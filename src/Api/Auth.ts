@@ -1,4 +1,5 @@
-import {Endpoint} from './Endpoint';
+import {Endpoint, RequestStatus} from './Endpoint';
+import {IProfile} from './Profiles';
 
 export interface AuthenticateUserRequest {
   username: string;
@@ -78,9 +79,57 @@ export const validateToken = (params: TokenValidationRequest) =>
  * If called before the session expires, this will refresh the caller's session and tokens.
  *
  * ```typescript
- * import {Auth} from '@verdocs/js-sdk';
+ * import {Auth, Endpoint} from '@verdocs/js-sdk';
  *
- * const profiles = await Auth.refreshTokens()
+ * const {accessToken} = await Auth.refreshTokens();
+ * Endpoint.setAuthToken(accessToken);
  * ```
  */
 export const refreshTokens = () => Endpoint.get<AuthenticateResponse>('/token').then((r) => r.data);
+
+export interface UpdatePasswordRequest {
+  email: string;
+  oldPassword: string;
+  newPassword: string;
+}
+
+export interface UpdatePasswordResponse {
+  status: RequestStatus;
+  /** Success or failure message */
+  message: string;
+}
+
+/**
+ * Update the caller's password. To help prevent CSRF attack vectors, the user's old password and email address are required.
+ *
+ * ```typescript
+ * import {Auth} from '@verdocs/js-sdk';
+ *
+ * const {status, message} = await Auth.updatePassword({ email, oldPassword, newPassword });
+ * if (status !== 'OK') {
+ *   window.alert(`Password reset error: ${message}`);
+ * }
+ * ```
+ */
+export const updatePassword = (params: UpdatePasswordRequest) =>
+  Endpoint.put<UpdatePasswordResponse>('/user/update_password', params).then((r) => r.data);
+
+export interface UpdateEmailRequest {
+  email: string;
+}
+
+export interface UpdateEmailResponse {
+  profiles: IProfile[];
+}
+
+/**
+ * Update the caller's email address.
+ *
+ * ```typescript
+ * import {Auth} from '@verdocs/js-sdk';
+ *
+ * const {profiles} = await Auth.updateEmail({ email: newEmail });
+ * ```
+ */
+export const updateEmail = (params: UpdateEmailRequest) =>
+  Endpoint.put<UpdateEmailResponse>('/user/update_email', params).then((r) => r.data);

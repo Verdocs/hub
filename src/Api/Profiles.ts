@@ -1,6 +1,6 @@
 import {Endpoint} from './Endpoint';
 
-export type IPermission =
+export type TPermission =
   | 'org:view'
   | 'member:view'
   | 'org:update'
@@ -26,9 +26,9 @@ export type IPermission =
   | 'org:list'
   | 'org:create';
 
-export type IRole = 'owner' | 'basic_user' | 'member';
+export type TPlan = 'env:essential' | 'org:standard';
 
-export type IPlan = 'env:essential' | 'org:standard';
+export type TRole = 'owner' | 'basic_user' | 'member';
 
 export interface IOrganization {
   /** The unique ID of the organization */
@@ -65,34 +65,56 @@ export interface IProfile {
   /** The organization */
   organization: IOrganization;
   /** The permissions assigned to the profilel _NOTE: Only present in the "current" profile._ */
-  permissions?: IPermission[];
+  permissions?: TPermission[];
   /** The roles assigned to the profilel _NOTE: Only present in the "current" profile._ */
-  roles?: IRole[];
+  roles?: TRole[];
   /** The plans assigned to the profilel _NOTE: Only present in the "current" profile._ */
-  plans?: IPlan[];
-}
-
-export interface IActiveSession {
-  sub: string;
-  email: string;
-  email_verified: boolean;
-  iat: number;
-  exp: number;
-  permissions: IPermission[];
-  roles: IRole[];
-  plans: IPlan[];
-  profile: IProfile;
-  profile_id: string;
-  organization_id: string;
+  plans?: TPlan[];
 }
 
 /**
  * Get the user's available profiles. The current profile will be marked with `current: true`.
  *
  * ```typescript
- * import {Auth} from '@verdocs/js-sdk';
+ * import {Profiles} from '@verdocs/js-sdk';
  *
- * const profiles = await Auth.getProfiles()
+ * const profiles = await Profiles.getProfiles()
  * ```
  */
 export const getProfiles = () => Endpoint.get<IProfile[]>('/profiles').then((r) => r.data);
+
+export interface IRole {
+  /** Unique identifier for the role. */
+  id: string;
+  /** Display name for the role. */
+  name: string;
+}
+
+/**
+ * Get a list of system roles.
+ *
+ * ```typescript
+ * import {Profiles} from '@verdocs/js-sdk';
+ *
+ * const roles = await Profiles.getRoles();
+ * ```
+ */
+export const getRoles = () => Endpoint.get<IRole[]>('/roles').then((r) => r.data);
+
+export interface IPermission {
+  /** Unique identifier for the permission. */
+  id: string;
+  /** Display name for the permission. */
+  name: string;
+}
+
+/**
+ * Get a list of system roles.
+ *
+ * ```typescript
+ * import {Profiles} from '@verdocs/js-sdk';
+ *
+ * const permissions = await Profiles.getPermissions();
+ * ```
+ */
+export const getPermissions = () => Endpoint.get<IPermission[]>('/permissions').then((r) => r.data);

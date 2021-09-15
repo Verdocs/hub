@@ -1,5 +1,12 @@
 import mockAxios from 'jest-mock-axios';
-import {authenticateUser, authenticateApp, validateToken, refreshTokens} from '../Api/Auth';
+import {
+  authenticateUser,
+  authenticateApp,
+  validateToken,
+  refreshTokens,
+  updateEmail,
+  updatePassword,
+} from '../Api/Auth';
 
 afterEach(() => {
   mockAxios.reset();
@@ -55,6 +62,34 @@ it('refreshTokens should return access tokens', () => {
   expect(mockAxios.get).toBeCalledWith('/token');
 
   const response = {accessToken: 'A', idToken: 'B', refreshToken: 'C'};
+  mockAxios.mockResponse({data: response});
+  expect(thenFn).toBeCalledWith(response);
+  expect(catchFn).not.toBeCalled();
+});
+
+it('updatePassword should return a success message', () => {
+  const catchFn = jest.fn();
+  const thenFn = jest.fn();
+
+  const request = {email: 'EMAIL', oldPassword: 'OLD', newPassword: 'NEW'};
+  updatePassword(request).then(thenFn).catch(catchFn);
+  expect(mockAxios.put).toBeCalledWith('/user/update_password', request);
+
+  const response = {status: 'OK', message: 'Password has been updated.'};
+  mockAxios.mockResponse({data: response});
+  expect(thenFn).toBeCalledWith(response);
+  expect(catchFn).not.toBeCalled();
+});
+
+it("updateEmail should return the user's profiles", () => {
+  const catchFn = jest.fn();
+  const thenFn = jest.fn();
+
+  const request = {email: 'EMAIL'};
+  updateEmail(request).then(thenFn).catch(catchFn);
+  expect(mockAxios.put).toBeCalledWith('/user/update_email', request);
+
+  const response = {profiles: []};
   mockAxios.mockResponse({data: response});
   expect(thenFn).toBeCalledWith(response);
   expect(catchFn).not.toBeCalled();

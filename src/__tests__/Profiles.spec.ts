@@ -1,5 +1,5 @@
 import mockAxios from 'jest-mock-axios';
-import {getProfiles, IProfile} from '../Api/Profiles';
+import {getPermissions, getProfiles, getRoles, IPermission, IProfile, IRole} from '../Api/Profiles';
 
 const MockProfile = {
   id: '1234',
@@ -37,5 +37,31 @@ it('getProfiles should return a "current" profile', () => {
 
   mockAxios.mockResponse({data: [MockProfile]});
   expect(thenFn).toBeCalledWith([MockProfile]);
+  expect(catchFn).not.toBeCalled();
+});
+
+it('getRoles should return a list of system roles', () => {
+  const catchFn = jest.fn();
+  const thenFn = jest.fn();
+
+  getRoles().then(thenFn).catch(catchFn);
+  expect(mockAxios.get).toBeCalledWith('/roles');
+
+  const roles = [] as IRole[];
+  mockAxios.mockResponse({data: roles});
+  expect(thenFn).toBeCalledWith(roles);
+  expect(catchFn).not.toBeCalled();
+});
+
+it('getPermissions should return a list of system permissions', () => {
+  const catchFn = jest.fn();
+  const thenFn = jest.fn();
+
+  getPermissions().then(thenFn).catch(catchFn);
+  expect(mockAxios.get).toBeCalledWith('/permissions');
+
+  const permissions = [] as IPermission[];
+  mockAxios.mockResponse({data: permissions});
+  expect(thenFn).toBeCalledWith(permissions);
   expect(catchFn).not.toBeCalled();
 });
