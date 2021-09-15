@@ -1,3 +1,5 @@
+verdocs-js-sdk - v1.0.0 / [Exports](modules.md)
+
 # Verdocs JS SDK
 
 > Verdocs SDK for Javascript / Typescript
