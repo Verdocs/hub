@@ -1,79 +1,13 @@
 import {Endpoint} from './Endpoint';
 
-export type IPermission =
-  | 'org:view'
-  | 'member:view'
-  | 'org:update'
-  | 'member:add'
-  | 'member:remove'
-  | 'admin:add'
-  | 'admin:remove'
-  | 'org:delete'
-  | 'org:transfer'
-  | 'owner:add'
-  | 'owner:remove'
-  | 'template:creator:create:personal'
-  | 'template:creator:visibility'
-  | 'template:creator:create:org'
-  | 'template:member:read'
-  | 'template:member:write'
-  | 'template:member:visibility'
-  | 'template:creator:delete'
-  | 'template:member:delete'
-  | 'template:creator:create:public'
-  | 'rform:access'
-  | 'rcommon:access'
-  | 'org:list'
-  | 'org:create';
-
-export type IRole = 'owner' | 'basic_user' | 'member';
-
-export type IPlan = 'env:essential' | 'org:standard';
-
-export interface IProfile {
-  id: string;
-  user_id: string;
-  organization_id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string | null;
-  current: boolean;
-  organization: {
-    id: string;
-    name: string;
-    address: string | null;
-    phone: string | null;
-    business_name: string | null;
-    is_business: boolean;
-    address2: string | null;
-    contact_email: string | null;
-    timezone: string | null;
-    envelope_responsible: boolean;
-  };
-  // Only the "current" profile will include these fields
-  permissions?: IPermission[];
-  roles?: IRole[];
-  plans?: IPlan[];
-}
-
-export interface IActiveSession {
-  sub: string;
-  email: string;
-  email_verified: boolean;
-  iat: number;
-  exp: number;
-  permissions: IPermission[];
-  roles: IRole[];
-  plans: IPlan[];
-  profile: IProfile;
-  profile_id: string;
-  organization_id: string;
-}
-
-export interface AuthenticateRequest {
+export interface AuthenticateUserRequest {
   username: string;
   password: string;
+}
+
+export interface AuthenticateAppRequest {
+  client_id: string;
+  client_secret: string;
 }
 
 export interface AuthenticateResponse {
@@ -88,20 +22,65 @@ export interface AuthenticateResponse {
  * ```typescript
  * import {Auth, Endpoint} from '@verdocs/js-sdk';
  *
- * const {accessToken} = await Auth.authenticate({ username: 'test@test.com', password: 'PASSWORD' });
+ * const {accessToken} = await Auth.authenticateUser({ username: 'test@test.com', password: 'PASSWORD' });
  * Endpoint.setAuthToken(accessToken);
  * ```
  */
-export const authenticate = (request: AuthenticateRequest) =>
-  Endpoint.post<AuthenticateResponse>('/authentication/login', request).then((r) => r.data);
+export const authenticateUser = (params: AuthenticateUserRequest) =>
+  Endpoint.post<AuthenticateResponse>('/authentication/login', params).then((r) => r.data);
 
 /**
- * Get the user's available profiles. The current profile will be marked with `current: true`.
+ * Authenticate to Verdocs via client ID / Secret authentication. **NOTE: This is only suitable for
+ * NodeJS server-side applications. Never expose your Client Secret in a Web or Mobile app!** Also note
+ * that access tokens may be cached by server-side apps (and this is recommended) but do expire after 2
+ * hours. This expiration may change based on future security needs. Application developers are encouraged
+ * to check the `exp` expiration field in the response accessToken and renew tokens after they expire.
+ *
+ * ```typescript
+ * import {Auth, Endpoint} from '@verdocs/js-sdk';
+ *
+ * const {accessToken} = await Auth.authenticateApp({ client_id: 'CLIENTID', client_secret: 'SECRET' });
+ * Endpoint.setAuthToken(accessToken);
+ * ```
+ */
+export const authenticateApp = (params: AuthenticateAppRequest) =>
+  Endpoint.post<AuthenticateResponse>('/authentication/login_client', {}, {headers: params}).then((r) => r.data);
+
+export interface TokenValidationRequest {
+  token: string;
+}
+
+export interface TokenValidationResponse {
+  /** True if the token is valid */
+  valid: boolean;
+  /** The decoded and validated body of the JWT */
+  payload: any;
+}
+
+/**
+ * Validate a token. Only Verdocs tokens will be accepted. Most applications can decode tokens locally,
+ * because tokens will be validated when API calls are made anyway. However, high-security applications
+ * may use this endpoint to check if a token has been revoked.
  *
  * ```typescript
  * import {Auth} from '@verdocs/js-sdk';
  *
- * const profiles = await Auth.getProfiles()
+ * const {valid} = await Auth.validateToken({ token });
+ * if (!valid) {
+ *   window.alert('Session invalid or expired. Please re-authenticate.');
+ * }
  * ```
  */
-export const getProfiles = () => Endpoint.post<IProfile[]>('/profiles').then((r) => r.data);
+export const validateToken = (params: TokenValidationRequest) =>
+  Endpoint.post<TokenValidationResponse>('/token/isValid', params).then((r) => r.data);
+
+/**
+ * If called before the session expires, this will refresh the caller's session and tokens.
+ *
+ * ```typescript
+ * import {Auth} from '@verdocs/js-sdk';
+ *
+ * const profiles = await Auth.refreshTokens()
+ * ```
+ */
+export const refreshTokens = () => Endpoint.get<AuthenticateResponse>('/token').then((r) => r.data);

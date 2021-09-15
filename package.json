@@ -26,7 +26,9 @@
     "test": "jest --config jestconfig.json",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
-    "docs": "rm -rf docs && typedoc && git add --all docs"
+    "docs-md": "rm -rf doc-md && typedoc && git add --all doc-md",
+    "docs-html": "rm -rf doc-html && typedoc --plugin none --out doc-html && git add --all doc-html",
+    "docs": "rm -rf docs && npm run docs-md && npm run docs-html "
   },
   "dependencies": {
     "axios": "^0.21.1"

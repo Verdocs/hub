@@ -6,6 +6,7 @@ export const Endpoint = axios.create({
   headers: {'X-Client-ID': '1234'},
 });
 
+/* istanbul ignore next */
 export const setAuthToken = (accessToken: string | null) => {
   Endpoint.defaults.headers.Authorization = `Bearer ${accessToken}`;
 };
