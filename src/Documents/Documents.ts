@@ -139,5 +139,14 @@ export type IEventDetail = 'in_app' | 'mail' | 'signer' | '';
 export const getSummary = async (page: number) =>
   Endpoint.post<IDocumentsSummary>('/documents/summary', {page}).then((r) => r.data);
 
+/**
+ * Search for documents matching various criteria.
+ *
+ * ```typescript
+ * import {Documents} from '@verdocs/js-sdk/Documents';
+ *
+ * const {result, page, total} = await Documents.search({ ... });
+ * ```
+ */
 export const search = async (params: any) =>
-	Endpoint.post<IDocumentsSearchResult>('/documents/search', params).then((r) => r.data);
+  Endpoint.post<IDocumentsSearchResult>('/documents/search', params).then((r) => r.data);

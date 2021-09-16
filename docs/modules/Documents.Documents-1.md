@@ -106,6 +106,14 @@ ___
 
 ▸ `Const` **search**(`params`): `Promise`<[`IDocumentsSearchResult`](../interfaces/Documents.Documents-1.IDocumentsSearchResult.md)\>
 
+Search for documents matching various criteria.
+
+```typescript
+import {Documents} from '@verdocs/js-sdk/Documents';
+
+const {result, page, total} = await Documents.search({ ... });
+```
+
 #### Parameters
 
 | Name | Type |
@@ -118,4 +126,4 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:142](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L142)
+[Documents/Documents.ts:151](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L151)
