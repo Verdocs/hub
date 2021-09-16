@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[Api/Templates.ts:23](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Templates.ts#L23)
+[Api/Templates.ts:23](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Templates.ts#L23)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:25](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Templates.ts#L25)
+[Api/Templates.ts:25](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Templates.ts#L25)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:24](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Templates.ts#L24)
+[Api/Templates.ts:24](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Templates.ts#L24)

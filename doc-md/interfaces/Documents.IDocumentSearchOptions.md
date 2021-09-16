@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[Api/Documents.ts:123](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L123)
+[Api/Documents.ts:123](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L123)
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:126](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L126)
+[Api/Documents.ts:126](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L126)
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:124](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L124)
+[Api/Documents.ts:124](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L124)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:125](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L125)
+[Api/Documents.ts:125](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L125)
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:121](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L121)
+[Api/Documents.ts:121](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L121)
 
 ___
 
@@ -75,7 +75,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:127](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L127)
+[Api/Documents.ts:127](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L127)
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:120](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L120)
+[Api/Documents.ts:120](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L120)
 
 ___
 
@@ -95,4 +95,4 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:122](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L122)
+[Api/Documents.ts:122](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L122)

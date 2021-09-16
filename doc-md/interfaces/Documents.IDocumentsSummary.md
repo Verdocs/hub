@@ -28,7 +28,7 @@
 
 #### Defined in
 
-[Api/Documents.ts:36](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L36)
+[Api/Documents.ts:36](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L36)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:41](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L41)
+[Api/Documents.ts:41](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L41)
 
 ___
 
@@ -64,4 +64,4 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:46](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L46)
+[Api/Documents.ts:46](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L46)

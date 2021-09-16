@@ -27,7 +27,7 @@
 
 #### Defined in
 
-[Api/Documents.ts:11](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L11)
+[Api/Documents.ts:11](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L11)
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:12](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L12)
+[Api/Documents.ts:12](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L12)
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:10](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L10)
+[Api/Documents.ts:10](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L10)
 
 ___
 
@@ -57,7 +57,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:13](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L13)
+[Api/Documents.ts:13](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L13)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:16](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L16)
+[Api/Documents.ts:16](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L16)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:14](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L14)
+[Api/Documents.ts:14](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L14)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:15](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L15)
+[Api/Documents.ts:15](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L15)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:24](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L24)
+[Api/Documents.ts:24](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L24)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:25](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L25)
+[Api/Documents.ts:25](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L25)
 
 ___
 
@@ -128,4 +128,4 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:26](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Documents.ts#L26)
+[Api/Documents.ts:26](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L26)

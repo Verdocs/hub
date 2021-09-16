@@ -11,12 +11,18 @@
 - [AuthenticateUserRequest](../interfaces/Auth.AuthenticateUserRequest.md)
 - [TokenValidationRequest](../interfaces/Auth.TokenValidationRequest.md)
 - [TokenValidationResponse](../interfaces/Auth.TokenValidationResponse.md)
+- [UpdateEmailRequest](../interfaces/Auth.UpdateEmailRequest.md)
+- [UpdateEmailResponse](../interfaces/Auth.UpdateEmailResponse.md)
+- [UpdatePasswordRequest](../interfaces/Auth.UpdatePasswordRequest.md)
+- [UpdatePasswordResponse](../interfaces/Auth.UpdatePasswordResponse.md)
 
 ### Functions
 
 - [authenticateApp](Auth.md#authenticateapp)
 - [authenticateUser](Auth.md#authenticateuser)
 - [refreshTokens](Auth.md#refreshtokens)
+- [updateEmail](Auth.md#updateemail)
+- [updatePassword](Auth.md#updatepassword)
 - [validateToken](Auth.md#validatetoken)
 
 ## Functions
@@ -50,7 +56,7 @@ Endpoint.setAuthToken(accessToken);
 
 #### Defined in
 
-[Api/Auth.ts:46](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Auth.ts#L46)
+[Api/Auth.ts:47](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Auth.ts#L47)
 
 ___
 
@@ -79,7 +85,7 @@ Endpoint.setAuthToken(accessToken);
 
 #### Defined in
 
-[Api/Auth.ts:29](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Auth.ts#L29)
+[Api/Auth.ts:30](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Auth.ts#L30)
 
 ___
 
@@ -90,9 +96,10 @@ ___
 If called before the session expires, this will refresh the caller's session and tokens.
 
 ```typescript
-import {Auth} from '@verdocs/js-sdk';
+import {Auth, Endpoint} from '@verdocs/js-sdk';
 
-const profiles = await Auth.refreshTokens()
+const {accessToken} = await Auth.refreshTokens();
+Endpoint.setAuthToken(accessToken);
 ```
 
 #### Returns
@@ -101,7 +108,66 @@ const profiles = await Auth.refreshTokens()
 
 #### Defined in
 
-[Api/Auth.ts:86](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Auth.ts#L86)
+[Api/Auth.ts:88](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Auth.ts#L88)
+
+___
+
+### updateEmail
+
+▸ `Const` **updateEmail**(`params`): `Promise`<[`UpdateEmailResponse`](../interfaces/Auth.UpdateEmailResponse.md)\>
+
+Update the caller's email address.
+
+```typescript
+import {Auth} from '@verdocs/js-sdk';
+
+const {profiles} = await Auth.updateEmail({ email: newEmail });
+```
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | [`UpdateEmailRequest`](../interfaces/Auth.UpdateEmailRequest.md) |
+
+#### Returns
+
+`Promise`<[`UpdateEmailResponse`](../interfaces/Auth.UpdateEmailResponse.md)\>
+
+#### Defined in
+
+[Api/Auth.ts:134](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Auth.ts#L134)
+
+___
+
+### updatePassword
+
+▸ `Const` **updatePassword**(`params`): `Promise`<[`UpdatePasswordResponse`](../interfaces/Auth.UpdatePasswordResponse.md)\>
+
+Update the caller's password. To help prevent CSRF attack vectors, the user's old password and email address are required.
+
+```typescript
+import {Auth} from '@verdocs/js-sdk';
+
+const {status, message} = await Auth.updatePassword({ email, oldPassword, newPassword });
+if (status !== 'OK') {
+  window.alert(`Password reset error: ${message}`);
+}
+```
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | [`UpdatePasswordRequest`](../interfaces/Auth.UpdatePasswordRequest.md) |
+
+#### Returns
+
+`Promise`<[`UpdatePasswordResponse`](../interfaces/Auth.UpdatePasswordResponse.md)\>
+
+#### Defined in
+
+[Api/Auth.ts:114](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Auth.ts#L114)
 
 ___
 
@@ -134,4 +200,4 @@ if (!valid) {
 
 #### Defined in
 
-[Api/Auth.ts:74](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Auth.ts#L74)
+[Api/Auth.ts:75](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Auth.ts#L75)

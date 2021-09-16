@@ -10,4 +10,5 @@
 - [Documents](modules/Documents.md)
 - [Endpoint](modules/Endpoint.md)
 - [Notifications](modules/Notifications.md)
+- [Profiles](modules/Profiles.md)
 - [Templates](modules/Templates.md)

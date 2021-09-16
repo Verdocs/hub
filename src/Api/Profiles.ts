@@ -30,6 +30,13 @@ export type TPlan = 'env:essential' | 'org:standard';
 
 export type TRole = 'owner' | 'basic_user' | 'member';
 
+export interface IGroup {
+  id: string;
+  name: string;
+  organization_id: string;
+  parent_id: string | null;
+}
+
 export interface IOrganization {
   /** The unique ID of the organization */
   id: string;
@@ -70,6 +77,8 @@ export interface IProfile {
   roles?: TRole[];
   /** The plans assigned to the profilel _NOTE: Only present in the "current" profile._ */
   plans?: TPlan[];
+  /** The plans assigned to the profilel _NOTE: Only present in the "current" profile._ */
+  groups?: IGroup[];
 }
 
 /**
@@ -118,3 +127,108 @@ export interface IPermission {
  * ```
  */
 export const getPermissions = () => Endpoint.get<IPermission[]>('/permissions').then((r) => r.data);
+
+export interface CreateProfileRequest {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone?: string;
+}
+
+/**
+ * Create a profile. If the caller does not have a "current" profile set, the new profile will be made current.
+ *
+ * ```typescript
+ * import {Profiles} from '@verdocs/js-sdk';
+ *
+ * const newProfile = await Profiles.createProfile({ first_name: 'FIRST', last_name: 'LAST', email: 'EMAIL' });
+ * ```
+ */
+export const createProfile = (params: CreateProfileRequest) =>
+  Endpoint.post<IProfile>('/profiles', params).then((r) => r.data);
+
+/**
+ * Get a profile. The caller must have admin access to the given profile.
+ * TODO: Add a "public" profile endpoint for public pages
+ *
+ * ```typescript
+ * import {Profiles} from '@verdocs/js-sdk';
+ *
+ * const profile = await Profiles.getProfile('PROFILEID');
+ * ```
+ */
+export const getProfile = (profileId: string) => Endpoint.get<IProfile>(`/profiles/${profileId}`).then((r) => r.data);
+
+/**
+ * Get a profile's permissions. The caller must have admin access to the given profile.
+ *
+ * ```typescript
+ * import {Profiles} from '@verdocs/js-sdk';
+ *
+ * const permissions = await Profiles.getProfilePermissions('PROFILEID');
+ * ```
+ */
+export const getProfilePermissions = (profileId: string) =>
+  Endpoint.get<IPermission[]>(`/profiles/${profileId}/permissions`).then((r) => r.data);
+
+/**
+ * Get a profile's groups.
+ *
+ * ```typescript
+ * import {Profiles} from '@verdocs/js-sdk';
+ *
+ * const groups = await Profiles.getProfileGroups('PROFILEID');
+ * ```
+ */
+export const getProfileGroups = (profileId: string) =>
+  Endpoint.get<IGroup[]>(`/profiles/${profileId}/groups`).then((r) => r.data);
+
+export interface SwitchProfileResponse {
+  profile: IProfile;
+  idToken: string;
+  accessToken: string;
+  refreshToken: string;
+}
+
+/**
+ * Switch the caller's "current" profile. The current profile is used for permissions checking and profile_id field settings
+ * for most operations in Verdocs. It is important to select the appropropriate profile before calling other API functions.
+ *
+ * ```typescript
+ * import {Profiles} from '@verdocs/js-sdk';
+ *
+ * const newProfile = await Profiles.switchProfile('PROFILEID');
+ * ```
+ */
+export const switchProfile = (profileId: string) =>
+  Endpoint.post<SwitchProfileResponse>(`/profiles/${profileId}/switch`).then((r) => r.data);
+
+export interface IUpdateProfileRequest {
+  first_name?: string;
+  last_name?: string;
+  phone?: string;
+}
+
+/**
+ * Update a profile. For future expansion, the profile ID to update is required, but currently this must also be the
+ * "current" profile for the caller.
+ *
+ * ```typescript
+ * import {Profiles} from '@verdocs/js-sdk';
+ *
+ * const newProfile = await Profiles.updateProfile('PROFILEID');
+ * ```
+ */
+export const updateProfile = (profileId: string, params: IUpdateProfileRequest) =>
+  Endpoint.put<IProfile>(`/profiles/${profileId}`, params).then((r) => r.data);
+
+/**
+ * Delete a profile. If the requested profile is the caller's curent profile, the next available profile will be selected.
+ *
+ * ```typescript
+ * import {Profiles} from '@verdocs/js-sdk';
+ *
+ * await Profiles.deleteProfile('PROFILEID');
+ * ```
+ */
+export const deleteProfile = (profileId: string) => Endpoint.delete(`/profiles/${profileId}`).then((r) => r.data);

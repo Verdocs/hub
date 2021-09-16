@@ -4,6 +4,10 @@
 
 ## Table of contents
 
+### Type aliases
+
+- [RequestStatus](Endpoint.md#requeststatus)
+
 ### Variables
 
 - [Endpoint](Endpoint.md#endpoint)
@@ -11,6 +15,16 @@
 ### Functions
 
 - [setAuthToken](Endpoint.md#setauthtoken)
+
+## Type aliases
+
+### RequestStatus
+
+Ƭ **RequestStatus**: ``"OK"`` \| ``"ERROR"``
+
+#### Defined in
+
+[Api/Endpoint.ts:9](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Endpoint.ts#L9)
 
 ## Variables
 
@@ -20,7 +34,7 @@
 
 #### Defined in
 
-[Api/Endpoint.ts:3](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Endpoint.ts#L3)
+[Api/Endpoint.ts:3](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Endpoint.ts#L3)
 
 ## Functions
 
@@ -40,4 +54,4 @@
 
 #### Defined in
 
-[Api/Endpoint.ts:10](https://github.com/Verdocs/js-sdk/blob/0c335e6/src/Api/Endpoint.ts#L10)
+[Api/Endpoint.ts:12](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Endpoint.ts#L12)
