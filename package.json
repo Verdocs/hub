@@ -1,6 +1,7 @@
 {
   "name": "@verdocs/js-sdk",
   "version": "1.0.0",
+  "private": false,
   "description": "Verdocs JS SDK",
   "keywords": [
     "Verdocs",
@@ -29,6 +30,9 @@
     "docs-md": "typedoc && git add --all docs",
     "docs-html": "typedoc --plugin none --out docs-html",
     "docs": "npm run docs-md && npm run docs-html"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "axios": "^0.21.1"
