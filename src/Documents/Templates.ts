@@ -1,4 +1,4 @@
-import {Endpoint} from '../HTTP/Endpoint';
+import {Endpoint} from '../HTTP/Transport';
 import {ITemplatesSummary} from './Types';
 
 export const getTemplates = async () => Endpoint.get('/templates').then((r) => r.data);

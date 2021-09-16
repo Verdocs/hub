@@ -1,4 +1,4 @@
-import {Endpoint} from '../HTTP/Endpoint';
+import {Endpoint} from '../HTTP/Transport';
 import {ITemplateSummaryEntry} from './Types';
 
 export const toggleStar = async (templateId: string) =>

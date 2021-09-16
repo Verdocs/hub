@@ -1,4 +1,4 @@
-import {Endpoint} from '../HTTP/Endpoint';
+import {Endpoint} from '../HTTP/Transport';
 
 export const getWebhook = (organizationId: string) =>
   Endpoint.get(`/organizations/${organizationId}/webhook`).then((r) => r.data);

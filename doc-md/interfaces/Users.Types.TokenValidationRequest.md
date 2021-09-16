@@ -1,4 +1,4 @@
-[verdocs-js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / TokenValidationRequest
+[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / TokenValidationRequest
 
 # Interface: TokenValidationRequest
 
@@ -18,4 +18,4 @@
 
 #### Defined in
 
-[Users/Types.ts:119](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Users/Types.ts#L119)
+[Users/Types.ts:119](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Users/Types.ts#L119)

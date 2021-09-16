@@ -1,4 +1,4 @@
-[verdocs-js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / Webhooks
+[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / Webhooks
 
 # Namespace: Webhooks
 
@@ -29,7 +29,7 @@
 
 #### Defined in
 
-[Organizations/Webhooks.ts:3](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Organizations/Webhooks.ts#L3)
+[Organizations/Webhooks.ts:3](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Organizations/Webhooks.ts#L3)
 
 ___
 
@@ -50,4 +50,4 @@ ___
 
 #### Defined in
 
-[Organizations/Webhooks.ts:6](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Organizations/Webhooks.ts#L6)
+[Organizations/Webhooks.ts:6](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Organizations/Webhooks.ts#L6)

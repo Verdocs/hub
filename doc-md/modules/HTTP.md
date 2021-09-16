@@ -1,4 +1,4 @@
-[verdocs-js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / HTTP
+[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / HTTP
 
 # Namespace: HTTP
 
@@ -6,4 +6,5 @@
 
 ### Namespaces
 
-- [Endpoint](HTTP.Endpoint.md)
+- [Transport](HTTP.Transport.md)
+- [Types](HTTP.Types.md)

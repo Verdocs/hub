@@ -1,4 +1,4 @@
-import {Endpoint} from '../HTTP/Endpoint';
+import {Endpoint} from '../HTTP/Transport';
 
 export type IDocumentStatus = 'complete' | 'pending' | 'progress';
 
@@ -140,4 +140,4 @@ export const getSummary = async (page: number) =>
   Endpoint.post<IDocumentsSummary>('/documents/summary', {page}).then((r) => r.data);
 
 export const search = async (params: any) =>
-  Endpoint.post<IDocumentsSearchResult>('/documents/search', params).then((r) => r.data);
+	Endpoint.post<IDocumentsSearchResult>('/documents/search', params).then((r) => r.data);

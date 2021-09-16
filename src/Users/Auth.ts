@@ -1,4 +1,4 @@
-import {Endpoint} from '../HTTP/Endpoint';
+import {Endpoint} from '../HTTP/Transport';
 import {
   IAuthenticateAppRequest,
   IAuthenticateResponse,

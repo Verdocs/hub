@@ -1,4 +1,4 @@
-[verdocs-js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Documents](../modules/Documents.md) / [Types](../modules/Documents.Types.md) / ITemplatesSummary
+[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Documents](../modules/Documents.md) / [Types](../modules/Documents.Types.md) / ITemplatesSummary
 
 # Interface: ITemplatesSummary
 
@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[Documents/Types.ts:21](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Types.ts#L21)
+[Documents/Types.ts:21](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Types.ts#L21)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[Documents/Types.ts:23](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Types.ts#L23)
+[Documents/Types.ts:23](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Types.ts#L23)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[Documents/Types.ts:22](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Types.ts#L22)
+[Documents/Types.ts:22](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Types.ts#L22)

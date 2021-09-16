@@ -1,4 +1,4 @@
-[verdocs-js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Documents](../modules/Documents.md) / [Documents](../modules/Documents.Documents-1.md) / IDocumentsSearchResultEntry
+[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Documents](../modules/Documents.md) / [Documents](../modules/Documents.Documents-1.md) / IDocumentsSearchResultEntry
 
 # Interface: IDocumentsSearchResultEntry
 
@@ -27,7 +27,7 @@
 
 #### Defined in
 
-[Documents/Documents.ts:11](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Documents.ts#L11)
+[Documents/Documents.ts:11](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Documents.ts#L11)
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:12](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Documents.ts#L12)
+[Documents/Documents.ts:12](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Documents.ts#L12)
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:10](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Documents.ts#L10)
+[Documents/Documents.ts:10](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Documents.ts#L10)
 
 ___
 
@@ -57,7 +57,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:13](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Documents.ts#L13)
+[Documents/Documents.ts:13](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Documents.ts#L13)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:16](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Documents.ts#L16)
+[Documents/Documents.ts:16](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Documents.ts#L16)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:14](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Documents.ts#L14)
+[Documents/Documents.ts:14](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Documents.ts#L14)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:15](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Documents.ts#L15)
+[Documents/Documents.ts:15](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Documents.ts#L15)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:24](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Documents.ts#L24)
+[Documents/Documents.ts:24](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Documents.ts#L24)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:25](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Documents.ts#L25)
+[Documents/Documents.ts:25](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Documents.ts#L25)
 
 ___
 
@@ -128,4 +128,4 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:26](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Documents.ts#L26)
+[Documents/Documents.ts:26](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Documents.ts#L26)

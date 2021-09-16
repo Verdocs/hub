@@ -1,4 +1,4 @@
-import {Endpoint} from '../HTTP/Endpoint';
+import {Endpoint} from '../HTTP/Transport';
 import {IOrganization} from './Types';
 
 export const getOrganizations = () => Endpoint.get<IOrganization[]>('/organizations').then((r) => r.data);

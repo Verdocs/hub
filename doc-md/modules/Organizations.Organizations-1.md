@@ -1,4 +1,4 @@
-[verdocs-js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / Organizations
+[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / Organizations
 
 # Namespace: Organizations
 
@@ -27,7 +27,7 @@
 
 #### Defined in
 
-[Organizations/Organizations.ts:6](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Organizations/Organizations.ts#L6)
+[Organizations/Organizations.ts:6](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Organizations/Organizations.ts#L6)
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 #### Defined in
 
-[Organizations/Organizations.ts:10](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Organizations/Organizations.ts#L10)
+[Organizations/Organizations.ts:10](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Organizations/Organizations.ts#L10)
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
 #### Defined in
 
-[Organizations/Organizations.ts:13](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Organizations/Organizations.ts#L13)
+[Organizations/Organizations.ts:13](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Organizations/Organizations.ts#L13)
 
 ___
 
@@ -81,7 +81,7 @@ ___
 
 #### Defined in
 
-[Organizations/Organizations.ts:4](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Organizations/Organizations.ts#L4)
+[Organizations/Organizations.ts:4](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Organizations/Organizations.ts#L4)
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 #### Defined in
 
-[Organizations/Organizations.ts:16](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Organizations/Organizations.ts#L16)
+[Organizations/Organizations.ts:16](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Organizations/Organizations.ts#L16)
 
 ___
 
@@ -116,4 +116,4 @@ ___
 
 #### Defined in
 
-[Organizations/Organizations.ts:8](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Organizations/Organizations.ts#L8)
+[Organizations/Organizations.ts:8](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Organizations/Organizations.ts#L8)

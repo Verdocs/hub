@@ -1,4 +1,4 @@
-[verdocs-js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / IAuthenticateResponse
+[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / IAuthenticateResponse
 
 # Interface: IAuthenticateResponse
 
@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[Users/Types.ts:114](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Users/Types.ts#L114)
+[Users/Types.ts:114](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Users/Types.ts#L114)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:113](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Users/Types.ts#L113)
+[Users/Types.ts:113](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Users/Types.ts#L113)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:115](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Users/Types.ts#L115)
+[Users/Types.ts:115](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Users/Types.ts#L115)

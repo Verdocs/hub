@@ -1,4 +1,4 @@
-import {Endpoint} from '../HTTP/Endpoint';
+import {Endpoint} from '../HTTP/Transport';
 
 export const getApiKeys = (organizationId: string) =>
   Endpoint.get(`/organizations/${organizationId}/api_key`).then((r) => r.data);

@@ -1,4 +1,4 @@
-[verdocs-js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / TokenValidationResponse
+[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / TokenValidationResponse
 
 # Interface: TokenValidationResponse
 
@@ -21,7 +21,7 @@ The decoded and validated body of the JWT
 
 #### Defined in
 
-[Users/Types.ts:126](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Users/Types.ts#L126)
+[Users/Types.ts:126](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Users/Types.ts#L126)
 
 ___
 
@@ -33,4 +33,4 @@ True if the token is valid
 
 #### Defined in
 
-[Users/Types.ts:124](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Users/Types.ts#L124)
+[Users/Types.ts:124](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Users/Types.ts#L124)

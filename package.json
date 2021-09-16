@@ -1,5 +1,5 @@
 {
-  "name": "verdocs-js-sdk",
+  "name": "@verdocs/js-sdk",
   "version": "1.0.0",
   "description": "Verdocs JS SDK",
   "keywords": [
@@ -35,10 +35,9 @@
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
-    "dotenv": "^10.0.0",
     "jest": "^27.0.6",
     "jest-mock-axios": "^4.4.0",
-    "prettier": "^2.3.2",
+    "prettier": "^2.4.1",
     "ts-jest": "^27.0.3",
     "tslint": "^6.1.3",
     "tslint-config-prettier": "^1.18.0",

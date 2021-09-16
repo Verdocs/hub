@@ -1,6 +1,6 @@
-[verdocs-js-sdk - v1.0.0](README.md) / Exports
+[@verdocs/js-sdk - v1.0.0](README.md) / Exports
 
-# verdocs-js-sdk - v1.0.0
+# @verdocs/js-sdk - v1.0.0
 
 ## Table of contents
 

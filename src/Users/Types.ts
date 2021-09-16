@@ -1,5 +1,5 @@
 import {IOrganization} from '../Organizations/Types';
-import {TRequestStatus} from '../HTTP/Endpoint';
+import {TRequestStatus} from '../HTTP/Types';
 
 export type TPermission =
   | 'org:view'

@@ -1,0 +1,5 @@
+docs-md/
+docs-html/
+__mocks__/
+src/__tests__/
+.idea/

@@ -1,4 +1,4 @@
-[verdocs-js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Utils](Utils.md) / DateTime
+[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Utils](Utils.md) / DateTime
 
 # Namespace: DateTime
 
@@ -28,4 +28,4 @@
 
 #### Defined in
 
-[Utils/DateTime.ts:8](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Utils/DateTime.ts#L8)
+[Utils/DateTime.ts:8](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Utils/DateTime.ts#L8)

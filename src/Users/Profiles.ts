@@ -1,4 +1,4 @@
-import {Endpoint} from '../HTTP/Endpoint';
+import {Endpoint} from '../HTTP/Transport';
 import {
   ICreateProfileRequest,
   IGroup,
@@ -52,7 +52,7 @@ export const getPermissions = () => Endpoint.get<IPermission[]>('/permissions').
  * ```
  */
 export const createProfile = (params: ICreateProfileRequest) =>
-  Endpoint.post<IProfile>('/profiles', params).then((r) => r.data);
+	Endpoint.post<IProfile>('/profiles', params).then((r) => r.data);
 
 /**
  * Get a profile. The caller must have admin access to the given profile.

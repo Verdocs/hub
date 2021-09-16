@@ -1,4 +1,4 @@
-[verdocs-js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Documents](../modules/Documents.md) / [Documents](../modules/Documents.Documents-1.md) / IDocumentsSummary
+[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Documents](../modules/Documents.md) / [Documents](../modules/Documents.Documents-1.md) / IDocumentsSummary
 
 # Interface: IDocumentsSummary
 
@@ -28,7 +28,7 @@
 
 #### Defined in
 
-[Documents/Documents.ts:36](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Documents.ts#L36)
+[Documents/Documents.ts:36](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Documents.ts#L36)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:41](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Documents.ts#L41)
+[Documents/Documents.ts:41](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Documents.ts#L41)
 
 ___
 
@@ -64,4 +64,4 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:46](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Documents.ts#L46)
+[Documents/Documents.ts:46](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Documents.ts#L46)

@@ -1,4 +1,4 @@
-[verdocs-js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / Documents
+[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / Documents
 
 # Namespace: Documents
 

@@ -1,4 +1,4 @@
-[verdocs-js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / ISwitchProfileResponse
+[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / ISwitchProfileResponse
 
 # Interface: ISwitchProfileResponse
 
@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[Users/Types.ts:92](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Users/Types.ts#L92)
+[Users/Types.ts:92](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Users/Types.ts#L92)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:91](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Users/Types.ts#L91)
+[Users/Types.ts:91](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Users/Types.ts#L91)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:90](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Users/Types.ts#L90)
+[Users/Types.ts:90](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Users/Types.ts#L90)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:93](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Users/Types.ts#L93)
+[Users/Types.ts:93](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Users/Types.ts#L93)

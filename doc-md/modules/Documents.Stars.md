@@ -1,4 +1,4 @@
-[verdocs-js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Documents](Documents.md) / Stars
+[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Documents](Documents.md) / Stars
 
 # Namespace: Stars
 
@@ -28,4 +28,4 @@
 
 #### Defined in
 
-[Documents/Stars.ts:4](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Documents/Stars.ts#L4)
+[Documents/Stars.ts:4](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Documents/Stars.ts#L4)

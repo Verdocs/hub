@@ -1,4 +1,4 @@
-[verdocs-js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Users](Users.md) / Types
+[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Users](Users.md) / Types
 
 # Namespace: Types
 
@@ -39,7 +39,7 @@
 
 #### Defined in
 
-[Users/Types.ts:4](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Users/Types.ts#L4)
+[Users/Types.ts:4](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Users/Types.ts#L4)
 
 ___
 
@@ -49,7 +49,7 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:30](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Users/Types.ts#L30)
+[Users/Types.ts:30](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Users/Types.ts#L30)
 
 ___
 
@@ -59,4 +59,4 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:32](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Users/Types.ts#L32)
+[Users/Types.ts:32](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Users/Types.ts#L32)

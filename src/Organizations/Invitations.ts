@@ -1,4 +1,4 @@
-import {Endpoint} from '../HTTP/Endpoint';
+import {Endpoint} from '../HTTP/Transport';
 
 export const getInvitations = (organizationId: string) =>
   Endpoint.get(`/organizations/${organizationId}/invitation`).then((r) => r.data);

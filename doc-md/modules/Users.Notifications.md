@@ -1,4 +1,4 @@
-[verdocs-js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Users](Users.md) / Notifications
+[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Users](Users.md) / Notifications
 
 # Namespace: Notifications
 
@@ -22,4 +22,4 @@
 
 #### Defined in
 
-[Users/Notifications.ts:3](https://github.com/Verdocs/js-sdk/blob/cfc4bfe/src/Users/Notifications.ts#L3)
+[Users/Notifications.ts:3](https://github.com/Verdocs/js-sdk/blob/4c3fec6/src/Users/Notifications.ts#L3)
