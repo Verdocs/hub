@@ -22,4 +22,4 @@
 
 #### Defined in
 
-[Users/Notifications.ts:3](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Users/Notifications.ts#L3)
+[Users/Notifications.ts:3](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Notifications.ts#L3)

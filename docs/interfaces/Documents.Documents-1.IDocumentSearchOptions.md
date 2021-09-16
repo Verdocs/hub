@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[Documents/Documents.ts:123](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Documents/Documents.ts#L123)
+[Documents/Documents.ts:123](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L123)
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:126](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Documents/Documents.ts#L126)
+[Documents/Documents.ts:126](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L126)
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:124](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Documents/Documents.ts#L124)
+[Documents/Documents.ts:124](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L124)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:125](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Documents/Documents.ts#L125)
+[Documents/Documents.ts:125](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L125)
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:121](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Documents/Documents.ts#L121)
+[Documents/Documents.ts:121](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L121)
 
 ___
 
@@ -75,7 +75,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:127](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Documents/Documents.ts#L127)
+[Documents/Documents.ts:127](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L127)
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:120](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Documents/Documents.ts#L120)
+[Documents/Documents.ts:120](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L120)
 
 ___
 
@@ -95,4 +95,4 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:122](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Documents/Documents.ts#L122)
+[Documents/Documents.ts:122](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L122)

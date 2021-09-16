@@ -30,7 +30,7 @@
 
 #### Defined in
 
-[Documents/Templates.ts:8](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Documents/Templates.ts#L8)
+[Documents/Templates.ts:8](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Templates.ts#L8)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[Documents/Templates.ts:4](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Documents/Templates.ts#L4)
+[Documents/Templates.ts:4](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Templates.ts#L4)
 
 ___
 
@@ -58,4 +58,4 @@ ___
 
 #### Defined in
 
-[Documents/Templates.ts:6](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Documents/Templates.ts#L6)
+[Documents/Templates.ts:6](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Templates.ts#L6)

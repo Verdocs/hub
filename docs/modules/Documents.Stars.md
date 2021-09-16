@@ -28,4 +28,4 @@
 
 #### Defined in
 
-[Documents/Stars.ts:4](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Documents/Stars.ts#L4)
+[Documents/Stars.ts:4](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Stars.ts#L4)

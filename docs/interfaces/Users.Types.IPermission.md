@@ -21,7 +21,7 @@ Unique identifier for the permission.
 
 #### Defined in
 
-[Users/Types.ts:77](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Users/Types.ts#L77)
+[Users/Types.ts:79](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L79)
 
 ___
 
@@ -33,4 +33,4 @@ Display name for the permission.
 
 #### Defined in
 
-[Users/Types.ts:79](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Users/Types.ts#L79)
+[Users/Types.ts:81](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L81)

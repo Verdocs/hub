@@ -18,4 +18,4 @@
 
 #### Defined in
 
-[Users/Types.ts:119](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Users/Types.ts#L119)
+[Users/Types.ts:121](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L121)

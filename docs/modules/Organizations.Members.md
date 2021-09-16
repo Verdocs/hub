@@ -34,7 +34,7 @@
 
 #### Defined in
 
-[Organizations/Members.ts:9](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Organizations/Members.ts#L9)
+[Organizations/Members.ts:9](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Organizations/Members.ts#L9)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[Organizations/Members.ts:6](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Organizations/Members.ts#L6)
+[Organizations/Members.ts:6](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Organizations/Members.ts#L6)
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 #### Defined in
 
-[Organizations/Members.ts:12](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Organizations/Members.ts#L12)
+[Organizations/Members.ts:12](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Organizations/Members.ts#L12)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[Organizations/Members.ts:15](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Organizations/Members.ts#L15)
+[Organizations/Members.ts:15](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Organizations/Members.ts#L15)
 
 ___
 
@@ -118,4 +118,4 @@ ___
 
 #### Defined in
 
-[Organizations/Members.ts:3](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Organizations/Members.ts#L3)
+[Organizations/Members.ts:3](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Organizations/Members.ts#L3)

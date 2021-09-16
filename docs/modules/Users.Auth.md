@@ -47,7 +47,7 @@ Endpoint.setAuthToken(accessToken);
 
 #### Defined in
 
-[Users/Auth.ts:43](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Users/Auth.ts#L43)
+[Users/Auth.ts:43](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Auth.ts#L43)
 
 ___
 
@@ -77,7 +77,7 @@ Endpoint.setAuthToken(accessToken);
 
 #### Defined in
 
-[Users/Auth.ts:25](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Users/Auth.ts#L25)
+[Users/Auth.ts:25](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Auth.ts#L25)
 
 ___
 
@@ -101,7 +101,7 @@ Auth.Endpoint.setAuthToken(accessToken);
 
 #### Defined in
 
-[Users/Auth.ts:74](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Users/Auth.ts#L74)
+[Users/Auth.ts:74](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Auth.ts#L74)
 
 ___
 
@@ -129,7 +129,7 @@ const {profiles} = await Auth.updateEmail({ email: newEmail });
 
 #### Defined in
 
-[Users/Auth.ts:100](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Users/Auth.ts#L100)
+[Users/Auth.ts:100](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Auth.ts#L100)
 
 ___
 
@@ -160,7 +160,7 @@ if (status !== 'OK') {
 
 #### Defined in
 
-[Users/Auth.ts:88](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Users/Auth.ts#L88)
+[Users/Auth.ts:88](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Auth.ts#L88)
 
 ___
 
@@ -193,4 +193,4 @@ if (!valid) {
 
 #### Defined in
 
-[Users/Auth.ts:60](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Users/Auth.ts#L60)
+[Users/Auth.ts:60](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Auth.ts#L60)

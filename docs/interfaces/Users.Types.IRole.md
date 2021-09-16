@@ -21,7 +21,7 @@ Unique identifier for the role.
 
 #### Defined in
 
-[Users/Types.ts:70](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Users/Types.ts#L70)
+[Users/Types.ts:72](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L72)
 
 ___
 
@@ -33,4 +33,4 @@ Display name for the role.
 
 #### Defined in
 
-[Users/Types.ts:72](https://github.com/Verdocs/js-sdk/blob/34c7ea0/src/Users/Types.ts#L72)
+[Users/Types.ts:74](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L74)
