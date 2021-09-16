@@ -18,4 +18,4 @@
 
 #### Defined in
 
-[Api/Auth.ts:118](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Auth.ts#L118)
+[Api/Auth.ts:118](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Auth.ts#L118)

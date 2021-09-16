@@ -40,7 +40,7 @@
 
 #### Defined in
 
-[Api/Documents.ts:3](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L3)
+[Api/Documents.ts:3](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Documents.ts#L3)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:137](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L137)
+[Api/Documents.ts:137](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Documents.ts#L137)
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:130](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L130)
+[Api/Documents.ts:130](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Documents.ts#L130)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:5](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L5)
+[Api/Documents.ts:5](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Documents.ts#L5)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:7](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L7)
+[Api/Documents.ts:7](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Documents.ts#L7)
 
 ## Variables
 
@@ -97,7 +97,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:145](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L145)
+[Api/Documents.ts:145](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Documents.ts#L145)
 
 ## Functions
 
@@ -117,7 +117,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:139](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L139)
+[Api/Documents.ts:139](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Documents.ts#L139)
 
 ___
 
@@ -137,4 +137,4 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:142](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L142)
+[Api/Documents.ts:142](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Documents.ts#L142)

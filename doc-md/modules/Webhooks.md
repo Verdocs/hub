@@ -27,7 +27,7 @@
 
 #### Defined in
 
-[Api/Webhooks.ts:3](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Webhooks.ts#L3)
+[Api/Webhooks.ts:3](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Webhooks.ts#L3)
 
 ___
 
@@ -48,4 +48,4 @@ ___
 
 #### Defined in
 
-[Api/Webhooks.ts:6](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Webhooks.ts#L6)
+[Api/Webhooks.ts:6](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Webhooks.ts#L6)

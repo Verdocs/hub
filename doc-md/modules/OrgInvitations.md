@@ -34,7 +34,7 @@
 
 #### Defined in
 
-[Api/OrgInvitations.ts:23](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgInvitations.ts#L23)
+[Api/OrgInvitations.ts:23](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgInvitations.ts#L23)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[Api/OrgInvitations.ts:20](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgInvitations.ts#L20)
+[Api/OrgInvitations.ts:20](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgInvitations.ts#L20)
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 #### Defined in
 
-[Api/OrgInvitations.ts:8](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgInvitations.ts#L8)
+[Api/OrgInvitations.ts:8](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgInvitations.ts#L8)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[Api/OrgInvitations.ts:11](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgInvitations.ts#L11)
+[Api/OrgInvitations.ts:11](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgInvitations.ts#L11)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[Api/OrgInvitations.ts:5](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgInvitations.ts#L5)
+[Api/OrgInvitations.ts:5](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgInvitations.ts#L5)
 
 ___
 
@@ -139,7 +139,7 @@ ___
 
 #### Defined in
 
-[Api/OrgInvitations.ts:17](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgInvitations.ts#L17)
+[Api/OrgInvitations.ts:17](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgInvitations.ts#L17)
 
 ___
 
@@ -161,4 +161,4 @@ ___
 
 #### Defined in
 
-[Api/OrgInvitations.ts:14](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgInvitations.ts#L14)
+[Api/OrgInvitations.ts:14](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgInvitations.ts#L14)

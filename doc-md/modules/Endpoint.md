@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[Api/Endpoint.ts:9](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Endpoint.ts#L9)
+[Api/Endpoint.ts:9](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Endpoint.ts#L9)
 
 ## Variables
 
@@ -35,7 +35,7 @@
 
 #### Defined in
 
-[Api/Endpoint.ts:3](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Endpoint.ts#L3)
+[Api/Endpoint.ts:3](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Endpoint.ts#L3)
 
 ## Functions
 
@@ -57,7 +57,7 @@ Most requests only ever need to access the data from the server's response
 
 #### Defined in
 
-[Api/Endpoint.ts:17](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Endpoint.ts#L17)
+[Api/Endpoint.ts:17](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Endpoint.ts#L17)
 
 ___
 
@@ -77,4 +77,4 @@ ___
 
 #### Defined in
 
-[Api/Endpoint.ts:12](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Endpoint.ts#L12)
+[Api/Endpoint.ts:12](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Endpoint.ts#L12)

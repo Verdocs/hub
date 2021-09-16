@@ -21,7 +21,7 @@ Unique identifier for the role.
 
 #### Defined in
 
-[Api/Profiles.ts:81](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L81)
+[Api/Profiles.ts:81](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Profiles.ts#L81)
 
 ___
 
@@ -33,4 +33,4 @@ Display name for the role.
 
 #### Defined in
 
-[Api/Profiles.ts:83](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L83)
+[Api/Profiles.ts:83](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Profiles.ts#L83)

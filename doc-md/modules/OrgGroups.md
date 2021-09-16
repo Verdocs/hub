@@ -34,7 +34,7 @@
 
 #### Defined in
 
-[Api/OrgGroups.ts:12](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgGroups.ts#L12)
+[Api/OrgGroups.ts:12](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgGroups.ts#L12)
 
 ___
 
@@ -57,7 +57,7 @@ ___
 
 #### Defined in
 
-[Api/OrgGroups.ts:18](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgGroups.ts#L18)
+[Api/OrgGroups.ts:18](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgGroups.ts#L18)
 
 ___
 
@@ -79,7 +79,7 @@ ___
 
 #### Defined in
 
-[Api/OrgGroups.ts:15](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgGroups.ts#L15)
+[Api/OrgGroups.ts:15](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgGroups.ts#L15)
 
 ___
 
@@ -101,7 +101,7 @@ ___
 
 #### Defined in
 
-[Api/OrgGroups.ts:23](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgGroups.ts#L23)
+[Api/OrgGroups.ts:23](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgGroups.ts#L23)
 
 ___
 
@@ -122,7 +122,7 @@ ___
 
 #### Defined in
 
-[Api/OrgGroups.ts:6](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgGroups.ts#L6)
+[Api/OrgGroups.ts:6](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgGroups.ts#L6)
 
 ___
 
@@ -143,7 +143,7 @@ ___
 
 #### Defined in
 
-[Api/OrgGroups.ts:9](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgGroups.ts#L9)
+[Api/OrgGroups.ts:9](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgGroups.ts#L9)
 
 ___
 
@@ -163,4 +163,4 @@ ___
 
 #### Defined in
 
-[Api/OrgGroups.ts:3](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgGroups.ts#L3)
+[Api/OrgGroups.ts:3](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgGroups.ts#L3)

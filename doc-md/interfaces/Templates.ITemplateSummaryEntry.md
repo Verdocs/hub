@@ -33,7 +33,7 @@
 
 #### Defined in
 
-[Api/Templates.ts:7](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L7)
+[Api/Templates.ts:7](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L7)
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:9](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L9)
+[Api/Templates.ts:9](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L9)
 
 ___
 
@@ -53,7 +53,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:8](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L8)
+[Api/Templates.ts:8](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L8)
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:16](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L16)
+[Api/Templates.ts:16](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L16)
 
 ___
 
@@ -73,7 +73,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:4](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L4)
+[Api/Templates.ts:4](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L4)
 
 ___
 
@@ -83,7 +83,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:11](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L11)
+[Api/Templates.ts:11](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L11)
 
 ___
 
@@ -93,7 +93,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:12](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L12)
+[Api/Templates.ts:12](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L12)
 
 ___
 
@@ -103,7 +103,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:19](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L19)
+[Api/Templates.ts:19](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L19)
 
 ___
 
@@ -113,7 +113,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:15](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L15)
+[Api/Templates.ts:15](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L15)
 
 ___
 
@@ -123,7 +123,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:5](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L5)
+[Api/Templates.ts:5](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L5)
 
 ___
 
@@ -133,7 +133,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:14](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L14)
+[Api/Templates.ts:14](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L14)
 
 ___
 
@@ -143,7 +143,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:13](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L13)
+[Api/Templates.ts:13](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L13)
 
 ___
 
@@ -153,7 +153,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:6](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L6)
+[Api/Templates.ts:6](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L6)
 
 ___
 
@@ -163,7 +163,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:17](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L17)
+[Api/Templates.ts:17](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L17)
 
 ___
 
@@ -173,7 +173,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:18](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L18)
+[Api/Templates.ts:18](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L18)
 
 ___
 
@@ -183,4 +183,4 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:10](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L10)
+[Api/Templates.ts:10](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Templates.ts#L10)

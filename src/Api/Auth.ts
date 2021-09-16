@@ -27,8 +27,8 @@ export interface AuthenticateResponse {
  * Endpoint.setAuthToken(accessToken);
  * ```
  */
-export const authenticateUser = (params: AuthenticateUserRequest) =>
-  Endpoint.post<AuthenticateResponse>('/authentication/login', params).then(StandardDataReponse);
+export const authenticateUser = (params: AuthenticateUserRequest): Promise<AuthenticateResponse> =>
+  Endpoint.post('/authentication/login', params).then(StandardDataReponse);
 
 /**
  * Authenticate to Verdocs via client ID / Secret authentication. **NOTE: This is only suitable for
@@ -44,8 +44,8 @@ export const authenticateUser = (params: AuthenticateUserRequest) =>
  * Endpoint.setAuthToken(accessToken);
  * ```
  */
-export const authenticateApp = (params: AuthenticateAppRequest) =>
-  Endpoint.post<AuthenticateResponse>('/authentication/login_client', {}, {headers: params}).then(StandardDataReponse);
+export const authenticateApp = (params: AuthenticateAppRequest): Promise<AuthenticateResponse> =>
+  Endpoint.post('/authentication/login_client', {}, {headers: params}).then(StandardDataReponse);
 
 export interface TokenValidationRequest {
   token: string;
@@ -72,8 +72,8 @@ export interface TokenValidationResponse {
  * }
  * ```
  */
-export const validateToken = (params: TokenValidationRequest) =>
-  Endpoint.post<TokenValidationResponse>('/token/isValid', params).then(StandardDataReponse);
+export const validateToken = (params: TokenValidationRequest): Promise<TokenValidationResponse> =>
+  Endpoint.post('/token/isValid', params).then(StandardDataReponse);
 
 /**
  * If called before the session expires, this will refresh the caller's session and tokens.
@@ -85,7 +85,7 @@ export const validateToken = (params: TokenValidationRequest) =>
  * Endpoint.setAuthToken(accessToken);
  * ```
  */
-export const refreshTokens = () => Endpoint.get<AuthenticateResponse>('/token').then(StandardDataReponse);
+export const refreshTokens = (): Promise<AuthenticateResponse> => Endpoint.get('/token').then(StandardDataReponse);
 
 export interface UpdatePasswordRequest {
   email: string;
@@ -111,8 +111,8 @@ export interface UpdatePasswordResponse {
  * }
  * ```
  */
-export const updatePassword = (params: UpdatePasswordRequest) =>
-  Endpoint.put<UpdatePasswordResponse>('/user/update_password', params).then(StandardDataReponse);
+export const updatePassword = (params: UpdatePasswordRequest): Promise<UpdatePasswordResponse> =>
+  Endpoint.put('/user/update_password', params).then(StandardDataReponse);
 
 export interface UpdateEmailRequest {
   email: string;
@@ -131,5 +131,5 @@ export interface UpdateEmailResponse {
  * const {profiles} = await Auth.updateEmail({ email: newEmail });
  * ```
  */
-export const updateEmail = (params: UpdateEmailRequest) =>
-  Endpoint.put<UpdateEmailResponse>('/user/update_email', params).then(StandardDataReponse);
+export const updateEmail = (params: UpdateEmailRequest): Promise<UpdateEmailResponse> =>
+  Endpoint.put('/user/update_email', params).then(StandardDataReponse);

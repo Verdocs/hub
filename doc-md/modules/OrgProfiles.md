@@ -32,7 +32,7 @@
 
 #### Defined in
 
-[Api/OrgProfiles.ts:12](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgProfiles.ts#L12)
+[Api/OrgProfiles.ts:12](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgProfiles.ts#L12)
 
 ___
 
@@ -53,7 +53,7 @@ ___
 
 #### Defined in
 
-[Api/OrgProfiles.ts:6](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgProfiles.ts#L6)
+[Api/OrgProfiles.ts:6](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgProfiles.ts#L6)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[Api/OrgProfiles.ts:15](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgProfiles.ts#L15)
+[Api/OrgProfiles.ts:15](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgProfiles.ts#L15)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[Api/OrgProfiles.ts:9](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgProfiles.ts#L9)
+[Api/OrgProfiles.ts:9](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgProfiles.ts#L9)
 
 ___
 
@@ -116,4 +116,4 @@ ___
 
 #### Defined in
 
-[Api/OrgProfiles.ts:3](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/OrgProfiles.ts#L3)
+[Api/OrgProfiles.ts:3](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/OrgProfiles.ts#L3)

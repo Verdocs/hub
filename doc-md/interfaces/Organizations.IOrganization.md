@@ -27,7 +27,7 @@
 
 #### Defined in
 
-[Api/Organizations.ts:8](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Organizations.ts#L8)
+[Api/Organizations.ts:8](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Organizations.ts#L8)
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 #### Defined in
 
-[Api/Organizations.ts:14](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Organizations.ts#L14)
+[Api/Organizations.ts:14](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Organizations.ts#L14)
 
 ___
 
@@ -49,7 +49,7 @@ If the organization is a business, its name. Note that a business name can be di
 
 #### Defined in
 
-[Api/Organizations.ts:11](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Organizations.ts#L11)
+[Api/Organizations.ts:11](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Organizations.ts#L11)
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
 #### Defined in
 
-[Api/Organizations.ts:15](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Organizations.ts#L15)
+[Api/Organizations.ts:15](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Organizations.ts#L15)
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 #### Defined in
 
-[Api/Organizations.ts:17](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Organizations.ts#L17)
+[Api/Organizations.ts:17](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Organizations.ts#L17)
 
 ___
 
@@ -81,7 +81,7 @@ The unique ID of the organization
 
 #### Defined in
 
-[Api/Organizations.ts:5](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Organizations.ts#L5)
+[Api/Organizations.ts:5](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Organizations.ts#L5)
 
 ___
 
@@ -93,7 +93,7 @@ If true, the organization is a business
 
 #### Defined in
 
-[Api/Organizations.ts:13](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Organizations.ts#L13)
+[Api/Organizations.ts:13](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Organizations.ts#L13)
 
 ___
 
@@ -105,7 +105,7 @@ The organization's name.
 
 #### Defined in
 
-[Api/Organizations.ts:7](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Organizations.ts#L7)
+[Api/Organizations.ts:7](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Organizations.ts#L7)
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
 #### Defined in
 
-[Api/Organizations.ts:9](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Organizations.ts#L9)
+[Api/Organizations.ts:9](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Organizations.ts#L9)
 
 ___
 
@@ -125,4 +125,4 @@ ___
 
 #### Defined in
 
-[Api/Organizations.ts:16](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Organizations.ts#L16)
+[Api/Organizations.ts:16](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Organizations.ts#L16)

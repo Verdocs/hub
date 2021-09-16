@@ -29,7 +29,7 @@
 
 ### authenticateApp
 
-▸ `Const` **authenticateApp**(`params`): `Promise`<`any`\>
+▸ `Const` **authenticateApp**(`params`): `Promise`<[`AuthenticateResponse`](../interfaces/Auth.AuthenticateResponse.md)\>
 
 Authenticate to Verdocs via client ID / Secret authentication. **NOTE: This is only suitable for
 NodeJS server-side applications. Never expose your Client Secret in a Web or Mobile app!** Also note
@@ -52,17 +52,17 @@ Endpoint.setAuthToken(accessToken);
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`AuthenticateResponse`](../interfaces/Auth.AuthenticateResponse.md)\>
 
 #### Defined in
 
-[Api/Auth.ts:47](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Auth.ts#L47)
+[Api/Auth.ts:47](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Auth.ts#L47)
 
 ___
 
 ### authenticateUser
 
-▸ `Const` **authenticateUser**(`params`): `Promise`<`any`\>
+▸ `Const` **authenticateUser**(`params`): `Promise`<[`AuthenticateResponse`](../interfaces/Auth.AuthenticateResponse.md)\>
 
 Authenticate to Verdocs via user/password authentication
 
@@ -81,17 +81,17 @@ Endpoint.setAuthToken(accessToken);
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`AuthenticateResponse`](../interfaces/Auth.AuthenticateResponse.md)\>
 
 #### Defined in
 
-[Api/Auth.ts:30](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Auth.ts#L30)
+[Api/Auth.ts:30](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Auth.ts#L30)
 
 ___
 
 ### refreshTokens
 
-▸ `Const` **refreshTokens**(): `Promise`<`any`\>
+▸ `Const` **refreshTokens**(): `Promise`<[`AuthenticateResponse`](../interfaces/Auth.AuthenticateResponse.md)\>
 
 If called before the session expires, this will refresh the caller's session and tokens.
 
@@ -104,17 +104,17 @@ Endpoint.setAuthToken(accessToken);
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`AuthenticateResponse`](../interfaces/Auth.AuthenticateResponse.md)\>
 
 #### Defined in
 
-[Api/Auth.ts:88](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Auth.ts#L88)
+[Api/Auth.ts:88](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Auth.ts#L88)
 
 ___
 
 ### updateEmail
 
-▸ `Const` **updateEmail**(`params`): `Promise`<`any`\>
+▸ `Const` **updateEmail**(`params`): `Promise`<[`UpdateEmailResponse`](../interfaces/Auth.UpdateEmailResponse.md)\>
 
 Update the caller's email address.
 
@@ -132,17 +132,17 @@ const {profiles} = await Auth.updateEmail({ email: newEmail });
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`UpdateEmailResponse`](../interfaces/Auth.UpdateEmailResponse.md)\>
 
 #### Defined in
 
-[Api/Auth.ts:134](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Auth.ts#L134)
+[Api/Auth.ts:134](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Auth.ts#L134)
 
 ___
 
 ### updatePassword
 
-▸ `Const` **updatePassword**(`params`): `Promise`<`any`\>
+▸ `Const` **updatePassword**(`params`): `Promise`<[`UpdatePasswordResponse`](../interfaces/Auth.UpdatePasswordResponse.md)\>
 
 Update the caller's password. To help prevent CSRF attack vectors, the user's old password and email address are required.
 
@@ -163,17 +163,17 @@ if (status !== 'OK') {
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`UpdatePasswordResponse`](../interfaces/Auth.UpdatePasswordResponse.md)\>
 
 #### Defined in
 
-[Api/Auth.ts:114](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Auth.ts#L114)
+[Api/Auth.ts:114](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Auth.ts#L114)
 
 ___
 
 ### validateToken
 
-▸ `Const` **validateToken**(`params`): `Promise`<`any`\>
+▸ `Const` **validateToken**(`params`): `Promise`<[`TokenValidationResponse`](../interfaces/Auth.TokenValidationResponse.md)\>
 
 Validate a token. Only Verdocs tokens will be accepted. Most applications can decode tokens locally,
 because tokens will be validated when API calls are made anyway. However, high-security applications
@@ -196,8 +196,8 @@ if (!valid) {
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`TokenValidationResponse`](../interfaces/Auth.TokenValidationResponse.md)\>
 
 #### Defined in
 
-[Api/Auth.ts:75](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Auth.ts#L75)
+[Api/Auth.ts:75](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Auth.ts#L75)

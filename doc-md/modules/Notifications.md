@@ -20,4 +20,4 @@
 
 #### Defined in
 
-[Api/Notifications.ts:3](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Notifications.ts#L3)
+[Api/Notifications.ts:3](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Notifications.ts#L3)

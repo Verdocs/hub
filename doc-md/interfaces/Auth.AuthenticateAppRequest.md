@@ -19,7 +19,7 @@
 
 #### Defined in
 
-[Api/Auth.ts:10](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Auth.ts#L10)
+[Api/Auth.ts:10](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Auth.ts#L10)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 #### Defined in
 
-[Api/Auth.ts:11](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Auth.ts#L11)
+[Api/Auth.ts:11](https://github.com/Verdocs/js-sdk/blob/6ec87bd/src/Api/Auth.ts#L11)
