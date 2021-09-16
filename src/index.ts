@@ -1,13 +1,5 @@
-export * as APIKeys from './Api/ApiKeys';
-export * as Auth from './Api/Auth';
-// export * as Billing from './Api/Billing';
-export * as Documents from './Api/Documents';
-export * as Endpoint from './Api/Endpoint';
-export * as OrgGroups from './Api/OrgGroups';
-export * as Notifications from './Api/Notifications';
-export * as Organizations from './Api/Organizations';
-export * as OrgInvitations from './Api/OrgInvitations';
-export * as OrgProfiles from './Api/OrgProfiles';
-export * as Profiles from './Api/Profiles';
-export * as Templates from './Api/Templates';
-export * as Webhooks from './Api/Webhooks';
+export * as Documents from './Documents';
+export * as HTTP from './HTTP';
+export * as Organizations from './Organizations';
+export * as Users from './Users';
+export * as Utils from './Utils';

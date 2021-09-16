@@ -6,15 +6,8 @@
 
 ### Namespaces
 
-- [APIKeys](modules/APIKeys.md)
-- [Auth](modules/Auth.md)
 - [Documents](modules/Documents.md)
-- [Endpoint](modules/Endpoint.md)
-- [Notifications](modules/Notifications.md)
-- [OrgGroups](modules/OrgGroups.md)
-- [OrgInvitations](modules/OrgInvitations.md)
-- [OrgProfiles](modules/OrgProfiles.md)
+- [HTTP](modules/HTTP.md)
 - [Organizations](modules/Organizations.md)
-- [Profiles](modules/Profiles.md)
-- [Templates](modules/Templates.md)
-- [Webhooks](modules/Webhooks.md)
+- [Users](modules/Users.md)
+- [Utils](modules/Utils.md)
