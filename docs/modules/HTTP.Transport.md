@@ -23,7 +23,7 @@
 
 #### Defined in
 
-[HTTP/Transport.ts:3](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/HTTP/Transport.ts#L3)
+[HTTP/Transport.ts:3](https://github.com/Verdocs/js-sdk/blob/main/src/HTTP/Transport.ts#L3)
 
 ## Functions
 
@@ -43,7 +43,7 @@
 
 #### Defined in
 
-[HTTP/Transport.ts:9](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/HTTP/Transport.ts#L9)
+[HTTP/Transport.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/HTTP/Transport.ts#L9)
 
 ___
 
@@ -63,4 +63,4 @@ ___
 
 #### Defined in
 
-[HTTP/Transport.ts:13](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/HTTP/Transport.ts#L13)
+[HTTP/Transport.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/HTTP/Transport.ts#L13)

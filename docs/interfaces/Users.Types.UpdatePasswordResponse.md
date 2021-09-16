@@ -21,7 +21,7 @@ Success or failure message
 
 #### Defined in
 
-[Users/Types.ts:140](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L140)
+[Users/Types.ts:140](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L140)
 
 ___
 
@@ -31,4 +31,4 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:138](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L138)
+[Users/Types.ts:138](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L138)

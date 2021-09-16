@@ -35,7 +35,7 @@
 
 #### Defined in
 
-[Documents/Documents.ts:54](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L54)
+[Documents/Documents.ts:54](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L54)
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:55](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L55)
+[Documents/Documents.ts:55](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L55)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:56](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L56)
+[Documents/Documents.ts:56](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L56)
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:57](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L57)
+[Documents/Documents.ts:57](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L57)
 
 ___
 
@@ -75,7 +75,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:58](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L58)
+[Documents/Documents.ts:58](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L58)
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:59](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L59)
+[Documents/Documents.ts:59](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L59)
 
 ___
 
@@ -95,7 +95,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:60](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L60)
+[Documents/Documents.ts:60](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L60)
 
 ___
 
@@ -105,7 +105,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:61](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L61)
+[Documents/Documents.ts:61](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L61)
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:62](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L62)
+[Documents/Documents.ts:62](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L62)
 
 ___
 
@@ -125,7 +125,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:63](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L63)
+[Documents/Documents.ts:63](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L63)
 
 ___
 
@@ -135,7 +135,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:64](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L64)
+[Documents/Documents.ts:64](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L64)
 
 ___
 
@@ -145,7 +145,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:65](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L65)
+[Documents/Documents.ts:65](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L65)
 
 ___
 
@@ -155,7 +155,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:66](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L66)
+[Documents/Documents.ts:66](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L66)
 
 ___
 
@@ -165,7 +165,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:67](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L67)
+[Documents/Documents.ts:67](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L67)
 
 ___
 
@@ -175,7 +175,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:68](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L68)
+[Documents/Documents.ts:68](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L68)
 
 ___
 
@@ -185,7 +185,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:69](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L69)
+[Documents/Documents.ts:69](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L69)
 
 ___
 
@@ -195,7 +195,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:70](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L70)
+[Documents/Documents.ts:70](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L70)
 
 ___
 
@@ -205,4 +205,4 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:71](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Documents/Documents.ts#L71)
+[Documents/Documents.ts:71](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L71)

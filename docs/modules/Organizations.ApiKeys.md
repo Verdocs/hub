@@ -33,7 +33,7 @@
 
 #### Defined in
 
-[Organizations/ApiKeys.ts:6](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Organizations/ApiKeys.ts#L6)
+[Organizations/ApiKeys.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L6)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[Organizations/ApiKeys.ts:15](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Organizations/ApiKeys.ts#L15)
+[Organizations/ApiKeys.ts:15](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L15)
 
 ___
 
@@ -75,7 +75,7 @@ ___
 
 #### Defined in
 
-[Organizations/ApiKeys.ts:3](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Organizations/ApiKeys.ts#L3)
+[Organizations/ApiKeys.ts:3](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L3)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[Organizations/ApiKeys.ts:9](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Organizations/ApiKeys.ts#L9)
+[Organizations/ApiKeys.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L9)
 
 ___
 
@@ -118,4 +118,4 @@ ___
 
 #### Defined in
 
-[Organizations/ApiKeys.ts:12](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Organizations/ApiKeys.ts#L12)
+[Organizations/ApiKeys.ts:12](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L12)

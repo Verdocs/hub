@@ -14,6 +14,7 @@
   "typedocOptions": {
     "entryPoints": ["src/index.ts"],
     "out": "docs",
-    "includeVersion": true
+    "includeVersion": true,
+    "gitRevision": "main"
   }
 }

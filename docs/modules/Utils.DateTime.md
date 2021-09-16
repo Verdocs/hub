@@ -28,4 +28,4 @@
 
 #### Defined in
 
-[Utils/DateTime.ts:8](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Utils/DateTime.ts#L8)
+[Utils/DateTime.ts:8](https://github.com/Verdocs/js-sdk/blob/main/src/Utils/DateTime.ts#L8)

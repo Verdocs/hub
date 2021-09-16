@@ -18,4 +18,4 @@
 
 #### Defined in
 
-[HTTP/Types.ts:1](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/HTTP/Types.ts#L1)
+[HTTP/Types.ts:1](https://github.com/Verdocs/js-sdk/blob/main/src/HTTP/Types.ts#L1)

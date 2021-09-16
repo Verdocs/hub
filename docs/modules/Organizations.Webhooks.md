@@ -29,7 +29,7 @@
 
 #### Defined in
 
-[Organizations/Webhooks.ts:3](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Organizations/Webhooks.ts#L3)
+[Organizations/Webhooks.ts:3](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Webhooks.ts#L3)
 
 ___
 
@@ -50,4 +50,4 @@ ___
 
 #### Defined in
 
-[Organizations/Webhooks.ts:6](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Organizations/Webhooks.ts#L6)
+[Organizations/Webhooks.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Webhooks.ts#L6)

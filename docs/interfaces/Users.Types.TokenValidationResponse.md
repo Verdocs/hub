@@ -21,7 +21,7 @@ The decoded and validated body of the JWT
 
 #### Defined in
 
-[Users/Types.ts:128](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L128)
+[Users/Types.ts:128](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L128)
 
 ___
 
@@ -33,4 +33,4 @@ True if the token is valid
 
 #### Defined in
 
-[Users/Types.ts:126](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L126)
+[Users/Types.ts:126](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L126)

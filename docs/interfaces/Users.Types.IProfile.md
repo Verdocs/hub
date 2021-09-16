@@ -32,7 +32,7 @@ If true, this is the caller's "currently selected" profile. All operations will 
 
 #### Defined in
 
-[Users/Types.ts:57](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L57)
+[Users/Types.ts:57](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L57)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:54](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L54)
+[Users/Types.ts:54](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L54)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:52](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L52)
+[Users/Types.ts:52](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L52)
 
 ___
 
@@ -64,7 +64,7 @@ The plans assigned to the profilel _NOTE: Only present in the "current" profile.
 
 #### Defined in
 
-[Users/Types.ts:67](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L67)
+[Users/Types.ts:67](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L67)
 
 ___
 
@@ -76,7 +76,7 @@ The unique ID of the profile
 
 #### Defined in
 
-[Users/Types.ts:43](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L43)
+[Users/Types.ts:43](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L43)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:53](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L53)
+[Users/Types.ts:53](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L53)
 
 ___
 
@@ -98,7 +98,7 @@ The organization
 
 #### Defined in
 
-[Users/Types.ts:59](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L59)
+[Users/Types.ts:59](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L59)
 
 ___
 
@@ -110,7 +110,7 @@ The profile's organization ID, or a global "Realster" organization that all pers
 
 #### Defined in
 
-[Users/Types.ts:51](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L51)
+[Users/Types.ts:51](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L51)
 
 ___
 
@@ -122,7 +122,7 @@ The permissions assigned to the profilel _NOTE: Only present in the "current" pr
 
 #### Defined in
 
-[Users/Types.ts:61](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L61)
+[Users/Types.ts:61](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L61)
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:55](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L55)
+[Users/Types.ts:55](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L55)
 
 ___
 
@@ -144,7 +144,7 @@ The plans assigned to the profilel _NOTE: Only present in the "current" profile.
 
 #### Defined in
 
-[Users/Types.ts:65](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L65)
+[Users/Types.ts:65](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L65)
 
 ___
 
@@ -156,7 +156,7 @@ The roles assigned to the profilel _NOTE: Only present in the "current" profile.
 
 #### Defined in
 
-[Users/Types.ts:63](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L63)
+[Users/Types.ts:63](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L63)
 
 ___
 
@@ -170,4 +170,4 @@ change in the future and developers should not develop code based on this field 
 
 #### Defined in
 
-[Users/Types.ts:49](https://github.com/Verdocs/js-sdk/blob/fb278cb/src/Users/Types.ts#L49)
+[Users/Types.ts:49](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L49)
