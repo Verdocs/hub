@@ -8,7 +8,6 @@
 
 - [CreateProfileRequest](../interfaces/Profiles.CreateProfileRequest.md)
 - [IGroup](../interfaces/Profiles.IGroup.md)
-- [IOrganization](../interfaces/Profiles.IOrganization.md)
 - [IPermission](../interfaces/Profiles.IPermission.md)
 - [IProfile](../interfaces/Profiles.IProfile.md)
 - [IRole](../interfaces/Profiles.IRole.md)
@@ -42,7 +41,7 @@
 
 #### Defined in
 
-[Api/Profiles.ts:3](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L3)
+[Api/Profiles.ts:4](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L4)
 
 ___
 
@@ -52,7 +51,7 @@ ___
 
 #### Defined in
 
-[Api/Profiles.ts:29](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L29)
+[Api/Profiles.ts:30](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L30)
 
 ___
 
@@ -62,13 +61,13 @@ ___
 
 #### Defined in
 
-[Api/Profiles.ts:31](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L31)
+[Api/Profiles.ts:32](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L32)
 
 ## Functions
 
 ### createProfile
 
-▸ `Const` **createProfile**(`params`): `Promise`<[`IProfile`](../interfaces/Profiles.IProfile.md)\>
+▸ `Const` **createProfile**(`params`): `Promise`<`any`\>
 
 Create a profile. If the caller does not have a "current" profile set, the new profile will be made current.
 
@@ -86,11 +85,11 @@ const newProfile = await Profiles.createProfile({ first_name: 'FIRST', last_name
 
 #### Returns
 
-`Promise`<[`IProfile`](../interfaces/Profiles.IProfile.md)\>
+`Promise`<`any`\>
 
 #### Defined in
 
-[Api/Profiles.ts:147](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L147)
+[Api/Profiles.ts:131](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L131)
 
 ___
 
@@ -118,13 +117,13 @@ await Profiles.deleteProfile('PROFILEID');
 
 #### Defined in
 
-[Api/Profiles.ts:234](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L234)
+[Api/Profiles.ts:219](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L219)
 
 ___
 
 ### getPermissions
 
-▸ `Const` **getPermissions**(): `Promise`<[`IPermission`](../interfaces/Profiles.IPermission.md)[]\>
+▸ `Const` **getPermissions**(): `Promise`<`any`\>
 
 Get a list of system roles.
 
@@ -136,17 +135,17 @@ const permissions = await Profiles.getPermissions();
 
 #### Returns
 
-`Promise`<[`IPermission`](../interfaces/Profiles.IPermission.md)[]\>
+`Promise`<`any`\>
 
 #### Defined in
 
-[Api/Profiles.ts:129](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L129)
+[Api/Profiles.ts:113](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L113)
 
 ___
 
 ### getProfile
 
-▸ `Const` **getProfile**(`profileId`): `Promise`<[`IProfile`](../interfaces/Profiles.IProfile.md)\>
+▸ `Const` **getProfile**(`profileId`): `Promise`<`any`\>
 
 Get a profile. The caller must have admin access to the given profile.
 TODO: Add a "public" profile endpoint for public pages
@@ -165,17 +164,17 @@ const profile = await Profiles.getProfile('PROFILEID');
 
 #### Returns
 
-`Promise`<[`IProfile`](../interfaces/Profiles.IProfile.md)\>
+`Promise`<`any`\>
 
 #### Defined in
 
-[Api/Profiles.ts:160](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L160)
+[Api/Profiles.ts:144](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L144)
 
 ___
 
 ### getProfileGroups
 
-▸ `Const` **getProfileGroups**(`profileId`): `Promise`<[`IGroup`](../interfaces/Profiles.IGroup.md)[]\>
+▸ `Const` **getProfileGroups**(`profileId`): `Promise`<`any`\>
 
 Get a profile's groups.
 
@@ -193,17 +192,17 @@ const groups = await Profiles.getProfileGroups('PROFILEID');
 
 #### Returns
 
-`Promise`<[`IGroup`](../interfaces/Profiles.IGroup.md)[]\>
+`Promise`<`any`\>
 
 #### Defined in
 
-[Api/Profiles.ts:183](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L183)
+[Api/Profiles.ts:168](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L168)
 
 ___
 
 ### getProfilePermissions
 
-▸ `Const` **getProfilePermissions**(`profileId`): `Promise`<[`IPermission`](../interfaces/Profiles.IPermission.md)[]\>
+▸ `Const` **getProfilePermissions**(`profileId`): `Promise`<`any`\>
 
 Get a profile's permissions. The caller must have admin access to the given profile.
 
@@ -221,17 +220,17 @@ const permissions = await Profiles.getProfilePermissions('PROFILEID');
 
 #### Returns
 
-`Promise`<[`IPermission`](../interfaces/Profiles.IPermission.md)[]\>
+`Promise`<`any`\>
 
 #### Defined in
 
-[Api/Profiles.ts:171](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L171)
+[Api/Profiles.ts:156](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L156)
 
 ___
 
 ### getProfiles
 
-▸ `Const` **getProfiles**(): `Promise`<[`IProfile`](../interfaces/Profiles.IProfile.md)[]\>
+▸ `Const` **getProfiles**(): `Promise`<`any`\>
 
 Get the user's available profiles. The current profile will be marked with `current: true`.
 
@@ -243,17 +242,17 @@ const profiles = await Profiles.getProfiles()
 
 #### Returns
 
-`Promise`<[`IProfile`](../interfaces/Profiles.IProfile.md)[]\>
+`Promise`<`any`\>
 
 #### Defined in
 
-[Api/Profiles.ts:93](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L93)
+[Api/Profiles.ts:77](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L77)
 
 ___
 
 ### getRoles
 
-▸ `Const` **getRoles**(): `Promise`<[`IRole`](../interfaces/Profiles.IRole.md)[]\>
+▸ `Const` **getRoles**(): `Promise`<`any`\>
 
 Get a list of system roles.
 
@@ -265,17 +264,17 @@ const roles = await Profiles.getRoles();
 
 #### Returns
 
-`Promise`<[`IRole`](../interfaces/Profiles.IRole.md)[]\>
+`Promise`<`any`\>
 
 #### Defined in
 
-[Api/Profiles.ts:111](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L111)
+[Api/Profiles.ts:95](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L95)
 
 ___
 
 ### switchProfile
 
-▸ `Const` **switchProfile**(`profileId`): `Promise`<[`SwitchProfileResponse`](../interfaces/Profiles.SwitchProfileResponse.md)\>
+▸ `Const` **switchProfile**(`profileId`): `Promise`<`any`\>
 
 Switch the caller's "current" profile. The current profile is used for permissions checking and profile_id field settings
 for most operations in Verdocs. It is important to select the appropropriate profile before calling other API functions.
@@ -294,17 +293,17 @@ const newProfile = await Profiles.switchProfile('PROFILEID');
 
 #### Returns
 
-`Promise`<[`SwitchProfileResponse`](../interfaces/Profiles.SwitchProfileResponse.md)\>
+`Promise`<`any`\>
 
 #### Defined in
 
-[Api/Profiles.ts:203](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L203)
+[Api/Profiles.ts:188](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L188)
 
 ___
 
 ### updateProfile
 
-▸ `Const` **updateProfile**(`profileId`, `params`): `Promise`<[`IProfile`](../interfaces/Profiles.IProfile.md)\>
+▸ `Const` **updateProfile**(`profileId`, `params`): `Promise`<`any`\>
 
 Update a profile. For future expansion, the profile ID to update is required, but currently this must also be the
 "current" profile for the caller.
@@ -324,8 +323,8 @@ const newProfile = await Profiles.updateProfile('PROFILEID');
 
 #### Returns
 
-`Promise`<[`IProfile`](../interfaces/Profiles.IProfile.md)\>
+`Promise`<`any`\>
 
 #### Defined in
 
-[Api/Profiles.ts:222](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L222)
+[Api/Profiles.ts:207](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L207)

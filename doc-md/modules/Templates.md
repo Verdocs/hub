@@ -37,7 +37,7 @@
 
 #### Defined in
 
-[Api/Templates.ts:38](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Templates.ts#L38)
+[Api/Templates.ts:38](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L38)
 
 ## Functions
 
@@ -57,7 +57,7 @@
 
 #### Defined in
 
-[Api/Templates.ts:32](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Templates.ts#L32)
+[Api/Templates.ts:32](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L32)
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:28](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Templates.ts#L28)
+[Api/Templates.ts:28](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L28)
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:30](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Templates.ts#L30)
+[Api/Templates.ts:30](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L30)
 
 ___
 
@@ -105,4 +105,4 @@ ___
 
 #### Defined in
 
-[Api/Templates.ts:35](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Templates.ts#L35)
+[Api/Templates.ts:35](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Templates.ts#L35)

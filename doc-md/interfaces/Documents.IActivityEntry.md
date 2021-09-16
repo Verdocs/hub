@@ -26,7 +26,7 @@
 
 #### Defined in
 
-[Api/Documents.ts:94](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L94)
+[Api/Documents.ts:94](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L94)
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:95](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L95)
+[Api/Documents.ts:95](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L95)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:92](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L92)
+[Api/Documents.ts:92](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L92)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:93](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L93)
+[Api/Documents.ts:93](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L93)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:97](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L97)
+[Api/Documents.ts:97](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L97)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:100](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L100)
+[Api/Documents.ts:100](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L100)
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:98](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L98)
+[Api/Documents.ts:98](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L98)
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:99](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L99)
+[Api/Documents.ts:99](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L99)
 
 ___
 
@@ -117,4 +117,4 @@ ___
 
 #### Defined in
 
-[Api/Documents.ts:96](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Documents.ts#L96)
+[Api/Documents.ts:96](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Documents.ts#L96)

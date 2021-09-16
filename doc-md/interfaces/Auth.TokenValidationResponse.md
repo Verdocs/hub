@@ -21,7 +21,7 @@ The decoded and validated body of the JWT
 
 #### Defined in
 
-[Api/Auth.ts:58](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Auth.ts#L58)
+[Api/Auth.ts:58](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Auth.ts#L58)
 
 ___
 
@@ -33,4 +33,4 @@ True if the token is valid
 
 #### Defined in
 
-[Api/Auth.ts:56](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Auth.ts#L56)
+[Api/Auth.ts:56](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Auth.ts#L56)

@@ -21,7 +21,7 @@ Success or failure message
 
 #### Defined in
 
-[Api/Auth.ts:99](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Auth.ts#L99)
+[Api/Auth.ts:99](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Auth.ts#L99)
 
 ___
 
@@ -31,4 +31,4 @@ ___
 
 #### Defined in
 
-[Api/Auth.ts:97](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Auth.ts#L97)
+[Api/Auth.ts:97](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Auth.ts#L97)

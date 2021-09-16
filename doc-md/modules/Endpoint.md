@@ -14,6 +14,7 @@
 
 ### Functions
 
+- [StandardDataReponse](Endpoint.md#standarddatareponse)
 - [setAuthToken](Endpoint.md#setauthtoken)
 
 ## Type aliases
@@ -24,7 +25,7 @@
 
 #### Defined in
 
-[Api/Endpoint.ts:9](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Endpoint.ts#L9)
+[Api/Endpoint.ts:9](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Endpoint.ts#L9)
 
 ## Variables
 
@@ -34,9 +35,31 @@
 
 #### Defined in
 
-[Api/Endpoint.ts:3](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Endpoint.ts#L3)
+[Api/Endpoint.ts:3](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Endpoint.ts#L3)
 
 ## Functions
+
+### StandardDataReponse
+
+▸ `Const` **StandardDataReponse**(`response`): `any`
+
+Most requests only ever need to access the data from the server's response
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `response` | `AxiosResponse`<`any`\> |
+
+#### Returns
+
+`any`
+
+#### Defined in
+
+[Api/Endpoint.ts:17](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Endpoint.ts#L17)
+
+___
 
 ### setAuthToken
 
@@ -54,4 +77,4 @@
 
 #### Defined in
 
-[Api/Endpoint.ts:12](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Endpoint.ts#L12)
+[Api/Endpoint.ts:12](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Endpoint.ts#L12)

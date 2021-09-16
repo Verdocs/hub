@@ -32,7 +32,7 @@ If true, this is the caller's "currently selected" profile. All operations will 
 
 #### Defined in
 
-[Api/Profiles.ts:71](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L71)
+[Api/Profiles.ts:55](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L55)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[Api/Profiles.ts:68](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L68)
+[Api/Profiles.ts:52](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L52)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[Api/Profiles.ts:66](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L66)
+[Api/Profiles.ts:50](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L50)
 
 ___
 
@@ -64,7 +64,7 @@ The plans assigned to the profilel _NOTE: Only present in the "current" profile.
 
 #### Defined in
 
-[Api/Profiles.ts:81](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L81)
+[Api/Profiles.ts:65](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L65)
 
 ___
 
@@ -76,7 +76,7 @@ The unique ID of the profile
 
 #### Defined in
 
-[Api/Profiles.ts:59](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L59)
+[Api/Profiles.ts:43](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L43)
 
 ___
 
@@ -86,19 +86,19 @@ ___
 
 #### Defined in
 
-[Api/Profiles.ts:67](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L67)
+[Api/Profiles.ts:51](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L51)
 
 ___
 
 ### organization
 
-• **organization**: [`IOrganization`](Profiles.IOrganization.md)
+• **organization**: [`IOrganization`](Organizations.IOrganization.md)
 
 The organization
 
 #### Defined in
 
-[Api/Profiles.ts:73](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L73)
+[Api/Profiles.ts:57](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L57)
 
 ___
 
@@ -110,7 +110,7 @@ The profile's organization ID, or a global "Realster" organization that all pers
 
 #### Defined in
 
-[Api/Profiles.ts:65](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L65)
+[Api/Profiles.ts:49](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L49)
 
 ___
 
@@ -122,7 +122,7 @@ The permissions assigned to the profilel _NOTE: Only present in the "current" pr
 
 #### Defined in
 
-[Api/Profiles.ts:75](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L75)
+[Api/Profiles.ts:59](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L59)
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-[Api/Profiles.ts:69](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L69)
+[Api/Profiles.ts:53](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L53)
 
 ___
 
@@ -144,7 +144,7 @@ The plans assigned to the profilel _NOTE: Only present in the "current" profile.
 
 #### Defined in
 
-[Api/Profiles.ts:79](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L79)
+[Api/Profiles.ts:63](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L63)
 
 ___
 
@@ -156,7 +156,7 @@ The roles assigned to the profilel _NOTE: Only present in the "current" profile.
 
 #### Defined in
 
-[Api/Profiles.ts:77](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L77)
+[Api/Profiles.ts:61](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L61)
 
 ___
 
@@ -170,4 +170,4 @@ change in the future and developers should not develop code based on this field 
 
 #### Defined in
 
-[Api/Profiles.ts:63](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L63)
+[Api/Profiles.ts:47](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L47)

@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[Api/Profiles.ts:207](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L207)
+[Api/Profiles.ts:192](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L192)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[Api/Profiles.ts:208](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L208)
+[Api/Profiles.ts:193](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L193)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[Api/Profiles.ts:209](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L209)
+[Api/Profiles.ts:194](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L194)

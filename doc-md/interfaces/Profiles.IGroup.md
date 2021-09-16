@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[Api/Profiles.ts:34](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L34)
+[Api/Profiles.ts:35](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L35)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[Api/Profiles.ts:35](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L35)
+[Api/Profiles.ts:36](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L36)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-[Api/Profiles.ts:36](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L36)
+[Api/Profiles.ts:37](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L37)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-[Api/Profiles.ts:37](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L37)
+[Api/Profiles.ts:38](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L38)

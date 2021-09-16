@@ -18,4 +18,4 @@
 
 #### Defined in
 
-[Api/Auth.ts:51](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Auth.ts#L51)
+[Api/Auth.ts:51](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Auth.ts#L51)

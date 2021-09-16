@@ -21,7 +21,7 @@ Unique identifier for the permission.
 
 #### Defined in
 
-[Api/Profiles.ts:115](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L115)
+[Api/Profiles.ts:99](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L99)
 
 ___
 
@@ -33,4 +33,4 @@ Display name for the permission.
 
 #### Defined in
 
-[Api/Profiles.ts:117](https://github.com/Verdocs/js-sdk/blob/a85c709/src/Api/Profiles.ts#L117)
+[Api/Profiles.ts:101](https://github.com/Verdocs/js-sdk/blob/458266e/src/Api/Profiles.ts#L101)
