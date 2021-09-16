@@ -13,7 +13,7 @@
   "exclude": ["node_modules", "dist", "**/__tests__/*"],
   "typedocOptions": {
     "entryPoints": ["src/index.ts"],
-    "out": "doc-md",
+    "out": "docs",
     "includeVersion": true
   }
 }
