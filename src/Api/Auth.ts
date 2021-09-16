@@ -1,4 +1,4 @@
-import {Endpoint, RequestStatus} from './Endpoint';
+import {Endpoint, RequestStatus, StandardDataReponse} from './Endpoint';
 import {IProfile} from './Profiles';
 
 export interface AuthenticateUserRequest {
@@ -28,7 +28,7 @@ export interface AuthenticateResponse {
  * ```
  */
 export const authenticateUser = (params: AuthenticateUserRequest) =>
-  Endpoint.post<AuthenticateResponse>('/authentication/login', params).then((r) => r.data);
+  Endpoint.post<AuthenticateResponse>('/authentication/login', params).then(StandardDataReponse);
 
 /**
  * Authenticate to Verdocs via client ID / Secret authentication. **NOTE: This is only suitable for
@@ -45,7 +45,7 @@ export const authenticateUser = (params: AuthenticateUserRequest) =>
  * ```
  */
 export const authenticateApp = (params: AuthenticateAppRequest) =>
-  Endpoint.post<AuthenticateResponse>('/authentication/login_client', {}, {headers: params}).then((r) => r.data);
+  Endpoint.post<AuthenticateResponse>('/authentication/login_client', {}, {headers: params}).then(StandardDataReponse);
 
 export interface TokenValidationRequest {
   token: string;
@@ -73,7 +73,7 @@ export interface TokenValidationResponse {
  * ```
  */
 export const validateToken = (params: TokenValidationRequest) =>
-  Endpoint.post<TokenValidationResponse>('/token/isValid', params).then((r) => r.data);
+  Endpoint.post<TokenValidationResponse>('/token/isValid', params).then(StandardDataReponse);
 
 /**
  * If called before the session expires, this will refresh the caller's session and tokens.
@@ -85,7 +85,7 @@ export const validateToken = (params: TokenValidationRequest) =>
  * Endpoint.setAuthToken(accessToken);
  * ```
  */
-export const refreshTokens = () => Endpoint.get<AuthenticateResponse>('/token').then((r) => r.data);
+export const refreshTokens = () => Endpoint.get<AuthenticateResponse>('/token').then(StandardDataReponse);
 
 export interface UpdatePasswordRequest {
   email: string;
@@ -112,7 +112,7 @@ export interface UpdatePasswordResponse {
  * ```
  */
 export const updatePassword = (params: UpdatePasswordRequest) =>
-  Endpoint.put<UpdatePasswordResponse>('/user/update_password', params).then((r) => r.data);
+  Endpoint.put<UpdatePasswordResponse>('/user/update_password', params).then(StandardDataReponse);
 
 export interface UpdateEmailRequest {
   email: string;
@@ -132,4 +132,4 @@ export interface UpdateEmailResponse {
  * ```
  */
 export const updateEmail = (params: UpdateEmailRequest) =>
-  Endpoint.put<UpdateEmailResponse>('/user/update_email', params).then((r) => r.data);
+  Endpoint.put<UpdateEmailResponse>('/user/update_email', params).then(StandardDataReponse);

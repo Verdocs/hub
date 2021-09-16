@@ -1,3 +1,3 @@
-import {Endpoint} from './Endpoint';
+import {Endpoint, StandardDataReponse} from './Endpoint';
 
-export const getNotifications = async () => Endpoint.get('/notifications').then((r:any) => r.data);
+export const getNotifications = async () => Endpoint.get('/notifications').then(StandardDataReponse);

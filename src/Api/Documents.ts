@@ -1,4 +1,4 @@
-import {Endpoint} from './Endpoint';
+import {Endpoint, StandardDataReponse} from './Endpoint';
 
 export type IDocumentStatus = 'complete' | 'pending' | 'progress';
 
@@ -137,10 +137,10 @@ export type IHistoryEvent =
 export type IEventDetail = 'in_app' | 'mail' | 'signer' | '';
 
 export const getSummary = async (page: number): Promise<IDocumentsSummary> =>
-  Endpoint.post('/documents/summary', {page}).then((r: any) => r.data);
+  Endpoint.post('/documents/summary', {page}).then(StandardDataReponse);
 
 export const search = async (params: any): Promise<IDocumentsSearchResult> =>
-  Endpoint.post('/documents/search', params).then((r: any) => r.data);
+  Endpoint.post('/documents/search', params).then(StandardDataReponse);
 
 export const Documents = {
   getSummary,

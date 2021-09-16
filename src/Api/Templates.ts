@@ -1,4 +1,4 @@
-import {Endpoint} from './Endpoint';
+import {Endpoint, StandardDataReponse} from './Endpoint';
 
 export interface ITemplateSummaryEntry {
   id: string;
@@ -25,15 +25,15 @@ export interface ITemplatesSummary {
   result: ITemplateSummaryEntry[];
 }
 
-export const getTemplates = async () => Endpoint.get('/templates').then((r: any) => r.data);
+export const getTemplates = async () => Endpoint.get('/templates').then(StandardDataReponse);
 
-export const searchTemplates = async () => Endpoint.post('/templates/search').then((r: any) => r.data);
+export const searchTemplates = async () => Endpoint.post('/templates/search').then(StandardDataReponse);
 
 export const getSummary = async (page: number): Promise<ITemplatesSummary> =>
-  Endpoint.post('/templates/summary', {page}).then((r: any) => r.data);
+  Endpoint.post('/templates/summary', {page}).then(StandardDataReponse);
 
 export const toggleStar = async (templateId: string): Promise<ITemplateSummaryEntry> =>
-  Endpoint.post(`/templates/${templateId}/stars/toggle`).then((r: any) => r.data);
+  Endpoint.post(`/templates/${templateId}/stars/toggle`).then(StandardDataReponse);
 
 export const Templates = {
   getSummary,

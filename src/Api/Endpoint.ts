@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
 
 export const Endpoint = axios.create({
   baseURL: 'https://stage-api.verdocs.com/',
@@ -12,3 +12,6 @@ export type RequestStatus = 'OK' | 'ERROR';
 export const setAuthToken = (accessToken: string | null) => {
   Endpoint.defaults.headers.Authorization = `Bearer ${accessToken}`;
 };
+
+/** Most requests only ever need to access the data from the server's response */
+export const StandardDataReponse = (response: AxiosResponse) => response.data;

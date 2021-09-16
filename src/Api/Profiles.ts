@@ -1,4 +1,5 @@
-import {Endpoint} from './Endpoint';
+import {Endpoint, StandardDataReponse} from './Endpoint';
+import {IOrganization} from './Organizations';
 
 export type TPermission =
   | 'org:view'
@@ -37,23 +38,6 @@ export interface IGroup {
   parent_id: string | null;
 }
 
-export interface IOrganization {
-  /** The unique ID of the organization */
-  id: string;
-  /** The organization's name. */
-  name: string;
-  address: string | null;
-  phone: string | null;
-  /** If the organization is a business, its name. Note that a business name can be different from an organization name. */
-  business_name: string | null;
-  /** If true, the organization is a business */
-  is_business: boolean;
-  address2: string | null;
-  contact_email: string | null;
-  timezone: string | null;
-  envelope_responsible: boolean;
-}
-
 export interface IProfile {
   /** The unique ID of the profile */
   id: string;
@@ -90,7 +74,7 @@ export interface IProfile {
  * const profiles = await Profiles.getProfiles()
  * ```
  */
-export const getProfiles = () => Endpoint.get<IProfile[]>('/profiles').then((r) => r.data);
+export const getProfiles = () => Endpoint.get<IProfile[]>('/profiles').then(StandardDataReponse);
 
 export interface IRole {
   /** Unique identifier for the role. */
@@ -108,7 +92,7 @@ export interface IRole {
  * const roles = await Profiles.getRoles();
  * ```
  */
-export const getRoles = () => Endpoint.get<IRole[]>('/roles').then((r) => r.data);
+export const getRoles = () => Endpoint.get<IRole[]>('/roles').then(StandardDataReponse);
 
 export interface IPermission {
   /** Unique identifier for the permission. */
@@ -126,7 +110,7 @@ export interface IPermission {
  * const permissions = await Profiles.getPermissions();
  * ```
  */
-export const getPermissions = () => Endpoint.get<IPermission[]>('/permissions').then((r) => r.data);
+export const getPermissions = () => Endpoint.get<IPermission[]>('/permissions').then(StandardDataReponse);
 
 export interface CreateProfileRequest {
   first_name: string;
@@ -145,7 +129,7 @@ export interface CreateProfileRequest {
  * ```
  */
 export const createProfile = (params: CreateProfileRequest) =>
-  Endpoint.post<IProfile>('/profiles', params).then((r) => r.data);
+  Endpoint.post<IProfile>('/profiles', params).then(StandardDataReponse);
 
 /**
  * Get a profile. The caller must have admin access to the given profile.
@@ -157,7 +141,8 @@ export const createProfile = (params: CreateProfileRequest) =>
  * const profile = await Profiles.getProfile('PROFILEID');
  * ```
  */
-export const getProfile = (profileId: string) => Endpoint.get<IProfile>(`/profiles/${profileId}`).then((r) => r.data);
+export const getProfile = (profileId: string) =>
+  Endpoint.get<IProfile>(`/profiles/${profileId}`).then(StandardDataReponse);
 
 /**
  * Get a profile's permissions. The caller must have admin access to the given profile.
@@ -169,7 +154,7 @@ export const getProfile = (profileId: string) => Endpoint.get<IProfile>(`/profil
  * ```
  */
 export const getProfilePermissions = (profileId: string) =>
-  Endpoint.get<IPermission[]>(`/profiles/${profileId}/permissions`).then((r) => r.data);
+  Endpoint.get<IPermission[]>(`/profiles/${profileId}/permissions`).then(StandardDataReponse);
 
 /**
  * Get a profile's groups.
@@ -181,7 +166,7 @@ export const getProfilePermissions = (profileId: string) =>
  * ```
  */
 export const getProfileGroups = (profileId: string) =>
-  Endpoint.get<IGroup[]>(`/profiles/${profileId}/groups`).then((r) => r.data);
+  Endpoint.get<IGroup[]>(`/profiles/${profileId}/groups`).then(StandardDataReponse);
 
 export interface SwitchProfileResponse {
   profile: IProfile;
@@ -201,7 +186,7 @@ export interface SwitchProfileResponse {
  * ```
  */
 export const switchProfile = (profileId: string) =>
-  Endpoint.post<SwitchProfileResponse>(`/profiles/${profileId}/switch`).then((r) => r.data);
+  Endpoint.post<SwitchProfileResponse>(`/profiles/${profileId}/switch`).then(StandardDataReponse);
 
 export interface IUpdateProfileRequest {
   first_name?: string;
@@ -220,7 +205,7 @@ export interface IUpdateProfileRequest {
  * ```
  */
 export const updateProfile = (profileId: string, params: IUpdateProfileRequest) =>
-  Endpoint.put<IProfile>(`/profiles/${profileId}`, params).then((r) => r.data);
+  Endpoint.put<IProfile>(`/profiles/${profileId}`, params).then(StandardDataReponse);
 
 /**
  * Delete a profile. If the requested profile is the caller's curent profile, the next available profile will be selected.
@@ -231,4 +216,4 @@ export const updateProfile = (profileId: string, params: IUpdateProfileRequest) 
  * await Profiles.deleteProfile('PROFILEID');
  * ```
  */
-export const deleteProfile = (profileId: string) => Endpoint.delete(`/profiles/${profileId}`).then((r) => r.data);
+export const deleteProfile = (profileId: string) => Endpoint.delete(`/profiles/${profileId}`).then(StandardDataReponse);
