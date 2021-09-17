@@ -1,5 +1,9 @@
 export * as Documents from './Documents';
 export * as HTTP from './HTTP';
 export * as Organizations from './Organizations';
+export * as Signatures from './Signatures';
+export * as Tags from './Tags';
 export * as Users from './Users';
 export * as Utils from './Utils';
+export * as Validators from './Validators';
+export * as Whitelabel from './Whitelabel';
