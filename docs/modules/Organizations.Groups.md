@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / Groups
+[@verdocs/js-sdk - v1.0.1](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / Groups
 
 # Namespace: Groups
 
@@ -8,19 +8,19 @@
 
 ### Functions
 
-- [addGroupMembers](Organizations.Groups.md#addgroupmembers)
-- [addGroupPermission](Organizations.Groups.md#addgrouppermission)
-- [deleteGroupMembers](Organizations.Groups.md#deletegroupmembers)
-- [deleteGroupPermission](Organizations.Groups.md#deletegrouppermission)
+- [addMembers](Organizations.Groups.md#addmembers)
+- [addPermission](Organizations.Groups.md#addpermission)
+- [deleteMembers](Organizations.Groups.md#deletemembers)
+- [deletePermission](Organizations.Groups.md#deletepermission)
 - [getGroup](Organizations.Groups.md#getgroup)
-- [getGroupMembers](Organizations.Groups.md#getgroupmembers)
 - [getGroups](Organizations.Groups.md#getgroups)
+- [getMembers](Organizations.Groups.md#getmembers)
 
 ## Functions
 
-### addGroupMembers
+### addMembers
 
-▸ `Const` **addGroupMembers**(`organizationId`, `groupId`, `params`): `Promise`<`any`\>
+▸ `Const` **addMembers**(`organizationId`, `groupId`, `params`): `Promise`<`any`\>
 
 #### Parameters
 
@@ -36,13 +36,13 @@
 
 #### Defined in
 
-[Organizations/Groups.ts:12](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L12)
+[Organizations/Groups.ts:31](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L31)
 
 ___
 
-### addGroupPermission
+### addPermission
 
-▸ `Const` **addGroupPermission**(`organizationId`, `groupId`, `permissionId`, `params`): `Promise`<`any`\>
+▸ `Const` **addPermission**(`organizationId`, `groupId`, `permissionId`, `params`): `Promise`<`any`\>
 
 #### Parameters
 
@@ -59,13 +59,13 @@ ___
 
 #### Defined in
 
-[Organizations/Groups.ts:18](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L18)
+[Organizations/Groups.ts:37](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L37)
 
 ___
 
-### deleteGroupMembers
+### deleteMembers
 
-▸ `Const` **deleteGroupMembers**(`organizationId`, `groupId`, `params`): `Promise`<`any`\>
+▸ `Const` **deleteMembers**(`organizationId`, `groupId`, `params`): `Promise`<`any`\>
 
 #### Parameters
 
@@ -81,13 +81,13 @@ ___
 
 #### Defined in
 
-[Organizations/Groups.ts:15](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L15)
+[Organizations/Groups.ts:34](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L34)
 
 ___
 
-### deleteGroupPermission
+### deletePermission
 
-▸ `Const` **deleteGroupPermission**(`organizationId`, `groupId`, `permissionId`): `Promise`<`any`\>
+▸ `Const` **deletePermission**(`organizationId`, `groupId`, `permissionId`): `Promise`<`any`\>
 
 #### Parameters
 
@@ -103,7 +103,7 @@ ___
 
 #### Defined in
 
-[Organizations/Groups.ts:23](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L23)
+[Organizations/Groups.ts:42](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L42)
 
 ___
 
@@ -124,13 +124,41 @@ ___
 
 #### Defined in
 
-[Organizations/Groups.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L6)
+[Organizations/Groups.ts:25](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L25)
 
 ___
 
-### getGroupMembers
+### getGroups
 
-▸ `Const` **getGroupMembers**(`organizationId`, `groupId`): `Promise`<`any`\>
+▸ `Const` **getGroups**(`organizationId`): `Promise`<`any`\>
+
+Get a list of groups for a given organization. The caller must have admin access to the organization.
+
+```typescript
+import {Groups} from '@verdocs/js-sdk/Organizations';
+
+const groups = await Groups.getGroups(ORGID);
+```
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `organizationId` | `string` |
+
+#### Returns
+
+`Promise`<`any`\>
+
+#### Defined in
+
+[Organizations/Groups.ts:22](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L22)
+
+___
+
+### getMembers
+
+▸ `Const` **getMembers**(`organizationId`, `groupId`): `Promise`<`any`\>
 
 #### Parameters
 
@@ -145,24 +173,4 @@ ___
 
 #### Defined in
 
-[Organizations/Groups.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L9)
-
-___
-
-### getGroups
-
-▸ `Const` **getGroups**(`organizationId`): `Promise`<`any`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `organizationId` | `string` |
-
-#### Returns
-
-`Promise`<`any`\>
-
-#### Defined in
-
-[Organizations/Groups.ts:3](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L3)
+[Organizations/Groups.ts:28](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L28)

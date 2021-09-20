@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Documents](Documents.md) / Templates
+[@verdocs/js-sdk - v1.0.1](../README.md) / [Exports](../modules.md) / [Documents](Documents.md) / Templates
 
 # Namespace: Templates
 

@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / TokenValidationResponse
+[@verdocs/js-sdk - v1.0.1](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / TokenValidationResponse
 
 # Interface: TokenValidationResponse
 

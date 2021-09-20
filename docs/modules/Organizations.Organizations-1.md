@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.0](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / Organizations
+[@verdocs/js-sdk - v1.0.1](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / Organizations
 
 # Namespace: Organizations
 
