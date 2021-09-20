@@ -130,7 +130,7 @@ ___
 
 ### getProfileGroups
 
-▸ `Const` **getProfileGroups**(`profileId`): `Promise`<[`IGroup`](../interfaces/Users.Types.IGroup.md)[]\>
+▸ `Const` **getProfileGroups**(`profileId`): `Promise`<[`IGroup`](../interfaces/Organizations.Types.IGroup.md)[]\>
 
 Get a profile's groups.
 
@@ -148,7 +148,7 @@ const groups = await Profiles.getProfileGroups('PROFILEID');
 
 #### Returns
 
-`Promise`<[`IGroup`](../interfaces/Users.Types.IGroup.md)[]\>
+`Promise`<[`IGroup`](../interfaces/Organizations.Types.IGroup.md)[]\>
 
 #### Defined in
 

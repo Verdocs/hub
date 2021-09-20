@@ -27,7 +27,7 @@
 
 #### Defined in
 
-[Organizations/Types.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L6)
+[Organizations/Types.ts:8](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L8)
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 #### Defined in
 
-[Organizations/Types.ts:12](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L12)
+[Organizations/Types.ts:14](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L14)
 
 ___
 
@@ -49,7 +49,7 @@ If the organization is a business, its name. Note that a business name can be di
 
 #### Defined in
 
-[Organizations/Types.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L9)
+[Organizations/Types.ts:11](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L11)
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
 #### Defined in
 
-[Organizations/Types.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L13)
+[Organizations/Types.ts:15](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L15)
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 #### Defined in
 
-[Organizations/Types.ts:15](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L15)
+[Organizations/Types.ts:17](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L17)
 
 ___
 
@@ -81,7 +81,7 @@ The unique ID of the organization
 
 #### Defined in
 
-[Organizations/Types.ts:3](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L3)
+[Organizations/Types.ts:5](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L5)
 
 ___
 
@@ -93,7 +93,7 @@ If true, the organization is a business
 
 #### Defined in
 
-[Organizations/Types.ts:11](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L11)
+[Organizations/Types.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L13)
 
 ___
 
@@ -105,7 +105,7 @@ The organization's name.
 
 #### Defined in
 
-[Organizations/Types.ts:5](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L5)
+[Organizations/Types.ts:7](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L7)
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
 #### Defined in
 
-[Organizations/Types.ts:7](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L7)
+[Organizations/Types.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L9)
 
 ___
 
@@ -125,4 +125,4 @@ ___
 
 #### Defined in
 
-[Organizations/Types.ts:14](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L14)
+[Organizations/Types.ts:16](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L16)

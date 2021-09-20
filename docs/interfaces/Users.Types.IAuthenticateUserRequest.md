@@ -19,7 +19,7 @@
 
 #### Defined in
 
-[Users/Types.ts:106](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L106)
+[Users/Types.ts:99](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L99)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:105](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L105)
+[Users/Types.ts:98](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L98)

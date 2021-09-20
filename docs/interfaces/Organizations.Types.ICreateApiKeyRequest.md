@@ -19,7 +19,7 @@
 
 #### Defined in
 
-[Organizations/Types.ts:19](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L19)
+[Organizations/Types.ts:21](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L21)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 #### Defined in
 
-[Organizations/Types.ts:20](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L20)
+[Organizations/Types.ts:22](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L22)

@@ -4,6 +4,15 @@
 
 [Organizations](Organizations.md).ApiKeys
 
+API keys are used to authenticate server-to-server calls. (API keys should **never** be used for client-to-server operations!)
+To generate a key, either use the Verdocs admin interface and make note of the client_id and client_secret generated, or call
+createKey as shown below. Then call [Users.Auth.authenticateApp](Users.Auth.md#authenticateapp) to obtain an access token using the provided ID and
+secret. Note that server-to-server authentication requests return shorter-lived tokens, so it is important to check the `exp`
+field and re-authenticate as needed for subsequent calls.
+
+API keys may be updated or rotated at any time. Regular rotation is recommended. Rotation will not expire or invalidate
+existing server-to-server sessions, so it may be done at any time without disrupting your application.
+
 ## Table of contents
 
 ### Functions
@@ -41,7 +50,7 @@ await ApiKeys.createKey(ORGID, {name: NEWNAME});
 
 #### Defined in
 
-[Organizations/ApiKeys.ts:25](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L25)
+[Organizations/ApiKeys.ts:38](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L38)
 
 ___
 
@@ -70,7 +79,7 @@ await ApiKeys.deleteKey(ORGID, CLIENTID);
 
 #### Defined in
 
-[Organizations/ApiKeys.ts:61](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L61)
+[Organizations/ApiKeys.ts:74](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L74)
 
 ___
 
@@ -98,7 +107,7 @@ const keys = await ApiKeys.getKeys(ORGID);
 
 #### Defined in
 
-[Organizations/ApiKeys.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L13)
+[Organizations/ApiKeys.ts:26](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L26)
 
 ___
 
@@ -127,7 +136,7 @@ const {client_secret: newSecret} = await ApiKeys.rotateKey(ORGID, CLIENTID);
 
 #### Defined in
 
-[Organizations/ApiKeys.ts:37](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L37)
+[Organizations/ApiKeys.ts:50](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L50)
 
 ___
 
@@ -157,4 +166,4 @@ await ApiKeys.updateKey(ORGID, CLIENTID, {name: NEWNAME});
 
 #### Defined in
 
-[Organizations/ApiKeys.ts:49](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L49)
+[Organizations/ApiKeys.ts:62](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L62)

@@ -32,7 +32,7 @@
 
 #### Defined in
 
-[Organizations/Types.ts:36](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L36)
+[Organizations/Types.ts:38](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L38)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[Organizations/Types.ts:37](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L37)
+[Organizations/Types.ts:39](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L39)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[Organizations/Types.ts:38](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L38)
+[Organizations/Types.ts:40](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L40)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-[Organizations/Types.ts:40](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L40)
+[Organizations/Types.ts:42](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L42)
 
 ___
 
@@ -84,4 +84,4 @@ ___
 
 #### Defined in
 
-[Organizations/Types.ts:39](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L39)
+[Organizations/Types.ts:41](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Types.ts#L41)

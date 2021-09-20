@@ -11,5 +11,7 @@
 - [IApiKey](../interfaces/Organizations.Types.IApiKey.md)
 - [IApiKeyWithSecret](../interfaces/Organizations.Types.IApiKeyWithSecret.md)
 - [ICreateApiKeyRequest](../interfaces/Organizations.Types.ICreateApiKeyRequest.md)
+- [IGroup](../interfaces/Organizations.Types.IGroup.md)
+- [IGroupDetail](../interfaces/Organizations.Types.IGroupDetail.md)
 - [IOrganization](../interfaces/Organizations.Types.IOrganization.md)
 - [IUpdateApiKeyRequest](../interfaces/Organizations.Types.IUpdateApiKeyRequest.md)

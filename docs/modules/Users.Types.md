@@ -12,7 +12,6 @@
 - [IAuthenticateResponse](../interfaces/Users.Types.IAuthenticateResponse.md)
 - [IAuthenticateUserRequest](../interfaces/Users.Types.IAuthenticateUserRequest.md)
 - [ICreateProfileRequest](../interfaces/Users.Types.ICreateProfileRequest.md)
-- [IGroup](../interfaces/Users.Types.IGroup.md)
 - [IPermission](../interfaces/Users.Types.IPermission.md)
 - [IProfile](../interfaces/Users.Types.IProfile.md)
 - [IRole](../interfaces/Users.Types.IRole.md)
