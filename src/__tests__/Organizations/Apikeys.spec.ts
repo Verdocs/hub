@@ -78,7 +78,7 @@ it('deleteKey should succeed', () => {
   ApiKeys.deleteKey('TEST', 'TEST').then(thenFn).catch(catchFn);
   expect(mockAxios.delete).toBeCalledWith('/organizations/TEST/api_key/TEST');
 
-	mockAxios.mockResponse();
+  mockAxios.mockResponse();
   expect(thenFn).toBeCalled();
   expect(catchFn).not.toBeCalled();
 });

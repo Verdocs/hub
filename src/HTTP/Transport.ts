@@ -7,9 +7,9 @@ export const Endpoint = axios.create({
 });
 
 export const setAuthToken = (accessToken: string | null) => {
-	Endpoint.defaults.headers.Authorization = `Bearer ${accessToken}`;
+  Endpoint.defaults.headers.Authorization = `Bearer ${accessToken}`;
 };
 
 export const setClientID = (clientID: string) => {
-	Endpoint.defaults.headers['X-Client-ID'] = clientID;
+  Endpoint.defaults.headers['X-Client-ID'] = clientID;
 };
