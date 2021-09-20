@@ -86,6 +86,7 @@ export interface IDocument {
   status: IDocumentStatus;
   template_id: string;
   updated_at: string;
+  organization_id: string | null;
 }
 
 export interface IActivityEntry {
