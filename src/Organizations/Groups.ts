@@ -1,5 +1,3 @@
-import {Endpoint} from '../HTTP/Transport';
-
 /**
  * Organizations may contain "Groups" of user profiles, called Members. Groups may have permissions assigned that
  * apply to all Members, making it easy to configure role-based access control (RBAC) within an Organization. Note
@@ -9,6 +7,9 @@ import {Endpoint} from '../HTTP/Transport';
  *
  * @module
  */
+
+import {Endpoint} from '../HTTP/Transport';
+import {IGroup, IGroupDetail} from './Types';
 
 /**
  * Get a list of groups for a given organization. The caller must have admin access to the organization.
@@ -20,10 +21,19 @@ import {Endpoint} from '../HTTP/Transport';
  * ```
  */
 export const getGroups = (organizationId: string) =>
-  Endpoint.get(`/organizations/${organizationId}/groups`).then((r) => r.data);
+  Endpoint.get<IGroup[]>(`/organizations/${organizationId}/groups`).then((r) => r.data);
 
+/**
+ * Get the details for a group.
+ *
+ * ```typescript
+ * import {Groups} from '@verdocs/js-sdk/Organizations';
+ *
+ * const groups = await Groups.getGroups(ORGID);
+ * ```
+ */
 export const getGroup = (organizationId: string, groupId: string) =>
-  Endpoint.get(`/organizations/${organizationId}/groups/${groupId}`).then((r) => r.data);
+  Endpoint.get<IGroupDetail>(`/organizations/${organizationId}/groups/${groupId}`).then((r) => r.data);
 
 export const getMembers = (organizationId: string, groupId: string) =>
   Endpoint.get(`/organizations/${organizationId}/groups/${groupId}/members`).then((r) => r.data);

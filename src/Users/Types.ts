@@ -1,4 +1,4 @@
-import {IOrganization} from '../Organizations/Types';
+import {IGroup, IOrganization} from '../Organizations/Types';
 import {TRequestStatus} from '../HTTP/Types';
 
 export type TPermission =
@@ -30,13 +30,6 @@ export type TPermission =
 export type TPlan = 'env:essential' | 'org:standard';
 
 export type TRole = 'owner' | 'basic_user' | 'member';
-
-export interface IGroup {
-  id: string;
-  name: string;
-  organization_id: string;
-  parent_id: string | null;
-}
 
 export interface IProfile {
   /** The unique ID of the profile */

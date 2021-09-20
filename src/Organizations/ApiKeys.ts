@@ -1,3 +1,16 @@
+/**
+ * API keys are used to authenticate server-to-server calls. (API keys should **never** be used for client-to-server operations!)
+ * To generate a key, either use the Verdocs admin interface and make note of the client_id and client_secret generated, or call
+ * createKey as shown below. Then call {@link Users.Auth.authenticateApp} to obtain an access token using the provided ID and
+ * secret. Note that server-to-server authentication requests return shorter-lived tokens, so it is important to check the `exp`
+ * field and re-authenticate as needed for subsequent calls.
+ *
+ * API keys may be updated or rotated at any time. Regular rotation is recommended. Rotation will not expire or invalidate
+ * existing server-to-server sessions, so it may be done at any time without disrupting your application.
+ *
+ * @module
+ */
+
 import {Endpoint} from '../HTTP/Transport';
 import {IApiKey, IApiKeyWithSecret, ICreateApiKeyRequest, IUpdateApiKeyRequest} from './Types';
 

@@ -1,13 +1,13 @@
 import {Endpoint} from '../HTTP/Transport';
 import {
   ICreateProfileRequest,
-  IGroup,
   IPermission,
   IProfile,
   IRole,
   ISwitchProfileResponse,
   IUpdateProfileRequest,
 } from './Types';
+import {IGroup} from '../Organizations/Types';
 
 /**
  * Get the user's available profiles. The current profile will be marked with `current: true`.

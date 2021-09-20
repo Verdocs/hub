@@ -1,3 +1,5 @@
+import {IProfile, TPermission, TRole} from '../Users/Types';
+
 export interface IOrganization {
   /** The unique ID of the organization */
   id: string;
@@ -38,4 +40,24 @@ export interface IApiKeyWithSecret extends IApiKey {
   name: string;
   profile_id: string;
   organization_id: string;
+}
+
+export interface IGroup {
+  id: string;
+  name: string;
+  organization_id: string;
+  /** For future expansion. In the future, Verdocs may support group hierarchies. Until then this field is always null. */
+  parent_id: string | null;
+  /** Some operations will additionally return a list of permissions. */
+  permissions?: TPermission[];
+	/** Some operations will additionally return a list of roles. */
+  roles?: TRole[];
+	/** Some operations will additionally return a list of profiles. */
+  profiles?: IProfile[];
+}
+
+export interface IGroupDetail extends IGroup {
+  permissions: TPermission[];
+  roles: TRole[];
+  profiles: IProfile[];
 }

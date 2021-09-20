@@ -4,6 +4,12 @@
 
 [Organizations](Organizations.md).Groups
 
+Organizations may contain "Groups" of user profiles, called Members. Groups may have permissions assigned that
+apply to all Members, making it easy to configure role-based access control (RBAC) within an Organization. Note
+that permissions are **additive**. A user may be a member of more than one group, and may also have permissions
+assigned directly. In that case, the user will have the combined set of all permissions inherited from all
+sources.
+
 ## Table of contents
 
 ### Functions
@@ -36,7 +42,7 @@
 
 #### Defined in
 
-[Organizations/Groups.ts:31](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L31)
+[Organizations/Groups.ts:41](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L41)
 
 ___
 
@@ -59,7 +65,7 @@ ___
 
 #### Defined in
 
-[Organizations/Groups.ts:37](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L37)
+[Organizations/Groups.ts:47](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L47)
 
 ___
 
@@ -81,7 +87,7 @@ ___
 
 #### Defined in
 
-[Organizations/Groups.ts:34](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L34)
+[Organizations/Groups.ts:44](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L44)
 
 ___
 
@@ -103,13 +109,21 @@ ___
 
 #### Defined in
 
-[Organizations/Groups.ts:42](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L42)
+[Organizations/Groups.ts:52](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L52)
 
 ___
 
 ### getGroup
 
-▸ `Const` **getGroup**(`organizationId`, `groupId`): `Promise`<`any`\>
+▸ `Const` **getGroup**(`organizationId`, `groupId`): `Promise`<[`IGroupDetail`](../interfaces/Organizations.Types.IGroupDetail.md)\>
+
+Get the details for a group.
+
+```typescript
+import {Groups} from '@verdocs/js-sdk/Organizations';
+
+const groups = await Groups.getGroups(ORGID);
+```
 
 #### Parameters
 
@@ -120,17 +134,17 @@ ___
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`IGroupDetail`](../interfaces/Organizations.Types.IGroupDetail.md)\>
 
 #### Defined in
 
-[Organizations/Groups.ts:25](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L25)
+[Organizations/Groups.ts:35](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L35)
 
 ___
 
 ### getGroups
 
-▸ `Const` **getGroups**(`organizationId`): `Promise`<`any`\>
+▸ `Const` **getGroups**(`organizationId`): `Promise`<[`IGroup`](../interfaces/Organizations.Types.IGroup.md)[]\>
 
 Get a list of groups for a given organization. The caller must have admin access to the organization.
 
@@ -148,11 +162,11 @@ const groups = await Groups.getGroups(ORGID);
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`IGroup`](../interfaces/Organizations.Types.IGroup.md)[]\>
 
 #### Defined in
 
-[Organizations/Groups.ts:22](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L22)
+[Organizations/Groups.ts:23](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L23)
 
 ___
 
@@ -173,4 +187,4 @@ ___
 
 #### Defined in
 
-[Organizations/Groups.ts:28](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L28)
+[Organizations/Groups.ts:38](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L38)
