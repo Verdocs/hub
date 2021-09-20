@@ -2,12 +2,8 @@
 
 > Verdocs SDK for Javascript / Typescript
 
-This SDK provides convenience wrappers for both Browser-based and NodeJS applications with strong typing and documentation to help
-you get started quickly developing for the Verdocs platform.
-
-## Documentation
-
-Please see the [API Docs](https://github.com/Verdocs/js-sdk/tree/main/docs) for details on the functions provided.
+This SDK provides convenience wrappers for both Browser-based and NodeJS applications to call the Verdocs API, with strong typing and
+documentation to help you get started quickly developing for the Verdocs platform.
 
 ## Getting Started
 
@@ -31,6 +27,19 @@ const {accessToken} = await Auth.authenticateUser({username: 'MY_USERNAME', pass
 Endpoint.setAuthToken(accessToken);
 ```
 
+## Documentation
+
+Verdocs functions are organized into high-level modules that represent the main objects within the platform:
+
+- Documents - An individual document to be signed. Documents are created from templates.
+- HTTP - General support functionality for Verdocs' REST endpoints. Typically not used directly.
+- Organizations - An Organization is a container for user profiles, templates, documents, billing, and other related objects.
+- Templates - A template for a document containing a PDF file, metadata for signature fields, and other information.
+- Users - All operations related to authentication and user-related operations.
+- Utils - General support functions used by the other modules and exported for convenience.
+
+Please see the [API Docs](https://github.com/Verdocs/js-sdk/tree/main/docs) for details on the functions provided by each module.
+
 ## HTTP Transport
 
 The underlying transport uses `axios`, a cross-environment (NodeJS vs. Browser) HTTP transport layer. When this SDK is included in a
@@ -46,5 +55,5 @@ Endpoint.defaults.timeout = 5000;
 
 ## Contributing
 
-Although we at Verdocs actively maintain this SDK, we welcome community contributions and suggestions! Please file a pull request
-with any change requests and we will review them as soon as possible.
+This repository is actively maintained and supported by [Verdocs](https://verdocs.com/). We welcome community contributions and
+suggestions! Please file a pull request with any change requests and we will review them as soon as possible.
