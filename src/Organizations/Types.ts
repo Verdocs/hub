@@ -14,3 +14,28 @@ export interface IOrganization {
   timezone: string | null;
   envelope_responsible: boolean;
 }
+
+export interface ICreateApiKeyRequest {
+	name: string;
+	profile_id: string;
+}
+
+export interface IUpdateApiKeyRequest {
+	name?: string;
+	profile_id?: string;
+}
+
+export interface IApiKey {
+	client_id: string;
+	name: string;
+	profile_id: string;
+	organization_id: string;
+}
+
+export interface IApiKeyWithSecret extends IApiKey {
+	client_id: string;
+	client_secret: string;
+	name: string;
+	profile_id: string;
+	organization_id: string;
+}
