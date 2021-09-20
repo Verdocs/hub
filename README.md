@@ -5,12 +5,23 @@
 This SDK provides convenience wrappers for both Browser-based and NodeJS applications with strong typing and documentation to help
 you get started quickly developing for the Verdocs platform.
 
-## Usage
+## Documentation
 
-We will shortly be adding code samples, tutorials, and guides. Until then, please refer to the
-[API Documentation](https://github.com/Verdocs/js-sdk/tree/main/doc-md). Note that this package is namespaced into packages that organize
-API calls into functional groups. A top-level `export *` is provided for simplicity, but to enable Tree Shaking to do its job, it is
-recommended that you only import the package required for a given task, e.g.:
+Please see the [API Docs](https://github.com/Verdocs/js-sdk/tree/main/docs) for details on the functions provided.
+
+## Getting Started
+
+First add this module to your project:
+
+    npm install --save @verdocs/js-sdk
+
+or:
+
+    yarn add @verdocs/js-sdk
+
+This package is namespaced into packages that organize API calls into functional groups. A top-level `export *` is provided for simplicity,
+but to enable Tree Shaking to do its job, it is recommended that you only import the package required for a given task. For example, to
+perform a simple authentication request:
 
 ```typescript
 import {Auth} from '@verdocs/js-sdk/Auth';
