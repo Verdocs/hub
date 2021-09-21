@@ -1,4 +1,5 @@
 export * as Documents from './Documents';
+export * as Templates from './Templates';
 export * as HTTP from './HTTP';
 export * as Organizations from './Organizations';
 export * as Signatures from './Signatures';
