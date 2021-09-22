@@ -50,9 +50,9 @@ export interface IGroup {
   parent_id: string | null;
   /** Some operations will additionally return a list of permissions. */
   permissions?: TPermission[];
-	/** Some operations will additionally return a list of roles. */
+  /** Some operations will additionally return a list of roles. */
   roles?: TRole[];
-	/** Some operations will additionally return a list of profiles. */
+  /** Some operations will additionally return a list of profiles. */
   profiles?: IProfile[];
 }
 
