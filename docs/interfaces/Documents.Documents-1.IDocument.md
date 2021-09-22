@@ -16,6 +16,7 @@
 - [id](Documents.Documents-1.IDocument.md#id)
 - [name](Documents.Documents-1.IDocument.md#name)
 - [no_contact](Documents.Documents-1.IDocument.md#no_contact)
+- [organization_id](Documents.Documents-1.IDocument.md#organization_id)
 - [profile_id](Documents.Documents-1.IDocument.md#profile_id)
 - [recipients](Documents.Documents-1.IDocument.md#recipients)
 - [reminder_id](Documents.Documents-1.IDocument.md#reminder_id)
@@ -102,6 +103,16 @@ ___
 #### Defined in
 
 [Documents/Documents.ts:83](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L83)
+
+___
+
+### organization\_id
+
+• **organization\_id**: ``null`` \| `string`
+
+#### Defined in
+
+[Documents/Documents.ts:89](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L89)
 
 ___
 

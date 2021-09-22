@@ -23,7 +23,7 @@
 
 #### Defined in
 
-[Documents/Documents.ts:111](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L111)
+[Documents/Documents.ts:112](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L112)
 
 ___
 
@@ -33,7 +33,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:112](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L112)
+[Documents/Documents.ts:113](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L113)
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:113](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L113)
+[Documents/Documents.ts:114](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L114)
 
 ___
 
@@ -53,7 +53,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:114](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L114)
+[Documents/Documents.ts:115](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L115)
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:115](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L115)
+[Documents/Documents.ts:116](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L116)
 
 ___
 
@@ -73,4 +73,4 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:116](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L116)
+[Documents/Documents.ts:117](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L117)

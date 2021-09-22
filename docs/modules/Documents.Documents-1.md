@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:137](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L137)
+[Documents/Documents.ts:138](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L138)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:130](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L130)
+[Documents/Documents.ts:131](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L131)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:139](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L139)
+[Documents/Documents.ts:140](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L140)
 
 ___
 
@@ -126,4 +126,4 @@ const {result, page, total} = await Documents.search({ ... });
 
 #### Defined in
 
-[Documents/Documents.ts:151](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L151)
+[Documents/Documents.ts:152](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L152)
