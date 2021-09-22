@@ -14,4 +14,5 @@ export const getSignatures = () => Endpoint.get<ISignature[]>('/signatures').the
 
 export const getSignature = (signatureId: string) => Endpoint.get(`/signatures/${signatureId}`).then((r) => r.data);
 
-export const deleteSignature = (signatureId: string) => Endpoint.delete(`/signatures/${signatureId}`).then((r) => r.data);
+export const deleteSignature = (signatureId: string) =>
+  Endpoint.delete(`/signatures/${signatureId}`).then((r) => r.data);

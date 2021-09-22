@@ -8,6 +8,6 @@ export interface ITags {
 
 export const createTag = () => Endpoint.post<ITags>('/tags').then((r) => r.data);
 
-export const getTag = (tag_name: string) => Endpoint.get<ITags>(`/tags/${tag_name}`).then((r) => r.data);
+export const getTag = (tagName: string) => Endpoint.get<ITags>(`/tags/${tagName}`).then((r) => r.data);
 
 export const searchTag = () => Endpoint.get<ITags[]>('/tags').then((r) => r.data);
