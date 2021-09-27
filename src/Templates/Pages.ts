@@ -1,13 +1,14 @@
 import {Endpoint} from '../HTTP/Transport';
+import { IPage } from './Types';
 
-export const createTemplatePage = (templateId: string) =>
-  Endpoint.post(`/templates/${templateId}/pages/`).then((r) => r.data);
+export const createPage = (templateId: string, params: IPage) =>
+  Endpoint.post<IPage>(`/templates/${templateId}/pages/`, params).then((r) => r.data);
 
-export const editTemplatePage = (templateId: string, sequence: string) =>
+export const editPage = (templateId: string, sequence: string) =>
   Endpoint.put(`/templates/${templateId}/pages/${sequence}`).then((r) => r.data);
 
-export const getTemplatePage = (templateId: string, sequence: string) =>
+export const getPage = (templateId: string, sequence: string) =>
   Endpoint.get(`/templates/${templateId}/pages/${sequence}`).then((r) => r.data);
 
-export const deleteTemplatePage = (templateId: string, sequence: string) =>
+export const deletePage = (templateId: string, sequence: string) =>
   Endpoint.delete(`/templates/${templateId}/pages/${sequence}`).then((r) => r.data);
