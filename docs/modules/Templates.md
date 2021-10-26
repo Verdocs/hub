@@ -14,3 +14,4 @@
 - [Stars](Templates.Stars.md)
 - [Tags](Templates.Tags.md)
 - [Templates](Templates.Templates-1.md)
+- [Types](Templates.Types.md)

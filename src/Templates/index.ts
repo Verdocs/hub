@@ -6,3 +6,4 @@ export * as Roles from './Roles';
 export * as Stars from './Stars';
 export * as Tags from './Tags';
 export * as Templates from './Templates';
+export * as Types from './Types';

@@ -53,7 +53,7 @@ ___
 
 ### getSummary
 
-▸ `Const` **getSummary**(`page`): `Promise`<`ITemplatesSummary`\>
+▸ `Const` **getSummary**(`page`): `Promise`<[`ITemplatesSummary`](../interfaces/Templates.Types.ITemplatesSummary.md)\>
 
 #### Parameters
 
@@ -63,7 +63,7 @@ ___
 
 #### Returns
 
-`Promise`<`ITemplatesSummary`\>
+`Promise`<[`ITemplatesSummary`](../interfaces/Templates.Types.ITemplatesSummary.md)\>
 
 #### Defined in
 
