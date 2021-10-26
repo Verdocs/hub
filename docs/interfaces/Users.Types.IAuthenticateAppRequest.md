@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.1](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / IAuthenticateAppRequest
+[@verdocs/js-sdk - v1.0.3](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / IAuthenticateAppRequest
 
 # Interface: IAuthenticateAppRequest
 

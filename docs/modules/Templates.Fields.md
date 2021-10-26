@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.1](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Fields
+[@verdocs/js-sdk - v1.0.3](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Fields
 
 # Namespace: Fields
 
@@ -51,7 +51,7 @@ ___
 
 #### Defined in
 
-[Templates/Fields.ts:7](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Fields.ts#L7)
+[Templates/Fields.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Fields.ts#L9)
 
 ___
 
@@ -72,4 +72,4 @@ ___
 
 #### Defined in
 
-[Templates/Fields.ts:5](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Fields.ts#L5)
+[Templates/Fields.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Fields.ts#L6)

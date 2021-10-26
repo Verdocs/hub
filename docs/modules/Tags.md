@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.1](../README.md) / [Exports](../modules.md) / Tags
+[@verdocs/js-sdk - v1.0.3](../README.md) / [Exports](../modules.md) / Tags
 
 # Namespace: Tags
 
@@ -32,13 +32,13 @@ ___
 
 ### getTag
 
-▸ `Const` **getTag**(`tag_name`): `Promise`<[`ITags`](../interfaces/Tags.ITags.md)\>
+▸ `Const` **getTag**(`tagName`): `Promise`<[`ITags`](../interfaces/Tags.ITags.md)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `tag_name` | `string` |
+| `tagName` | `string` |
 
 #### Returns
 

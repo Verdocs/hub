@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.1](../README.md) / [Exports](../modules.md) / [Signatures](../modules/Signatures.md) / ISignature
+[@verdocs/js-sdk - v1.0.3](../README.md) / [Exports](../modules.md) / [Signatures](../modules/Signatures.md) / ISignature
 
 # Interface: ISignature
 

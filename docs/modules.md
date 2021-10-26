@@ -1,6 +1,6 @@
-[@verdocs/js-sdk - v1.0.1](README.md) / Exports
+[@verdocs/js-sdk - v1.0.3](README.md) / Exports
 
-# @verdocs/js-sdk - v1.0.1
+# @verdocs/js-sdk - v1.0.3
 
 Verdocs functions are organized into high-level modules that represent the main objects within Verdocs:
 
