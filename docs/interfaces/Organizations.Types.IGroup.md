@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.1](../README.md) / [Exports](../modules.md) / [Organizations](../modules/Organizations.md) / [Types](../modules/Organizations.Types.md) / IGroup
+[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Organizations](../modules/Organizations.md) / [Types](../modules/Organizations.Types.md) / IGroup
 
 # Interface: IGroup
 

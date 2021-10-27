@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.1](../README.md) / [Exports](../modules.md) / [Users](Users.md) / Notifications
+[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Users](Users.md) / Notifications
 
 # Namespace: Notifications
 

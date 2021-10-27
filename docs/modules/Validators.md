@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.1](../README.md) / [Exports](../modules.md) / Validators
+[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / Validators
 
 # Namespace: Validators
 
@@ -17,13 +17,13 @@
 
 ### getValidator
 
-▸ `Const` **getValidator**(`validator_name`): `Promise`<[`IValidator`](../interfaces/Validators.IValidator.md)\>
+▸ `Const` **getValidator**(`validatorName`): `Promise`<[`IValidator`](../interfaces/Validators.IValidator.md)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `validator_name` | `string` |
+| `validatorName` | `string` |
 
 #### Returns
 

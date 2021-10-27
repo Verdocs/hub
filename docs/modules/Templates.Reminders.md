@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.1](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Reminders
+[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Reminders
 
 # Namespace: Reminders
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[Templates/Reminders.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Reminders.ts#L9)
+[Templates/Reminders.ts:12](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Reminders.ts#L12)
 
 ___
 
@@ -73,7 +73,7 @@ ___
 
 #### Defined in
 
-[Templates/Reminders.ts:7](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Reminders.ts#L7)
+[Templates/Reminders.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Reminders.ts#L9)
 
 ___
 
@@ -94,4 +94,4 @@ ___
 
 #### Defined in
 
-[Templates/Reminders.ts:5](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Reminders.ts#L5)
+[Templates/Reminders.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Reminders.ts#L6)

@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.1](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Templates
+[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Templates
 
 # Namespace: Templates
 
@@ -53,7 +53,7 @@ ___
 
 ### getSummary
 
-▸ `Const` **getSummary**(`page`): `Promise`<`ITemplatesSummary`\>
+▸ `Const` **getSummary**(`page`): `Promise`<[`ITemplatesSummary`](../interfaces/Templates.Types.ITemplatesSummary.md)\>
 
 #### Parameters
 
@@ -63,7 +63,7 @@ ___
 
 #### Returns
 
-`Promise`<`ITemplatesSummary`\>
+`Promise`<[`ITemplatesSummary`](../interfaces/Templates.Types.ITemplatesSummary.md)\>
 
 #### Defined in
 

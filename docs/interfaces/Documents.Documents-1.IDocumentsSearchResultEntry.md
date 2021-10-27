@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.1](../README.md) / [Exports](../modules.md) / [Documents](../modules/Documents.md) / [Documents](../modules/Documents.Documents-1.md) / IDocumentsSearchResultEntry
+[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Documents](../modules/Documents.md) / [Documents](../modules/Documents.Documents-1.md) / IDocumentsSearchResultEntry
 
 # Interface: IDocumentsSearchResultEntry
 
