@@ -1,4 +1,4 @@
-import {IDocumentStatus} from '../Documents/Documents';
+import {IDocumentStatus, IRecipientStatus} from '../Documents/Documents';
 
 export interface IDocumentFile {
   id: string;
@@ -43,6 +43,12 @@ export interface ITemplateResult {
 export interface ISearchParams {
   page?: number;
   limit?: number;
+  q?: string;
+  tags?: string[];
+  type?: 'template' | 'document' | 'organization';
+  shared?: 'private' | 'shared' | 'public';
+  mine?: boolean;
+  status?: IDocumentStatus | IRecipientStatus;
 }
 
 export interface IRecentSearch {

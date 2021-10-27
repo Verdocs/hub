@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.3](../README.md) / [Exports](../modules.md) / [Documents](../modules/Documents.md) / [Documents](../modules/Documents.Documents-1.md) / IDocumentSearchOptions
+[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Documents](../modules/Documents.md) / [Documents](../modules/Documents.Documents-1.md) / IDocumentSearchOptions
 
 # Interface: IDocumentSearchOptions
 

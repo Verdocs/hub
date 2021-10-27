@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.3](../README.md) / [Exports](../modules.md) / [Templates](../modules/Templates.md) / [Types](../modules/Templates.Types.md) / ITemplateSummaryEntry
+[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Templates](../modules/Templates.md) / [Types](../modules/Templates.Types.md) / ITemplateSummaryEntry
 
 # Interface: ITemplateSummaryEntry
 
