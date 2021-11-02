@@ -40,6 +40,12 @@ Verdocs functions are organized into high-level modules that represent the main 
 
 Please see the [API Docs](https://github.com/Verdocs/js-sdk/tree/main/docs) for details on the functions provided by each module.
 
+## Contributing
+
+To avoid the presence of the `dist/` distribution directory appearing in package imports, when this project is built, this `README.md`
+and other support files are copied there. Be sure to run `npm version patch` from THIS directory, but the publish command from within
+the `dist` folder.
+
 ## HTTP Transport
 
 The underlying transport uses `axios`, a cross-environment (NodeJS vs. Browser) HTTP transport layer. When this SDK is included in a

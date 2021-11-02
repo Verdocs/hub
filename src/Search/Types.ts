@@ -79,4 +79,5 @@ export interface ISearchResult {
   matches: number;
   templates: any[];
   documents: IDocumentResult[];
+  organizations: any[];
 }
