@@ -1,5 +1,5 @@
 import {Endpoint} from '../HTTP/Transport';
-import {ITag} from "./Types";
+import {ITag} from './Types';
 
 export const createTag = (templateId: string, params: any) =>
   Endpoint.post<ITag>(`/templates/${templateId}/tags/`, params).then((r) => r.data);

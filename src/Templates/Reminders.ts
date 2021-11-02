@@ -1,5 +1,5 @@
 import {Endpoint} from '../HTTP/Transport';
-import {IReminder, ITemplate} from "./Types";
+import {IReminder, ITemplate} from './Types';
 
 export const createReminder = (templateId: string, params: any) =>
   Endpoint.post<ITemplate>(`/templates/${templateId}/reminder/`, params).then((r) => r.data);

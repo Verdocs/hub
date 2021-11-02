@@ -1,5 +1,5 @@
 import {Endpoint} from '../HTTP/Transport';
-import {IDocument} from "./Types";
+import {IDocument} from './Types';
 
 /**
  * Get all the Documents associated to a particular Template.

@@ -1,5 +1,5 @@
 import {Endpoint} from '../HTTP/Transport';
-import {IStar, ITemplatesSummary} from "./Types";
+import {IStar, ITemplatesSummary} from './Types';
 
 export const getStars = (templateId: string) =>
   Endpoint.get<IStar[]>(`/templates/${templateId}/stars/`).then((r) => r.data);

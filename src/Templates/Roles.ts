@@ -1,5 +1,5 @@
 import {Endpoint} from '../HTTP/Transport';
-import {IField, IRole} from "./Types";
+import {IField, IRole} from './Types';
 
 export const createRole = (templateId: string, params: IRole) =>
   Endpoint.post<IRole>(`/templates/${templateId}/roles/`, params).then((r) => r.data);

@@ -1,5 +1,5 @@
 import {Endpoint} from '../HTTP/Transport';
-import { IPage } from './Types';
+import {IPage} from './Types';
 
 export const createPage = (templateId: string, params: IPage) =>
   Endpoint.post<IPage>(`/templates/${templateId}/pages/`, params).then((r) => r.data);

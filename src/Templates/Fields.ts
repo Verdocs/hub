@@ -1,5 +1,5 @@
 import {Endpoint} from '../HTTP/Transport';
-import {IField} from "./Types";
+import {IField} from './Types';
 
 export const createField = (templateId: string, params: IField) =>
   Endpoint.post<IField>(`/templates/${templateId}/pages/`, params).then((r) => r.data);

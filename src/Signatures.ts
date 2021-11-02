@@ -8,8 +8,7 @@ export interface ISignature {
   updated_at?: Date;
 }
 
-export const createSignature = (params: any) =>
-  Endpoint.post<ISignature>('/signatures', params).then((r) => r.data);
+export const createSignature = (params: any) => Endpoint.post<ISignature>('/signatures', params).then((r) => r.data);
 
 export const getSignatures = () => Endpoint.get<ISignature[]>('/signatures').then((r) => r.data);
 
