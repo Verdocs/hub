@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Templates](../modules/Templates.md) / [Types](../modules/Templates.Types.md) / IDocument
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Templates](../modules/Templates.md) / [Types](../modules/Templates.Types.md) / IDocument
 
 # Interface: IDocument
 

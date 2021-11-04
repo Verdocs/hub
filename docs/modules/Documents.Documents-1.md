@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Documents](Documents.md) / Documents
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Documents](Documents.md) / Documents
 
 # Namespace: Documents
 
@@ -86,6 +86,14 @@ ___
 
 ▸ `Const` **getSummary**(`page`): `Promise`<[`IDocumentsSummary`](../interfaces/Documents.Documents-1.IDocumentsSummary.md)\>
 
+Get a summary of currently active documents.
+
+```typescript
+import {Documents} from '@verdocs/js-sdk/Documents';
+
+const {action_required, completed, waiting_on_others} = await Documents.getSummary();
+```
+
 #### Parameters
 
 | Name | Type |
@@ -98,7 +106,7 @@ ___
 
 #### Defined in
 
-[Documents/Documents.ts:140](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L140)
+[Documents/Documents.ts:149](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L149)
 
 ___
 
@@ -126,4 +134,4 @@ const {result, page, total} = await Documents.search({ ... });
 
 #### Defined in
 
-[Documents/Documents.ts:152](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L152)
+[Documents/Documents.ts:163](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Documents.ts#L163)

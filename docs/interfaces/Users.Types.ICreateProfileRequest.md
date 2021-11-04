@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / ICreateProfileRequest
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / ICreateProfileRequest
 
 # Interface: ICreateProfileRequest
 
@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[Users/Types.ts:80](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L80)
+[Users/Types.ts:94](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L94)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:78](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L78)
+[Users/Types.ts:92](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L92)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:79](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L79)
+[Users/Types.ts:93](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L93)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:81](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L81)
+[Users/Types.ts:95](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L95)

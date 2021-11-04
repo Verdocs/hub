@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Users](Users.md) / Types
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Users](Users.md) / Types
 
 # Namespace: Types
 
@@ -8,6 +8,7 @@
 
 ### Interfaces
 
+- [IActiveSession](../interfaces/Users.Types.IActiveSession.md)
 - [IAuthenticateAppRequest](../interfaces/Users.Types.IAuthenticateAppRequest.md)
 - [IAuthenticateResponse](../interfaces/Users.Types.IAuthenticateResponse.md)
 - [IAuthenticateUserRequest](../interfaces/Users.Types.IAuthenticateUserRequest.md)

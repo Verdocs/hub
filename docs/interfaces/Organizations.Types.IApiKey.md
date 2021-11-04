@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Organizations](../modules/Organizations.md) / [Types](../modules/Organizations.Types.md) / IApiKey
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Organizations](../modules/Organizations.md) / [Types](../modules/Organizations.Types.md) / IApiKey
 
 # Interface: IApiKey
 

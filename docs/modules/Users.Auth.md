@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Users](Users.md) / Auth
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Users](Users.md) / Auth
 
 # Namespace: Auth
 
@@ -47,7 +47,7 @@ Transport.setAuthToken(accessToken);
 
 #### Defined in
 
-[Users/Auth.ts:43](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Auth.ts#L43)
+[Users/Auth.ts:45](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Auth.ts#L45)
 
 ___
 
@@ -101,7 +101,7 @@ Transport.setAuthToken(accessToken);
 
 #### Defined in
 
-[Users/Auth.ts:74](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Auth.ts#L74)
+[Users/Auth.ts:80](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Auth.ts#L80)
 
 ___
 
@@ -129,7 +129,7 @@ const {profiles} = await Auth.updateEmail({ email: newEmail });
 
 #### Defined in
 
-[Users/Auth.ts:100](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Auth.ts#L100)
+[Users/Auth.ts:111](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Auth.ts#L111)
 
 ___
 
@@ -160,7 +160,7 @@ if (status !== 'OK') {
 
 #### Defined in
 
-[Users/Auth.ts:88](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Auth.ts#L88)
+[Users/Auth.ts:97](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Auth.ts#L97)
 
 ___
 
@@ -193,4 +193,4 @@ if (!valid) {
 
 #### Defined in
 
-[Users/Auth.ts:60](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Auth.ts#L60)
+[Users/Auth.ts:64](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Auth.ts#L64)

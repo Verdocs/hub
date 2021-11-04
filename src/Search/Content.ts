@@ -1,5 +1,5 @@
 import {ISavedSearch, ISearchHistory, ISearchParams, ISearchResult} from './Types';
-import {Endpoint} from '../HTTP/Transport';
+import {getEndpoint} from '../HTTP/Transport';
 
 /**
  * Retrieve recent and saved searches. Note that result counts will be limited to a maximum of 20 entries for each
@@ -11,7 +11,10 @@ import {Endpoint} from '../HTTP/Transport';
  * const {recent, saved} = await Content.getSearchHistory();
  * ```
  */
-export const getSearchHistory = async () => Endpoint.get<ISearchHistory>('/search/history').then((r) => r.data);
+export const getSearchHistory = async () =>
+  getEndpoint()
+    .get<ISearchHistory>('/search/history')
+    .then((r) => r.data);
 
 /**
  * Save a search. If a name is re-used, that saved search will be overwritten with the new parameters.
@@ -23,7 +26,9 @@ export const getSearchHistory = async () => Endpoint.get<ISearchHistory>('/searc
  * ```
  */
 export const saveSearch = async (name: string, params: ISearchParams) =>
-  Endpoint.post<ISavedSearch>('/search/saved', {name, params}).then((r) => r.data);
+  getEndpoint()
+    .post<ISavedSearch>('/search/saved', {name, params})
+    .then((r) => r.data);
 
 /**
  * Search for documents matching various criteria.
@@ -35,4 +40,6 @@ export const saveSearch = async (name: string, params: ISearchParams) =>
  * ```
  */
 export const searchContent = async (params: ISearchParams) =>
-  Endpoint.post<ISearchResult>('/search/content').then((r) => r.data);
+  getEndpoint()
+    .post<ISearchResult>('/search/content')
+    .then((r) => r.data);

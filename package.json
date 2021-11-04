@@ -1,6 +1,6 @@
 {
   "name": "@verdocs/js-sdk",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "private": false,
   "homepage": "https://github.com/Verdocs/js-sdk",
   "description": "Verdocs JS SDK",
@@ -27,8 +27,8 @@
   },
   "scripts": {
     "build": "rm -rf dist/* && tsc && cp README.md package.json .npmignore dist",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run lint",
+    "Xprepare": "npm run build",
+    "XprepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags",

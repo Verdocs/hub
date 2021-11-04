@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / UpdatePasswordResponse
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / UpdatePasswordResponse
 
 # Interface: UpdatePasswordResponse
 
@@ -21,7 +21,7 @@ Success or failure message
 
 #### Defined in
 
-[Users/Types.ts:133](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L133)
+[Users/Types.ts:147](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L147)
 
 ___
 
@@ -31,4 +31,4 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:131](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L131)
+[Users/Types.ts:145](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L145)

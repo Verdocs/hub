@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Roles
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Roles
 
 # Namespace: Roles
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[Templates/Roles.ts:16](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L16)
+[Templates/Roles.ts:24](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L24)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[Templates/Roles.ts:22](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L22)
+[Templates/Roles.ts:34](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L34)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[Templates/Roles.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L13)
+[Templates/Roles.ts:19](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L19)
 
 ___
 
@@ -119,7 +119,7 @@ ___
 
 #### Defined in
 
-[Templates/Roles.ts:10](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L10)
+[Templates/Roles.ts:14](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L14)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[Templates/Roles.ts:19](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L19)
+[Templates/Roles.ts:29](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L29)
 
 ___
 
@@ -160,4 +160,4 @@ ___
 
 #### Defined in
 
-[Templates/Roles.ts:7](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L7)
+[Templates/Roles.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L9)

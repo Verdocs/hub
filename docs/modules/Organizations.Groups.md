@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / Groups
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / Groups
 
 # Namespace: Groups
 
@@ -42,7 +42,7 @@ sources.
 
 #### Defined in
 
-[Organizations/Groups.ts:41](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L41)
+[Organizations/Groups.ts:47](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L47)
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-[Organizations/Groups.ts:47](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L47)
+[Organizations/Groups.ts:57](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L57)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 #### Defined in
 
-[Organizations/Groups.ts:44](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L44)
+[Organizations/Groups.ts:52](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L52)
 
 ___
 
@@ -109,7 +109,7 @@ ___
 
 #### Defined in
 
-[Organizations/Groups.ts:52](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L52)
+[Organizations/Groups.ts:62](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L62)
 
 ___
 
@@ -138,7 +138,7 @@ const groups = await Groups.getGroups(ORGID);
 
 #### Defined in
 
-[Organizations/Groups.ts:35](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L35)
+[Organizations/Groups.ts:37](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L37)
 
 ___
 
@@ -187,4 +187,4 @@ ___
 
 #### Defined in
 
-[Organizations/Groups.ts:38](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L38)
+[Organizations/Groups.ts:42](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Groups.ts#L42)

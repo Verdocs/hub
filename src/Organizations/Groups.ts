@@ -8,7 +8,7 @@
  * @module
  */
 
-import {Endpoint} from '../HTTP/Transport';
+import {getEndpoint} from '../HTTP/Transport';
 import {IGroup, IGroupDetail} from './Types';
 
 /**
@@ -21,7 +21,9 @@ import {IGroup, IGroupDetail} from './Types';
  * ```
  */
 export const getGroups = (organizationId: string) =>
-  Endpoint.get<IGroup[]>(`/organizations/${organizationId}/groups`).then((r) => r.data);
+  getEndpoint()
+    .get<IGroup[]>(`/organizations/${organizationId}/groups`)
+    .then((r) => r.data);
 
 /**
  * Get the details for a group.
@@ -33,21 +35,31 @@ export const getGroups = (organizationId: string) =>
  * ```
  */
 export const getGroup = (organizationId: string, groupId: string) =>
-  Endpoint.get<IGroupDetail>(`/organizations/${organizationId}/groups/${groupId}`).then((r) => r.data);
+  getEndpoint()
+    .get<IGroupDetail>(`/organizations/${organizationId}/groups/${groupId}`)
+    .then((r) => r.data);
 
 export const getMembers = (organizationId: string, groupId: string) =>
-  Endpoint.get(`/organizations/${organizationId}/groups/${groupId}/members`).then((r) => r.data);
+  getEndpoint()
+    .get(`/organizations/${organizationId}/groups/${groupId}/members`)
+    .then((r) => r.data);
 
 export const addMembers = (organizationId: string, groupId: string, params: any) =>
-  Endpoint.post(`/organizations/${organizationId}/groups/${groupId}/members`, params).then((r) => r.data);
+  getEndpoint()
+    .post(`/organizations/${organizationId}/groups/${groupId}/members`, params)
+    .then((r) => r.data);
 
 export const deleteMembers = (organizationId: string, groupId: string, params: any) =>
-  Endpoint.put(`/organizations/${organizationId}/groups/${groupId}/delete_members`, params).then((r) => r.data);
+  getEndpoint()
+    .put(`/organizations/${organizationId}/groups/${groupId}/delete_members`, params)
+    .then((r) => r.data);
 
 export const addPermission = (organizationId: string, groupId: string, permissionId: string, params: any) =>
-  Endpoint.post(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`, params).then(
-    (r) => r.data,
-  );
+  getEndpoint()
+    .post(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`, params)
+    .then((r) => r.data);
 
 export const deletePermission = (organizationId: string, groupId: string, permissionId: string) =>
-  Endpoint.delete(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`).then((r) => r.data);
+  getEndpoint()
+    .delete(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`)
+    .then((r) => r.data);

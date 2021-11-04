@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / IAuthenticateAppRequest
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / IAuthenticateAppRequest
 
 # Interface: IAuthenticateAppRequest
 
@@ -19,7 +19,7 @@
 
 #### Defined in
 
-[Users/Types.ts:103](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L103)
+[Users/Types.ts:117](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L117)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:104](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L104)
+[Users/Types.ts:118](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L118)

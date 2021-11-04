@@ -1,4 +1,4 @@
-import {Endpoint} from '../HTTP/Transport';
+import {getEndpoint} from '../HTTP/Transport';
 import {
   IAuthenticateAppRequest,
   IAuthenticateResponse,
@@ -23,7 +23,9 @@ import {
  * ```
  */
 export const authenticateUser = (params: IAuthenticateUserRequest) =>
-  Endpoint.post<IAuthenticateResponse>('/authentication/login', params).then((r) => r.data);
+  getEndpoint()
+    .post<IAuthenticateResponse>('/authentication/login', params)
+    .then((r) => r.data);
 
 /**
  * Authenticate to Verdocs via client ID / Secret authentication. **NOTE: This is only suitable for
@@ -41,7 +43,9 @@ export const authenticateUser = (params: IAuthenticateUserRequest) =>
  * ```
  */
 export const authenticateApp = (params: IAuthenticateAppRequest): Promise<IAuthenticateResponse> =>
-  Endpoint.post('/authentication/login_client', {}, {headers: params}).then((r) => r.data);
+  getEndpoint()
+    .post('/authentication/login_client', {}, {headers: params})
+    .then((r) => r.data);
 
 /**
  * Validate a token. Only Verdocs tokens will be accepted. Most applications can decode tokens locally,
@@ -58,7 +62,9 @@ export const authenticateApp = (params: IAuthenticateAppRequest): Promise<IAuthe
  * ```
  */
 export const validateToken = (params: TokenValidationRequest): Promise<TokenValidationResponse> =>
-  Endpoint.post('/token/isValid', params).then((r) => r.data);
+  getEndpoint()
+    .post('/token/isValid', params)
+    .then((r) => r.data);
 
 /**
  * If called before the session expires, this will refresh the caller's session and tokens.
@@ -71,7 +77,10 @@ export const validateToken = (params: TokenValidationRequest): Promise<TokenVali
  * Transport.setAuthToken(accessToken);
  * ```
  */
-export const refreshTokens = (): Promise<IAuthenticateResponse> => Endpoint.get('/token').then((r) => r.data);
+export const refreshTokens = (): Promise<IAuthenticateResponse> =>
+  getEndpoint()
+    .get('/token')
+    .then((r) => r.data);
 
 /**
  * Update the caller's password. To help prevent CSRF attack vectors, the user's old password and email address are required.
@@ -86,7 +95,9 @@ export const refreshTokens = (): Promise<IAuthenticateResponse> => Endpoint.get(
  * ```
  */
 export const updatePassword = (params: UpdatePasswordRequest): Promise<UpdatePasswordResponse> =>
-  Endpoint.put('/user/update_password', params).then((r) => r.data);
+  getEndpoint()
+    .put('/user/update_password', params)
+    .then((r) => r.data);
 
 /**
  * Update the caller's email address.
@@ -98,4 +109,6 @@ export const updatePassword = (params: UpdatePasswordRequest): Promise<UpdatePas
  * ```
  */
 export const updateEmail = (params: UpdateEmailRequest): Promise<UpdateEmailResponse> =>
-  Endpoint.put('/user/update_email', params).then((r) => r.data);
+  getEndpoint()
+    .put('/user/update_email', params)
+    .then((r) => r.data);

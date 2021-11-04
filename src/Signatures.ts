@@ -1,4 +1,4 @@
-import {Endpoint} from './HTTP/Transport';
+import {getEndpoint} from './HTTP/Transport';
 
 export interface ISignature {
   id?: string;
@@ -8,11 +8,22 @@ export interface ISignature {
   updated_at?: Date;
 }
 
-export const createSignature = (params: any) => Endpoint.post<ISignature>('/signatures', params).then((r) => r.data);
+export const createSignature = (params: any) =>
+  getEndpoint()
+    .post<ISignature>('/signatures', params)
+    .then((r) => r.data);
 
-export const getSignatures = () => Endpoint.get<ISignature[]>('/signatures').then((r) => r.data);
+export const getSignatures = () =>
+  getEndpoint()
+    .get<ISignature[]>('/signatures')
+    .then((r) => r.data);
 
-export const getSignature = (signatureId: string) => Endpoint.get(`/signatures/${signatureId}`).then((r) => r.data);
+export const getSignature = (signatureId: string) =>
+  getEndpoint()
+    .get(`/signatures/${signatureId}`)
+    .then((r) => r.data);
 
 export const deleteSignature = (signatureId: string) =>
-  Endpoint.delete(`/signatures/${signatureId}`).then((r) => r.data);
+  getEndpoint()
+    .delete(`/signatures/${signatureId}`)
+    .then((r) => r.data);

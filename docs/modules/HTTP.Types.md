@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [HTTP](HTTP.md) / Types
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [HTTP](HTTP.md) / Types
 
 # Namespace: Types
 

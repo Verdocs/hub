@@ -1,13 +1,11 @@
 import axios from 'axios';
 
-// TODO: This is only for debugging purposes
-export const Endpoint = axios.create({
+const config = {
   baseURL: 'https://api.verdocs.com/',
   timeout: 3000,
-  headers: {'X-Client-ID': 'NONE'},
-});
-// tslint:disable-next-line
-console.log('[JS-SDK] Created endpoint', Endpoint);
+  headers: {'X-Client-ID': 'NONE'} as Record<string, string>,
+};
+let endpoint = axios.create(config);
 
 /**
  * Set the auth token that will be used for Verdocs API calls.
@@ -19,7 +17,15 @@ console.log('[JS-SDK] Created endpoint', Endpoint);
  * ```
  */
 export const setAuthorization = (accessToken: string | null) => {
-  Endpoint.defaults.headers.Authorization = `Bearer ${accessToken}`;
+  if (accessToken) {
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
+  } else {
+    delete config.headers['Authorization'];
+  }
+
+  if (endpoint) {
+    endpoint = axios.create(config);
+  }
 };
 
 /**
@@ -32,7 +38,10 @@ export const setAuthorization = (accessToken: string | null) => {
  * ```
  */
 export const setClientID = (clientID: string) => {
-  Endpoint.defaults.headers['X-Client-ID'] = clientID;
+  config.headers['X-Client-ID'] = clientID;
+  if (endpoint) {
+    endpoint = axios.create(config);
+  }
 };
 
 /**
@@ -46,7 +55,10 @@ export const setClientID = (clientID: string) => {
  * ```
  */
 export const setBaseUrl = (baseUrl: string) => {
-  Endpoint.defaults.baseURL = baseUrl;
+  config.baseURL = baseUrl;
+  if (endpoint) {
+    endpoint = axios.create(config);
+  }
 };
 
 /**
@@ -59,11 +71,14 @@ export const setBaseUrl = (baseUrl: string) => {
  * ```
  */
 export const setTimeout = (timeout: number) => {
-  Endpoint.defaults.timeout = timeout;
+  config.timeout = timeout;
+  if (endpoint) {
+    endpoint = axios.create(config);
+  }
 };
 
 /**
- * Helper to get the endpoint rather than directly accessing the exported object.
+ * Helper to get the endpoint for direct access to HTTP functions.
  *
  * ```typescript
  * import {Transport} from '@verdocs/js-sdk/HTTP';
@@ -72,5 +87,9 @@ export const setTimeout = (timeout: number) => {
  * ```
  */
 export const getEndpoint = () => {
-  return Endpoint;
+  if (!endpoint) {
+    endpoint = axios.create(config);
+  }
+
+  return endpoint;
 };

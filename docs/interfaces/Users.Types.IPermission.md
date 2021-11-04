@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / IPermission
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / IPermission
 
 # Interface: IPermission
 
@@ -21,7 +21,7 @@ Unique identifier for the permission.
 
 #### Defined in
 
-[Users/Types.ts:72](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L72)
+[Users/Types.ts:86](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L86)
 
 ___
 
@@ -33,4 +33,4 @@ Display name for the permission.
 
 #### Defined in
 
-[Users/Types.ts:74](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L74)
+[Users/Types.ts:88](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L88)

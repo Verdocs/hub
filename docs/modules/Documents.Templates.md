@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Documents](Documents.md) / Templates
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Documents](Documents.md) / Templates
 
 # Namespace: Templates
 
@@ -30,7 +30,7 @@
 
 #### Defined in
 
-[Documents/Templates.ts:8](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Templates.ts#L8)
+[Documents/Templates.ts:14](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Templates.ts#L14)
 
 ___
 
@@ -58,4 +58,4 @@ ___
 
 #### Defined in
 
-[Documents/Templates.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Templates.ts#L6)
+[Documents/Templates.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Documents/Templates.ts#L9)

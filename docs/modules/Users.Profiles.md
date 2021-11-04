@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Users](Users.md) / Profiles
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Users](Users.md) / Profiles
 
 # Namespace: Profiles
 
@@ -45,7 +45,7 @@ const newProfile = await Profiles.createProfile({ first_name: 'FIRST', last_name
 
 #### Defined in
 
-[Users/Profiles.ts:54](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L54)
+[Users/Profiles.ts:63](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L63)
 
 ___
 
@@ -73,7 +73,7 @@ await Profiles.deleteProfile('PROFILEID');
 
 #### Defined in
 
-[Users/Profiles.ts:128](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L128)
+[Users/Profiles.ts:150](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L150)
 
 ___
 
@@ -95,7 +95,7 @@ const permissions = await Profiles.getPermissions();
 
 #### Defined in
 
-[Users/Profiles.ts:43](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L43)
+[Users/Profiles.ts:49](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L49)
 
 ___
 
@@ -124,7 +124,7 @@ const profile = await Profiles.getProfile('PROFILEID');
 
 #### Defined in
 
-[Users/Profiles.ts:67](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L67)
+[Users/Profiles.ts:78](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L78)
 
 ___
 
@@ -152,7 +152,7 @@ const groups = await Profiles.getProfileGroups('PROFILEID');
 
 #### Defined in
 
-[Users/Profiles.ts:90](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L90)
+[Users/Profiles.ts:106](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L106)
 
 ___
 
@@ -180,7 +180,7 @@ const permissions = await Profiles.getProfilePermissions('PROFILEID');
 
 #### Defined in
 
-[Users/Profiles.ts:78](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L78)
+[Users/Profiles.ts:92](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L92)
 
 ___
 
@@ -224,7 +224,7 @@ const roles = await Profiles.getRoles();
 
 #### Defined in
 
-[Users/Profiles.ts:32](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L32)
+[Users/Profiles.ts:35](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L35)
 
 ___
 
@@ -253,7 +253,7 @@ const newProfile = await Profiles.switchProfile('PROFILEID');
 
 #### Defined in
 
-[Users/Profiles.ts:103](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L103)
+[Users/Profiles.ts:121](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L121)
 
 ___
 
@@ -283,4 +283,4 @@ const newProfile = await Profiles.updateProfile('PROFILEID');
 
 #### Defined in
 
-[Users/Profiles.ts:116](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L116)
+[Users/Profiles.ts:136](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Profiles.ts#L136)

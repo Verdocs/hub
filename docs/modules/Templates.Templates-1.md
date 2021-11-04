@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Templates
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Templates
 
 # Namespace: Templates
 
@@ -33,7 +33,7 @@
 
 #### Defined in
 
-[Templates/Templates.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L9)
+[Templates/Templates.ts:15](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L15)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[Templates/Templates.ts:11](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L11)
+[Templates/Templates.ts:20](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L20)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[Templates/Templates.ts:26](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L26)
+[Templates/Templates.ts:39](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L39)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[Templates/Templates.ts:7](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L7)
+[Templates/Templates.ts:10](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L10)
 
 ___
 
@@ -136,4 +136,4 @@ const {result, page, total} = await Templates.search({ ... });
 
 #### Defined in
 
-[Templates/Templates.ts:23](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L23)
+[Templates/Templates.ts:34](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L34)

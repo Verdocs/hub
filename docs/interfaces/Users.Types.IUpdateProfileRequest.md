@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / IUpdateProfileRequest
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / IUpdateProfileRequest
 
 # Interface: IUpdateProfileRequest
 
@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[Users/Types.ts:92](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L92)
+[Users/Types.ts:106](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L106)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:93](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L93)
+[Users/Types.ts:107](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L107)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:94](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L94)
+[Users/Types.ts:108](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L108)

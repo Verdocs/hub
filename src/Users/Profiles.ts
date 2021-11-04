@@ -1,4 +1,4 @@
-import {Endpoint} from '../HTTP/Transport';
+import {getEndpoint} from '../HTTP/Transport';
 import {
   ICreateProfileRequest,
   IPermission,
@@ -18,7 +18,10 @@ import {IGroup} from '../Organizations/Types';
  * const profiles = await Profiles.getProfiles()
  * ```
  */
-export const getProfiles = () => Endpoint.get<IProfile[]>('/profiles').then((r) => r.data);
+export const getProfiles = () =>
+  getEndpoint()
+    .get<IProfile[]>('/profiles')
+    .then((r) => r.data);
 
 /**
  * Get a list of system roles.
@@ -29,7 +32,10 @@ export const getProfiles = () => Endpoint.get<IProfile[]>('/profiles').then((r) 
  * const roles = await Profiles.getRoles();
  * ```
  */
-export const getRoles = () => Endpoint.get<IRole[]>('/roles').then((r) => r.data);
+export const getRoles = () =>
+  getEndpoint()
+    .get<IRole[]>('/roles')
+    .then((r) => r.data);
 
 /**
  * Get a list of system roles.
@@ -40,7 +46,10 @@ export const getRoles = () => Endpoint.get<IRole[]>('/roles').then((r) => r.data
  * const permissions = await Profiles.getPermissions();
  * ```
  */
-export const getPermissions = () => Endpoint.get<IPermission[]>('/permissions').then((r) => r.data);
+export const getPermissions = () =>
+  getEndpoint()
+    .get<IPermission[]>('/permissions')
+    .then((r) => r.data);
 
 /**
  * Create a profile. If the caller does not have a "current" profile set, the new profile will be made current.
@@ -52,7 +61,9 @@ export const getPermissions = () => Endpoint.get<IPermission[]>('/permissions').
  * ```
  */
 export const createProfile = (params: ICreateProfileRequest) =>
-  Endpoint.post<IProfile>('/profiles', params).then((r) => r.data);
+  getEndpoint()
+    .post<IProfile>('/profiles', params)
+    .then((r) => r.data);
 
 /**
  * Get a profile. The caller must have admin access to the given profile.
@@ -64,7 +75,10 @@ export const createProfile = (params: ICreateProfileRequest) =>
  * const profile = await Profiles.getProfile('PROFILEID');
  * ```
  */
-export const getProfile = (profileId: string) => Endpoint.get<IProfile>(`/profiles/${profileId}`).then((r) => r.data);
+export const getProfile = (profileId: string) =>
+  getEndpoint()
+    .get<IProfile>(`/profiles/${profileId}`)
+    .then((r) => r.data);
 
 /**
  * Get a profile's permissions. The caller must have admin access to the given profile.
@@ -76,7 +90,9 @@ export const getProfile = (profileId: string) => Endpoint.get<IProfile>(`/profil
  * ```
  */
 export const getProfilePermissions = (profileId: string) =>
-  Endpoint.get<IPermission[]>(`/profiles/${profileId}/permissions`).then((r) => r.data);
+  getEndpoint()
+    .get<IPermission[]>(`/profiles/${profileId}/permissions`)
+    .then((r) => r.data);
 
 /**
  * Get a profile's groups.
@@ -88,7 +104,9 @@ export const getProfilePermissions = (profileId: string) =>
  * ```
  */
 export const getProfileGroups = (profileId: string) =>
-  Endpoint.get<IGroup[]>(`/profiles/${profileId}/groups`).then((r) => r.data);
+  getEndpoint()
+    .get<IGroup[]>(`/profiles/${profileId}/groups`)
+    .then((r) => r.data);
 
 /**
  * Switch the caller's "current" profile. The current profile is used for permissions checking and profile_id field settings
@@ -101,7 +119,9 @@ export const getProfileGroups = (profileId: string) =>
  * ```
  */
 export const switchProfile = (profileId: string) =>
-  Endpoint.post<ISwitchProfileResponse>(`/profiles/${profileId}/switch`).then((r) => r.data);
+  getEndpoint()
+    .post<ISwitchProfileResponse>(`/profiles/${profileId}/switch`)
+    .then((r) => r.data);
 
 /**
  * Update a profile. For future expansion, the profile ID to update is required, but currently this must also be the
@@ -114,7 +134,9 @@ export const switchProfile = (profileId: string) =>
  * ```
  */
 export const updateProfile = (profileId: string, params: IUpdateProfileRequest) =>
-  Endpoint.put<IProfile>(`/profiles/${profileId}`, params).then((r) => r.data);
+  getEndpoint()
+    .put<IProfile>(`/profiles/${profileId}`, params)
+    .then((r) => r.data);
 
 /**
  * Delete a profile. If the requested profile is the caller's curent profile, the next available profile will be selected.
@@ -125,4 +147,7 @@ export const updateProfile = (profileId: string, params: IUpdateProfileRequest) 
  * await Profiles.deleteProfile('PROFILEID');
  * ```
  */
-export const deleteProfile = (profileId: string) => Endpoint.delete(`/profiles/${profileId}`).then((r) => r.data);
+export const deleteProfile = (profileId: string) =>
+  getEndpoint()
+    .delete(`/profiles/${profileId}`)
+    .then((r) => r.data);

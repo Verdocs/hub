@@ -1,4 +1,4 @@
-import {Endpoint} from '../HTTP/Transport';
+import {getEndpoint} from '../HTTP/Transport';
 
 export type IDocumentStatus = 'complete' | 'pending' | 'progress';
 
@@ -137,8 +137,19 @@ export type IHistoryEvent =
 
 export type IEventDetail = 'in_app' | 'mail' | 'signer' | '';
 
+/**
+ * Get a summary of currently active documents.
+ *
+ * ```typescript
+ * import {Documents} from '@verdocs/js-sdk/Documents';
+ *
+ * const {action_required, completed, waiting_on_others} = await Documents.getSummary();
+ * ```
+ */
 export const getSummary = async (page: number) =>
-  Endpoint.post<IDocumentsSummary>('/documents/summary', {page}).then((r) => r.data);
+  getEndpoint()
+    .post<IDocumentsSummary>('/documents/summary', {page})
+    .then((r) => r.data);
 
 /**
  * Search for documents matching various criteria.
@@ -150,4 +161,6 @@ export const getSummary = async (page: number) =>
  * ```
  */
 export const search = async (params: any) =>
-  Endpoint.post<IDocumentsSearchResult>('/documents/search', params).then((r) => r.data);
+  getEndpoint()
+    .post<IDocumentsSearchResult>('/documents/search', params)
+    .then((r) => r.data);

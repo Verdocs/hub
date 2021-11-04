@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / Validators
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / Validators
 
 # Namespace: Validators
 
@@ -31,7 +31,7 @@
 
 #### Defined in
 
-[Validators.ts:10](https://github.com/Verdocs/js-sdk/blob/main/src/Validators.ts#L10)
+[Validators.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/Validators.ts#L13)
 
 ___
 

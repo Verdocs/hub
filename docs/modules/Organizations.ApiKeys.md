@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / ApiKeys
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / ApiKeys
 
 # Namespace: ApiKeys
 
@@ -50,7 +50,7 @@ await ApiKeys.createKey(ORGID, {name: NEWNAME});
 
 #### Defined in
 
-[Organizations/ApiKeys.ts:38](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L38)
+[Organizations/ApiKeys.ts:40](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L40)
 
 ___
 
@@ -79,7 +79,7 @@ await ApiKeys.deleteKey(ORGID, CLIENTID);
 
 #### Defined in
 
-[Organizations/ApiKeys.ts:74](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L74)
+[Organizations/ApiKeys.ts:82](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L82)
 
 ___
 
@@ -136,7 +136,7 @@ const {client_secret: newSecret} = await ApiKeys.rotateKey(ORGID, CLIENTID);
 
 #### Defined in
 
-[Organizations/ApiKeys.ts:50](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L50)
+[Organizations/ApiKeys.ts:54](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L54)
 
 ___
 
@@ -166,4 +166,4 @@ await ApiKeys.updateKey(ORGID, CLIENTID, {name: NEWNAME});
 
 #### Defined in
 
-[Organizations/ApiKeys.ts:62](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L62)
+[Organizations/ApiKeys.ts:68](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/ApiKeys.ts#L68)

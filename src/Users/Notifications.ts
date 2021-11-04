@@ -1,3 +1,6 @@
-import {Endpoint} from '../HTTP/Transport';
+import {getEndpoint} from '../HTTP/Transport';
 
-export const getNotifications = async () => Endpoint.get('/notifications').then((r) => r.data);
+export const getNotifications = async () =>
+  getEndpoint()
+    .get('/notifications')
+    .then((r) => r.data);

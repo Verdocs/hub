@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Pages
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Pages
 
 # Namespace: Pages
 
@@ -53,7 +53,7 @@ ___
 
 #### Defined in
 
-[Templates/Pages.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Pages.ts#L13)
+[Templates/Pages.ts:19](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Pages.ts#L19)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[Templates/Pages.ts:7](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Pages.ts#L7)
+[Templates/Pages.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Pages.ts#L9)
 
 ___
 
@@ -95,4 +95,4 @@ ___
 
 #### Defined in
 
-[Templates/Pages.ts:10](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Pages.ts#L10)
+[Templates/Pages.ts:14](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Pages.ts#L14)

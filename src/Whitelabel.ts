@@ -1,5 +1,11 @@
-import {Endpoint} from './HTTP/Transport';
+import {getEndpoint} from './HTTP/Transport';
 
-export const createWhitelabel = () => Endpoint.post('/whitelabel').then((r) => r.data);
+export const createWhitelabel = () =>
+  getEndpoint()
+    .post('/whitelabel')
+    .then((r) => r.data);
 
-export const getWhitelabel = () => Endpoint.get('/whitelabel').then((r) => r.data);
+export const getWhitelabel = () =>
+  getEndpoint()
+    .get('/whitelabel')
+    .then((r) => r.data);

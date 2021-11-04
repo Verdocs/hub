@@ -11,7 +11,7 @@
  * @module
  */
 
-import {Endpoint} from '../HTTP/Transport';
+import {getEndpoint} from '../HTTP/Transport';
 import {IApiKey, IApiKeyWithSecret, ICreateApiKeyRequest, IUpdateApiKeyRequest} from './Types';
 
 /**
@@ -24,7 +24,9 @@ import {IApiKey, IApiKeyWithSecret, ICreateApiKeyRequest, IUpdateApiKeyRequest} 
  * ```
  */
 export const getKeys = (organizationId: string) =>
-  Endpoint.get<IApiKey[]>(`/organizations/${organizationId}/api_key`).then((r) => r.data);
+  getEndpoint()
+    .get<IApiKey[]>(`/organizations/${organizationId}/api_key`)
+    .then((r) => r.data);
 
 /**
  * Create an API key.
@@ -36,7 +38,9 @@ export const getKeys = (organizationId: string) =>
  * ```
  */
 export const createKey = (organizationId: string, params: ICreateApiKeyRequest) =>
-  Endpoint.post<IApiKeyWithSecret>(`/organizations/${organizationId}/api_key`, params).then((r) => r.data);
+  getEndpoint()
+    .post<IApiKeyWithSecret>(`/organizations/${organizationId}/api_key`, params)
+    .then((r) => r.data);
 
 /**
  * Rotate the secret for an API key. The caller must have admin access to the organization.
@@ -48,7 +52,9 @@ export const createKey = (organizationId: string, params: ICreateApiKeyRequest) 
  * ```
  */
 export const rotateKey = (organizationId: string, clientId: string) =>
-  Endpoint.put<IApiKeyWithSecret>(`/organizations/${organizationId}/api_key/${clientId}/rotate`).then((r) => r.data);
+  getEndpoint()
+    .put<IApiKeyWithSecret>(`/organizations/${organizationId}/api_key/${clientId}/rotate`)
+    .then((r) => r.data);
 
 /**
  * Update an API key to change its assigned Profile ID or Name.
@@ -60,7 +66,9 @@ export const rotateKey = (organizationId: string, clientId: string) =>
  * ```
  */
 export const updateKey = (organizationId: string, clientId: string, params: IUpdateApiKeyRequest) =>
-  Endpoint.patch<IApiKey>(`/organizations/${organizationId}/api_key/${clientId}`, params).then((r) => r.data);
+  getEndpoint()
+    .patch<IApiKey>(`/organizations/${organizationId}/api_key/${clientId}`, params)
+    .then((r) => r.data);
 
 /**
  * Delete an API key.
@@ -72,4 +80,6 @@ export const updateKey = (organizationId: string, clientId: string, params: IUpd
  * ```
  */
 export const deleteKey = (organizationId: string, clientId: string) =>
-  Endpoint.delete(`/organizations/${organizationId}/api_key/${clientId}`).then((r) => r.data);
+  getEndpoint()
+    .delete(`/organizations/${organizationId}/api_key/${clientId}`)
+    .then((r) => r.data);

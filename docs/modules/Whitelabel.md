@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / Whitelabel
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / Whitelabel
 
 # Namespace: Whitelabel
 
@@ -35,4 +35,4 @@ ___
 
 #### Defined in
 
-[Whitelabel.ts:5](https://github.com/Verdocs/js-sdk/blob/main/src/Whitelabel.ts#L5)
+[Whitelabel.ts:8](https://github.com/Verdocs/js-sdk/blob/main/src/Whitelabel.ts#L8)

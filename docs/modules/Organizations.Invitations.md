@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / Invitations
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / Invitations
 
 # Namespace: Invitations
 
@@ -36,7 +36,7 @@
 
 #### Defined in
 
-[Organizations/Invitations.ts:18](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Invitations.ts#L18)
+[Organizations/Invitations.ts:28](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Invitations.ts#L28)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[Organizations/Invitations.ts:21](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Invitations.ts#L21)
+[Organizations/Invitations.ts:33](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Invitations.ts#L33)
 
 ___
 
@@ -79,7 +79,7 @@ ___
 
 #### Defined in
 
-[Organizations/Invitations.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Invitations.ts#L6)
+[Organizations/Invitations.ts:8](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Invitations.ts#L8)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[Organizations/Invitations.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Invitations.ts#L9)
+[Organizations/Invitations.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Invitations.ts#L13)
 
 ___
 
@@ -141,7 +141,7 @@ ___
 
 #### Defined in
 
-[Organizations/Invitations.ts:15](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Invitations.ts#L15)
+[Organizations/Invitations.ts:23](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Invitations.ts#L23)
 
 ___
 
@@ -163,4 +163,4 @@ ___
 
 #### Defined in
 
-[Organizations/Invitations.ts:12](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Invitations.ts#L12)
+[Organizations/Invitations.ts:18](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Invitations.ts#L18)

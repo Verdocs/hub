@@ -1,3 +1,3 @@
-import {Endpoint} from '../HTTP/Transport';
+import {getEndpoint} from '../HTTP/Transport';
 
 // TODO

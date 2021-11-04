@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / IRole
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / IRole
 
 # Interface: IRole
 
@@ -21,7 +21,7 @@ Unique identifier for the role.
 
 #### Defined in
 
-[Users/Types.ts:65](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L65)
+[Users/Types.ts:79](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L79)
 
 ___
 
@@ -33,4 +33,4 @@ Display name for the role.
 
 #### Defined in
 
-[Users/Types.ts:67](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L67)
+[Users/Types.ts:81](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L81)

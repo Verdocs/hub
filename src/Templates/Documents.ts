@@ -1,4 +1,4 @@
-import {Endpoint} from '../HTTP/Transport';
+import {getEndpoint} from '../HTTP/Transport';
 import {IDocument} from './Types';
 
 /**
@@ -11,7 +11,9 @@ import {IDocument} from './Types';
  * ```
  */
 export const getDocuments = (templateId: string) =>
-  Endpoint.get(`/templates/${templateId}/documents/`).then((r) => r.data);
+  getEndpoint()
+    .get(`/templates/${templateId}/documents/`)
+    .then((r) => r.data);
 
 /**
  * Create a Document for a particular Template.
@@ -23,7 +25,9 @@ export const getDocuments = (templateId: string) =>
  * ```
  */
 export const createDocument = (templateId: string, params: any) =>
-  Endpoint.post<IDocument>(`/templates/${templateId}/documents/`, params).then((r) => r.data);
+  getEndpoint()
+    .post<IDocument>(`/templates/${templateId}/documents/`, params)
+    .then((r) => r.data);
 
 /**
  * Get a specific Document.
@@ -35,7 +39,9 @@ export const createDocument = (templateId: string, params: any) =>
  * ```
  */
 export const getDocument = (templateId: string, documentId: string) =>
-  Endpoint.get<IDocument>(`/templates/${templateId}/documents/${documentId}`).then((r) => r.data);
+  getEndpoint()
+    .get<IDocument>(`/templates/${templateId}/documents/${documentId}`)
+    .then((r) => r.data);
 
 /**
  * Delete a specific Document.
@@ -47,4 +53,6 @@ export const getDocument = (templateId: string, documentId: string) =>
  * ```
  */
 export const deleteDocument = (templateId: string, documentId: string) =>
-  Endpoint.delete(`/templates/${templateId}/documents/${documentId}`).then((r) => r.data);
+  getEndpoint()
+    .delete(`/templates/${templateId}/documents/${documentId}`)
+    .then((r) => r.data);

@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Documents
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Documents
 
 # Namespace: Documents
 
@@ -40,7 +40,7 @@ await Documents.createDocument(templateID, params);
 
 #### Defined in
 
-[Templates/Documents.ts:25](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Documents.ts#L25)
+[Templates/Documents.ts:27](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Documents.ts#L27)
 
 ___
 
@@ -69,7 +69,7 @@ await Documents.deleteDocument(templateID, documentID);
 
 #### Defined in
 
-[Templates/Documents.ts:49](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Documents.ts#L49)
+[Templates/Documents.ts:55](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Documents.ts#L55)
 
 ___
 
@@ -98,7 +98,7 @@ await Documents.getDocument(templateID, documentID);
 
 #### Defined in
 
-[Templates/Documents.ts:37](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Documents.ts#L37)
+[Templates/Documents.ts:41](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Documents.ts#L41)
 
 ___
 

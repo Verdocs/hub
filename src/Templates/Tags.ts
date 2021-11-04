@@ -1,11 +1,17 @@
-import {Endpoint} from '../HTTP/Transport';
+import {getEndpoint} from '../HTTP/Transport';
 import {ITag} from './Types';
 
 export const createTag = (templateId: string, params: any) =>
-  Endpoint.post<ITag>(`/templates/${templateId}/tags/`, params).then((r) => r.data);
+  getEndpoint()
+    .post<ITag>(`/templates/${templateId}/tags/`, params)
+    .then((r) => r.data);
 
 export const getTags = (templateId: string) =>
-  Endpoint.get<ITag[]>(`/templates/${templateId}/tags/`).then((r) => r.data);
+  getEndpoint()
+    .get<ITag[]>(`/templates/${templateId}/tags/`)
+    .then((r) => r.data);
 
 export const deleteTag = (templateId: string, tagName: string) =>
-  Endpoint.post(`/templates/${templateId}/tags/${tagName}`).then((r) => r.data);
+  getEndpoint()
+    .post(`/templates/${templateId}/tags/${tagName}`)
+    .then((r) => r.data);

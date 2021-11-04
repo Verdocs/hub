@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / Signatures
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / Signatures
 
 # Namespace: Signatures
 
@@ -53,7 +53,7 @@ ___
 
 #### Defined in
 
-[Signatures.ts:17](https://github.com/Verdocs/js-sdk/blob/main/src/Signatures.ts#L17)
+[Signatures.ts:26](https://github.com/Verdocs/js-sdk/blob/main/src/Signatures.ts#L26)
 
 ___
 
@@ -73,7 +73,7 @@ ___
 
 #### Defined in
 
-[Signatures.ts:15](https://github.com/Verdocs/js-sdk/blob/main/src/Signatures.ts#L15)
+[Signatures.ts:21](https://github.com/Verdocs/js-sdk/blob/main/src/Signatures.ts#L21)
 
 ___
 
@@ -87,4 +87,4 @@ ___
 
 #### Defined in
 
-[Signatures.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/Signatures.ts#L13)
+[Signatures.ts:16](https://github.com/Verdocs/js-sdk/blob/main/src/Signatures.ts#L16)

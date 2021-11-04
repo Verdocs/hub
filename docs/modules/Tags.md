@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / Tags
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / Tags
 
 # Namespace: Tags
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[Tags.ts:11](https://github.com/Verdocs/js-sdk/blob/main/src/Tags.ts#L11)
+[Tags.ts:14](https://github.com/Verdocs/js-sdk/blob/main/src/Tags.ts#L14)
 
 ___
 
@@ -72,4 +72,4 @@ ___
 
 #### Defined in
 
-[Tags.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/Tags.ts#L13)
+[Tags.ts:19](https://github.com/Verdocs/js-sdk/blob/main/src/Tags.ts#L19)

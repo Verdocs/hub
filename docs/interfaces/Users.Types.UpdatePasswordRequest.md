@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / UpdatePasswordRequest
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / UpdatePasswordRequest
 
 # Interface: UpdatePasswordRequest
 
@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[Users/Types.ts:125](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L125)
+[Users/Types.ts:139](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L139)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:127](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L127)
+[Users/Types.ts:141](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L141)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[Users/Types.ts:126](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L126)
+[Users/Types.ts:140](https://github.com/Verdocs/js-sdk/blob/main/src/Users/Types.ts#L140)

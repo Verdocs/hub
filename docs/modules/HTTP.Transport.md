@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [HTTP](HTTP.md) / Transport
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [HTTP](HTTP.md) / Transport
 
 # Namespace: Transport
 
@@ -6,28 +6,37 @@
 
 ## Table of contents
 
-### Variables
-
-- [Endpoint](HTTP.Transport.md#endpoint)
-
 ### Functions
 
+- [getEndpoint](HTTP.Transport.md#getendpoint)
 - [setAuthorization](HTTP.Transport.md#setauthorization)
 - [setBaseUrl](HTTP.Transport.md#setbaseurl)
 - [setClientID](HTTP.Transport.md#setclientid)
 - [setTimeout](HTTP.Transport.md#settimeout)
 
-## Variables
+## Functions
 
-### Endpoint
+### getEndpoint
 
-• **Endpoint**: `AxiosInstance`
+▸ `Const` **getEndpoint**(): `AxiosInstance`
+
+Helper to get the endpoint for direct access to HTTP functions.
+
+```typescript
+import {Transport} from '@verdocs/js-sdk/HTTP';
+
+console.log('Current timeout', Transport.getEndpoint().defaults.timeout);
+```
+
+#### Returns
+
+`AxiosInstance`
 
 #### Defined in
 
-[HTTP/Transport.ts:3](https://github.com/Verdocs/js-sdk/blob/main/src/HTTP/Transport.ts#L3)
+[HTTP/Transport.ts:89](https://github.com/Verdocs/js-sdk/blob/main/src/HTTP/Transport.ts#L89)
 
-## Functions
+___
 
 ### setAuthorization
 
@@ -53,7 +62,7 @@ Transport.setAuthorization(accessToken);
 
 #### Defined in
 
-[HTTP/Transport.ts:18](https://github.com/Verdocs/js-sdk/blob/main/src/HTTP/Transport.ts#L18)
+[HTTP/Transport.ts:19](https://github.com/Verdocs/js-sdk/blob/main/src/HTTP/Transport.ts#L19)
 
 ___
 
@@ -82,7 +91,7 @@ Transport.setBaseUrl('https://api.verdiocs.com');
 
 #### Defined in
 
-[HTTP/Transport.ts:45](https://github.com/Verdocs/js-sdk/blob/main/src/HTTP/Transport.ts#L45)
+[HTTP/Transport.ts:57](https://github.com/Verdocs/js-sdk/blob/main/src/HTTP/Transport.ts#L57)
 
 ___
 
@@ -110,7 +119,7 @@ Transport.setClientID('1234);
 
 #### Defined in
 
-[HTTP/Transport.ts:31](https://github.com/Verdocs/js-sdk/blob/main/src/HTTP/Transport.ts#L31)
+[HTTP/Transport.ts:40](https://github.com/Verdocs/js-sdk/blob/main/src/HTTP/Transport.ts#L40)
 
 ___
 
@@ -138,4 +147,4 @@ Transport.setTimeout(3000);
 
 #### Defined in
 
-[HTTP/Transport.ts:58](https://github.com/Verdocs/js-sdk/blob/main/src/HTTP/Transport.ts#L58)
+[HTTP/Transport.ts:73](https://github.com/Verdocs/js-sdk/blob/main/src/HTTP/Transport.ts#L73)

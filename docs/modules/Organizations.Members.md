@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / Members
+[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Organizations](Organizations.md) / Members
 
 # Namespace: Members
 
@@ -34,7 +34,7 @@
 
 #### Defined in
 
-[Organizations/Members.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Members.ts#L9)
+[Organizations/Members.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Members.ts#L13)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[Organizations/Members.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Members.ts#L6)
+[Organizations/Members.ts:8](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Members.ts#L8)
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 #### Defined in
 
-[Organizations/Members.ts:12](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Members.ts#L12)
+[Organizations/Members.ts:18](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Members.ts#L18)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[Organizations/Members.ts:15](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Members.ts#L15)
+[Organizations/Members.ts:23](https://github.com/Verdocs/js-sdk/blob/main/src/Organizations/Members.ts#L23)
 
 ___
 
