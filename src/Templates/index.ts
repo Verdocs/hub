@@ -7,3 +7,4 @@ export * as Stars from './Stars';
 export * as Tags from './Tags';
 export * as Templates from './Templates';
 export * as Types from './Types';
+export * as Validators from './Validators';

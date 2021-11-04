@@ -1,4 +1,4 @@
-import {getEndpoint} from './HTTP/Transport';
+import {getEndpoint} from '../HTTP/Transport';
 
 export interface ISignature {
   id?: string;

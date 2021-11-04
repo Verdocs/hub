@@ -125,6 +125,12 @@ export interface ITag {
   template_id: string;
 }
 
+export interface ITags {
+	name: string;
+	featured?: boolean;
+	created_at?: Date;
+}
+
 export interface IStar {
   template_id: string;
   profile_id: string;

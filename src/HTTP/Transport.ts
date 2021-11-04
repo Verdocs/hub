@@ -1,11 +1,29 @@
-import axios from 'axios';
+import axios, {AxiosInstance} from 'axios';
+
+const TRACE_ID = '' + Math.floor(Math.random() * 100000);
+
+console.log('[JS-SDK Loaded]', TRACE_ID, import.meta.url);
 
 const config = {
   baseURL: 'https://api.verdocs.com/',
   timeout: 3000,
   headers: {'X-Client-ID': 'NONE'} as Record<string, string>,
 };
-let endpoint = axios.create(config);
+
+const recreateEndpoint = () => {
+  endpoint = axios.create(config);
+  endpoint.interceptors.request.use((config: any) => {
+    console.log(
+      `[JS-SDK] ${config.method.toUpperCase()}  ${config.url}`,
+      JSON.stringify(config.data),
+      JSON.stringify(config.headers),
+    );
+    return config;
+  });
+};
+
+let endpoint: AxiosInstance;
+recreateEndpoint();
 
 /**
  * Set the auth token that will be used for Verdocs API calls.
@@ -18,14 +36,12 @@ let endpoint = axios.create(config);
  */
 export const setAuthorization = (accessToken: string | null) => {
   if (accessToken) {
-    config.headers['Authorization'] = `Bearer ${accessToken}`;
+    config.headers.Authorization = `Bearer ${accessToken}`;
   } else {
-    delete config.headers['Authorization'];
+    delete config.headers.Authorization;
   }
 
-  if (endpoint) {
-    endpoint = axios.create(config);
-  }
+  recreateEndpoint();
 };
 
 /**
@@ -39,9 +55,7 @@ export const setAuthorization = (accessToken: string | null) => {
  */
 export const setClientID = (clientID: string) => {
   config.headers['X-Client-ID'] = clientID;
-  if (endpoint) {
-    endpoint = axios.create(config);
-  }
+  recreateEndpoint();
 };
 
 /**
@@ -56,9 +70,7 @@ export const setClientID = (clientID: string) => {
  */
 export const setBaseUrl = (baseUrl: string) => {
   config.baseURL = baseUrl;
-  if (endpoint) {
-    endpoint = axios.create(config);
-  }
+  recreateEndpoint();
 };
 
 /**
@@ -72,9 +84,7 @@ export const setBaseUrl = (baseUrl: string) => {
  */
 export const setTimeout = (timeout: number) => {
   config.timeout = timeout;
-  if (endpoint) {
-    endpoint = axios.create(config);
-  }
+  recreateEndpoint();
 };
 
 /**
@@ -88,7 +98,7 @@ export const setTimeout = (timeout: number) => {
  */
 export const getEndpoint = () => {
   if (!endpoint) {
-    endpoint = axios.create(config);
+    recreateEndpoint();
   }
 
   return endpoint;
