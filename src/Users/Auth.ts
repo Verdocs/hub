@@ -16,10 +16,10 @@ import {
  *
  * ```typescript
  * import {Auth} from '@verdocs/js-sdk/Auth';
- * import {Endpoint} from '@verdocs/js-sdk/HTTP';
+ * import {Transport} from '@verdocs/js-sdk/HTTP';
  *
  * const {accessToken} = await Auth.authenticateUser({ username: 'test@test.com', password: 'PASSWORD' });
- * Endpoint.setAuthToken(accessToken);
+ * Transport.setAuthToken(accessToken);
  * ```
  */
 export const authenticateUser = (params: IAuthenticateUserRequest) =>
@@ -34,10 +34,10 @@ export const authenticateUser = (params: IAuthenticateUserRequest) =>
  *
  * ```typescript
  * import {Auth} from '@verdocs/js-sdk/Auth';
- * import {Endpoint} from '@verdocs/js-sdk/HTTP';
+ * import {Transport} from '@verdocs/js-sdk/HTTP';
  *
  * const {accessToken} = await Auth.authenticateApp({ client_id: 'CLIENTID', client_secret: 'SECRET' });
- * Endpoint.setAuthToken(accessToken);
+ * Transport.setAuthToken(accessToken);
  * ```
  */
 export const authenticateApp = (params: IAuthenticateAppRequest): Promise<IAuthenticateResponse> =>
@@ -65,10 +65,10 @@ export const validateToken = (params: TokenValidationRequest): Promise<TokenVali
  *
  * ```typescript
  * import {Auth} from '@verdocs/js-sdk/Auth';
- * import {Endpoint} from '@verdocs/js-sdk/HTTP';
+ * import {Transport} from '@verdocs/js-sdk/HTTP';
  *
  * const {accessToken} = await Auth.refreshTokens();
- * Auth.Endpoint.setAuthToken(accessToken);
+ * Transport.setAuthToken(accessToken);
  * ```
  */
 export const refreshTokens = (): Promise<IAuthenticateResponse> => Endpoint.get('/token').then((r) => r.data);

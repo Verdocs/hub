@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.8](../README.md) / [Exports](../modules.md) / [Users](Users.md) / Auth
+[@verdocs/js-sdk - v1.0.10](../README.md) / [Exports](../modules.md) / [Users](Users.md) / Auth
 
 # Namespace: Auth
 
@@ -29,10 +29,10 @@ to check the `exp` expiration field in the response accessToken and renew tokens
 
 ```typescript
 import {Auth} from '@verdocs/js-sdk/Auth';
-import {Endpoint} from '@verdocs/js-sdk/HTTP';
+import {Transport} from '@verdocs/js-sdk/HTTP';
 
 const {accessToken} = await Auth.authenticateApp({ client_id: 'CLIENTID', client_secret: 'SECRET' });
-Endpoint.setAuthToken(accessToken);
+Transport.setAuthToken(accessToken);
 ```
 
 #### Parameters
@@ -59,10 +59,10 @@ Authenticate to Verdocs via user/password authentication
 
 ```typescript
 import {Auth} from '@verdocs/js-sdk/Auth';
-import {Endpoint} from '@verdocs/js-sdk/HTTP';
+import {Transport} from '@verdocs/js-sdk/HTTP';
 
 const {accessToken} = await Auth.authenticateUser({ username: 'test@test.com', password: 'PASSWORD' });
-Endpoint.setAuthToken(accessToken);
+Transport.setAuthToken(accessToken);
 ```
 
 #### Parameters
@@ -89,10 +89,10 @@ If called before the session expires, this will refresh the caller's session and
 
 ```typescript
 import {Auth} from '@verdocs/js-sdk/Auth';
-import {Endpoint} from '@verdocs/js-sdk/HTTP';
+import {Transport} from '@verdocs/js-sdk/HTTP';
 
 const {accessToken} = await Auth.refreshTokens();
-Auth.Endpoint.setAuthToken(accessToken);
+Transport.setAuthToken(accessToken);
 ```
 
 #### Returns

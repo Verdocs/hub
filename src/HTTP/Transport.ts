@@ -1,10 +1,12 @@
 import axios from 'axios';
 
+// TODO: This is only for debugging purposes
 export const Endpoint = axios.create({
   baseURL: 'https://api.verdocs.com/',
   timeout: 3000,
   headers: {'X-Client-ID': 'NONE'},
 });
+console.log('[JS-SDK] Created endpoint', Endpoint);
 
 /**
  * Set the auth token that will be used for Verdocs API calls.
@@ -57,4 +59,17 @@ export const setBaseUrl = (baseUrl: string) => {
  */
 export const setTimeout = (timeout: number) => {
   Endpoint.defaults.timeout = timeout;
+};
+
+/**
+ * Helper to get the endpoint rather than directly accessing the exported object.
+ *
+ * ```typescript
+ * import {Transport} from '@verdocs/js-sdk/HTTP';
+ *
+ * console.log('Current timeout', Transport.getEndpoint().defaults.timeout);
+ * ```
+ */
+export const getEndpoint = () => {
+  return Endpoint;
 };

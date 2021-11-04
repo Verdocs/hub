@@ -1,4 +1,4 @@
-@verdocs/js-sdk - v1.0.8 / [Exports](modules.md)
+@verdocs/js-sdk - v1.0.10 / [Exports](modules.md)
 
 # Verdocs JS SDK
 
@@ -23,10 +23,10 @@ perform a simple authentication request:
 
 ```typescript
 import {Auth} from '@verdocs/js-sdk/Auth';
-import {Endpoint} from '@verdocs/js-sdk/HTTP';
+import {Transport} from '@verdocs/js-sdk/HTTP';
 
 const {accessToken} = await Auth.authenticateUser({username: 'MY_USERNAME', password: 'MY_PASSWORD'});
-Endpoint.setAuthToken(accessToken);
+Transport.setAuthToken(accessToken);
 ```
 
 Once you are authenticated, you can use the rest of the controls and embeds within an app. For instance, to provide a simple PDF
@@ -54,14 +54,14 @@ the `dist` folder.
 ## HTTP Transport
 
 The underlying transport uses `axios`, a cross-environment (NodeJS vs. Browser) HTTP transport layer. When this SDK is included in a
-project, an `Endpoint` singleton Axios Instance will be created to support the API calls to Verdocs servers. This endpoint's operation
+project, a `Transport` singleton Axios Instance will be created to support the API calls to Verdocs servers. This endpoint's operation
 may be configured by importing it. Please see the [Axios Documentation](https://github.com/axios/axios) for more information on the
 options available. For example, to override the default API call timeout of 3s:
 
 ```typescript
-import {Endpoint} from '@verdocs/js-sdk/Auth/HTTP/Transport';
+import {Transport} from '@verdocs/js-sdk/Auth/HTTP';
 
-Endpoint.defaults.timeout = 5000;
+Transport.setTimeout(5000);
 ```
 
 ## Contributing
