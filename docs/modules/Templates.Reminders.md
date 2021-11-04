@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Reminders
+[@verdocs/js-sdk - v1.0.8](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Reminders
 
 # Namespace: Reminders
 
@@ -8,36 +8,37 @@
 
 ### Functions
 
-- [createTemplateReminder](Templates.Reminders.md#createtemplatereminder)
-- [deleteTemplateReminder](Templates.Reminders.md#deletetemplatereminder)
-- [editTemplateReminder](Templates.Reminders.md#edittemplatereminder)
-- [getTemplateReminder](Templates.Reminders.md#gettemplatereminder)
+- [createReminder](Templates.Reminders.md#createreminder)
+- [deleteReminder](Templates.Reminders.md#deletereminder)
+- [editReminder](Templates.Reminders.md#editreminder)
+- [getReminder](Templates.Reminders.md#getreminder)
 
 ## Functions
 
-### createTemplateReminder
+### createReminder
 
-▸ `Const` **createTemplateReminder**(`templateId`): `Promise`<`any`\>
+▸ `Const` **createReminder**(`templateId`, `params`): `Promise`<[`ITemplate`](../interfaces/Templates.Types.ITemplate.md)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `templateId` | `string` |
+| `params` | `any` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`ITemplate`](../interfaces/Templates.Types.ITemplate.md)\>
 
 #### Defined in
 
-[Templates/Reminders.ts:3](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Reminders.ts#L3)
+[Templates/Reminders.ts:4](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Reminders.ts#L4)
 
 ___
 
-### deleteTemplateReminder
+### deleteReminder
 
-▸ `Const` **deleteTemplateReminder**(`templateId`, `reminderId`): `Promise`<`any`\>
+▸ `Const` **deleteReminder**(`templateId`, `reminderId`): `Promise`<`any`\>
 
 #### Parameters
 
@@ -52,13 +53,13 @@ ___
 
 #### Defined in
 
-[Templates/Reminders.ts:12](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Reminders.ts#L12)
+[Templates/Reminders.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Reminders.ts#L13)
 
 ___
 
-### editTemplateReminder
+### editReminder
 
-▸ `Const` **editTemplateReminder**(`templateId`, `reminderId`): `Promise`<`any`\>
+▸ `Const` **editReminder**(`templateId`, `reminderId`): `Promise`<[`IReminder`](../interfaces/Templates.Types.IReminder.md)\>
 
 #### Parameters
 
@@ -69,17 +70,17 @@ ___
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`IReminder`](../interfaces/Templates.Types.IReminder.md)\>
 
 #### Defined in
 
-[Templates/Reminders.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Reminders.ts#L9)
+[Templates/Reminders.ts:10](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Reminders.ts#L10)
 
 ___
 
-### getTemplateReminder
+### getReminder
 
-▸ `Const` **getTemplateReminder**(`templateId`, `reminderId`): `Promise`<`any`\>
+▸ `Const` **getReminder**(`templateId`, `reminderId`): `Promise`<[`IReminder`](../interfaces/Templates.Types.IReminder.md)\>
 
 #### Parameters
 
@@ -90,8 +91,8 @@ ___
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`IReminder`](../interfaces/Templates.Types.IReminder.md)\>
 
 #### Defined in
 
-[Templates/Reminders.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Reminders.ts#L6)
+[Templates/Reminders.ts:7](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Reminders.ts#L7)

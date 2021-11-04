@@ -27,6 +27,9 @@ const {accessToken} = await Auth.authenticateUser({username: 'MY_USERNAME', pass
 Endpoint.setAuthToken(accessToken);
 ```
 
+Once you are authenticated, you can use the rest of the controls and embeds within an app. For instance, to provide a simple PDF
+viewer for a document stored within Verdocs:
+
 ## Documentation
 
 Verdocs functions are organized into high-level modules that represent the main objects within the platform:

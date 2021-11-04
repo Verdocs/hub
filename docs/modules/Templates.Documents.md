@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Documents
+[@verdocs/js-sdk - v1.0.8](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Documents
 
 # Namespace: Documents
 
@@ -8,36 +8,53 @@
 
 ### Functions
 
-- [createTemplateDocument](Templates.Documents.md#createtemplatedocument)
-- [deleteTemplateDocument](Templates.Documents.md#deletetemplatedocument)
-- [getTemplateDocument](Templates.Documents.md#gettemplatedocument)
-- [getTemplateDocuments](Templates.Documents.md#gettemplatedocuments)
+- [createDocument](Templates.Documents.md#createdocument)
+- [deleteDocument](Templates.Documents.md#deletedocument)
+- [getDocument](Templates.Documents.md#getdocument)
+- [getDocuments](Templates.Documents.md#getdocuments)
 
 ## Functions
 
-### createTemplateDocument
+### createDocument
 
-▸ `Const` **createTemplateDocument**(`templateId`): `Promise`<`any`\>
+▸ `Const` **createDocument**(`templateId`, `params`): `Promise`<[`IDocument`](../interfaces/Templates.Types.IDocument.md)\>
+
+Create a Document for a particular Template.
+
+```typescript
+import {Documents} from '@verdocs/js-sdk/Templates';
+
+await Documents.createDocument(templateID, params);
+```
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `templateId` | `string` |
+| `params` | `any` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`IDocument`](../interfaces/Templates.Types.IDocument.md)\>
 
 #### Defined in
 
-[Templates/Documents.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Documents.ts#L6)
+[Templates/Documents.ts:25](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Documents.ts#L25)
 
 ___
 
-### deleteTemplateDocument
+### deleteDocument
 
-▸ `Const` **deleteTemplateDocument**(`templateId`, `documentId`): `Promise`<`any`\>
+▸ `Const` **deleteDocument**(`templateId`, `documentId`): `Promise`<`any`\>
+
+Delete a specific Document.
+
+```typescript
+import {Documents} from '@verdocs/js-sdk/Templates';
+
+await Documents.deleteDocument(templateID, documentID);
+```
 
 #### Parameters
 
@@ -52,13 +69,21 @@ ___
 
 #### Defined in
 
-[Templates/Documents.ts:12](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Documents.ts#L12)
+[Templates/Documents.ts:49](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Documents.ts#L49)
 
 ___
 
-### getTemplateDocument
+### getDocument
 
-▸ `Const` **getTemplateDocument**(`templateId`, `documentId`): `Promise`<`any`\>
+▸ `Const` **getDocument**(`templateId`, `documentId`): `Promise`<[`IDocument`](../interfaces/Templates.Types.IDocument.md)\>
+
+Get a specific Document.
+
+```typescript
+import {Documents} from '@verdocs/js-sdk/Templates';
+
+await Documents.getDocument(templateID, documentID);
+```
 
 #### Parameters
 
@@ -69,17 +94,25 @@ ___
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`IDocument`](../interfaces/Templates.Types.IDocument.md)\>
 
 #### Defined in
 
-[Templates/Documents.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Documents.ts#L9)
+[Templates/Documents.ts:37](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Documents.ts#L37)
 
 ___
 
-### getTemplateDocuments
+### getDocuments
 
-▸ `Const` **getTemplateDocuments**(`templateId`): `Promise`<`any`\>
+▸ `Const` **getDocuments**(`templateId`): `Promise`<`any`\>
+
+Get all the Documents associated to a particular Template.
+
+```typescript
+import {Documents} from '@verdocs/js-sdk/Templates';
+
+await Documents.getDocuments(templateID);
+```
 
 #### Parameters
 
@@ -93,4 +126,4 @@ ___
 
 #### Defined in
 
-[Templates/Documents.ts:3](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Documents.ts#L3)
+[Templates/Documents.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Documents.ts#L13)

@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / IPermission
+[@verdocs/js-sdk - v1.0.8](../README.md) / [Exports](../modules.md) / [Users](../modules/Users.md) / [Types](../modules/Users.Types.md) / IPermission
 
 # Interface: IPermission
 

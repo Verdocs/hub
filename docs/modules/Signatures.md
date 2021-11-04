@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / Signatures
+[@verdocs/js-sdk - v1.0.8](../README.md) / [Exports](../modules.md) / Signatures
 
 # Namespace: Signatures
 
@@ -19,7 +19,13 @@
 
 ### createSignature
 
-▸ `Const` **createSignature**(): `Promise`<[`ISignature`](../interfaces/Signatures.ISignature.md)\>
+▸ `Const` **createSignature**(`params`): `Promise`<[`ISignature`](../interfaces/Signatures.ISignature.md)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | `any` |
 
 #### Returns
 

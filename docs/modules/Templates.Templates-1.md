@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Templates
+[@verdocs/js-sdk - v1.0.8](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Templates
 
 # Namespace: Templates
 
@@ -19,35 +19,42 @@
 
 ### createTemplate
 
-▸ `Const` **createTemplate**(): `Promise`<`any`\>
+▸ `Const` **createTemplate**(`params`): `Promise`<[`ITemplate`](../interfaces/Templates.Types.ITemplate.md)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | `any` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`ITemplate`](../interfaces/Templates.Types.ITemplate.md)\>
 
 #### Defined in
 
-[Templates/Templates.ts:8](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L8)
+[Templates/Templates.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L9)
 
 ___
 
 ### editTemplate
 
-▸ `Const` **editTemplate**(`templateId`): `Promise`<`any`\>
+▸ `Const` **editTemplate**(`templateId`, `params`): `Promise`<[`ITemplate`](../interfaces/Templates.Types.ITemplate.md)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `templateId` | `string` |
+| `params` | `any` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`ITemplate`](../interfaces/Templates.Types.ITemplate.md)\>
 
 #### Defined in
 
-[Templates/Templates.ts:10](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L10)
+[Templates/Templates.ts:11](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L11)
 
 ___
 
@@ -67,7 +74,7 @@ ___
 
 #### Defined in
 
-[Templates/Templates.ts:14](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L14)
+[Templates/Templates.ts:26](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L26)
 
 ___
 
@@ -87,32 +94,46 @@ ___
 
 #### Defined in
 
-[Templates/Templates.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L6)
+[Templates/Templates.ts:7](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L7)
 
 ___
 
 ### getTemplates
 
-▸ `Const` **getTemplates**(): `Promise`<`any`\>
+▸ `Const` **getTemplates**(): `Promise`<`any`[]\>
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`any`[]\>
 
 #### Defined in
 
-[Templates/Templates.ts:4](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L4)
+[Templates/Templates.ts:5](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L5)
 
 ___
 
 ### searchTemplate
 
-▸ `Const` **searchTemplate**(): `Promise`<`any`\>
+▸ `Const` **searchTemplate**(`params`): `Promise`<[`ITemplatesSearchResult`](../interfaces/Templates.Types.ITemplatesSearchResult.md)\>
+
+Search for templates matching various criteria.
+
+```typescript
+import {Templates} from '@verdocs/js-sdk/Templates';
+
+const {result, page, total} = await Templates.search({ ... });
+```
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | `any` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`ITemplatesSearchResult`](../interfaces/Templates.Types.ITemplatesSearchResult.md)\>
 
 #### Defined in
 
-[Templates/Templates.ts:12](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L12)
+[Templates/Templates.ts:23](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Templates.ts#L23)

@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Pages
+[@verdocs/js-sdk - v1.0.8](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Pages
 
 # Namespace: Pages
 
@@ -8,36 +8,37 @@
 
 ### Functions
 
-- [createTemplatePage](Templates.Pages.md#createtemplatepage)
-- [deleteTemplatePage](Templates.Pages.md#deletetemplatepage)
-- [editTemplatePage](Templates.Pages.md#edittemplatepage)
-- [getTemplatePage](Templates.Pages.md#gettemplatepage)
+- [createPage](Templates.Pages.md#createpage)
+- [deletePage](Templates.Pages.md#deletepage)
+- [editPage](Templates.Pages.md#editpage)
+- [getPage](Templates.Pages.md#getpage)
 
 ## Functions
 
-### createTemplatePage
+### createPage
 
-▸ `Const` **createTemplatePage**(`templateId`): `Promise`<`any`\>
+▸ `Const` **createPage**(`templateId`, `params`): `Promise`<[`IPage`](../interfaces/Templates.Types.IPage.md)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `templateId` | `string` |
+| `params` | [`IPage`](../interfaces/Templates.Types.IPage.md) |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`IPage`](../interfaces/Templates.Types.IPage.md)\>
 
 #### Defined in
 
-[Templates/Pages.ts:3](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Pages.ts#L3)
+[Templates/Pages.ts:4](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Pages.ts#L4)
 
 ___
 
-### deleteTemplatePage
+### deletePage
 
-▸ `Const` **deleteTemplatePage**(`templateId`, `sequence`): `Promise`<`any`\>
+▸ `Const` **deletePage**(`templateId`, `sequence`): `Promise`<`any`\>
 
 #### Parameters
 
@@ -52,13 +53,13 @@ ___
 
 #### Defined in
 
-[Templates/Pages.ts:12](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Pages.ts#L12)
+[Templates/Pages.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Pages.ts#L13)
 
 ___
 
-### editTemplatePage
+### editPage
 
-▸ `Const` **editTemplatePage**(`templateId`, `sequence`): `Promise`<`any`\>
+▸ `Const` **editPage**(`templateId`, `sequence`): `Promise`<`any`\>
 
 #### Parameters
 
@@ -73,13 +74,13 @@ ___
 
 #### Defined in
 
-[Templates/Pages.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Pages.ts#L6)
+[Templates/Pages.ts:7](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Pages.ts#L7)
 
 ___
 
-### getTemplatePage
+### getPage
 
-▸ `Const` **getTemplatePage**(`templateId`, `sequence`): `Promise`<`any`\>
+▸ `Const` **getPage**(`templateId`, `sequence`): `Promise`<`any`\>
 
 #### Parameters
 
@@ -94,4 +95,4 @@ ___
 
 #### Defined in
 
-[Templates/Pages.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Pages.ts#L9)
+[Templates/Pages.ts:10](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Pages.ts#L10)

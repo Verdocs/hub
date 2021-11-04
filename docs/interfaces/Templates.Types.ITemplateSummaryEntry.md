@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Templates](../modules/Templates.md) / [Types](../modules/Templates.Types.md) / ITemplateSummaryEntry
+[@verdocs/js-sdk - v1.0.8](../README.md) / [Exports](../modules.md) / [Templates](../modules/Templates.md) / [Types](../modules/Templates.Types.md) / ITemplateSummaryEntry
 
 # Interface: ITemplateSummaryEntry
 
@@ -33,7 +33,7 @@
 
 #### Defined in
 
-[Templates/Types.ts:5](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L5)
+[Templates/Types.ts:27](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L27)
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
 #### Defined in
 
-[Templates/Types.ts:7](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L7)
+[Templates/Types.ts:29](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L29)
 
 ___
 
@@ -53,7 +53,7 @@ ___
 
 #### Defined in
 
-[Templates/Types.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L6)
+[Templates/Types.ts:28](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L28)
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 #### Defined in
 
-[Templates/Types.ts:14](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L14)
+[Templates/Types.ts:36](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L36)
 
 ___
 
@@ -73,7 +73,7 @@ ___
 
 #### Defined in
 
-[Templates/Types.ts:2](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L2)
+[Templates/Types.ts:24](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L24)
 
 ___
 
@@ -83,7 +83,7 @@ ___
 
 #### Defined in
 
-[Templates/Types.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L9)
+[Templates/Types.ts:31](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L31)
 
 ___
 
@@ -93,7 +93,7 @@ ___
 
 #### Defined in
 
-[Templates/Types.ts:10](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L10)
+[Templates/Types.ts:32](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L32)
 
 ___
 
@@ -103,7 +103,7 @@ ___
 
 #### Defined in
 
-[Templates/Types.ts:17](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L17)
+[Templates/Types.ts:39](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L39)
 
 ___
 
@@ -113,7 +113,7 @@ ___
 
 #### Defined in
 
-[Templates/Types.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L13)
+[Templates/Types.ts:35](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L35)
 
 ___
 
@@ -123,7 +123,7 @@ ___
 
 #### Defined in
 
-[Templates/Types.ts:3](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L3)
+[Templates/Types.ts:25](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L25)
 
 ___
 
@@ -133,7 +133,7 @@ ___
 
 #### Defined in
 
-[Templates/Types.ts:12](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L12)
+[Templates/Types.ts:34](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L34)
 
 ___
 
@@ -143,7 +143,7 @@ ___
 
 #### Defined in
 
-[Templates/Types.ts:11](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L11)
+[Templates/Types.ts:33](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L33)
 
 ___
 
@@ -153,7 +153,7 @@ ___
 
 #### Defined in
 
-[Templates/Types.ts:4](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L4)
+[Templates/Types.ts:26](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L26)
 
 ___
 
@@ -163,7 +163,7 @@ ___
 
 #### Defined in
 
-[Templates/Types.ts:15](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L15)
+[Templates/Types.ts:37](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L37)
 
 ___
 
@@ -173,7 +173,7 @@ ___
 
 #### Defined in
 
-[Templates/Types.ts:16](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L16)
+[Templates/Types.ts:38](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L38)
 
 ___
 
@@ -183,4 +183,4 @@ ___
 
 #### Defined in
 
-[Templates/Types.ts:8](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L8)
+[Templates/Types.ts:30](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Types.ts#L30)

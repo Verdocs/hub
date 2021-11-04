@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Roles
+[@verdocs/js-sdk - v1.0.8](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Roles
 
 # Namespace: Roles
 
@@ -8,38 +8,40 @@
 
 ### Functions
 
-- [createTemplateRole](Templates.Roles.md#createtemplaterole)
-- [deleteTemplateRole](Templates.Roles.md#deletetemplaterole)
-- [deleteTemplateSequence](Templates.Roles.md#deletetemplatesequence)
-- [editTemplateRole](Templates.Roles.md#edittemplaterole)
-- [getTemplateRole](Templates.Roles.md#gettemplaterole)
-- [getTemplateRoles](Templates.Roles.md#gettemplateroles)
+- [createRole](Templates.Roles.md#createrole)
+- [deleteRole](Templates.Roles.md#deleterole)
+- [deleteSequence](Templates.Roles.md#deletesequence)
+- [editRole](Templates.Roles.md#editrole)
+- [getRole](Templates.Roles.md#getrole)
+- [getRoleFields](Templates.Roles.md#getrolefields)
+- [getRoles](Templates.Roles.md#getroles)
 
 ## Functions
 
-### createTemplateRole
+### createRole
 
-▸ `Const` **createTemplateRole**(`templateId`): `Promise`<`any`\>
+▸ `Const` **createRole**(`templateId`, `params`): `Promise`<[`IRole`](../interfaces/Templates.Types.IRole.md)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `templateId` | `string` |
+| `params` | [`IRole`](../interfaces/Templates.Types.IRole.md) |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`IRole`](../interfaces/Templates.Types.IRole.md)\>
 
 #### Defined in
 
-[Templates/Roles.ts:3](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L3)
+[Templates/Roles.ts:4](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L4)
 
 ___
 
-### deleteTemplateRole
+### deleteRole
 
-▸ `Const` **deleteTemplateRole**(`templateId`, `roleName`): `Promise`<`any`\>
+▸ `Const` **deleteRole**(`templateId`, `roleName`): `Promise`<`any`\>
 
 #### Parameters
 
@@ -54,13 +56,13 @@ ___
 
 #### Defined in
 
-[Templates/Roles.ts:15](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L15)
+[Templates/Roles.ts:16](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L16)
 
 ___
 
-### deleteTemplateSequence
+### deleteSequence
 
-▸ `Const` **deleteTemplateSequence**(`templateId`): `Promise`<`any`\>
+▸ `Const` **deleteSequence**(`templateId`): `Promise`<[`IRole`](../interfaces/Templates.Types.IRole.md)[]\>
 
 #### Parameters
 
@@ -70,17 +72,39 @@ ___
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`IRole`](../interfaces/Templates.Types.IRole.md)[]\>
 
 #### Defined in
 
-[Templates/Roles.ts:18](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L18)
+[Templates/Roles.ts:22](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L22)
 
 ___
 
-### editTemplateRole
+### editRole
 
-▸ `Const` **editTemplateRole**(`templateId`, `roleName`): `Promise`<`any`\>
+▸ `Const` **editRole**(`templateId`, `roleName`, `params`): `Promise`<[`IRole`](../interfaces/Templates.Types.IRole.md)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `templateId` | `string` |
+| `roleName` | `string` |
+| `params` | [`IRole`](../interfaces/Templates.Types.IRole.md) |
+
+#### Returns
+
+`Promise`<[`IRole`](../interfaces/Templates.Types.IRole.md)\>
+
+#### Defined in
+
+[Templates/Roles.ts:13](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L13)
+
+___
+
+### getRole
+
+▸ `Const` **getRole**(`templateId`, `roleName`): `Promise`<[`IRole`](../interfaces/Templates.Types.IRole.md)\>
 
 #### Parameters
 
@@ -91,17 +115,17 @@ ___
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`IRole`](../interfaces/Templates.Types.IRole.md)\>
 
 #### Defined in
 
-[Templates/Roles.ts:12](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L12)
+[Templates/Roles.ts:10](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L10)
 
 ___
 
-### getTemplateRole
+### getRoleFields
 
-▸ `Const` **getTemplateRole**(`templateId`, `roleName`): `Promise`<`any`\>
+▸ `Const` **getRoleFields**(`templateId`, `roleName`): `Promise`<[`IField`](../interfaces/Templates.Types.IField.md)[]\>
 
 #### Parameters
 
@@ -112,17 +136,17 @@ ___
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`IField`](../interfaces/Templates.Types.IField.md)[]\>
 
 #### Defined in
 
-[Templates/Roles.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L9)
+[Templates/Roles.ts:19](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L19)
 
 ___
 
-### getTemplateRoles
+### getRoles
 
-▸ `Const` **getTemplateRoles**(`templateId`): `Promise`<`any`\>
+▸ `Const` **getRoles**(`templateId`): `Promise`<[`IRole`](../interfaces/Templates.Types.IRole.md)[]\>
 
 #### Parameters
 
@@ -132,8 +156,8 @@ ___
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`IRole`](../interfaces/Templates.Types.IRole.md)[]\>
 
 #### Defined in
 
-[Templates/Roles.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L6)
+[Templates/Roles.ts:7](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Roles.ts#L7)

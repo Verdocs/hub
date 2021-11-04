@@ -1,4 +1,4 @@
-@verdocs/js-sdk - v1.0.5 / [Exports](modules.md)
+@verdocs/js-sdk - v1.0.8 / [Exports](modules.md)
 
 # Verdocs JS SDK
 
@@ -29,6 +29,9 @@ const {accessToken} = await Auth.authenticateUser({username: 'MY_USERNAME', pass
 Endpoint.setAuthToken(accessToken);
 ```
 
+Once you are authenticated, you can use the rest of the controls and embeds within an app. For instance, to provide a simple PDF
+viewer for a document stored within Verdocs:
+
 ## Documentation
 
 Verdocs functions are organized into high-level modules that represent the main objects within the platform:
@@ -41,6 +44,12 @@ Verdocs functions are organized into high-level modules that represent the main 
 - Utils - General support functions used by the other modules and exported for convenience.
 
 Please see the [API Docs](https://github.com/Verdocs/js-sdk/tree/main/docs) for details on the functions provided by each module.
+
+## Contributing
+
+To avoid the presence of the `dist/` distribution directory appearing in package imports, when this project is built, this `README.md`
+and other support files are copied there. Be sure to run `npm version patch` from THIS directory, but the publish command from within
+the `dist` folder.
 
 ## HTTP Transport
 

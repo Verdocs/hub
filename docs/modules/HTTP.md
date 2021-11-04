@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / HTTP
+[@verdocs/js-sdk - v1.0.8](../README.md) / [Exports](../modules.md) / HTTP
 
 # Namespace: HTTP
 

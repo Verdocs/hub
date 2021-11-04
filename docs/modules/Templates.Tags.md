@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Tags
+[@verdocs/js-sdk - v1.0.8](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Tags
 
 # Namespace: Tags
 
@@ -8,35 +8,36 @@
 
 ### Functions
 
-- [createTemplateTag](Templates.Tags.md#createtemplatetag)
-- [deleteTemplateTag](Templates.Tags.md#deletetemplatetag)
-- [getTemplateTags](Templates.Tags.md#gettemplatetags)
+- [createTag](Templates.Tags.md#createtag)
+- [deleteTag](Templates.Tags.md#deletetag)
+- [getTags](Templates.Tags.md#gettags)
 
 ## Functions
 
-### createTemplateTag
+### createTag
 
-▸ `Const` **createTemplateTag**(`templateId`): `Promise`<`any`\>
+▸ `Const` **createTag**(`templateId`, `params`): `Promise`<[`ITag`](../interfaces/Templates.Types.ITag.md)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `templateId` | `string` |
+| `params` | `any` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`ITag`](../interfaces/Templates.Types.ITag.md)\>
 
 #### Defined in
 
-[Templates/Tags.ts:3](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Tags.ts#L3)
+[Templates/Tags.ts:4](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Tags.ts#L4)
 
 ___
 
-### deleteTemplateTag
+### deleteTag
 
-▸ `Const` **deleteTemplateTag**(`templateId`, `tagName`): `Promise`<`any`\>
+▸ `Const` **deleteTag**(`templateId`, `tagName`): `Promise`<`any`\>
 
 #### Parameters
 
@@ -51,13 +52,13 @@ ___
 
 #### Defined in
 
-[Templates/Tags.ts:9](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Tags.ts#L9)
+[Templates/Tags.ts:10](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Tags.ts#L10)
 
 ___
 
-### getTemplateTags
+### getTags
 
-▸ `Const` **getTemplateTags**(`templateId`): `Promise`<`any`\>
+▸ `Const` **getTags**(`templateId`): `Promise`<[`ITag`](../interfaces/Templates.Types.ITag.md)[]\>
 
 #### Parameters
 
@@ -67,8 +68,8 @@ ___
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`ITag`](../interfaces/Templates.Types.ITag.md)[]\>
 
 #### Defined in
 
-[Templates/Tags.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Tags.ts#L6)
+[Templates/Tags.ts:7](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Tags.ts#L7)

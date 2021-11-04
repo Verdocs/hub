@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / Tags
+[@verdocs/js-sdk - v1.0.8](../README.md) / [Exports](../modules.md) / Tags
 
 # Namespace: Tags
 
@@ -18,7 +18,13 @@
 
 ### createTag
 
-▸ `Const` **createTag**(): `Promise`<[`ITags`](../interfaces/Tags.ITags.md)\>
+▸ `Const` **createTag**(`params`): `Promise`<[`ITags`](../interfaces/Tags.ITags.md)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | [`ITags`](../interfaces/Tags.ITags.md) |
 
 #### Returns
 
@@ -52,7 +58,13 @@ ___
 
 ### searchTag
 
-▸ `Const` **searchTag**(): `Promise`<[`ITags`](../interfaces/Tags.ITags.md)[]\>
+▸ `Const` **searchTag**(`params`): `Promise`<[`ITags`](../interfaces/Tags.ITags.md)[]\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | `any` |
 
 #### Returns
 

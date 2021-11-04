@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.5](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Stars
+[@verdocs/js-sdk - v1.0.8](../README.md) / [Exports](../modules.md) / [Templates](Templates.md) / Stars
 
 # Namespace: Stars
 
@@ -8,14 +8,14 @@
 
 ### Functions
 
-- [getTemplateStars](Templates.Stars.md#gettemplatestars)
-- [toggleTemplateStar](Templates.Stars.md#toggletemplatestar)
+- [getStars](Templates.Stars.md#getstars)
+- [toggleStar](Templates.Stars.md#togglestar)
 
 ## Functions
 
-### getTemplateStars
+### getStars
 
-▸ `Const` **getTemplateStars**(`templateId`): `Promise`<`any`\>
+▸ `Const` **getStars**(`templateId`): `Promise`<[`IStar`](../interfaces/Templates.Types.IStar.md)[]\>
 
 #### Parameters
 
@@ -25,17 +25,17 @@
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`IStar`](../interfaces/Templates.Types.IStar.md)[]\>
 
 #### Defined in
 
-[Templates/Stars.ts:3](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Stars.ts#L3)
+[Templates/Stars.ts:4](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Stars.ts#L4)
 
 ___
 
-### toggleTemplateStar
+### toggleStar
 
-▸ `Const` **toggleTemplateStar**(`templateId`): `Promise`<`any`\>
+▸ `Const` **toggleStar**(`templateId`): `Promise`<[`ITemplatesSummary`](../interfaces/Templates.Types.ITemplatesSummary.md)\>
 
 #### Parameters
 
@@ -45,8 +45,8 @@ ___
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`ITemplatesSummary`](../interfaces/Templates.Types.ITemplatesSummary.md)\>
 
 #### Defined in
 
-[Templates/Stars.ts:6](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Stars.ts#L6)
+[Templates/Stars.ts:7](https://github.com/Verdocs/js-sdk/blob/main/src/Templates/Stars.ts#L7)
