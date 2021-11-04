@@ -1,7 +1,9 @@
+import {jest} from '@jest/globals';
 import mockAxios from 'jest-mock-axios';
 import {Auth} from '../../Users';
 
 afterEach(() => {
+  console.log('mr', mockAxios.reset);
   mockAxios.reset();
 });
 
@@ -11,6 +13,7 @@ it('authenticateUser should return access tokens', () => {
 
   const request = {username: 'test@test.com', password: 'PASSWORD'};
   Auth.authenticateUser(request).then(thenFn).catch(catchFn);
+  console.log('ma', mockAxios.post);
   expect(mockAxios.post).toBeCalledWith('/authentication/login', request);
 
   const response = {accessToken: 'A', idToken: 'B', refreshToken: 'C'};

@@ -66,3 +66,10 @@ Transport.setTimeout(5000);
 
 This repository is actively maintained and supported by [Verdocs](https://verdocs.com/). We welcome community contributions and
 suggestions! Please file a pull request with any change requests and we will review them as soon as possible.
+
+## TODO
+
+Currently, we have placeholder tests for a number of functions but had to disable the test suite. See
+https://jestjs.io/docs/ecmascript-modules and https://github.com/facebook/jest/issues/10025 for more information. Since we manage our
+own transport endpoint, we can probably do this mocking ourselves and eliminate the dependency in the first place.
+

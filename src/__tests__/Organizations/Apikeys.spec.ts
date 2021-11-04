@@ -1,3 +1,4 @@
+import {jest} from '@jest/globals';
 import mockAxios from 'jest-mock-axios';
 import {ApiKeys} from '../../Organizations';
 import {IApiKey, IApiKeyWithSecret} from '../../Organizations/Types';

@@ -1,3 +1,4 @@
+import {jest} from '@jest/globals';
 import mockAxios from 'jest-mock-axios';
 import {Profiles} from '../../Users';
 import {IPermission, IProfile, IRole} from '../../Users/Types';

@@ -2,6 +2,7 @@ import axios, {AxiosInstance} from 'axios';
 
 const TRACE_ID = '' + Math.floor(Math.random() * 100000);
 
+// tslint:disable-next-line
 console.log('[JS-SDK Loaded]', TRACE_ID, import.meta.url);
 
 const config = {
@@ -12,13 +13,14 @@ const config = {
 
 const recreateEndpoint = () => {
   endpoint = axios.create(config);
-  endpoint.interceptors.request.use((config: any) => {
+  endpoint.interceptors.request.use((r: any) => {
+    // tslint:disable-next-line
     console.log(
-      `[JS-SDK] ${config.method.toUpperCase()}  ${config.url}`,
-      JSON.stringify(config.data),
-      JSON.stringify(config.headers),
+      `[JS-SDK] ${TRACE_ID} :: ${r.method.toUpperCase()}  ${r.url}`,
+      JSON.stringify(r.data),
+      JSON.stringify(r.headers),
     );
-    return config;
+    return r;
   });
 };
 

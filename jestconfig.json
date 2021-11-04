@@ -1,11 +1,21 @@
 {
   "transform": {
-    "^.+\\.(t|j)sx?$": "ts-jest"
+    "^.+\\.(t|j)s?$": "ts-jest"
   },
   "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
   "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
   "collectCoverage": true,
   "coverageDirectory": "<rootDir>/../reports/coverage",
   "coveragePathIgnorePatterns": ["config"],
-  "coverageReporters": ["json", "lcov", "text", "html"]
+  "coverageReporters": ["json", "lcov", "text", "html"],
+  "extensionsToTreatAsEsm": [".ts"],
+  "preset": "ts-jest/presets/default-esm",
+  "globals": {
+    "ts-jest": {
+      "useESM": true
+    }
+  },
+  "moduleNameMapper": {
+    "^(\\.{1,2}/.*)\\.js$": "$1"
+  }
 }

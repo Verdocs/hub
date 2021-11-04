@@ -1,6 +1,7 @@
-.idea
+/.idea
 __mocks__
 /dist
+/docs
 /docs-md
 /docs-html
 /src
