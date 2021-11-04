@@ -1,5 +1,10 @@
-docs-md/
-docs-html/
-__mocks__/
-src/__tests__/
-.idea/
+.idea
+__mocks__
+/dist
+/docs-md
+/docs-html
+/src
+.prettierrc.js
+jestconfig.json
+tslint.json
+tsconfig.json

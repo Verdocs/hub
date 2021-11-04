@@ -26,9 +26,9 @@
     "url": "https://github.com/Verdocs/js-sdk/issues"
   },
   "scripts": {
-    "build": "rm -rf dist/* && tsc && cp README.md package.json .npmignore dist",
-    "Xprepare": "npm run build",
-    "XprepublishOnly": "npm test && npm run lint",
+    "build": "npm run clean && tsc && npm run lint",
+    "prepare": "npm run build && npm run docs",
+    "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags",
@@ -38,7 +38,7 @@
     "docs-md": "typedoc && git add --all docs",
     "docs-html": "typedoc --plugin none --out docs-html",
     "docs": "npm run docs-md && npm run docs-html && cp -aR docs-html/* ../partner-portal/site/static/js-sdk/",
-    "pkg": "npm version patch && npm run build && npm run docs"
+    "clean": "rm -rf Documents HTTP Organizations Search Templates Users Utils index.js index.d.ts"
   },
   "publishConfig": {
     "access": "public"
