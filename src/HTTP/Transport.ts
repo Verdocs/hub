@@ -6,6 +6,7 @@ export const Endpoint = axios.create({
   timeout: 3000,
   headers: {'X-Client-ID': 'NONE'},
 });
+// tslint:disable-next-line
 console.log('[JS-SDK] Created endpoint', Endpoint);
 
 /**
