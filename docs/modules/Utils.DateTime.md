@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Utils](Utils.md) / DateTime
+[@verdocs/js-sdk - v1.0.14](../README.md) / [Exports](../modules.md) / [Utils](Utils.md) / DateTime
 
 # Namespace: DateTime
 

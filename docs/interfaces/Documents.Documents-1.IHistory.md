@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / [Documents](../modules/Documents.md) / [Documents](../modules/Documents.Documents-1.md) / IHistory
+[@verdocs/js-sdk - v1.0.14](../README.md) / [Exports](../modules.md) / [Documents](../modules/Documents.md) / [Documents](../modules/Documents.Documents-1.md) / IHistory
 
 # Interface: IHistory
 

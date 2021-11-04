@@ -1,4 +1,4 @@
-[@verdocs/js-sdk - v1.0.12](../README.md) / [Exports](../modules.md) / Tags
+[@verdocs/js-sdk - v1.0.14](../README.md) / [Exports](../modules.md) / Tags
 
 # Namespace: Tags
 

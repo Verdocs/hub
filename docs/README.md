@@ -1,4 +1,4 @@
-@verdocs/js-sdk - v1.0.12 / [Exports](modules.md)
+@verdocs/js-sdk - v1.0.14 / [Exports](modules.md)
 
 # Verdocs JS SDK
 
