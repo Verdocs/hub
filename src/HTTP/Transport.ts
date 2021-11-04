@@ -43,7 +43,7 @@ export const setClientID = (clientID: string) => {
  * ```
  */
 export const setBaseUrl = (baseUrl: string) => {
-	Endpoint.defaults.baseURL = baseUrl;
+  Endpoint.defaults.baseURL = baseUrl;
 };
 
 /**
@@ -56,5 +56,5 @@ export const setBaseUrl = (baseUrl: string) => {
  * ```
  */
 export const setTimeout = (timeout: number) => {
-	Endpoint.defaults.timeout = timeout;
+  Endpoint.defaults.timeout = timeout;
 };
