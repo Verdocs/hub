@@ -31,7 +31,7 @@ export const editTemplate = (templateId: string, params: any) =>
  * const {result, page, total} = await Templates.search({ ... });
  * ```
  */
-export const searchTemplate = async (params: any): Promise<ITemplatesSearchResult> =>
+export const searchTemplates = async (params: any): Promise<ITemplatesSearchResult> =>
   getEndpoint()
     .post('/templates/search', params)
     .then((r) => r.data);

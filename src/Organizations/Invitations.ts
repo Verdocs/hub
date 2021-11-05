@@ -1,3 +1,9 @@
+/**
+ * An invitation represents an opportunity for a Member to join an Organization.
+ *
+ * @module
+ */
+
 import {getEndpoint} from '../HTTP/Transport';
 
 export const getInvitations = (organizationId: string) =>

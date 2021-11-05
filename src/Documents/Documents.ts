@@ -160,7 +160,7 @@ export const getSummary = async (page: number) =>
  * const {result, page, total} = await Documents.search({ ... });
  * ```
  */
-export const search = async (params: any) =>
+export const searchDocuments = async (params: any) =>
   getEndpoint()
     .post<IDocumentsSearchResult>('/documents/search', params)
     .then((r) => r.data);

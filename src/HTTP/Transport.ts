@@ -1,40 +1,32 @@
+/**
+ * The Transport Endpoint is a global singleton used to call Verdocs APIs. There can only be one Endpoint per application, and
+ * its configuration settings are shared for all callers.
+ *
+ * @module
+ */
+
 import axios, {AxiosInstance} from 'axios';
 import globalThis from './globalThis';
 
-// @credit https://derickbailey.com/2016/03/09/creating-a-true-singleton-in-node-js-with-es6-symbols/
-// Also see globalThis for comments about why we're doing this in the first place.
-
-const TRACE_ID = Math.floor(Math.random() * 100000);
-const ENDPOINT_KEY = Symbol('verdocs-api' + Math.floor(Math.random() * 100000));
 const DEFAULTS = {
-  baseURL: 'https://api.verdocs.com/',
-  timeout: 3000,
-  headers: {'X-Client-ID': 'NONE'},
+	baseURL: 'https://api.verdocs.com/',
+	timeout: 3000,
+	headers: {'X-Client-ID': 'NONE'},
 };
 
+// @credit https://derickbailey.com/2016/03/09/creating-a-true-singleton-in-node-js-with-es6-symbols/
+// Also see globalThis for comments about why we're doing this in the first place.
+const ENDPOINT_KEY = Symbol.for('verdocs-api-endpoint');
 if (!globalThis[ENDPOINT_KEY]) {
-	// tslint:disable-next-line
-  console.log('[JS-SDK] Creating endpoint', TRACE_ID, ENDPOINT_KEY);
   globalThis[ENDPOINT_KEY] = axios.create(DEFAULTS);
-} else {
-	// tslint:disable-next-line
-  console.log('[JS-SDK] Using existing endpoint', TRACE_ID, ENDPOINT_KEY);
 }
-
 const endpoint = globalThis[ENDPOINT_KEY] as AxiosInstance;
 
-// TODO: Remove these once done debugging
-// tslint:disable-next-line
-console.log('[JS-SDK] Created API Endpoint', TRACE_ID, ENDPOINT_KEY);
-endpoint.interceptors.request.use((r: any) => {
+const requestLogger = (r: any) => {
   // tslint:disable-next-line
-  console.log(
-    `[JS-SDK] ${TRACE_ID} :: ${r.method.toUpperCase()}  ${r.url}`,
-    JSON.stringify(r.data),
-    JSON.stringify(r.headers),
-  );
+  console.log(`[JS-SDK] ${r.method.toUpperCase()} ${r.baseURL}${r.url}`, r.data ? JSON.stringify(r.data) : '');
   return r;
-});
+};
 
 /**
  * Set the auth token that will be used for Verdocs API calls.
@@ -67,13 +59,13 @@ export const setClientID = (clientID: string) => {
 };
 
 /**
- * Set the base URL for API calls. Typically this is https://api.verdocs.com/ and is the default. Change this only after consultation
- * with Verdocs Developer Support.
+ * Set the base URL for API calls. This defaults to https://api.verdocs.com/ and should only be changed after consultation with
+ * Verdocs Developer Support (e.g. to access a private API endpoint).
  *
  * ```typescript
  * import {Transport} from '@verdocs/js-sdk/HTTP';
  *
- * Transport.setBaseUrl('https://api.verdiocs.com');
+ * Transport.setBaseUrl('https://my-private-api.verdocs.com');
  * ```
  */
 export const setBaseUrl = (baseUrl: string) => {
@@ -91,6 +83,24 @@ export const setBaseUrl = (baseUrl: string) => {
  */
 export const setTimeout = (timeout: number) => {
   endpoint.defaults.timeout = timeout;
+};
+
+/**
+ * Enable or disable request logging. This may expose sensitive data in the console log, so it should only be used for debugging.
+ *
+ * ```typescript
+ * import {Transport} from '@verdocs/js-sdk/HTTP';
+ *
+ * Transport.logRequests(true);
+ * ```
+ */
+let requestLoggerId = null as number | null;
+export const logRequests = (enable: boolean) => {
+  if (enable && requestLoggerId === null) {
+    requestLoggerId = endpoint.interceptors.request.use(requestLogger);
+  } else if (!enable && requestLoggerId !== null) {
+    endpoint.interceptors.request.eject(requestLoggerId);
+  }
 };
 
 /**

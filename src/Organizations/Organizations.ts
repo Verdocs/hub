@@ -1,3 +1,9 @@
+/**
+ * An Organization is the top level object for ownership for Members, Documents, and Templates.
+ *
+ * @module
+ */
+
 import {getEndpoint} from '../HTTP/Transport';
 import {IOrganization} from './Types';
 

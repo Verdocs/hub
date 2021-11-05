@@ -1,3 +1,9 @@
+/**
+ * An Organization Member (aka Profile) is an individual user with access to an organization.
+ *
+ * @module
+ */
+
 import {getEndpoint} from '../HTTP/Transport';
 
 export const getMembers = (organizationId: string) =>
