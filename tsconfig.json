@@ -4,6 +4,7 @@
     "module": "esnext",
     "lib": ["es2017", "es7", "es6", "dom"],
     "declaration": true,
+    "allowJs": true,
     "outDir": "./",
     "strict": true,
     "esModuleInterop": true,

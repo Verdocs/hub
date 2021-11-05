@@ -1,31 +1,40 @@
 import axios, {AxiosInstance} from 'axios';
+import globalThis from './globalThis';
 
-const TRACE_ID = '' + Math.floor(Math.random() * 100000);
+// @credit https://derickbailey.com/2016/03/09/creating-a-true-singleton-in-node-js-with-es6-symbols/
+// Also see globalThis for comments about why we're doing this in the first place.
 
-// tslint:disable-next-line
-console.log('[JS-SDK Loaded]', TRACE_ID, import.meta.url);
-
-const config = {
+const TRACE_ID = Math.floor(Math.random() * 100000);
+const ENDPOINT_KEY = Symbol('verdocs-api' + Math.floor(Math.random() * 100000));
+const DEFAULTS = {
   baseURL: 'https://api.verdocs.com/',
   timeout: 3000,
-  headers: {'X-Client-ID': 'NONE'} as Record<string, string>,
+  headers: {'X-Client-ID': 'NONE'},
 };
 
-const recreateEndpoint = () => {
-  endpoint = axios.create(config);
-  endpoint.interceptors.request.use((r: any) => {
-    // tslint:disable-next-line
-    console.log(
-      `[JS-SDK] ${TRACE_ID} :: ${r.method.toUpperCase()}  ${r.url}`,
-      JSON.stringify(r.data),
-      JSON.stringify(r.headers),
-    );
-    return r;
-  });
-};
+if (!globalThis[ENDPOINT_KEY]) {
+	// tslint:disable-next-line
+  console.log('[JS-SDK] Creating endpoint', TRACE_ID, ENDPOINT_KEY);
+  globalThis[ENDPOINT_KEY] = axios.create(DEFAULTS);
+} else {
+	// tslint:disable-next-line
+  console.log('[JS-SDK] Using existing endpoint', TRACE_ID, ENDPOINT_KEY);
+}
 
-let endpoint: AxiosInstance;
-recreateEndpoint();
+const endpoint = globalThis[ENDPOINT_KEY] as AxiosInstance;
+
+// TODO: Remove these once done debugging
+// tslint:disable-next-line
+console.log('[JS-SDK] Created API Endpoint', TRACE_ID, ENDPOINT_KEY);
+endpoint.interceptors.request.use((r: any) => {
+  // tslint:disable-next-line
+  console.log(
+    `[JS-SDK] ${TRACE_ID} :: ${r.method.toUpperCase()}  ${r.url}`,
+    JSON.stringify(r.data),
+    JSON.stringify(r.headers),
+  );
+  return r;
+});
 
 /**
  * Set the auth token that will be used for Verdocs API calls.
@@ -38,12 +47,10 @@ recreateEndpoint();
  */
 export const setAuthorization = (accessToken: string | null) => {
   if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
+    endpoint.defaults.headers.Authorization = `Bearer ${accessToken}`;
   } else {
-    delete config.headers.Authorization;
+    delete endpoint.defaults.headers.Authorization;
   }
-
-  recreateEndpoint();
 };
 
 /**
@@ -56,8 +63,7 @@ export const setAuthorization = (accessToken: string | null) => {
  * ```
  */
 export const setClientID = (clientID: string) => {
-  config.headers['X-Client-ID'] = clientID;
-  recreateEndpoint();
+  endpoint.defaults.headers['X-Client-ID'] = clientID;
 };
 
 /**
@@ -71,8 +77,7 @@ export const setClientID = (clientID: string) => {
  * ```
  */
 export const setBaseUrl = (baseUrl: string) => {
-  config.baseURL = baseUrl;
-  recreateEndpoint();
+  endpoint.defaults.baseURL = baseUrl;
 };
 
 /**
@@ -85,8 +90,7 @@ export const setBaseUrl = (baseUrl: string) => {
  * ```
  */
 export const setTimeout = (timeout: number) => {
-  config.timeout = timeout;
-  recreateEndpoint();
+  endpoint.defaults.timeout = timeout;
 };
 
 /**
@@ -99,9 +103,5 @@ export const setTimeout = (timeout: number) => {
  * ```
  */
 export const getEndpoint = () => {
-  if (!endpoint) {
-    recreateEndpoint();
-  }
-
   return endpoint;
 };

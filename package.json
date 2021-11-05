@@ -1,6 +1,6 @@
 {
   "name": "@verdocs/js-sdk",
-  "version": "1.0.14",
+  "version": "1.0.16",
   "private": false,
   "homepage": "https://github.com/Verdocs/js-sdk",
   "description": "Verdocs JS SDK",
@@ -15,9 +15,6 @@
   "license": "MIT",
   "main": "index.js",
   "types": "index.d.ts",
-  "Xfiles": [
-    "**/*"
-  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/Verdocs/js-sdk.git"
@@ -36,7 +33,7 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jestconfig.json",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
-    "docs-md": "typedoc && git add --all docs",
+    "docs-md": "typedoc",
     "docs-html": "typedoc --plugin none --out docs-html",
     "docs": "npm run docs-md && npm run docs-html && cp -aR docs-html/* ../partner-portal/site/static/js-sdk/",
     "clean": "rm -rf Documents HTTP Organizations Search Templates Users Utils index.js index.d.ts"
