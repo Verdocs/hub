@@ -10,7 +10,7 @@ import globalThis from './globalThis';
 
 const DEFAULTS = {
 	baseURL: 'https://api.verdocs.com/',
-	timeout: 3000,
+	timeout: 6000,
 	headers: {'X-Client-ID': 'NONE'},
 };
 

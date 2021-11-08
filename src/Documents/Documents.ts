@@ -1,10 +1,10 @@
 import {getEndpoint} from '../HTTP/Transport';
 
-export type IDocumentStatus = 'complete' | 'pending' | 'progress';
+export type IDocumentStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
 
-export type IRecipientStatus = 'invited' | 'opened' | 'signed' | 'submitted';
+export type IRecipientStatus = 'invited' | 'opened' | 'signed' | 'submitted' | 'canceled' | 'pending' | 'declined';
 
-export type IRecipientType = 'signer' | 'cc';
+export type IRecipientType = 'signer' | 'cc' | 'approver';
 
 export interface IDocumentsSearchResultEntry {
   id: string;
