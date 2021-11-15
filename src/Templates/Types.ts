@@ -16,14 +16,14 @@ export interface ITemplate {
   organization_id?: string;
   is_personal?: boolean;
   is_public?: boolean;
-  sender?: TemplateSenderTypes;
+  sender?: TTemplateSender;
   description?: string;
 }
 
 export interface ITemplateSummaryEntry {
   id: string;
   name: string;
-  sender: string;
+  sender: TTemplateSender;
   counter: number;
   description: string | null;
   created_at: string;
@@ -38,29 +38,13 @@ export interface ITemplateSummaryEntry {
   tag_name: string | null;
   is_starred: boolean;
 }
-export enum Template {
-  ID = 'id',
-  PROFILE_ID = 'profile_id',
-  NAME = 'name',
-  COUNTER = 'counter',
-  CREATED_AT = 'created_at',
-  UPDATED_AT = 'updated_at',
-  TOKEN = 'token',
-  REMINDER_ID = 'reminder_id',
-  ORGANIZATION_ID = 'organization_id',
-  IS_PERSONAL = 'is_personal',
-  IS_PUBLIC = 'is_public',
-  SENDER = 'sender',
-  DESCRIPTION = 'description',
-}
 
-export enum TemplateSenderTypes {
-  CREATOR = 'creator',
-  ORGANIZATION_MEMBER = 'organization_member',
-  ORGANIZATION_MEMBER_AS_CREATOR = 'organization_member_as_creator',
-  EVERYONE = 'everyone',
-  EVERYONE_AS_CREATOR = 'everyone_as_creator',
-}
+export type TTemplateSender =
+  | 'creator'
+  | 'organization_member'
+  | 'organization_member_as_creator'
+  | 'everyone'
+  | 'everyone_as_creator';
 
 export enum TemplatePermissions {
   TEMPLATE_CREATOR_CREATE_PUBLIC = 'template:creator:create:public',
@@ -126,9 +110,9 @@ export interface ITag {
 }
 
 export interface ITags {
-	name: string;
-	featured?: boolean;
-	created_at?: Date;
+  name: string;
+  featured?: boolean;
+  created_at?: Date;
 }
 
 export interface IStar {

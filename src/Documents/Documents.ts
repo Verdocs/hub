@@ -1,10 +1,10 @@
 import {getEndpoint} from '../HTTP/Transport';
 
-export type IDocumentStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
+export type TDocumentStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
 
-export type IRecipientStatus = 'invited' | 'opened' | 'signed' | 'submitted' | 'canceled' | 'pending' | 'declined';
+export type TRecipientStatus = 'invited' | 'opened' | 'signed' | 'submitted' | 'canceled' | 'pending' | 'declined';
 
-export type IRecipientType = 'signer' | 'cc' | 'approver';
+export type TRecipientType = 'signer' | 'cc' | 'approver';
 
 export interface IDocumentsSearchResultEntry {
   id: string;
@@ -12,14 +12,14 @@ export interface IDocumentsSearchResultEntry {
   created_at: string;
   name: string;
   profile_id: string;
-  status: IDocumentStatus;
+  status: TDocumentStatus;
   next_recipient: {
     claimed: boolean;
     email: string;
     name: string;
     profile_id: string;
-    status: IRecipientStatus;
-    type: IRecipientType;
+    status: TRecipientStatus;
+    type: TRecipientType;
   };
   template_id: string;
   total_count: number;
@@ -66,8 +66,8 @@ export interface IRecipient {
   profile_id: string;
   role_name: string;
   sequence: number;
-  status: IRecipientStatus;
-  type: IRecipientType;
+  status: TRecipientStatus;
+  type: TRecipientType;
   updated_at: string;
 }
 
@@ -83,7 +83,7 @@ export interface IDocument {
   no_contact: boolean;
   profile_id: string;
   reminder_id: string | null;
-  status: IDocumentStatus;
+  status: TDocumentStatus;
   template_id: string;
   updated_at: string;
   organization_id: string | null;
@@ -96,15 +96,15 @@ export interface IActivityEntry {
   created_at: string;
   updated_at: string;
   profile_id: string;
-  status: IDocumentStatus;
+  status: TDocumentStatus;
   template_id: string;
   recipient: {
     claimed: boolean;
     email: string;
     name: string;
     profile_id: string;
-    status: IRecipientStatus;
-    type: IRecipientType;
+    status: TRecipientStatus;
+    type: TRecipientType;
   };
 }
 
@@ -124,8 +124,8 @@ export interface IDocumentSearchOptions {
   ascending?: boolean;
   is_owner?: boolean;
   is_recipient?: boolean;
-  envelope_status: IDocumentStatus[];
-  recipient_status: IDocumentStatus[];
+  envelope_status: TDocumentStatus[];
+  recipient_status: TDocumentStatus[];
 }
 
 export type IHistoryEvent =
