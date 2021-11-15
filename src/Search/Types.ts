@@ -8,6 +8,7 @@ export type TMimeType = 'application/pdf' | string;
  * are optimized for search performance.
  */
 export interface IDocumentHit {
+  type: 'document';
   id: string;
   template_id: string;
   name: string;
@@ -34,6 +35,7 @@ export interface IDocumentHit {
  * are optimized for search performance.
  */
 export interface ITemplateHit {
+  type: 'template';
   id: string;
   name: string;
   description: string;
@@ -60,6 +62,7 @@ export interface ITemplateHit {
  * are optimized for search performance.
  */
 export interface IOrganizationHit {
+  type: 'organization';
   id: string;
   name: string;
   slug: string;
@@ -94,7 +97,7 @@ export interface ISearchResultCollection<T> {
   page: number;
   found: number;
   out_of: number;
-  hits: IHit<T>;
+  hits: IHit<T>[];
   request_params: ISearchRequestParams;
   search_time_ms: number;
 }
