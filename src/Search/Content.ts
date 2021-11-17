@@ -49,5 +49,5 @@ export const saveSearch = async (name: string, params: ISearchParams) =>
  */
 export const searchContent = async (params: ISearchParams) =>
   getEndpoint()
-    .post<ISearchResult>('/search/content')
+    .post<ISearchResult>('/search/content', params)
     .then((r) => r.data);

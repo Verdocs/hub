@@ -110,14 +110,7 @@ export interface ISearchResult {
 }
 
 export interface ISearchParams {
-  page?: number;
-  limit?: number;
-  q?: string;
-  tags?: string[];
-  type?: 'template' | 'document' | 'organization';
-  shared?: 'private' | 'shared' | 'public';
-  mine?: boolean;
-  status?: TDocumentStatus | TRecipientStatus;
+  q: string;
 }
 
 export interface IRecentSearch {
