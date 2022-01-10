@@ -1,6 +1,6 @@
 {
   "name": "@verdocs/js-sdk",
-  "version": "1.0.23",
+  "version": "1.0.25",
   "private": false,
   "homepage": "https://github.com/Verdocs/js-sdk",
   "description": "Verdocs JS SDK",
@@ -23,20 +23,20 @@
     "url": "https://github.com/Verdocs/js-sdk/issues"
   },
   "scripts": {
-    "build": "npm run clean && tsc && npm run lint && npm run docs",
+    "build": "npm run clean && npm run docs && tsc && npm run lint",
     "prepare": "npm run build",
     "prepublishOnly": "npm run lint",
-    "OldprepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jestconfig.json",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
-    "docs-md": "typedoc",
-    "docs-html": "typedoc --plugin none --out docs-html",
-    "docs": "npm run docs-md && npm run docs-html && cp -aR docs-html/* ../partner-portal/site/static/js-sdk/",
-    "clean": "rm -rf Documents HTTP Organizations Search Templates Users Utils index.js index.d.ts"
+    "docs-md": "typedoc --tsconfig ./tsconfig-typedoc.json",
+    "docs-html": "typedoc --tsconfig ./tsconfig-typedoc.json --plugin none --out docs-html",
+    "Xdocs-html": "typedoc --tsconfig ./tsconfig-typedoc.json --plugin ./typedoc-theme.tsx --out docs-html",
+    "docs": "rm -rf ../partner-portal/site/static/js-sdk/* && npm run docs-md && npm run docs-html && cp -aR docs-html/* ../partner-portal/site/static/js-sdk/",
+    "clean": "rm -rf Documents HTTP Organizations Search Templates Users Utils index.js index.d.ts docs docs-html"
   },
   "publishConfig": {
     "access": "public"
@@ -51,12 +51,12 @@
     "@types/jest": "^27.0.2",
     "jest": "^27.3.1",
     "jest-mock-axios": "^4.4.1",
-    "prettier": "^2.4.1",
+    "prettier": "^2.5.1",
     "ts-jest": "^27.0.7",
     "tslint": "^6.1.3",
     "tslint-config-prettier": "^1.18.0",
-    "typedoc": "^0.22.9",
-    "typedoc-plugin-markdown": "^3.11.6",
-    "typescript": "^4.4.4"
+    "typedoc": "^0.22.10",
+    "typedoc-plugin-markdown": "^3.11.9",
+    "typescript": "^4.5.4"
   }
 }

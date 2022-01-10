@@ -1,6 +1,9 @@
 import {IGroup, IOrganization} from '../Organizations/Types';
 import {TRequestStatus} from '../HTTP/Types';
 
+/**
+ * An operation within Verdocs the user may perform.
+ */
 export type TPermission =
   | 'org:view'
   | 'member:view'
@@ -27,8 +30,14 @@ export type TPermission =
   | 'org:list'
   | 'org:create';
 
+/**
+ * Plans provide access to Verdocs product features.
+ */
 export type TPlan = 'env:essential' | 'org:standard';
 
+/**
+ * Roles provide access to groups of permissions.
+ */
 export type TRole = 'owner' | 'basic_user' | 'member';
 
 export interface IProfile {
@@ -61,17 +70,19 @@ export interface IProfile {
 }
 
 export interface IActiveSession {
-	  sub: string;
-	  email: string;
-	  email_verified: boolean;
-	  iat: number;
-	  exp: number;
-	  permissions: IPermission[];
-	  roles: IRole[];
-	  profile: IProfile;
-	  profile_id: string;
-	  organization_id: string;
-	  plans?: TPlan[];
+  sub: string;
+  email: string;
+  email_verified: boolean;
+  iat: number;
+  exp: number;
+  permissions: TPermission[];
+  roles: TRole[];
+  profile: IProfile;
+  profile_id: string;
+  organization_id: string;
+  plans?: TPlan[];
+
+  [key: string]: any;
 }
 
 export interface IRole {
