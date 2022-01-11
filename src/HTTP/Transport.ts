@@ -1,6 +1,7 @@
 /**
- * The Transport Endpoint is a global singleton used to call Verdocs APIs. There can only be one Endpoint per application, and
- * its configuration settings are shared for all callers.
+ * The Transport is a global singleton used to call Verdocs APIs. There can only be one Transport per application, and
+ * its configuration settings are shared for all callers. This is a simplified form of the Endpoint class where most
+ * tasks such as general session-token-management are handled automatically for the caller.
  *
  * @module
  */
