@@ -7,10 +7,10 @@ export interface IValidator {
 
 export const getValidators = () =>
   getEndpoint()
-    .get<IValidator[]>('/validators')
+    .api.get<IValidator[]>('/validators')
     .then((r) => r.data);
 
 export const getValidator = (validatorName: string) =>
   getEndpoint()
-    .get<IValidator>(`/validators/${validatorName}`)
+    .api.get<IValidator>(`/validators/${validatorName}`)
     .then((r) => r.data);

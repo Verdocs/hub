@@ -1,8 +1,9 @@
 /**
- * An Endpoint is a specific connection and authorization session for calling the Verdocs APIs. Where the global Transport is generally used
- * to simpliy standard-user operations, Endpoints can be used for isolated session tasks. For instance, ephemeral signing sessions may be
- * created independently of a caller's status as an authenticated user. In that case, an Endpoint can be created and authenticated, used
- * for calls related to signing operations, then discarded once signing is complete.
+ * A VerdocsEndpoint is a specific connection and authorization session for calling the Verdocs APIs. Where the global
+ * Transport is generally used to simpliy standard-user operations, Endpoints can be used for isolated session tasks.
+ * For instance, ephemeral signing sessions may be created independently of a caller's status as an authenticated user.
+ * In that case, an Endpoint can be created and authenticated, used for calls related to signing operations, then
+ * discarded once signing is complete.
  *
  * @module
  */
@@ -15,9 +16,11 @@ const requestLogger = (r: any) => {
   return r;
 };
 
-export class Endpoint {
+export class VerdocsEndpoint {
   baseURL: string;
-  endpoint: AxiosInstance;
+
+  api: AxiosInstance;
+
   requestLoggerId: number | null = null;
 
   /**
@@ -29,10 +32,10 @@ export class Endpoint {
    * console.log('Current timeout', Transport.getEndpoint().defaults.timeout);
    * ```
    */
-  constructor({baseURL}: {baseURL?: string}) {
+  constructor({baseURL}: {baseURL?: string} = {}) {
     this.baseURL = baseURL || 'https://api.verdocs.com/';
 
-    this.endpoint = axios.create({
+    this.api = axios.create({
       baseURL: this.baseURL,
       timeout: 6000,
     });
@@ -49,7 +52,7 @@ export class Endpoint {
    * ```
    */
   setTimeout(timeout: number) {
-    this.endpoint.defaults.timeout = timeout;
+    this.api.defaults.timeout = timeout;
   }
 
   /**
@@ -63,7 +66,7 @@ export class Endpoint {
    * ```
    */
   setClientID(clientID: string) {
-    this.endpoint.defaults.headers['X-Client-ID'] = clientID;
+    this.api.defaults.headers['X-Client-ID'] = clientID;
   }
 
   /**
@@ -78,9 +81,9 @@ export class Endpoint {
    */
   setAuthorization(accessToken: string | null) {
     if (accessToken) {
-      this.endpoint.defaults.headers.Authorization = `Bearer ${accessToken}`;
+      this.api.defaults.headers.Authorization = `Bearer ${accessToken}`;
     } else {
-      delete this.endpoint.defaults.headers.Authorization;
+      delete this.api.defaults.headers.Authorization;
     }
   }
 
@@ -96,9 +99,9 @@ export class Endpoint {
    */
   logRequests(enable: boolean) {
     if (enable && this.requestLoggerId === null) {
-      this.requestLoggerId = this.endpoint.interceptors.request.use(requestLogger);
+      this.requestLoggerId = this.api.interceptors.request.use(requestLogger);
     } else if (!enable && this.requestLoggerId !== null) {
-      this.endpoint.interceptors.request.eject(this.requestLoggerId);
+      this.api.interceptors.request.eject(this.requestLoggerId);
     }
   }
 }

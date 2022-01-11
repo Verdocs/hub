@@ -24,7 +24,7 @@ import {
  */
 export const authenticateUser = (params: IAuthenticateUserRequest) =>
   getEndpoint()
-    .post<IAuthenticateResponse>('/authentication/login', params)
+    .api.post<IAuthenticateResponse>('/authentication/login', params)
     .then((r) => r.data);
 
 /**
@@ -44,7 +44,7 @@ export const authenticateUser = (params: IAuthenticateUserRequest) =>
  */
 export const authenticateApp = (params: IAuthenticateAppRequest): Promise<IAuthenticateResponse> =>
   getEndpoint()
-    .post('/authentication/login_client', {}, {headers: params})
+    .api.post('/authentication/login_client', {}, {headers: params})
     .then((r) => r.data);
 
 /**
@@ -63,7 +63,7 @@ export const authenticateApp = (params: IAuthenticateAppRequest): Promise<IAuthe
  */
 export const validateToken = (params: TokenValidationRequest): Promise<TokenValidationResponse> =>
   getEndpoint()
-    .post('/token/isValid', params)
+    .api.post('/token/isValid', params)
     .then((r) => r.data);
 
 /**
@@ -79,7 +79,7 @@ export const validateToken = (params: TokenValidationRequest): Promise<TokenVali
  */
 export const refreshTokens = (): Promise<IAuthenticateResponse> =>
   getEndpoint()
-    .get('/token')
+    .api.get('/token')
     .then((r) => r.data);
 
 /**
@@ -96,7 +96,7 @@ export const refreshTokens = (): Promise<IAuthenticateResponse> =>
  */
 export const updatePassword = (params: UpdatePasswordRequest): Promise<UpdatePasswordResponse> =>
   getEndpoint()
-    .put('/user/update_password', params)
+    .api.put('/user/update_password', params)
     .then((r) => r.data);
 
 /**
@@ -110,5 +110,5 @@ export const updatePassword = (params: UpdatePasswordRequest): Promise<UpdatePas
  */
 export const updateEmail = (params: UpdateEmailRequest): Promise<UpdateEmailResponse> =>
   getEndpoint()
-    .put('/user/update_email', params)
+    .api.put('/user/update_email', params)
     .then((r) => r.data);

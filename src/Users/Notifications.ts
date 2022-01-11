@@ -2,5 +2,5 @@ import {getEndpoint} from '../HTTP/Transport';
 
 export const getNotifications = async () =>
   getEndpoint()
-    .get('/notifications')
+    .api.get('/notifications')
     .then((r) => r.data);

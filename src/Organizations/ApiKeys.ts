@@ -25,7 +25,7 @@ import {IApiKey, IApiKeyWithSecret, ICreateApiKeyRequest, IUpdateApiKeyRequest} 
  */
 export const getKeys = (organizationId: string) =>
   getEndpoint()
-    .get<IApiKey[]>(`/organizations/${organizationId}/api_key`)
+    .api.get<IApiKey[]>(`/organizations/${organizationId}/api_key`)
     .then((r) => r.data);
 
 /**
@@ -39,7 +39,7 @@ export const getKeys = (organizationId: string) =>
  */
 export const createKey = (organizationId: string, params: ICreateApiKeyRequest) =>
   getEndpoint()
-    .post<IApiKeyWithSecret>(`/organizations/${organizationId}/api_key`, params)
+    .api.post<IApiKeyWithSecret>(`/organizations/${organizationId}/api_key`, params)
     .then((r) => r.data);
 
 /**
@@ -53,7 +53,7 @@ export const createKey = (organizationId: string, params: ICreateApiKeyRequest) 
  */
 export const rotateKey = (organizationId: string, clientId: string) =>
   getEndpoint()
-    .put<IApiKeyWithSecret>(`/organizations/${organizationId}/api_key/${clientId}/rotate`)
+    .api.put<IApiKeyWithSecret>(`/organizations/${organizationId}/api_key/${clientId}/rotate`)
     .then((r) => r.data);
 
 /**
@@ -67,7 +67,7 @@ export const rotateKey = (organizationId: string, clientId: string) =>
  */
 export const updateKey = (organizationId: string, clientId: string, params: IUpdateApiKeyRequest) =>
   getEndpoint()
-    .patch<IApiKey>(`/organizations/${organizationId}/api_key/${clientId}`, params)
+    .api.patch<IApiKey>(`/organizations/${organizationId}/api_key/${clientId}`, params)
     .then((r) => r.data);
 
 /**
@@ -81,5 +81,5 @@ export const updateKey = (organizationId: string, clientId: string, params: IUpd
  */
 export const deleteKey = (organizationId: string, clientId: string) =>
   getEndpoint()
-    .delete(`/organizations/${organizationId}/api_key/${clientId}`)
+    .api.delete(`/organizations/${organizationId}/api_key/${clientId}`)
     .then((r) => r.data);

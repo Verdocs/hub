@@ -12,7 +12,7 @@ import {IDocument} from './Types';
  */
 export const getDocuments = (templateId: string) =>
   getEndpoint()
-    .get(`/templates/${templateId}/documents/`)
+    .api.get(`/templates/${templateId}/documents/`)
     .then((r) => r.data);
 
 /**
@@ -26,7 +26,7 @@ export const getDocuments = (templateId: string) =>
  */
 export const createDocument = (templateId: string, params: any) =>
   getEndpoint()
-    .post<IDocument>(`/templates/${templateId}/documents/`, params)
+    .api.post<IDocument>(`/templates/${templateId}/documents/`, params)
     .then((r) => r.data);
 
 /**
@@ -40,7 +40,7 @@ export const createDocument = (templateId: string, params: any) =>
  */
 export const getDocument = (templateId: string, documentId: string) =>
   getEndpoint()
-    .get<IDocument>(`/templates/${templateId}/documents/${documentId}`)
+    .api.get<IDocument>(`/templates/${templateId}/documents/${documentId}`)
     .then((r) => r.data);
 
 /**
@@ -54,5 +54,5 @@ export const getDocument = (templateId: string, documentId: string) =>
  */
 export const deleteDocument = (templateId: string, documentId: string) =>
   getEndpoint()
-    .delete(`/templates/${templateId}/documents/${documentId}`)
+    .api.delete(`/templates/${templateId}/documents/${documentId}`)
     .then((r) => r.data);

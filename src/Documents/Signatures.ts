@@ -10,20 +10,20 @@ export interface ISignature {
 
 export const createSignature = (params: any) =>
   getEndpoint()
-    .post<ISignature>('/signatures', params)
+    .api.post<ISignature>('/signatures', params)
     .then((r) => r.data);
 
 export const getSignatures = () =>
   getEndpoint()
-    .get<ISignature[]>('/signatures')
+    .api.get<ISignature[]>('/signatures')
     .then((r) => r.data);
 
 export const getSignature = (signatureId: string) =>
   getEndpoint()
-    .get(`/signatures/${signatureId}`)
+    .api.get(`/signatures/${signatureId}`)
     .then((r) => r.data);
 
 export const deleteSignature = (signatureId: string) =>
   getEndpoint()
-    .delete(`/signatures/${signatureId}`)
+    .api.delete(`/signatures/${signatureId}`)
     .then((r) => r.data);

@@ -20,7 +20,7 @@ import {IGroup} from '../Organizations/Types';
  */
 export const getProfiles = () =>
   getEndpoint()
-    .get<IProfile[]>('/profiles')
+    .api.get<IProfile[]>('/profiles')
     .then((r: any) => r.data);
 
 /**
@@ -34,7 +34,7 @@ export const getProfiles = () =>
  */
 export const getRoles = () =>
   getEndpoint()
-    .get<IRole[]>('/roles')
+    .api.get<IRole[]>('/roles')
     .then((r: any) => r.data);
 
 /**
@@ -48,7 +48,7 @@ export const getRoles = () =>
  */
 export const getPermissions = () =>
   getEndpoint()
-    .get<IPermission[]>('/permissions')
+    .api.get<IPermission[]>('/permissions')
     .then((r: any) => r.data);
 
 /**
@@ -62,7 +62,7 @@ export const getPermissions = () =>
  */
 export const createProfile = (params: ICreateProfileRequest) =>
   getEndpoint()
-    .post<IProfile>('/profiles', params)
+    .api.post<IProfile>('/profiles', params)
     .then((r: any) => r.data);
 
 /**
@@ -77,7 +77,7 @@ export const createProfile = (params: ICreateProfileRequest) =>
  */
 export const getProfile = (profileId: string) =>
   getEndpoint()
-    .get<IProfile>(`/profiles/${profileId}`)
+    .api.get<IProfile>(`/profiles/${profileId}`)
     .then((r: any) => r.data);
 
 /**
@@ -91,7 +91,7 @@ export const getProfile = (profileId: string) =>
  */
 export const getProfilePermissions = (profileId: string) =>
   getEndpoint()
-    .get<IPermission[]>(`/profiles/${profileId}/permissions`)
+    .api.get<IPermission[]>(`/profiles/${profileId}/permissions`)
     .then((r: any) => r.data);
 
 /**
@@ -105,7 +105,7 @@ export const getProfilePermissions = (profileId: string) =>
  */
 export const getProfileGroups = (profileId: string) =>
   getEndpoint()
-    .get<IGroup[]>(`/profiles/${profileId}/groups`)
+    .api.get<IGroup[]>(`/profiles/${profileId}/groups`)
     .then((r: any) => r.data);
 
 /**
@@ -120,7 +120,7 @@ export const getProfileGroups = (profileId: string) =>
  */
 export const switchProfile = (profileId: string) =>
   getEndpoint()
-    .post<ISwitchProfileResponse>(`/profiles/${profileId}/switch`)
+    .api.post<ISwitchProfileResponse>(`/profiles/${profileId}/switch`)
     .then((r: any) => r.data);
 
 /**
@@ -135,7 +135,7 @@ export const switchProfile = (profileId: string) =>
  */
 export const updateProfile = (profileId: string, params: IUpdateProfileRequest) =>
   getEndpoint()
-    .put<IProfile>(`/profiles/${profileId}`, params)
+    .api.put<IProfile>(`/profiles/${profileId}`, params)
     .then((r: any) => r.data);
 
 /**
@@ -149,5 +149,5 @@ export const updateProfile = (profileId: string, params: IUpdateProfileRequest) 
  */
 export const deleteProfile = (profileId: string) =>
   getEndpoint()
-    .delete(`/profiles/${profileId}`)
+    .api.delete(`/profiles/${profileId}`)
     .then((r: any) => r.data);

@@ -22,7 +22,7 @@ import {IGroup, IGroupDetail} from './Types';
  */
 export const getGroups = (organizationId: string) =>
   getEndpoint()
-    .get<IGroup[]>(`/organizations/${organizationId}/groups`)
+    .api.get<IGroup[]>(`/organizations/${organizationId}/groups`)
     .then((r) => r.data);
 
 /**
@@ -36,30 +36,30 @@ export const getGroups = (organizationId: string) =>
  */
 export const getGroup = (organizationId: string, groupId: string) =>
   getEndpoint()
-    .get<IGroupDetail>(`/organizations/${organizationId}/groups/${groupId}`)
+    .api.get<IGroupDetail>(`/organizations/${organizationId}/groups/${groupId}`)
     .then((r) => r.data);
 
 export const getMembers = (organizationId: string, groupId: string) =>
   getEndpoint()
-    .get(`/organizations/${organizationId}/groups/${groupId}/members`)
+    .api.get(`/organizations/${organizationId}/groups/${groupId}/members`)
     .then((r) => r.data);
 
 export const addMembers = (organizationId: string, groupId: string, params: any) =>
   getEndpoint()
-    .post(`/organizations/${organizationId}/groups/${groupId}/members`, params)
+    .api.post(`/organizations/${organizationId}/groups/${groupId}/members`, params)
     .then((r) => r.data);
 
 export const deleteMembers = (organizationId: string, groupId: string, params: any) =>
   getEndpoint()
-    .put(`/organizations/${organizationId}/groups/${groupId}/delete_members`, params)
+    .api.put(`/organizations/${organizationId}/groups/${groupId}/delete_members`, params)
     .then((r) => r.data);
 
 export const addPermission = (organizationId: string, groupId: string, permissionId: string, params: any) =>
   getEndpoint()
-    .post(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`, params)
+    .api.post(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`, params)
     .then((r) => r.data);
 
 export const deletePermission = (organizationId: string, groupId: string, permissionId: string) =>
   getEndpoint()
-    .delete(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`)
+    .api.delete(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`)
     .then((r) => r.data);

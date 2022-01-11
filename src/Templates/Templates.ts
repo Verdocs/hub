@@ -4,22 +4,22 @@ import {ITemplate, ITemplatesSearchResult, ITemplatesSummary} from './Types';
 
 export const getTemplates = () =>
   getEndpoint()
-    .get<any[]>('/templates/')
+    .api.get<any[]>('/templates/')
     .then((r) => r.data);
 
 export const getTemplate = (templateId: string) =>
   getEndpoint()
-    .get(`/templates/${templateId}`)
+    .api.get(`/templates/${templateId}`)
     .then((r) => r.data);
 
 export const createTemplate = (params: any) =>
   getEndpoint()
-    .post<ITemplate>('/templates/', params)
+    .api.post<ITemplate>('/templates/', params)
     .then((r) => r.data);
 
 export const editTemplate = (templateId: string, params: any) =>
   getEndpoint()
-    .put<ITemplate>(`/templates/${templateId}`, params)
+    .api.put<ITemplate>(`/templates/${templateId}`, params)
     .then((r) => r.data);
 
 /**
@@ -33,10 +33,10 @@ export const editTemplate = (templateId: string, params: any) =>
  */
 export const searchTemplates = async (params: any): Promise<ITemplatesSearchResult> =>
   getEndpoint()
-    .post('/templates/search', params)
+    .api.post('/templates/search', params)
     .then((r) => r.data);
 
 export const getSummary = async (page: number): Promise<ITemplatesSummary> =>
   getEndpoint()
-    .post('/templates/summary', {page})
+    .api.post('/templates/summary', {page})
     .then((r) => r.data);

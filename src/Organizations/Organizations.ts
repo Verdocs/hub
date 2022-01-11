@@ -9,30 +9,30 @@ import {IOrganization} from './Types';
 
 export const getOrganizations = () =>
   getEndpoint()
-    .get<IOrganization[]>('/organizations')
+    .api.get<IOrganization[]>('/organizations')
     .then((r) => r.data);
 
 export const createOrganization = () =>
   getEndpoint()
-    .post<IOrganization>('/organizations')
+    .api.post<IOrganization>('/organizations')
     .then((r) => r.data);
 
 export const validateOrganization = () =>
   getEndpoint()
-    .get<IOrganization>('/organizations/is_valid')
+    .api.get<IOrganization>('/organizations/is_valid')
     .then((r) => r.data);
 
 export const deleteOrganization = (organizationId: string) =>
   getEndpoint()
-    .delete(`/organizations/${organizationId}`)
+    .api.delete(`/organizations/${organizationId}`)
     .then((r) => r.data);
 
 export const getOrganization = (organizationId: string) =>
   getEndpoint()
-    .get(`/organizations/${organizationId}`)
+    .api.get(`/organizations/${organizationId}`)
     .then((r) => r.data);
 
 export const updateOrganization = (organizationId: string, params: any) =>
   getEndpoint()
-    .patch(`/organizations/${organizationId}`, params)
+    .api.patch(`/organizations/${organizationId}`, params)
     .then((r) => r.data);

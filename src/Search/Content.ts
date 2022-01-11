@@ -21,7 +21,7 @@ import {getEndpoint} from '../HTTP/Transport';
  */
 export const getSearchHistory = async () =>
   getEndpoint()
-    .get<ISearchHistory>('/search/history')
+    .api.get<ISearchHistory>('/search/history')
     .then((r) => r.data);
 
 /**
@@ -35,7 +35,7 @@ export const getSearchHistory = async () =>
  */
 export const saveSearch = async (name: string, params: ISearchParams) =>
   getEndpoint()
-    .post<ISavedSearch>('/search/saved', {name, params})
+    .api.post<ISavedSearch>('/search/saved', {name, params})
     .then((r) => r.data);
 
 /**
@@ -49,5 +49,5 @@ export const saveSearch = async (name: string, params: ISearchParams) =>
  */
 export const searchContent = async (params: ISearchParams) =>
   getEndpoint()
-    .post<ISearchResult>('/search/content', params)
+    .api.post<ISearchResult>('/search/content', params)
     .then((r) => r.data);

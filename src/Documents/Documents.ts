@@ -1,4 +1,5 @@
 import {getEndpoint} from '../HTTP/Transport';
+import {ISigningSession, ISigningSessionRequest} from './Types';
 
 export type TDocumentStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
 
@@ -59,10 +60,10 @@ export interface IRecipient {
   email: string;
   envelope_id: string;
   full_name: string;
-  in_app_access_key: string;
-  key_used_to_conclude: string;
+  in_app_access_key?: string;
+  key_used_to_conclude?: string;
   message: string | null;
-  phone: string;
+  phone: string | null;
   profile_id: string;
   role_name: string;
   sequence: number;
@@ -148,7 +149,7 @@ export type IEventDetail = 'in_app' | 'mail' | 'signer' | '';
  */
 export const getSummary = async (page: number) =>
   getEndpoint()
-    .post<IDocumentsSummary>('/documents/summary', {page})
+    .api.post<IDocumentsSummary>('/documents/summary', {page})
     .then((r) => r.data);
 
 /**
@@ -162,5 +163,28 @@ export const getSummary = async (page: number) =>
  */
 export const searchDocuments = async (params: any) =>
   getEndpoint()
-    .post<IDocumentsSearchResult>('/documents/search', params)
+    .api.post<IDocumentsSearchResult>('/documents/search', params)
+    .then((r) => r.data);
+
+/**
+ * Get a signing session for a document.
+ */
+export const getSigningSession = async (
+  params: ISigningSessionRequest,
+): Promise<{recipient: IRecipient; session: ISigningSession}> =>
+  getEndpoint()
+    .api.get<IRecipient>(
+      `/documents/${params.documentId}/recipients/${encodeURIComponent(params.roleId)}/invitation/${params.inviteCode}`,
+    )
+    .then((r) => {
+      // Avoiding a jsonwebtoken dependency here - we don't actually need the whole library
+      const signerToken = r.headers?.signer_token || '';
+      const session = JSON.parse(atob(signerToken.split('.')[1]));
+
+      return {recipient: r.data, session};
+    });
+
+export const getDocumentRecipients = async (documentId: string): Promise<IRecipient[]> =>
+  getEndpoint()
+    .api.get<IRecipient[]>(`/documents/${documentId}/recipients`)
     .then((r) => r.data);

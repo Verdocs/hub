@@ -22,7 +22,7 @@ import {getEndpoint} from '../HTTP/Transport';
  */
 export const setWhitelabel = () =>
   getEndpoint()
-    .post('/whitelabel')
+    .api.post('/whitelabel')
     .then((r) => r.data);
 
 /**
@@ -36,5 +36,5 @@ export const setWhitelabel = () =>
  */
 export const getWhitelabel = () =>
   getEndpoint()
-    .get('/whitelabel')
+    .api.get('/whitelabel')
     .then((r) => r.data);
