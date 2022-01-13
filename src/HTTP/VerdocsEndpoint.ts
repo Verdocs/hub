@@ -17,8 +17,6 @@ const requestLogger = (r: any) => {
 };
 
 export class VerdocsEndpoint {
-  baseURL: string;
-
   api: AxiosInstance;
 
   requestLoggerId: number | null = null;
@@ -32,12 +30,10 @@ export class VerdocsEndpoint {
    * console.log('Current timeout', Transport.getEndpoint().defaults.timeout);
    * ```
    */
-  constructor({baseURL}: {baseURL?: string} = {}) {
-    this.baseURL = baseURL || 'https://api.verdocs.com/';
-
+  constructor({baseURL, timeout}: {baseURL?: string; timeout?: number} = {}) {
     this.api = axios.create({
-      baseURL: this.baseURL,
-      timeout: 6000,
+      baseURL: baseURL || 'https://api.verdocs.com',
+      timeout: timeout || 6000,
     });
   }
 
@@ -85,6 +81,20 @@ export class VerdocsEndpoint {
     } else {
       delete this.api.defaults.headers.Authorization;
     }
+  }
+
+  /**
+   * Set the base URL for API calls. May also be set via the constructor.
+   *
+   * ```typescript
+   * import {Endpoint} from '@verdocs/js-sdk/HTTP';
+   *
+   * const endpoint = new Endpoint();
+   * endpoint.setBaseURL('https://api.verdocs.com');
+   * ```
+   */
+  setBaseURL(url: string) {
+    this.api.defaults.baseURL = url;
   }
 
   /**

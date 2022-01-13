@@ -1,15 +1,15 @@
-import {getEndpoint} from '../HTTP/Transport';
 import {
+  IActiveSession,
   IAuthenticateAppRequest,
-  IAuthenticateResponse,
   IAuthenticateUserRequest,
   TokenValidationRequest,
-  TokenValidationResponse,
   UpdateEmailRequest,
-  UpdateEmailResponse,
-  UpdatePasswordRequest,
-  UpdatePasswordResponse,
 } from './Types';
+import {IAuthenticateResponse, TokenValidationResponse, UpdateEmailResponse, UpdatePasswordResponse} from './Types';
+import {UpdatePasswordRequest} from './Types';
+import {getEndpoint} from '../HTTP/Transport';
+import {ISigningSession} from '../Documents/Types';
+import {decodeAccessTokenBody} from '../Utils/Token';
 
 /**
  * Authenticate to Verdocs via user/password authentication
@@ -112,3 +112,64 @@ export const updateEmail = (params: UpdateEmailRequest): Promise<UpdateEmailResp
   getEndpoint()
     .api.put('/user/update_email', params)
     .then((r) => r.data);
+
+export type TSession = IActiveSession | ISigningSession | null;
+
+const clearSession = (source: string, persist: boolean) => {
+  getEndpoint().setAuthorization(null);
+
+  if (persist) {
+    localStorage.removeItem(source);
+  }
+
+  return null;
+};
+
+/**
+ * Parses and sets the active session, optionally persisting (brower-only, persists to localStorage).
+ */
+export const setSession = (source: string, token: string | null, persist: boolean = false): TSession => {
+  if (token === null) {
+    return clearSession(source, persist);
+  }
+
+  const session = decodeAccessTokenBody(token || '') as TSession;
+  if (session === null || (session.exp && session.exp * 1000 < new Date().getTime())) {
+    return clearSession(source, persist);
+  }
+
+  if (persist) {
+    localStorage.setItem(source, token);
+  }
+
+  getEndpoint().setAuthorization(token);
+  return session;
+};
+
+/**
+ * Load a session from localStorage
+ */
+export const loadSession = (source: string): IActiveSession | ISigningSession | null => {
+  const token = localStorage.getItem(source);
+  if (!token) {
+    return null;
+  }
+
+  const session = decodeAccessTokenBody(token) as IActiveSession | ISigningSession | null;
+  if (!session) {
+    return null;
+  }
+
+  if (session.exp && session.exp * 1000 < new Date().getTime()) {
+    localStorage.removeItem(source);
+    return null;
+  }
+
+  getEndpoint().setAuthorization(token);
+  return session;
+};
+
+/**
+ * End the active session.
+ */
+export const endSession = (source: string, persist: boolean = false) => clearSession(source, persist);

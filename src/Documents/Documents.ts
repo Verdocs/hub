@@ -1,5 +1,6 @@
-import {getEndpoint} from '../HTTP/Transport';
 import {ISigningSession, ISigningSessionRequest} from './Types';
+import {getEndpoint} from '../HTTP/Transport';
+import {decodeAccessTokenBody} from '../Utils/Token';
 
 export type TDocumentStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
 
@@ -166,12 +167,16 @@ export const searchDocuments = async (params: any) =>
     .api.post<IDocumentsSearchResult>('/documents/search', params)
     .then((r) => r.data);
 
+export interface ISigningSessionResult {
+  recipient: IRecipient;
+  session: ISigningSession;
+  signerToken: string;
+}
+
 /**
  * Get a signing session for a document.
  */
-export const getSigningSession = async (
-  params: ISigningSessionRequest,
-): Promise<{recipient: IRecipient; session: ISigningSession}> =>
+export const getSigningSession = async (params: ISigningSessionRequest): Promise<ISigningSessionResult> =>
   getEndpoint()
     .api.get<IRecipient>(
       `/documents/${params.documentId}/recipients/${encodeURIComponent(params.roleId)}/invitation/${params.inviteCode}`,
@@ -179,12 +184,26 @@ export const getSigningSession = async (
     .then((r) => {
       // Avoiding a jsonwebtoken dependency here - we don't actually need the whole library
       const signerToken = r.headers?.signer_token || '';
-      const session = JSON.parse(atob(signerToken.split('.')[1]));
+      const session = decodeAccessTokenBody(signerToken) as ISigningSession;
 
-      return {recipient: r.data, session};
+      getEndpoint().setAuthorization(r.headers?.signer_token);
+
+      return {recipient: r.data, session, signerToken};
     });
 
 export const getDocumentRecipients = async (documentId: string): Promise<IRecipient[]> =>
   getEndpoint()
     .api.get<IRecipient[]>(`/documents/${documentId}/recipients`)
     .then((r) => r.data);
+
+export const getDocument = async (documentId: string): Promise<IDocument> =>
+  getEndpoint()
+    .api.get<IDocument>(`/documents/${documentId}`)
+    .then((r) => r.data);
+
+export const getDocumentFile = async (documentId: string, envelopeDocumentId: string): Promise<string> =>
+  getEndpoint()
+    .api.get<string>(`/documents/${documentId}/envelope_documents/${envelopeDocumentId}?file=true`, {
+      responseType: 'arraybuffer',
+    })
+    .then((r) => Buffer.from(r.data, 'binary').toString('base64'));

@@ -1,6 +1,6 @@
 {
   "name": "@verdocs/js-sdk",
-  "version": "1.0.28",
+  "version": "1.1.7",
   "private": false,
   "homepage": "https://github.com/Verdocs/js-sdk",
   "description": "Verdocs JS SDK",
@@ -36,6 +36,8 @@
     "docs-html": "typedoc --tsconfig ./tsconfig-typedoc.json --plugin none --out docs-html",
     "Xdocs-html": "typedoc --tsconfig ./tsconfig-typedoc.json --plugin ./typedoc-theme.tsx --out docs-html",
     "docs": "rm -rf ../partner-portal/site/static/js-sdk/* && npm run docs-md && npm run docs-html && cp -aR docs-html/* ../partner-portal/site/static/js-sdk/",
+    "clear-docs": "aws --profile=verdocs cloudfront create-invalidation --distribution-id E29UFGU4KEH1GQ --paths \"/*\"",
+    "deploy-docs": "npm run docs && aws --profile=verdocs s3 sync --acl public-read --delete docs-html s3://verdocs-developers-js-sdk/ && yarn clear-docs",
     "clean": "rm -rf Documents HTTP Organizations Search Templates Users Utils index.js index.d.ts docs docs-html"
   },
   "publishConfig": {
