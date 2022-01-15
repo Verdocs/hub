@@ -1,5 +1,5 @@
 export interface ITemplate {
-  template_document?: IDocument;
+  template_document?: ITemplateAsset;
   pages?: IPage[];
   roles?: IRole[];
   counter?: number;
@@ -56,6 +56,26 @@ export enum TemplatePermissions {
   TEMPLATE_MEMBER_WRITE = 'template:member:write',
   TEMPLATE_MEMBER_DELETE = 'template:member:delete',
   TEMPLATE_MEMBER_VISIBILITY = 'template:member:visibility',
+}
+
+export enum TemplateSenderTypes {
+  CREATOR = 'creator', // same as legacy
+  ORGANIZATION_MEMBER = 'organization_member',
+  ORGANIZATION_MEMBER_AS_CREATOR = 'organization_member_as_creator',
+  EVERYONE = 'everyone',
+  EVERYONE_AS_CREATOR = 'everyone_as_creator', // Creator would be sender of envelope no matter who creates the envelope
+}
+
+export enum TemplateActions {
+  CREATE_PERSONAL = 'create_personal',
+  CREATE_ORG = 'create_org',
+  CREATE_PUBLIC = 'create_public',
+  READ = 'read',
+  WRITE = 'write',
+  DELETE = 'delete',
+  CHANGE_VISIBILITY_PERSONAL = 'change_visibility_personal',
+  CHANGE_VISIBILITY_ORG = 'change_visibility_org',
+  CHANGE_VISIBILITY_PUBLIC = 'change_visibility_public',
 }
 
 export interface ITemplateSearchParams {
@@ -127,13 +147,14 @@ export interface IRole {
   email?: string;
   type: string;
   sequence: number;
-  fields?: IField[];
+  fields?: ITemplateField[];
   delegator?: boolean;
   message?: string;
   phone?: string;
+  rgba?: string;
 }
 
-export interface IDocument {
+export interface ITemplateAsset {
   url: string;
   name: string;
   page_numbers: number;
@@ -145,7 +166,7 @@ export interface IDocument {
   thumbnail_url: string;
 }
 
-export interface IField {
+export interface ITemplateField {
   name: string;
   role_name: string;
   template_id: string;
@@ -166,16 +187,18 @@ export interface ISetting {
   type?: string;
   options?: any[];
   value?: string;
+
+  [key: string]: any;
 }
 
 export interface IPage {
   template_id: string;
   document_id: string;
-  template_document?: IDocument;
+  template_document?: ITemplateAsset;
   sequence: number;
   page_number: number;
   thumbnail_url: string;
-  fields?: IField[];
+  fields?: ITemplateField[];
 }
 
 export interface IReminder {

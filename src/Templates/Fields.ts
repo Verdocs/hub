@@ -1,14 +1,14 @@
 import {getEndpoint} from '../HTTP/Transport';
-import {IField} from './Types';
+import {ITemplateField} from './Types';
 
-export const createField = (templateId: string, params: IField) =>
+export const createField = (templateId: string, params: ITemplateField) =>
   getEndpoint()
-    .api.post<IField>(`/templates/${templateId}/pages/`, params)
+    .api.post<ITemplateField>(`/templates/${templateId}/pages/`, params)
     .then((r) => r.data);
 
-export const editField = (templateId: string, fieldName: string, params: IField) =>
+export const editField = (templateId: string, fieldName: string, params: ITemplateField) =>
   getEndpoint()
-    .api.put<IField>(`/templates/${templateId}/pages/${fieldName}`, params)
+    .api.put<ITemplateField>(`/templates/${templateId}/pages/${fieldName}`, params)
     .then((r) => r.data);
 
 export const deleteField = (templateId: string, fieldName: string) =>

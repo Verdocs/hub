@@ -1,5 +1,5 @@
 import {getEndpoint} from '../HTTP/Transport';
-import {IDocument} from './Types';
+import {ITemplateAsset} from './Types';
 
 /**
  * Get all the Documents associated to a particular Template.
@@ -26,7 +26,7 @@ export const getDocuments = (templateId: string) =>
  */
 export const createDocument = (templateId: string, params: any) =>
   getEndpoint()
-    .api.post<IDocument>(`/templates/${templateId}/documents/`, params)
+    .api.post<ITemplateAsset>(`/templates/${templateId}/documents/`, params)
     .then((r) => r.data);
 
 /**
@@ -40,7 +40,7 @@ export const createDocument = (templateId: string, params: any) =>
  */
 export const getDocument = (templateId: string, documentId: string) =>
   getEndpoint()
-    .api.get<IDocument>(`/templates/${templateId}/documents/${documentId}`)
+    .api.get<ITemplateAsset>(`/templates/${templateId}/documents/${documentId}`)
     .then((r) => r.data);
 
 /**

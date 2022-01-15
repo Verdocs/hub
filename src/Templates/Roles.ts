@@ -1,5 +1,5 @@
 import {getEndpoint} from '../HTTP/Transport';
-import {IField, IRole} from './Types';
+import {ITemplateField, IRole} from './Types';
 
 export const createRole = (templateId: string, params: IRole) =>
   getEndpoint()
@@ -28,7 +28,7 @@ export const deleteRole = (templateId: string, roleName: string) =>
 
 export const getRoleFields = (templateId: string, roleName: string) =>
   getEndpoint()
-    .api.get<IField[]>(`/templates/${templateId}/roles/${roleName}/fields`)
+    .api.get<ITemplateField[]>(`/templates/${templateId}/roles/${roleName}/fields`)
     .then((r) => r.data);
 
 export const deleteSequence = (templateId: string) =>

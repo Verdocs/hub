@@ -1,6 +1,7 @@
 import {ISigningSession, ISigningSessionRequest} from './Types';
 import {getEndpoint} from '../HTTP/Transport';
 import {decodeAccessTokenBody} from '../Utils/Token';
+import {ISetting} from '../Templates/Types';
 
 export type TDocumentStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
 
@@ -73,6 +74,33 @@ export interface IRecipient {
   updated_at: string;
 }
 
+export interface IDocumentAsset {
+  created_at: string;
+  id: string;
+  mime: string;
+  name: string;
+  page_numbers: number;
+  updated_at: string;
+  url: string;
+}
+
+export interface IDocumentField {
+  envelope_id: string;
+  label: string | null;
+  name: string;
+  page: number;
+  recipient_role: string;
+  type: string;
+  required: boolean;
+  settings?: ISetting;
+  // DEPRECATED
+  setting?: ISetting;
+  validator: string | null;
+
+  // Not sent by the server. Used in the UI to identify prepared fields.
+  prepared?: boolean;
+}
+
 export interface IDocument {
   id: string;
   created_at: string;
@@ -89,6 +117,10 @@ export interface IDocument {
   template_id: string;
   updated_at: string;
   organization_id: string | null;
+
+  certificate?: IDocumentAsset | null;
+  document?: IDocumentAsset | null;
+  fields?: IDocumentField[];
 }
 
 export interface IActivityEntry {
