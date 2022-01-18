@@ -1,7 +1,7 @@
 import {ISigningSession, ISigningSessionRequest} from './Types';
 import {getEndpoint} from '../HTTP/Transport';
 import {decodeAccessTokenBody} from '../Utils/Token';
-import {ISetting} from '../Templates/Types';
+import {IFieldSetting} from '../Templates/Types';
 
 export type TDocumentStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
 
@@ -92,9 +92,9 @@ export interface IDocumentField {
   recipient_role: string;
   type: string;
   required: boolean;
-  settings?: ISetting;
+  settings?: IFieldSetting;
   // DEPRECATED
-  setting?: ISetting;
+  setting?: IFieldSetting;
   validator: string | null;
 
   // Not sent by the server. Used in the UI to identify prepared fields.
@@ -239,3 +239,13 @@ export const getDocumentFile = async (documentId: string, envelopeDocumentId: st
       responseType: 'arraybuffer',
     })
     .then((r) => Buffer.from(r.data, 'binary').toString('base64'));
+
+export const updateDocumentField = async (documentId: string, fieldName: string, value: any) =>
+  getEndpoint()
+    .api.put<IFieldSetting>(`/documents/${documentId}/fields/${fieldName}`, value)
+    .then((r) => r.data);
+
+export const updateDocumentFieldSignature = async (documentId: string, fieldName: string, signatureId: string) =>
+  getEndpoint()
+    .api.put<IFieldSetting>(`/documents/${documentId}/fields/${fieldName}/signature/${signatureId}`)
+    .then((r) => r.data);

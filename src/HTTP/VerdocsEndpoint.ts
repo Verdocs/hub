@@ -84,6 +84,25 @@ export class VerdocsEndpoint {
   }
 
   /**
+   * Set the auth token used for signing sessions. Separating user from signing auth allows the same endpoint to be
+   * used for multiple operations, although it is recommended that a separate endpoint be created for each operation.
+   *
+   * ```typescript
+   * import {Endpoint} from '@verdocs/js-sdk/HTTP';
+   *
+   * const endpoint = new Endpoint();
+   * endpoint.setSigningAuthorization(accessToken);
+   * ```
+   */
+  setSigningAuthorization(accessToken: string | null) {
+    if (accessToken) {
+      this.api.defaults.headers.signer = `Bearer ${accessToken}`;
+    } else {
+      delete this.api.defaults.headers.signer;
+    }
+  }
+
+  /**
    * Set the base URL for API calls. May also be set via the constructor.
    *
    * ```typescript

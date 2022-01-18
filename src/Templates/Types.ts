@@ -1,3 +1,5 @@
+import {IOrganization} from '../Organizations/Types';
+
 export interface ITemplate {
   template_document?: ITemplateAsset;
   pages?: IPage[];
@@ -7,9 +9,9 @@ export interface ITemplate {
   name: string;
   id?: string;
   profile_id?: string;
-  created_at?: Date;
-  updated_at?: Date;
-  last_used_at?: Date;
+  created_at?: string;
+  updated_at?: string;
+  last_used_at?: string;
   token?: string;
   reminder_id?: string;
   reminder?: IReminder;
@@ -18,6 +20,8 @@ export interface ITemplate {
   is_public?: boolean;
   sender?: TTemplateSender;
   description?: string;
+  // TODO: Add to all API endpoint returns
+  organization?: IOrganization;
 }
 
 export interface ITemplateSummaryEntry {
@@ -132,7 +136,7 @@ export interface ITag {
 export interface ITags {
   name: string;
   featured?: boolean;
-  created_at?: Date;
+  created_at?: string;
 }
 
 export interface IStar {
@@ -159,8 +163,8 @@ export interface ITemplateAsset {
   name: string;
   page_numbers: number;
   id?: string;
-  updated_at?: Date;
-  created_at?: Date;
+  updated_at?: string;
+  created_at?: string;
   template_id: string;
   mime: string;
   thumbnail_url: string;
@@ -172,21 +176,35 @@ export interface ITemplateField {
   template_id: string;
   type: string;
   required: boolean;
-  setting?: ISetting;
+  setting?: IFieldSetting;
   page_sequence: number;
   validator?: string;
   label?: string;
 }
 
-export interface ISetting {
-  x?: number;
-  y?: number;
+export interface IFieldSetting {
+  x: number;
+  y: number;
   width?: number;
   height?: number;
-  result?: string;
+  result?: any;
   type?: string;
-  options?: any[];
   value?: string;
+
+  // Text field settings
+  leading?: number;
+  alignment?: number;
+  upperCase?: boolean;
+
+  // Dropdowns, checkboxes, radio groups
+  options?: any[];
+
+  // Signatures and Initials, result will be "signed"
+  base64?: string;
+  hash?: string;
+  ip_address?: string;
+  signature_id?: string;
+  signed_at?: string;
 
   [key: string]: any;
 }
@@ -203,7 +221,7 @@ export interface IPage {
 
 export interface IReminder {
   id?: string;
-  created_at?: Date;
+  created_at?: string;
   is_on: boolean;
   setup_time: number;
   interval_time: number;
