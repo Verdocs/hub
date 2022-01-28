@@ -44,7 +44,7 @@ export const authenticateUser = (params: IAuthenticateUserRequest) =>
  */
 export const authenticateApp = (params: IAuthenticateAppRequest): Promise<IAuthenticateResponse> =>
   getEndpoint()
-    .api.post('/authentication/login_client', {}, {headers: params})
+    .api.post('/authentication/login_client', {}, {headers: params as any})
     .then((r) => r.data);
 
 /**
