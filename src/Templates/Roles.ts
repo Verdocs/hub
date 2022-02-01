@@ -1,6 +1,3 @@
-import {getEndpoint} from '../HTTP/Transport';
-import {ITemplateField, IRole} from './Types';
-
 /**
  * A "role" is an individual participant in a signing flow, such as a signer or CC contact. Roles are identified by
  * their names, which must be unique (e.g. 'Recipient 1'). Template fields are assigned to roles for signing operations,
@@ -8,6 +5,9 @@ import {ITemplateField, IRole} from './Types';
  *
  * @module
  */
+
+import {getEndpoint} from '../HTTP/Transport';
+import {ITemplateField, IRole} from './Types';
 
 export const createRole = (templateId: string, params: IRole) =>
   getEndpoint()

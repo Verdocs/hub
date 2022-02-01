@@ -29,6 +29,7 @@
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags",
+    "postpublish": "npm run clean",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jestconfig.json",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",

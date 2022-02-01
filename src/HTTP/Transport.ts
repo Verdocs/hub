@@ -13,7 +13,7 @@ import {VerdocsEndpoint} from './VerdocsEndpoint';
 // Also see globalThis for comments about why we're doing this in the first place.
 const ENDPOINT_KEY = Symbol.for('verdocs-api-endpoint');
 if (!globalThis[ENDPOINT_KEY]) {
-  globalThis[ENDPOINT_KEY] = new VerdocsEndpoint({baseURL: 'https://api.verdocs.com/'});
+  globalThis[ENDPOINT_KEY] = new VerdocsEndpoint();
 }
 
 const globalEndpoint = globalThis[ENDPOINT_KEY] as VerdocsEndpoint;

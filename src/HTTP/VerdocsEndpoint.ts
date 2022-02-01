@@ -1,6 +1,14 @@
+import axios, {AxiosInstance} from 'axios';
+
+const requestLogger = (r: any) => {
+  // tslint:disable-next-line
+  console.debug(`[JS-SDK] ${r.method.toUpperCase()} ${r.baseURL}${r.url}`, r.data ? JSON.stringify(r.data) : '');
+  return r;
+};
+
 /**
- * A VerdocsEndpoint is a specific connection and authorization session for calling the Verdocs APIs. Where the global
- * Transport is generally used to simpliy standard-user operations, Endpoints can be used for isolated session tasks.
+ * VerdocsEndpoint is a class wrapper for a specific connection and authorization context for calling the Verdocs APIs.
+ * Endpoints can be used for isolated session tasks.
  * For instance, ephemeral signing sessions may be created independently of a caller's status as an authenticated user.
  * In that case, an Endpoint can be created and authenticated, used for calls related to signing operations, then
  * discarded once signing is complete.
@@ -16,37 +24,28 @@
  *     .setClientID('1234)
  *     .setTimeout(5000);
  * ```
- *
- * @module
  */
-
-import axios, {AxiosInstance} from 'axios';
-
-const requestLogger = (r: any) => {
-  // tslint:disable-next-line
-  console.debug(`[JS-SDK] ${r.method.toUpperCase()} ${r.baseURL}${r.url}`, r.data ? JSON.stringify(r.data) : '');
-  return r;
-};
-
 export class VerdocsEndpoint {
+  /**
+   * Reference to the axios instance wrapped by this endpoint. This is exposed as a convenience to developers, but
+   * developers should generally use the convenience functions such as `setTimeout` to configure the connection.
+   * Although there are currently no plans to change from Axios to another XHR library, the less this property is
+   * directly accessed the easier future migrations will be.
+   */
   api: AxiosInstance;
 
-  requestLoggerId: number | null = null;
+  private requestLoggerId: number | null = null;
 
   /**
-   * Create a new Endpoint to call Verdocs services.
+   * Create a new VerdocsEndpoint to call Verdocs platform services.
    *
    * ```typescript
    * import {VerdocsEndpoint} from '@verdocs/js-sdk/HTTP';
-   *
-   * console.log('Current timeout', Transport.getEndpoint().defaults.timeout);
+   * const endpoint = new VerdocsEndpoint();
    * ```
    */
-  constructor({baseURL, timeout}: {baseURL?: string; timeout?: number} = {}) {
-    this.api = axios.create({
-      baseURL: baseURL || 'https://api.verdocs.com',
-      timeout: timeout || 6000,
-    });
+  constructor() {
+    this.api = axios.create({baseURL: 'https://api.verdocs.com', timeout: 3000});
   }
 
   /**

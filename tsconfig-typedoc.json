@@ -20,6 +20,7 @@
     "out": "docs",
     "includeVersion": true,
     "gitRevision": "main",
-    "hideGenerator": true
+    "hideGenerator": true,
+    "excludePrivate": true
   }
 }
