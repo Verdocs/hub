@@ -1,10 +1,15 @@
 import {getEndpoint} from '../HTTP/Transport';
-
 import {ITemplate, ITemplatesSearchResult, ITemplatesSummary} from './Types';
 
-export const getTemplates = () =>
+export interface IGetTemplatesParams {
+  is_starred?: boolean;
+  is_creator?: boolean;
+  is_organization?: boolean;
+}
+
+export const getTemplates = (params?: IGetTemplatesParams) =>
   getEndpoint()
-    .api.get<any[]>('/templates/')
+    .api.get<any[]>('/templates/', {params})
     .then((r) => r.data);
 
 export const getTemplate = (templateId: string) =>

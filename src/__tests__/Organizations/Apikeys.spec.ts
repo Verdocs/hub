@@ -27,6 +27,7 @@ it('getKeys should return a list of keys for an organization', () => {
   const thenFn = jest.fn();
 
   ApiKeys.getKeys('TEST').then(thenFn).catch(catchFn);
+  console.log('xxxr', mockAxios.lastReqGet());
   expect(mockAxios.get).toBeCalledWith('/organizations/TEST/api_key');
 
   mockAxios.mockResponse({data: [MockKeyWithSecret]});
