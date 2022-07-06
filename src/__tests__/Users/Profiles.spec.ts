@@ -1,7 +1,8 @@
 import {jest} from '@jest/globals';
-import mockAxios from 'jest-mock-axios';
+import MockAdapter from 'axios-mock-adapter';
 import {Profiles} from '../../Users';
 import {IPermission, IProfile, IRole} from '../../Users/Types';
+import {getEndpoint} from '../../HTTP/Transport';
 
 // TODO: Expand this test suite with more mock data and result checks
 
@@ -28,136 +29,127 @@ const MockProfile = {
   },
 } as IProfile;
 
-afterEach(() => {
-  mockAxios.reset();
-});
-
-it('getProfiles should return a "current" profile', () => {
+it('getProfiles should return a "current" profile', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
 
-  Profiles.getProfiles().then(thenFn).catch(catchFn);
-  expect(mockAxios.get).toBeCalledWith('/profiles');
+  const mock = new MockAdapter(getEndpoint().api);
+  mock.onGet('/profiles').reply(200, [MockProfile]);
 
-  mockAxios.mockResponse({data: [MockProfile]});
+  await Profiles.getProfiles().then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalledWith([MockProfile]);
   expect(catchFn).not.toBeCalled();
 });
 
-it('getRoles should return a list of system roles', () => {
+it('getRoles should return a list of system roles', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
 
-  Profiles.getRoles().then(thenFn).catch(catchFn);
-  expect(mockAxios.get).toBeCalledWith('/roles');
-
+  const mock = new MockAdapter(getEndpoint().api);
   const roles = [] as IRole[];
-  mockAxios.mockResponse({data: roles});
+  mock.onGet('/roles').reply(200, roles);
+
+  await Profiles.getRoles().then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalledWith(roles);
   expect(catchFn).not.toBeCalled();
 });
 
-it('getPermissions should return a list of system permissions', () => {
+it('getPermissions should return a list of system permissions', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
 
-  Profiles.getPermissions().then(thenFn).catch(catchFn);
-  expect(mockAxios.get).toBeCalledWith('/permissions');
-
+  const mock = new MockAdapter(getEndpoint().api);
   const permissions = [] as IPermission[];
-  mockAxios.mockResponse({data: permissions});
+  mock.onGet('/permissions').reply(200, permissions);
+
+  await Profiles.getPermissions().then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalledWith(permissions);
   expect(catchFn).not.toBeCalled();
 });
 
-it('createProfile should return the new profile', () => {
+it('createProfile should return the new profile', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
 
+  const mock = new MockAdapter(getEndpoint().api);
   const profile = {first_name: 'FIRST', last_name: 'LAST', email: 'EMAIL', organization_id: 'ORGID', user_id: 'TEST'};
-  Profiles.createProfile(profile).then(thenFn).catch(catchFn);
-  expect(mockAxios.post).toBeCalledWith('/profiles', profile);
+  mock.onPost('/profiles').reply(200, profile);
 
-  mockAxios.mockResponse({data: profile});
+  await Profiles.createProfile(profile).then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalledWith(profile);
   expect(catchFn).not.toBeCalled();
 });
 
-it('getProfile should return a profile', () => {
+it('getProfile should return a profile', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
 
+  const mock = new MockAdapter(getEndpoint().api);
   const profileId = 'TEST';
-  Profiles.getProfile(profileId).then(thenFn).catch(catchFn);
-  expect(mockAxios.get).toBeCalledWith(`/profiles/${profileId}`);
+  const response = {id: 'TEST'};
+  mock.onGet('/profiles/TEST').reply(200, response);
 
-  mockAxios.mockResponse({data: {id: profileId}});
-  expect(thenFn).toBeCalledWith({id: profileId});
+  await Profiles.getProfile(profileId).then(thenFn).catch(catchFn);
+  expect(thenFn).toBeCalledWith(response);
   expect(catchFn).not.toBeCalled();
 });
 
-it('getProfilePermissions should return a permissions array', () => {
+it('getProfilePermissions should return a permissions array', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
 
-  const profileId = 'TEST';
-  Profiles.getProfilePermissions(profileId).then(thenFn).catch(catchFn);
-  expect(mockAxios.get).toBeCalledWith(`/profiles/${profileId}/permissions`);
+  const mock = new MockAdapter(getEndpoint().api);
+  mock.onGet('/profiles/TEST/permissions').reply(200, []);
 
-  mockAxios.mockResponse({data: []});
+  await Profiles.getProfilePermissions('TEST').then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalledWith([]);
   expect(catchFn).not.toBeCalled();
 });
 
-it('getProfileGroups should return a groups array', () => {
+it('getProfileGroups should return a groups array', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
 
-  const profileId = 'TEST';
-  Profiles.getProfileGroups(profileId).then(thenFn).catch(catchFn);
-  expect(mockAxios.get).toBeCalledWith(`/profiles/${profileId}/groups`);
+  const mock = new MockAdapter(getEndpoint().api);
+  mock.onGet('/profiles/TEST/groups').reply(200, []);
 
-  mockAxios.mockResponse({data: []});
+  await Profiles.getProfileGroups('TEST').then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalledWith([]);
   expect(catchFn).not.toBeCalled();
 });
 
-it('switchProfile should return a new profile', () => {
+it('switchProfile should return a new profile', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
 
-  const profileId = 'TEST';
-  Profiles.switchProfile(profileId).then(thenFn).catch(catchFn);
-  expect(mockAxios.post).toBeCalledWith(`/profiles/${profileId}/switch`);
+  const mock = new MockAdapter(getEndpoint().api);
+  mock.onPost('/profiles/TEST/switch').reply(200, {});
 
-  mockAxios.mockResponse({data: {}});
+  await Profiles.switchProfile('TEST').then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalledWith({});
   expect(catchFn).not.toBeCalled();
 });
 
-it('updateProfile should return a new profile', () => {
+it('updateProfile should return a new profile', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
 
-  const profileId = 'TEST';
-  const params = {first_name: 'TEST'};
-  Profiles.updateProfile(profileId, params).then(thenFn).catch(catchFn);
-  expect(mockAxios.put).toBeCalledWith(`/profiles/${profileId}`, params);
+  const mock = new MockAdapter(getEndpoint().api);
+  mock.onPut('/profiles/TEST').reply(200, {});
 
-  mockAxios.mockResponse({data: {}});
+  await Profiles.updateProfile('TEST', {first_name: 'TEST'}).then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalledWith({});
   expect(catchFn).not.toBeCalled();
 });
 
-it('deleteProfile should return a new profile', () => {
+it('deleteProfile should return a new profile', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
 
-  const profileId = 'TEST';
-  Profiles.deleteProfile(profileId).then(thenFn).catch(catchFn);
-  expect(mockAxios.delete).toBeCalledWith(`/profiles/${profileId}`);
+  const mock = new MockAdapter(getEndpoint().api);
+  mock.onDelete('/profiles/TEST').reply(200);
 
-  mockAxios.mockResponse();
+  await Profiles.deleteProfile('TEST').then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalled();
   expect(catchFn).not.toBeCalled();
 });

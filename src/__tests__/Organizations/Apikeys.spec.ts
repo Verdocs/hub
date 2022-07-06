@@ -1,11 +1,8 @@
 import {jest} from '@jest/globals';
-import mockAxios from 'jest-mock-axios';
-import {ApiKeys} from '../../Organizations';
+import MockAdapter from 'axios-mock-adapter';
 import {IApiKey, IApiKeyWithSecret} from '../../Organizations/Types';
-
-afterEach(() => {
-  mockAxios.reset();
-});
+import {ApiKeys} from '../../Organizations';
+import {getEndpoint} from '../../HTTP/Transport';
 
 const MockKey = {
   client_id: 'TEST',
@@ -22,65 +19,62 @@ const MockKeyWithSecret = {
   organization_id: 'TEST',
 } as IApiKeyWithSecret;
 
-it('getKeys should return a list of keys for an organization', () => {
+it('getKeys should return a list of keys for an organization', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
 
-  ApiKeys.getKeys('TEST').then(thenFn).catch(catchFn);
-  console.log('xxxr', mockAxios.lastReqGet());
-  expect(mockAxios.get).toBeCalledWith('/organizations/TEST/api_key');
+  const mock = new MockAdapter(getEndpoint().api);
+  mock.onGet('/organizations/TEST/api_key').reply(200, [MockKeyWithSecret]);
 
-  mockAxios.mockResponse({data: [MockKeyWithSecret]});
+  await ApiKeys.getKeys('TEST').then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalledWith([MockKeyWithSecret]);
   expect(catchFn).not.toBeCalled();
 });
 
-it('createKey should return a newly created key', () => {
+it('createKey should return a newly created key', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
 
-  const request = {name: 'TEST', profile_id: 'TEST'};
-  ApiKeys.createKey('TEST', request).then(thenFn).catch(catchFn);
-  expect(mockAxios.post).toBeCalledWith('/organizations/TEST/api_key', request);
+  const mock = new MockAdapter(getEndpoint().api);
+  mock.onPost('/organizations/TEST/api_key').reply(200, MockKeyWithSecret);
 
-  mockAxios.mockResponse({data: MockKeyWithSecret});
+  await ApiKeys.createKey('TEST', {name: 'TEST', profile_id: 'TEST'}).then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalledWith(MockKeyWithSecret);
   expect(catchFn).not.toBeCalled();
 });
 
-it('rotateKey should return an updated key with secret', () => {
+it('rotateKey should return an updated key with secret', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
 
-  ApiKeys.rotateKey('TEST', 'TEST').then(thenFn).catch(catchFn);
-  expect(mockAxios.put).toBeCalledWith('/organizations/TEST/api_key/TEST/rotate');
+  const mock = new MockAdapter(getEndpoint().api);
+  mock.onPut('/organizations/TEST/api_key/TEST/rotate').reply(200, MockKeyWithSecret);
 
-  mockAxios.mockResponse({data: MockKeyWithSecret});
+  await ApiKeys.rotateKey('TEST', 'TEST').then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalledWith(MockKeyWithSecret);
   expect(catchFn).not.toBeCalled();
 });
 
-it('updateKey should return an updated key without secret', () => {
+it('updateKey should return an updated key without secret', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
 
-  const params = {name: 'TEST'};
-  ApiKeys.updateKey('TEST', 'TEST', params).then(thenFn).catch(catchFn);
-  expect(mockAxios.patch).toBeCalledWith('/organizations/TEST/api_key/TEST', params);
+  const mock = new MockAdapter(getEndpoint().api);
+  mock.onPatch('/organizations/TEST/api_key/TEST').reply(200, MockKey);
 
-  mockAxios.mockResponse({data: MockKey});
+  await ApiKeys.updateKey('TEST', 'TEST', {name: 'TEST'}).then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalledWith(MockKey);
   expect(catchFn).not.toBeCalled();
 });
 
-it('deleteKey should succeed', () => {
+it('deleteKey should succeed', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
 
-  ApiKeys.deleteKey('TEST', 'TEST').then(thenFn).catch(catchFn);
-  expect(mockAxios.delete).toBeCalledWith('/organizations/TEST/api_key/TEST');
+  const mock = new MockAdapter(getEndpoint().api);
+  mock.onDelete('/organizations/TEST/api_key/TEST').reply(200);
 
-  mockAxios.mockResponse();
+  await ApiKeys.deleteKey('TEST', 'TEST').then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalled();
   expect(catchFn).not.toBeCalled();
 });

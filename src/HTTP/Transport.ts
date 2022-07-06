@@ -6,8 +6,8 @@
  * @module
  */
 
-import globalThis from './globalThis';
 import {VerdocsEndpoint} from './VerdocsEndpoint';
+import globalThis from './globalThis';
 
 // @credit https://derickbailey.com/2016/03/09/creating-a-true-singleton-in-node-js-with-es6-symbols/
 // Also see globalThis for comments about why we're doing this in the first place.
