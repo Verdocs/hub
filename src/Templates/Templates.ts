@@ -1,3 +1,10 @@
+/**
+ * A Template defines how a Verdocs signing flow will be performed, including attachments, signing fields, and
+ * recipients.
+ *
+ * @module
+ */
+
 import {getEndpoint} from '../HTTP/Transport';
 import {ITemplate, ITemplatesSearchResult, ITemplatesSummary} from './Types';
 
@@ -7,22 +14,61 @@ export interface IGetTemplatesParams {
   is_organization?: boolean;
 }
 
+/**
+ * Get all templates accessible by the caller, with optional filters.
+ *
+ * ```typescript
+ * import {Templates} from '@verdocs/js-sdk/Templates';
+ *
+ * await Templates.getTemplates();
+ * await Templates.getTemplates({ is_starred: true });
+ * await Templates.getTemplates({ is_creator: true });
+ * await Templates.getTemplates({ is_organization: true });
+ * ```
+ */
 export const getTemplates = (params?: IGetTemplatesParams) =>
   getEndpoint()
     .api.get<any[]>('/templates/', {params})
     .then((r) => r.data);
 
+/**
+ * Get one template by its ID.
+ *
+ * ```typescript
+ * import {Templates} from '@verdocs/js-sdk/Templates';
+ *
+ * const template = await Templates.getTemplate('83da3d70-7857-4392-b876-c4592a304bc9');
+ * ```
+ */
 export const getTemplate = (templateId: string) =>
   getEndpoint()
     .api.get(`/templates/${templateId}`)
     .then((r) => r.data);
 
+/**
+ * Create a template.
+ *
+ * ```typescript
+ * import {Templates} from '@verdocs/js-sdk/Templates';
+ *
+ * const newTemplate = await Templates.createTemplate({...});
+ * ```
+ */
 export const createTemplate = (params: any) =>
   getEndpoint()
     .api.post<ITemplate>('/templates/', params)
     .then((r) => r.data);
 
-export const editTemplate = (templateId: string, params: any) =>
+/**
+ * Update a template.
+ *
+ * ```typescript
+ * import {Templates} from '@verdocs/js-sdk/Templates';
+ *
+ * const updatedTemplate = await Templates.updateTemplate('83da3d70-7857-4392-b876-c4592a304bc9', { name: 'New Name' });
+ * ```
+ */
+export const updateTemplate = (templateId: string, params: any) =>
   getEndpoint()
     .api.put<ITemplate>(`/templates/${templateId}`, params)
     .then((r) => r.data);
@@ -41,6 +87,15 @@ export const searchTemplates = async (params: any): Promise<ITemplatesSearchResu
     .api.post('/templates/search', params)
     .then((r) => r.data);
 
+/**
+ * Get a summary of template data, typically used to populate admin panel dashboard pages.
+ *
+ * ```typescript
+ * import {Templates} from '@verdocs/js-sdk/Templates';
+ *
+ * const summary = await Templates.getSummary(0);
+ * ```
+ */
 export const getSummary = async (page: number): Promise<ITemplatesSummary> =>
   getEndpoint()
     .api.post('/templates/summary', {page})

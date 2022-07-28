@@ -1,7 +1,7 @@
 import {IOrganization} from '../Organizations/Types';
 
 export interface ITemplate {
-  template_document?: ITemplateAsset;
+  template_document?: ITemplateDocument;
   pages?: IPage[];
   roles?: IRole[];
   counter?: number;
@@ -128,14 +128,15 @@ export interface ITemplatesSearchResult {
   result: ITemplate[];
 }
 
-export interface ITag {
+export interface ITemplateTag {
   tag_name: string;
   template_id: string;
 }
 
-export interface ITags {
+export interface ITag {
   name: string;
   featured?: boolean;
+  organization_id?: string;
   created_at?: string;
 }
 
@@ -158,7 +159,7 @@ export interface IRole {
   rgba?: string;
 }
 
-export interface ITemplateAsset {
+export interface ITemplateDocument {
   url: string;
   name: string;
   page_numbers: number;
@@ -212,7 +213,7 @@ export interface IFieldSetting {
 export interface IPage {
   template_id: string;
   document_id: string;
-  template_document?: ITemplateAsset;
+  template_document?: ITemplateDocument;
   sequence: number;
   page_number: number;
   thumbnail_url: string;

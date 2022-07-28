@@ -7,6 +7,15 @@ export interface IValidator {
   regex: string;
 }
 
+/**
+ * Get all defined validators
+ *
+ * ```typescript
+ * import {Documents} from '@verdocs/js-sdk/Templates';
+ *
+ * await Documents.getDocuments(templateID);
+ * ```
+ */
 export const getValidators = () =>
   getEndpoint()
     .api.get<IValidator[]>('/validators')
