@@ -122,6 +122,7 @@ const clearSession = (source: string, persist: boolean) => {
     localStorage.removeItem(source);
   }
 
+  notifySessionListeners(source, null);
   return null;
 };
 
@@ -143,6 +144,8 @@ export const setSession = (source: string, token: string | null, persist: boolea
   }
 
   getEndpoint().setAuthorization(token);
+
+  notifySessionListeners(source, session);
   return session;
 };
 
@@ -166,6 +169,8 @@ export const loadSession = (source: string): IActiveSession | ISigningSession | 
   }
 
   getEndpoint().setAuthorization(token);
+
+  notifySessionListeners(source, session);
   return session;
 };
 
@@ -173,3 +178,33 @@ export const loadSession = (source: string): IActiveSession | ISigningSession | 
  * End the active session.
  */
 export const endSession = (source: string, persist: boolean = false) => clearSession(source, persist);
+
+export type SessionChangedListener = (source: string, session: IActiveSession | ISigningSession | null) => void;
+
+const sessionChangedListeners = new Map<symbol, SessionChangedListener>();
+let nextListenerId = 1;
+
+/**
+ * Subscribe to session state change events.
+ */
+export const onSessionChanged = (listener: SessionChangedListener) => {
+  // There's no value in randomizing this so we don't
+  const listenerId = ++nextListenerId;
+  const listenerSymbol = Symbol.for('' + listenerId);
+
+  sessionChangedListeners.set(listenerSymbol, listener);
+
+  return () => {
+    sessionChangedListeners.delete(listenerSymbol);
+  };
+};
+
+const notifySessionListeners = (source: string, session: IActiveSession | ISigningSession | null) => {
+  sessionChangedListeners.forEach((listener) => {
+    try {
+      listener(source, session);
+    } catch (e) {
+      // NOOP
+    }
+  });
+};
