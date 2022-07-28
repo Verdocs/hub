@@ -10,6 +10,8 @@ import {UpdatePasswordRequest} from './Types';
 import {getEndpoint} from '../HTTP/Transport';
 import {ISigningSession} from '../Documents/Types';
 import {decodeAccessTokenBody} from '../Utils/Token';
+import globalThis from '../HTTP/globalThis';
+import {VerdocsEndpoint} from '../HTTP';
 
 /**
  * Authenticate to Verdocs via user/password authentication
@@ -181,26 +183,33 @@ export const endSession = (source: string, persist: boolean = false) => clearSes
 
 export type SessionChangedListener = (source: string, session: IActiveSession | ISigningSession | null) => void;
 
-const sessionChangedListeners = new Map<symbol, SessionChangedListener>();
-let nextListenerId = 1;
+const SESSION_LISTENERS_KEY = Symbol.for('verdocs-session-listeners');
+if (!globalThis[SESSION_LISTENERS_KEY]) {
+  globalThis[SESSION_LISTENERS_KEY] = new Map<symbol, SessionChangedListener>();
+}
+
+const LISTENER_ID_KEY = Symbol.for('verdocs-session-listener-id');
+if (!globalThis[LISTENER_ID_KEY]) {
+  globalThis[LISTENER_ID_KEY] = 0;
+}
 
 /**
  * Subscribe to session state change events.
  */
 export const onSessionChanged = (listener: SessionChangedListener) => {
+  globalThis[LISTENER_ID_KEY]++;
   // There's no value in randomizing this so we don't
-  const listenerId = ++nextListenerId;
-  const listenerSymbol = Symbol.for('' + listenerId);
+  const listenerSymbol = Symbol.for('' + globalThis[LISTENER_ID_KEY]);
 
-  sessionChangedListeners.set(listenerSymbol, listener);
+  globalThis[SESSION_LISTENERS_KEY].set(listenerSymbol, listener);
 
   return () => {
-    sessionChangedListeners.delete(listenerSymbol);
+    globalThis[SESSION_LISTENERS_KEY].delete(listenerSymbol);
   };
 };
 
 const notifySessionListeners = (source: string, session: IActiveSession | ISigningSession | null) => {
-  sessionChangedListeners.forEach((listener) => {
+  globalThis[SESSION_LISTENERS_KEY].forEach((listener: SessionChangedListener) => {
     try {
       listener(source, session);
     } catch (e) {
