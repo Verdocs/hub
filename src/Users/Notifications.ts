@@ -1,6 +1,6 @@
-import {getEndpoint} from '../HTTP/Transport';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
-export const getNotifications = async () =>
-  getEndpoint()
-    .api.get('/notifications')
+export const getNotifications = async (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .get('/notifications')
     .then((r) => r.data);

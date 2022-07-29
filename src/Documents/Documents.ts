@@ -1,6 +1,6 @@
 import {ISigningSession, ISigningSessionRequest} from './Types';
-import {getEndpoint} from '../HTTP/Transport';
 import {decodeAccessTokenBody} from '../Utils/Token';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {IFieldSetting} from '../Templates/Types';
 
 export type TDocumentStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
@@ -162,12 +162,7 @@ export interface IDocumentSearchOptions {
   recipient_status: TDocumentStatus[];
 }
 
-export type IHistoryEvent =
-  | 'recipient:invited'
-  | 'recipient:opened'
-  | 'recipient:agreed'
-  | 'recipient:signed'
-  | 'recipient:submitted';
+export type IHistoryEvent = 'recipient:invited' | 'recipient:opened' | 'recipient:agreed' | 'recipient:signed' | 'recipient:submitted';
 
 export type IEventDetail = 'in_app' | 'mail' | 'signer' | '';
 
@@ -180,9 +175,9 @@ export type IEventDetail = 'in_app' | 'mail' | 'signer' | '';
  * const {action_required, completed, waiting_on_others} = await Documents.getSummary();
  * ```
  */
-export const getSummary = async (page: number) =>
-  getEndpoint()
-    .api.post<IDocumentsSummary>('/documents/summary', {page})
+export const getSummary = async (endpoint: VerdocsEndpoint, page: number) =>
+  endpoint.api //
+    .post<IDocumentsSummary>('/documents/summary', {page})
     .then((r) => r.data);
 
 /**
@@ -194,9 +189,9 @@ export const getSummary = async (page: number) =>
  * const {result, page, total} = await Documents.search({ ... });
  * ```
  */
-export const searchDocuments = async (params: any) =>
-  getEndpoint()
-    .api.post<IDocumentsSearchResult>('/documents/search', params)
+export const searchDocuments = async (endpoint: VerdocsEndpoint, params: any) =>
+  endpoint.api //
+    .post<IDocumentsSearchResult>('/documents/search', params)
     .then((r) => r.data);
 
 export interface ISigningSessionResult {
@@ -206,46 +201,60 @@ export interface ISigningSessionResult {
 }
 
 /**
- * Get a signing session for a document.
+ * Get a signing session for a Document.
  */
-export const getSigningSession = async (params: ISigningSessionRequest): Promise<ISigningSessionResult> =>
-  getEndpoint()
-    .api.get<IRecipient>(
-      `/documents/${params.documentId}/recipients/${encodeURIComponent(params.roleId)}/invitation/${params.inviteCode}`,
-    )
+export const getSigningSession = async (endpoint: VerdocsEndpoint, params: ISigningSessionRequest): Promise<ISigningSessionResult> =>
+  endpoint.api //
+    .get<IRecipient>(`/documents/${params.documentId}/recipients/${encodeURIComponent(params.roleId)}/invitation/${params.inviteCode}`)
     .then((r) => {
       // Avoiding a jsonwebtoken dependency here - we don't actually need the whole library
       const signerToken = r.headers?.signer_token || '';
       const session = decodeAccessTokenBody(signerToken) as ISigningSession;
 
-      getEndpoint().setAuthorization(r.headers?.signer_token);
+      endpoint.setToken(r.headers?.signer_token);
 
       return {recipient: r.data, session, signerToken};
     });
 
-export const getDocumentRecipients = async (documentId: string): Promise<IRecipient[]> =>
-  getEndpoint()
-    .api.get<IRecipient[]>(`/documents/${documentId}/recipients`)
+/**
+ * Get the list of recipients for a Document.
+ */
+export const getDocumentRecipients = async (endpoint: VerdocsEndpoint, documentId: string): Promise<IRecipient[]> =>
+  endpoint.api //
+    .get<IRecipient[]>(`/documents/${documentId}/recipients`)
     .then((r) => r.data);
 
-export const getDocument = async (documentId: string): Promise<IDocument> =>
-  getEndpoint()
-    .api.get<IDocument>(`/documents/${documentId}`)
+/**
+ * Get all metadata for a Document.
+ */
+export const getDocument = async (endpoint: VerdocsEndpoint, documentId: string): Promise<IDocument> =>
+  endpoint.api //
+    .get<IDocument>(`/documents/${documentId}`)
     .then((r) => r.data);
 
-export const getDocumentFile = async (documentId: string, envelopeDocumentId: string): Promise<string> =>
-  getEndpoint()
-    .api.get<string>(`/documents/${documentId}/envelope_documents/${envelopeDocumentId}?file=true`, {
+/**
+ * Get (binary download) a file attached to a Document.
+ */
+export const getDocumentFile = async (endpoint: VerdocsEndpoint, documentId: string, envelopeDocumentId: string): Promise<string> =>
+  endpoint.api //
+    .get<string>(`/documents/${documentId}/envelope_documents/${envelopeDocumentId}?file=true`, {
       responseType: 'arraybuffer',
     })
     .then((r) => Buffer.from(r.data, 'binary').toString('base64'));
 
-export const updateDocumentField = async (documentId: string, fieldName: string, value: any) =>
-  getEndpoint()
-    .api.put<IFieldSetting>(`/documents/${documentId}/fields/${fieldName}`, value)
+/**
+ * Update a Document field. Typically called during the signing process as a Recipient fills in fields.
+ */
+export const updateDocumentField = async (endpoint: VerdocsEndpoint, documentId: string, fieldName: string, value: any) =>
+  endpoint.api //
+    .put<IFieldSetting>(`/documents/${documentId}/fields/${fieldName}`, value)
     .then((r) => r.data);
 
-export const updateDocumentFieldSignature = async (documentId: string, fieldName: string, signatureId: string) =>
-  getEndpoint()
-    .api.put<IFieldSetting>(`/documents/${documentId}/fields/${fieldName}/signature/${signatureId}`)
+/**
+ * Update a Document signature field. Signature fields are ID-driven. Call `Document.createSignature()` first to create a
+ * signature for a Recipient, then call `Documents.updateDocumentFieldSignature()` to attach it to a field.
+ */
+export const updateDocumentFieldSignature = async (endpoint: VerdocsEndpoint, documentId: string, fieldName: string, signatureId: string) =>
+  endpoint.api //
+    .put<IFieldSetting>(`/documents/${documentId}/fields/${fieldName}/signature/${signatureId}`)
     .then((r) => r.data);

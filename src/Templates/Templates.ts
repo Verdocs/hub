@@ -5,8 +5,8 @@
  * @module
  */
 
-import {getEndpoint} from '../HTTP/Transport';
 import {ITemplate, ITemplatesSearchResult, ITemplatesSummary} from './Types';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export interface IGetTemplatesParams {
   is_starred?: boolean;
@@ -26,9 +26,9 @@ export interface IGetTemplatesParams {
  * await Templates.getTemplates({ is_organization: true });
  * ```
  */
-export const getTemplates = (params?: IGetTemplatesParams) =>
-  getEndpoint()
-    .api.get<any[]>('/templates/', {params})
+export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesParams) =>
+  endpoint.api //
+    .get<any[]>('/templates/', {params})
     .then((r) => r.data);
 
 /**
@@ -40,9 +40,9 @@ export const getTemplates = (params?: IGetTemplatesParams) =>
  * const template = await Templates.getTemplate('83da3d70-7857-4392-b876-c4592a304bc9');
  * ```
  */
-export const getTemplate = (templateId: string) =>
-  getEndpoint()
-    .api.get(`/templates/${templateId}`)
+export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
+  endpoint.api //
+    .get(`/templates/${templateId}`)
     .then((r) => r.data);
 
 /**
@@ -54,9 +54,9 @@ export const getTemplate = (templateId: string) =>
  * const newTemplate = await Templates.createTemplate({...});
  * ```
  */
-export const createTemplate = (params: any) =>
-  getEndpoint()
-    .api.post<ITemplate>('/templates/', params)
+export const createTemplate = (endpoint: VerdocsEndpoint, params: any) =>
+  endpoint.api //
+    .post<ITemplate>('/templates/', params)
     .then((r) => r.data);
 
 /**
@@ -68,9 +68,9 @@ export const createTemplate = (params: any) =>
  * const updatedTemplate = await Templates.updateTemplate('83da3d70-7857-4392-b876-c4592a304bc9', { name: 'New Name' });
  * ```
  */
-export const updateTemplate = (templateId: string, params: any) =>
-  getEndpoint()
-    .api.put<ITemplate>(`/templates/${templateId}`, params)
+export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, params: any) =>
+  endpoint.api //
+    .put<ITemplate>(`/templates/${templateId}`, params)
     .then((r) => r.data);
 
 /**
@@ -82,9 +82,9 @@ export const updateTemplate = (templateId: string, params: any) =>
  * const {result, page, total} = await Templates.search({ ... });
  * ```
  */
-export const searchTemplates = async (params: any): Promise<ITemplatesSearchResult> =>
-  getEndpoint()
-    .api.post('/templates/search', params)
+export const searchTemplates = async (endpoint: VerdocsEndpoint, params: any): Promise<ITemplatesSearchResult> =>
+  endpoint.api //
+    .post('/templates/search', params)
     .then((r) => r.data);
 
 /**
@@ -96,7 +96,7 @@ export const searchTemplates = async (params: any): Promise<ITemplatesSearchResu
  * const summary = await Templates.getSummary(0);
  * ```
  */
-export const getSummary = async (page: number): Promise<ITemplatesSummary> =>
-  getEndpoint()
-    .api.post('/templates/summary', {page})
+export const getSummary = async (endpoint: VerdocsEndpoint, page: number): Promise<ITemplatesSummary> =>
+  endpoint.api //
+    .post('/templates/summary', {page})
     .then((r) => r.data);

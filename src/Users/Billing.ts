@@ -1,3 +1,2 @@
-import {getEndpoint} from '../HTTP/Transport';
-
 // TODO
+export const billingPlaceholder = {};

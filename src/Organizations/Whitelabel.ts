@@ -9,7 +9,7 @@
  * @module
  */
 
-import {getEndpoint} from '../HTTP/Transport';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 /**
  * Create or update white-label data. The caller's organization ID will be used as the key for the operation.
@@ -20,9 +20,9 @@ import {getEndpoint} from '../HTTP/Transport';
  * await Whitelabel.setWhitelabel({ logo: '/path/to/logo.png' });
  * ```
  */
-export const setWhitelabel = () =>
-  getEndpoint()
-    .api.post('/whitelabel')
+export const setWhitelabel = (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .post('/whitelabel')
     .then((r) => r.data);
 
 /**
@@ -34,7 +34,7 @@ export const setWhitelabel = () =>
  * const {logo} = await Whitelabel.getWhitelabel();
  * ```
  */
-export const getWhitelabel = () =>
-  getEndpoint()
-    .api.get('/whitelabel')
+export const getWhitelabel = (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .get('/whitelabel')
     .then((r) => r.data);

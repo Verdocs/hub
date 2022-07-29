@@ -1,17 +1,7 @@
-import {
-  IActiveSession,
-  IAuthenticateAppRequest,
-  IAuthenticateUserRequest,
-  TokenValidationRequest,
-  UpdateEmailRequest,
-} from './Types';
+import {IAuthenticateAppRequest, IAuthenticateUserRequest} from './Types';
+import {TokenValidationRequest, UpdateEmailRequest, UpdatePasswordRequest} from './Types';
 import {IAuthenticateResponse, TokenValidationResponse, UpdateEmailResponse, UpdatePasswordResponse} from './Types';
-import {UpdatePasswordRequest} from './Types';
-import {getEndpoint} from '../HTTP/Transport';
-import {ISigningSession} from '../Documents/Types';
-import {decodeAccessTokenBody} from '../Utils/Token';
-import globalThis from '../HTTP/globalThis';
-import {VerdocsEndpoint} from '../HTTP';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 /**
  * Authenticate to Verdocs via user/password authentication
@@ -24,9 +14,9 @@ import {VerdocsEndpoint} from '../HTTP';
  * Transport.setAuthToken(accessToken);
  * ```
  */
-export const authenticateUser = (params: IAuthenticateUserRequest) =>
-  getEndpoint()
-    .api.post<IAuthenticateResponse>('/authentication/login', params)
+export const authenticateUser = (endpoint: VerdocsEndpoint, params: IAuthenticateUserRequest) =>
+  endpoint.api //
+    .post<IAuthenticateResponse>('/authentication/login', params)
     .then((r) => r.data);
 
 /**
@@ -44,9 +34,9 @@ export const authenticateUser = (params: IAuthenticateUserRequest) =>
  * Transport.setAuthToken(accessToken);
  * ```
  */
-export const authenticateApp = (params: IAuthenticateAppRequest): Promise<IAuthenticateResponse> =>
-  getEndpoint()
-    .api.post('/authentication/login_client', {}, {headers: params as any})
+export const authenticateApp = (endpoint: VerdocsEndpoint, params: IAuthenticateAppRequest): Promise<IAuthenticateResponse> =>
+  endpoint.api //
+    .post('/authentication/login_client', {}, {headers: params as any})
     .then((r) => r.data);
 
 /**
@@ -63,9 +53,9 @@ export const authenticateApp = (params: IAuthenticateAppRequest): Promise<IAuthe
  * }
  * ```
  */
-export const validateToken = (params: TokenValidationRequest): Promise<TokenValidationResponse> =>
-  getEndpoint()
-    .api.post('/token/isValid', params)
+export const validateToken = (endpoint: VerdocsEndpoint, params: TokenValidationRequest): Promise<TokenValidationResponse> =>
+  endpoint.api //
+    .post('/token/isValid', params)
     .then((r) => r.data);
 
 /**
@@ -79,9 +69,9 @@ export const validateToken = (params: TokenValidationRequest): Promise<TokenVali
  * Transport.setAuthToken(accessToken);
  * ```
  */
-export const refreshTokens = (): Promise<IAuthenticateResponse> =>
-  getEndpoint()
-    .api.get('/token')
+export const refreshTokens = (endpoint: VerdocsEndpoint): Promise<IAuthenticateResponse> =>
+  endpoint.api //
+    .get('/token')
     .then((r) => r.data);
 
 /**
@@ -96,9 +86,9 @@ export const refreshTokens = (): Promise<IAuthenticateResponse> =>
  * }
  * ```
  */
-export const updatePassword = (params: UpdatePasswordRequest): Promise<UpdatePasswordResponse> =>
-  getEndpoint()
-    .api.put('/user/update_password', params)
+export const updatePassword = (endpoint: VerdocsEndpoint, params: UpdatePasswordRequest): Promise<UpdatePasswordResponse> =>
+  endpoint.api //
+    .put('/user/update_password', params)
     .then((r) => r.data);
 
 /**
@@ -110,110 +100,7 @@ export const updatePassword = (params: UpdatePasswordRequest): Promise<UpdatePas
  * const {profiles} = await Auth.updateEmail({ email: newEmail });
  * ```
  */
-export const updateEmail = (params: UpdateEmailRequest): Promise<UpdateEmailResponse> =>
-  getEndpoint()
-    .api.put('/user/update_email', params)
+export const updateEmail = (endpoint: VerdocsEndpoint, params: UpdateEmailRequest): Promise<UpdateEmailResponse> =>
+  endpoint.api //
+    .put('/user/update_email', params)
     .then((r) => r.data);
-
-export type TSession = IActiveSession | ISigningSession | null;
-
-const clearSession = (source: string, persist: boolean) => {
-  getEndpoint().setAuthorization(null);
-
-  if (persist) {
-    localStorage.removeItem(source);
-  }
-
-  notifySessionListeners(source, null);
-  return null;
-};
-
-/**
- * Parses and sets the active session, optionally persisting (brower-only, persists to localStorage).
- */
-export const setSession = (source: string, token: string | null, persist: boolean = false): TSession => {
-  if (token === null) {
-    return clearSession(source, persist);
-  }
-
-  const session = decodeAccessTokenBody(token || '') as TSession;
-  if (session === null || (session.exp && session.exp * 1000 < new Date().getTime())) {
-    return clearSession(source, persist);
-  }
-
-  if (persist) {
-    localStorage.setItem(source, token);
-  }
-
-  getEndpoint().setAuthorization(token);
-
-  notifySessionListeners(source, session);
-  return session;
-};
-
-/**
- * Load a session from localStorage
- */
-export const loadSession = (source: string): IActiveSession | ISigningSession | null => {
-  const token = localStorage.getItem(source);
-  if (!token) {
-    return null;
-  }
-
-  const session = decodeAccessTokenBody(token) as IActiveSession | ISigningSession | null;
-  if (!session) {
-    return null;
-  }
-
-  if (session.exp && session.exp * 1000 < new Date().getTime()) {
-    localStorage.removeItem(source);
-    return null;
-  }
-
-  getEndpoint().setAuthorization(token);
-
-  notifySessionListeners(source, session);
-  return session;
-};
-
-/**
- * End the active session.
- */
-export const endSession = (source: string, persist: boolean = false) => clearSession(source, persist);
-
-export type SessionChangedListener = (source: string, session: IActiveSession | ISigningSession | null) => void;
-
-const SESSION_LISTENERS_KEY = Symbol.for('verdocs-session-listeners');
-if (!globalThis[SESSION_LISTENERS_KEY]) {
-  globalThis[SESSION_LISTENERS_KEY] = new Map<symbol, SessionChangedListener>();
-}
-
-const LISTENER_ID_KEY = Symbol.for('verdocs-session-listener-id');
-if (!globalThis[LISTENER_ID_KEY]) {
-  globalThis[LISTENER_ID_KEY] = 0;
-}
-
-/**
- * Subscribe to session state change events.
- */
-export const onSessionChanged = (listener: SessionChangedListener) => {
-  globalThis[LISTENER_ID_KEY]++;
-  // There's no value in randomizing this so we don't
-  const listenerSymbol = Symbol.for('' + globalThis[LISTENER_ID_KEY]);
-
-  globalThis[SESSION_LISTENERS_KEY].set(listenerSymbol, listener);
-
-  return () => {
-    globalThis[SESSION_LISTENERS_KEY].delete(listenerSymbol);
-  };
-};
-
-const notifySessionListeners = (source: string, session: IActiveSession | ISigningSession | null) => {
-  globalThis[SESSION_LISTENERS_KEY].forEach((listener: SessionChangedListener) => {
-    try {
-      listener(source, session);
-    } catch (e) {
-      // NOOP
-    }
-  });
-};

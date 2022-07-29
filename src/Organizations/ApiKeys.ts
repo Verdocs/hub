@@ -11,8 +11,8 @@
  * @module
  */
 
-import {getEndpoint} from '../HTTP/Transport';
 import {IApiKey, IApiKeyWithSecret, ICreateApiKeyRequest, IUpdateApiKeyRequest} from './Types';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 /**
  * Get a list of keys for a given organization. The caller must have admin access to the organization.
@@ -23,9 +23,9 @@ import {IApiKey, IApiKeyWithSecret, ICreateApiKeyRequest, IUpdateApiKeyRequest} 
  * const keys = await ApiKeys.getKeys(ORGID);
  * ```
  */
-export const getKeys = (organizationId: string) =>
-  getEndpoint()
-    .api.get<IApiKey[]>(`/organizations/${organizationId}/api_key`)
+export const getKeys = (endpoint: VerdocsEndpoint, organizationId: string) =>
+  endpoint.api //
+    .get<IApiKey[]>(`/organizations/${organizationId}/api_key`)
     .then((r) => r.data);
 
 /**
@@ -37,9 +37,9 @@ export const getKeys = (organizationId: string) =>
  * await ApiKeys.createKey(ORGID, {name: NEWNAME});
  * ```
  */
-export const createKey = (organizationId: string, params: ICreateApiKeyRequest) =>
-  getEndpoint()
-    .api.post<IApiKeyWithSecret>(`/organizations/${organizationId}/api_key`, params)
+export const createKey = (endpoint: VerdocsEndpoint, organizationId: string, params: ICreateApiKeyRequest) =>
+  endpoint.api //
+    .post<IApiKeyWithSecret>(`/organizations/${organizationId}/api_key`, params)
     .then((r) => r.data);
 
 /**
@@ -51,9 +51,9 @@ export const createKey = (organizationId: string, params: ICreateApiKeyRequest) 
  * const {client_secret: newSecret} = await ApiKeys.rotateKey(ORGID, CLIENTID);
  * ```
  */
-export const rotateKey = (organizationId: string, clientId: string) =>
-  getEndpoint()
-    .api.put<IApiKeyWithSecret>(`/organizations/${organizationId}/api_key/${clientId}/rotate`)
+export const rotateKey = (endpoint: VerdocsEndpoint, organizationId: string, clientId: string) =>
+  endpoint.api //
+    .put<IApiKeyWithSecret>(`/organizations/${organizationId}/api_key/${clientId}/rotate`)
     .then((r) => r.data);
 
 /**
@@ -65,9 +65,9 @@ export const rotateKey = (organizationId: string, clientId: string) =>
  * await ApiKeys.updateKey(ORGID, CLIENTID, {name: NEWNAME});
  * ```
  */
-export const updateKey = (organizationId: string, clientId: string, params: IUpdateApiKeyRequest) =>
-  getEndpoint()
-    .api.patch<IApiKey>(`/organizations/${organizationId}/api_key/${clientId}`, params)
+export const updateKey = (endpoint: VerdocsEndpoint, organizationId: string, clientId: string, params: IUpdateApiKeyRequest) =>
+  endpoint.api //
+    .patch<IApiKey>(`/organizations/${organizationId}/api_key/${clientId}`, params)
     .then((r) => r.data);
 
 /**
@@ -79,7 +79,7 @@ export const updateKey = (organizationId: string, clientId: string, params: IUpd
  * await ApiKeys.deleteKey(ORGID, CLIENTID);
  * ```
  */
-export const deleteKey = (organizationId: string, clientId: string) =>
-  getEndpoint()
-    .api.delete(`/organizations/${organizationId}/api_key/${clientId}`)
+export const deleteKey = (endpoint: VerdocsEndpoint, organizationId: string, clientId: string) =>
+  endpoint.api //
+    .delete(`/organizations/${organizationId}/api_key/${clientId}`)
     .then((r) => r.data);

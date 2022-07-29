@@ -1,4 +1,4 @@
-import {getEndpoint} from '../HTTP/Transport';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export interface ISignature {
   id: string;
@@ -15,26 +15,35 @@ export interface ISignature {
  * create and store a signature block. Thereafter, the ID of the signature block may be re-used for each signature field
  * to be "stamped" by the user.
  */
-export const createSignature = (name: string, signature: string | Blob) => {
+export const createSignature = (endpoint: VerdocsEndpoint, name: string, signature: string | Blob) => {
   const data = new FormData();
   data.append('signature', signature, name);
 
-  return getEndpoint()
-    .api.post<ISignature>(`/signatures`, data)
+  return endpoint.api //
+    .post<ISignature>(`/signatures`, data)
     .then((r) => r.data);
 };
 
-export const getSignatures = () =>
-  getEndpoint()
-    .api.get<ISignature[]>('/signatures')
+/**
+ * Get the availbable signatures for a user.
+ */
+export const getSignatures = (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .get<ISignature[]>('/signatures')
     .then((r) => r.data);
 
-export const getSignature = (signatureId: string) =>
-  getEndpoint()
-    .api.get(`/signatures/${signatureId}`)
+/**
+ * Get a user's signature by ID.
+ */
+export const getSignature = (endpoint: VerdocsEndpoint, signatureId: string) =>
+  endpoint.api //
+    .get(`/signatures/${signatureId}`)
     .then((r) => r.data);
 
-export const deleteSignature = (signatureId: string) =>
-  getEndpoint()
-    .api.delete(`/signatures/${signatureId}`)
+/**
+ * Delete a user's signature.
+ */
+export const deleteSignature = (endpoint: VerdocsEndpoint, signatureId: string) =>
+  endpoint.api //
+    .delete(`/signatures/${signatureId}`)
     .then((r) => r.data);

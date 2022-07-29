@@ -7,7 +7,7 @@
  */
 
 import {ISavedSearch, ISearchHistory, ISearchParams, ISearchResult} from './Types';
-import {getEndpoint} from '../HTTP/Transport';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 /**
  * Retrieve recent and saved searches. Note that result counts will be limited to a maximum of 20 entries for each
@@ -19,9 +19,9 @@ import {getEndpoint} from '../HTTP/Transport';
  * const {recent, saved} = await Content.getSearchHistory();
  * ```
  */
-export const getSearchHistory = async () =>
-  getEndpoint()
-    .api.get<ISearchHistory>('/search/history')
+export const getSearchHistory = async (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .get<ISearchHistory>('/search/history')
     .then((r) => r.data);
 
 /**
@@ -33,9 +33,9 @@ export const getSearchHistory = async () =>
  * const entry = await Documents.saveSearch('W9 Forms', {q: 'w9', type: 'template});
  * ```
  */
-export const saveSearch = async (name: string, params: ISearchParams) =>
-  getEndpoint()
-    .api.post<ISavedSearch>('/search/saved', {name, params})
+export const saveSearch = async (endpoint: VerdocsEndpoint, name: string, params: ISearchParams) =>
+  endpoint.api //
+    .post<ISavedSearch>('/search/saved', {name, params})
     .then((r) => r.data);
 
 /**
@@ -47,7 +47,7 @@ export const saveSearch = async (name: string, params: ISearchParams) =>
  * const {result, page, total} = await Documents.search({ ... });
  * ```
  */
-export const searchContent = async (params: ISearchParams) =>
-  getEndpoint()
-    .api.post<ISearchResult>('/search/content', params)
+export const searchContent = async (endpoint: VerdocsEndpoint, params: ISearchParams) =>
+  endpoint.api //
+    .post<ISearchResult>('/search/content', params)
     .then((r) => r.data);

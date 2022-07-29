@@ -47,7 +47,7 @@ export const AtoB = (str: string) => {
  * Decode the body of a JWT. This helper may allow front-end applications to avoid a dependency on `jsonwebtoken` in
  * many cases. Note that this should only be used for true JWTs. Opaque tokens will cause this to throw.
  */
-export const decodeTokenBody = (token: string) => JSON.parse(AtoB((token || '').split('.')[1] || ''));
+export const decodeJWTBody = (token: string) => JSON.parse(AtoB((token || '').split('.')[1] || ''));
 
 /**
  * Decode the body of an Verdocs access token. Note that raw tokens contain namespaced fields, e.g.
@@ -59,7 +59,7 @@ export const decodeTokenBody = (token: string) => JSON.parse(AtoB((token || '').
 export const decodeAccessTokenBody = (token: string): IActiveSession | ISigningSession | null => {
   let decoded: any;
   try {
-    decoded = decodeTokenBody(token) as IActiveSession | ISigningSession | null;
+    decoded = decodeJWTBody(token) as IActiveSession | ISigningSession | null;
     if (decoded === null) {
       return null;
     }

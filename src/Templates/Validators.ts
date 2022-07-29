@@ -1,6 +1,6 @@
 import {simpleE164Validator} from '../Utils/Locales';
-import {getEndpoint} from '../HTTP/Transport';
 import {IRole, ITag} from './Types';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export interface IValidator {
   name: string;
@@ -16,14 +16,14 @@ export interface IValidator {
  * await Documents.getDocuments(templateID);
  * ```
  */
-export const getValidators = () =>
-  getEndpoint()
-    .api.get<IValidator[]>('/validators')
+export const getValidators = (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .get<IValidator[]>('/validators')
     .then((r) => r.data);
 
-export const getValidator = (validatorName: string) =>
-  getEndpoint()
-    .api.get<IValidator>(`/validators/${validatorName}`)
+export const getValidator = (endpoint: VerdocsEndpoint, validatorName: string) =>
+  endpoint.api //
+    .get<IValidator>(`/validators/${validatorName}`)
     .then((r) => r.data);
 
 const EmailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -36,5 +36,4 @@ export const isValidRoleName = (value: string, roles: IRole[]) => roles.findInde
 
 const TagRegEx = /^[a-zA-Z0-9-]{0,32}$/;
 
-export const isValidTag = (value: string, tags: ITag[]) =>
-  TagRegEx.test(value) || tags.findIndex((tag) => tag.name === value) !== -1;
+export const isValidTag = (value: string, tags: ITag[]) => TagRegEx.test(value) || tags.findIndex((tag) => tag.name === value) !== -1;

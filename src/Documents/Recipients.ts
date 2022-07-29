@@ -1,5 +1,5 @@
-import {getEndpoint} from '../HTTP/Transport';
 import {IRecipient} from './Documents';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export type TRecipientAction = 'submit' | 'decline' | 'prepare' | 'update';
 
@@ -8,14 +8,18 @@ export interface IUpdateRecipientParams {
   agreed?: boolean;
 }
 
+/**
+ * Update a recipient's status block
+ */
 export const updateRecipientStatus = async (
+  endpoint: VerdocsEndpoint,
   documentId: string,
   roleName: string,
   action: TRecipientAction,
   params?: IUpdateRecipientParams,
 ): Promise<IRecipient> =>
-  getEndpoint()
-    .api.put<IRecipient>(`/documents/${documentId}/recipients/${roleName}`, {
+  endpoint.api //
+    .put<IRecipient>(`/documents/${documentId}/recipients/${roleName}`, {
       role_name: roleName,
       action,
       ...(params || {}),

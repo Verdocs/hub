@@ -1,5 +1,6 @@
 import {IGroup, IOrganization} from '../Organizations/Types';
-import {TRequestStatus} from '../HTTP/Types';
+
+export type TRequestStatus = 'OK' | 'ERROR';
 
 /**
  * An operation within Verdocs the user may perform.

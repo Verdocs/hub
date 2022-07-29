@@ -4,35 +4,35 @@
  * @module
  */
 
-import {getEndpoint} from '../HTTP/Transport';
 import {IOrganization} from './Types';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
-export const getOrganizations = () =>
-  getEndpoint()
-    .api.get<IOrganization[]>('/organizations')
+export const getOrganizations = (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .get<IOrganization[]>('/organizations')
     .then((r) => r.data);
 
-export const createOrganization = () =>
-  getEndpoint()
-    .api.post<IOrganization>('/organizations')
+export const createOrganization = (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .post<IOrganization>('/organizations')
     .then((r) => r.data);
 
-export const validateOrganization = () =>
-  getEndpoint()
-    .api.get<IOrganization>('/organizations/is_valid')
+export const validateOrganization = (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .get<IOrganization>('/organizations/is_valid')
     .then((r) => r.data);
 
-export const deleteOrganization = (organizationId: string) =>
-  getEndpoint()
-    .api.delete(`/organizations/${organizationId}`)
+export const deleteOrganization = (endpoint: VerdocsEndpoint, organizationId: string) =>
+  endpoint.api //
+    .delete(`/organizations/${organizationId}`)
     .then((r) => r.data);
 
-export const getOrganization = (organizationId: string) =>
-  getEndpoint()
-    .api.get(`/organizations/${organizationId}`)
+export const getOrganization = (endpoint: VerdocsEndpoint, organizationId: string) =>
+  endpoint.api //
+    .get(`/organizations/${organizationId}`)
     .then((r) => r.data);
 
-export const updateOrganization = (organizationId: string, params: any) =>
-  getEndpoint()
-    .api.patch(`/organizations/${organizationId}`, params)
+export const updateOrganization = (endpoint: VerdocsEndpoint, organizationId: string, params: any) =>
+  endpoint.api //
+    .patch(`/organizations/${organizationId}`, params)
     .then((r) => r.data);

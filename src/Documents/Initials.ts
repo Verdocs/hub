@@ -1,4 +1,4 @@
-import {getEndpoint} from '../HTTP/Transport';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export interface IInitials {
   id?: string;
@@ -14,11 +14,11 @@ export interface IInitials {
  * create and store an initials block. Thereafter, the ID of the initials block may be re-used for each initials field
  * to be "stamped" by the user.
  */
-export const createInitials = (name: string, initials: string | Blob) => {
+export const createInitials = (endpoint: VerdocsEndpoint, name: string, initials: string | Blob) => {
   const data = new FormData();
   data.append('initial', initials, name);
 
-  return getEndpoint()
-    .api.post<IInitials>(`/initials`, data)
+  return endpoint.api //
+    .post<IInitials>(`/initials`, data)
     .then((r) => r.data);
 };

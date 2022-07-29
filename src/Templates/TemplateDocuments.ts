@@ -4,7 +4,7 @@
  * @module
  */
 
-import {getEndpoint} from '../HTTP/Transport';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {ITemplateDocument} from './Types';
 
 /**
@@ -16,9 +16,9 @@ import {ITemplateDocument} from './Types';
  * await TemplateDocument.getDocuments(templateID);
  * ```
  */
-export const getTemplateDocuments = (templateId: string) =>
-  getEndpoint()
-    .api.get<ITemplateDocument[]>(`/templates/${templateId}/documents/`)
+export const getTemplateDocuments = (endpoint: VerdocsEndpoint, templateId: string) =>
+  endpoint.api //
+    .get<ITemplateDocument[]>(`/templates/${templateId}/documents/`)
     .then((r) => r.data);
 
 /**
@@ -30,9 +30,9 @@ export const getTemplateDocuments = (templateId: string) =>
  * await TemplateDocument.createDocument(templateID, params);
  * ```
  */
-export const createTemplateDocument = (templateId: string, params: any) =>
-  getEndpoint()
-    .api.post<ITemplateDocument>(`/templates/${templateId}/documents/`, params)
+export const createTemplateDocument = (endpoint: VerdocsEndpoint, templateId: string, params: any) =>
+  endpoint.api //
+    .post<ITemplateDocument>(`/templates/${templateId}/documents/`, params)
     .then((r) => r.data);
 
 /**
@@ -44,9 +44,9 @@ export const createTemplateDocument = (templateId: string, params: any) =>
  * await TemplateDocument.getDocument(templateID, documentID);
  * ```
  */
-export const getTemplateDocument = (templateId: string, documentId: string) =>
-  getEndpoint()
-    .api.get<ITemplateDocument>(`/templates/${templateId}/documents/${documentId}`)
+export const getTemplateDocument = (endpoint: VerdocsEndpoint, templateId: string, documentId: string) =>
+  endpoint.api //
+    .get<ITemplateDocument>(`/templates/${templateId}/documents/${documentId}`)
     .then((r) => r.data);
 
 /**
@@ -58,7 +58,7 @@ export const getTemplateDocument = (templateId: string, documentId: string) =>
  * await TemplateDocument.deleteDocument(templateID, documentID);
  * ```
  */
-export const deleteTemplateDocument = (templateId: string, documentId: string) =>
-  getEndpoint()
-    .api.delete(`/templates/${templateId}/documents/${documentId}`)
+export const deleteTemplateDocument = (endpoint: VerdocsEndpoint, templateId: string, documentId: string) =>
+  endpoint.api //
+    .delete(`/templates/${templateId}/documents/${documentId}`)
     .then((r) => r.data);

@@ -6,40 +6,40 @@
  * @module
  */
 
-import {getEndpoint} from '../HTTP/Transport';
 import {ITemplateField, IRole} from './Types';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
-export const createRole = (templateId: string, params: IRole) =>
-  getEndpoint()
-    .api.post<IRole>(`/templates/${templateId}/roles/`, params)
+export const createRole = (endpoint: VerdocsEndpoint, templateId: string, params: IRole) =>
+  endpoint.api //
+    .post<IRole>(`/templates/${templateId}/roles/`, params)
     .then((r) => r.data);
 
-export const getRoles = (templateId: string) =>
-  getEndpoint()
-    .api.get<IRole[]>(`/templates/${templateId}/roles/`)
+export const getRoles = (endpoint: VerdocsEndpoint, templateId: string) =>
+  endpoint.api //
+    .get<IRole[]>(`/templates/${templateId}/roles/`)
     .then((r) => r.data);
 
-export const getRole = (templateId: string, roleName: string) =>
-  getEndpoint()
-    .api.get<IRole>(`/templates/${templateId}/roles/${roleName}`)
+export const getRole = (endpoint: VerdocsEndpoint, templateId: string, roleName: string) =>
+  endpoint.api //
+    .get<IRole>(`/templates/${templateId}/roles/${roleName}`)
     .then((r) => r.data);
 
-export const editRole = (templateId: string, roleName: string, params: IRole) =>
-  getEndpoint()
-    .api.put<IRole>(`/templates/${templateId}/roles/${roleName}`, params)
+export const editRole = (endpoint: VerdocsEndpoint, templateId: string, roleName: string, params: IRole) =>
+  endpoint.api //
+    .put<IRole>(`/templates/${templateId}/roles/${roleName}`, params)
     .then((r) => r.data);
 
-export const deleteRole = (templateId: string, roleName: string) =>
-  getEndpoint()
-    .api.delete(`/templates/${templateId}/roles/${roleName}`)
+export const deleteRole = (endpoint: VerdocsEndpoint, templateId: string, roleName: string) =>
+  endpoint.api //
+    .delete(`/templates/${templateId}/roles/${roleName}`)
     .then((r) => r.data);
 
-export const getRoleFields = (templateId: string, roleName: string) =>
-  getEndpoint()
-    .api.get<ITemplateField[]>(`/templates/${templateId}/roles/${roleName}/fields`)
+export const getRoleFields = (endpoint: VerdocsEndpoint, templateId: string, roleName: string) =>
+  endpoint.api //
+    .get<ITemplateField[]>(`/templates/${templateId}/roles/${roleName}/fields`)
     .then((r) => r.data);
 
-export const deleteSequence = (templateId: string) =>
-  getEndpoint()
-    .api.delete<IRole[]>(`/templates/${templateId}/roles/`)
+export const deleteSequence = (endpoint: VerdocsEndpoint, templateId: string) =>
+  endpoint.api //
+    .delete<IRole[]>(`/templates/${templateId}/roles/`)
     .then((r) => r.data);

@@ -1,4 +1,4 @@
-import {TDocumentStatus, TRecipientStatus} from '../Documents/Documents';
+import {TDocumentStatus} from '../Documents/Documents';
 import {TTemplateSender} from '../Templates/Types';
 
 export type TMimeType = 'application/pdf' | string;

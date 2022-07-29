@@ -1,12 +1,12 @@
-import {getEndpoint} from '../HTTP/Transport';
 import {IStar, ITemplatesSummary} from './Types';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
-export const getStars = (templateId: string) =>
-  getEndpoint()
-    .api.get<IStar[]>(`/templates/${templateId}/stars/`)
+export const getStars = (endpoint: VerdocsEndpoint, templateId: string) =>
+  endpoint.api //
+    .get<IStar[]>(`/templates/${templateId}/stars/`)
     .then((r) => r.data);
 
-export const toggleStar = (templateId: string) =>
-  getEndpoint()
-    .api.get<ITemplatesSummary>(`/templates/${templateId}/stars/toggle`)
+export const toggleStar = (endpoint: VerdocsEndpoint, templateId: string) =>
+  endpoint.api //
+    .get<ITemplatesSummary>(`/templates/${templateId}/stars/toggle`)
     .then((r) => r.data);

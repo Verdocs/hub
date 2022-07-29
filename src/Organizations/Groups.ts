@@ -8,8 +8,8 @@
  * @module
  */
 
-import {getEndpoint} from '../HTTP/Transport';
 import {IGroup, IGroupDetail} from './Types';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 /**
  * Get a list of groups for a given organization. The caller must have admin access to the organization.
@@ -20,9 +20,9 @@ import {IGroup, IGroupDetail} from './Types';
  * const groups = await Groups.getGroups(ORGID);
  * ```
  */
-export const getGroups = (organizationId: string) =>
-  getEndpoint()
-    .api.get<IGroup[]>(`/organizations/${organizationId}/groups`)
+export const getGroups = (endpoint: VerdocsEndpoint, organizationId: string) =>
+  endpoint.api //
+    .get<IGroup[]>(`/organizations/${organizationId}/groups`)
     .then((r) => r.data);
 
 /**
@@ -34,32 +34,32 @@ export const getGroups = (organizationId: string) =>
  * const groups = await Groups.getGroups(ORGID);
  * ```
  */
-export const getGroup = (organizationId: string, groupId: string) =>
-  getEndpoint()
-    .api.get<IGroupDetail>(`/organizations/${organizationId}/groups/${groupId}`)
+export const getGroup = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string) =>
+  endpoint.api //
+    .get<IGroupDetail>(`/organizations/${organizationId}/groups/${groupId}`)
     .then((r) => r.data);
 
-export const getMembers = (organizationId: string, groupId: string) =>
-  getEndpoint()
-    .api.get(`/organizations/${organizationId}/groups/${groupId}/members`)
+export const getMembers = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string) =>
+  endpoint.api //
+    .get(`/organizations/${organizationId}/groups/${groupId}/members`)
     .then((r) => r.data);
 
-export const addMembers = (organizationId: string, groupId: string, params: any) =>
-  getEndpoint()
-    .api.post(`/organizations/${organizationId}/groups/${groupId}/members`, params)
+export const addMembers = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, params: any) =>
+  endpoint.api //
+    .post(`/organizations/${organizationId}/groups/${groupId}/members`, params)
     .then((r) => r.data);
 
-export const deleteMembers = (organizationId: string, groupId: string, params: any) =>
-  getEndpoint()
-    .api.put(`/organizations/${organizationId}/groups/${groupId}/delete_members`, params)
+export const deleteMembers = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, params: any) =>
+  endpoint.api //
+    .put(`/organizations/${organizationId}/groups/${groupId}/delete_members`, params)
     .then((r) => r.data);
 
-export const addPermission = (organizationId: string, groupId: string, permissionId: string, params: any) =>
-  getEndpoint()
-    .api.post(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`, params)
+export const addPermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permissionId: string, params: any) =>
+  endpoint.api //
+    .post(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`, params)
     .then((r) => r.data);
 
-export const deletePermission = (organizationId: string, groupId: string, permissionId: string) =>
-  getEndpoint()
-    .api.delete(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`)
+export const deletePermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permissionId: string) =>
+  endpoint.api //
+    .delete(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`)
     .then((r) => r.data);

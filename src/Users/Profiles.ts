@@ -1,13 +1,6 @@
-import {getEndpoint} from '../HTTP/Transport';
-import {
-  ICreateProfileRequest,
-  IPermission,
-  IProfile,
-  IRole,
-  ISwitchProfileResponse,
-  IUpdateProfileRequest,
-} from './Types';
+import {ICreateProfileRequest, IPermission, IProfile, IRole, ISwitchProfileResponse, IUpdateProfileRequest} from './Types';
 import {IGroup} from '../Organizations/Types';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 /**
  * Get the user's available profiles. The current profile will be marked with `current: true`.
@@ -18,9 +11,9 @@ import {IGroup} from '../Organizations/Types';
  * const profiles = await Profiles.getProfiles()
  * ```
  */
-export const getProfiles = () =>
-  getEndpoint()
-    .api.get<IProfile[]>('/profiles')
+export const getProfiles = (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .get<IProfile[]>('/profiles')
     .then((r: any) => r.data);
 
 /**
@@ -32,9 +25,9 @@ export const getProfiles = () =>
  * const roles = await Profiles.getRoles();
  * ```
  */
-export const getRoles = () =>
-  getEndpoint()
-    .api.get<IRole[]>('/roles')
+export const getRoles = (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .get<IRole[]>('/roles')
     .then((r: any) => r.data);
 
 /**
@@ -46,9 +39,9 @@ export const getRoles = () =>
  * const permissions = await Profiles.getPermissions();
  * ```
  */
-export const getPermissions = () =>
-  getEndpoint()
-    .api.get<IPermission[]>('/permissions')
+export const getPermissions = (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .get<IPermission[]>('/permissions')
     .then((r: any) => r.data);
 
 /**
@@ -60,9 +53,9 @@ export const getPermissions = () =>
  * const newProfile = await Profiles.createProfile({ first_name: 'FIRST', last_name: 'LAST', email: 'EMAIL' });
  * ```
  */
-export const createProfile = (params: ICreateProfileRequest) =>
-  getEndpoint()
-    .api.post<IProfile>('/profiles', params)
+export const createProfile = (endpoint: VerdocsEndpoint, params: ICreateProfileRequest) =>
+  endpoint.api //
+    .post<IProfile>('/profiles', params)
     .then((r: any) => r.data);
 
 /**
@@ -75,9 +68,9 @@ export const createProfile = (params: ICreateProfileRequest) =>
  * const profile = await Profiles.getProfile('PROFILEID');
  * ```
  */
-export const getProfile = (profileId: string) =>
-  getEndpoint()
-    .api.get<IProfile>(`/profiles/${profileId}`)
+export const getProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
+  endpoint.api //
+    .get<IProfile>(`/profiles/${profileId}`)
     .then((r: any) => r.data);
 
 /**
@@ -89,9 +82,9 @@ export const getProfile = (profileId: string) =>
  * const permissions = await Profiles.getProfilePermissions('PROFILEID');
  * ```
  */
-export const getProfilePermissions = (profileId: string) =>
-  getEndpoint()
-    .api.get<IPermission[]>(`/profiles/${profileId}/permissions`)
+export const getProfilePermissions = (endpoint: VerdocsEndpoint, profileId: string) =>
+  endpoint.api //
+    .get<IPermission[]>(`/profiles/${profileId}/permissions`)
     .then((r: any) => r.data);
 
 /**
@@ -103,9 +96,9 @@ export const getProfilePermissions = (profileId: string) =>
  * const groups = await Profiles.getProfileGroups('PROFILEID');
  * ```
  */
-export const getProfileGroups = (profileId: string) =>
-  getEndpoint()
-    .api.get<IGroup[]>(`/profiles/${profileId}/groups`)
+export const getProfileGroups = (endpoint: VerdocsEndpoint, profileId: string) =>
+  endpoint.api //
+    .get<IGroup[]>(`/profiles/${profileId}/groups`)
     .then((r: any) => r.data);
 
 /**
@@ -118,9 +111,9 @@ export const getProfileGroups = (profileId: string) =>
  * const newProfile = await Profiles.switchProfile('PROFILEID');
  * ```
  */
-export const switchProfile = (profileId: string) =>
-  getEndpoint()
-    .api.post<ISwitchProfileResponse>(`/profiles/${profileId}/switch`)
+export const switchProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
+  endpoint.api //
+    .post<ISwitchProfileResponse>(`/profiles/${profileId}/switch`)
     .then((r: any) => r.data);
 
 /**
@@ -133,9 +126,9 @@ export const switchProfile = (profileId: string) =>
  * const newProfile = await Profiles.updateProfile('PROFILEID');
  * ```
  */
-export const updateProfile = (profileId: string, params: IUpdateProfileRequest) =>
-  getEndpoint()
-    .api.put<IProfile>(`/profiles/${profileId}`, params)
+export const updateProfile = (endpoint: VerdocsEndpoint, profileId: string, params: IUpdateProfileRequest) =>
+  endpoint.api //
+    .put<IProfile>(`/profiles/${profileId}`, params)
     .then((r: any) => r.data);
 
 /**
@@ -147,7 +140,7 @@ export const updateProfile = (profileId: string, params: IUpdateProfileRequest) 
  * await Profiles.deleteProfile('PROFILEID');
  * ```
  */
-export const deleteProfile = (profileId: string) =>
-  getEndpoint()
-    .api.delete(`/profiles/${profileId}`)
+export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
+  endpoint.api //
+    .delete(`/profiles/${profileId}`)
     .then((r: any) => r.data);

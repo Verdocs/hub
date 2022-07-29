@@ -1,42 +1,42 @@
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
+
 /**
  * An invitation represents an opportunity for a Member to join an Organization.
  *
  * @module
  */
 
-import {getEndpoint} from '../HTTP/Transport';
-
-export const getInvitations = (organizationId: string) =>
-  getEndpoint()
-    .api.get(`/organizations/${organizationId}/invitation`)
+export const getInvitations = (endpoint: VerdocsEndpoint, organizationId: string) =>
+  endpoint.api //
+    .get(`/organizations/${organizationId}/invitation`)
     .then((r) => r.data);
 
-export const createInvitation = (organizationId: string, params: any) =>
-  getEndpoint()
-    .api.post(`/organizations/${organizationId}/invitation`, params)
+export const createInvitation = (endpoint: VerdocsEndpoint, organizationId: string, params: any) =>
+  endpoint.api //
+    .post(`/organizations/${organizationId}/invitation`, params)
     .then((r) => r.data);
 
-export const deleteInvitation = (organizationId: string, email: string) =>
-  getEndpoint()
-    .api.delete(`/organizations/${organizationId}/invitation/${email}`)
+export const deleteInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string) =>
+  endpoint.api //
+    .delete(`/organizations/${organizationId}/invitation/${email}`)
     .then((r) => r.data);
 
-export const updateInvitation = (organizationId: string, email: string, params: any) =>
-  getEndpoint()
-    .api.patch(`/organizations/${organizationId}/invitation/${email}`, params)
+export const updateInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string, params: any) =>
+  endpoint.api //
+    .patch(`/organizations/${organizationId}/invitation/${email}`, params)
     .then((r) => r.data);
 
-export const resendInvitation = (organizationId: string, email: string) =>
-  getEndpoint()
-    .api.post(`/organizations/${organizationId}/invitation/${email}/resend`)
+export const resendInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string) =>
+  endpoint.api //
+    .post(`/organizations/${organizationId}/invitation/${email}/resend`)
     .then((r) => r.data);
 
-export const claimInvitation = (organizationId: string, email: string, params: any) =>
-  getEndpoint()
-    .api.put(`/organizations/${organizationId}/invitation/${email}`, params)
+export const claimInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string, params: any) =>
+  endpoint.api //
+    .put(`/organizations/${organizationId}/invitation/${email}`, params)
     .then((r) => r.data);
 
-export const claimNewUser = (organizationId: string, email: string, token: string) =>
-  getEndpoint()
-    .api.put(`/organizations/${organizationId}/invitation/${email}/token/${token}/new_user`)
+export const claimNewUser = (endpoint: VerdocsEndpoint, organizationId: string, email: string, token: string) =>
+  endpoint.api //
+    .put(`/organizations/${organizationId}/invitation/${email}/token/${token}/new_user`)
     .then((r) => r.data);
