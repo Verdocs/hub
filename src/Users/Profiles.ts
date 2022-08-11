@@ -14,7 +14,21 @@ import {VerdocsEndpoint} from '../VerdocsEndpoint';
 export const getProfiles = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
     .get<IProfile[]>('/profiles')
-    .then((r: any) => r.data);
+    .then((r) => r.data);
+
+/**
+ * Get the user's available profiles. The current profile will be marked with `current: true`.
+ *
+ * ```typescript
+ * import {Profiles} from '@verdocs/js-sdk/Users';
+ *
+ * const profiles = await Profiles.getCurrentProfile()
+ * ```
+ */
+export const getCurrentProfile = (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .get<IProfile[]>('/profiles')
+    .then((r) => (r.data || []).find((profile) => profile.current));
 
 /**
  * Get a list of system roles.
@@ -28,7 +42,7 @@ export const getProfiles = (endpoint: VerdocsEndpoint) =>
 export const getRoles = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
     .get<IRole[]>('/roles')
-    .then((r: any) => r.data);
+    .then((r) => r.data);
 
 /**
  * Get a list of system roles.
@@ -56,7 +70,7 @@ export const getPermissions = (endpoint: VerdocsEndpoint) =>
 export const createProfile = (endpoint: VerdocsEndpoint, params: ICreateProfileRequest) =>
   endpoint.api //
     .post<IProfile>('/profiles', params)
-    .then((r: any) => r.data);
+    .then((r) => r.data);
 
 /**
  * Get a profile. The caller must have admin access to the given profile.
@@ -71,7 +85,7 @@ export const createProfile = (endpoint: VerdocsEndpoint, params: ICreateProfileR
 export const getProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
     .get<IProfile>(`/profiles/${profileId}`)
-    .then((r: any) => r.data);
+    .then((r) => r.data);
 
 /**
  * Get a profile's permissions. The caller must have admin access to the given profile.
@@ -85,7 +99,7 @@ export const getProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
 export const getProfilePermissions = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
     .get<IPermission[]>(`/profiles/${profileId}/permissions`)
-    .then((r: any) => r.data);
+    .then((r) => r.data);
 
 /**
  * Get a profile's groups.
@@ -99,7 +113,7 @@ export const getProfilePermissions = (endpoint: VerdocsEndpoint, profileId: stri
 export const getProfileGroups = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
     .get<IGroup[]>(`/profiles/${profileId}/groups`)
-    .then((r: any) => r.data);
+    .then((r) => r.data);
 
 /**
  * Switch the caller's "current" profile. The current profile is used for permissions checking and profile_id field settings
@@ -114,7 +128,7 @@ export const getProfileGroups = (endpoint: VerdocsEndpoint, profileId: string) =
 export const switchProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
     .post<ISwitchProfileResponse>(`/profiles/${profileId}/switch`)
-    .then((r: any) => r.data);
+    .then((r) => r.data);
 
 /**
  * Update a profile. For future expansion, the profile ID to update is required, but currently this must also be the
@@ -129,7 +143,7 @@ export const switchProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
 export const updateProfile = (endpoint: VerdocsEndpoint, profileId: string, params: IUpdateProfileRequest) =>
   endpoint.api //
     .put<IProfile>(`/profiles/${profileId}`, params)
-    .then((r: any) => r.data);
+    .then((r) => r.data);
 
 /**
  * Delete a profile. If the requested profile is the caller's curent profile, the next available profile will be selected.
@@ -143,4 +157,4 @@ export const updateProfile = (endpoint: VerdocsEndpoint, profileId: string, para
 export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
     .delete(`/profiles/${profileId}`)
-    .then((r: any) => r.data);
+    .then((r) => r.data);

@@ -17,7 +17,7 @@ export type TSessionType = 'user' | 'signing';
 
 export type TSession = IActiveSession | ISigningSession | null;
 
-export type TSessionChangedListener = (endpoint: VerdocsEndpoint, session: IActiveSession | ISigningSession | null) => void;
+export type TSessionChangedListener = (endpoint: VerdocsEndpoint, session: TSession) => void;
 
 export interface VerdocsEndpointOptions {
   baseURL?: string;
@@ -91,7 +91,7 @@ export class VerdocsEndpoint {
     globalThis[ENDPOINT_KEY] = this;
   }
 
-  public static getDefault() {
+  public static getDefault(): VerdocsEndpoint {
     return globalThis[ENDPOINT_KEY];
   }
 
