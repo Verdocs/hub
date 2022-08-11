@@ -275,6 +275,14 @@ export class VerdocsEndpoint {
     return this;
   }
 
+  /**
+   * Retrieves the current session token, if any. Tokens should rarely be used for direct actions, but this is
+   * required by the `<VerdocsView>` and other components to authorize requests to raw PDF files.
+   */
+  public getToken() {
+    return this.token;
+  }
+
   private sessionStorageKey() {
     return `verdocs-session-${this.getSessionType()}-${this.getEnvironment()}`;
   }
