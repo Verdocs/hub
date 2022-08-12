@@ -59,7 +59,7 @@ export interface IProfile {
   /** If true, this is the caller's "currently selected" profile. All operations will performed "as" this profile. */
   current: boolean;
   /** The organization */
-  organization: IOrganization;
+  organization?: IOrganization;
   /** The permissions assigned to the profilel _NOTE: Only present in the "current" profile._ */
   permissions?: TPermission[];
   /** The roles assigned to the profilel _NOTE: Only present in the "current" profile._ */

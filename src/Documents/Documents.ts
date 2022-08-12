@@ -2,6 +2,7 @@ import {ISigningSession, ISigningSessionRequest} from './Types';
 import {decodeAccessTokenBody} from '../Utils/Token';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {IFieldSetting} from '../Templates/Types';
+import {IProfile} from '../Users/Types';
 
 export type TDocumentStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
 
@@ -121,6 +122,7 @@ export interface IDocument {
   certificate?: IDocumentAsset | null;
   document?: IDocumentAsset | null;
   fields?: IDocumentField[];
+  profile?: IProfile;
 }
 
 export interface IActivityEntry {
