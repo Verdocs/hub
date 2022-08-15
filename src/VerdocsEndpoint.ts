@@ -345,4 +345,5 @@ export class VerdocsEndpoint {
 const ENDPOINT_KEY = Symbol.for('verdocs-default-endpoint');
 if (!globalThis[ENDPOINT_KEY]) {
   globalThis[ENDPOINT_KEY] = new VerdocsEndpoint();
+  window.console.debug('[JS_SDK] Created default endpoint', globalThis[ENDPOINT_KEY]);
 }
