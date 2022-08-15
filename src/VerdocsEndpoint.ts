@@ -5,6 +5,10 @@ import {IActiveSession} from './Users/Types';
 import globalThis from './Utils/globalThis';
 import * as Documents from './Documents';
 
+// @credit https://derickbailey.com/2016/03/09/creating-a-true-singleton-in-node-js-with-es6-symbols/
+// Also see globalThis for comments about why we're doing this in the first place.
+const ENDPOINT_KEY = Symbol.for('verdocs-default-endpoint');
+
 const requestLogger = (r: any) => {
   // tslint:disable-next-line
   console.debug(`[JS-SDK] ${r.method.toUpperCase()} ${r.baseURL}${r.url}`, r.data ? JSON.stringify(r.data) : '');
@@ -92,6 +96,13 @@ export class VerdocsEndpoint {
   }
 
   public static getDefault(): VerdocsEndpoint {
+    if (!globalThis[ENDPOINT_KEY]) {
+      globalThis[ENDPOINT_KEY] = new VerdocsEndpoint();
+      window.console.debug('[JS_SDK] Created default endpoint', globalThis[ENDPOINT_KEY]);
+    } else {
+      window.console.debug('[JS SDK] Re-using existing endpoint', globalThis[ENDPOINT_KEY]);
+    }
+
     return globalThis[ENDPOINT_KEY];
   }
 
@@ -338,12 +349,4 @@ export class VerdocsEndpoint {
 
     return this.setToken(token);
   }
-}
-
-// @credit https://derickbailey.com/2016/03/09/creating-a-true-singleton-in-node-js-with-es6-symbols/
-// Also see globalThis for comments about why we're doing this in the first place.
-const ENDPOINT_KEY = Symbol.for('verdocs-default-endpoint');
-if (!globalThis[ENDPOINT_KEY]) {
-  globalThis[ENDPOINT_KEY] = new VerdocsEndpoint();
-  window.console.debug('[JS_SDK] Created default endpoint', globalThis[ENDPOINT_KEY]);
 }
