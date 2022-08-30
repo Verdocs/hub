@@ -20,9 +20,9 @@ import {VerdocsEndpoint} from '../VerdocsEndpoint';
  * const groups = await Groups.getGroups(ORGID);
  * ```
  */
-export const getGroups = (endpoint: VerdocsEndpoint, organizationId: string) =>
+export const getGroups = (endpoint: VerdocsEndpoint, organizationId: string, name?: string) =>
   endpoint.api //
-    .get<IGroup[]>(`/organizations/${organizationId}/groups`)
+    .get<IGroup[]>(`/organizations/${organizationId}/groups`, {params: {name}})
     .then((r) => r.data);
 
 /**
