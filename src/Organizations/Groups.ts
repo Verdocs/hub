@@ -20,9 +20,23 @@ import {VerdocsEndpoint} from '../VerdocsEndpoint';
  * const groups = await Groups.getGroups(ORGID);
  * ```
  */
-export const getGroups = (endpoint: VerdocsEndpoint, organizationId: string, name?: string) =>
+export const getGroups = (endpoint: VerdocsEndpoint, organizationId: string) =>
   endpoint.api //
-    .get<IGroup[]>(`/organizations/${organizationId}/groups`, {params: {name}})
+    .get<IGroup[]>(`/organizations/${organizationId}/groups`)
+    .then((r) => r.data);
+
+/**
+ * Get a single group by name. Returns a detail record.
+ *
+ * ```typescript
+ * import {Groups} from '@verdocs/js-sdk/Organizations';
+ *
+ * const groups = await Groups.getGroups(ORGID);
+ * ```
+ */
+export const getGroupByName = (endpoint: VerdocsEndpoint, organizationId: string, name?: string) =>
+  endpoint.api //
+    .get<IGroup>(`/organizations/${organizationId}/groups`, {params: {name}})
     .then((r) => r.data);
 
 /**

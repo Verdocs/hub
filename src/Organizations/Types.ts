@@ -47,6 +47,8 @@ export interface IGroup {
   name: string;
   organization_id: string;
   /** For future expansion. In the future, Verdocs may support group hierarchies. Until then this field is always null. */
+  parent: IGroup | null;
+  /** For future expansion. In the future, Verdocs may support group hierarchies. Until then this field is always null. */
   parent_id: string | null;
   /** Some operations will additionally return a list of permissions. */
   permissions?: TPermission[];
