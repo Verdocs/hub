@@ -10,12 +10,21 @@ export type TRecipientStatus = 'invited' | 'opened' | 'signed' | 'submitted' | '
 
 export type TRecipientType = 'signer' | 'cc' | 'approver';
 
+// NOTE: Many of the fields here are undefined unless "summary=true" is included in the search terms
 export interface IDocumentsSearchResultEntry {
   id: string;
   canceled_at: string;
+  certificate_document_id: string;
   created_at: string;
+  envelope_document_id: string;
+  histories: IHistory[];
+  indexed_at: string;
   name: string;
+  no_contact: boolean;
+  organization_id: string;
   profile_id: string;
+  recipients: string;
+  reminder_id: string | null;
   status: TDocumentStatus;
   next_recipient: {
     claimed: boolean;

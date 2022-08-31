@@ -58,8 +58,27 @@ export interface IGroup {
   profiles?: IProfile[];
 }
 
-export interface IGroupDetail extends IGroup {
-  permissions: TPermission[];
-  roles: TRole[];
+export interface IPermissionDetail {
+  id: string;
+  name: string;
+  client_id: string;
+}
+
+export interface IRoleDetail {
+  id: string;
+  name: string;
+  client_id: string;
+}
+
+export interface IGroupDetail {
+  id: string;
+  name: string;
+  organization_id: string;
+  permissions: IPermissionDetail[];
+  roles: IRoleDetail[];
   profiles: IProfile[];
+  /** For future expansion. In the future, Verdocs may support group hierarchies. Until then this field is always null. */
+  parent: IGroup | null;
+  /** For future expansion. In the future, Verdocs may support group hierarchies. Until then this field is always null. */
+  parent_id: string | null;
 }

@@ -36,7 +36,7 @@ export const getGroups = (endpoint: VerdocsEndpoint, organizationId: string) =>
  */
 export const getGroupByName = (endpoint: VerdocsEndpoint, organizationId: string, name?: string) =>
   endpoint.api //
-    .get<IGroup>(`/organizations/${organizationId}/groups`, {params: {name}})
+    .get<IGroupDetail>(`/organizations/${organizationId}/groups`, {params: {name}})
     .then((r) => r.data);
 
 /**
