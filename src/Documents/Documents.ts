@@ -23,7 +23,7 @@ export interface IDocumentsSearchResultEntry {
   no_contact: boolean;
   organization_id: string;
   profile_id: string;
-  recipients: string;
+  recipients: IRecipient[];
   reminder_id: string | null;
   status: TDocumentStatus;
   next_recipient: {
@@ -78,6 +78,10 @@ export interface IRecipient {
   phone: string | null;
   profile_id: string;
   role_name: string;
+  // The sequence number indicates the order in which recipients act. Note that it is the workflow "level" not the
+  // recipient's individual index in the list. There may be multiple recipients with the same sequence. Recipients
+  // with the same sequence number may act independently, in parallel to each other (co-signers), as long as all
+  // Recipients with an earlier sequence number have completed their tasks.
   sequence: number;
   status: TRecipientStatus;
   type: TRecipientType;
@@ -242,6 +246,38 @@ export const getDocument = async (endpoint: VerdocsEndpoint, documentId: string)
   endpoint.api //
     .get<IDocument>(`/documents/${documentId}`)
     .then((r) => r.data);
+
+/**
+ * Cancel a Document.
+ */
+export const cancelDocument = async (endpoint: VerdocsEndpoint, documentId: string): Promise<IDocument> =>
+  endpoint.api //
+    .put<IDocument>(`/documents/${documentId}`, {action: 'cancel'})
+    .then((r) => r.data);
+
+/**
+ * Returns true if the recipient has a pending action. Note that this does not necessarily mean the recipient can act (yet).
+ */
+export const recipientHasAction = (recipient: IRecipient) => !['submitted', 'canceled', 'declined'].includes(recipient.status);
+
+/**
+ * Returns the recipients who still have a pending action. Note that not all of these recipients may be able to act (yet).
+ */
+export const getRecipientsWithActions = (document: IDocument) => (document?.recipients || []).filter(recipientHasAction);
+
+/**
+ * Returns true if the recipient can act.
+ */
+export const recipientCanAct = (recipient: IRecipient, recipientsWithActions: IRecipient[]) =>
+  recipient.sequence === recipientsWithActions?.[0]?.sequence;
+
+/**
+ * Returns true if the user can act.
+ */
+export const userCanAct = (email: string, recipientsWithActions: IRecipient[]) => {
+  const recipient = recipientsWithActions.find((r) => r.email === email);
+  return recipient && recipient.sequence === recipientsWithActions?.[0]?.sequence;
+};
 
 /**
  * Get (binary download) a file attached to a Document.
