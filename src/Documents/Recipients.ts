@@ -1,7 +1,6 @@
-import {IRecipient} from './Documents';
+import {IInPersonAccessKey, TRecipientAction} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-
-export type TRecipientAction = 'submit' | 'decline' | 'prepare' | 'update';
+import {IDocument, IRecipient} from './Documents';
 
 export interface IUpdateRecipientParams {
   new_full_name?: string;
@@ -25,3 +24,14 @@ export const updateRecipientStatus = async (
       ...(params || {}),
     })
     .then((r) => r.data);
+
+export interface ISignerTokenResponse {
+  recipient: IRecipient;
+  envelope: IDocument;
+  signerToken: string;
+  inPersonAccessKey: IInPersonAccessKey;
+}
+
+export const getSignerToken = (endpoint: VerdocsEndpoint, documentId: string, roleName: string) =>
+  endpoint.api //
+    .get<ISignerTokenResponse>(`/documents/${documentId}/recipients/${encodeURIComponent(roleName)}/signer-token`);

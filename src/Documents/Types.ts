@@ -1,3 +1,5 @@
+export type TRecipientAction = 'submit' | 'decline' | 'prepare' | 'update';
+
 export interface ITemplateSummaryEntry {
   id: string;
   name: string;
@@ -44,4 +46,16 @@ export interface ISigningSession {
   iat: number;
 
   [key: string]: any;
+}
+
+export interface IInPersonAccessKey {
+  id: string;
+  created_at: string;
+  recipient_name: string;
+  envelope_id: string;
+  type: 'in_person_link';
+  key: string;
+  expiration_date: string | null;
+  first_used: string | null;
+  last_used: string | null;
 }

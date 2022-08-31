@@ -138,6 +138,8 @@ export interface IDocument {
   profile?: IProfile;
 }
 
+export type TDocumentUpdateResult = Omit<IDocument, 'histories' | 'recipients' | 'certificate' | 'document' | 'fields' | 'profile'>;
+
 export interface IActivityEntry {
   id: string;
   name: string;
@@ -250,7 +252,7 @@ export const getDocument = async (endpoint: VerdocsEndpoint, documentId: string)
 /**
  * Cancel a Document.
  */
-export const cancelDocument = async (endpoint: VerdocsEndpoint, documentId: string): Promise<IDocument> =>
+export const cancelDocument = async (endpoint: VerdocsEndpoint, documentId: string): Promise<TDocumentUpdateResult> =>
   endpoint.api //
     .put<IDocument>(`/documents/${documentId}`, {action: 'cancel'})
     .then((r) => r.data);
