@@ -1,4 +1,3 @@
-import {IFieldSetting} from '../Templates/Types';
 import {IProfile} from '../Users/Types';
 
 export type TRecipientAction = 'submit' | 'decline' | 'prepare' | 'update';
@@ -157,6 +156,33 @@ export interface IDocumentAsset {
   url: string;
 }
 
+export interface IDocumentFieldSettings {
+  type?: string;
+  x: number;
+  y: number;
+  width?: number;
+  height?: number;
+  value?: number | string;
+  result?: any;
+
+  // Text field settings
+  leading?: number;
+  alignment?: number;
+  upperCase?: boolean;
+
+  // Dropdowns, checkboxes, radio groups
+  options?: any[];
+
+  // Signatures and Initials, result will be "signed"
+  base64?: string;
+  hash?: string;
+  ip_address?: string;
+  signature_id?: string;
+  signed_at?: string;
+
+  [key: string]: any;
+}
+
 export interface IDocumentField {
   envelope_id: string;
   label: string | null;
@@ -165,9 +191,7 @@ export interface IDocumentField {
   recipient_role: string;
   type: string;
   required: boolean;
-  settings?: IFieldSetting;
-  // DEPRECATED
-  setting?: IFieldSetting;
+  settings?: IDocumentFieldSettings;
   validator: string | null;
 
   // Not sent by the server. Used in the UI to identify prepared fields.

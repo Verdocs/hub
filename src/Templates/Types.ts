@@ -172,20 +172,18 @@ export interface ITemplateField {
   template_id: string;
   type: string;
   required: boolean;
-  setting?: IFieldSetting;
+  setting: ITemplateFieldSetting;
   page_sequence: number;
   validator?: string;
   label?: string;
 }
 
-export interface IFieldSetting {
+export interface ITemplateFieldSetting {
   x: number;
   y: number;
+  result?: string;
   width?: number;
   height?: number;
-  result?: any;
-  type?: string;
-  value?: string;
 
   // Text field settings
   leading?: number;
@@ -194,13 +192,6 @@ export interface IFieldSetting {
 
   // Dropdowns, checkboxes, radio groups
   options?: any[];
-
-  // Signatures and Initials, result will be "signed"
-  base64?: string;
-  hash?: string;
-  ip_address?: string;
-  signature_id?: string;
-  signed_at?: string;
 
   [key: string]: any;
 }

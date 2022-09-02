@@ -1,8 +1,7 @@
 import {IDocument, IDocumentsSearchResult, IDocumentsSummary, IRecipient, ISigningSession, ISigningSessionRequest} from './Types';
+import {TDocumentUpdateResult, IDocumentFieldSettings} from './Types';
 import {decodeAccessTokenBody} from '../Utils/Token';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {IFieldSetting} from '../Templates/Types';
-import {TDocumentUpdateResult} from './Types';
 
 /**
  * Get a summary of currently active documents.
@@ -117,7 +116,7 @@ export const getDocumentFile = async (endpoint: VerdocsEndpoint, documentId: str
  */
 export const updateDocumentField = async (endpoint: VerdocsEndpoint, documentId: string, fieldName: string, value: any) =>
   endpoint.api //
-    .put<IFieldSetting>(`/documents/${documentId}/fields/${fieldName}`, value)
+    .put<IDocumentFieldSettings>(`/documents/${documentId}/fields/${fieldName}`, value)
     .then((r) => r.data);
 
 /**
@@ -126,5 +125,5 @@ export const updateDocumentField = async (endpoint: VerdocsEndpoint, documentId:
  */
 export const updateDocumentFieldSignature = async (endpoint: VerdocsEndpoint, documentId: string, fieldName: string, signatureId: string) =>
   endpoint.api //
-    .put<IFieldSetting>(`/documents/${documentId}/fields/${fieldName}/signature/${signatureId}`)
+    .put<IDocumentFieldSettings>(`/documents/${documentId}/fields/${fieldName}/signature/${signatureId}`)
     .then((r) => r.data);
