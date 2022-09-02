@@ -5,7 +5,7 @@
  * @module
  */
 
-import {ITemplate, ITemplatesSearchResult, ITemplatesSummary} from './Types';
+import {ITemplate, ITemplateOwnerInfo, ITemplatesSearchResult, ITemplatesSummary} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export interface IGetTemplatesParams {
@@ -28,7 +28,7 @@ export interface IGetTemplatesParams {
  */
 export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesParams) =>
   endpoint.api //
-    .get<any[]>('/templates/', {params})
+    .get<ITemplate[]>('/templates', {params})
     .then((r) => r.data);
 
 /**
@@ -42,7 +42,21 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
  */
 export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
-    .get(`/templates/${templateId}`)
+    .get<ITemplate>(`/templates/${templateId}`)
+    .then((r) => r.data);
+
+/**
+ * Get owner information for a template.
+ *
+ * ```typescript
+ * import {Templates} from '@verdocs/js-sdk/Templates';
+ *
+ * const template = await Templates.getTemplateOwnerInfo('83da3d70-7857-4392-b876-c4592a304bc9');
+ * ```
+ */
+export const getTemplateOwnerInfo = (endpoint: VerdocsEndpoint, templateId: string) =>
+  endpoint.api //
+    .get<ITemplateOwnerInfo>(`/templates/${templateId}`)
     .then((r) => r.data);
 
 /**
@@ -82,9 +96,9 @@ export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, pa
  * const {result, page, total} = await Templates.search({ ... });
  * ```
  */
-export const searchTemplates = async (endpoint: VerdocsEndpoint, params: any): Promise<ITemplatesSearchResult> =>
+export const searchTemplates = async (endpoint: VerdocsEndpoint, params: any) =>
   endpoint.api //
-    .post('/templates/search', params)
+    .post<ITemplatesSearchResult>('/templates/search', params)
     .then((r) => r.data);
 
 /**
@@ -96,7 +110,7 @@ export const searchTemplates = async (endpoint: VerdocsEndpoint, params: any): P
  * const summary = await Templates.getSummary(0);
  * ```
  */
-export const getSummary = async (endpoint: VerdocsEndpoint, page: number): Promise<ITemplatesSummary> =>
+export const getSummary = async (endpoint: VerdocsEndpoint, page: number) =>
   endpoint.api //
-    .post('/templates/summary', {page})
+    .post<ITemplatesSummary>('/templates/summary', {page})
     .then((r) => r.data);

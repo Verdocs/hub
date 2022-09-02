@@ -1,5 +1,5 @@
-import {TDocumentStatus} from '../Documents/Documents';
 import {TTemplateSender} from '../Templates/Types';
+import {TDocumentStatus} from '../Documents/Types';
 
 export type TMimeType = 'application/pdf' | string;
 

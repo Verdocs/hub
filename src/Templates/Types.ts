@@ -43,12 +43,7 @@ export interface ITemplateSummaryEntry {
   is_starred: boolean;
 }
 
-export type TTemplateSender =
-  | 'creator'
-  | 'organization_member'
-  | 'organization_member_as_creator'
-  | 'everyone'
-  | 'everyone_as_creator';
+export type TTemplateSender = 'creator' | 'organization_member' | 'organization_member_as_creator' | 'everyone' | 'everyone_as_creator';
 
 export enum TemplatePermissions {
   TEMPLATE_CREATOR_CREATE_PUBLIC = 'template:creator:create:public',
@@ -230,4 +225,10 @@ export interface IReminder {
   next_time: number;
   envelope_id: string;
   template_id: string;
+}
+
+export interface ITemplateOwnerInfo {
+  email: string;
+  name: string;
+  profile_id: string;
 }
