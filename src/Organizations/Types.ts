@@ -32,6 +32,7 @@ export interface IApiKey {
   name: string;
   profile_id: string;
   organization_id: string;
+  profile?: IProfile;
 }
 
 export interface IApiKeyWithSecret extends IApiKey {

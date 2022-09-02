@@ -55,7 +55,7 @@ export interface VerdocsEndpointOptions {
 export class VerdocsEndpoint {
   private environment = 'verdocs' as TEnvironment;
   private sessionType = 'user' as TSessionType;
-  private baseURL = 'https://api.verdocs.com' as string;
+  private readonly baseURL = 'https://api.verdocs.com' as string;
   private clientID = 'not-set' as string;
   private timeout = 3000 as number;
   private token = null as string | null;
@@ -99,8 +99,6 @@ export class VerdocsEndpoint {
     if (!globalThis[ENDPOINT_KEY]) {
       globalThis[ENDPOINT_KEY] = new VerdocsEndpoint();
       window.console.debug('[JS_SDK] Created default endpoint', globalThis[ENDPOINT_KEY]);
-    } else {
-      window.console.debug('[JS SDK] Re-using existing endpoint', globalThis[ENDPOINT_KEY]);
     }
 
     return globalThis[ENDPOINT_KEY];

@@ -1,4 +1,5 @@
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {IProfile} from '../Users/Types';
 
 /**
  * An Organization Member (aka Profile) is an individual user with access to an organization.
@@ -8,7 +9,7 @@ import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export const getMembers = (endpoint: VerdocsEndpoint, organizationId: string) =>
   endpoint.api //
-    .get(`/organizations/${organizationId}/profiles`)
+    .get<IProfile[]>(`/organizations/${organizationId}/profiles`)
     .then((r) => r.data);
 
 export const deleteMember = (endpoint: VerdocsEndpoint, organizationId: string, profileId: string) =>

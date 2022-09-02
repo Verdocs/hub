@@ -1,6 +1,6 @@
 import {IInPersonAccessKey, TRecipientAction} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {IDocument, IRecipient} from './Documents';
+import {IDocument, IRecipient} from './Types';
 
 export interface IUpdateRecipientParams {
   new_full_name?: string;
@@ -34,4 +34,10 @@ export interface ISignerTokenResponse {
 
 export const getSignerToken = (endpoint: VerdocsEndpoint, documentId: string, roleName: string) =>
   endpoint.api //
-    .get<ISignerTokenResponse>(`/documents/${documentId}/recipients/${encodeURIComponent(roleName)}/signer-token`);
+    .get<ISignerTokenResponse>(`/documents/${documentId}/recipients/${encodeURIComponent(roleName)}/signer-token`)
+    .then((r) => r.data);
+
+export const getInPersonLink = (endpoint: VerdocsEndpoint, documentId: string, roleName: string) =>
+  endpoint.api //
+    .get<ISignerTokenResponse>(`/documents/${documentId}/recipients/${encodeURIComponent(roleName)}?in_person_link=true`)
+    .then((r) => r.data);
