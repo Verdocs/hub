@@ -1,7 +1,45 @@
-import {IDocument, IDocumentsSearchResult, IDocumentsSummary, IRecipient, ISigningSession, ISigningSessionRequest} from './Types';
+import {ICreateDocumentRequest, IDocumentsSearchResult, ISigningSessionRequest} from './Types';
+import {IDocument, IDocumentsSummary, IRecipient, ISigningSession} from './Types';
 import {TDocumentUpdateResult, IDocumentFieldSettings} from './Types';
 import {decodeAccessTokenBody} from '../Utils/Token';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+
+/**
+ * Create a document
+ *
+ * ```typescript
+ * import {Documents, ICreateDocumentRole, ICreateDocumentRequest} from '@verdocs/js-sdk/Documents';
+ *
+ * const role1: ICreateDocumentRole = {
+ *   type: 'signer',
+ *   name: 'Seller',
+ *   full_name: 'Paige Turner',
+ *   email: 'paige.turner@nomail.com',
+ *   phone: '',
+ *   sequence: 1,
+ *   delegator: false,
+ *   message: '',
+ * };
+ *
+ * const role2: ICreateDocumentRole = {
+ *   type: 'signer',
+ *   name: 'Buyer',
+ *   full_name: 'Will Power',
+ *   email: 'will.power@nomail.com',
+ *   phone: '',
+ *   sequence: 2,
+ *   delegator: false,
+ *   message: '',
+ * };
+ *
+ * const request: ICreateDocumentRequest = {template_id: 'd2338742-f3a1-465b-8592-806587413cc1', name: 'Bill of Sale', roles: [role1, role2]};
+ * const {id, recipients} = await Documents.createDocument(VerdocsEndpoint.getDefault(), request);
+ * ```
+ */
+export const createDocument = async (endpoint: VerdocsEndpoint, request: ICreateDocumentRequest) =>
+  endpoint.api //
+    .post<IDocument>('/documents', request)
+    .then((r) => r.data);
 
 /**
  * Get a summary of currently active documents.
@@ -9,7 +47,7 @@ import {VerdocsEndpoint} from '../VerdocsEndpoint';
  * ```typescript
  * import {Documents} from '@verdocs/js-sdk/Documents';
  *
- * const {action_required, completed, waiting_on_others} = await Documents.getSummary();
+ * const {action_required, completed, waiting_on_others} = await Documents.getSummary(VerdocsEndpoint.getDefault());
  * ```
  */
 export const getSummary = async (endpoint: VerdocsEndpoint, page: number) =>
@@ -23,7 +61,7 @@ export const getSummary = async (endpoint: VerdocsEndpoint, page: number) =>
  * ```typescript
  * import {Documents} from '@verdocs/js-sdk/Documents';
  *
- * const {result, page, total} = await Documents.search({ ... });
+ * const {result, page, total} = await Documents.search(VerdocsEndpoint.getDefault(), { ... });
  * ```
  */
 export const searchDocuments = async (endpoint: VerdocsEndpoint, params: any) =>

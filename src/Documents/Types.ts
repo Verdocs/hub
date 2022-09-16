@@ -144,6 +144,7 @@ export interface IRecipient {
   status: TRecipientStatus;
   type: TRecipientType;
   updated_at: string;
+  fields?: IDocumentField[];
 }
 
 export interface IDocumentAsset {
@@ -156,6 +157,26 @@ export interface IDocumentAsset {
   url: string;
 }
 
+export interface IDocumentFieldOptions {
+  // The unique ID of the field
+  id: string;
+
+  // The X position of the field on the page. Self-placed fields will have an X value of 0.
+  x: number;
+
+  // The Y position of the field on the page. Self-placed fields will have an X value of 0.
+  y: number;
+
+  // For checkboxes, whether it is currently checked
+  checked?: boolean;
+
+  // For radio buttons, whether it is currently selected
+  selected?: boolean;
+
+  // The visible label for the field e.g. 'Not Applicable'
+  value: string;
+}
+
 export interface IDocumentFieldSettings {
   type?: string;
   x: number;
@@ -163,6 +184,8 @@ export interface IDocumentFieldSettings {
   width?: number;
   height?: number;
   value?: number | string;
+
+  // If the field has been filled in, this contains the current value
   result?: any;
 
   // Text field settings
@@ -171,7 +194,7 @@ export interface IDocumentFieldSettings {
   upperCase?: boolean;
 
   // Dropdowns, checkboxes, radio groups
-  options?: any[];
+  options?: IDocumentFieldOptions[];
 
   // Signatures and Initials, result will be "signed"
   base64?: string;
@@ -180,18 +203,51 @@ export interface IDocumentFieldSettings {
   signature_id?: string;
   signed_at?: string;
 
+  // Checkbox settings
+  minimum_checked?: number;
+  maximum_checked?: number;
+
   [key: string]: any;
 }
 
+export type TDocumentFieldType =
+  | 'signature'
+  | 'initial'
+  | 'checkbox_group'
+  | 'radio_button_group'
+  | 'textbox'
+  | 'timestamp'
+  | 'date'
+  | 'dropdown'
+  | 'textarea'
+  | 'attachment'
+  | 'payment';
+
 export interface IDocumentField {
+  // The ID of the document the field is for. For historical reasons, this is called `envelope_id` because documents
+  // were previously called envelopes.
   envelope_id: string;
-  label: string | null;
+
+  // The machine name of the field, e.g. `checkbox_groupP1-18`
   name: string;
+
+  // If set, the placeholder/label for the field.
+  label: string | null;
+
+  // The 1-based page number the field is displayed on. "Self-placed" fields that the user must apply will be on page 0.
   page: number;
+
+  // The ID of the role in the recipients list, e.g. `Recipient 2`
   recipient_role: string;
-  type: string;
+
+  // The type of the field
+  type: TDocumentFieldType;
+
+  // If true, the field will be required
   required: boolean;
+
   settings?: IDocumentFieldSettings;
+
   validator: string | null;
 
   // Not sent by the server. Used in the UI to identify prepared fields.
@@ -218,7 +274,7 @@ export interface IDocument {
   certificate?: IDocumentAsset | null;
   document?: IDocumentAsset | null;
   fields?: IDocumentField[];
-  profile?: IProfile;
+  profile?: IProfile | null;
 }
 
 export type TDocumentUpdateResult = Omit<IDocument, 'histories' | 'recipients' | 'certificate' | 'document' | 'fields' | 'profile'>;
@@ -265,3 +321,40 @@ export interface IDocumentSearchOptions {
 export type THistoryEvent = 'recipient:invited' | 'recipient:opened' | 'recipient:agreed' | 'recipient:signed' | 'recipient:submitted';
 
 export type TEventDetail = 'in_app' | 'mail' | 'signer' | '';
+
+export interface ICreateDocumentRole {
+  // The type of role to create. Most participants in standard flows will be "signer" recipients.
+  type: TRecipientType;
+
+  // The Role name of the recipient. Please note this is not the person's name. It is the ID of the role, e.g.
+  // 'Recipient 1', 'Seller', etc. This must match one of the pre-defined roles in the template's Recipients list.
+  name: string;
+
+  // The full name of the recipient as it will be displayed in reports and queries, e.g. 'Paige Turner'.
+  full_name: string;
+
+  // The email address of the recipient. One of `email` or `phone` must be provided.
+  email?: string;
+
+  // The phone number of the recipient. One of `email` or `phone` must be provided. If `phone` is included, the
+  // recipient will receive an SMS notification for the document.
+  phone?: string;
+
+  // The 1-based sequence number for the recipient. This can be used to override the template's workflow. Recipients
+  // are processed in parallel for each matching sequence number (e.g. all recipients at level "1" may act in parallel)
+  // and in series between sequence numbers (e.g. all recipients at level "1" must complete their tasks before
+  // recipients at level "2" may act).
+  sequence: number;
+
+  // Whether the recipient may delegate their tasks to others. Should be false for most standard workflows.
+  delegator: boolean;
+
+  // A custom message to include in the email or SMS invitation. May be left blank for a default message.
+  message: string;
+}
+
+export interface ICreateDocumentRequest {
+  template_id: string;
+  roles: ICreateDocumentRole[];
+  name: string;
+}
