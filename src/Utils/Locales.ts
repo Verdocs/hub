@@ -1368,8 +1368,8 @@ export function getMatchingCountry(code: string, substrings: number) {
   return Countries.filter((c) => c.code === toMatch).length;
 }
 
-const e164Regex = new RegExp(/\+[1-9]\d{6,14}/g);
+// const e164Regex = new RegExp(/\+[1-9]\d{6,14}/g);
 
-export function simpleE164Validator(code: string) {
-  return (code !== null && code.length < 16 && code.length > 6 && e164Regex.test(code)) || code === '' || code === null;
-}
+// export function simpleE164Validator(code: string) {
+//   return (code !== null && code.length < 16 && code.length > 6 && e164Regex.test(code)) || code === '' || code === null;
+// }
