@@ -140,7 +140,9 @@ export const userCanAct = (email: string, recipientsWithActions: IRecipient[]) =
 };
 
 /**
- * Get (binary download) a file attached to a Document.
+ * Get (binary download) a file attached to a Document. It is important to use this method
+ * rather than a direct A HREF or similar link to set the authorization headers for the
+ * request.
  */
 export const getDocumentFile = async (endpoint: VerdocsEndpoint, documentId: string, envelopeDocumentId: string): Promise<string> =>
   endpoint.api //
