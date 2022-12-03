@@ -28,7 +28,7 @@ export interface IGetTemplatesParams {
  */
 export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesParams) =>
   endpoint.api //
-    .get<ITemplate[]>('/templates', {params})
+    .post<ITemplate[]>('/templates', {params})
     .then((r) => r.data);
 
 /**
