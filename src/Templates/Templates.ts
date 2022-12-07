@@ -101,6 +101,29 @@ export const searchTemplates = async (endpoint: VerdocsEndpoint, params: any) =>
     .post<ITemplatesSearchResult>('/templates/search', params)
     .then((r) => r.data);
 
+export interface ISearchTimeRange {
+  start_time: string;
+  end_time: string;
+}
+
+export interface IGetTemplateSummaryParams {
+  id?: string;
+  name?: string;
+  sender?: string;
+  profile_id?: string;
+  organization_id?: string;
+  description?: string;
+  created_at?: ISearchTimeRange;
+  updated_at?: ISearchTimeRange;
+  last_used_at?: ISearchTimeRange;
+  is_personal?: boolean;
+  is_public?: boolean;
+  sort_by?: 'created_at' | 'updated_at' | 'name' | 'last_used_at' | 'counter' | 'star_counter';
+  ascending?: boolean;
+  row?: number;
+  page?: number;
+}
+
 /**
  * Get a summary of template data, typically used to populate admin panel dashboard pages.
  *
@@ -110,7 +133,7 @@ export const searchTemplates = async (endpoint: VerdocsEndpoint, params: any) =>
  * const summary = await Templates.getSummary(0);
  * ```
  */
-export const getSummary = async (endpoint: VerdocsEndpoint, page: number) =>
+export const getSummary = async (endpoint: VerdocsEndpoint, params: IGetTemplateSummaryParams = {}) =>
   endpoint.api //
-    .post<ITemplatesSummary>('/templates/summary', {page})
+    .post<ITemplatesSummary>('/templates/summary', params)
     .then((r) => r.data);

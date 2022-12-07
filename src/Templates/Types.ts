@@ -7,7 +7,7 @@ export interface ITemplate {
   counter?: number;
   star_counter?: number;
   name: string;
-  id?: string;
+  id: string;
   profile_id?: string;
   created_at?: string;
   updated_at?: string;
