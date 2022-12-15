@@ -10,7 +10,7 @@ export interface ICreatePageParams {
 /**
  * Add a page to a template.
  */
-export const createPage = (endpoint: VerdocsEndpoint, templateId: string, params: IPage) =>
+export const createPage = (endpoint: VerdocsEndpoint, templateId: string, params: ICreatePageParams) =>
   endpoint.api //
     .post<IPage>(`/templates/${templateId}/pages`, params)
     .then((r) => r.data);
