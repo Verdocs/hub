@@ -96,6 +96,20 @@ export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, pa
     .then((r) => r.data);
 
 /**
+ * Delete a template.
+ *
+ * ```typescript
+ * import {Templates} from '@verdocs/js-sdk/Templates';
+ *
+ * await Templates.deleteTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');
+ * ```
+ */
+export const deleteTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
+  endpoint.api //
+    .delete(`/templates/${templateId}`)
+    .then((r) => r.data);
+
+/**
  * Search for templates matching various criteria.
  *
  * ```typescript
