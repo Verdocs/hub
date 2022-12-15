@@ -13,7 +13,7 @@ import {ITemplateDocument} from './Types';
  * ```typescript
  * import {TemplateDocument} from '@verdocs/js-sdk/Templates';
  *
- * await TemplateDocument.getDocuments(templateID);
+ * await TemplateDocument.getDocuments((VerdocsEndpoint.getDefault(), templateID);
  * ```
  */
 export const getTemplateDocuments = (endpoint: VerdocsEndpoint, templateId: string) =>
@@ -27,13 +27,25 @@ export const getTemplateDocuments = (endpoint: VerdocsEndpoint, templateId: stri
  * ```typescript
  * import {TemplateDocument} from '@verdocs/js-sdk/Templates';
  *
- * await TemplateDocument.createDocument(templateID, params);
+ * await TemplateDocument.createDocument((VerdocsEndpoint.getDefault(), templateID, params);
  * ```
  */
-export const createTemplateDocument = (endpoint: VerdocsEndpoint, templateId: string, params: any) =>
-  endpoint.api //
-    .post<ITemplateDocument>(`/templates/${templateId}/documents/`, params)
+export const createTemplateDocument = (
+  endpoint: VerdocsEndpoint,
+  templateId: string,
+  file: File,
+  onUploadProgress?: (percent: number, loadedBytes: number, totalBytes: number) => void,
+) => {
+  const formData = new FormData();
+  formData.append('document', file, file.name);
+
+  return endpoint.api //
+    .post<ITemplateDocument>(`/templates/${templateId}/documents`, formData, {
+      timeout: 10000,
+      onUploadProgress: (event) => onUploadProgress?.(Math.floor((event.loaded * 100) / event.total), event.loaded, event.total),
+    })
     .then((r) => r.data);
+};
 
 /**
  * Get a specific Document.
@@ -41,7 +53,7 @@ export const createTemplateDocument = (endpoint: VerdocsEndpoint, templateId: st
  * ```typescript
  * import {TemplateDocument} from '@verdocs/js-sdk/Templates';
  *
- * await TemplateDocument.getDocument(templateID, documentID);
+ * await TemplateDocument.getDocument((VerdocsEndpoint.getDefault(), templateID, documentID);
  * ```
  */
 export const getTemplateDocument = (endpoint: VerdocsEndpoint, templateId: string, documentId: string) =>
@@ -55,7 +67,7 @@ export const getTemplateDocument = (endpoint: VerdocsEndpoint, templateId: strin
  * ```typescript
  * import {TemplateDocument} from '@verdocs/js-sdk/Templates';
  *
- * await TemplateDocument.deleteDocument(templateID, documentID);
+ * await TemplateDocument.deleteDocument((VerdocsEndpoint.getDefault(), templateID, documentID);
  * ```
  */
 export const deleteTemplateDocument = (endpoint: VerdocsEndpoint, templateId: string, documentId: string) =>

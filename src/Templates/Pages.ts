@@ -1,12 +1,18 @@
 import {IPage} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
+export interface ICreatePageParams {
+  document_id: string;
+  page_number: number;
+  sequence: number;
+}
+
 /**
- * Add a page to a template
+ * Add a page to a template.
  */
 export const createPage = (endpoint: VerdocsEndpoint, templateId: string, params: IPage) =>
   endpoint.api //
-    .post<IPage>(`/templates/${templateId}/pages/`, params)
+    .post<IPage>(`/templates/${templateId}/pages`, params)
     .then((r) => r.data);
 
 /**

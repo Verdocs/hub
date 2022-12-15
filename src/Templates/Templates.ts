@@ -5,7 +5,7 @@
  * @module
  */
 
-import {ITemplate, ITemplateOwnerInfo, ITemplatesSearchResult, ITemplatesSummary} from './Types';
+import {ITemplate, ITemplateOwnerInfo, ITemplatesSearchResult, ITemplatesSummary, TTemplateSender} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export interface IGetTemplatesParams {
@@ -20,10 +20,10 @@ export interface IGetTemplatesParams {
  * ```typescript
  * import {Templates} from '@verdocs/js-sdk/Templates';
  *
- * await Templates.getTemplates();
- * await Templates.getTemplates({ is_starred: true });
- * await Templates.getTemplates({ is_creator: true });
- * await Templates.getTemplates({ is_organization: true });
+ * await Templates.getTemplates((VerdocsEndpoint.getDefault());
+ * await Templates.getTemplates((VerdocsEndpoint.getDefault(), { is_starred: true });
+ * await Templates.getTemplates((VerdocsEndpoint.getDefault(), { is_creator: true });
+ * await Templates.getTemplates((VerdocsEndpoint.getDefault(), { is_organization: true });
  * ```
  */
 export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesParams) =>
@@ -37,7 +37,7 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
  * ```typescript
  * import {Templates} from '@verdocs/js-sdk/Templates';
  *
- * const template = await Templates.getTemplate('83da3d70-7857-4392-b876-c4592a304bc9');
+ * const template = await Templates.getTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');
  * ```
  */
 export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
@@ -51,7 +51,7 @@ export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
  * ```typescript
  * import {Templates} from '@verdocs/js-sdk/Templates';
  *
- * const template = await Templates.getTemplateOwnerInfo('83da3d70-7857-4392-b876-c4592a304bc9');
+ * const template = await Templates.getTemplateOwnerInfo((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');
  * ```
  */
 export const getTemplateOwnerInfo = (endpoint: VerdocsEndpoint, templateId: string) =>
@@ -59,16 +59,24 @@ export const getTemplateOwnerInfo = (endpoint: VerdocsEndpoint, templateId: stri
     .get<ITemplateOwnerInfo>(`/templates/${templateId}`)
     .then((r) => r.data);
 
+export interface ITemplateCreateParams {
+  name: string;
+  is_personal?: boolean;
+  is_public?: boolean;
+  sender?: TTemplateSender;
+  description?: string;
+}
+
 /**
  * Create a template.
  *
  * ```typescript
  * import {Templates} from '@verdocs/js-sdk/Templates';
  *
- * const newTemplate = await Templates.createTemplate({...});
+ * const newTemplate = await Templates.createTemplate((VerdocsEndpoint.getDefault(), {...});
  * ```
  */
-export const createTemplate = (endpoint: VerdocsEndpoint, params: any) =>
+export const createTemplate = (endpoint: VerdocsEndpoint, params: ITemplateCreateParams) =>
   endpoint.api //
     .post<ITemplate>('/templates/', params)
     .then((r) => r.data);
@@ -79,10 +87,10 @@ export const createTemplate = (endpoint: VerdocsEndpoint, params: any) =>
  * ```typescript
  * import {Templates} from '@verdocs/js-sdk/Templates';
  *
- * const updatedTemplate = await Templates.updateTemplate('83da3d70-7857-4392-b876-c4592a304bc9', { name: 'New Name' });
+ * const updatedTemplate = await Templates.updateTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9', { name: 'New Name' });
  * ```
  */
-export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, params: any) =>
+export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, params: Partial<ITemplateCreateParams>) =>
   endpoint.api //
     .put<ITemplate>(`/templates/${templateId}`, params)
     .then((r) => r.data);
@@ -93,7 +101,7 @@ export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, pa
  * ```typescript
  * import {Templates} from '@verdocs/js-sdk/Templates';
  *
- * const {result, page, total} = await Templates.search({ ... });
+ * const {result, page, total} = await Templates.search((VerdocsEndpoint.getDefault(), { ... });
  * ```
  */
 export const searchTemplates = async (endpoint: VerdocsEndpoint, params: any) =>
@@ -130,7 +138,7 @@ export interface IGetTemplateSummaryParams {
  * ```typescript
  * import {Templates} from '@verdocs/js-sdk/Templates';
  *
- * const summary = await Templates.getSummary(0);
+ * const summary = await Templates.getSummary((VerdocsEndpoint.getDefault(), 0);
  * ```
  */
 export const getSummary = async (endpoint: VerdocsEndpoint, params: IGetTemplateSummaryParams = {}) =>
