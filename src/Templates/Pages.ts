@@ -26,9 +26,9 @@ export const editPage = (endpoint: VerdocsEndpoint, templateId: string, sequence
 /**
  * Get a page from a template.
  */
-export const getPage = (endpoint: VerdocsEndpoint, templateId: string, sequence: string) =>
+export const getPage = (endpoint: VerdocsEndpoint, templateId: string, sequence: number, thumbnail: boolean = false) =>
   endpoint.api //
-    .get(`/templates/${templateId}/pages/${sequence}`)
+    .get(`/templates/${templateId}/pages/${sequence}${thumbnail ? '?thumbnail=true' : ''}`)
     .then((r) => r.data);
 
 /**
