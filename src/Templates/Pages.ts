@@ -31,6 +31,18 @@ export const getPage = (endpoint: VerdocsEndpoint, templateId: string, sequence:
     .get(`/templates/${templateId}/pages/${sequence}${thumbnail ? '?thumbnail=true' : ''}`)
     .then((r) => r.data);
 
+export interface IPageImageResponse {
+  url: string;
+}
+
+/**
+ * Get a page image (PNG format) from a template.
+ */
+export const getPageImage = (endpoint: VerdocsEndpoint, templateId: string, sequence: number) =>
+  endpoint.api //
+    .get<IPageImageResponse>(`/templates/${templateId}/pages/${sequence}/image`)
+    .then((r) => r.data);
+
 /**
  * Delete a page from a template
  */

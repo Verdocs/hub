@@ -199,10 +199,11 @@ export interface ITemplateFieldSetting {
 export interface IPage {
   template_id: string;
   document_id: string;
-  template_document?: ITemplateDocument;
   sequence: number;
   page_number: number;
   thumbnail_url: string;
+  image_uri?: string | null;
+  template_document?: ITemplateDocument;
   fields?: ITemplateField[];
 }
 
