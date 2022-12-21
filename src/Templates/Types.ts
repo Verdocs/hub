@@ -1,29 +1,63 @@
 import {IOrganization} from '../Organizations/Types';
 
+/**
+ * A reusable template for creating signable instruments. Templates are used to create Envelopes which contain
+ * Documents to sign.
+ */
 export interface ITemplate {
-  template_document?: ITemplateDocument;
-  pages?: IPage[];
-  roles?: IRole[];
-  counter?: number;
-  star_counter?: number;
-  name: string;
+  // The unique ID of the template.
   id: string;
-  profile_id?: string;
-  created_at?: string;
-  updated_at?: string;
-  last_used_at?: string;
-  token?: string;
-  reminder_id?: string;
-  reminder?: IReminder;
-  organization_id?: string;
-  is_personal?: boolean;
-  is_public?: boolean;
-  sender?: TTemplateSender;
+  // The user-supplied name of the template.
+  name: string;
+  // Optional description for the template.
   description?: string;
-  // TODO: Add to all API endpoint returns
+  // Who may create new documents from the template.
+  sender: TTemplateSender;
+  // The template's owner/creator.
+  profile_id: string;
+  // Organization the template lives in.
+  organization_id: string;
+  // Number of times the template has been used.
+  counter: number;
+  // Number of times the template has been "starred".
+  star_counter: number;
+  // If true, the template is only visible to the creator. If false, the template will also be visible to the user's
+  // organization, if any.
+  is_personal: boolean;
+  // If true, the template is visible publicly. Note that this does not necessarily mean it is also visible to the
+  // user's organization. It may be desirable to create documents that are public but that do not appear in the
+  // organization's shared templates list. To achieve this, set both `is_personal` and `is_public` to TRUE.
+  is_public: boolean;
+  // Creation date/time.
+  created_at: string;
+  // Last-update date/time.
+  updated_at: string;
+  // Last-used date/time (when the template was used to create a document).
+  last_used_at: string;
+  // Secret token associated with the document. Note that this field is marked optional because it is only visible to
+  // the creator. This token is used in some operations such as creating shareable links to the template.
+  token?: string;
+  // If set, the template has reminders enabled.
+  reminder_id?: string;
+  // If reminders are enabled, the reminder configuration.
+  reminder?: IReminder;
+  // If set, the template has been post-processed (rendered server-side for display in Web and Mobile clients).
+  processed?: boolean;
+  // If the template was created within an organization, details about that organization.
   organization?: IOrganization;
+  // Roles (recipients) attached to the template. (Note that roles are uniquely identified by name rather than ID.)
+  roles?: IRole[];
+  // Pages attached to the template. Note that this is all of the pages for all document attachments in sequential order.
+  pages?: IPage[];
+  // @deprecated. New code should use `template_documents`.
+  template_document?: ITemplateDocument;
+  // File attachments for this template.
+  template_documents?: ITemplateDocument[];
 }
 
+/**
+ * Some template search and list endpoints return only a partial set of fields for each entry via this structure.
+ */
 export interface ITemplateSummaryEntry {
   id: string;
   name: string;
@@ -140,8 +174,12 @@ export interface IStar {
   profile_id: string;
 }
 
+/**
+ * An individual recipient, CC, or other party in a signing flow.
+ */
 export interface IRole {
   template_id: string;
+  // The name of the recipient. Note that recipients do not have a separate ID - they are uniquely identified by name.
   name: string;
   full_name?: string;
   email?: string;
@@ -154,6 +192,9 @@ export interface IRole {
   rgba?: string;
 }
 
+/**
+ * A file attached to the template for display/signing.
+ */
 export interface ITemplateDocument {
   url: string;
   name: string;
