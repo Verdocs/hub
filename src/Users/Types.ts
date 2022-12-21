@@ -70,22 +70,6 @@ export interface IProfile {
   groups?: IGroup[];
 }
 
-export interface IActiveSession {
-  sub: string;
-  email: string;
-  email_verified: boolean;
-  iat: number;
-  exp: number;
-  permissions: TPermission[];
-  roles: TRole[];
-  profile: IProfile;
-  profile_id: string;
-  organization_id: string;
-  plans?: TPlan[];
-
-  [key: string]: any;
-}
-
 export interface IRole {
   /** Unique identifier for the role. */
   id: string;

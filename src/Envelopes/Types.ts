@@ -2,40 +2,15 @@ import {IProfile} from '../Users/Types';
 
 export type TRecipientAction = 'submit' | 'decline' | 'prepare' | 'update';
 
-export interface ITemplateSummaryEntry {
-  id: string;
-  name: string;
-  sender: string;
-  counter: number;
-  description: string | null;
-  created_at: string;
-  updated_at: string;
-  is_personal: boolean;
-  is_public: boolean;
-  profile_id: string;
-  organization_id: string;
-  last_used_at: string | null;
-  document_name: string | null;
-  star_counter: number;
-  tag_name: string | null;
-  is_starred: boolean;
-}
-
-export interface ITemplatesSummary {
-  page: number;
-  total: number;
-  result: ITemplateSummaryEntry[];
-}
-
 export interface ISigningSessionRequest {
-  documentId: string;
+  envelopeId: string;
   roleId: string;
   inviteCode: string;
 }
 
 export interface ISigningSession {
   profile_id: string;
-  document_id: string;
+  envelope_id: string;
   role: string;
   email: string;
   access_key: {
@@ -62,19 +37,20 @@ export interface IInPersonAccessKey {
   last_used: string | null;
 }
 
-export type TDocumentStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
+export type TEnvelopeStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
 
 export type TRecipientStatus = 'invited' | 'opened' | 'signed' | 'submitted' | 'canceled' | 'pending' | 'declined';
 
 export type TRecipientType = 'signer' | 'cc' | 'approver';
 
 // NOTE: Many of the fields here are undefined unless "summary=true" is included in the search terms
-export interface IDocumentsSearchResultEntry {
+export interface IEnvelopesSearchResultEntry {
   id: string;
   canceled_at: string;
   certificate_document_id: string;
-  created_at: string;
+  // @deprecated. New envelopes may have more than one document attached.
   envelope_document_id: string;
+  created_at: string;
   histories: IHistory[];
   indexed_at: string;
   name: string;
@@ -83,7 +59,7 @@ export interface IDocumentsSearchResultEntry {
   profile_id: string;
   recipients: IRecipient[];
   reminder_id: string | null;
-  status: TDocumentStatus;
+  status: TEnvelopeStatus;
   next_recipient: {
     claimed: boolean;
     email: string;
@@ -97,13 +73,13 @@ export interface IDocumentsSearchResultEntry {
   updated_at: string;
 }
 
-export interface IDocumentsSearchResult {
+export interface IEnvelopesSearchResult {
   page: number;
   total: number;
-  result: IDocumentsSearchResultEntry[];
+  result: IEnvelopesSearchResultEntry[];
 }
 
-export interface IDocumentsSummary {
+export interface IEnvelopesSummary {
   action_required: {
     page: number;
     total: number;
@@ -147,7 +123,7 @@ export interface IRecipient {
   fields?: IDocumentField[];
 }
 
-export interface IDocumentAsset {
+export interface IEnvelopeDocument {
   created_at: string;
   id: string;
   mime: string;
@@ -254,30 +230,37 @@ export interface IDocumentField {
   prepared?: boolean;
 }
 
-export interface IDocument {
+/**
+ * An Envelope is a workflow wrapper that shepherds one or more Documents through the various recipients in a signing
+ * process.
+ */
+export interface IEnvelope {
   id: string;
+  template_id: string;
+  name: string;
+  status: TEnvelopeStatus;
+  profile_id: string;
+  organization_id: string | null;
+  no_contact: boolean;
   created_at: string;
+  updated_at: string;
   canceled_at: string;
+  reminder_id: string | null;
+  // @deprecated. New envelopes will support more than one document attachment so new code should no longer refer to this field.
   envelope_document_id: string;
   certificate_document_id: string | null;
   histories: IHistory[];
   recipients: IRecipient[];
-  name: string;
-  no_contact: boolean;
-  profile_id: string;
-  reminder_id: string | null;
-  status: TDocumentStatus;
-  template_id: string;
-  updated_at: string;
-  organization_id: string | null;
-
-  certificate?: IDocumentAsset | null;
-  document?: IDocumentAsset | null;
-  fields?: IDocumentField[];
   profile?: IProfile | null;
+  certificate?: IEnvelopeDocument | null;
+  // @deprecated. New code should use `documents[]`.
+  document?: IEnvelopeDocument | null;
+  // Documents attached to this envelope
+  documents?: IEnvelopeDocument[] | null;
+  fields?: IDocumentField[];
 }
 
-export type TDocumentUpdateResult = Omit<IDocument, 'histories' | 'recipients' | 'certificate' | 'document' | 'fields' | 'profile'>;
+export type TEnvelopeUpdateResult = Omit<IEnvelope, 'histories' | 'recipients' | 'certificate' | 'document' | 'fields' | 'profile'>;
 
 export interface IActivityEntry {
   id: string;
@@ -286,7 +269,7 @@ export interface IActivityEntry {
   created_at: string;
   updated_at: string;
   profile_id: string;
-  status: TDocumentStatus;
+  status: TEnvelopeStatus;
   template_id: string;
   recipient: {
     claimed: boolean;
@@ -314,15 +297,15 @@ export interface IDocumentSearchOptions {
   ascending?: boolean;
   is_owner?: boolean;
   is_recipient?: boolean;
-  envelope_status: TDocumentStatus[];
-  recipient_status: TDocumentStatus[];
+  envelope_status?: TEnvelopeStatus[];
+  recipient_status?: TEnvelopeStatus[];
 }
 
 export type THistoryEvent = 'recipient:invited' | 'recipient:opened' | 'recipient:agreed' | 'recipient:signed' | 'recipient:submitted';
 
 export type TEventDetail = 'in_app' | 'mail' | 'signer' | '';
 
-export interface ICreateDocumentRole {
+export interface ICreateEnvelopeRole {
   // The type of role to create. Most participants in standard flows will be "signer" recipients.
   type: TRecipientType;
 
@@ -351,10 +334,4 @@ export interface ICreateDocumentRole {
 
   // A custom message to include in the email or SMS invitation. May be left blank for a default message.
   message: string;
-}
-
-export interface ICreateDocumentRequest {
-  template_id: string;
-  roles: ICreateDocumentRole[];
-  name: string;
 }

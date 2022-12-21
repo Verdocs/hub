@@ -1,7 +1,7 @@
 /* tslint:disable:no-bitwise */
 
-import {ISigningSession} from '../Documents/Types';
-import {IActiveSession} from '../Users/Types';
+import {ISigningSession} from '../Envelopes/Types';
+import {IUserSession} from '../Sessions/Types';
 
 const b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 // Regular expression to check formal correctness of base64 encoded strings
@@ -15,8 +15,7 @@ export const AtoB = (str: string) => {
   // atob can work with strings with whitespaces, even inside the encoded part,
   // but only \t, \n, \f, \r and ' ', which can be stripped.
   str = String(str).replace(/[\t\n\f\r ]+/g, '');
-  if (!b64re.test(str))
-    throw new TypeError("Failed to execute 'atob' on 'Window': The string to be decoded is not correctly encoded.");
+  if (!b64re.test(str)) throw new TypeError("Failed to execute 'atob' on 'Window': The string to be decoded is not correctly encoded.");
 
   // Adding the padding if missing, for semplicity
   str += '=='.slice(2 - (str.length & 3));
@@ -56,10 +55,10 @@ export const decodeJWTBody = (token: string) => JSON.parse(AtoB((token || '').sp
  * application should distinguish between the two based on the context of the authenticated session, or by
  * the presence of the `document_id` field, which will only be present for signing sessions.
  */
-export const decodeAccessTokenBody = (token: string): IActiveSession | ISigningSession | null => {
+export const decodeAccessTokenBody = (token: string): IUserSession | ISigningSession | null => {
   let decoded: any;
   try {
-    decoded = decodeJWTBody(token) as IActiveSession | ISigningSession | null;
+    decoded = decodeJWTBody(token) as IUserSession | ISigningSession | null;
     if (decoded === null) {
       return null;
     }

@@ -1,5 +1,5 @@
 import {TTemplateSender} from '../Templates/Types';
-import {TDocumentStatus} from '../Documents/Types';
+import {TEnvelopeStatus} from '../Envelopes/Types';
 
 export type TMimeType = 'application/pdf' | string;
 
@@ -7,15 +7,15 @@ export type TMimeType = 'application/pdf' | string;
  * An individual hit in a document search result. Note that this schema does not precisely match IDocument because fields
  * are optimized for search performance.
  */
-export interface IDocumentHit {
-  type: 'document';
+export interface IEnvelopeHit {
+  type: 'envelope';
   id: string;
   template_id: string;
   name: string;
   profile_id: string;
   organization_id: string;
   organization_name: string;
-  status: TDocumentStatus;
+  status: TEnvelopeStatus;
   recipient_emails: string[];
   recipient_names: string[];
   updated_at: string;
@@ -103,7 +103,7 @@ export interface ISearchResultCollection<T> {
 }
 
 export interface ISearchResult {
-  documents: ISearchResultCollection<IDocumentHit>;
+  documents: ISearchResultCollection<IEnvelopeHit>;
   myTemplates: ISearchResultCollection<ITemplateHit>;
   publicTemplates: ISearchResultCollection<ITemplateHit>;
   organizations: ISearchResultCollection<IOrganizationHit>;

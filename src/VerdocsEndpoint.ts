@@ -1,9 +1,7 @@
 import axios, {AxiosInstance} from 'axios';
-import {ISigningSession} from './Documents/Types';
+import {TSession, TSessionType} from './Sessions/Types';
 import {decodeAccessTokenBody} from './Utils/Token';
-import {IActiveSession} from './Users/Types';
 import globalThis from './Utils/globalThis';
-import * as Documents from './Documents';
 
 // @credit https://derickbailey.com/2016/03/09/creating-a-true-singleton-in-node-js-with-es6-symbols/
 // Also see globalThis for comments about why we're doing this in the first place.
@@ -16,10 +14,6 @@ const requestLogger = (r: any) => {
 };
 
 export type TEnvironment = 'verdocs' | 'verdocs-stage';
-
-export type TSessionType = 'user' | 'signing';
-
-export type TSession = IActiveSession | ISigningSession | null;
 
 export type TSessionChangedListener = (endpoint: VerdocsEndpoint, session: TSession) => void;
 
@@ -71,8 +65,6 @@ export class VerdocsEndpoint {
   public session = null as TSession;
 
   public api: AxiosInstance;
-
-  public Documents = Documents;
 
   /**
    * Create a new VerdocsEndpoint to call Verdocs platform services.

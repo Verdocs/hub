@@ -1,7 +1,7 @@
 /**
  * Verdocs provides a range of search functions to help find and retrieve content. This module provides generic functions intended
  * to locate items across all content types. More specific retrievals may be performed using the various "list" endpoints within
- * each collection (e.g. {@link Documents.Documents.searchDocuments} or {@link Templates.Templates.searchTemplates}).
+ * each collection (e.g. {@link Envelopes.Envelopes.searchEnvelopes} or {@link Templates.Templates.searchTemplates}).
  *
  * @module
  */

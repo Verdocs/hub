@@ -1,6 +1,6 @@
 import {IInPersonAccessKey, TRecipientAction} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {IDocument, IRecipient} from './Types';
+import {IEnvelope, IRecipient} from './Types';
 
 export interface IUpdateRecipientParams {
   new_full_name?: string;
@@ -12,13 +12,13 @@ export interface IUpdateRecipientParams {
  */
 export const updateRecipientStatus = async (
   endpoint: VerdocsEndpoint,
-  documentId: string,
+  envelopeId: string,
   roleName: string,
   action: TRecipientAction,
   params?: IUpdateRecipientParams,
 ): Promise<IRecipient> =>
   endpoint.api //
-    .put<IRecipient>(`/documents/${documentId}/recipients/${roleName}`, {
+    .put<IRecipient>(`/envelopes/${envelopeId}/recipients/${roleName}`, {
       role_name: roleName,
       action,
       ...(params || {}),
@@ -27,17 +27,17 @@ export const updateRecipientStatus = async (
 
 export interface ISignerTokenResponse {
   recipient: IRecipient;
-  envelope: IDocument;
+  envelope: IEnvelope;
   signerToken: string;
   inPersonAccessKey: IInPersonAccessKey;
 }
 
-export const getSignerToken = (endpoint: VerdocsEndpoint, documentId: string, roleName: string) =>
+export const getSignerToken = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
   endpoint.api //
-    .get<ISignerTokenResponse>(`/documents/${documentId}/recipients/${encodeURIComponent(roleName)}/signer-token`)
+    .get<ISignerTokenResponse>(`/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/signer-token`)
     .then((r) => r.data);
 
-export const getInPersonLink = (endpoint: VerdocsEndpoint, documentId: string, roleName: string) =>
+export const getInPersonLink = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
   endpoint.api //
-    .get<ISignerTokenResponse>(`/documents/${documentId}/recipients/${encodeURIComponent(roleName)}?in_person_link=true`)
+    .get<ISignerTokenResponse>(`/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}?in_person_link=true`)
     .then((r) => r.data);
