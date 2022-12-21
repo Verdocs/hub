@@ -6,7 +6,7 @@ export interface ISigningSessionRequest {
   inviteCode: string;
 }
 
-// A Signing Session connects a caller to a role within an envelope, and can be used only for calls related to signing that envelope.
+/** A Signing Session connects a caller to a role within an envelope, and can be used only for calls related to signing that envelope. */
 export interface ISigningSession {
   profile_id: string;
   envelope_id: string;
@@ -24,7 +24,7 @@ export interface ISigningSession {
   [key: string]: any;
 }
 
-// A User Session connects a caller to a Verdocs profile, and can be used for any operations that profile may perform.
+/** A User Session connects a caller to a Verdocs profile, and can be used for any operations that profile may perform. */
 export interface IUserSession {
   sub: string;
   email: string;

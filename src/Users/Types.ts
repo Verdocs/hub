@@ -58,6 +58,10 @@ export interface IProfile {
   phone: string | null;
   /** If true, this is the caller's "currently selected" profile. All operations will performed "as" this profile. */
   current: boolean;
+  // Creation date/time.
+  created_at: string;
+  // Last-update date/time.
+  updated_at: string;
   /** The organization */
   organization?: IOrganization;
   /** The permissions assigned to the profilel _NOTE: Only present in the "current" profile._ */

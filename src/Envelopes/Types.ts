@@ -48,7 +48,7 @@ export interface IEnvelopesSearchResultEntry {
   id: string;
   canceled_at: string;
   certificate_document_id: string;
-  // @deprecated. New envelopes may have more than one document attached.
+  /** @deprecated. New envelopes may have more than one document attached. */
   envelope_document_id: string;
   created_at: string;
   histories: IHistory[];
@@ -112,10 +112,12 @@ export interface IRecipient {
   phone: string | null;
   profile_id: string;
   role_name: string;
-  // The sequence number indicates the order in which recipients act. Note that it is the workflow "level" not the
-  // recipient's individual index in the list. There may be multiple recipients with the same sequence. Recipients
-  // with the same sequence number may act independently, in parallel to each other (co-signers), as long as all
-  // Recipients with an earlier sequence number have completed their tasks.
+  /**
+   * The sequence number indicates the order in which recipients act. Note that it is the workflow "level" not the
+   * recipient's individual index in the list. There may be multiple recipients with the same sequence. Recipients
+   * with the same sequence number may act independently, in parallel to each other (co-signers), as long as all
+   * Recipients with an earlier sequence number have completed their tasks.
+   */
   sequence: number;
   status: TRecipientStatus;
   type: TRecipientType;
@@ -134,22 +136,22 @@ export interface IEnvelopeDocument {
 }
 
 export interface IDocumentFieldOptions {
-  // The unique ID of the field
+  /** The unique ID of the field */
   id: string;
 
-  // The X position of the field on the page. Self-placed fields will have an X value of 0.
+  /** The X position of the field on the page. Self-placed fields will have an X value of 0. */
   x: number;
 
-  // The Y position of the field on the page. Self-placed fields will have an X value of 0.
+  /** The Y position of the field on the page. Self-placed fields will have an X value of 0. */
   y: number;
 
-  // For checkboxes, whether it is currently checked
+  /** For checkboxes, whether it is currently checked */
   checked?: boolean;
 
-  // For radio buttons, whether it is currently selected
+  /** For radio buttons, whether it is currently selected */
   selected?: boolean;
 
-  // The visible label for the field e.g. 'Not Applicable'
+  /** The visible label for the field e.g. 'Not Applicable' */
   value: string;
 }
 
@@ -161,25 +163,25 @@ export interface IDocumentFieldSettings {
   height?: number;
   value?: number | string;
 
-  // If the field has been filled in, this contains the current value
+  /** If the field has been filled in, this contains the current value */
   result?: any;
 
-  // Text field settings
+  /** Text field settings */
   leading?: number;
   alignment?: number;
   upperCase?: boolean;
 
-  // Dropdowns, checkboxes, radio groups
+  /** Dropdowns, checkboxes, radio groups */
   options?: IDocumentFieldOptions[];
 
-  // Signatures and Initials, result will be "signed"
+  /** Signatures and Initials, result will be "signed" */
   base64?: string;
   hash?: string;
   ip_address?: string;
   signature_id?: string;
   signed_at?: string;
 
-  // Checkbox settings
+  /** Checkbox settings */
   minimum_checked?: number;
   maximum_checked?: number;
 
@@ -200,33 +202,35 @@ export type TDocumentFieldType =
   | 'payment';
 
 export interface IDocumentField {
-  // The ID of the document the field is for. For historical reasons, this is called `envelope_id` because documents
-  // were previously called envelopes.
+  /**
+   * The ID of the document the field is for. For historical reasons, this is called `envelope_id` because documents
+   * were previously called envelopes.
+   */
   envelope_id: string;
 
-  // The machine name of the field, e.g. `checkbox_groupP1-18`
+  /** The machine name of the field, e.g. `checkbox_groupP1-18` */
   name: string;
 
-  // If set, the placeholder/label for the field.
+  /** If set, the placeholder/label for the field. */
   label: string | null;
 
-  // The 1-based page number the field is displayed on. "Self-placed" fields that the user must apply will be on page 0.
+  /** The 1-based page number the field is displayed on. "Self-placed" fields that the user must apply will be on page 0. */
   page: number;
 
-  // The ID of the role in the recipients list, e.g. `Recipient 2`
+  /** The ID of the role in the recipients list, e.g. `Recipient 2` */
   recipient_role: string;
 
-  // The type of the field
+  /** The type of the field */
   type: TDocumentFieldType;
 
-  // If true, the field will be required
+  /** If true, the field will be required */
   required: boolean;
 
   settings?: IDocumentFieldSettings;
 
   validator: string | null;
 
-  // Not sent by the server. Used in the UI to identify prepared fields.
+  /** Not sent by the server. Used in the UI to identify prepared fields. */
   prepared?: boolean;
 }
 
@@ -246,16 +250,16 @@ export interface IEnvelope {
   updated_at: string;
   canceled_at: string;
   reminder_id: string | null;
-  // @deprecated. New envelopes will support more than one document attachment so new code should no longer refer to this field.
+  /** @deprecated. New envelopes will support more than one document attachment so new code should no longer refer to this field. */
   envelope_document_id: string;
   certificate_document_id: string | null;
   histories: IHistory[];
   recipients: IRecipient[];
   profile?: IProfile | null;
   certificate?: IEnvelopeDocument | null;
-  // @deprecated. New code should use `documents[]`.
+  /** @deprecated. New code should use `documents[]`. */
   document?: IEnvelopeDocument | null;
-  // Documents attached to this envelope
+  /** Documents attached to this envelope */
   documents?: IEnvelopeDocument[] | null;
   fields?: IDocumentField[];
 }
@@ -306,32 +310,38 @@ export type THistoryEvent = 'recipient:invited' | 'recipient:opened' | 'recipien
 export type TEventDetail = 'in_app' | 'mail' | 'signer' | '';
 
 export interface ICreateEnvelopeRole {
-  // The type of role to create. Most participants in standard flows will be "signer" recipients.
+  /** The type of role to create. Most participants in standard flows will be "signer" recipients. */
   type: TRecipientType;
 
-  // The Role name of the recipient. Please note this is not the person's name. It is the ID of the role, e.g.
-  // 'Recipient 1', 'Seller', etc. This must match one of the pre-defined roles in the template's Recipients list.
+  /**
+   * The Role name of the recipient. Please note this is not the person's name. It is the ID of the role, e.g.
+   * 'Recipient 1', 'Seller', etc. This must match one of the pre-defined roles in the template's Recipients list.
+   */
   name: string;
 
-  // The full name of the recipient as it will be displayed in reports and queries, e.g. 'Paige Turner'.
+  /** The full name of the recipient as it will be displayed in reports and queries, e.g. 'Paige Turner'. */
   full_name: string;
 
-  // The email address of the recipient. One of `email` or `phone` must be provided.
+  /** The email address of the recipient. One of `email` or `phone` must be provided. */
   email?: string;
 
-  // The phone number of the recipient. One of `email` or `phone` must be provided. If `phone` is included, the
-  // recipient will receive an SMS notification for the document.
+  /**
+   * The phone number of the recipient. One of `email` or `phone` must be provided. If `phone` is included, the
+   * recipient will receive an SMS notification for the document.
+   */
   phone?: string;
 
-  // The 1-based sequence number for the recipient. This can be used to override the template's workflow. Recipients
-  // are processed in parallel for each matching sequence number (e.g. all recipients at level "1" may act in parallel)
-  // and in series between sequence numbers (e.g. all recipients at level "1" must complete their tasks before
-  // recipients at level "2" may act).
+  /**
+   *  The 1-based sequence number for the recipient. This can be used to override the template's workflow. Recipients
+   *  are processed in parallel for each matching sequence number (e.g. all recipients at level "1" may act in parallel)
+   *  and in series between sequence numbers (e.g. all recipients at level "1" must complete their tasks before
+   *  recipients at level "2" may act).
+   */
   sequence: number;
 
-  // Whether the recipient may delegate their tasks to others. Should be false for most standard workflows.
+  /** Whether the recipient may delegate their tasks to others. Should be false for most standard workflows. */
   delegator: boolean;
 
-  // A custom message to include in the email or SMS invitation. May be left blank for a default message.
+  /** A custom message to include in the email or SMS invitation. May be left blank for a default message. */
   message: string;
 }
