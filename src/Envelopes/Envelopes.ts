@@ -1,4 +1,12 @@
-import {IEnvelope, IEnvelopesSummary, IRecipient, ISigningSession, TEnvelopeUpdateResult, IDocumentFieldSettings} from './Types';
+import {
+  IEnvelope,
+  IEnvelopesSummary,
+  IRecipient,
+  ISigningSession,
+  TEnvelopeUpdateResult,
+  IDocumentFieldSettings,
+  IEnvelopeDocument,
+} from './Types';
 import {ICreateEnvelopeRole, IEnvelopesSearchResult, ISigningSessionRequest} from './Types';
 import {decodeAccessTokenBody} from '../Utils/Token';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
@@ -110,6 +118,14 @@ export const getEnvelopeRecipients = async (endpoint: VerdocsEndpoint, envelopeI
 export const getEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string) =>
   endpoint.api //
     .get<IEnvelope>(`/envelopes/${envelopeId}`)
+    .then((r) => r.data);
+
+/**
+ * Get all metadata for an Envelope.
+ */
+export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
+  endpoint.api //
+    .get<IEnvelopeDocument>(`/envelopes/${envelopeId}/envelope_documents/${documentId}`)
     .then((r) => r.data);
 
 /**
