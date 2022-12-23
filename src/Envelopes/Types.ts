@@ -1,4 +1,5 @@
 import {IProfile} from '../Users/Types';
+import {IPage} from '../Templates/Types';
 
 export type TRecipientAction = 'submit' | 'decline' | 'prepare' | 'update';
 
@@ -43,7 +44,10 @@ export type TRecipientStatus = 'invited' | 'opened' | 'signed' | 'submitted' | '
 
 export type TRecipientType = 'signer' | 'cc' | 'approver';
 
-// NOTE: Many of the fields here are undefined unless "summary=true" is included in the search terms
+/**
+ * One entry in an envelope search result.
+ * NOTE: Many of the fields here are undefined unless "summary=true" is included in the search terms
+ */
 export interface IEnvelopesSearchResultEntry {
   id: string;
   canceled_at: string;
@@ -133,6 +137,7 @@ export interface IEnvelopeDocument {
   page_numbers: number;
   updated_at: string;
   url: string;
+  pages?: IPage[];
 }
 
 export interface IDocumentFieldOptions {

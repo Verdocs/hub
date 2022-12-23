@@ -205,6 +205,7 @@ export interface ITemplateDocument {
   template_id: string;
   mime: string;
   thumbnail_url: string;
+  pages?: IPage[];
 }
 
 export interface ITemplateField {
@@ -240,16 +241,20 @@ export interface ITemplateFieldSetting {
 export interface IPage {
   template_id: string;
   document_id: string;
-  // Note: Page numbers are 1-based
+  /** Note: Page numbers are 1-based */
   sequence: number;
-  // @deprecated. New code should use `sequence`
+  /** @deprecated. New code should use `sequence` */
   page_number: number;
   thumbnail_url: string;
-  // The storage location for the page once rendered server-side. This can be used to determine whether a page has
-  // finished rendering, but cannot be accessed directly - client applications should use display_uri instead.
+  /**
+   * The storage location for the page once rendered server-side. This can be used to determine whether a page has
+   * finished rendering, but cannot be accessed directly - client applications should use display_uri instead.
+   */
   image_uri?: string | null;
-  // If the page was rendered server-side and the caller has access to view it, this will contain the signed URI
-  // to access it. Note that these URIs include short expirations and should never be cached.
+  /**
+   * If the page was rendered server-side and the caller has access to view it, this will contain the signed URI
+   * to access it. Note that these URIs include short expirations and should never be cached.
+   */
   display_uri?: string | null;
   template_document?: ITemplateDocument;
   fields?: ITemplateField[];
