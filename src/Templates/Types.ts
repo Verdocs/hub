@@ -199,6 +199,7 @@ export interface ITemplateDocument {
   url: string;
   name: string;
   page_numbers: number;
+  order: number;
   id?: string;
   updated_at?: string;
   created_at?: string;

@@ -99,7 +99,7 @@ export const getSigningSession = async (endpoint: VerdocsEndpoint, params: ISign
       const signerToken = r.headers?.signer_token || '';
       const session = decodeAccessTokenBody(signerToken) as ISigningSession;
 
-      endpoint.setToken(r.headers?.signer_token);
+      endpoint.setToken(signerToken);
 
       return {recipient: r.data, session, signerToken} as ISigningSessionResult;
     });

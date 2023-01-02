@@ -22,8 +22,6 @@ export interface ISigningSession {
   aud: string;
   exp: number;
   iat: number;
-
-  [key: string]: any;
 }
 
 export interface IInPersonAccessKey {

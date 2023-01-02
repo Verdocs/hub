@@ -60,7 +60,7 @@ export class VerdocsEndpoint {
   /**
    * The current user session, or null if not authenticated. May be either a User or Signing session. If set, the
    * presence of the `document_id` field can be used to differentiate the types. Only signing sessions are associated
-   * with Documents.
+   * with Envelopes.
    */
   public session = null as TSession;
 
@@ -263,12 +263,17 @@ export class VerdocsEndpoint {
 
     const session = decodeAccessTokenBody(token);
     if (session === null || (session.exp && session.exp * 1000 < new Date().getTime())) {
+      window.console.warn('[JS_SDK] Ignoring attempt to use expired session token');
       return this.clearSession();
     }
 
     this.token = token;
     this.session = session;
-    this.api.defaults.headers.common.Authorization = `Bearer ${token}`;
+    if (this.sessionType === 'user') {
+      this.api.defaults.headers.common.Authorization = `Bearer ${token}`;
+    } else {
+      this.api.defaults.headers.common.signer = `Bearer ${token}`;
+    }
 
     localStorage.setItem(this.sessionStorageKey(), token);
 
@@ -292,6 +297,22 @@ export class VerdocsEndpoint {
    * Clear the active session.
    */
   public clearSession() {
+    localStorage.removeItem(this.sessionStorageKey());
+    delete this.api.defaults.headers.common.Authorization;
+    delete this.api.defaults.headers.common.signer;
+
+    this.session = null;
+    this.token = null;
+
+    this.notifySessionListeners();
+
+    return this;
+  }
+
+  /**
+   * Clear the active signing session.
+   */
+  public clearSignerSession() {
     localStorage.removeItem(this.sessionStorageKey());
     delete this.api.defaults.headers.common.Authorization;
 
