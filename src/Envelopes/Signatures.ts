@@ -15,10 +15,9 @@ export interface ISignature {
  * create and store a signature block. Thereafter, the ID of the signature block may be re-used for each signature field
  * to be "stamped" by the user.
  */
-export const createSignature = (endpoint: VerdocsEndpoint, name: string, signature: string | Blob) => {
+export const createSignature = (endpoint: VerdocsEndpoint, name: string, signature: Blob) => {
   const data = new FormData();
-  data.append(name, signature);
-  // data.append('signature', signature, name);
+  data.append('signature', signature, name);
 
   return endpoint.api //
     .post<ISignature>(`/signatures`, data)

@@ -14,10 +14,9 @@ export interface IInitials {
  * create and store an initials block. Thereafter, the ID of the initials block may be re-used for each initials field
  * to be "stamped" by the user.
  */
-export const createInitials = (endpoint: VerdocsEndpoint, name: string, initials: string | Blob) => {
+export const createInitials = (endpoint: VerdocsEndpoint, name: string, initials: Blob) => {
   const data = new FormData();
-  data.append(name, initials);
-  // data.append('initial', initials, name);
+  data.append('initial', initials, name);
 
   return endpoint.api //
     .post<IInitials>(`/initials`, data)
