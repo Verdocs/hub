@@ -188,3 +188,12 @@ export const updateEnvelopeFieldSignature = async (endpoint: VerdocsEndpoint, en
   endpoint.api //
     .put<IDocumentFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}/signature/${signatureId}`)
     .then((r) => r.data);
+
+/**
+ * Update a Document signature field. Signature fields are ID-driven. Call `Document.createSignature()` first to create a
+ * signature for a Recipient, then call `Documents.updateDocumentFieldSignature()` to attach it to a field.
+ */
+export const updateEnvelopeFieldInitials = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string, initialId: string) =>
+  endpoint.api //
+    .put<IDocumentFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}/initial/${initialId}`)
+    .then((r) => r.data);

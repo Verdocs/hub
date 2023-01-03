@@ -5,53 +5,97 @@ import {IOrganization} from '../Organizations/Types';
  * Documents to sign.
  */
 export interface ITemplate {
-  // The unique ID of the template.
+  /**
+   * The unique ID of the template.
+   */
   id: string;
-  // The user-supplied name of the template.
+  /*
+   The user-supplied name of the template.
+  */
   name: string;
-  // Optional description for the template.
+  /**
+   * Optional description for the template.
+   */
   description?: string;
-  // Who may create new documents from the template.
+  /**
+   * Who may create new documents from the template.
+   */
   sender: TTemplateSender;
-  // The template's owner/creator.
+  /**
+   * The template's owner/creator.
+   */
   profile_id: string;
-  // Organization the template lives in.
+  /**
+   * Organization the template lives in.
+   */
   organization_id: string;
-  // Number of times the template has been used.
+  /**
+   * Number of times the template has been used.
+   */
   counter: number;
-  // Number of times the template has been "starred".
+  /**
+   * Number of times the template has been "starred".
+   */
   star_counter: number;
-  // If true, the template is only visible to the creator. If false, the template will also be visible to the user's
-  // organization, if any.
+  /**
+   * If true, the template is only visible to the creator. If false, the template will also be visible to the user's
+   * organization, if any.
+   */
   is_personal: boolean;
-  // If true, the template is visible publicly. Note that this does not necessarily mean it is also visible to the
-  // user's organization. It may be desirable to create documents that are public but that do not appear in the
-  // organization's shared templates list. To achieve this, set both `is_personal` and `is_public` to TRUE.
+  /**
+   * If true, the template is visible publicly. Note that this does not necessarily mean it is also visible to the
+   * user's organization. It may be desirable to create documents that are public but that do not appear in the
+   * organization's shared templates list. To achieve this, set both `is_personal` and `is_public` to TRUE.
+   */
   is_public: boolean;
-  // Creation date/time.
+  /**
+   * Creation date/time.
+   */
   created_at: string;
-  // Last-update date/time.
+  /**
+   * Last-update date/time.
+   */
   updated_at: string;
-  // Last-used date/time (when the template was used to create a document).
+  /**
+   * Last-used date/time (when the template was used to create a document).
+   */
   last_used_at: string;
-  // Secret token associated with the document. Note that this field is marked optional because it is only visible to
-  // the creator. This token is used in some operations such as creating shareable links to the template.
+  /**
+   * Secret token associated with the document. Note that this field is marked optional because it is only visible to
+   * the creator. This token is used in some operations such as creating shareable links to the template.
+   */
   token?: string;
-  // If set, the template has reminders enabled.
+  /**
+   * If set, the template has reminders enabled.
+   */
   reminder_id?: string;
-  // If reminders are enabled, the reminder configuration.
+  /**
+   * If reminders are enabled, the reminder configuration.
+   */
   reminder?: IReminder;
-  // If set, the template has been post-processed (rendered server-side for display in Web and Mobile clients).
+  /**
+   * If set, the template has been post-processed (rendered server-side for display in Web and Mobile clients).
+   */
   processed?: boolean;
-  // If the template was created within an organization, details about that organization.
+  /**
+   * If the template was created within an organization, details about that organization.
+   */
   organization?: IOrganization;
-  // Roles (recipients) attached to the template. (Note that roles are uniquely identified by name rather than ID.)
+  /**
+   * Roles (recipients) attached to the template. (Note that roles are uniquely identified by name rather than ID.)
+   */
   roles?: IRole[];
-  // Pages attached to the template. Note that this is all of the pages for all document attachments in sequential order.
+  /**
+   * Pages attached to the template. Note that this is all of the pages for all document attachments in sequential order.
+   */
   pages?: IPage[];
-  // @deprecated. New code should use `template_documents`.
+  /**
+   * @deprecated. New code should use `template_documents`.
+   */
   template_document?: ITemplateDocument;
-  // File attachments for this template.
+  /**
+   * File attachments for this template.
+   */
   template_documents?: ITemplateDocument[];
 }
 
@@ -242,9 +286,13 @@ export interface ITemplateFieldSetting {
 export interface IPage {
   template_id: string;
   document_id: string;
-  /** Note: Page numbers are 1-based */
+  /**
+   * Note: Page numbers are 1-based
+   */
   sequence: number;
-  /** @deprecated. New code should use `sequence` */
+  /**
+   * @deprecated. New code should use `sequence`
+   */
   page_number: number;
   thumbnail_url: string;
   /**
@@ -254,7 +302,7 @@ export interface IPage {
   image_uri?: string | null;
   /**
    * If the page was rendered server-side and the caller has access to view it, this will contain the signed URI
-   * to access it. Note that these URIs include short expirations and should never be cached.
+   * to access it. NOTE: These URIs include short expirations and should never be cached or shared.
    */
   display_uri?: string | null;
   template_document?: ITemplateDocument;
