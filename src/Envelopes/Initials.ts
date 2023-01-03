@@ -16,7 +16,8 @@ export interface IInitials {
  */
 export const createInitials = (endpoint: VerdocsEndpoint, name: string, initials: string | Blob) => {
   const data = new FormData();
-  data.append('initial', initials, name);
+  data.append(name, initials);
+  // data.append('initial', initials, name);
 
   return endpoint.api //
     .post<IInitials>(`/initials`, data)

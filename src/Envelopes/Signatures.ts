@@ -17,7 +17,8 @@ export interface ISignature {
  */
 export const createSignature = (endpoint: VerdocsEndpoint, name: string, signature: string | Blob) => {
   const data = new FormData();
-  data.append('signature', signature, name);
+  data.append(name, signature);
+  // data.append('signature', signature, name);
 
   return endpoint.api //
     .post<ISignature>(`/signatures`, data)
