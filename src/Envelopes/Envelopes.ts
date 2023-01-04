@@ -115,9 +115,9 @@ export const getEnvelopeRecipients = async (endpoint: VerdocsEndpoint, envelopeI
 /**
  * Get all metadata for an Envelope.
  */
-export const getEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string) =>
+export const getEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string, ssr?: boolean) =>
   endpoint.api //
-    .get<IEnvelope>(`/envelopes/${envelopeId}`)
+    .get<IEnvelope>(`/envelopes/${envelopeId}` + (ssr ? '?ssr=true' : ''))
     .then((r) => r.data);
 
 /**

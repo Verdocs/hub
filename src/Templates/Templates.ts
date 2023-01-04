@@ -40,9 +40,9 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
  * const template = await Templates.getTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');
  * ```
  */
-export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
+export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string, ssr?: boolean) =>
   endpoint.api //
-    .get<ITemplate>(`/templates/${templateId}`)
+    .get<ITemplate>(`/templates/${templateId}` + (ssr ? '?ssr=true' : ''))
     .then((r) => r.data);
 
 /**
