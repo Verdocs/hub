@@ -256,6 +256,8 @@ export interface IEnvelope {
   /** @deprecated. New envelopes will support more than one document attachment so new code should no longer refer to this field. */
   envelope_document_id: string;
   certificate_document_id: string | null;
+  /** Defaults to 'private'. If set to 'shared', this envelope will be visible to other users in the same organization. Ignored for personal profiles. */
+  visibility: 'private' | 'shared';
   histories: IHistory[];
   recipients: IRecipient[];
   profile?: IProfile | null;
