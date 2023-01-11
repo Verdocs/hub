@@ -62,6 +62,8 @@ export interface IEnvelopesSearchResultEntry {
   recipients: IRecipient[];
   reminder_id: string | null;
   status: TEnvelopeStatus;
+  /** Defaults to 'private'. If set to 'shared', this envelope will be visible to other users in the same organization. Ignored for personal profiles. */
+  visibility: 'private' | 'shared';
   next_recipient: {
     claimed: boolean;
     email: string;
