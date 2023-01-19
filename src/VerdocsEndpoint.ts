@@ -51,7 +51,7 @@ export class VerdocsEndpoint {
   private sessionType = 'user' as TSessionType;
   private readonly baseURL = 'https://api.verdocs.com' as string;
   private clientID = 'not-set' as string;
-  private timeout = 3000 as number;
+  private timeout = 15000 as number;
   private token = null as string | null;
   private nextListenerId = 0;
   private sessionListeners = new Map<symbol, TSessionChangedListener>();
@@ -76,7 +76,7 @@ export class VerdocsEndpoint {
    */
   constructor(options?: VerdocsEndpointOptions) {
     this.baseURL = options?.baseURL || 'https://api.verdocs.com';
-    this.timeout = options?.timeout || 3000;
+    this.timeout = options?.timeout || 15000;
     this.environment = options?.environment || 'verdocs';
     this.sessionType = options?.sessionType || 'user';
     this.clientID = options?.clientID || 'not-set';
@@ -206,7 +206,9 @@ export class VerdocsEndpoint {
   }
 
   /**
-   * Set the timeout for API calls in milliseconds. 2000-4000ms is recommended for most purposes. 3000ms is the default.
+   * Set the timeout for API calls in milliseconds. 5000-20000ms is recommended for most purposes. 15000ms is the default.
+   * Note that some calls may involve rendering operations that require some time to complete, so very short timeouts
+   * are not recommended.
    *
    * ```typescript
    * import {VerdocsEndpoint} from '@verdocs/js-sdk/HTTP';
