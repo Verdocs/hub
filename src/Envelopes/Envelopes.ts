@@ -167,7 +167,7 @@ export const userCanAct = (email: string, recipientsWithActions: IRecipient[]) =
  */
 export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string): Promise<string> =>
   endpoint.api //
-    .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}?file=true`, {responseType: 'blob'})
+    .get(`/envelopes/${envelopeId}/envelope_documents/${documentId}?file=true`, {responseType: 'blob'})
     .then((r) => Buffer.from(r.data, 'binary').toString('base64'));
 
 /**
