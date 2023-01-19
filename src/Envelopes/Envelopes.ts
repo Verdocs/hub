@@ -165,10 +165,10 @@ export const userCanAct = (email: string, recipientsWithActions: IRecipient[]) =
  * rather than a direct A HREF or similar link to set the authorization headers for the
  * request.
  */
-export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string): Promise<string> =>
+export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
   endpoint.api //
     .get(`/envelopes/${envelopeId}/envelope_documents/${documentId}?file=true`, {responseType: 'blob'})
-    .then((r) => Buffer.from(r.data, 'binary').toString('base64'));
+    .then((r) => r.data);
 
 /**
  * Update a Document field. Typically called during the signing process as a Recipient fills in fields.

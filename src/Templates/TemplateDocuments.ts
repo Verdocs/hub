@@ -84,17 +84,17 @@ export const deleteTemplateDocument = (endpoint: VerdocsEndpoint, templateId: st
  * rather than a direct A HREF or similar link to set the authorization headers for the
  * request.
  */
-export const getTemplateDocumentFile = async (endpoint: VerdocsEndpoint, templateId: string, documentId: string): Promise<string> =>
+export const getTemplateDocumentFile = async (endpoint: VerdocsEndpoint, templateId: string, documentId: string) =>
   endpoint.api //
     .get(`/templates/${templateId}/documents/${documentId}?file=true`, {responseType: 'blob'})
-    .then((r) => Buffer.from(r.data, 'binary').toString('base64'));
+    .then((r) => r.data);
 
 /**
  * Get (binary download) a file attached to a Template. It is important to use this method
  * rather than a direct A HREF or similar link to set the authorization headers for the
  * request.
  */
-export const getTemplateDocumentThumbnail = async (endpoint: VerdocsEndpoint, templateId: string, documentId: string): Promise<string> =>
+export const getTemplateDocumentThumbnail = async (endpoint: VerdocsEndpoint, templateId: string, documentId: string) =>
   endpoint.api //
     .get(`/templates/${templateId}/documents/${documentId}?thumbnail=true`, {responseType: 'blob'})
-    .then((r) => Buffer.from(r.data, 'binary').toString('base64'));
+    .then((r) => r.data);
