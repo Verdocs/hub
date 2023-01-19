@@ -31,3 +31,25 @@ export const fileToDataUrl = (file: File): Promise<FileWithData> =>
       reject(new Error('Invalid file'));
     }
   });
+
+/**
+ * Trigger a download dialog to save a blob as a file on disk.
+ */
+export const downloadBlob = (blob: Blob, name = 'file.pdf') => {
+  const blobUrl = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.href = blobUrl;
+  link.download = name;
+  document.body.appendChild(link);
+
+  link.dispatchEvent(
+    new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    }),
+  );
+
+  document.body.removeChild(link);
+};

@@ -86,9 +86,7 @@ export const deleteTemplateDocument = (endpoint: VerdocsEndpoint, templateId: st
  */
 export const getTemplateDocumentFile = async (endpoint: VerdocsEndpoint, templateId: string, documentId: string): Promise<string> =>
   endpoint.api //
-    .get<string>(`/templates/${templateId}/documents/${documentId}?file=true`, {
-      responseType: 'arraybuffer',
-    })
+    .get<string>(`/templates/${templateId}/documents/${documentId}?file=true`, {responseType: 'blob'})
     .then((r) => Buffer.from(r.data, 'binary').toString('base64'));
 
 /**
@@ -98,7 +96,5 @@ export const getTemplateDocumentFile = async (endpoint: VerdocsEndpoint, templat
  */
 export const getTemplateDocumentThumbnail = async (endpoint: VerdocsEndpoint, templateId: string, documentId: string): Promise<string> =>
   endpoint.api //
-    .get<string>(`/templates/${templateId}/documents/${documentId}?thumbnail=true`, {
-      responseType: 'arraybuffer',
-    })
+    .get<string>(`/templates/${templateId}/documents/${documentId}?thumbnail=true`, {responseType: 'blob'})
     .then((r) => Buffer.from(r.data, 'binary').toString('base64'));
