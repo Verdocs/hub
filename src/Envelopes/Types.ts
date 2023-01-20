@@ -130,13 +130,16 @@ export interface IRecipient {
 }
 
 export interface IEnvelopeDocument {
-  created_at: string;
   id: string;
+  envelope_id: string;
   mime: string;
   name: string;
   page_numbers: number;
   updated_at: string;
   url: string;
+  processed: boolean;
+  type: 'attachment' | 'certificate';
+  created_at: string;
   pages?: IPage[];
 }
 

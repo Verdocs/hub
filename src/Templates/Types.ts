@@ -286,6 +286,7 @@ export interface ITemplateFieldSetting {
 export interface IPage {
   template_id: string;
   document_id: string;
+  envelope_id: string;
   /**
    * Note: Page numbers are 1-based
    */
@@ -294,7 +295,7 @@ export interface IPage {
    * @deprecated. New code should use `sequence`
    */
   page_number: number;
-  thumbnail_url: string;
+  thumbnail_url?: string;
   /**
    * The storage location for the page once rendered server-side. This can be used to determine whether a page has
    * finished rendering, but cannot be accessed directly - client applications should use display_uri instead.
