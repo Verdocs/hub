@@ -315,7 +315,25 @@ export interface IDocumentSearchOptions {
   recipient_status?: TEnvelopeStatus[];
 }
 
-export type THistoryEvent = 'recipient:invited' | 'recipient:opened' | 'recipient:agreed' | 'recipient:signed' | 'recipient:submitted';
+export type THistoryEvent =
+  | 'recipient:signed'
+  | 'recipient:opened'
+  | 'recipient:submitted'
+  | 'recipient:prepared'
+  | 'recipient:claimed'
+  | 'recipient:agreed'
+  | 'recipient:invited'
+  | 'recipient:delegated'
+  | 'recipient:updated_info'
+  | 'recipient:declined'
+  | 'invitation:resent'
+  | 'envelope:cc'
+  | 'owner:updated_recipient_info'
+  | 'created'
+  | 'completed'
+  | 'canceled'
+  | 'owner:canceled'
+  | 'owner:get_in_person_link';
 
 export type TEventDetail = 'in_app' | 'mail' | 'signer' | '';
 
