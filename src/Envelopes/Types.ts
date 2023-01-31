@@ -328,14 +328,28 @@ export type THistoryEvent =
   | 'recipient:declined'
   | 'invitation:resent'
   | 'envelope:cc'
-  | 'owner:updated_recipient_info'
+  // TODO: These were removed and are not actually in use. See the created_at, updated_at (if status is completed)
+  //  and canceled_at fields to identify these states.
   | 'created'
   | 'completed'
   | 'canceled'
+  | 'owner:updated_recipient_info'
   | 'owner:canceled'
   | 'owner:get_in_person_link';
 
-export type TEventDetail = 'in_app' | 'mail' | 'signer' | '';
+export type TEventDetail =
+  | 'in_app'
+  | 'mail'
+  | 'signer'
+  | 'sms'
+  | 'reminder'
+  | 'preparer'
+  | 'manual'
+  | 'in_person_link'
+  | 'guest'
+  | 'email'
+  | ''
+  | string; // Modification events have a string description
 
 export interface ICreateEnvelopeRole {
   /** The type of role to create. Most participants in standard flows will be "signer" recipients. */
