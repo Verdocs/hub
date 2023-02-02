@@ -6,7 +6,8 @@ import {ITemplateField} from './Types';
  */
 export const createField = (endpoint: VerdocsEndpoint, templateId: string, params: ITemplateField) =>
   endpoint.api //
-    .post<ITemplateField>(`/templates/${templateId}/pages/`, params)
+    // curl -X POST 'https://api.verdocs.com/templates/d2338742-f3a1-465b-8592-806587413cc1/fields' \
+    .post<ITemplateField>(`/templates/${templateId}/fields`, params)
     .then((r) => r.data);
 
 /**
@@ -14,7 +15,7 @@ export const createField = (endpoint: VerdocsEndpoint, templateId: string, param
  */
 export const editField = (endpoint: VerdocsEndpoint, templateId: string, fieldName: string, params: ITemplateField) =>
   endpoint.api //
-    .put<ITemplateField>(`/templates/${templateId}/pages/${fieldName}`, params)
+    .put<ITemplateField>(`/templates/${templateId}/fields/${fieldName}`, params)
     .then((r) => r.data);
 
 /**
@@ -22,5 +23,5 @@ export const editField = (endpoint: VerdocsEndpoint, templateId: string, fieldNa
  */
 export const deleteField = (endpoint: VerdocsEndpoint, templateId: string, fieldName: string) =>
   endpoint.api //
-    .delete(`/templates/${templateId}/pages/${fieldName}`)
+    .delete(`/templates/${templateId}/fields/${fieldName}`)
     .then((r) => r.data);

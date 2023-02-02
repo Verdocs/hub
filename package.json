@@ -1,6 +1,6 @@
 {
   "name": "@verdocs/js-sdk",
-  "version": "3.0.22",
+  "version": "3.0.24",
   "private": false,
   "homepage": "https://github.com/Verdocs/js-sdk",
   "description": "Verdocs JS SDK",
@@ -46,7 +46,7 @@
     "access": "public"
   },
   "dependencies": {
-    "axios": "^1.3.0"
+    "axios": "^1.3.1"
   },
   "peerDependencies": {
     "typescript": "^4.7.3"
