@@ -6,7 +6,6 @@ import {ITemplateField} from './Types';
  */
 export const createField = (endpoint: VerdocsEndpoint, templateId: string, params: ITemplateField) =>
   endpoint.api //
-    // curl -X POST 'https://api.verdocs.com/templates/d2338742-f3a1-465b-8592-806587413cc1/fields' \
     .post<ITemplateField>(`/templates/${templateId}/fields`, params)
     .then((r) => r.data);
 
