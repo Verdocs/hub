@@ -1,4 +1,5 @@
 import {IOrganization} from '../Organizations/Types';
+import {TRecipientType} from '../Envelopes/Types';
 
 /**
  * A reusable template for creating signable instruments. Templates are used to create Envelopes which contain
@@ -219,7 +220,10 @@ export interface IStar {
 }
 
 /**
- * An individual recipient, CC, or other party in a signing flow.
+ * A placeholder for an individual recipient, CC, or other party in a signing flow. Roles may be "known" or "unknown."
+ * "Known" roles will have their email address supplied in the template which will get copied to envelopes created from
+ * it. This is used when a certain party will always be the same, e.g. a leasing agent counter-signing a lease.
+ * "Unknown" roles are dynamic, and will be filled in later when the envelope is created.
  */
 export interface IRole {
   template_id: string;
@@ -227,8 +231,19 @@ export interface IRole {
   name: string;
   full_name?: string;
   email?: string;
-  type: string;
+  type: TRecipientType;
+  /**
+   * The sequence number indicates the order in which Roles act. Multiple roles may have the same sequence
+   * number, in which case they may act in parallel. (e.g. all Roles at sequence 2 will receive invites once
+   * all Recipients at sequence 1 have signed.)
+   */
   sequence: number;
+  /**
+   * The order indicates the order in which recipients are listed in a single "level" of the workflow. Note that
+   * recipients at the same level may act in parallel despite this value. However, it can often be useful to visually
+   * arrange recipients to match related business processes so this field allows for that.
+   */
+  order: number;
   fields?: ITemplateField[];
   delegator?: boolean;
   message?: string;

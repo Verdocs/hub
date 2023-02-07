@@ -117,12 +117,17 @@ export interface IRecipient {
   profile_id: string;
   role_name: string;
   /**
-   * The sequence number indicates the order in which recipients act. Note that it is the workflow "level" not the
-   * recipient's individual index in the list. There may be multiple recipients with the same sequence. Recipients
-   * with the same sequence number may act independently, in parallel to each other (co-signers), as long as all
-   * Recipients with an earlier sequence number have completed their tasks.
+   * The sequence number indicates the order in which Recipients act. Multiple recipients may have the same sequence
+   * number, in which case they may act in parallel. (e.g. all Recipients at sequence 2 will receive invites once
+   * all Recipients at sequence 1 have signed.)
    */
   sequence: number;
+  /**
+   * The order indicates the order in which recipients are listed in a single "level" of the workflow. Note that
+   * recipients at the same level may act in parallel despite this value. However, it can often be useful to visually
+   * arrange recipients to match related business processes so this field allows for that.
+   */
+  order: number;
   status: TRecipientStatus;
   type: TRecipientType;
   updated_at: string;
