@@ -12,7 +12,7 @@ export const createField = (endpoint: VerdocsEndpoint, templateId: string, param
 /**
  * Update a template field.
  */
-export const editField = (endpoint: VerdocsEndpoint, templateId: string, fieldName: string, params: ITemplateField) =>
+export const updateField = (endpoint: VerdocsEndpoint, templateId: string, fieldName: string, params: Partial<ITemplateField>) =>
   endpoint.api //
     .put<ITemplateField>(`/templates/${templateId}/fields/${fieldName}`, params)
     .then((r) => r.data);
