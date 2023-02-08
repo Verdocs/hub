@@ -1,5 +1,5 @@
 import {IOrganization} from '../Organizations/Types';
-import {TRecipientType} from '../Envelopes/Types';
+import {TDocumentFieldType, TRecipientType} from '../Envelopes/Types';
 
 /**
  * A reusable template for creating signable instruments. Templates are used to create Envelopes which contain
@@ -272,7 +272,7 @@ export interface ITemplateField {
   name: string;
   role_name: string;
   template_id: string;
-  type: string;
+  type: TDocumentFieldType;
   required: boolean;
   setting: ITemplateFieldSetting;
   page_sequence: number;
