@@ -24,9 +24,9 @@ export const getRole = (endpoint: VerdocsEndpoint, templateId: string, roleName:
     .get<IRole>(`/templates/${templateId}/roles/${roleName}`)
     .then((r) => r.data);
 
-export const updateRole = (endpoint: VerdocsEndpoint, templateId: string, roleName: string, params: IRole) =>
+export const updateRole = (endpoint: VerdocsEndpoint, templateId: string, roleName: string, params: Partial<IRole>) =>
   endpoint.api //
-    .put<Partial<IRole>>(`/templates/${templateId}/roles/${roleName}`, params)
+    .put<IRole>(`/templates/${templateId}/roles/${roleName}`, params)
     .then((r) => r.data);
 
 export const deleteRole = (endpoint: VerdocsEndpoint, templateId: string, roleName: string) =>
