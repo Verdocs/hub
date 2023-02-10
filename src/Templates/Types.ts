@@ -39,6 +39,10 @@ export interface ITemplate {
    */
   star_counter: number;
   /**
+   * If true, the template is considered "sendable" (it has at least one signer, and every signer has at least one field.)
+   */
+  is_sendable: boolean;
+  /**
    * If true, the template is only visible to the creator. If false, the template will also be visible to the user's
    * organization, if any.
    */
@@ -111,6 +115,10 @@ export interface ITemplateSummaryEntry {
   description: string | null;
   created_at: string;
   updated_at: string;
+  /**
+   * If true, the template is considered "sendable" (it has at least one signer, and every signer has at least one field.)
+   */
+  is_sendable: boolean;
   is_personal: boolean;
   is_public: boolean;
   profile_id: string;
