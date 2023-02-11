@@ -15,6 +15,7 @@ export interface ICreateEnvelopeRequest {
   template_id: string;
   roles: ICreateEnvelopeRole[];
   name: string;
+  environment?: string;
 }
 
 /**

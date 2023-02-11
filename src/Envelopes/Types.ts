@@ -102,20 +102,21 @@ export interface IEnvelopesSummary {
 }
 
 export interface IRecipient {
+  envelope_id: string;
+  role_name: string;
   agreed: boolean;
   claimed: boolean;
   created_at: string;
   delegated_to: string | null;
   delegator: boolean;
   email: string;
-  envelope_id: string;
   full_name: string;
   in_app_access_key?: string;
   key_used_to_conclude?: string;
   message: string | null;
   phone: string | null;
   profile_id: string;
-  role_name: string;
+  environment: string;
   /**
    * The sequence number indicates the order in which Recipients act. Multiple recipients may have the same sequence
    * number, in which case they may act in parallel. (e.g. all Recipients at sequence 2 will receive invites once
