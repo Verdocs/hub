@@ -7,6 +7,7 @@
 
 import {ITemplate, ITemplateOwnerInfo, ITemplatesSearchResult, ITemplatesSummary, TTemplateSender} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {IEnvelope} from '../Envelopes/Types';
 
 export interface IGetTemplatesParams {
   is_starred?: boolean;

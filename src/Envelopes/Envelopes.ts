@@ -196,3 +196,22 @@ export const updateEnvelopeFieldInitials = async (endpoint: VerdocsEndpoint, env
   endpoint.api //
     .put<IDocumentFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}/initial/${initialId}`)
     .then((r) => r.data);
+
+/**
+ * Get the attached file for an attachment field (if any)
+ */
+export const getFieldAttachment = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string) =>
+  endpoint.api //
+    .get(`/envelopes/${envelopeId}/fields/${fieldName}/document`, {responseType: 'blob'})
+    .then((r) => r.data);
+
+/**
+ * Get all of the envelopes that were sent using a given template.
+ * NOTE: This endpoint will be retired soon. Its response is not paginated and it is typically used only to retrieve
+ * "submitted data" for a template. A new endpoint will be introduced to provide this function more directly.
+ * @deprecated
+ */
+export const getEnvelopesByTemplateId = async (endpoint: VerdocsEndpoint, templateId:string) =>
+  endpoint.api //
+    .get<IEnvelope[]>(`/envelopes?template_id=${templateId}`)
+    .then((r) => r.data);

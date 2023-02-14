@@ -103,12 +103,38 @@ export interface ISignerTokenResponse {
   inPersonAccessKey: IInPersonAccessKey;
 }
 
+/**
+ * Get a signing token.
+ */
 export const getSignerToken = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
   endpoint.api //
     .get<ISignerTokenResponse>(`/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/signer-token`)
     .then((r) => r.data);
 
+export interface IInPersonLinkResponse {
+  link: string;
+}
+
+/**
+ * Get an in-person signing link.
+ */
 export const getInPersonLink = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
   endpoint.api //
-    .get<ISignerTokenResponse>(`/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}?in_person_link=true`)
+    .get<IInPersonLinkResponse>(`/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}?in_person_link=true`)
+    .then((r) => r.data);
+
+/**
+ * Send a delegation request.
+ */
+export const sendDelegate = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
+  endpoint.api //
+    .post<IEnvelope>(`/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/delegate`)
+    .then((r) => r.data);
+
+/**
+ * Resend a recipient's invitation.
+ */
+export const resendInvitation = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
+  endpoint.api //
+    .post(`/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/resend_invitation`)
     .then((r) => r.data);
