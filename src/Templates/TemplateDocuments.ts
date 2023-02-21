@@ -98,3 +98,12 @@ export const getTemplateDocumentThumbnail = async (endpoint: VerdocsEndpoint, te
   endpoint.api //
     .get(`/templates/${templateId}/documents/${documentId}?thumbnail=true`, {responseType: 'blob'})
     .then((r) => r.data);
+
+/**
+ * Get a display URI for a given page in a file attached to a template document. These pages are rendered server-side
+ * into PNG resources suitable for display in IMG tags although they may be used elsewhere. Note that these are
+ * intended for DISPLAY ONLY, and do not contain any encoded metadata from participants. The original asset may be
+ * obtained by calling `getTemplateDocumentFile()` or similar.
+ */
+export const getTemplateDocumentPageDisplayUri = async (endpoint: VerdocsEndpoint, templateId: string, documentId: string, page: number) =>
+  endpoint.api.get<string>(`/templates/${templateId}/documents/${documentId}/pages/${page}/image`);

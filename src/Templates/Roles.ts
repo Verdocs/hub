@@ -11,12 +11,12 @@ import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export const createRole = (endpoint: VerdocsEndpoint, templateId: string, params: IRole) =>
   endpoint.api //
-    .post<IRole>(`/templates/${templateId}/roles/`, params)
+    .post<IRole>(`/templates/${templateId}/roles`, params)
     .then((r) => r.data);
 
 export const getRoles = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
-    .get<IRole[]>(`/templates/${templateId}/roles/`)
+    .get<IRole[]>(`/templates/${templateId}/roles`)
     .then((r) => r.data);
 
 export const getRole = (endpoint: VerdocsEndpoint, templateId: string, roleName: string) =>
@@ -41,5 +41,5 @@ export const getRoleFields = (endpoint: VerdocsEndpoint, templateId: string, rol
 
 export const deleteSequence = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
-    .delete<IRole[]>(`/templates/${templateId}/roles/`)
+    .delete<IRole[]>(`/templates/${templateId}/roles`)
     .then((r) => r.data);
