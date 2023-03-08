@@ -211,7 +211,15 @@ export const getFieldAttachment = async (endpoint: VerdocsEndpoint, envelopeId: 
  * "submitted data" for a template. A new endpoint will be introduced to provide this function more directly.
  * @deprecated
  */
-export const getEnvelopesByTemplateId = async (endpoint: VerdocsEndpoint, templateId:string) =>
+export const getEnvelopesByTemplateId = async (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
     .get<IEnvelope[]>(`/envelopes?template_id=${templateId}`)
     .then((r) => r.data);
+
+/**
+ * Get a display URI for a given page in a file attached to an envelope document. These pages are rendered server-side
+ * into PNG resources suitable for display in IMG tags although they may be used elsewhere. Note that these are intended
+ * for DISPLAY ONLY, are not legally binding documents, and do not contain any encoded metadata from participants.
+ */
+export const getEnvelopeDocumentPageDisplayUri = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string, page: number) =>
+  endpoint.api.get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}/pages/${page}/image`).then((r) => r.data);

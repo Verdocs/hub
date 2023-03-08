@@ -101,9 +101,9 @@ export const getTemplateDocumentThumbnail = async (endpoint: VerdocsEndpoint, te
 
 /**
  * Get a display URI for a given page in a file attached to a template document. These pages are rendered server-side
- * into PNG resources suitable for display in IMG tags although they may be used elsewhere. Note that these are
- * intended for DISPLAY ONLY, and do not contain any encoded metadata from participants. The original asset may be
- * obtained by calling `getTemplateDocumentFile()` or similar.
+ * into PNG resources suitable for display in IMG tags although they may be used elsewhere. Note that these are intended
+ * for DISPLAY ONLY, are not legally binding documents, and do not contain any encoded metadata from participants. The
+ * original asset may be obtained by calling `getTemplateDocumentFile()` or similar.
  */
 export const getTemplateDocumentPageDisplayUri = async (endpoint: VerdocsEndpoint, templateId: string, documentId: string, page: number) =>
-  endpoint.api.get<string>(`/templates/${templateId}/documents/${documentId}/pages/${page}/image`);
+  endpoint.api.get<string>(`/templates/${templateId}/documents/${documentId}/pages/${page}/image`).then((r) => r.data);
