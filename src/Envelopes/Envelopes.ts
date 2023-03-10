@@ -87,7 +87,7 @@ export interface IEnvelopeSearchParams {
   /** At least one of the envelope's recipients must match the specified ID. */
   recipient_id?: string;
   /** The date-range in which the envelope was created. Values should be specified in ISO8601 "UTC" format. */
-  created_at: {
+  created_at?: {
     start_time: string;
     end_time: string;
   };
@@ -96,12 +96,12 @@ export interface IEnvelopeSearchParams {
    * Note that any operations that alter the envelope are considered "updates", including status changes (cancellation),
    * recipient actions (opening/signing), etc.
    */
-  updated_at: {
+  updated_at?: {
     start_time: string;
     end_time: string;
   };
   /** The date-range in which the envelope was canceled. Values should be specified in ISO8601 "UTC" format. */
-  canceled_at: {
+  canceled_at?: {
     start_time: string;
     end_time: string;
   };
