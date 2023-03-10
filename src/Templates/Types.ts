@@ -288,9 +288,20 @@ export interface ITemplateField {
   label?: string;
 }
 
-export interface ITemplateFieldSetting {
+export interface ITextFieldSetting {
   x: number;
   y: number;
+  width: number;
+  height: number;
+  result: string;
+  leading: number;
+  alignment: number;
+  upperCase: boolean;
+}
+
+export interface ITemplateFieldSetting {
+  x?: number;
+  y?: number;
   result?: string;
   width?: number;
   height?: number;

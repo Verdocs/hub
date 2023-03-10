@@ -6,6 +6,8 @@ import {
   TEnvelopeUpdateResult,
   IDocumentFieldSettings,
   IEnvelopeDocument,
+  TEnvelopeStatus,
+  TRecipientStatus,
 } from './Types';
 import {ICreateEnvelopeRole, IEnvelopesSearchResult, ISigningSessionRequest} from './Types';
 import {decodeAccessTokenBody} from '../Utils/Token';
@@ -69,6 +71,62 @@ export const getSummary = async (endpoint: VerdocsEndpoint, page: number) =>
     .post<IEnvelopesSummary>('/envelopes/summary', {page})
     .then((r) => r.data);
 
+export interface IEnvelopeSearchParams {
+  /** The envelope must have been created via the specified template ID. */
+  template_id?: string;
+  /** The envelope must match one of the specified statuses. */
+  envelope_status?: TEnvelopeStatus[];
+  /** At least one of the recipients must match one of the specified statuses. */
+  recipient_status?: TRecipientStatus[];
+  /** The envelope's name (inherited from the template) must match the specified string. */
+  envelope_name?: string;
+  /** At least one of the envelope's recipients must match the specified name. */
+  recipient_name?: string;
+  /** At least one of the envelope's recipients must match the specified email address. */
+  recipient_email?: string;
+  /** At least one of the envelope's recipients must match the specified ID. */
+  recipient_id?: string;
+  /** The date-range in which the envelope was created. Values should be specified in ISO8601 "UTC" format. */
+  created_at: {
+    start_time: string;
+    end_time: string;
+  };
+  /**
+   * The date-range in which the envelope was last updated. Values should be specified in ISO8601 "UTC" format.
+   * Note that any operations that alter the envelope are considered "updates", including status changes (cancellation),
+   * recipient actions (opening/signing), etc.
+   */
+  updated_at: {
+    start_time: string;
+    end_time: string;
+  };
+  /** The date-range in which the envelope was canceled. Values should be specified in ISO8601 "UTC" format. */
+  canceled_at: {
+    start_time: string;
+    end_time: string;
+  };
+  /** Perform a "contains" search where any of the attached documents' fields contains the specified value. */
+  text_field_value?: string;
+  /** Set to true to retrieve only summary records (IEnvelopeSummary). */
+  summary?: boolean;
+  /** Set to true to retrieve only those envelopes owned by the caller. */
+  is_owner?: boolean;
+  /** Set to true to retrieve only those envelopes in which the caller is one of the recipients. */
+  is_recipient?: boolean;
+  /** Whether the recipient has "claimed" the envelope. */
+  recipient_claimed?: boolean;
+  /** @deprecated. Use `limit`. */
+  row?: number;
+  /** The maximum number of records to return. Should be used in place of `row`. */
+  limit?: number;
+  /** The page number to return. Page numbers are 0-based. */
+  page?: number;
+  /** The field to sort the results by. */
+  sort_by?: 'created_at' | 'updated_at' | 'envelope_name' | 'canceled_at' | 'envelope_status';
+  /** Whether to sort in ascending (default) or descending order. */
+  ascending?: boolean;
+}
+
 /**
  * Search for envelopes matching various criteria.
  *
@@ -78,7 +136,7 @@ export const getSummary = async (endpoint: VerdocsEndpoint, page: number) =>
  * const {result, page, total} = await Envelopes.search(VerdocsEndpoint.getDefault(), { ... });
  * ```
  */
-export const searchEnvelopes = async (endpoint: VerdocsEndpoint, params: any) =>
+export const searchEnvelopes = async (endpoint: VerdocsEndpoint, params: IEnvelopeSearchParams) =>
   endpoint.api //
     .post<IEnvelopesSearchResult>('/envelopes/search', params)
     .then((r) => r.data);
