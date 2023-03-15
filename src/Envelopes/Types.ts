@@ -1,27 +1,10 @@
 import {IProfile} from '../Users/Types';
 import {IPage} from '../Templates/Types';
 
-export type TRecipientAction = 'submit' | 'decline' | 'prepare' | 'update';
-
 export interface ISigningSessionRequest {
   envelopeId: string;
   roleId: string;
   inviteCode: string;
-}
-
-export interface ISigningSession {
-  profile_id: string;
-  envelope_id: string;
-  role: string;
-  email: string;
-  access_key: {
-    id: string;
-    type: string;
-  };
-  iss: string;
-  aud: string;
-  exp: number;
-  iat: number;
 }
 
 export interface IInPersonAccessKey {
@@ -36,11 +19,44 @@ export interface IInPersonAccessKey {
   last_used: string | null;
 }
 
-export type TEnvelopeStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
+export enum RecipientActions {
+  SUBMIT = 'submit',
+  DECLINE = 'decline',
+  PREPARE = 'prepare',
+  UPDATE = 'update',
+}
 
-export type TRecipientStatus = 'invited' | 'opened' | 'signed' | 'submitted' | 'canceled' | 'pending' | 'declined';
+export type TRecipientAction = `${RecipientActions}`;
 
-export type TRecipientType = 'signer' | 'cc' | 'approver';
+export enum EnvelopeStates {
+  COMPLETE = 'complete',
+  PENDING = 'pending',
+  IN_PROGRESS = 'in progress',
+  DECLINED = 'declined',
+  CANCELED = 'canceled',
+}
+
+export type TEnvelopeStatus = `${EnvelopeStates}`;
+
+export enum RecipientStates {
+  INVITED = 'invited',
+  OPENED = 'opened',
+  SIGNED = 'signed',
+  SUBMITTED = 'submitted',
+  CANCELED = 'canceled',
+  PENDING = 'pending',
+  DECLINED = 'declined',
+}
+
+export type TRecipientStatus = `${RecipientStates}`;
+
+export enum RecipientTypes {
+  SIGNER = 'signer',
+  CC = 'cc',
+  APPROVER = 'approver',
+}
+
+export type TRecipientType = `${RecipientTypes}`;
 
 /**
  * One entry in an envelope search result.
@@ -202,18 +218,21 @@ export interface IDocumentFieldSettings {
   [key: string]: any;
 }
 
-export type TDocumentFieldType =
-  | 'signature'
-  | 'initial'
-  | 'checkbox_group'
-  | 'radio_button_group'
-  | 'textbox'
-  | 'timestamp'
-  | 'date'
-  | 'dropdown'
-  | 'textarea'
-  | 'attachment'
-  | 'payment';
+export enum DocumentFieldTypes {
+  SIGNATURE = 'signature',
+  INITIAL = 'initial',
+  CHECKBOX_GROUP = 'checkbox_group',
+  RADIO_BUTTON_GROUP = 'radio_button_group',
+  TEXTBOX = 'textbox',
+  TIMESTAMP = 'timestamp',
+  DATE = 'date',
+  DROPDOWN = 'dropdown',
+  TEXTAREA = 'textarea',
+  ATTACHMENT = 'attachment',
+  PAYMENT = 'payment',
+}
+
+export type TDocumentFieldType = `${DocumentFieldTypes}`;
 
 export interface IDocumentField {
   /**

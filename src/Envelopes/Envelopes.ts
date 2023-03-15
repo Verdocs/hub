@@ -1,17 +1,9 @@
-import {
-  IEnvelope,
-  IEnvelopesSummary,
-  IRecipient,
-  ISigningSession,
-  TEnvelopeUpdateResult,
-  IDocumentFieldSettings,
-  IEnvelopeDocument,
-  TEnvelopeStatus,
-  TRecipientStatus,
-} from './Types';
+import {IEnvelope, IEnvelopesSummary, IRecipient, IDocumentFieldSettings, IEnvelopeDocument} from './Types';
 import {ICreateEnvelopeRole, IEnvelopesSearchResult, ISigningSessionRequest} from './Types';
+import {TEnvelopeUpdateResult, TEnvelopeStatus, TRecipientStatus} from './Types';
 import {decodeAccessTokenBody} from '../Utils/Token';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {ISigningSession} from '../Sessions/Types';
 
 export interface ICreateEnvelopeRequest {
   template_id: string;

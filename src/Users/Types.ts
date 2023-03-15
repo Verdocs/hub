@@ -3,43 +3,63 @@ import {IGroup, IOrganization} from '../Organizations/Types';
 export type TRequestStatus = 'OK' | 'ERROR';
 
 /**
- * An operation within Verdocs the user may perform.
+ * Operation within Verdocs that users may perform.
  */
-export type TPermission =
-  | 'org:view'
-  | 'member:view'
-  | 'org:update'
-  | 'member:add'
-  | 'member:remove'
-  | 'admin:add'
-  | 'admin:remove'
-  | 'org:delete'
-  | 'org:transfer'
-  | 'owner:add'
-  | 'owner:remove'
-  | 'template:creator:create:personal'
-  | 'template:creator:visibility'
-  | 'template:creator:create:org'
-  | 'template:member:read'
-  | 'template:member:write'
-  | 'template:member:visibility'
-  | 'template:creator:delete'
-  | 'template:member:delete'
-  | 'template:creator:create:public'
-  | 'rform:access'
-  | 'rcommon:access'
-  | 'org:list'
-  | 'org:create';
+export enum Permissions {
+  RCOMMON = 'rcommon:access',
+  RFORM_ACCESS = 'rform:access',
+
+  ORG_CREATE = 'org:create',
+  ORG_VIEW = 'org:view',
+  ORG_UPDATE = 'org:update',
+  ORG_DELETE = 'org:delete',
+  ORG_TRANSFER = 'org:transfer',
+  ORG_LIST = 'org:list',
+
+  OWNER_ADD = 'owner:add',
+  OWNER_REMOVE = 'owner:remove',
+
+  ADMIN_ADD = 'admin:add',
+  ADMIN_REMOVE = 'admin:remove',
+
+  MEMBER_VIEW = 'member:view',
+  MEMBER_ADD = 'member:add',
+  MEMBER_REMOVE = 'member:remove',
+
+  TEMPLATE_CREATOR_DELETE = 'template:creator:delete',
+  TEMPLATE_CREATOR_VISIBILITY = 'template:creator:visibility',
+  TEMPLATE_CREATOR_CREATE_ORG = 'template:creator:create:org',
+  TEMPLATE_CREATOR_CREATE_PUBLIC = 'template:creator:create:public',
+  TEMPLATE_CREATOR_CREATE_PERSONAL = 'template:creator:create:personal',
+
+  TEMPLATE_MEMBER_READ = 'template:member:read',
+  TEMPLATE_MEMBER_WRITE = 'template:member:write',
+  TEMPLATE_MEMBER_DELETE = 'template:member:delete',
+  TEMPLATE_MEMBER_VISIBILITY = 'template:member:visibility',
+}
+
+export type TPermission = `${Permissions}`;
 
 /**
  * Plans provide access to Verdocs product features.
  */
-export type TPlan = 'env:essential' | 'org:standard';
+export enum Plans {
+  ENV_ESSENTIAL = 'env:essential',
+  ORG_STANDARD = 'org:standard',
+}
+
+export type TPlan = `${Plans}`;
 
 /**
  * Roles provide access to groups of permissions.
  */
-export type TRole = 'owner' | 'basic_user' | 'member';
+export enum Roles {
+  OWNER = 'owner',
+  BASIC_USER = 'basic_user',
+  MEMBER = 'member',
+}
+
+export type TRole = `${Roles}`;
 
 export interface IProfile {
   /** The unique ID of the profile */

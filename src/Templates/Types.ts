@@ -130,20 +130,6 @@ export interface ITemplateSummaryEntry {
   is_starred: boolean;
 }
 
-export type TTemplateSender = 'creator' | 'organization_member' | 'organization_member_as_creator' | 'everyone' | 'everyone_as_creator';
-
-export enum TemplatePermissions {
-  TEMPLATE_CREATOR_CREATE_PUBLIC = 'template:creator:create:public',
-  TEMPLATE_CREATOR_CREATE_ORG = 'template:creator:create:org',
-  TEMPLATE_CREATOR_CREATE_PERSONAL = 'template:creator:create:personal',
-  TEMPLATE_CREATOR_DELETE = 'template:creator:delete',
-  TEMPLATE_CREATOR_VISIBILITY = 'template:creator:visibility',
-  TEMPLATE_MEMBER_READ = 'template:member:read',
-  TEMPLATE_MEMBER_WRITE = 'template:member:write',
-  TEMPLATE_MEMBER_DELETE = 'template:member:delete',
-  TEMPLATE_MEMBER_VISIBILITY = 'template:member:visibility',
-}
-
 export enum TemplateSenderTypes {
   CREATOR = 'creator', // same as legacy
   ORGANIZATION_MEMBER = 'organization_member',
@@ -151,6 +137,8 @@ export enum TemplateSenderTypes {
   EVERYONE = 'everyone',
   EVERYONE_AS_CREATOR = 'everyone_as_creator', // Creator would be sender of envelope no matter who creates the envelope
 }
+
+export type TTemplateSender = `${TemplateSenderTypes}`;
 
 export enum TemplateActions {
   CREATE_PERSONAL = 'create_personal',
@@ -163,6 +151,8 @@ export enum TemplateActions {
   CHANGE_VISIBILITY_ORG = 'change_visibility_org',
   CHANGE_VISIBILITY_PUBLIC = 'change_visibility_public',
 }
+
+export type TTemplateAction = `${TemplateActions}`;
 
 export interface ITemplateSearchParams {
   id?: string;
