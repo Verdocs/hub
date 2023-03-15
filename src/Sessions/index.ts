@@ -1,3 +1,5 @@
+export * as Types from './Types';
+
 import {TSession} from './Types';
 
 /**

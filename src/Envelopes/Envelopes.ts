@@ -286,7 +286,7 @@ export const throttledGetEnvelope = (endpoint: VerdocsEndpoint, envelopeId: stri
     return cachedEnvelopes[envelopeId].envelope;
   }
 
-  return getEnvelope(endpoint, envelopeId).then((envelope) => {
+  return getEnvelope(endpoint, envelopeId, true).then((envelope) => {
     cachedEnvelopes[envelopeId] = {loaded: new Date().getTime(), envelope};
     return envelope;
   });
