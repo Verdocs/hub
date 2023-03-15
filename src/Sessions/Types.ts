@@ -6,7 +6,9 @@ export interface ISigningSessionRequest {
   inviteCode: string;
 }
 
-/** A Signing Session connects a caller to a role within an envelope, and can be used only for calls related to signing that envelope. */
+/**
+ * A Signing Session connects a caller to a role within an envelope, and can be used only for calls related to signing that envelope.
+ */
 export interface ISigningSession {
   profile_id: string;
   envelope_id: string;
@@ -24,7 +26,9 @@ export interface ISigningSession {
   [key: string]: any;
 }
 
-/** A User Session connects a caller to a Verdocs profile, and can be used for any operations that profile may perform. */
+/**
+ * A User Session connects a caller to a Verdocs profile, and can be used for any operations that profile may perform.
+ */
 export interface IUserSession {
   sub: string;
   email: string;
@@ -41,6 +45,13 @@ export interface IUserSession {
   [key: string]: any;
 }
 
+/**
+ * Verdocs supports two types of authenticated sessions: User and Signing. Both behave similarly and have similar
+ * properties, but signing sessions only have access to a small set of signing-related functions.
+ */
 export type TSessionType = 'user' | 'signing';
 
+/**
+ * An authenticated session within Verdocs, either for signing or regular user-based operations.
+ */
 export type TSession = IUserSession | ISigningSession | null;

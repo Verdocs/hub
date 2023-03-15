@@ -1,7 +1,6 @@
 /* tslint:disable:no-bitwise */
 
-import {ISigningSession} from '../Envelopes/Types';
-import {IUserSession} from '../Sessions/Types';
+import {TSession} from '../Sessions/Types';
 
 const b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 // Regular expression to check formal correctness of base64 encoded strings
@@ -55,10 +54,10 @@ export const decodeJWTBody = (token: string) => JSON.parse(AtoB((token || '').sp
  * application should distinguish between the two based on the context of the authenticated session, or by
  * the presence of the `document_id` field, which will only be present for signing sessions.
  */
-export const decodeAccessTokenBody = (token: string): IUserSession | ISigningSession | null => {
+export const decodeAccessTokenBody = (token: string): TSession => {
   let decoded: any;
   try {
-    decoded = decodeJWTBody(token) as IUserSession | ISigningSession | null;
+    decoded = decodeJWTBody(token) as TSession;
     if (decoded === null) {
       return null;
     }
