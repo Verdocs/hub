@@ -159,3 +159,21 @@ export const getSummary = async (endpoint: VerdocsEndpoint, params: IGetTemplate
   endpoint.api //
     .post<ITemplatesSummary>('/templates/summary', params)
     .then((r) => r.data);
+
+const cachedTemplates: Record<string, {loaded: number; template: ITemplate}> = {};
+
+/**
+ * Wrapper for `getTemplate()` that limits queries to one every 2 seconds per template ID.
+ * This is intended for use in component hierarchies that all rely on the same template
+ * to avoid unnecessary repeat server calls.
+ */
+export const throttledGetTemplate = (endpoint: VerdocsEndpoint, templateId: string) => {
+  if (cachedTemplates[templateId] && cachedTemplates[templateId].loaded + 2000 < new Date().getTime()) {
+    return cachedTemplates[templateId].template;
+  }
+
+  return getTemplate(endpoint, templateId).then((template) => {
+    cachedTemplates[templateId] = {loaded: new Date().getTime(), template};
+    return template;
+  });
+};

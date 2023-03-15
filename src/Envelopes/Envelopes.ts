@@ -273,3 +273,21 @@ export const getEnvelopesByTemplateId = async (endpoint: VerdocsEndpoint, templa
  */
 export const getEnvelopeDocumentPageDisplayUri = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string, page: number) =>
   endpoint.api.get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}/pages/${page}/image`).then((r) => r.data);
+
+const cachedEnvelopes: Record<string, {loaded: number; envelope: IEnvelope}> = {};
+
+/**
+ * Wrapper for `getEnvelope()` that limits queries to one every 2 seconds per template ID.
+ * This is intended for use in component hierarchies that all rely on the same template
+ * to avoid unnecessary repeat server calls.
+ */
+export const throttledGetEnvelope = (endpoint: VerdocsEndpoint, envelopeId: string) => {
+  if (cachedEnvelopes[envelopeId] && cachedEnvelopes[envelopeId].loaded + 2000 < new Date().getTime()) {
+    return cachedEnvelopes[envelopeId].envelope;
+  }
+
+  return getEnvelope(endpoint, envelopeId).then((envelope) => {
+    cachedEnvelopes[envelopeId] = {loaded: new Date().getTime(), envelope};
+    return envelope;
+  });
+};
