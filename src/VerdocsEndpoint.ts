@@ -51,7 +51,7 @@ export class VerdocsEndpoint {
   private sessionType = 'user' as TSessionType;
   private readonly baseURL = 'https://api.verdocs.com' as string;
   private clientID = 'not-set' as string;
-  private timeout = 15000 as number;
+  private timeout = 60000 as number;
   private token = null as string | null;
   private nextListenerId = 0;
   private sessionListeners = new Map<symbol, TSessionChangedListener>();
@@ -76,7 +76,7 @@ export class VerdocsEndpoint {
    */
   constructor(options?: VerdocsEndpointOptions) {
     this.baseURL = options?.baseURL || 'https://api.verdocs.com';
-    this.timeout = options?.timeout || 15000;
+    this.timeout = options?.timeout || 60000;
     this.environment = options?.environment || 'verdocs';
     this.sessionType = options?.sessionType || 'user';
     this.clientID = options?.clientID || 'not-set';

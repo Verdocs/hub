@@ -272,7 +272,9 @@ export const getEnvelopesByTemplateId = async (endpoint: VerdocsEndpoint, templa
  * for DISPLAY ONLY, are not legally binding documents, and do not contain any encoded metadata from participants.
  */
 export const getEnvelopeDocumentPageDisplayUri = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string, page: number) =>
-  endpoint.api.get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}/pages/${page}/image`).then((r) => r.data);
+  endpoint.api
+    .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}/pages/${page}/image`, {timeout: 60000})
+    .then((r) => r.data);
 
 const cachedEnvelopes: Record<string, {loaded: number; envelope: IEnvelope}> = {};
 
