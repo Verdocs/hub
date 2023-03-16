@@ -1,3 +1,4 @@
+import axiosRetry from 'axios-retry';
 import {IEnvelope, IEnvelopesSummary, IRecipient, IDocumentFieldSettings, IEnvelopeDocument} from './Types';
 import {ICreateEnvelopeRole, IEnvelopesSearchResult, ISigningSessionRequest} from './Types';
 import {TEnvelopeUpdateResult, TEnvelopeStatus, TRecipientStatus} from './Types';
@@ -273,7 +274,12 @@ export const getEnvelopesByTemplateId = async (endpoint: VerdocsEndpoint, templa
  */
 export const getEnvelopeDocumentPageDisplayUri = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string, page: number) =>
   endpoint.api
-    .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}/pages/${page}/image`, {timeout: 60000})
+    .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}/pages/${page}/image`, {
+      timeout: 20000,
+      'axios-retry': {
+        retries: 5,
+      },
+    })
     .then((r) => r.data);
 
 const cachedEnvelopes: Record<string, {loaded: number; envelope: IEnvelope}> = {};
