@@ -155,15 +155,13 @@ export interface IRecipient {
 export interface IEnvelopeDocument {
   id: string;
   envelope_id: string;
-  mime: string;
   name: string;
-  page_numbers: number;
-  updated_at: string;
   url: string;
-  processed: boolean;
+  mime: string;
+  page_numbers: number;
   type: 'attachment' | 'certificate';
   created_at: string;
-  pages?: IPage[];
+  updated_at: string;
 }
 
 export interface IDocumentFieldOptions {
