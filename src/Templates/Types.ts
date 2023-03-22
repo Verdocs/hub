@@ -319,17 +319,16 @@ export interface IPage {
    * @deprecated. New code should use `sequence`
    */
   page_number: number;
+  /**
+   * @deprecated. Clients should not attempt to access images directly. Call `getTemplateDocumentPageDisplayUri()`
+   * instead.
+   */
   thumbnail_url?: string;
   /**
-   * The storage location for the page once rendered server-side. This can be used to determine whether a page has
-   * finished rendering, but cannot be accessed directly - client applications should use display_uri instead.
+   * @deprecated. Clients should not attempt to access images directly. Call `getTemplateDocumentPageDisplayUri()`
+   * instead.
    */
   image_uri?: string | null;
-  /**
-   * If the page was rendered server-side and the caller has access to view it, this will contain the signed URI
-   * to access it. NOTE: These URIs include short expirations and should never be cached or shared.
-   */
-  display_uri?: string | null;
   template_document?: ITemplateDocument;
   fields?: ITemplateField[];
 }

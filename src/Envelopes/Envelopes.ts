@@ -1,4 +1,3 @@
-import axiosRetry from 'axios-retry';
 import {IEnvelope, IEnvelopesSummary, IRecipient, IDocumentFieldSettings, IEnvelopeDocument} from './Types';
 import {ICreateEnvelopeRole, IEnvelopesSearchResult, ISigningSessionRequest} from './Types';
 import {TEnvelopeUpdateResult, TEnvelopeStatus, TRecipientStatus} from './Types';
@@ -167,9 +166,9 @@ export const getEnvelopeRecipients = async (endpoint: VerdocsEndpoint, envelopeI
 /**
  * Get all metadata for an Envelope.
  */
-export const getEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string, ssr?: boolean) =>
+export const getEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string) =>
   endpoint.api //
-    .get<IEnvelope>(`/envelopes/${envelopeId}` + (ssr ? '?ssr=true' : ''))
+    .get<IEnvelope>(`/envelopes/${envelopeId}`)
     .then((r) => r.data);
 
 /**
@@ -294,7 +293,7 @@ export const throttledGetEnvelope = (endpoint: VerdocsEndpoint, envelopeId: stri
     return cachedEnvelopes[envelopeId].envelope;
   }
 
-  return getEnvelope(endpoint, envelopeId, true).then((envelope) => {
+  return getEnvelope(endpoint, envelopeId).then((envelope) => {
     cachedEnvelopes[envelopeId] = {loaded: new Date().getTime(), envelope};
     return envelope;
   });

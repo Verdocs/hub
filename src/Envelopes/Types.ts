@@ -65,6 +65,7 @@ export type TRecipientType = `${RecipientTypes}`;
 export interface IEnvelopesSearchResultEntry {
   id: string;
   canceled_at: string;
+  /** @deprecated. New envelopes may have more than one certificate attached. */
   certificate_document_id: string;
   /** @deprecated. New envelopes may have more than one document attached. */
   envelope_document_id: string;
@@ -285,6 +286,7 @@ export interface IEnvelope {
   reminder_id: string | null;
   /** @deprecated. New envelopes will support more than one document attachment so new code should no longer refer to this field. */
   envelope_document_id: string;
+  /** @deprecated. New envelopes may have more than one certificate attached. */
   certificate_document_id: string | null;
   /** Defaults to 'private'. If set to 'shared', this envelope will be visible to other users in the same organization. Ignored for personal profiles. */
   visibility: 'private' | 'shared';
