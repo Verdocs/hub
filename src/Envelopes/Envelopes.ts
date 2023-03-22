@@ -271,9 +271,15 @@ export const getEnvelopesByTemplateId = async (endpoint: VerdocsEndpoint, templa
  * into PNG resources suitable for display in IMG tags although they may be used elsewhere. Note that these are intended
  * for DISPLAY ONLY, are not legally binding documents, and do not contain any encoded metadata from participants.
  */
-export const getEnvelopeDocumentPageDisplayUri = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string, page: number) =>
+export const getEnvelopeDocumentPageDisplayUri = async (
+  endpoint: VerdocsEndpoint,
+  envelopeId: string,
+  documentId: string,
+  page: number,
+  type: 'original' | 'filled' | 'certificate' = 'original',
+) =>
   endpoint.api
-    .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}/pages/${page}/image`, {
+    .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}/pages/${page}/image?type=${type}`, {
       timeout: 20000,
       'axios-retry': {
         retries: 5,
