@@ -159,6 +159,7 @@ export interface IEnvelopeDocument {
   url: string;
   mime: string;
   page_numbers: number;
+  template_document_id: string | null;
   type: 'attachment' | 'certificate';
   created_at: string;
   updated_at: string;
