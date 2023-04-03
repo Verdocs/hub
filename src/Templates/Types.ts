@@ -102,6 +102,10 @@ export interface ITemplate {
    * File attachments for this template.
    */
   template_documents?: ITemplateDocument[];
+  /**
+   * Fields connected to the template.
+   */
+  fields?: ITemplateField[];
 }
 
 /**
@@ -242,6 +246,9 @@ export interface IRole {
    * arrange recipients to match related business processes so this field allows for that.
    */
   order: number;
+  /**
+   * @deprecated. Use the fields array at the template level instead. This nested block will be removed in a future release.
+   */
   fields?: ITemplateField[];
   delegator?: boolean;
   message?: string;
