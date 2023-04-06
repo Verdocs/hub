@@ -1,5 +1,4 @@
 import {IProfile} from '../Users/Types';
-import {IPage} from '../Templates/Types';
 
 export interface ISigningSessionRequest {
   envelopeId: string;
@@ -149,7 +148,7 @@ export interface IRecipient {
   status: TRecipientStatus;
   type: TRecipientType;
   updated_at: string;
-  fields?: IDocumentField[];
+  fields?: IEnvelopeField[];
 }
 
 export interface IEnvelopeDocument {
@@ -165,7 +164,7 @@ export interface IEnvelopeDocument {
   updated_at: string;
 }
 
-export interface IDocumentFieldOptions {
+export interface IEnvelopeFieldOptions {
   /** The unique ID of the field */
   id: string;
 
@@ -185,7 +184,7 @@ export interface IDocumentFieldOptions {
   value: string;
 }
 
-export interface IDocumentFieldSettings {
+export interface IEnvelopeFieldSettings {
   type?: string;
   x: number;
   y: number;
@@ -202,7 +201,7 @@ export interface IDocumentFieldSettings {
   upperCase?: boolean;
 
   /** Dropdowns, checkboxes, radio groups */
-  options?: IDocumentFieldOptions[];
+  options?: IEnvelopeFieldOptions[];
 
   /** Signatures and Initials, result will be "signed" */
   base64?: string;
@@ -234,37 +233,44 @@ export enum DocumentFieldTypes {
 
 export type TDocumentFieldType = `${DocumentFieldTypes}`;
 
-export interface IDocumentField {
+export interface IEnvelopeField {
   /**
-   * The ID of the document the field is for. For historical reasons, this is called `envelope_id` because documents
+   * The ID of the envelope the field is for. For historical reasons, this is called `envelope_id` because documents
    * were previously called envelopes.
    */
   envelope_id: string;
-
   /** The machine name of the field, e.g. `checkbox_groupP1-18` */
   name: string;
-
   /** If set, the placeholder/label for the field. */
   label: string | null;
-
   /** The 1-based page number the field is displayed on. "Self-placed" fields that the user must apply will be on page 0. */
   page: number;
-
   /** The ID of the role in the recipients list, e.g. `Recipient 2` */
   recipient_role: string;
-
   /** The type of the field */
   type: TDocumentFieldType;
-
   /** If true, the field will be required */
   required: boolean;
-
-  settings?: IDocumentFieldSettings;
-
+  settings?: IEnvelopeFieldSettings;
   validator: string | null;
-
   /** Not sent by the server. Used in the UI to identify prepared fields. */
   prepared?: boolean;
+  /** If set, the tab index for the field. */
+  tabindex: number;
+  /** The X position of the field. */
+  x: number;
+  /** The Y position of the field. */
+  y: number;
+  /** The width of the field. */
+  width: number;
+  /** The height of the field. */
+  height: number;
+  /** The default value for the field. */
+  default?: string;
+  /** The placeholder to show in the field. */
+  placeholder?: string;
+  /** For fields that support grouping (radio buttons and check boxes) the value selected will be stored under this name. */
+  group?: string;
 }
 
 /**
@@ -297,7 +303,7 @@ export interface IEnvelope {
   document?: IEnvelopeDocument | null;
   /** Documents attached to this envelope */
   documents?: IEnvelopeDocument[] | null;
-  fields?: IDocumentField[];
+  fields?: IEnvelopeField[];
 }
 
 export type TEnvelopeUpdateResult = Omit<IEnvelope, 'histories' | 'recipients' | 'certificate' | 'document' | 'fields' | 'profile'>;

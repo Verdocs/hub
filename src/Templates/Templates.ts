@@ -5,7 +5,16 @@
  * @module
  */
 
-import {ITemplate, ITemplateOwnerInfo, ITemplatesSearchResult, ITemplatesSummary, TTemplateSender} from './Types';
+import {
+  IPage,
+  IRole,
+  ITemplate,
+  ITemplateField,
+  ITemplateOwnerInfo,
+  ITemplatesSearchResult,
+  ITemplatesSummary,
+  TTemplateSender,
+} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export interface IGetTemplatesParams {
@@ -59,12 +68,52 @@ export const getTemplateOwnerInfo = (endpoint: VerdocsEndpoint, templateId: stri
     .get<ITemplateOwnerInfo>(`/templates/${templateId}`)
     .then((r) => r.data);
 
-export interface ITemplateCreateParams {
+/**
+ * Represents a document to be attached to a template via an externally-accessible URI. A copy of the document will be
+ * downloaded from the specified URI. Note that the URI will be accessed without headers or other authorization methods
+ * set, so the URI itself must encode any security tokens or keys required to access the file.
+ */
+export interface IDocumentFromUri {
+  /** The URI to retrieve the file from. */
+  uri: string;
+  /** A name for the attachment. */
   name: string;
+}
+
+/**
+ * Represents a document to be attached to a template via a Base64-encoded string attachment. This is the best option
+ * for maximum security but there is a 10MB size limit for the entire creation request. Requests attaching larger files
+ * should use `IDocumentFromUri` or add attachments via `createTemplateDocument` after creating the template.
+ */
+export interface IDocumentFromData {
+  /** Base64-encoded file data. */
+  data: string;
+  /** A name for the attachment. */
+  name: string;
+}
+
+export interface ITemplateCreateParams {
+  /** Name for the template to create. */
+  name: string;
+  /**
+   * Optional (defaults to true). Personal templates are only visible to the owner. Non-personal templates are shared
+   * within the user's organization.
+   */
   is_personal?: boolean;
+  /**
+   * Optional (defaults to false). Public templates may be found (via search) and viewed by anyone.
+   */
   is_public?: boolean;
+  /** Optional (defaults to EVERYONE_AS_CREATOR). Who may create and send envelopes using this template. */
   sender?: TTemplateSender;
+  /** Optional description for the template to help identify it. */
   description?: string;
+  /** Optional list of roles to create. Documents are required if roles or fields will also be specified. */
+  documents?: (IDocumentFromUri | IDocumentFromData)[];
+  /** Optional list of roles to create. Documents are required if fields will also be specified. */
+  roles?: IRole[];
+  /** Optional list of fields to create. Fields associated with roles or documents that do not exist will be ignored. */
+  fields?: ITemplateField[];
 }
 
 /**

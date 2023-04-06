@@ -274,8 +274,14 @@ export interface ITemplateDocument {
 }
 
 export interface ITemplateField {
+  /** The machine name of the field, e.g. `checkbox_groupP1-18` */
   name: string;
+  /** The ID of the role in the recipients list, e.g. `Recipient 2` */
   role_name: string;
+  /**
+   * The ID of the document the field is for. For historical reasons, this is called `envelope_id` because documents
+   * were previously called envelopes.
+   */
   template_id: string;
   type: TDocumentFieldType;
   required: boolean;
@@ -283,6 +289,22 @@ export interface ITemplateField {
   page_sequence: number;
   validator?: string;
   label?: string;
+  /** If set, the tab index for the field. */
+  tabindex: number;
+  /** The X position of the field. */
+  x: number;
+  /** The Y position of the field. */
+  y: number;
+  /** The width of the field. */
+  width: number;
+  /** The height of the field. */
+  height: number;
+  /** The default value for the field. */
+  default?: string;
+  /** The placeholder to show in the field. */
+  placeholder?: string;
+  /** For fields that support grouping (radio buttons and check boxes) the value selected will be stored under this name. */
+  group?: string;
 }
 
 export interface ITextFieldSetting {
