@@ -1,4 +1,4 @@
-import {IEnvelope, IEnvelopesSummary, IRecipient, IDocumentFieldSettings, IEnvelopeDocument} from './Types';
+import {IEnvelope, IEnvelopesSummary, IRecipient, IEnvelopeDocument, IEnvelopeFieldSettings} from './Types';
 import {ICreateEnvelopeRole, IEnvelopesSearchResult, ISigningSessionRequest} from './Types';
 import {TEnvelopeUpdateResult, TEnvelopeStatus, TRecipientStatus} from './Types';
 import {decodeAccessTokenBody} from '../Utils/Token';
@@ -226,7 +226,7 @@ export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, envelopeId: str
  */
 export const updateEnvelopeField = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string, value: any) =>
   endpoint.api //
-    .put<IDocumentFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}`, value)
+    .put<IEnvelopeFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}`, value)
     .then((r) => r.data);
 
 /**
@@ -235,7 +235,7 @@ export const updateEnvelopeField = async (endpoint: VerdocsEndpoint, envelopeId:
  */
 export const updateEnvelopeFieldSignature = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string, signatureId: string) =>
   endpoint.api //
-    .put<IDocumentFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}/signature/${signatureId}`)
+    .put<IEnvelopeFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}/signature/${signatureId}`)
     .then((r) => r.data);
 
 /**
@@ -244,7 +244,7 @@ export const updateEnvelopeFieldSignature = async (endpoint: VerdocsEndpoint, en
  */
 export const updateEnvelopeFieldInitials = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string, initialId: string) =>
   endpoint.api //
-    .put<IDocumentFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}/initial/${initialId}`)
+    .put<IEnvelopeFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}/initial/${initialId}`)
     .then((r) => r.data);
 
 /**
