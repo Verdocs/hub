@@ -55,7 +55,7 @@ export const createTemplateDocument = (
 
   return endpoint.api //
     .post<ITemplateDocument>(`/templates/${templateId}/documents`, formData, {
-      timeout: 60000,
+      timeout: 120000,
       onUploadProgress: (event) => {
         const total = event.total || 1;
         const loaded = event.loaded || 0;
