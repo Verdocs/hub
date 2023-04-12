@@ -99,13 +99,31 @@ export interface ITemplateCreateParams {
   sender?: TTemplateSender;
   /** Optional description for the template to help identify it. */
   description?: string;
-  /** Optional list of roles to create. Documents are required if roles or fields will also be specified. */
-  documents?: (IDocumentFromUri | IDocumentFromData)[];
-  /** Optional list of roles to create. Documents are required if fields will also be specified. */
+  /**
+   * Optional list of roles to create. Documents are required if roles or fields will also be specified. Files may
+   * be attached via a number of methods (browser File object, remote URI reference, or Base64-encoded string) but
+   * all entries must of of the same type.
+   */
+  documents?: File[] | IDocumentFromUri[] | IDocumentFromData[];
+  /**
+   * Optional list of roles to create. Note that if roles are not included in the request, fields will be ignored.
+   */
   roles?: IRole[];
-  /** Optional list of fields to create. Fields associated with roles or documents that do not exist will be ignored. */
+  /**
+   * Optional list of fields to create.
+   */
   fields?: ITemplateField[];
 }
+
+const ALLOWED_CREATE_FIELDS: (keyof ITemplateCreateParams)[] = [
+  'name',
+  'is_personal',
+  'is_public',
+  'sender',
+  'description',
+  'roles',
+  'fields',
+];
 
 /**
  * Create a template.
@@ -116,80 +134,40 @@ export interface ITemplateCreateParams {
  * const newTemplate = await Templates.createTemplate((VerdocsEndpoint.getDefault(), {...});
  * ```
  */
-export const createTemplate = (endpoint: VerdocsEndpoint, params: ITemplateCreateParams) =>
-  endpoint.api //
-    .post<ITemplate>('/templates/', params)
-    .then((r) => r.data);
-
-/**
- * Represents a document to be attached to a template via a browser File object. This is the best option for connecting
- * Web forms that contain file choosers where the File object is returned. This is also the only option supported by
- * `createTemplateWithProgress`.
- */
-export interface IDocumentFromFile {
-  /** Browser File object. */
-  file: File;
-  /** A name for the attachment. */
-  name: string;
-}
-
-export interface ITemplateCreateWithFileParams {
-  /** Name for the template to create. */
-  name: string;
-  /**
-   * Optional (defaults to true). Personal templates are only visible to the owner. Non-personal templates are shared
-   * within the user's organization.
-   */
-  is_personal?: boolean;
-  /**
-   * Optional (defaults to false). Public templates may be found (via search) and viewed by anyone.
-   */
-  is_public?: boolean;
-  /** Optional (defaults to EVERYONE_AS_CREATOR). Who may create and send envelopes using this template. */
-  sender?: TTemplateSender;
-  /** Optional description for the template to help identify it. */
-  description?: string;
-  /** Optional list of roles to create. Documents are required if roles or fields will also be specified. */
-  documents?: IDocumentFromFile[];
-  /** Optional list of roles to create. Documents are required if fields will also be specified. */
-  roles?: IRole[];
-  /** Optional list of fields to create. Fields associated with roles or documents that do not exist will be ignored. */
-  fields?: ITemplateField[];
-}
-
-/**
- * Create a template with optional uploadProgress callback. This method uses a FORM POST rather than XHR to provide the
- * upload progress functionality. Document attachments may be included via File objects, making this function ideal for
- * web forms that provide file choosers.
- */
-export const createTemplateWithProgress = (
+export const createTemplate = (
   endpoint: VerdocsEndpoint,
-  templateId: string,
-  params: ITemplateCreateWithFileParams,
+  params: ITemplateCreateParams,
   onUploadProgress?: (percent: number, loadedBytes: number, totalBytes: number) => void,
 ) => {
-  const formData = new FormData();
+  const options = {
+    timeout: 120000,
+    onUploadProgress: (event: any) => {
+      const total = event.total || 1;
+      const loaded = event.loaded || 0;
+      onUploadProgress?.(Math.floor((loaded * 100) / (total || 1)), loaded, total || 1);
+    },
+  };
 
-  ['name', 'is_personal', 'is_public', 'sender', 'description', 'roles', 'fields'].forEach((eligibleField) => {
-    if ((params as any)[eligibleField] !== undefined) {
-      formData.set(eligibleField, (params as any)[eligibleField]);
+  if (params.documents && params.documents[0] instanceof File) {
+    if (params.documents.length > 10) {
+      throw new Error('createTemplate() has a maximum of 10 documents that can be attached.');
     }
-  });
 
-  (params.documents || []).forEach((document) => {
-    formData.append('documents', document.file, document.file.name);
-  });
+    const formData = new FormData();
+    ALLOWED_CREATE_FIELDS.forEach((allowedKey) => {
+      if (params[allowedKey as keyof ITemplateCreateParams] !== undefined) {
+        formData.append(allowedKey, params[allowedKey] as any);
+      }
+    });
 
-  return endpoint.api //
-    .post<ITemplate>(`/templates/with-attachments`, formData, {
-      timeout: 120000,
-      onUploadProgress: (event) => {
-        const total = event.total || 1;
-        const loaded = event.loaded || 0;
-        onUploadProgress?.(Math.floor((loaded * 100) / (total || 1)), loaded, total || 1);
-      },
-    })
-    .then((r) => r.data);
+    params.documents.forEach((file) => {
+      formData.append('documents', file as never as File, file.name);
+    });
+
+    return endpoint.api.post<ITemplate>('/templates', formData, options).then((r) => r.data);
+  } else {
+    return endpoint.api.post<ITemplate>('/templates', params, options).then((r) => r.data);
+  }
 };
 
 /**

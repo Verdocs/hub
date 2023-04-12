@@ -92,6 +92,7 @@ export interface ITemplate {
   roles?: IRole[];
   /**
    * Pages attached to the template. Note that this is all of the pages for all document attachments in sequential order.
+   * @deprecated. Use document page counts instead, and accessor functions that take page numbers rather than Page objects.
    */
   pages?: IPage[];
   /**
