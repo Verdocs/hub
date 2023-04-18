@@ -52,6 +52,11 @@ export interface IUserSession {
 export type TSessionType = 'user' | 'signing';
 
 /**
- * An authenticated session within Verdocs, either for signing or regular user-based operations.
+ * Represents a possibly-authenticated session within Verdocs, either for signing or regular user-based operations.
  */
 export type TSession = IUserSession | ISigningSession | null;
+
+/**
+ * An active authenticated session within Verdocs, either for signing or regular user-based operations.
+ */
+export type TActiveSession = IUserSession | ISigningSession;

@@ -102,7 +102,8 @@ export interface ITemplateCreateParams {
   /**
    * Optional list of roles to create. Documents are required if roles or fields will also be specified. Files may
    * be attached via a number of methods (browser File object, remote URI reference, or Base64-encoded string) but
-   * all entries must of of the same type.
+   * all entries must of of the same type. If browser File objects are provided, the request will use a FORM POST
+   * call, otherwise it will use traditional XHR.
    */
   documents?: File[] | IDocumentFromUri[] | IDocumentFromData[];
   /**
@@ -115,7 +116,7 @@ export interface ITemplateCreateParams {
   fields?: ITemplateField[];
 }
 
-const ALLOWED_CREATE_FIELDS: (keyof ITemplateCreateParams)[] = [
+const ALLOWED_CREATE_FIELDS: (keyof ITemplateCreateParams)[] = [``
   'name',
   'is_personal',
   'is_public',

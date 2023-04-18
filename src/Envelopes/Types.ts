@@ -18,6 +18,32 @@ export interface IInPersonAccessKey {
   last_used: string | null;
 }
 
+export interface IEmailAccessKey {
+  id: string;
+  created_at: string;
+  recipient_name: string;
+  envelope_id: string;
+  type: 'email';
+  key: string;
+  expiration_date: string | null;
+  first_used: string | null;
+  last_used: string | null;
+}
+
+export interface ISMSAccessKey {
+  id: string;
+  created_at: string;
+  recipient_name: string;
+  envelope_id: string;
+  type: 'sms';
+  key: string;
+  expiration_date: string | null;
+  first_used: string | null;
+  last_used: string | null;
+}
+
+export type TAccessKey = IInPersonAccessKey | IEmailAccessKey | ISMSAccessKey;
+
 export enum RecipientActions {
   SUBMIT = 'submit',
   DECLINE = 'decline',

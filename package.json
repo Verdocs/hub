@@ -1,6 +1,6 @@
 {
   "name": "@verdocs/js-sdk",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "private": false,
   "homepage": "https://github.com/Verdocs/js-sdk",
   "description": "Verdocs JS SDK",
@@ -35,7 +35,6 @@
     "lint": "tslint -p tsconfig.json",
     "docs-md": "typedoc --tsconfig ./tsconfig-typedoc.json",
     "docs-html": "typedoc --tsconfig ./tsconfig-typedoc.json --plugin none --out docs-html",
-    "Xdocs-html": "typedoc --tsconfig ./tsconfig-typedoc.json --plugin ./typedoc-theme.tsx --out docs-html",
     "docs": "npm run docs-md && npm run docs-html",
     "clear-docs": "aws --profile=verdocs cloudfront create-invalidation --distribution-id E29UFGU4KEH1GQ --paths \"/*\"",
     "deploy-docs": "npm run docs && aws --profile=verdocs s3 sync --acl public-read --delete docs-html s3://verdocs-developers-js-sdk/ && yarn clear-docs",

@@ -1,4 +1,4 @@
-import {IEnvelope, IRecipient, IInPersonAccessKey} from './Types';
+import {IEnvelope, IRecipient, IInPersonAccessKey, TAccessKey} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export interface IUpdateRecipientSubmitParams {
@@ -113,6 +113,12 @@ export const getSignerToken = (endpoint: VerdocsEndpoint, envelopeId: string, ro
 
 export interface IInPersonLinkResponse {
   link: string;
+  envelope_id: string;
+  profile_id: string;
+  role_name: string;
+  access_key: string;
+  expiration_date: string;
+  type: TAccessKey;
 }
 
 /**

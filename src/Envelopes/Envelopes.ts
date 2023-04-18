@@ -188,30 +188,6 @@ export const cancelEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: stri
     .then((r) => r.data);
 
 /**
- * Returns true if the recipient has a pending action. Note that this does not necessarily mean the recipient can act (yet).
- */
-export const recipientHasAction = (recipient: IRecipient) => !['submitted', 'canceled', 'declined'].includes(recipient.status);
-
-/**
- * Returns the recipients who still have a pending action. Note that not all of these recipients may be able to act (yet).
- */
-export const getRecipientsWithActions = (envelope: IEnvelope) => (envelope?.recipients || []).filter(recipientHasAction);
-
-/**
- * Returns true if the recipient can act.
- */
-export const recipientCanAct = (recipient: IRecipient, recipientsWithActions: IRecipient[]) =>
-  recipient.sequence === recipientsWithActions?.[0]?.sequence;
-
-/**
- * Returns true if the user can act.
- */
-export const userCanAct = (email: string, recipientsWithActions: IRecipient[]) => {
-  const recipient = recipientsWithActions.find((r) => r.email === email);
-  return recipient && recipient.sequence === recipientsWithActions?.[0]?.sequence;
-};
-
-/**
  * Get (binary download) a file attached to an Envelope. It is important to use this method
  * rather than a direct A HREF or similar link to set the authorization headers for the
  * request.
