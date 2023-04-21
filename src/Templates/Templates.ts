@@ -116,7 +116,7 @@ export interface ITemplateCreateParams {
   fields?: ITemplateField[];
 }
 
-const ALLOWED_CREATE_FIELDS: (keyof ITemplateCreateParams)[] = [``
+const ALLOWED_CREATE_FIELDS: (keyof ITemplateCreateParams)[] = [
   'name',
   'is_personal',
   'is_public',
