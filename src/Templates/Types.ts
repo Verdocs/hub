@@ -279,11 +279,10 @@ export interface ITemplateField {
   name: string;
   /** The ID of the role in the recipients list, e.g. `Recipient 2` */
   role_name: string;
-  /**
-   * The ID of the document the field is for. For historical reasons, this is called `envelope_id` because documents
-   * were previously called envelopes.
-   */
+  /** The ID of the template the field is for. */
   template_id: string;
+  /** The ID of the document the field is for. */
+  document_id: string;
   type: TDocumentFieldType;
   required: boolean;
   setting: ITemplateFieldSetting;

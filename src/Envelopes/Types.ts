@@ -260,11 +260,10 @@ export enum DocumentFieldTypes {
 export type TDocumentFieldType = `${DocumentFieldTypes}`;
 
 export interface IEnvelopeField {
-  /**
-   * The ID of the envelope the field is for. For historical reasons, this is called `envelope_id` because documents
-   * were previously called envelopes.
-   */
+  /** The ID of the envelope the field is for. */
   envelope_id: string;
+  /** The ID of the document the field is for. */
+  document_id: string;
   /** The machine name of the field, e.g. `checkbox_groupP1-18` */
   name: string;
   /** If set, the placeholder/label for the field. */
