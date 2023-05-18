@@ -218,6 +218,8 @@ export interface ISearchTimeRange {
   end_time: string;
 }
 
+export type IGetTemplateSummarySortBy = 'created_at' | 'updated_at' | 'name' | 'last_used_at' | 'counter' | 'star_counter';
+
 export interface IGetTemplateSummaryParams {
   id?: string;
   name?: string;
@@ -230,7 +232,7 @@ export interface IGetTemplateSummaryParams {
   last_used_at?: ISearchTimeRange;
   is_personal?: boolean;
   is_public?: boolean;
-  sort_by?: 'created_at' | 'updated_at' | 'name' | 'last_used_at' | 'counter' | 'star_counter';
+  sort_by?: IGetTemplateSummarySortBy;
   ascending?: boolean;
   row?: number;
   page?: number;

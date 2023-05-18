@@ -77,6 +77,8 @@ export interface IEnvelopeSearchParams {
   recipient_name?: string;
   /** At least one of the envelope's recipients must match the specified email address. */
   recipient_email?: string;
+  /** Match against envelope_name, recipient_name, or recipient_email all at once. */
+  name?: string;
   /** At least one of the envelope's recipients must match the specified ID. */
   recipient_id?: string;
   /** The date-range in which the envelope was created. Values should be specified in ISO8601 "UTC" format. */
