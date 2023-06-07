@@ -87,3 +87,8 @@ export const userCanSignNow = (session: TSession, envelope: IEnvelope) => {
     recipientCanAct(myRecipient, recipientsWithActions)
   );
 };
+
+export const getNextRecipient = (envelope: IEnvelope) => {
+  const recipientsWithActions = getRecipientsWithActions(envelope);
+  return recipientsWithActions?.[0];
+}
