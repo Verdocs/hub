@@ -232,6 +232,7 @@ export interface IGetTemplateSummaryParams {
   last_used_at?: ISearchTimeRange;
   is_personal?: boolean;
   is_public?: boolean;
+  is_starred?: boolean;
   sort_by?: IGetTemplateSummarySortBy;
   ascending?: boolean;
   row?: number;
