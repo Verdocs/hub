@@ -1,4 +1,4 @@
-import {IStar, ITemplatesSummary} from './Types';
+import {IStar, ITemplateSummaryEntry} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 /**
@@ -14,5 +14,5 @@ export const getStars = (endpoint: VerdocsEndpoint, templateId: string) =>
  */
 export const toggleStar = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
-    .post<ITemplatesSummary>(`/templates/${templateId}/stars/toggle`)
+    .post<ITemplateSummaryEntry>(`/templates/${templateId}/stars/toggle`)
     .then((r) => r.data);
