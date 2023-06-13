@@ -23,20 +23,20 @@ export const formatShortTimeAgo = (val: any) => {
   if (timeDiff >= YEAR) {
     return Math.floor(timeDiff / YEAR) + 'Y';
   }
-  if (timeDiff >= MONTH) {
-    return Math.floor(timeDiff / MONTH) + 'M';
-  }
+  // if (timeDiff >= MONTH) {
+  //   return Math.floor(timeDiff / MONTH) + 'M';
+  // }
   if (timeDiff >= WEEK) {
     return Math.floor(timeDiff / WEEK) + 'W';
   }
   if (timeDiff >= DAY) {
-    return Math.floor(timeDiff / DAY) + 'Y';
+    return Math.floor(timeDiff / DAY) + 'D';
   }
   if (timeDiff >= HOUR) {
-    return Math.floor(timeDiff / HOUR) + 'Y';
+    return Math.floor(timeDiff / HOUR) + 'H';
   }
   if (timeDiff >= MINUTE) {
-    return Math.floor(timeDiff / MINUTE) + 'Y';
+    return Math.floor(timeDiff / MINUTE) + 'M';
   }
 
   return `${timeDiff}S`;
