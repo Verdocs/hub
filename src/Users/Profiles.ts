@@ -158,3 +158,28 @@ export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
     .delete(`/profiles/${profileId}`)
     .then((r) => r.data);
+
+export interface ICreateBusinessAccountRequest {
+  orgName: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+
+/**
+ * Create a user account and parent organization. This endpoint is for creating a new organization. Users joining an
+ * existing organization should be invited, and follow their invitation links/instructions to create their accounts.
+ *
+ * ```typescript
+ * import {Profiles} from '@verdocs/js-sdk/Users';
+ *
+ * const newAccount = await Profiles.createBusinessAccount({
+ *   orgName: 'ORG', email: 'a@b.com', password: '12345678', firstName: 'FIRST', lastName: 'LAST'
+ * });
+ * ```
+ */
+export const createBusinessAccount = (endpoint: VerdocsEndpoint, params: ICreateBusinessAccountRequest) =>
+  endpoint.api //
+    .post<IProfile>('/user/business', params)
+    .then((r) => r.data);
