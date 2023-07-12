@@ -20,6 +20,7 @@ export type TSessionChangedListener = (endpoint: VerdocsEndpoint, session: TSess
 
 export interface VerdocsEndpointOptions {
   baseURL?: string;
+  baseURLv2?: string;
   timeout?: number;
   environment?: TEnvironment;
   sessionType?: TSessionType;
@@ -50,7 +51,8 @@ export interface VerdocsEndpointOptions {
 export class VerdocsEndpoint {
   private environment = 'verdocs' as TEnvironment;
   private sessionType = 'user' as TSessionType;
-  private readonly baseURL = 'https://api.verdocs.com' as string;
+  private baseURL = 'https://api.verdocs.com' as string;
+  private baseURLv2 = 'https://api-v2.verdocs.com' as string;
   private clientID = 'not-set' as string;
   private timeout = 60000 as number;
   private token = null as string | null;
@@ -77,6 +79,7 @@ export class VerdocsEndpoint {
    */
   constructor(options?: VerdocsEndpointOptions) {
     this.baseURL = options?.baseURL || 'https://api.verdocs.com';
+    this.baseURLv2 = options?.baseURLv2 || 'https://api-v2.verdocs.com';
     this.timeout = options?.timeout || 60000;
     this.environment = options?.environment || 'verdocs';
     this.sessionType = options?.sessionType || 'user';
@@ -125,6 +128,14 @@ export class VerdocsEndpoint {
    */
   public getBaseURL() {
     return this.baseURL;
+  }
+
+  /**
+   * Get the current base URL for the v2 APIs.
+   * This should rarely be anything other than 'https://api-v2.verdocs.com'.
+   */
+  public getBaseURLv2() {
+    return this.baseURLv2;
   }
 
   /**
@@ -195,7 +206,24 @@ export class VerdocsEndpoint {
    * ```
    */
   public setBaseURL(url: string): VerdocsEndpoint {
+    this.baseURL = url;
     this.api.defaults.baseURL = url;
+    return this;
+  }
+
+  /**
+   * Set the base URL for API calls. Should be called only upon direction from Verdocs Customer Solutions Engineering.
+   *
+   * ```typescript
+   * import {VerdocsEndpoint} from '@verdocs/js-sdk/HTTP';
+   *
+   * const endpoint = new VerdocsEndpoint();
+   * endpoint.setBaseURL('https://api.verdocs.com');
+   * ```
+   */
+  public setBaseURLv2(url: string): VerdocsEndpoint {
+    this.baseURLv2 = url;
+    // NOTE: We do not set this on the Axios instance because v1 is still the standard.
     return this;
   }
 
