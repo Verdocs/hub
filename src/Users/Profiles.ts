@@ -160,11 +160,19 @@ export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
     .then((r) => r.data);
 
 export interface ICreateBusinessAccountRequest {
-  orgName: string;
   email: string;
   password: string;
   firstName: string;
   lastName: string;
+  orgName: string;
+
+  industry?: string;
+  size?: string;
+  source?: string;
+  referral?: string;
+  coupon?: string;
+  reason?: string;
+  hearabout?: string;
 }
 
 /**
