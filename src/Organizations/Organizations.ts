@@ -51,7 +51,7 @@ export const updateOrganization = (endpoint: VerdocsEndpoint, organizationId: st
  * Check if an organization name is available. Typically used during the sign-up process. This endpoint is rate-limited
  * to prevent abuse. Developers experiencing problems with testing new applications should contact support.
  */
-export const isOrgAvailable = (endpoint: VerdocsEndpoint) =>
+export const isOrgAvailable = (endpoint: VerdocsEndpoint, name: string) =>
   endpoint.api //
-    .get<'TAKEN' | 'OK'>('/organizations/check-availability', {baseURL: endpoint.getBaseURLv2()})
+    .post<'TAKEN' | 'OK'>('/organizations/check-availability', {name}, {baseURL: endpoint.getBaseURLv2()})
     .then((r) => r.data);
