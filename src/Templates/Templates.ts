@@ -51,7 +51,7 @@ export interface IListTemplatesParams {
  */
 export const listTemplates = (endpoint: VerdocsEndpoint, params?: IListTemplatesParams) =>
   endpoint.api //
-    .post<{records: ITemplate[]; total: number}>('/templates/list', {params}, {baseURL: endpoint.getBaseURLv2()})
+    .post<{records: ITemplate[]; total: number}>('/templates/list', params, {baseURL: endpoint.getBaseURLv2()})
     .then((r) => r.data);
 
 /**
