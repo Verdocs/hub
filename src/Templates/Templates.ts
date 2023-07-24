@@ -31,6 +31,29 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
     .post<ITemplate[]>('/templates', {params})
     .then((r) => r.data);
 
+export interface IListTemplatesParams {
+  name?: string;
+  sharing?: 'all' | 'personal' | 'shared' | 'public';
+  starred?: 'all' | 'starred' | 'unstarred';
+  sort?: 'name' | 'created_at' | 'updated_at' | 'last_used_at' | 'counter' | 'star_counter';
+  page?: number;
+  rows?: number;
+}
+
+/**
+ * Lists all templates accessible by the caller, with optional filters.
+ *
+ * ```typescript
+ * import {Templates} from '@verdocs/js-sdk/Templates';
+ *
+ * await Templates.listTemplates((VerdocsEndpoint.getDefault(), { sharing: 'personal', sort: 'last_used_at' });
+ * ```
+ */
+export const listTemplates = (endpoint: VerdocsEndpoint, params?: IListTemplatesParams) =>
+  endpoint.api //
+    .post<ITemplate[]>('/templates/list', {params}, {baseURL: endpoint.getBaseURLv2()})
+    .then((r) => r.data);
+
 /**
  * Get one template by its ID.
  *
