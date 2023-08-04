@@ -238,7 +238,7 @@ export const uploadEnvelopeFieldAttachment = async (
   onUploadProgress?: (percent: number, loadedBytes: number, totalBytes: number) => void,
 ) => {
   const formData = new FormData();
-  formData.append('file', file, file.name);
+  formData.append('document', file, file.name);
 
   return endpoint.api //
     .put<IEnvelopeFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}`, formData, {
