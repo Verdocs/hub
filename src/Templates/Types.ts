@@ -112,14 +112,16 @@ export interface ITemplate {
 /**
  * Some template search and list endpoints return only a partial set of fields for each entry via this structure.
  */
-export interface ITemplateSummaryEntry {
+export interface ITemplateSummary {
   id: string;
   name: string;
+  description: string | null;
   sender: TTemplateSender;
   counter: number;
-  description: string | null;
+  star_counter: number;
   created_at: string;
   updated_at: string;
+  last_used_at: string | null;
   /**
    * If true, the template is considered "sendable" (it has at least one signer, and every signer has at least one field.)
    */
@@ -128,11 +130,10 @@ export interface ITemplateSummaryEntry {
   is_public: boolean;
   profile_id: string;
   organization_id: string;
-  last_used_at: string | null;
-  document_name: string | null;
-  star_counter: number;
-  tag_name: string | null;
-  is_starred: boolean;
+  reminder_id: string;
+  tags: string[];
+
+  allowed_operations: TemplateActions[];
 }
 
 export enum TemplateSenderTypes {
@@ -193,16 +194,11 @@ export enum SortOptions {
   STAR_COUNTER = 'star_counter',
 }
 
-export interface ITemplatesSummary {
+export interface ITemplateSummaries {
   page: number;
+  rows: number;
   total: number;
-  result: ITemplateSummaryEntry[];
-}
-
-export interface ITemplatesSearchResult {
-  page: number;
-  total: number;
-  result: ITemplate[];
+  records: ITemplateSummary[];
 }
 
 export interface ITemplateTag {
