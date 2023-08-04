@@ -4,6 +4,7 @@ import {TEnvelopeUpdateResult, TEnvelopeStatus, TRecipientStatus} from './Types'
 import {decodeAccessTokenBody} from '../Utils/Token';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {ISigningSession} from '../Sessions/Types';
+import {ITemplateDocument} from '../Templates/Types';
 
 export interface ICreateEnvelopeRequest {
   template_id: string;
@@ -225,6 +226,56 @@ export const updateEnvelopeFieldInitials = async (endpoint: VerdocsEndpoint, env
   endpoint.api //
     .put<IEnvelopeFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}/initial/${initialId}`)
     .then((r) => r.data);
+
+/**
+ * Upload an attachment.
+ */
+export const uploadEnvelopeFieldAttachment = async (
+  endpoint: VerdocsEndpoint,
+  envelopeId: string,
+  fieldName: string,
+  file: File,
+  onUploadProgress?: (percent: number, loadedBytes: number, totalBytes: number) => void,
+) => {
+  const formData = new FormData();
+  formData.append('file', file, file.name);
+
+  return endpoint.api //
+    .put<IEnvelopeFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}`, formData, {
+      timeout: 120000,
+      onUploadProgress: (event) => {
+        const total = event.total || 1;
+        const loaded = event.loaded || 0;
+        onUploadProgress?.(Math.floor((loaded * 100) / (total || 1)), loaded, total || 1);
+      },
+    })
+    .then((r) => r.data);
+};
+
+/**
+ * Delete an attachment.
+ */
+export const deleteEnvelopeFieldAttachment = async (
+  endpoint: VerdocsEndpoint,
+  envelopeId: string,
+  fieldName: string,
+  file: File,
+  onUploadProgress?: (percent: number, loadedBytes: number, totalBytes: number) => void,
+) => {
+  const formData = new FormData();
+  // Omitting file is the trigger here
+
+  return endpoint.api //
+    .put<IEnvelopeFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}`, formData, {
+      timeout: 120000,
+      onUploadProgress: (event) => {
+        const total = event.total || 1;
+        const loaded = event.loaded || 0;
+        onUploadProgress?.(Math.floor((loaded * 100) / (total || 1)), loaded, total || 1);
+      },
+    })
+    .then((r) => r.data);
+};
 
 /**
  * Get the attached file for an attachment field (if any)
