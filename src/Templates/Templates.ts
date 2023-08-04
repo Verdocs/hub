@@ -5,7 +5,7 @@
  * @module
  */
 
-import {IRole, ITemplate, ITemplateField, ITemplateOwnerInfo, ITemplatesSearchResult, ITemplatesSummary, TTemplateSender} from './Types';
+import {IRole, ITemplate, ITemplateField, ITemplateOwnerInfo, ITemplateSummaries, ITemplateSummary, TTemplateSender} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export interface IGetTemplatesParams {
@@ -51,7 +51,7 @@ export interface IListTemplatesParams {
  */
 export const listTemplates = (endpoint: VerdocsEndpoint, params?: IListTemplatesParams) =>
   endpoint.api //
-    .post<{records: ITemplate[]; total: number}>('/templates/list', params, {baseURL: endpoint.getBaseURLv2()})
+    .post<ITemplateSummaries>('/templates/list', params, {baseURL: endpoint.getBaseURLv2()})
     .then((r) => r.data);
 
 /**
@@ -233,7 +233,7 @@ export const deleteTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
  */
 export const searchTemplates = async (endpoint: VerdocsEndpoint, params: any) =>
   endpoint.api //
-    .post<ITemplatesSearchResult>('/templates/search', params)
+    .post<ITemplateSummaries>('/templates/search', params)
     .then((r) => r.data);
 
 export interface ISearchTimeRange {
@@ -273,7 +273,7 @@ export interface IGetTemplateSummaryParams {
  */
 export const getSummary = async (endpoint: VerdocsEndpoint, params: IGetTemplateSummaryParams = {}) =>
   endpoint.api //
-    .post<ITemplatesSummary>('/templates/summary', params)
+    .post<ITemplateSummary>('/templates/summary', params)
     .then((r) => r.data);
 
 const cachedTemplates: Record<string, {loaded: number; template: ITemplate}> = {};

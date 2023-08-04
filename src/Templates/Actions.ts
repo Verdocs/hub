@@ -1,4 +1,4 @@
-import {ITemplate, ITemplateSummaryEntry} from './Types';
+import {ITemplate, ITemplateSummary} from './Types';
 import {TSession} from '../Sessions/Types';
 
 export enum TemplateSenderTypes {
@@ -35,7 +35,7 @@ export type TTemplateActions =
 export const canPerformTemplateAction = (
   session: TSession,
   action: TTemplateActions,
-  template?: ITemplate | ITemplateSummaryEntry,
+  template?: ITemplate | ITemplateSummary,
 ): {canPerform: boolean; message: string} => {
   if (!template && !action.includes('create')) {
     return {canPerform: false, message: 'Missing required template object'};

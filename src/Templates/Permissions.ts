@@ -4,7 +4,7 @@
  * @module
  */
 
-import {ITemplate, ITemplateSummaryEntry, TemplateSenderTypes} from './Types';
+import {ITemplate, ITemplateSummary, TemplateSenderTypes} from './Types';
 import {userHasPermissions} from '../Sessions';
 import {Permissions} from '../Users/Types';
 import {TSession} from '../Sessions/Types';
@@ -12,13 +12,13 @@ import {TSession} from '../Sessions/Types';
 /**
  * Check to see if the user created the template.
  */
-export const userIsTemplateCreator = (session: TSession, template: ITemplate | ITemplateSummaryEntry) =>
+export const userIsTemplateCreator = (session: TSession, template: ITemplate | ITemplateSummary) =>
   session && template && session.profile_id === template.profile_id;
 
 /**
  * Check to see if a template is "shared" with the user.
  */
-export const userHasSharedTemplate = (session: TSession, template: ITemplate | ITemplateSummaryEntry) =>
+export const userHasSharedTemplate = (session: TSession, template: ITemplate | ITemplateSummary) =>
   session && template && !template.is_personal && session.organization_id === template.organization_id;
 
 /**
@@ -40,7 +40,7 @@ export const userCanCreatePublicTemplate = (session: TSession) => userHasPermiss
 /**
  * Check to see if the user can read/view a template.
  */
-export const userCanReadTemplate = (session: TSession, template: ITemplate | ITemplateSummaryEntry) =>
+export const userCanReadTemplate = (session: TSession, template: ITemplate | ITemplateSummary) =>
   template.is_public ||
   userIsTemplateCreator(session, template) ||
   (userHasSharedTemplate(session, template) && userHasPermissions(session, [Permissions.TEMPLATE_MEMBER_READ]));
@@ -48,7 +48,7 @@ export const userCanReadTemplate = (session: TSession, template: ITemplate | ITe
 /**
  * Check to see if the user can update a tempate.
  */
-export const userCanUpdateTemplate = (session: TSession, template: ITemplate | ITemplateSummaryEntry) =>
+export const userCanUpdateTemplate = (session: TSession, template: ITemplate | ITemplateSummary) =>
   userIsTemplateCreator(session, template) ||
   (userHasSharedTemplate(session, template) &&
     userHasPermissions(session, [Permissions.TEMPLATE_MEMBER_READ, Permissions.TEMPLATE_MEMBER_WRITE]));
@@ -56,7 +56,7 @@ export const userCanUpdateTemplate = (session: TSession, template: ITemplate | I
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
  */
-export const userCanMakeTemplatePrivate = (session: TSession, template: ITemplate | ITemplateSummaryEntry) =>
+export const userCanMakeTemplatePrivate = (session: TSession, template: ITemplate | ITemplateSummary) =>
   userIsTemplateCreator(session, template)
     ? userHasPermissions(session, [Permissions.TEMPLATE_CREATOR_CREATE_PERSONAL])
     : userHasPermissions(session, [Permissions.TEMPLATE_MEMBER_VISIBILITY]);
@@ -64,7 +64,7 @@ export const userCanMakeTemplatePrivate = (session: TSession, template: ITemplat
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
  */
-export const userCanMakeTemplateShared = (session: TSession, template: ITemplate | ITemplateSummaryEntry) =>
+export const userCanMakeTemplateShared = (session: TSession, template: ITemplate | ITemplateSummary) =>
   userIsTemplateCreator(session, template)
     ? userHasPermissions(session, [Permissions.TEMPLATE_CREATOR_CREATE_ORG])
     : userHasPermissions(session, [Permissions.TEMPLATE_MEMBER_VISIBILITY]);
@@ -72,7 +72,7 @@ export const userCanMakeTemplateShared = (session: TSession, template: ITemplate
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
  */
-export const userCanMakeTemplatePublic = (session: TSession, template: ITemplate | ITemplateSummaryEntry) =>
+export const userCanMakeTemplatePublic = (session: TSession, template: ITemplate | ITemplateSummary) =>
   userIsTemplateCreator(session, template)
     ? userHasPermissions(session, [Permissions.TEMPLATE_CREATOR_CREATE_PUBLIC])
     : userHasPermissions(session, [Permissions.TEMPLATE_MEMBER_VISIBILITY]);
@@ -80,13 +80,13 @@ export const userCanMakeTemplatePublic = (session: TSession, template: ITemplate
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
  */
-export const userCanChangeOrgVisibility = (session: TSession, template: ITemplate | ITemplateSummaryEntry) =>
+export const userCanChangeOrgVisibility = (session: TSession, template: ITemplate | ITemplateSummary) =>
   userIsTemplateCreator(session, template) && userHasPermissions(session, [Permissions.TEMPLATE_CREATOR_CREATE_PERSONAL]);
 
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
  */
-export const userCanDeleteTemplate = (session: TSession, template: ITemplate | ITemplateSummaryEntry) =>
+export const userCanDeleteTemplate = (session: TSession, template: ITemplate | ITemplateSummary) =>
   userIsTemplateCreator(session, template)
     ? userHasPermissions(session, [Permissions.TEMPLATE_CREATOR_DELETE])
     : userHasPermissions(session, [Permissions.TEMPLATE_MEMBER_DELETE]);
@@ -94,7 +94,7 @@ export const userCanDeleteTemplate = (session: TSession, template: ITemplate | I
 /**
  * Confirm whether the user can create an envelope using the specified template.
  */
-export const userCanSendTemplate = (session: TSession, template: ITemplate | ITemplateSummaryEntry) => {
+export const userCanSendTemplate = (session: TSession, template: ITemplate | ITemplateSummary) => {
   switch (template.sender) {
     case TemplateSenderTypes.CREATOR:
       return userIsTemplateCreator(session, template);
