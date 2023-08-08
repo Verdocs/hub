@@ -36,7 +36,7 @@ export const deleteOrganization = (endpoint: VerdocsEndpoint, organizationId: st
  */
 export const getOrganization = (endpoint: VerdocsEndpoint, organizationId: string) =>
   endpoint.api //
-    .get(`/organizations/${organizationId}`)
+    .get<IOrganization>(`/organizations/${organizationId}`)
     .then((r) => r.data);
 
 /**
@@ -44,7 +44,7 @@ export const getOrganization = (endpoint: VerdocsEndpoint, organizationId: strin
  */
 export const updateOrganization = (endpoint: VerdocsEndpoint, organizationId: string, params: any) =>
   endpoint.api //
-    .patch(`/organizations/${organizationId}`, params)
+    .patch<IOrganization>(`/organizations/${organizationId}`, params)
     .then((r) => r.data);
 
 /**
