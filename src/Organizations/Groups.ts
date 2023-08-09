@@ -10,6 +10,7 @@
 
 import {IGroup, IGroupDetail} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {IPermission} from '../Users/Types';
 
 /**
  * Get a list of groups for a given organization. The caller must have admin access to the organization.
@@ -68,9 +69,9 @@ export const deleteMembers = (endpoint: VerdocsEndpoint, organizationId: string,
     .put(`/organizations/${organizationId}/groups/${groupId}/delete_members`, params)
     .then((r) => r.data);
 
-export const addPermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permissionId: string, params: any) =>
+export const addPermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permissionId: string) =>
   endpoint.api //
-    .post(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`, params)
+    .post<IPermission>(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`, {})
     .then((r) => r.data);
 
 export const deletePermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permissionId: string) =>
