@@ -1,4 +1,5 @@
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {IInvitation} from './Types';
 
 /**
  * An invitation represents an opportunity for a Member to join an Organization.
@@ -6,14 +7,20 @@ import {VerdocsEndpoint} from '../VerdocsEndpoint';
  * @module
  */
 
+export interface ICreateInvitationRequest {
+  email: string;
+  role_id: string;
+  organization_id: string;
+}
+
 export const getInvitations = (endpoint: VerdocsEndpoint, organizationId: string) =>
   endpoint.api //
-    .get(`/organizations/${organizationId}/invitation`)
+    .get<IInvitation[]>(`/organizations/${organizationId}/invitation`)
     .then((r) => r.data);
 
-export const createInvitation = (endpoint: VerdocsEndpoint, organizationId: string, params: any) =>
+export const createInvitation = (endpoint: VerdocsEndpoint, organizationId: string, params: ICreateInvitationRequest) =>
   endpoint.api //
-    .post(`/organizations/${organizationId}/invitation`, params)
+    .post<IInvitation>(`/organizations/${organizationId}/invitation`, params)
     .then((r) => r.data);
 
 export const deleteInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string) =>
@@ -21,9 +28,14 @@ export const deleteInvitation = (endpoint: VerdocsEndpoint, organizationId: stri
     .delete(`/organizations/${organizationId}/invitation/${email}`)
     .then((r) => r.data);
 
-export const updateInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string, params: any) =>
+export const updateInvitation = (
+  endpoint: VerdocsEndpoint,
+  organizationId: string,
+  email: string,
+  params: Partial<ICreateInvitationRequest>,
+) =>
   endpoint.api //
-    .patch(`/organizations/${organizationId}/invitation/${email}`, params)
+    .patch<IInvitation>(`/organizations/${organizationId}/invitation/${email}`, params)
     .then((r) => r.data);
 
 export const resendInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string) =>

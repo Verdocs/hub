@@ -102,3 +102,12 @@ export interface IGroupDetail {
   /** For future expansion. In the future, Verdocs may support group hierarchies. Until then this field is always null. */
   parent_id: string | null;
 }
+
+export interface IInvitation {
+  organization_id: string;
+  email: string;
+  token: string;
+  generated_at: string;
+  role_id: string;
+  status: 'pending';
+}
