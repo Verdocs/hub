@@ -4,44 +4,45 @@
  * @module
  */
 
-import {EnvelopeStates, IEnvelope, IRecipient} from './Types';
+import {EnvelopeStates, IEnvelope, IEnvelopeSummary, IRecipient} from './Types';
 import {TSession} from '../Sessions/Types';
 
 /**
  * Check to see if the user owns the envelope.
  */
-export const userIsEnvelopeOwner = (session: TSession, envelope: IEnvelope) => envelope.profile_id === session?.profile_id;
+export const userIsEnvelopeOwner = (session: TSession, envelope: IEnvelope | IEnvelopeSummary) =>
+  envelope.profile_id === session?.profile_id;
 
 /**
  * Check to see if the user owns the envelope.
  */
-export const userIsEnvelopeRecipient = (session: TSession, envelope: IEnvelope) => envelope.profile_id === session?.profile_id;
+export const userIsEnvelopeRecipient = (session: TSession, envelope: IEnvelope | IEnvelopeSummary) =>
+  envelope.profile_id === session?.profile_id;
 
 /**
  * Check to see if the envelope has pending actions.
  */
-export const envelopeIsActive = (envelope: IEnvelope) =>
+export const envelopeIsActive = (envelope: IEnvelope | IEnvelopeSummary) =>
   envelope.status !== EnvelopeStates.COMPLETE && envelope.status !== EnvelopeStates.DECLINED && envelope.status !== EnvelopeStates.CANCELED;
 
 /**
  * Check to see if the envelope has been completed.
  */
-export const envelopeIsComplete = (envelope: IEnvelope) => envelope.status !== EnvelopeStates.COMPLETE;
+export const envelopeIsComplete = (envelope: IEnvelope | IEnvelopeSummary) => envelope.status !== EnvelopeStates.COMPLETE;
 
 /**
  * Check to see if the user owns the envelope.
  */
-export const userCanCancelEnvelope = (session: TSession, envelope: IEnvelope) =>
+export const userCanCancelEnvelope = (session: TSession, envelope: IEnvelope | IEnvelopeSummary) =>
   userIsEnvelopeOwner(session, envelope) &&
   envelope.status !== EnvelopeStates.COMPLETE &&
   envelope.status !== EnvelopeStates.DECLINED &&
   envelope.status !== EnvelopeStates.CANCELED;
 
-// export type TEnvelopeStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
 /**
  * Check to see if the user owns the envelope.
  */
-export const userCanFinishEnvelope = (session: TSession, envelope: IEnvelope) =>
+export const userCanFinishEnvelope = (session: TSession, envelope: IEnvelope | IEnvelopeSummary) =>
   userIsEnvelopeOwner(session, envelope) &&
   envelope.status !== EnvelopeStates.COMPLETE &&
   envelope.status !== EnvelopeStates.DECLINED &&
@@ -54,7 +55,7 @@ export const recipientHasAction = (recipient: IRecipient) => !['submitted', 'can
 /**
  * Returns the recipients who still have a pending action. Note that not all of these recipients may be able to act (yet).
  */
-export const getRecipientsWithActions = (envelope: IEnvelope) => (envelope?.recipients || []).filter(recipientHasAction);
+export const getRecipientsWithActions = (envelope: IEnvelope | IEnvelopeSummary) => (envelope?.recipients || []).filter(recipientHasAction);
 
 /**
  * Returns true if the recipient can act.
@@ -73,7 +74,7 @@ export const userCanAct = (email: string, recipientsWithActions: IRecipient[]) =
 /**
  * Returns true if the user can act.
  */
-export const userCanSignNow = (session: TSession, envelope: IEnvelope) => {
+export const userCanSignNow = (session: TSession, envelope: IEnvelope | IEnvelopeSummary) => {
   if (!session) {
     return false;
   }
@@ -88,7 +89,7 @@ export const userCanSignNow = (session: TSession, envelope: IEnvelope) => {
   );
 };
 
-export const getNextRecipient = (envelope: IEnvelope) => {
+export const getNextRecipient = (envelope: IEnvelope | IEnvelopeSummary) => {
   const recipientsWithActions = getRecipientsWithActions(envelope);
   return recipientsWithActions?.[0];
-}
+};

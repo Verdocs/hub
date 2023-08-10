@@ -334,11 +334,27 @@ export const throttledGetEnvelope = (endpoint: VerdocsEndpoint, envelopeId: stri
   });
 };
 
+export interface ITimeRange {
+  start: string;
+  end: string;
+}
+
 export interface IListEnvelopesParams {
+  match?: string;
   name?: string;
-  sharing?: 'all' | 'personal' | 'shared' | 'public';
-  starred?: 'all' | 'starred' | 'unstarred';
-  sort?: 'name' | 'created_at' | 'updated_at' | 'last_used_at' | 'counter' | 'star_counter';
+  recipient_name?: string;
+  field_value?: string;
+  visibility?: 'private' | 'shared';
+  status?: ('pending' | 'in progress' | 'complete' | 'declined' | 'canceled')[];
+  recipient_status?: ('pending' | 'invited' | 'declined' | 'opened' | 'signed' | 'submitted' | 'canceled')[];
+  recipient_id?: string;
+  updated_at?: ITimeRange;
+  canceled_at?: ITimeRange;
+  created_at?: ITimeRange;
+  is_owner?: boolean;
+  is_recipient?: boolean;
+  template_id?: string;
+  sort?: 'name' | 'created_at' | 'updated_at' | 'canceled_at' | 'status';
   direction?: 'asc' | 'desc';
   page?: number;
   rows?: number;
