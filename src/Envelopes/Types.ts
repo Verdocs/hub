@@ -444,3 +444,30 @@ export interface ICreateEnvelopeRole {
   /** A custom message to include in the email or SMS invitation. May be left blank for a default message. */
   message: string;
 }
+
+export interface IEnvelopeSummary {
+  id: string;
+  profile_id: string;
+  organization_id: string | null;
+  name: string;
+  status: TEnvelopeStatus;
+  template_id: string;
+  created_at: string;
+  updated_at: string;
+  canceled_at: string;
+  envelope_document_id: string;
+  certificate_document_id: string | null;
+  reminder_id: string | null;
+  no_contact: boolean;
+  visibility: 'private' | 'shared';
+  documents: IEnvelopeDocument[];
+  recipients: IRecipient[];
+  fields: IEnvelopeField[];
+}
+
+export interface IEnvelopeSummaries {
+  page: number;
+  count: number;
+  total: number;
+  records: IEnvelopeSummary[];
+}

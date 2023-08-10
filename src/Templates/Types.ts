@@ -196,7 +196,7 @@ export enum SortOptions {
 
 export interface ITemplateSummaries {
   page: number;
-  rows: number;
+  count: number;
   total: number;
   records: ITemplateSummary[];
 }

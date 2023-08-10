@@ -1,10 +1,9 @@
-import {IEnvelope, IEnvelopesSummary, IRecipient, IEnvelopeDocument, IEnvelopeFieldSettings} from './Types';
+import {IEnvelope, IEnvelopesSummary, IRecipient, IEnvelopeDocument, IEnvelopeFieldSettings, IEnvelopeSummaries} from './Types';
 import {ICreateEnvelopeRole, IEnvelopesSearchResult, ISigningSessionRequest} from './Types';
 import {TEnvelopeUpdateResult, TEnvelopeStatus, TRecipientStatus} from './Types';
 import {decodeAccessTokenBody} from '../Utils/Token';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {ISigningSession} from '../Sessions/Types';
-import {ITemplateDocument} from '../Templates/Types';
 
 export interface ICreateEnvelopeRequest {
   template_id: string;
@@ -334,3 +333,27 @@ export const throttledGetEnvelope = (endpoint: VerdocsEndpoint, envelopeId: stri
     return envelope;
   });
 };
+
+export interface IListEnvelopesParams {
+  name?: string;
+  sharing?: 'all' | 'personal' | 'shared' | 'public';
+  starred?: 'all' | 'starred' | 'unstarred';
+  sort?: 'name' | 'created_at' | 'updated_at' | 'last_used_at' | 'counter' | 'star_counter';
+  direction?: 'asc' | 'desc';
+  page?: number;
+  rows?: number;
+}
+
+/**
+ * Lists all templates accessible by the caller, with optional filters.
+ *
+ * ```typescript
+ * import {Envelopes} from '@verdocs/js-sdk/Templates';
+ *
+ * await Envelopes.listEnvelopes((VerdocsEndpoint.getDefault(), { name: 'test', sort: 'updated_at' });
+ * ```
+ */
+export const listEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesParams) =>
+  endpoint.api //
+    .post<IEnvelopeSummaries>('/envelopes/list', params, {baseURL: endpoint.getBaseURLv2()})
+    .then((r) => r.data);

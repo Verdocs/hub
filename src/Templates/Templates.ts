@@ -36,6 +36,7 @@ export interface IListTemplatesParams {
   sharing?: 'all' | 'personal' | 'shared' | 'public';
   starred?: 'all' | 'starred' | 'unstarred';
   sort?: 'name' | 'created_at' | 'updated_at' | 'last_used_at' | 'counter' | 'star_counter';
+  direction?: 'asc' | 'desc';
   page?: number;
   rows?: number;
 }
