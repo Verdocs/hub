@@ -1,5 +1,5 @@
 import {IAuthenticateAppRequest, IAuthenticateUserRequest} from './Types';
-import {TokenValidationRequest, UpdateEmailRequest, UpdatePasswordRequest} from './Types';
+import {TokenValidationRequest, UpdateEmailRequest, IUpdatePasswordRequest} from './Types';
 import {IAuthenticateResponse, TokenValidationResponse, UpdateEmailResponse, UpdatePasswordResponse} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
@@ -86,9 +86,26 @@ export const refreshTokens = (endpoint: VerdocsEndpoint): Promise<IAuthenticateR
  * }
  * ```
  */
-export const updatePassword = (endpoint: VerdocsEndpoint, params: UpdatePasswordRequest): Promise<UpdatePasswordResponse> =>
+export const updatePassword = (endpoint: VerdocsEndpoint, params: IUpdatePasswordRequest): Promise<UpdatePasswordResponse> =>
   endpoint.api //
     .put('/user/update_password', params)
+    .then((r) => r.data);
+
+/**
+ * Reset the caller's password.
+ *
+ * ```typescript
+ * import {Auth} from '@verdocs/js-sdk/Auth';
+ *
+ * const {success} = await Auth.resetPassword({ email });
+ * if (status !== 'OK') {
+ *   window.alert(`Please check your email for instructions on how to reset your password.`);
+ * }
+ * ```
+ */
+export const resetPassword = (endpoint: VerdocsEndpoint, params: {email: string}): Promise<{success: boolean}> =>
+  endpoint.api //
+    .put('/user/reset_password', params)
     .then((r) => r.data);
 
 /**

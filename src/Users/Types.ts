@@ -155,7 +155,7 @@ export interface TokenValidationResponse {
   payload: any;
 }
 
-export interface UpdatePasswordRequest {
+export interface IUpdatePasswordRequest {
   email: string;
   oldPassword: string;
   newPassword: string;
