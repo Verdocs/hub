@@ -105,7 +105,7 @@ export const updatePassword = (endpoint: VerdocsEndpoint, params: IUpdatePasswor
  */
 export const resetPassword = (endpoint: VerdocsEndpoint, params: {email: string}): Promise<{success: boolean}> =>
   endpoint.api //
-    .put('/user/reset_password', params)
+    .post('/user/reset_password', params)
     .then((r) => r.data);
 
 /**
