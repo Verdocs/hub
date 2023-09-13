@@ -121,3 +121,21 @@ export const updateEmail = (endpoint: VerdocsEndpoint, params: UpdateEmailReques
   endpoint.api //
     .put('/user/update_email', params)
     .then((r) => r.data);
+
+/**
+ * Resend the email verification request. Note that to prevent certain forms of abuse, the email address is not
+ * a parameter here. Instead, the caller must be authenticated as the (unverified) user. To simplify this process,
+ * the access token to be used may be passed directly as a parameter here. This avoids the need to set it as the
+ * active token on an endpoint, which may be inconvenient in workflows where it is preferable to keep the user in
+ * "anonymous" mode while verification is being performed.
+ *
+ * ```typescript
+ * import {Auth} from '@verdocs/js-sdk/Auth';
+ *
+ * const result = await Auth.resendVerification();
+ * ```
+ */
+export const resendVerification = (endpoint: VerdocsEndpoint, accessToken?: string): Promise<{result: 'done'}> =>
+  endpoint.api //
+    .post('/user/email_verification', {}, accessToken ? {headers: {Authorization: `Bearer ${accessToken}`}} : {})
+    .then((r) => r.data);
