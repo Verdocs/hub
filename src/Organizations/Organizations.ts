@@ -53,5 +53,5 @@ export const updateOrganization = (endpoint: VerdocsEndpoint, organizationId: st
  */
 export const isOrgAvailable = (endpoint: VerdocsEndpoint, name: string) =>
   endpoint.api //
-    .post<'TAKEN' | 'OK'>('/organizations/check-availability', {name}, {baseURL: endpoint.getBaseURLv2()})
+    .post<{result: 'TAKEN' | 'AVAILABLE'}>('/organizations/check-availability', {name}, {baseURL: endpoint.getBaseURLv2()})
     .then((r) => r.data);
