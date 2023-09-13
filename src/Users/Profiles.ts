@@ -1,5 +1,5 @@
 import {ICreateProfileRequest, IPermission, IProfile, IRole, ISwitchProfileResponse, IUpdateProfileRequest} from './Types';
-import {IGroup} from '../Organizations/Types';
+import {IGroup, IOrganization} from '../Organizations/Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 /**
@@ -189,5 +189,5 @@ export interface ICreateBusinessAccountRequest {
  */
 export const createBusinessAccount = (endpoint: VerdocsEndpoint, params: ICreateBusinessAccountRequest) =>
   endpoint.api //
-    .post<IProfile>('/user/business', params)
+    .post<{profile: IProfile; organization: IOrganization}>('/user/business', params)
     .then((r) => r.data);
