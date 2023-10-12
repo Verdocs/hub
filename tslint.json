@@ -1,6 +1,11 @@
 {
   "extends": ["tslint:recommended", "tslint-config-prettier"],
   "rules": {
+    // The 'prefer-for-of' rule threw an error
+    // TypeError: DeprecationError: 'originalKeywordKind' has been deprecated since
+    // v5.0.0 and can no longer be used. Use 'identifierToKeywordKind(identifier)' instead.
+    "prefer-for-of": false,
+    "no-shadowed-variable": false,
     "variable-name": false
   }
 }
