@@ -184,11 +184,20 @@ export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, envelopeId:
 
 /**
  * Get a pre-signed download link for an Envelope Document. This link expires quickly, so it should
- * be accessed immediately and never shared.
+ * be accessed immediately and never shared. Content-Disposition will be set to "download".
  */
-export const getEnvelopeDocumentLink = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
+export const getDocumentDownloadLink = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
   endpoint.api //
-    .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}?link=true`)
+    .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}?download=true`)
+    .then((r) => r.data);
+
+/**
+ * Get a pre-signed preview link for an Envelope Document. This link expires quickly, so it should
+ * be accessed immediately and never shared. Content-Disposition will be set to "inline".
+ */
+export const getDocumentPreviewLink = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
+  endpoint.api //
+    .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}?preview=true`)
     .then((r) => r.data);
 
 /**
