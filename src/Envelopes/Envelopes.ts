@@ -175,11 +175,20 @@ export const getEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string)
     .then((r) => r.data);
 
 /**
- * Get all metadata for an Envelope.
+ * Get an Envelope Document
  */
 export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
   endpoint.api //
     .get<IEnvelopeDocument>(`/envelopes/${envelopeId}/envelope_documents/${documentId}`)
+    .then((r) => r.data);
+
+/**
+ * Get a pre-signed download link for an Envelope Document. This link expires quickly, so it should
+ * be accessed immediately and never shared.
+ */
+export const getEnvelopeDocumentLink = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
+  endpoint.api //
+    .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}?link=true`)
     .then((r) => r.data);
 
 /**
