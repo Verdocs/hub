@@ -357,37 +357,62 @@ export interface ITimeRange {
   end: string;
 }
 
+// export interface IListEnvelopesParams {
+//   match?: string;
+//   name?: string;
+//   recipient_name?: string;
+//   field_value?: string;
+//   visibility?: 'private' | 'shared';
+//   status?: ('pending' | 'in progress' | 'complete' | 'declined' | 'canceled')[];
+//   recipient_status?: ('pending' | 'invited' | 'declined' | 'opened' | 'signed' | 'submitted' | 'canceled')[];
+//   recipient_id?: string;
+//   updated_at?: ITimeRange;
+//   canceled_at?: ITimeRange;
+//   created_at?: ITimeRange;
+//   is_owner?: boolean;
+//   is_recipient?: boolean;
+//   template_id?: string;
+//   sort?: 'name' | 'created_at' | 'updated_at' | 'canceled_at' | 'status';
+//   direction?: 'asc' | 'desc';
+//   page?: number;
+//   rows?: number;
+// }
+//
+// /**
+//  * Lists all templates accessible by the caller, with optional filters.
+//  *
+//  * ```typescript
+//  * import {Envelopes} from '@verdocs/js-sdk/Templates';
+//  *
+//  * await Envelopes.listEnvelopes((VerdocsEndpoint.getDefault(), { name: 'test', sort: 'updated_at' });
+//  * ```
+//  */
+// export const listEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesParams) =>
+//   endpoint.api //
+//     .post<IEnvelopeSummaries>('/envelopes/list', params, {baseURL: endpoint.getBaseURLv2()})
+//     .then((r) => r.data);
 export interface IListEnvelopesParams {
-  match?: string;
-  name?: string;
-  recipient_name?: string;
-  field_value?: string;
-  visibility?: 'private' | 'shared';
-  status?: ('pending' | 'in progress' | 'complete' | 'declined' | 'canceled')[];
-  recipient_status?: ('pending' | 'invited' | 'declined' | 'opened' | 'signed' | 'submitted' | 'canceled')[];
-  recipient_id?: string;
-  updated_at?: ITimeRange;
-  canceled_at?: ITimeRange;
+  status?: string[];
+  q?: string;
   created_at?: ITimeRange;
   is_owner?: boolean;
-  is_recipient?: boolean;
+  sort_by?: 'name' | 'created_at' | 'updated_at' | 'canceled_at' | 'status';
   template_id?: string;
-  sort?: 'name' | 'created_at' | 'updated_at' | 'canceled_at' | 'status';
-  direction?: 'asc' | 'desc';
-  page?: number;
+  ascending?: boolean;
   rows?: number;
+  page?: number;
 }
 
-/**
- * Lists all templates accessible by the caller, with optional filters.
+/**a
+ * Lists all envelopes accessible by the caller, with optional filters.
  *
  * ```typescript
- * import {Envelopes} from '@verdocs/js-sdk/Templates';
+ * import {Envelopes} from '@verdocs/js-sdk/Envelopes';
  *
- * await Envelopes.listEnvelopes((VerdocsEndpoint.getDefault(), { name: 'test', sort: 'updated_at' });
+ * await Envelopes.listEnvelopes((VerdocsEndpoint.getDefault(), { q: 'test', sort: 'created)at' });
  * ```
  */
 export const listEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesParams) =>
   endpoint.api //
-    .post<IEnvelopeSummaries>('/envelopes/list', params, {baseURL: endpoint.getBaseURLv2()})
+    .post<IEnvelope[]>('/envelopes/list', params)
     .then((r) => r.data);
