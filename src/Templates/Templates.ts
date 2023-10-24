@@ -228,7 +228,7 @@ export interface ITimePeriod {
   end_time: string; // Date
 }
 
-enum SortOptions {
+export enum SortOptions {
   CREATED_AT = 'created_at',
   UPDATED_AT = 'updated_at',
   NAME = 'name',

@@ -357,27 +357,6 @@ export interface ITimeRange {
   end: string;
 }
 
-// export interface IListEnvelopesParams {
-//   match?: string;
-//   name?: string;
-//   recipient_name?: string;
-//   field_value?: string;
-//   visibility?: 'private' | 'shared';
-//   status?: ('pending' | 'in progress' | 'complete' | 'declined' | 'canceled')[];
-//   recipient_status?: ('pending' | 'invited' | 'declined' | 'opened' | 'signed' | 'submitted' | 'canceled')[];
-//   recipient_id?: string;
-//   updated_at?: ITimeRange;
-//   canceled_at?: ITimeRange;
-//   created_at?: ITimeRange;
-//   is_owner?: boolean;
-//   is_recipient?: boolean;
-//   template_id?: string;
-//   sort?: 'name' | 'created_at' | 'updated_at' | 'canceled_at' | 'status';
-//   direction?: 'asc' | 'desc';
-//   page?: number;
-//   rows?: number;
-// }
-//
 // /**
 //  * Lists all templates accessible by the caller, with optional filters.
 //  *
@@ -414,5 +393,5 @@ export interface IListEnvelopesParams {
  */
 export const listEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesParams) =>
   endpoint.api //
-    .post<IEnvelope[]>('/envelopes/list', params)
+    .post<{total: number; rows: number; page: number; envelopes: IEnvelope[]}>('/envelopes/list', params)
     .then((r) => r.data);
