@@ -5,7 +5,7 @@
  * @module
  */
 
-import {IRole, ITemplate, ITemplateField, ITemplateOwnerInfo, ITemplateSummaries, ITemplateSummary, TTemplateSender} from './Types';
+import {IRole, ITemplate, ITemplateField, ITemplateOwnerInfo, ITemplateSummary, TTemplateSender} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export interface IGetTemplatesParams {
@@ -31,15 +31,15 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
     .post<ITemplate[]>('/templates', {params})
     .then((r) => r.data);
 
-export interface IListTemplatesParams {
-  name?: string;
-  sharing?: 'all' | 'personal' | 'shared' | 'public';
-  starred?: 'all' | 'starred' | 'unstarred';
-  sort?: 'name' | 'created_at' | 'updated_at' | 'last_used_at' | 'counter' | 'star_counter';
-  direction?: 'asc' | 'desc';
-  page?: number;
-  rows?: number;
-}
+// export interface IListTemplatesParams {
+//   name?: string;
+//   sharing?: 'all' | 'personal' | 'shared' | 'public';
+//   starred?: 'all' | 'starred' | 'unstarred';
+//   sort?: 'name' | 'created_at' | 'updated_at' | 'last_used_at' | 'counter' | 'star_counter';
+//   direction?: 'asc' | 'desc';
+//   page?: number;
+//   rows?: number;
+// }
 
 /**
  * Lists all templates accessible by the caller, with optional filters.
@@ -50,10 +50,10 @@ export interface IListTemplatesParams {
  * await Templates.listTemplates((VerdocsEndpoint.getDefault(), { sharing: 'personal', sort: 'last_used_at' });
  * ```
  */
-export const listTemplates = (endpoint: VerdocsEndpoint, params?: IListTemplatesParams) =>
-  endpoint.api //
-    .post<ITemplateSummaries>('/templates/list', params, {baseURL: endpoint.getBaseURLv2()})
-    .then((r) => r.data);
+// export const listTemplates = (endpoint: VerdocsEndpoint, params?: IListTemplatesParams) =>
+//   endpoint.api //
+//     .post<ITemplateSummaries>('/templates/list', params, {baseURL: endpoint.getBaseURLv2()})
+//     .then((r) => r.data);
 
 /**
  * Get one template by its ID.
@@ -335,3 +335,28 @@ export const throttledGetTemplate = (endpoint: VerdocsEndpoint, templateId: stri
     return template;
   });
 };
+
+export interface ITemplateListParams {
+  status?: string[];
+  q?: string;
+  created_at?: ITimePeriod;
+  is_personal?: boolean;
+  is_public?: boolean;
+  sort_by?: SortOptions;
+  ascending?: boolean;
+  rows?: number;
+  page?: number;
+}
+
+/**
+ * List templates.
+ *
+ * ```typescript
+ * import {Templates} from '@verdocs/js-sdk/Templates';
+ *
+ * const {totals, templates} = await Templates.listTemplates((VerdocsEndpoint.getDefault(), { q: 'test', sort: 'created_at' }); * ```
+ */
+export const listTemplates = async (endpoint: VerdocsEndpoint, params: ITemplateListParams = {}) =>
+  endpoint.api //
+    .post<{total: number; rows: number; page: number; templates: ITemplate[]}>('/templates/list', params)
+    .then((r) => r.data);

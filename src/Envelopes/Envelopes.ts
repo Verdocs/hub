@@ -388,7 +388,7 @@ export interface IListEnvelopesParams {
  * ```typescript
  * import {Envelopes} from '@verdocs/js-sdk/Envelopes';
  *
- * await Envelopes.listEnvelopes((VerdocsEndpoint.getDefault(), { q: 'test', sort: 'created)at' });
+ * const {totals, envelopes} = await Envelopes.listEnvelopes((VerdocsEndpoint.getDefault(), { q: 'test', sort: 'created_at' });
  * ```
  */
 export const listEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesParams) =>
