@@ -371,8 +371,9 @@ export interface ITimeRange {
 //     .post<IEnvelopeSummaries>('/envelopes/list', params, {baseURL: endpoint.getBaseURLv2()})
 //     .then((r) => r.data);
 export interface IListEnvelopesParams {
-  status?: string[];
+  view?: 'inbox' | 'sent' | 'action' | 'waiting' | 'completed';
   q?: string;
+  status?: string[];
   created_at?: ITimeRange;
   is_owner?: boolean;
   sort_by?: 'name' | 'created_at' | 'updated_at' | 'canceled_at' | 'status';
