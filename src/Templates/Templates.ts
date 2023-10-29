@@ -195,6 +195,38 @@ export const createTemplate = (
   }
 };
 
+export interface ITemplateCreateFromSharepointParams {
+  /** Name for the template to create. */
+  name: string;
+  /** The site ID the source file is in. */
+  siteId: string;
+  /** The item ID of the source file. */
+  itemId: string;
+  /**
+   * On-Behalf-Of access token generated for the request. This must have an audience of "https://graph.microsoft.com"
+   * with Read access to the source file. This token is used ephemerally and discarded after the request, but it is
+   * still recommended that you generate it with the minimal permissions possible.
+   */
+  oboToken: string;
+}
+
+/**
+ * Create a template from a Sharepoint asset.
+ *
+ * ```typescript
+ * import {Templates} from '@verdocs/js-sdk/Templates';
+ *
+ * const newTemplate = await Templates.createTemplateFromSharepoint((VerdocsEndpoint.getDefault(), {...});
+ * ```
+ */
+export const createTemplateFromSharepoint = (endpoint: VerdocsEndpoint, params: ITemplateCreateFromSharepointParams) => {
+  const options = {
+    timeout: 120000,
+  };
+
+  return endpoint.api.post<ITemplate>('/templates/from-sharepoint', params, options).then((r) => r.data);
+};
+
 /**
  * Update a template.
  *
