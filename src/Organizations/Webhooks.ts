@@ -1,6 +1,6 @@
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
-interface ISetWebhookRequest {
+export interface ISetWebhookRequest {
   url: string;
   active: boolean;
   events: {
@@ -15,7 +15,7 @@ interface ISetWebhookRequest {
   };
 }
 
-interface IWebhook {
+export interface IWebhook {
   id: string;
   organization_id: string;
   url: string;
