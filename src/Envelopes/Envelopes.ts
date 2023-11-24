@@ -10,7 +10,7 @@ export interface ICreateEnvelopeRequest {
   roles: ICreateEnvelopeRole[];
   name: string;
   environment?: string;
-  prepared_fields: {name: string; value: string}[];
+  prepared_fields?: {name: string; value: string}[];
 }
 
 /**
