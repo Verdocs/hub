@@ -44,6 +44,11 @@ export const resendInvitation = (endpoint: VerdocsEndpoint, organizationId: stri
     .post(`/organizations/${organizationId}/invitation/${email}/resend`)
     .then((r) => r.data);
 
+export const getInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string, token: string) =>
+  endpoint.api //
+    .get<IInvitation>(`/organizations/${organizationId}/invitation/${email}/accept/${token}`)
+    .then((r) => r.data);
+
 export const acceptInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string, token: string) =>
   endpoint.api //
     .post<IProfile>(`/organizations/${organizationId}/invitation/${email}/accept/${token}`)

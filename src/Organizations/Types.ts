@@ -110,4 +110,5 @@ export interface IInvitation {
   generated_at: string;
   role_id: string;
   status: 'pending';
+  organization?: IOrganization;
 }
