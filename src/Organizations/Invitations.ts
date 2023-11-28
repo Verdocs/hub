@@ -1,5 +1,6 @@
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {IInvitation} from './Types';
+import {IProfile} from '../Users/Types';
 
 /**
  * An invitation represents an opportunity for a Member to join an Organization.
@@ -43,9 +44,14 @@ export const resendInvitation = (endpoint: VerdocsEndpoint, organizationId: stri
     .post(`/organizations/${organizationId}/invitation/${email}/resend`)
     .then((r) => r.data);
 
-export const claimInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string, params: any) =>
+export const acceptInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string, token: string) =>
   endpoint.api //
-    .put(`/organizations/${organizationId}/invitation/${email}`, params)
+    .post<IProfile>(`/organizations/${organizationId}/invitation/${email}/accept/${token}`)
+    .then((r) => r.data);
+
+export const declineInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string, token: string) =>
+  endpoint.api //
+    .post<{status: 'OK'}>(`/organizations/${organizationId}/invitation/${email}/decline/${token}`)
     .then((r) => r.data);
 
 export const claimNewUser = (endpoint: VerdocsEndpoint, organizationId: string, email: string, token: string) =>
