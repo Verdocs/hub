@@ -165,14 +165,6 @@ export interface ICreateBusinessAccountRequest {
   firstName: string;
   lastName: string;
   orgName: string;
-
-  industry?: string;
-  size?: string;
-  source?: string;
-  referral?: string;
-  coupon?: string;
-  reason?: string;
-  hearabout?: string;
 }
 
 /**
@@ -190,4 +182,19 @@ export interface ICreateBusinessAccountRequest {
 export const createBusinessAccount = (endpoint: VerdocsEndpoint, params: ICreateBusinessAccountRequest) =>
   endpoint.api //
     .post<{profile: IProfile; organization: IOrganization}>('/user/business', params)
+    .then((r) => r.data);
+
+export interface ISignupSurvey {
+  industry?: string;
+  size?: string;
+  source?: string;
+  referral?: string;
+  coupon?: string;
+  reason?: string;
+  hearabout?: string;
+}
+
+export const recordSignupSurvey = (endpoint: VerdocsEndpoint, params: ISignupSurvey) =>
+  endpoint.api //
+    .post<{status: 'OK'}>('/user/signup', params)
     .then((r) => r.data);
