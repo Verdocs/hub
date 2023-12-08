@@ -195,6 +195,47 @@ export const createTemplate = (
   }
 };
 
+/**
+ * Create a template.
+ *
+ * ```typescript
+ * import {Templates} from '@verdocs/js-sdk/Templates';
+ *
+ * const newTemplate = await Templates.createTemplatev2((VerdocsEndpoint.getDefault(), {...});
+ * ```
+ */
+export const createTemplatev2 = (
+  endpoint: VerdocsEndpoint,
+  params: ITemplateCreateParams,
+  onUploadProgress?: (percent: number, loadedBytes: number, totalBytes: number) => void,
+) => {
+  const options = {
+    timeout: 120000,
+    onUploadProgress: (event: any) => {
+      const total = event.total || 1;
+      const loaded = event.loaded || 0;
+      onUploadProgress?.(Math.floor((loaded * 100) / (total || 1)), loaded, total || 1);
+    },
+  };
+
+  if (params.documents && params.documents[0] instanceof File) {
+    const formData = new FormData();
+    ALLOWED_CREATE_FIELDS.forEach((allowedKey) => {
+      if (params[allowedKey as keyof ITemplateCreateParams] !== undefined) {
+        formData.append(allowedKey, params[allowedKey] as any);
+      }
+    });
+
+    params.documents.forEach((file) => {
+      formData.append('documents', file as never as File, file.name);
+    });
+
+    return endpoint.api.post<ITemplate>('/v2/templates', formData, options).then((r) => r.data);
+  } else {
+    return endpoint.api.post<ITemplate>('/v2/templates', params, options).then((r) => r.data);
+  }
+};
+
 export interface ITemplateCreateFromSharepointParams {
   /** Name for the template to create. */
   name: string;
