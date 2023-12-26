@@ -39,8 +39,8 @@ it('getProfiles should return a "current" profile', async () => {
   mock.onGet('/profiles').reply(200, [MockProfile]);
 
   await Profiles.getProfiles(endpoint).then(thenFn).catch(catchFn);
-  expect(thenFn).toBeCalledWith([MockProfile]);
-  expect(catchFn).not.toBeCalled();
+  expect(thenFn).toHaveBeenCalledWith([MockProfile]);
+  expect(catchFn).not.toHaveBeenCalled();
 });
 
 it('getRoles should return a list of system roles', async () => {
@@ -52,8 +52,8 @@ it('getRoles should return a list of system roles', async () => {
   mock.onGet('/roles').reply(200, roles);
 
   await Profiles.getRoles(endpoint).then(thenFn).catch(catchFn);
-  expect(thenFn).toBeCalledWith(roles);
-  expect(catchFn).not.toBeCalled();
+  expect(thenFn).toHaveBeenCalledWith(roles);
+  expect(catchFn).not.toHaveBeenCalled();
 });
 
 it('getPermissions should return a list of system permissions', async () => {
@@ -65,8 +65,8 @@ it('getPermissions should return a list of system permissions', async () => {
   mock.onGet('/permissions').reply(200, permissions);
 
   await Profiles.getPermissions(endpoint).then(thenFn).catch(catchFn);
-  expect(thenFn).toBeCalledWith(permissions);
-  expect(catchFn).not.toBeCalled();
+  expect(thenFn).toHaveBeenCalledWith(permissions);
+  expect(catchFn).not.toHaveBeenCalled();
 });
 
 it('createProfile should return the new profile', async () => {
@@ -78,8 +78,8 @@ it('createProfile should return the new profile', async () => {
   mock.onPost('/profiles').reply(200, profile);
 
   await Profiles.createProfile(endpoint, profile).then(thenFn).catch(catchFn);
-  expect(thenFn).toBeCalledWith(profile);
-  expect(catchFn).not.toBeCalled();
+  expect(thenFn).toHaveBeenCalledWith(profile);
+  expect(catchFn).not.toHaveBeenCalled();
 });
 
 it('getProfile should return a profile', async () => {
@@ -92,8 +92,8 @@ it('getProfile should return a profile', async () => {
   mock.onGet('/profiles/TEST').reply(200, response);
 
   await Profiles.getProfile(endpoint, profileId).then(thenFn).catch(catchFn);
-  expect(thenFn).toBeCalledWith(response);
-  expect(catchFn).not.toBeCalled();
+  expect(thenFn).toHaveBeenCalledWith(response);
+  expect(catchFn).not.toHaveBeenCalled();
 });
 
 it('getProfilePermissions should return a permissions array', async () => {
@@ -104,8 +104,8 @@ it('getProfilePermissions should return a permissions array', async () => {
   mock.onGet('/profiles/TEST/permissions').reply(200, []);
 
   await Profiles.getProfilePermissions(endpoint, 'TEST').then(thenFn).catch(catchFn);
-  expect(thenFn).toBeCalledWith([]);
-  expect(catchFn).not.toBeCalled();
+  expect(thenFn).toHaveBeenCalledWith([]);
+  expect(catchFn).not.toHaveBeenCalled();
 });
 
 it('getProfileGroups should return a groups array', async () => {
@@ -116,8 +116,8 @@ it('getProfileGroups should return a groups array', async () => {
   mock.onGet('/profiles/TEST/groups').reply(200, []);
 
   await Profiles.getProfileGroups(endpoint, 'TEST').then(thenFn).catch(catchFn);
-  expect(thenFn).toBeCalledWith([]);
-  expect(catchFn).not.toBeCalled();
+  expect(thenFn).toHaveBeenCalledWith([]);
+  expect(catchFn).not.toHaveBeenCalled();
 });
 
 it('switchProfile should return a new profile', async () => {
@@ -128,8 +128,8 @@ it('switchProfile should return a new profile', async () => {
   mock.onPost('/profiles/TEST/switch').reply(200, {});
 
   await Profiles.switchProfile(endpoint, 'TEST').then(thenFn).catch(catchFn);
-  expect(thenFn).toBeCalledWith({});
-  expect(catchFn).not.toBeCalled();
+  expect(thenFn).toHaveBeenCalledWith({});
+  expect(catchFn).not.toHaveBeenCalled();
 });
 
 it('updateProfile should return a new profile', async () => {
@@ -140,8 +140,8 @@ it('updateProfile should return a new profile', async () => {
   mock.onPut('/profiles/TEST').reply(200, {});
 
   await Profiles.updateProfile(endpoint, 'TEST', {first_name: 'TEST'}).then(thenFn).catch(catchFn);
-  expect(thenFn).toBeCalledWith({});
-  expect(catchFn).not.toBeCalled();
+  expect(thenFn).toHaveBeenCalledWith({});
+  expect(catchFn).not.toHaveBeenCalled();
 });
 
 it('deleteProfile should return a new profile', async () => {
@@ -152,6 +152,6 @@ it('deleteProfile should return a new profile', async () => {
   mock.onDelete('/profiles/TEST').reply(200);
 
   await Profiles.deleteProfile(endpoint, 'TEST').then(thenFn).catch(catchFn);
-  expect(thenFn).toBeCalled();
-  expect(catchFn).not.toBeCalled();
+  expect(thenFn).toHaveBeenCalled();
+  expect(catchFn).not.toHaveBeenCalled();
 });

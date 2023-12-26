@@ -9,6 +9,7 @@
   "coveragePathIgnorePatterns": ["config"],
   "coverageReporters": ["json", "lcov", "text", "html"],
   "extensionsToTreatAsEsm": [".ts"],
+  "testEnvironment": "jsdom",
   "preset": "ts-jest/presets/default-esm",
   "globals": {
     "ts-jest": {

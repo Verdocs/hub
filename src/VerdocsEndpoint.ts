@@ -48,10 +48,13 @@ export interface VerdocsEndpointOptions {
  *     .setTimeout(5000);
  * ```
  */
+// TODO: Research issue with Beta URL
 export class VerdocsEndpoint {
   private environment = 'verdocs' as TEnvironment;
   private sessionType = 'user' as TSessionType;
-  private baseURL = 'https://api.verdocs.com' as string;
+  private baseURL = (window.location.origin === 'https://beta.verdocs.com'
+    ? 'https://stage-api.verdocs.com'
+    : 'https://api.verdocs.com') as string;
   private baseURLv2 = 'https://api-v2.verdocs.com' as string;
   private clientID = 'not-set' as string;
   private timeout = 60000 as number;
@@ -103,7 +106,7 @@ export class VerdocsEndpoint {
   public static getDefault(): VerdocsEndpoint {
     if (!globalThis[ENDPOINT_KEY]) {
       globalThis[ENDPOINT_KEY] = new VerdocsEndpoint();
-      window.console.debug('[JS_SDK] Created default endpoint', globalThis[ENDPOINT_KEY]);
+      window.console.debug('[JS_SDK] Created default endpoint', globalThis[ENDPOINT_KEY].baseURL);
     }
 
     return globalThis[ENDPOINT_KEY];

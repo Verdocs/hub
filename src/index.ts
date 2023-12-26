@@ -3,7 +3,6 @@
  *
  * - Envelopes - An individual document to be signed. Documents are created from templates.
  * - Organizations - An Organization is a container for user profiles, templates, documents, billing, and other related objects.
- * - Search - Various methods used to retrieve lists of documents and templtes.
  * - Templates - A template for a document containing a PDF file, metadata for signature fields, and other information.
  * - Users - All operations related to authentication and user-related operations.
  * - Utils - General support functions used by the other modules and exported for convenience.
@@ -13,7 +12,6 @@
 
 export * as Envelopes from './Envelopes';
 export * as Organizations from './Organizations';
-export * as Search from './Search';
 export * as Sessions from './Sessions';
 export * as Templates from './Templates';
 export * as Users from './Users';
