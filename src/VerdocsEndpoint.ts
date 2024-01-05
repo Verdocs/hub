@@ -47,7 +47,6 @@ export interface VerdocsEndpointOptions {
  *     .setTimeout(5000);
  * ```
  */
-// TODO: Research issue with Beta URL
 export class VerdocsEndpoint {
   private environment = 'verdocs' as TEnvironment;
   private sessionType = 'user' as TSessionType;
@@ -79,12 +78,14 @@ export class VerdocsEndpoint {
    * ```
    */
   constructor(options?: VerdocsEndpointOptions) {
-    this.baseURL = options?.baseURL || 'https://api.verdocs.com';
-    this.timeout = options?.timeout || 60000;
-    this.environment = options?.environment || 'verdocs';
-    this.sessionType = options?.sessionType || 'user';
-    this.clientID = options?.clientID || 'not-set';
+    this.baseURL = options?.baseURL || this.baseURL;
+    this.timeout = options?.timeout || this.timeout;
+    this.environment = options?.environment || this.environment;
+    this.sessionType = options?.sessionType || this.sessionType;
+    this.clientID = options?.clientID || this.clientID;
     this.api = axios.create({baseURL: this.baseURL, timeout: this.timeout});
+
+    window.console.log('[JS_SDK] Initializing', this.baseURL, window.location.origin);
 
     // We set the default retries to zero because we only actually want this feature on certain calls for now
     axiosRetry(this.api, {
