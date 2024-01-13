@@ -1,5 +1,4 @@
-import axiosRetry from 'axios-retry';
-import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios';
+import axios, {AxiosInstance} from 'axios';
 import {TSession, TSessionType} from './Sessions/Types';
 import {decodeAccessTokenBody} from './Utils/Token';
 import globalThis from './Utils/globalThis';
@@ -44,7 +43,7 @@ export interface VerdocsEndpointOptions {
  *     .setSessionType('signing')
  *     .logRequests(true)
  *     .setClientID('1234)
- *     .setTimeout(5000);
+ *     .setTimeout(30000);
  * ```
  */
 export class VerdocsEndpoint {
@@ -84,17 +83,6 @@ export class VerdocsEndpoint {
     this.sessionType = options?.sessionType || this.sessionType;
     this.clientID = options?.clientID || this.clientID;
     this.api = axios.create({baseURL: this.baseURL, timeout: this.timeout});
-
-    window.console.log('[JS_SDK] Initializing', this.baseURL, window.location.origin);
-
-    // We set the default retries to zero because we only actually want this feature on certain calls for now
-    axiosRetry(this.api, {
-      retries: 0,
-      retryDelay: axiosRetry.exponentialDelay,
-      onRetry: (retryCount: number, error: AxiosError, requestConfig: AxiosRequestConfig) => {
-        window.console.debug(`[JS_SDK] Retrying request (${retryCount})`, error.message, requestConfig.url);
-      },
-    });
   }
 
   public setDefault() {

@@ -28,12 +28,7 @@ export const editPage = (endpoint: VerdocsEndpoint, templateId: string, sequence
  */
 export const getPage = (endpoint: VerdocsEndpoint, templateId: string, sequence: number, thumbnail: boolean = false) =>
   endpoint.api //
-    .get(`/templates/${templateId}/pages/${sequence}${thumbnail ? '?thumbnail=true' : ''}`, {
-      timeout: 20000,
-      'axios-retry': {
-        retries: 5,
-      },
-    })
+    .get(`/templates/${templateId}/pages/${sequence}${thumbnail ? '?thumbnail=true' : ''}`)
     .then((r) => r.data);
 
 export interface IPageImageResponse {

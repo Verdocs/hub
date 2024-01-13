@@ -145,8 +145,9 @@ export interface ISigningSessionResult {
 /**
  * Get a signing session for an Envelope.
  */
-export const getSigningSession = async (endpoint: VerdocsEndpoint, params: ISigningSessionRequest) =>
-  endpoint.api //
+export const getSigningSession = async (endpoint: VerdocsEndpoint, params: ISigningSessionRequest) => {
+  window.console.log('[JS_SDK] getSigningSession', params, endpoint.api);
+  return endpoint.api //
     .get<IRecipient>(`/envelopes/${params.envelopeId}/recipients/${encodeURIComponent(params.roleId)}/invitation/${params.inviteCode}`)
     .then((r) => {
       // Avoiding a jsonwebtoken dependency here - we don't actually need the whole library
@@ -157,6 +158,7 @@ export const getSigningSession = async (endpoint: VerdocsEndpoint, params: ISign
 
       return {recipient: r.data, session, signerToken} as ISigningSessionResult;
     });
+};
 
 /**
  * Get the list of recipients for an Envelope.
@@ -326,12 +328,7 @@ export const getEnvelopeDocumentPageDisplayUri = async (
   type: 'original' | 'filled' | 'certificate' = 'original',
 ) =>
   endpoint.api
-    .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}/pages/${page}/image?type=${type}`, {
-      timeout: 20000,
-      'axios-retry': {
-        retries: 5,
-      },
-    })
+    .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}/pages/${page}/image?type=${type}`, {timeout: 20000})
     .then((r) => r.data);
 
 const cachedEnvelopes: Record<string, {loaded: number; envelope: IEnvelope}> = {};
