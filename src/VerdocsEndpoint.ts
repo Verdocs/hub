@@ -49,7 +49,7 @@ export interface VerdocsEndpointOptions {
 export class VerdocsEndpoint {
   private environment = 'verdocs' as TEnvironment;
   private sessionType = 'user' as TSessionType;
-  private baseURL = (window.location.origin === 'https://beta.verdocs.com'
+  private baseURL = (window.location.origin === 'https://beta.verdocs.com' || window.location.origin === 'https://stage.verdocs.com'
     ? 'https://stage-api.verdocs.com'
     : 'https://api.verdocs.com') as string;
   private clientID = 'not-set' as string;
