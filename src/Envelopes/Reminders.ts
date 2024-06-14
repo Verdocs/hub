@@ -1,10 +1,6 @@
+import {ICreateEnvelopeReminderRequest} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {IReminder} from '../Templates/Types';
-
-export interface ICreateEnvelopeReminderRequest {
-  setup_time: number;
-  interval_time: number;
-}
+import {IReminder} from '../Models';
 
 /**
  * Enable automatic reminders. setup_time is the number of days after the envelope is sent that the first reminder

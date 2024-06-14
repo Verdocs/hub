@@ -5,7 +5,7 @@
  */
 
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {ITemplateDocument} from './Types';
+import {ITemplateDocument} from '../Models';
 
 /**
  * Get all the Template Documents associated to a particular Template.

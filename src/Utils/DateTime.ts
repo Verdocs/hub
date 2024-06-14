@@ -1,5 +1,5 @@
 const YEAR = 365 * 24 * 60 * 60;
-const MONTH = 30 * 24 * 60 * 60;
+// const MONTH = 30 * 24 * 60 * 60;
 const WEEK = 7 * 24 * 60 * 60;
 const DAY = 24 * 60 * 60;
 const HOUR = 60 * 60;

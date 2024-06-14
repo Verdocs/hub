@@ -1,40 +1,14 @@
-import {IEnvelope, IRecipient, IInPersonAccessKey, TAccessKey} from './Types';
+import {
+  IInPersonLinkResponse,
+  IUpdateRecipientSubmitParams,
+  IUpdateRecipientClaimEnvelope,
+  IUpdateRecipientAgreedParams,
+  IUpdateRecipientNameParams,
+  IUpdateRecipientDeclineParams,
+  IUpdateRecipientPrepareParams,
+} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-
-export interface IUpdateRecipientSubmitParams {
-  action: 'submit';
-}
-
-export interface IUpdateRecipientDeclineParams {
-  action: 'decline';
-}
-
-export interface IUpdateRecipientClaimEnvelope {
-  action: 'owner_update';
-  full_name: string;
-  email: string;
-}
-
-export interface IUpdateRecipientStatus {
-  new_full_name?: string;
-  agreed?: boolean;
-  action?: 'prepare' | 'update';
-}
-
-export interface IUpdateRecipientAgreedParams {
-  action: 'update';
-  agreed: boolean;
-}
-
-export interface IUpdateRecipientNameParams {
-  action: 'update';
-  new_full_name: string;
-}
-
-export interface IUpdateRecipientPrepareParams {
-  action: 'prepare';
-  recipients: IRecipient[];
-}
+import {IEnvelope, IInPersonAccessKey, IRecipient} from '../Models';
 
 /**
  * Update a recipient's status block
@@ -110,16 +84,6 @@ export const getSignerToken = (endpoint: VerdocsEndpoint, envelopeId: string, ro
   endpoint.api //
     .get<ISignerTokenResponse>(`/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/signer-token`)
     .then((r) => r.data);
-
-export interface IInPersonLinkResponse {
-  link: string;
-  envelope_id: string;
-  profile_id: string;
-  role_name: string;
-  access_key: string;
-  expiration_date: string;
-  type: TAccessKey;
-}
 
 /**
  * Get an in-person signing link.

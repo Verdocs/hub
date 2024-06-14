@@ -1,12 +1,5 @@
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-
-export interface IInitials {
-  id?: string;
-  profile_id: string;
-  url: string;
-  created_at?: string;
-  updated_at?: string;
-}
+import {IInitial} from '../Models';
 
 /**
  * Create an initials block. In a typical signing workflow, the user is asked at the beginning of the process to "adopt"
@@ -19,6 +12,6 @@ export const createInitials = (endpoint: VerdocsEndpoint, name: string, initials
   data.append('initial', initials, name);
 
   return endpoint.api //
-    .post<IInitials>(`/initials`, data)
+    .post<IInitial>(`/initials`, data)
     .then((r) => r.data);
 };

@@ -10,6 +10,8 @@
  * @module
  */
 
+export * as Models from './Models';
+
 export * as Envelopes from './Envelopes';
 export * as Organizations from './Organizations';
 export * as Sessions from './Sessions';

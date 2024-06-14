@@ -1,8 +1,9 @@
 import {jest} from '@jest/globals';
 import MockAdapter from 'axios-mock-adapter';
-import {IPermission, IProfile, IRole} from '../../Users/Types';
+import {TPermission, TRole} from '../../Users/Types';
 import {VerdocsEndpoint} from '../../VerdocsEndpoint';
 import {Profiles} from '../../Users';
+import {IProfile} from '../../Models';
 
 // TODO: Expand this test suite with more mock data and result checks
 
@@ -17,6 +18,8 @@ const MockProfile = {
   email: 'test@test.com',
   phone: null,
   current: true,
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
   organization: {
     id: '5678',
     name: 'test org',
@@ -28,7 +31,18 @@ const MockProfile = {
     contact_email: null,
     timezone: null,
     envelope_responsible: false,
+    url: '',
+    slug: '',
+    full_logo_url: '',
+    thumbnail_url: '',
+    primary_color: '',
+    secondary_color: '',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   },
+  permissions: [],
+  roles: [],
+  plans: [],
 } as IProfile;
 
 it('getProfiles should return a "current" profile', async () => {
@@ -48,7 +62,7 @@ it('getRoles should return a list of system roles', async () => {
   const thenFn = jest.fn();
 
   const mock = new MockAdapter(endpoint.api);
-  const roles = [] as IRole[];
+  const roles = [] as TRole[];
   mock.onGet('/roles').reply(200, roles);
 
   await Profiles.getRoles(endpoint).then(thenFn).catch(catchFn);
@@ -61,7 +75,7 @@ it('getPermissions should return a list of system permissions', async () => {
   const thenFn = jest.fn();
 
   const mock = new MockAdapter(endpoint.api);
-  const permissions = [] as IPermission[];
+  const permissions = [] as TPermission[];
   mock.onGet('/permissions').reply(200, permissions);
 
   await Profiles.getPermissions(endpoint).then(thenFn).catch(catchFn);

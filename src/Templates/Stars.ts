@@ -1,5 +1,5 @@
-import {IStar, ITemplateSummary} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {IStar, ITemplateSummary} from './Types';
 
 /**
  * Get the template stars for a template.

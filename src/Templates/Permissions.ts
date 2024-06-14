@@ -4,10 +4,10 @@
  * @module
  */
 
-import {ITemplate, ITemplateSummary, TemplateSenderTypes} from './Types';
+import {ITemplate} from '../Models';
 import {userHasPermissions} from '../Sessions';
-import {Permissions} from '../Users/Types';
 import {TSession} from '../Sessions/Types';
+import {ITemplateSummary} from './Types';
 
 /**
  * Check to see if the user created the template.
@@ -24,18 +24,17 @@ export const userHasSharedTemplate = (session: TSession, template: ITemplate | I
 /**
  * Check to see if the user can create a personal/private template.
  */
-export const userCanCreatePersonalTemplate = (session: TSession) =>
-  userHasPermissions(session, [Permissions.TEMPLATE_CREATOR_CREATE_PERSONAL]);
+export const userCanCreatePersonalTemplate = (session: TSession) => userHasPermissions(session, ['template:creator:create:personal']);
 
 /**
  * Check to see if the user can create an org-shared template.
  */
-export const userCanCreateOrgTemplate = (session: TSession) => userHasPermissions(session, [Permissions.TEMPLATE_CREATOR_CREATE_ORG]);
+export const userCanCreateOrgTemplate = (session: TSession) => userHasPermissions(session, ['template:creator:create:org']);
 
 /**
  * Check to see if the user can create a public template.
  */
-export const userCanCreatePublicTemplate = (session: TSession) => userHasPermissions(session, [Permissions.TEMPLATE_CREATOR_CREATE_PUBLIC]);
+export const userCanCreatePublicTemplate = (session: TSession) => userHasPermissions(session, ['template:creator:create:public']);
 
 /**
  * Check to see if the user can read/view a template.
@@ -43,63 +42,62 @@ export const userCanCreatePublicTemplate = (session: TSession) => userHasPermiss
 export const userCanReadTemplate = (session: TSession, template: ITemplate | ITemplateSummary) =>
   template.is_public ||
   userIsTemplateCreator(session, template) ||
-  (userHasSharedTemplate(session, template) && userHasPermissions(session, [Permissions.TEMPLATE_MEMBER_READ]));
+  (userHasSharedTemplate(session, template) && userHasPermissions(session, ['template:member:read']));
 
 /**
  * Check to see if the user can update a tempate.
  */
 export const userCanUpdateTemplate = (session: TSession, template: ITemplate | ITemplateSummary) =>
   userIsTemplateCreator(session, template) ||
-  (userHasSharedTemplate(session, template) &&
-    userHasPermissions(session, [Permissions.TEMPLATE_MEMBER_READ, Permissions.TEMPLATE_MEMBER_WRITE]));
+  (userHasSharedTemplate(session, template) && userHasPermissions(session, ['template:member:read', 'template:member:write']));
 
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
  */
 export const userCanMakeTemplatePrivate = (session: TSession, template: ITemplate | ITemplateSummary) =>
   userIsTemplateCreator(session, template)
-    ? userHasPermissions(session, [Permissions.TEMPLATE_CREATOR_CREATE_PERSONAL])
-    : userHasPermissions(session, [Permissions.TEMPLATE_MEMBER_VISIBILITY]);
+    ? userHasPermissions(session, ['template:creator:create:personal'])
+    : userHasPermissions(session, ['template:member:visibility']);
 
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
  */
 export const userCanMakeTemplateShared = (session: TSession, template: ITemplate | ITemplateSummary) =>
   userIsTemplateCreator(session, template)
-    ? userHasPermissions(session, [Permissions.TEMPLATE_CREATOR_CREATE_ORG])
-    : userHasPermissions(session, [Permissions.TEMPLATE_MEMBER_VISIBILITY]);
+    ? userHasPermissions(session, ['template:creator:create:org'])
+    : userHasPermissions(session, ['template:member:visibility']);
 
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
  */
 export const userCanMakeTemplatePublic = (session: TSession, template: ITemplate | ITemplateSummary) =>
   userIsTemplateCreator(session, template)
-    ? userHasPermissions(session, [Permissions.TEMPLATE_CREATOR_CREATE_PUBLIC])
-    : userHasPermissions(session, [Permissions.TEMPLATE_MEMBER_VISIBILITY]);
+    ? userHasPermissions(session, ['template:creator:create:public'])
+    : userHasPermissions(session, ['template:member:visibility']);
 
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
  */
 export const userCanChangeOrgVisibility = (session: TSession, template: ITemplate | ITemplateSummary) =>
-  userIsTemplateCreator(session, template) && userHasPermissions(session, [Permissions.TEMPLATE_CREATOR_CREATE_PERSONAL]);
+  userIsTemplateCreator(session, template) && userHasPermissions(session, ['template:creator:create:personal']);
 
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
  */
 export const userCanDeleteTemplate = (session: TSession, template: ITemplate | ITemplateSummary) =>
   userIsTemplateCreator(session, template)
-    ? userHasPermissions(session, [Permissions.TEMPLATE_CREATOR_DELETE])
-    : userHasPermissions(session, [Permissions.TEMPLATE_MEMBER_DELETE]);
+    ? userHasPermissions(session, ['template:creator:delete'])
+    : userHasPermissions(session, ['template:member:delete']);
 
 /**
  * Confirm whether the user can create an envelope using the specified template.
  */
 export const userCanSendTemplate = (session: TSession, template: ITemplate | ITemplateSummary) => {
   switch (template.sender) {
-    case TemplateSenderTypes.CREATOR:
+    case 'creator':
       return userIsTemplateCreator(session, template);
-    case TemplateSenderTypes.ORGANIZATION_MEMBER:
-    case TemplateSenderTypes.ORGANIZATION_MEMBER_AS_CREATOR:
+    case 'organization_member':
+    case 'organization_member_as_creator':
       return userIsTemplateCreator(session, template) || template.organization_id === session?.organization_id;
     default:
       return true;
@@ -119,6 +117,9 @@ export const userCanCreateTemplate = (session: TSession) =>
 export const userCanBuildTemplate = (session: TSession, template: ITemplate) =>
   userCanUpdateTemplate(session, template) && (template.roles || []).filter((role) => role.type === 'signer').length > 0;
 
+export const getFieldsForRole = (template: ITemplate, role_name: string) =>
+  (template.fields || []).filter((field) => field.role_name === role_name);
+
 /**
  * Check to see if the user can preview the template. The user must have read access to the template, the template must
  * have at least one signer, and every signer must have at least one field.
@@ -126,5 +127,5 @@ export const userCanBuildTemplate = (session: TSession, template: ITemplate) =>
 export const userCanPreviewTemplate = (session: TSession, template: ITemplate) => {
   const hasPermission = userCanReadTemplate(session, template);
   const signers = (template.roles || []).filter((role) => role.type === 'signer');
-  return hasPermission && signers.length > 0 && signers.every((signer) => (signer.fields || []).length > 0);
+  return hasPermission && signers.length > 0 && signers.every((signer) => getFieldsForRole(template, signer.name).length > 0);
 };

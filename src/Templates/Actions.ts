@@ -1,40 +1,10 @@
-import {ITemplate, ITemplateSummary} from './Types';
+import {ITemplateSummary, TTemplateAction, TTemplatePermission} from './Types';
 import {TSession} from '../Sessions/Types';
-
-export enum TemplateSenderTypes {
-  CREATOR = 'creator', // same as legacy
-  ORGANIZATION_MEMBER = 'organization_member',
-  ORGANIZATION_MEMBER_AS_CREATOR = 'organization_member_as_creator',
-  EVERYONE = 'everyone',
-  EVERYONE_AS_CREATOR = 'everyone_as_creator', // Creator would be sender of envelope no matter who creates the envelope
-}
-
-export enum TemplatePermissions {
-  TEMPLATE_CREATOR_CREATE_PUBLIC = 'template:creator:create:public',
-  TEMPLATE_CREATOR_CREATE_ORG = 'template:creator:create:org',
-  TEMPLATE_CREATOR_CREATE_PERSONAL = 'template:creator:create:personal',
-  TEMPLATE_CREATOR_DELETE = 'template:creator:delete',
-  TEMPLATE_CREATOR_VISIBILITY = 'template:creator:visibility',
-  TEMPLATE_MEMBER_READ = 'template:member:read',
-  TEMPLATE_MEMBER_WRITE = 'template:member:write',
-  TEMPLATE_MEMBER_DELETE = 'template:member:delete',
-  TEMPLATE_MEMBER_VISIBILITY = 'template:member:visibility',
-}
-
-export type TTemplateActions =
-  | 'create_personal'
-  | 'create_org'
-  | 'create_public'
-  | 'read'
-  | 'write'
-  | 'delete'
-  | 'change_visibility_personal'
-  | 'change_visibility_org'
-  | 'change_visibility_public';
+import {ITemplate} from '../Models';
 
 export const canPerformTemplateAction = (
   session: TSession,
-  action: TTemplateActions,
+  action: TTemplateAction,
   template?: ITemplate | ITemplateSummary,
 ): {canPerform: boolean; message: string} => {
   if (!template && !action.includes('create')) {
@@ -55,57 +25,57 @@ export const canPerformTemplateAction = (
   const isPersonal = template?.is_personal ?? false;
   const isPublic = template?.is_public ?? false;
 
-  const permissionsRequired = [];
+  const permissionsRequired: TTemplatePermission[] = [];
   switch (action) {
     case 'create_personal':
-      permissionsRequired.push(TemplatePermissions.TEMPLATE_CREATOR_CREATE_PERSONAL);
+      permissionsRequired.push('template:creator:create:personal');
       break;
     case 'create_org':
-      permissionsRequired.push(TemplatePermissions.TEMPLATE_CREATOR_CREATE_ORG);
+      permissionsRequired.push('template:creator:create:org');
       break;
     case 'create_public':
-      permissionsRequired.push(TemplatePermissions.TEMPLATE_CREATOR_CREATE_PUBLIC);
+      permissionsRequired.push('template:creator:create:public');
       break;
     case 'read':
       if (!isCreator) {
         if ((!isPersonal && isSameOrg) || !isPublic) {
-          permissionsRequired.push(TemplatePermissions.TEMPLATE_MEMBER_READ);
+          permissionsRequired.push('template:member:read');
         }
       }
       break;
     case 'write':
       if (!isCreator) {
-        permissionsRequired.push(TemplatePermissions.TEMPLATE_MEMBER_READ);
-        permissionsRequired.push(TemplatePermissions.TEMPLATE_MEMBER_WRITE);
+        permissionsRequired.push('template:member:read');
+        permissionsRequired.push('template:member:write');
       }
       break;
     case 'change_visibility_personal':
       if (isCreator) {
-        permissionsRequired.push(TemplatePermissions.TEMPLATE_CREATOR_CREATE_PERSONAL);
+        permissionsRequired.push('template:creator:create:personal');
       } else {
-        permissionsRequired.push(TemplatePermissions.TEMPLATE_MEMBER_VISIBILITY);
+        permissionsRequired.push('template:member:visibility');
       }
       break;
     case 'change_visibility_org':
       if (isCreator) {
-        permissionsRequired.push(TemplatePermissions.TEMPLATE_CREATOR_CREATE_ORG);
+        permissionsRequired.push('template:creator:create:org');
       } else {
-        permissionsRequired.push(TemplatePermissions.TEMPLATE_MEMBER_VISIBILITY);
+        permissionsRequired.push('template:member:visibility');
       }
       break;
     case 'change_visibility_public':
       if (isCreator) {
-        permissionsRequired.push(TemplatePermissions.TEMPLATE_CREATOR_CREATE_PUBLIC);
-        permissionsRequired.push(TemplatePermissions.TEMPLATE_CREATOR_VISIBILITY);
+        permissionsRequired.push('template:creator:create:public');
+        permissionsRequired.push('template:creator:visibility');
       } else {
-        permissionsRequired.push(TemplatePermissions.TEMPLATE_MEMBER_VISIBILITY);
+        permissionsRequired.push('template:member:visibility');
       }
       break;
     case 'delete':
       if (isCreator) {
-        permissionsRequired.push(TemplatePermissions.TEMPLATE_CREATOR_DELETE);
+        permissionsRequired.push('template:creator:delete');
       } else {
-        permissionsRequired.push(TemplatePermissions.TEMPLATE_MEMBER_DELETE);
+        permissionsRequired.push('template:member:delete');
       }
       break;
     default:

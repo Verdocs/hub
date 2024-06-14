@@ -4,8 +4,9 @@
  * @module
  */
 
-import {EnvelopeStates, IEnvelope, IEnvelopeSummary, IRecipient} from './Types';
+import {IEnvelope, IRecipient} from '../Models';
 import {TSession} from '../Sessions/Types';
+import {IEnvelopeSummary} from './Types';
 
 /**
  * Check to see if the user owns the envelope.
@@ -23,30 +24,30 @@ export const userIsEnvelopeRecipient = (session: TSession, envelope: IEnvelope |
  * Check to see if the envelope has pending actions.
  */
 export const envelopeIsActive = (envelope: IEnvelope | IEnvelopeSummary) =>
-  envelope.status !== EnvelopeStates.COMPLETE && envelope.status !== EnvelopeStates.DECLINED && envelope.status !== EnvelopeStates.CANCELED;
+  envelope.status !== 'complete' && envelope.status !== 'declined' && envelope.status !== 'canceled';
 
 /**
  * Check to see if the envelope has been completed.
  */
-export const envelopeIsComplete = (envelope: IEnvelope | IEnvelopeSummary) => envelope.status !== EnvelopeStates.COMPLETE;
+export const envelopeIsComplete = (envelope: IEnvelope | IEnvelopeSummary) => envelope.status !== 'complete';
 
 /**
  * Check to see if the user owns the envelope.
  */
 export const userCanCancelEnvelope = (session: TSession, envelope: IEnvelope | IEnvelopeSummary) =>
   userIsEnvelopeOwner(session, envelope) &&
-  envelope.status !== EnvelopeStates.COMPLETE &&
-  envelope.status !== EnvelopeStates.DECLINED &&
-  envelope.status !== EnvelopeStates.CANCELED;
+  envelope.status !== 'complete' &&
+  envelope.status !== 'declined' &&
+  envelope.status !== 'canceled';
 
 /**
  * Check to see if the user owns the envelope.
  */
 export const userCanFinishEnvelope = (session: TSession, envelope: IEnvelope | IEnvelopeSummary) =>
   userIsEnvelopeOwner(session, envelope) &&
-  envelope.status !== EnvelopeStates.COMPLETE &&
-  envelope.status !== EnvelopeStates.DECLINED &&
-  envelope.status !== EnvelopeStates.CANCELED;
+  envelope.status !== 'complete' &&
+  envelope.status !== 'declined' &&
+  envelope.status !== 'canceled';
 /**
  * Returns true if the recipient has a pending action. Note that this does not necessarily mean the recipient can act (yet).
  */

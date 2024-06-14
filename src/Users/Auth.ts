@@ -1,8 +1,8 @@
-import {IAuthenticateAppRequest, IAuthenticateUserRequest, IProfile} from './Types';
-import {TokenValidationRequest, UpdateEmailRequest, IUpdatePasswordRequest} from './Types';
 import {IAuthenticateResponse, TokenValidationResponse, UpdateEmailResponse, UpdatePasswordResponse} from './Types';
+import {IAuthenticateAppRequest, IAuthenticateUserRequest, ICreateUserRequest} from './Types';
+import {TokenValidationRequest, UpdateEmailRequest, IUpdatePasswordRequest} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {ISignupSurvey} from './Profiles';
+import {IProfile} from '../Models';
 
 /**
  * Authenticate to Verdocs via user/password authentication
@@ -140,14 +140,6 @@ export const resendVerification = (endpoint: VerdocsEndpoint, accessToken?: stri
   endpoint.api //
     .post('/user/email_verification', {}, accessToken ? {headers: {Authorization: `Bearer ${accessToken}`}} : {})
     .then((r) => r.data);
-
-export interface ICreateUserRequest {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  fromInviteCode: string;
-}
 
 export const createUser = (endpoint: VerdocsEndpoint, params: ICreateUserRequest) =>
   endpoint.api //

@@ -1,5 +1,5 @@
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {IReminder, ITemplate} from './Types';
+import {IReminder, ITemplate} from '../Models';
 
 export interface ICreateTemplateReminderRequest {
   setup_time: number;

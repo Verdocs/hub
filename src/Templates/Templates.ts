@@ -5,8 +5,9 @@
  * @module
  */
 
-import {IRole, ITemplate, ITemplateField, ITemplateOwnerInfo, ITemplateSummary, TTemplateSender} from './Types';
+import {IRole, ITemplate, ITemplateField} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {ITemplateOwnerInfo, ITemplateSummary, TSortTemplateBy, TTemplateSenderType} from './Types';
 
 export interface IGetTemplatesParams {
   is_starred?: boolean;
@@ -120,7 +121,7 @@ export interface ITemplateCreateParams {
    */
   is_public?: boolean;
   /** Optional (defaults to EVERYONE_AS_CREATOR). Who may create and send envelopes using this template. */
-  sender?: TTemplateSender;
+  sender?: TTemplateSenderType;
   /** Optional description for the template to help identify it. */
   description?: string;
   /**
@@ -301,15 +302,6 @@ export interface ITimePeriod {
   end_time: string; // Date
 }
 
-export enum SortOptions {
-  CREATED_AT = 'created_at',
-  UPDATED_AT = 'updated_at',
-  NAME = 'name',
-  LAST_USED_AT = 'last_used_at',
-  COUNTER = 'counter',
-  STAR_COUNTER = 'star_counter',
-}
-
 export interface ITemplateSearchParams {
   id?: string;
   name?: string;
@@ -324,7 +316,7 @@ export interface ITemplateSearchParams {
   is_public?: boolean;
   tags?: string[];
   document_name?: string;
-  sort_by?: SortOptions;
+  sort_by?: TSortTemplateBy;
   ascending?: boolean;
   row?: number;
   page?: number;
@@ -415,7 +407,7 @@ export interface ITemplateListParams {
   created_at?: ITimePeriod;
   is_personal?: boolean;
   is_public?: boolean;
-  sort_by?: SortOptions;
+  sort_by?: TSortTemplateBy;
   ascending?: boolean;
   rows?: number;
   page?: number;

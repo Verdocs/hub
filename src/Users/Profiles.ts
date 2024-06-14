@@ -1,6 +1,13 @@
-import {ICreateProfileRequest, IPermission, IProfile, IRole, ISwitchProfileResponse, IUpdateProfileRequest} from './Types';
-import {IGroup, IOrganization} from '../Organizations/Types';
+import {
+  ICreateBusinessAccountRequest,
+  ICreateProfileRequest,
+  TPermission,
+  ISwitchProfileResponse,
+  IUpdateProfileRequest,
+  TRole,
+} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {IGroup, IOrganization, IProfile} from '../Models';
 
 /**
  * Get the user's available profiles. The current profile will be marked with `current: true`.
@@ -41,7 +48,7 @@ export const getCurrentProfile = (endpoint: VerdocsEndpoint) =>
  */
 export const getRoles = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
-    .get<IRole[]>('/roles')
+    .get<TRole[]>('/roles')
     .then((r) => r.data);
 
 /**
@@ -55,7 +62,7 @@ export const getRoles = (endpoint: VerdocsEndpoint) =>
  */
 export const getPermissions = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
-    .get<IPermission[]>('/permissions')
+    .get<TPermission[]>('/permissions')
     .then((r: any) => r.data);
 
 /**
@@ -98,7 +105,7 @@ export const getProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  */
 export const getProfilePermissions = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
-    .get<IPermission[]>(`/profiles/${profileId}/permissions`)
+    .get<TPermission[]>(`/profiles/${profileId}/permissions`)
     .then((r) => r.data);
 
 /**
@@ -158,14 +165,6 @@ export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
     .delete(`/profiles/${profileId}`)
     .then((r) => r.data);
-
-export interface ICreateBusinessAccountRequest {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  orgName: string;
-}
 
 /**
  * Create a user account and parent organization. This endpoint is for creating a new organization. Users joining an

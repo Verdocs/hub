@@ -1,17 +1,9 @@
-import {IEnvelope, IEnvelopesSummary, IRecipient, IEnvelopeDocument, IEnvelopeFieldSettings, IEnvelopeSummaries} from './Types';
-import {ICreateEnvelopeRole, IEnvelopesSearchResult, ISigningSessionRequest} from './Types';
-import {TEnvelopeUpdateResult, TEnvelopeStatus, TRecipientStatus} from './Types';
+import {TEnvelopeUpdateResult, TEnvelopeStatus, TRecipientStatus, ICreateEnvelopeRequest, IEnvelopesSummary} from './Types';
+import {IEnvelope, IEnvelopeDocument, IEnvelopeFieldSettings, IRecipient} from '../Models';
+import {IEnvelopesSearchResult, ISigningSessionRequest} from './Types';
 import {decodeAccessTokenBody} from '../Utils/Token';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {ISigningSession} from '../Sessions/Types';
-
-export interface ICreateEnvelopeRequest {
-  template_id: string;
-  roles: ICreateEnvelopeRole[];
-  name: string;
-  environment?: string;
-  prepared_fields?: {name: string; value: string}[];
-}
 
 /**
  * Create an envelope
@@ -110,8 +102,6 @@ export interface IEnvelopeSearchParams {
   is_recipient?: boolean;
   /** Whether the recipient has "claimed" the envelope. */
   recipient_claimed?: boolean;
-  /** @deprecated. Use `limit`. */
-  row?: number;
   /** The maximum number of records to return. Should be used in place of `row`. */
   limit?: number;
   /** The page number to return. Page numbers are 0-based. */
@@ -302,17 +292,6 @@ export const deleteEnvelopeFieldAttachment = async (
 export const getFieldAttachment = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string) =>
   endpoint.api //
     .get(`/envelopes/${envelopeId}/fields/${fieldName}/document`, {responseType: 'blob'})
-    .then((r) => r.data);
-
-/**
- * Get all of the envelopes that were sent using a given template.
- * NOTE: This endpoint will be retired soon. Its response is not paginated and it is typically used only to retrieve
- * "submitted data" for a template. A new endpoint will be introduced to provide this function more directly.
- * @deprecated
- */
-export const getEnvelopesByTemplateId = async (endpoint: VerdocsEndpoint, templateId: string) =>
-  endpoint.api //
-    .get<IEnvelope[]>(`/envelopes?template_id=${templateId}`)
     .then((r) => r.data);
 
 /**

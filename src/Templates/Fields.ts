@@ -1,5 +1,5 @@
+import {ITemplateField} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {ITemplateField} from './Types';
 
 /**
  * Add a field to a template.

@@ -4,8 +4,8 @@
  * @module
  */
 
-import {IOrganization} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {IOrganization} from '../Models';
 
 /**
  * Get a list of organizations the user has access to.

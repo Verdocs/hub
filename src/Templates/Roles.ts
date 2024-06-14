@@ -6,8 +6,8 @@
  * @module
  */
 
-import {ITemplateField, IRole} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {ITemplateField, IRole} from '../Models';
 
 export const createRole = (endpoint: VerdocsEndpoint, templateId: string, params: IRole) =>
   endpoint.api //

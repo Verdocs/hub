@@ -1,4 +1,5 @@
-import {IProfile, TPermission, TPlan, TRole} from '../Users/Types';
+import {TPermission, TPlan, TRole} from '../Users/Types';
+import {IProfile} from '../Models';
 
 export interface ISigningSessionRequest {
   envelopeId: string;

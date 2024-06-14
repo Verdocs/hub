@@ -1,5 +1,5 @@
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {IProfile, IRole} from '../Users/Types';
+import {IProfile, IRole} from '../Models';
 
 /**
  * An Organization Member (aka Profile) is an individual user with access to an organization.

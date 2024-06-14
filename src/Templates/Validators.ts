@@ -1,6 +1,5 @@
-// import {simpleE164Validator} from '../Utils/Locales';
-import {IRole, ITag} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {IRole} from '../Models';
 
 export interface IValidator {
   name: string;
@@ -41,4 +40,4 @@ export const isValidRoleName = (value: string, roles: IRole[]) => roles.findInde
 
 const TagRegEx = /^[a-zA-Z0-9-]{0,32}$/;
 
-export const isValidTag = (value: string, tags: ITag[]) => TagRegEx.test(value) || tags.findIndex((tag) => tag.name === value) !== -1;
+export const isValidTag = (value: string, tags: string[]) => TagRegEx.test(value) || tags.findIndex((tag) => tag === value) !== -1;

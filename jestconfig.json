@@ -1,6 +1,6 @@
 {
   "transform": {
-    "^.+\\.(t|j)s?$": "ts-jest"
+    "^.+\\.(t|j)s?$": ["ts-jest", {"useESM": true}]
   },
   "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
   "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
@@ -11,11 +11,6 @@
   "extensionsToTreatAsEsm": [".ts"],
   "testEnvironment": "jsdom",
   "preset": "ts-jest/presets/default-esm",
-  "globals": {
-    "ts-jest": {
-      "useESM": true
-    }
-  },
   "moduleNameMapper": {
     "^(\\.{1,2}/.*)\\.js$": "$1"
   }

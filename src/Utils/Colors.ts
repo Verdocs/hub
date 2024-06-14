@@ -1,5 +1,6 @@
 /* tslint:disable:no-bitwise */
-import {IRole} from '../Templates/Types';
+
+import {TRole} from '../Users/Types';
 
 /**
  * Given a `rgba(r,g,b,a)` string value, returns the hex equivalent, dropping the alpha channel.
@@ -90,13 +91,13 @@ export function nameToRGBA(str: string) {
 /**
  * Helper function to obtain a color code given a role name given various possible inputs.
  */
-export function getRoleColor(name: string, roles: IRole[], index?: number) {
+export function getRoleColor(name: string, roles: TRole[], index?: number) {
   if (index) {
     return getRGBA(index);
   } else if (roles && roles.length > 0) {
-    const roleIndex = roles.findIndex((role) => role.name === name);
+    const roleIndex = roles.findIndex((role) => role === name);
     if (roleIndex > -1) {
-      return roles[roleIndex].rgba || getRGBA(roleIndex);
+      return getRGBA(roleIndex);
     } else {
       return nameToRGBA(name);
     }

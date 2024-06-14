@@ -1,6 +1,5 @@
 export * as Actions from './Actions';
 export * as Fields from './Fields';
-export * as Pages from './Pages';
 export * as Reminders from './Reminders';
 export * as Roles from './Roles';
 export * as Stars from './Stars';

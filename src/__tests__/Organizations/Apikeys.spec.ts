@@ -1,8 +1,8 @@
 import {jest} from '@jest/globals';
 import MockAdapter from 'axios-mock-adapter';
-import {IApiKey, IApiKeyWithSecret} from '../../Organizations/Types';
 import {VerdocsEndpoint} from '../../VerdocsEndpoint';
 import {ApiKeys} from '../../Organizations';
+import {IApiKey} from '../../Models';
 
 const MockKey = {
   client_id: 'TEST',
@@ -17,7 +17,7 @@ const MockKeyWithSecret = {
   name: 'TEST',
   profile_id: 'TEST',
   organization_id: 'TEST',
-} as IApiKeyWithSecret;
+} as IApiKey;
 
 const endpoint = VerdocsEndpoint.getDefault();
 
@@ -40,7 +40,7 @@ it('createKey should return a newly created key', async () => {
   const mock = new MockAdapter(endpoint.api);
   mock.onPost('/organizations/TEST/api_key').reply(200, MockKeyWithSecret);
 
-  await ApiKeys.createKey(endpoint, 'TEST', {name: 'TEST', profile_id: 'TEST'}).then(thenFn).catch(catchFn);
+  await ApiKeys.createKey(endpoint, 'TEST', {name: 'TEST', permission: 'personal'}).then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalledWith(MockKeyWithSecret);
   expect(catchFn).not.toBeCalled();
 });

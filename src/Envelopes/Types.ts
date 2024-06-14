@@ -1,4 +1,4 @@
-import {IProfile} from '../Users/Types';
+import {IActivityEntry, IEnvelope, IEnvelopeDocument, IEnvelopeField, IEnvelopeHistory, IRecipient, TAccessKey} from '../Models';
 
 export interface ISigningSessionRequest {
   envelopeId: string;
@@ -6,82 +6,13 @@ export interface ISigningSessionRequest {
   inviteCode: string;
 }
 
-export interface IInPersonAccessKey {
-  id: string;
-  created_at: string;
-  recipient_name: string;
-  envelope_id: string;
-  type: 'in_person_link';
-  key: string;
-  expiration_date: string | null;
-  first_used: string | null;
-  last_used: string | null;
-}
+export type TRecipientAction = 'submit' | 'decline' | 'prepare' | 'update';
 
-export interface IEmailAccessKey {
-  id: string;
-  created_at: string;
-  recipient_name: string;
-  envelope_id: string;
-  type: 'email';
-  key: string;
-  expiration_date: string | null;
-  first_used: string | null;
-  last_used: string | null;
-}
+export type TEnvelopeStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
 
-export interface ISMSAccessKey {
-  id: string;
-  created_at: string;
-  recipient_name: string;
-  envelope_id: string;
-  type: 'sms';
-  key: string;
-  expiration_date: string | null;
-  first_used: string | null;
-  last_used: string | null;
-}
+export type TRecipientStatus = 'invited' | 'opened' | 'signed' | 'submitted' | 'canceled' | 'pending' | 'declined';
 
-export type TAccessKey = IInPersonAccessKey | IEmailAccessKey | ISMSAccessKey;
-
-export enum RecipientActions {
-  SUBMIT = 'submit',
-  DECLINE = 'decline',
-  PREPARE = 'prepare',
-  UPDATE = 'update',
-}
-
-export type TRecipientAction = `${RecipientActions}`;
-
-export enum EnvelopeStates {
-  COMPLETE = 'complete',
-  PENDING = 'pending',
-  IN_PROGRESS = 'in progress',
-  DECLINED = 'declined',
-  CANCELED = 'canceled',
-}
-
-export type TEnvelopeStatus = `${EnvelopeStates}`;
-
-export enum RecipientStates {
-  INVITED = 'invited',
-  OPENED = 'opened',
-  SIGNED = 'signed',
-  SUBMITTED = 'submitted',
-  CANCELED = 'canceled',
-  PENDING = 'pending',
-  DECLINED = 'declined',
-}
-
-export type TRecipientStatus = `${RecipientStates}`;
-
-export enum RecipientTypes {
-  SIGNER = 'signer',
-  CC = 'cc',
-  APPROVER = 'approver',
-}
-
-export type TRecipientType = `${RecipientTypes}`;
+export type TRecipientType = 'signer' | 'cc' | 'approver';
 
 /**
  * One entry in an envelope search result.
@@ -90,12 +21,9 @@ export type TRecipientType = `${RecipientTypes}`;
 export interface IEnvelopesSearchResultEntry {
   id: string;
   canceled_at: string;
-  /** @deprecated. New envelopes may have more than one certificate attached. */
   certificate_document_id: string;
-  /** @deprecated. New envelopes may have more than one document attached. */
-  envelope_document_id: string;
   created_at: string;
-  histories: IHistory[];
+  histories: IEnvelopeHistory[];
   indexed_at: string;
   name: string;
   no_contact: boolean;
@@ -143,223 +71,20 @@ export interface IEnvelopesSummary {
   };
 }
 
-export interface IRecipient {
-  envelope_id: string;
-  role_name: string;
-  agreed: boolean;
-  claimed: boolean;
-  created_at: string;
-  delegated_to: string | null;
-  delegator: boolean;
-  email: string;
-  full_name: string;
-  in_app_access_key?: string;
-  key_used_to_conclude?: string;
-  message: string | null;
-  phone: string | null;
-  profile_id: string;
-  environment: string;
-  /**
-   * The sequence number indicates the order in which Recipients act. Multiple recipients may have the same sequence
-   * number, in which case they may act in parallel. (e.g. all Recipients at sequence 2 will receive invites once
-   * all Recipients at sequence 1 have signed.)
-   */
-  sequence: number;
-  /**
-   * The order indicates the order in which recipients are listed in a single "level" of the workflow. Note that
-   * recipients at the same level may act in parallel despite this value. However, it can often be useful to visually
-   * arrange recipients to match related business processes so this field allows for that.
-   */
-  order: number;
-  status: TRecipientStatus;
-  type: TRecipientType;
-  updated_at: string;
-  fields?: IEnvelopeField[];
-}
-
-export interface IEnvelopeDocument {
-  id: string;
-  envelope_id: string;
-  name: string;
-  url: string;
-  mime: string;
-  page_numbers: number;
-  template_document_id: string | null;
-  type: 'attachment' | 'certificate';
-  created_at: string;
-  updated_at: string;
-}
-
-export interface IEnvelopeFieldOptions {
-  /** The unique ID of the field */
-  id: string;
-
-  /** The X position of the field on the page. Self-placed fields will have an X value of 0. */
-  x: number;
-
-  /** The Y position of the field on the page. Self-placed fields will have an X value of 0. */
-  y: number;
-
-  /** For checkboxes, whether it is currently checked */
-  checked?: boolean;
-
-  /** For radio buttons, whether it is currently selected */
-  selected?: boolean;
-
-  /** The visible label for the field e.g. 'Not Applicable' */
-  value: string;
-}
-
-export interface IEnvelopeFieldSettings {
-  type?: string;
-  x: number;
-  y: number;
-  width?: number;
-  height?: number;
-  value?: number | string;
-
-  /** If the field has been filled in, this contains the current value */
-  result?: any;
-
-  /** Text field settings */
-  leading?: number;
-  alignment?: number;
-  upperCase?: boolean;
-
-  /** Dropdowns, checkboxes, radio groups */
-  options?: IEnvelopeFieldOptions[];
-
-  /** Signatures and Initials, result will be "signed" */
-  base64?: string;
-  hash?: string;
-  ip_address?: string;
-  signature_id?: string;
-  signed_at?: string;
-
-  /** Checkbox settings */
-  minimum_checked?: number;
-  maximum_checked?: number;
-
-  [key: string]: any;
-}
-
-export enum DocumentFieldTypes {
-  SIGNATURE = 'signature',
-  INITIAL = 'initial',
-  CHECKBOX_GROUP = 'checkbox_group',
-  RADIO_BUTTON_GROUP = 'radio_button_group',
-  TEXTBOX = 'textbox',
-  TIMESTAMP = 'timestamp',
-  DATE = 'date',
-  DROPDOWN = 'dropdown',
-  TEXTAREA = 'textarea',
-  ATTACHMENT = 'attachment',
-  PAYMENT = 'payment',
-}
-
-export type TDocumentFieldType = `${DocumentFieldTypes}`;
-
-export interface IEnvelopeField {
-  /** The ID of the envelope the field is for. */
-  envelope_id: string;
-  /** The ID of the document the field is for. */
-  document_id: string;
-  /** The machine name of the field, e.g. `checkbox_groupP1-18` */
-  name: string;
-  /** If set, the placeholder/label for the field. */
-  label: string | null;
-  /** The 1-based page number the field is displayed on. "Self-placed" fields that the user must apply will be on page 0. */
-  page: number;
-  /** The ID of the role in the recipients list, e.g. `Recipient 2` */
-  recipient_role: string;
-  /** The type of the field */
-  type: TDocumentFieldType;
-  /** If true, the field will be required */
-  required: boolean;
-  settings?: IEnvelopeFieldSettings;
-  validator: string | null;
-  /** Not sent by the server. Used in the UI to identify prepared fields. */
-  prepared?: boolean;
-  /** If set, the tab index for the field. */
-  tabindex: number;
-  /** The X position of the field. */
-  x: number;
-  /** The Y position of the field. */
-  y: number;
-  /** The width of the field. */
-  width: number;
-  /** The height of the field. */
-  height: number;
-  /** The default value for the field. */
-  default?: string;
-  /** The placeholder to show in the field. */
-  placeholder?: string;
-  /** For fields that support grouping (radio buttons and check boxes) the value selected will be stored under this name. */
-  group?: string;
-}
-
-/**
- * An Envelope is a workflow wrapper that shepherds one or more Documents through the various recipients in a signing
- * process.
- */
-export interface IEnvelope {
-  id: string;
-  template_id: string;
-  name: string;
-  status: TEnvelopeStatus;
-  profile_id: string;
-  organization_id: string | null;
-  no_contact: boolean;
-  created_at: string;
-  updated_at: string;
-  canceled_at: string;
-  reminder_id: string | null;
-  /** @deprecated. New envelopes will support more than one document attachment so new code should no longer refer to this field. */
-  envelope_document_id: string;
-  /** @deprecated. New envelopes may have more than one certificate attached. */
-  certificate_document_id: string | null;
-  /** Defaults to 'private'. If set to 'shared', this envelope will be visible to other users in the same organization. Ignored for personal profiles. */
-  visibility: 'private' | 'shared';
-  histories: IHistory[];
-  recipients: IRecipient[];
-  profile?: IProfile | null;
-  certificate?: IEnvelopeDocument | null;
-  /** @deprecated. New code should use `documents[]`. */
-  document?: IEnvelopeDocument | null;
-  /** Documents attached to this envelope */
-  documents?: IEnvelopeDocument[] | null;
-  fields?: IEnvelopeField[];
-}
+export type TDocumentFieldType =
+  | 'signature'
+  | 'initial'
+  | 'checkbox_group'
+  | 'radio_button_group'
+  | 'textbox'
+  | 'timestamp'
+  | 'date'
+  | 'dropdown'
+  | 'textarea'
+  | 'attachment'
+  | 'payment';
 
 export type TEnvelopeUpdateResult = Omit<IEnvelope, 'histories' | 'recipients' | 'certificate' | 'document' | 'fields' | 'profile'>;
-
-export interface IActivityEntry {
-  id: string;
-  name: string;
-  canceled_at: string;
-  created_at: string;
-  updated_at: string;
-  profile_id: string;
-  status: TEnvelopeStatus;
-  template_id: string;
-  recipient: {
-    claimed: boolean;
-    email: string;
-    name: string;
-    profile_id: string;
-    status: TRecipientStatus;
-    type: TRecipientType;
-  };
-}
-
-export interface IHistory {
-  created_at: string;
-  envelope_id: string;
-  event: THistoryEvent;
-  event_detail: TEventDetail;
-  id: string;
-  role_name: string;
-}
 
 export interface IDocumentSearchOptions {
   rows?: number;
@@ -470,4 +195,62 @@ export interface IEnvelopeSummaries {
   count: number;
   total: number;
   records: IEnvelopeSummary[];
+}
+
+export interface IInPersonLinkResponse {
+  link: string;
+  envelope_id: string;
+  profile_id: string;
+  role_name: string;
+  access_key: string;
+  expiration_date: string;
+  type: TAccessKey;
+}
+
+export interface IUpdateRecipientSubmitParams {
+  action: 'submit';
+}
+
+export interface IUpdateRecipientDeclineParams {
+  action: 'decline';
+}
+
+export interface IUpdateRecipientClaimEnvelope {
+  action: 'owner_update';
+  full_name: string;
+  email: string;
+}
+
+export interface IUpdateRecipientStatus {
+  new_full_name?: string;
+  agreed?: boolean;
+  action?: 'prepare' | 'update';
+}
+
+export interface IUpdateRecipientAgreedParams {
+  action: 'update';
+  agreed: boolean;
+}
+
+export interface IUpdateRecipientNameParams {
+  action: 'update';
+  new_full_name: string;
+}
+
+export interface IUpdateRecipientPrepareParams {
+  action: 'prepare';
+  recipients: IRecipient[];
+}
+
+export interface ICreateEnvelopeReminderRequest {
+  setup_time: number;
+  interval_time: number;
+}
+
+export interface ICreateEnvelopeRequest {
+  template_id: string;
+  roles: ICreateEnvelopeRole[];
+  name: string;
+  environment?: string;
+  prepared_fields?: {name: string; value: string}[];
 }

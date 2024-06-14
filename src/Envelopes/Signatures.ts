@@ -1,13 +1,5 @@
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-
-export interface ISignature {
-  id: string;
-  profile_id: string;
-  url: string;
-  deleted: boolean;
-  created_at: string;
-  updated_at: string;
-}
+import {ISignature} from '../Models';
 
 /**
  * Create a signature block. In a typical signing workflow, the user is asked at the beginning of the process to "adopt"

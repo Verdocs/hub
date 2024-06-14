@@ -6,3 +6,4 @@ export * as Locales from './Locales';
 export * as Primitives from './Primitives';
 export * as Strings from './Strings';
 export * as Token from './Token';
+export * as Types from './Types';

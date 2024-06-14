@@ -8,9 +8,9 @@
  * @module
  */
 
-import {IGroup, IGroupDetail} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {IPermission} from '../Users/Types';
+import {TPermission} from '../Users/Types';
+import {IGroup} from '../Models';
 
 /**
  * Get a list of groups for a given organization. The caller must have admin access to the organization.
@@ -37,7 +37,7 @@ export const getGroups = (endpoint: VerdocsEndpoint, organizationId: string) =>
  */
 export const getGroupByName = (endpoint: VerdocsEndpoint, organizationId: string, name?: string) =>
   endpoint.api //
-    .get<IGroupDetail>(`/organizations/${organizationId}/groups`, {params: {name}})
+    .get<IGroup>(`/organizations/${organizationId}/groups`, {params: {name}})
     .then((r) => r.data);
 
 /**
@@ -51,7 +51,7 @@ export const getGroupByName = (endpoint: VerdocsEndpoint, organizationId: string
  */
 export const getGroup = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string) =>
   endpoint.api //
-    .get<IGroupDetail>(`/organizations/${organizationId}/groups/${groupId}`)
+    .get<IGroup>(`/organizations/${organizationId}/groups/${groupId}`)
     .then((r) => r.data);
 
 export const getMembers = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string) =>
@@ -69,12 +69,12 @@ export const deleteMembers = (endpoint: VerdocsEndpoint, organizationId: string,
     .put(`/organizations/${organizationId}/groups/${groupId}/delete_members`, params)
     .then((r) => r.data);
 
-export const addPermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permissionId: string) =>
+export const addPermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permissionId: TPermission) =>
   endpoint.api //
-    .post<IPermission>(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`, {})
+    .post(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`, {})
     .then((r) => r.data);
 
-export const deletePermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permissionId: string) =>
+export const deletePermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permissionId: TPermission) =>
   endpoint.api //
     .delete(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`)
     .then((r) => r.data);

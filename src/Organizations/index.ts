@@ -14,4 +14,3 @@ export * as Members from './Members';
 export * as Organizations from './Organizations';
 export * as Types from './Types';
 export * as Webhooks from './Webhooks';
-export * as Whitelabel from './Whitelabel';

@@ -6,8 +6,8 @@
  * @module
  */
 
-import {ITemplateTag, ITag} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {ITemplateTag, ITag} from './Types';
 
 /**
  * Apply a tag to a template.

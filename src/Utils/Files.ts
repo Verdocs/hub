@@ -1,16 +1,10 @@
-export interface FileWithData {
-  lastModified: number;
-  size: number;
-  type: string;
-  name: string;
-  data: string;
-}
+import {IFileWithData} from './Types';
 
 /**
  * Given a File, extract the file's content as a base64 encoded data URL. The response will have a prefix that
  * includes the MIME type of the file, e.g. "data:image/jpeg;base64,iVBORw0K......"
  */
-export const fileToDataUrl = (file: File): Promise<FileWithData> =>
+export const fileToDataUrl = (file: File): Promise<IFileWithData> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
 

@@ -11,8 +11,9 @@
  * @module
  */
 
-import {IApiKey, IApiKeyWithSecret, ICreateApiKeyRequest, IUpdateApiKeyRequest} from './Types';
+import {ICreateApiKeyRequest, IUpdateApiKeyRequest} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {IApiKey} from '../Models';
 
 /**
  * Get a list of keys for a given organization. The caller must have admin access to the organization.
@@ -39,7 +40,7 @@ export const getKeys = (endpoint: VerdocsEndpoint, organizationId: string) =>
  */
 export const createKey = (endpoint: VerdocsEndpoint, organizationId: string, params: ICreateApiKeyRequest) =>
   endpoint.api //
-    .post<IApiKeyWithSecret>(`/organizations/${organizationId}/api_key`, params)
+    .post<IApiKey>(`/organizations/${organizationId}/api_key`, params)
     .then((r) => r.data);
 
 /**
@@ -53,7 +54,7 @@ export const createKey = (endpoint: VerdocsEndpoint, organizationId: string, par
  */
 export const rotateKey = (endpoint: VerdocsEndpoint, organizationId: string, clientId: string) =>
   endpoint.api //
-    .put<IApiKeyWithSecret>(`/organizations/${organizationId}/api_key/${clientId}/rotate`)
+    .put<IApiKey>(`/organizations/${organizationId}/api_key/${clientId}/rotate`)
     .then((r) => r.data);
 
 /**

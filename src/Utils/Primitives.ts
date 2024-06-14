@@ -1,5 +1,5 @@
-import {IProfile} from '../Users/Types';
 import {capitalize} from './Strings';
+import {IProfile} from '../Models';
 
 /**
  * Create an array containing a sequence of integers, e.g. [START, START+1, START+2, ...] This is frequently useful
