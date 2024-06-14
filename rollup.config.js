@@ -1,4 +1,5 @@
 import ts from 'rollup-plugin-ts';
+import copy from 'rollup-plugin-copy';
 import clear from 'rollup-plugin-clear';
 import commonjs from '@rollup/plugin-commonjs';
 
@@ -32,5 +33,12 @@ module.exports = {
       },
     }),
     commonjs(),
+    copy({
+      targets: [
+        {src: 'README.md', dest: 'dist/'},
+        {src: 'package.json', dest: 'dist/'},
+        {src: 'tsconfig.json', dest: 'dist/'},
+      ],
+    }),
   ],
 };

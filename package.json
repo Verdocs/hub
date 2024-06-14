@@ -13,21 +13,13 @@
   ],
   "author": "Verdocs, LLC",
   "license": "MIT",
-  "Xexports": {
-    ".": {
-      "import": "./dist-esm/bundle.min.mjs",
-      "require": "./dist-cjs/bundle.min.cjs"
-    },
-    "./server": "./server/index.js"
-  },
-  "Xtype": "module",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "source": "./src/index.ts",
-  "browser": "dis/browser.js",
+  "browser": "dist/browser.js",
   "files": [
-    "index.d.ts",
+    "dist/*",
     "node.js",
     "browser.js",
     "README.md"
@@ -81,8 +73,7 @@
     "prettier": "^3.3.2",
     "rollup": "^4.18.0",
     "rollup-plugin-clear": "^2.0.7",
-    "rollup-plugin-dts": "^6.1.1",
-    "rollup-plugin-esbuild": "^6.1.1",
+    "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-ts": "^3.4.5",
     "ts-jest": "^29.1.4",
     "tslint": "^6.1.3",
