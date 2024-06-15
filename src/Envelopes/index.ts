@@ -1,7 +1,7 @@
-export * as Envelopes from './Envelopes';
-export * as Permissions from './Permissions';
-export * as Recipients from './Recipients';
-export * as Reminders from './Reminders';
-export * as Signatures from './Signatures';
-export * as Initials from './Initials';
-export * as Types from './Types';
+export * from './Envelopes';
+export * from './Initials';
+export * from './Recipients';
+export * from './Reminders';
+export * from './Permissions';
+export * from './Signatures';
+export * from './Types';

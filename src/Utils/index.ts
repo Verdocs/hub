@@ -1,9 +1,9 @@
-export * as Colors from './Colors';
-export * as DateTime from './DateTime';
-export * as Fields from './Fields';
-export * as Files from './Files';
-export * as Locales from './Locales';
-export * as Primitives from './Primitives';
-export * as Strings from './Strings';
-export * as Token from './Token';
-export * as Types from './Types';
+export * from './Colors';
+export * from './DateTime';
+export * from './Fields';
+export * from './Files';
+export * from './Locales';
+export * from './Primitives';
+export * from './Strings';
+export * from './Token';
+export * from './Types';

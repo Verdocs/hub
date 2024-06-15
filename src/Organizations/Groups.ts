@@ -54,27 +54,27 @@ export const getGroup = (endpoint: VerdocsEndpoint, organizationId: string, grou
     .get<IGroup>(`/organizations/${organizationId}/groups/${groupId}`)
     .then((r) => r.data);
 
-export const getMembers = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string) =>
+export const getGroupMembers = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string) =>
   endpoint.api //
     .get(`/organizations/${organizationId}/groups/${groupId}/members`)
     .then((r) => r.data);
 
-export const addMembers = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, params: any) =>
+export const addGroupMembers = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, params: any) =>
   endpoint.api //
     .post(`/organizations/${organizationId}/groups/${groupId}/members`, params)
     .then((r) => r.data);
 
-export const deleteMembers = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, params: any) =>
+export const deleteGroupMembers = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, params: any) =>
   endpoint.api //
     .put(`/organizations/${organizationId}/groups/${groupId}/delete_members`, params)
     .then((r) => r.data);
 
-export const addPermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permission: TPermission) =>
+export const addGroupPermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permission: TPermission) =>
   endpoint.api //
     .post(`/organizations/${organizationId}/groups/${groupId}/permissions/${permission}`, {})
     .then((r) => r.data);
 
-export const deletePermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permission: TPermission) =>
+export const deleteGroupPermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permission: TPermission) =>
   endpoint.api //
     .delete(`/organizations/${organizationId}/groups/${groupId}/permissions/${permission}`)
     .then((r) => r.data);

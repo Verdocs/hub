@@ -13,10 +13,9 @@
 export * from './BaseTypes';
 export * from './Models';
 export * from './VerdocsEndpoint';
-
-export * as Envelopes from './Envelopes';
-export * as Organizations from './Organizations';
-export * as Sessions from './Sessions';
-export * as Templates from './Templates';
-export * as Users from './Users';
-export * as Utils from './Utils';
+export * from './Envelopes';
+export * from './Organizations';
+export * from './Sessions';
+export * from './Templates';
+export * from './Users';
+export * from './Utils';

@@ -1,4 +1,6 @@
 import {TSortTemplateBy, TTemplateAction, TTemplateSenderType} from '../BaseTypes';
+import {ITimePeriod} from '../Utils';
+import {ITemplate} from '../Models';
 
 /**
  * Some template search and list endpoints return only a partial set of fields for each entry via this structure.
@@ -47,11 +49,6 @@ export interface ITemplateSearchParams {
   page?: number;
 }
 
-export interface ITimePeriod {
-  start_time: string; // Date
-  end_time: string; // Date
-}
-
 export interface ITemplateSummaries {
   page: number;
   count: number;
@@ -80,4 +77,11 @@ export interface ITemplateOwnerInfo {
   email: string;
   name: string;
   profile_id: string;
+}
+
+export interface ITemplateSearchResult {
+  page: number;
+  row: number;
+  total: number;
+  result: ITemplate[];
 }

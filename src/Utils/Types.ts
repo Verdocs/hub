@@ -11,3 +11,8 @@ export interface ICountry {
   name: string;
   value: string;
 }
+
+export interface ITimePeriod {
+  start_time: string;
+  end_time: string;
+}

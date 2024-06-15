@@ -5,10 +5,11 @@
  * @module
  */
 
+import {ITemplateOwnerInfo, ITemplateSearchParams, ITemplateSearchResult, ITemplateSummary} from './Types';
 import {TSortTemplateBy, TTemplateSenderType} from '../BaseTypes';
-import {ITemplateOwnerInfo, ITemplateSummary} from './Types';
 import {IRole, ITemplate, ITemplateField} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {ITimePeriod} from '../Utils';
 
 export interface IGetTemplatesParams {
   is_starred?: boolean;
@@ -298,38 +299,6 @@ export const deleteTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
     .delete(`/templates/${templateId}`)
     .then((r) => r.data);
 
-export interface ITimePeriod {
-  start_time: string; // Date
-  end_time: string; // Date
-}
-
-export interface ITemplateSearchParams {
-  id?: string;
-  name?: string;
-  sender?: string;
-  description?: string;
-  profile_id?: string;
-  organization_id?: string;
-  updated_at?: ITimePeriod;
-  created_at?: ITimePeriod;
-  last_used_at?: ITimePeriod;
-  is_personal?: boolean;
-  is_public?: boolean;
-  tags?: string[];
-  document_name?: string;
-  sort_by?: TSortTemplateBy;
-  ascending?: boolean;
-  row?: number;
-  page?: number;
-}
-
-export interface ITemplateSearchResult {
-  page: number;
-  row: number;
-  total: number;
-  result: ITemplate[];
-}
-
 /**
  * Search for templates matching various criteria.
  *
@@ -379,7 +348,7 @@ export interface IGetTemplateSummaryParams {
  * const summary = await Templates.getSummary((VerdocsEndpoint.getDefault(), 0);
  * ```
  */
-export const getSummary = async (endpoint: VerdocsEndpoint, params: IGetTemplateSummaryParams = {}) =>
+export const getTemplatesSummary = async (endpoint: VerdocsEndpoint, params: IGetTemplateSummaryParams = {}) =>
   endpoint.api //
     .post<ITemplateSummary>('/templates/summary', params)
     .then((r) => r.data);

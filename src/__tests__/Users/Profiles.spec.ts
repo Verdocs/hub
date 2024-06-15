@@ -1,9 +1,10 @@
 import {jest} from '@jest/globals';
 import MockAdapter from 'axios-mock-adapter';
+import {createProfile, deleteProfile, getPermissions, getProfile, getProfileGroups} from '../../Users';
+import {getProfilePermissions, getProfiles, getRoles, switchProfile, updateProfile} from '../../Users';
 import {VerdocsEndpoint} from '../../VerdocsEndpoint';
-import {Profiles} from '../../Users';
-import {IProfile} from '../../Models';
 import {TPermission, TRole} from '../../BaseTypes';
+import {IProfile} from '../../Models';
 
 // TODO: Expand this test suite with more mock data and result checks
 
@@ -52,7 +53,7 @@ it('getProfiles should return a "current" profile', async () => {
   const mock = new MockAdapter(endpoint.api);
   mock.onGet('/profiles').reply(200, [MockProfile]);
 
-  await Profiles.getProfiles(endpoint).then(thenFn).catch(catchFn);
+  await getProfiles(endpoint).then(thenFn).catch(catchFn);
   expect(thenFn).toHaveBeenCalledWith([MockProfile]);
   expect(catchFn).not.toHaveBeenCalled();
 });
@@ -65,7 +66,7 @@ it('getRoles should return a list of system roles', async () => {
   const roles = [] as TRole[];
   mock.onGet('/roles').reply(200, roles);
 
-  await Profiles.getRoles(endpoint).then(thenFn).catch(catchFn);
+  await getRoles(endpoint).then(thenFn).catch(catchFn);
   expect(thenFn).toHaveBeenCalledWith(roles);
   expect(catchFn).not.toHaveBeenCalled();
 });
@@ -78,7 +79,7 @@ it('getPermissions should return a list of system permissions', async () => {
   const permissions = [] as TPermission[];
   mock.onGet('/permissions').reply(200, permissions);
 
-  await Profiles.getPermissions(endpoint).then(thenFn).catch(catchFn);
+  await getPermissions(endpoint).then(thenFn).catch(catchFn);
   expect(thenFn).toHaveBeenCalledWith(permissions);
   expect(catchFn).not.toHaveBeenCalled();
 });
@@ -91,7 +92,7 @@ it('createProfile should return the new profile', async () => {
   const profile = {first_name: 'FIRST', last_name: 'LAST', email: 'EMAIL', organization_id: 'ORGID', user_id: 'TEST'};
   mock.onPost('/profiles').reply(200, profile);
 
-  await Profiles.createProfile(endpoint, profile).then(thenFn).catch(catchFn);
+  await createProfile(endpoint, profile).then(thenFn).catch(catchFn);
   expect(thenFn).toHaveBeenCalledWith(profile);
   expect(catchFn).not.toHaveBeenCalled();
 });
@@ -105,7 +106,7 @@ it('getProfile should return a profile', async () => {
   const response = {id: 'TEST'};
   mock.onGet('/profiles/TEST').reply(200, response);
 
-  await Profiles.getProfile(endpoint, profileId).then(thenFn).catch(catchFn);
+  await getProfile(endpoint, profileId).then(thenFn).catch(catchFn);
   expect(thenFn).toHaveBeenCalledWith(response);
   expect(catchFn).not.toHaveBeenCalled();
 });
@@ -117,7 +118,7 @@ it('getProfilePermissions should return a permissions array', async () => {
   const mock = new MockAdapter(endpoint.api);
   mock.onGet('/profiles/TEST/permissions').reply(200, []);
 
-  await Profiles.getProfilePermissions(endpoint, 'TEST').then(thenFn).catch(catchFn);
+  await getProfilePermissions(endpoint, 'TEST').then(thenFn).catch(catchFn);
   expect(thenFn).toHaveBeenCalledWith([]);
   expect(catchFn).not.toHaveBeenCalled();
 });
@@ -129,7 +130,7 @@ it('getProfileGroups should return a groups array', async () => {
   const mock = new MockAdapter(endpoint.api);
   mock.onGet('/profiles/TEST/groups').reply(200, []);
 
-  await Profiles.getProfileGroups(endpoint, 'TEST').then(thenFn).catch(catchFn);
+  await getProfileGroups(endpoint, 'TEST').then(thenFn).catch(catchFn);
   expect(thenFn).toHaveBeenCalledWith([]);
   expect(catchFn).not.toHaveBeenCalled();
 });
@@ -141,7 +142,7 @@ it('switchProfile should return a new profile', async () => {
   const mock = new MockAdapter(endpoint.api);
   mock.onPost('/profiles/TEST/switch').reply(200, {});
 
-  await Profiles.switchProfile(endpoint, 'TEST').then(thenFn).catch(catchFn);
+  await switchProfile(endpoint, 'TEST').then(thenFn).catch(catchFn);
   expect(thenFn).toHaveBeenCalledWith({});
   expect(catchFn).not.toHaveBeenCalled();
 });
@@ -153,7 +154,7 @@ it('updateProfile should return a new profile', async () => {
   const mock = new MockAdapter(endpoint.api);
   mock.onPut('/profiles/TEST').reply(200, {});
 
-  await Profiles.updateProfile(endpoint, 'TEST', {first_name: 'TEST'}).then(thenFn).catch(catchFn);
+  await updateProfile(endpoint, 'TEST', {first_name: 'TEST'}).then(thenFn).catch(catchFn);
   expect(thenFn).toHaveBeenCalledWith({});
   expect(catchFn).not.toHaveBeenCalled();
 });
@@ -165,7 +166,7 @@ it('deleteProfile should return a new profile', async () => {
   const mock = new MockAdapter(endpoint.api);
   mock.onDelete('/profiles/TEST').reply(200);
 
-  await Profiles.deleteProfile(endpoint, 'TEST').then(thenFn).catch(catchFn);
+  await deleteProfile(endpoint, 'TEST').then(thenFn).catch(catchFn);
   expect(thenFn).toHaveBeenCalled();
   expect(catchFn).not.toHaveBeenCalled();
 });

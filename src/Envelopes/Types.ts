@@ -1,12 +1,6 @@
 import {IActivityEntry, IEnvelopeDocument, IEnvelopeField, IEnvelopeHistory, IRecipient, TAccessKey} from '../Models';
 import {TEnvelopeStatus, TRecipientStatus, TRecipientType} from '../BaseTypes';
 
-export interface ISigningSessionRequest {
-  envelopeId: string;
-  roleId: string;
-  inviteCode: string;
-}
-
 /**
  * One entry in an envelope search result.
  * NOTE: Many of the fields here are undefined unless "summary=true" is included in the search terms

@@ -24,7 +24,7 @@ import {IApiKey} from '../Models';
  * const keys = await ApiKeys.getKeys(ORGID);
  * ```
  */
-export const getKeys = (endpoint: VerdocsEndpoint, organizationId: string) =>
+export const getApiKeys = (endpoint: VerdocsEndpoint, organizationId: string) =>
   endpoint.api //
     .get<IApiKey[]>(`/organizations/${organizationId}/api_key`)
     .then((r) => r.data);
@@ -38,7 +38,7 @@ export const getKeys = (endpoint: VerdocsEndpoint, organizationId: string) =>
  * await ApiKeys.createKey(ORGID, {name: NEWNAME});
  * ```
  */
-export const createKey = (endpoint: VerdocsEndpoint, organizationId: string, params: ICreateApiKeyRequest) =>
+export const createApiKey = (endpoint: VerdocsEndpoint, organizationId: string, params: ICreateApiKeyRequest) =>
   endpoint.api //
     .post<IApiKey>(`/organizations/${organizationId}/api_key`, params)
     .then((r) => r.data);
@@ -52,7 +52,7 @@ export const createKey = (endpoint: VerdocsEndpoint, organizationId: string, par
  * const {client_secret: newSecret} = await ApiKeys.rotateKey(ORGID, CLIENTID);
  * ```
  */
-export const rotateKey = (endpoint: VerdocsEndpoint, organizationId: string, clientId: string) =>
+export const rotateApiKey = (endpoint: VerdocsEndpoint, organizationId: string, clientId: string) =>
   endpoint.api //
     .put<IApiKey>(`/organizations/${organizationId}/api_key/${clientId}/rotate`)
     .then((r) => r.data);
@@ -66,7 +66,7 @@ export const rotateKey = (endpoint: VerdocsEndpoint, organizationId: string, cli
  * await ApiKeys.updateKey(ORGID, CLIENTID, {name: NEWNAME});
  * ```
  */
-export const updateKey = (endpoint: VerdocsEndpoint, organizationId: string, clientId: string, params: IUpdateApiKeyRequest) =>
+export const updateApiKey = (endpoint: VerdocsEndpoint, organizationId: string, clientId: string, params: IUpdateApiKeyRequest) =>
   endpoint.api //
     .patch<IApiKey>(`/organizations/${organizationId}/api_key/${clientId}`, params)
     .then((r) => r.data);
@@ -80,7 +80,7 @@ export const updateKey = (endpoint: VerdocsEndpoint, organizationId: string, cli
  * await ApiKeys.deleteKey(ORGID, CLIENTID);
  * ```
  */
-export const deleteKey = (endpoint: VerdocsEndpoint, organizationId: string, clientId: string) =>
+export const deleteApiKey = (endpoint: VerdocsEndpoint, organizationId: string, clientId: string) =>
   endpoint.api //
     .delete(`/organizations/${organizationId}/api_key/${clientId}`)
     .then((r) => r.data);

@@ -1,6 +1,6 @@
 import {TTemplateAction, TTemplatePermission} from '../BaseTypes';
-import {TSession} from '../Sessions/Types';
 import {ITemplateSummary} from './Types';
+import {TSession} from '../Sessions';
 import {ITemplate} from '../Models';
 
 export const canPerformTemplateAction = (

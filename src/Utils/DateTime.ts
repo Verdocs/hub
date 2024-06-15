@@ -1,3 +1,5 @@
+import {ITimePeriod} from './Types';
+
 const YEAR = 365 * 24 * 60 * 60;
 // const MONTH = 30 * 24 * 60 * 60;
 const WEEK = 7 * 24 * 60 * 60;
@@ -41,11 +43,6 @@ export const formatShortTimeAgo = (val: any) => {
 
   return `${timeDiff}S`;
 };
-
-export interface ITimePeriod {
-  start_time: string;
-  end_time: string;
-}
 
 export function timePeriod(type: string): ITimePeriod | null {
   let endDate = new Date().getTime();

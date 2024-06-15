@@ -1,9 +1,9 @@
-import {ICreateEnvelopeRequest, IEnvelopesSearchResult, IEnvelopesSummary, ISigningSessionRequest} from './Types';
 import {IEnvelope, IEnvelopeDocument, IEnvelopeFieldSettings, IRecipient} from '../Models';
+import {ICreateEnvelopeRequest, IEnvelopesSearchResult, IEnvelopesSummary} from './Types';
 import {TEnvelopeStatus, TEnvelopeUpdateResult, TRecipientStatus} from '../BaseTypes';
+import {ISigningSession, ISigningSessionRequest} from '../Sessions';
 import {decodeAccessTokenBody} from '../Utils/Token';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {ISigningSession} from '../Sessions/Types';
 
 /**
  * Create an envelope
@@ -51,7 +51,7 @@ export const createEnvelope = async (endpoint: VerdocsEndpoint, request: ICreate
  * const {action_required, completed, waiting_on_others} = await Envelopes.getSummary(VerdocsEndpoint.getDefault());
  * ```
  */
-export const getSummary = async (endpoint: VerdocsEndpoint, page: number) =>
+export const getEnvelopesSummary = async (endpoint: VerdocsEndpoint, page: number) =>
   endpoint.api //
     .post<IEnvelopesSummary>('/envelopes/summary', {page})
     .then((r) => r.data);

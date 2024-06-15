@@ -4,8 +4,7 @@
  * @module
  */
 
-import {userHasPermissions} from '../Sessions';
-import {TSession} from '../Sessions/Types';
+import {TSession, userHasPermissions} from '../Sessions';
 import {ITemplateSummary} from './Types';
 import {ITemplate} from '../Models';
 
