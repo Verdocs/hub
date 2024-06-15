@@ -1,9 +1,9 @@
 import {jest} from '@jest/globals';
 import MockAdapter from 'axios-mock-adapter';
-import {TPermission, TRole} from '../../Users/Types';
 import {VerdocsEndpoint} from '../../VerdocsEndpoint';
 import {Profiles} from '../../Users';
 import {IProfile} from '../../Models';
+import {TPermission, TRole} from '../../BaseTypes';
 
 // TODO: Expand this test suite with more mock data and result checks
 

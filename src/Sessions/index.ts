@@ -1,4 +1,4 @@
-import {TPermission} from '../Users/Types';
+import {TPermission} from '../BaseTypes';
 export * as Types from './Types';
 import {TSession} from './Types';
 

@@ -1,33 +1,5 @@
-import {TTemplatePermission} from '../Templates/Types';
-import {TOrgPermission} from '../Organizations/Types';
+import {TRequestStatus} from '../BaseTypes';
 import {IProfile} from '../Models';
-
-export type TRequestStatus = 'OK' | 'ERROR';
-
-export type TAccountPermission =
-  | 'owner:add'
-  | 'owner:remove'
-  | 'admin:add'
-  | 'admin:remove'
-  | 'member:view'
-  | 'member:add'
-  | 'member:remove';
-
-/**
- * Operation within Verdocs that users may perform.
- */
-export type TPermission = TTemplatePermission | TOrgPermission | TAccountPermission;
-
-/**
- * Plans provide access to Verdocs product features.
- */
-export type TPlan = 'env:essential' | 'org:standard';
-
-/**
- * Roles provide access to groups of permissions. Note that for historical reasons there is some overlap in the
- * use of the term "role". TRole refers to a user type. A "Role" (IRole) is a Template participant placeholder.
- */
-export type TRole = 'contact' | 'basic_user' | 'member' | 'admin' | 'owner';
 
 export interface ICreateProfileRequest {
   first_name: string;

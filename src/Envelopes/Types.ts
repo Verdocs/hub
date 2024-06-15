@@ -1,18 +1,11 @@
-import {IActivityEntry, IEnvelope, IEnvelopeDocument, IEnvelopeField, IEnvelopeHistory, IRecipient, TAccessKey} from '../Models';
+import {IActivityEntry, IEnvelopeDocument, IEnvelopeField, IEnvelopeHistory, IRecipient, TAccessKey} from '../Models';
+import {TEnvelopeStatus, TRecipientStatus, TRecipientType} from '../BaseTypes';
 
 export interface ISigningSessionRequest {
   envelopeId: string;
   roleId: string;
   inviteCode: string;
 }
-
-export type TRecipientAction = 'submit' | 'decline' | 'prepare' | 'update';
-
-export type TEnvelopeStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
-
-export type TRecipientStatus = 'invited' | 'opened' | 'signed' | 'submitted' | 'canceled' | 'pending' | 'declined';
-
-export type TRecipientType = 'signer' | 'cc' | 'approver';
 
 /**
  * One entry in an envelope search result.
@@ -71,21 +64,6 @@ export interface IEnvelopesSummary {
   };
 }
 
-export type TDocumentFieldType =
-  | 'signature'
-  | 'initial'
-  | 'checkbox_group'
-  | 'radio_button_group'
-  | 'textbox'
-  | 'timestamp'
-  | 'date'
-  | 'dropdown'
-  | 'textarea'
-  | 'attachment'
-  | 'payment';
-
-export type TEnvelopeUpdateResult = Omit<IEnvelope, 'histories' | 'recipients' | 'certificate' | 'document' | 'fields' | 'profile'>;
-
 export interface IDocumentSearchOptions {
   rows?: number;
   page?: number;
@@ -96,42 +74,6 @@ export interface IDocumentSearchOptions {
   envelope_status?: TEnvelopeStatus[];
   recipient_status?: TEnvelopeStatus[];
 }
-
-export type THistoryEvent =
-  | 'recipient:signed'
-  | 'recipient:opened'
-  | 'recipient:submitted'
-  | 'recipient:prepared'
-  | 'recipient:claimed'
-  | 'recipient:agreed'
-  | 'recipient:invited'
-  | 'recipient:delegated'
-  | 'recipient:updated_info'
-  | 'recipient:declined'
-  | 'invitation:resent'
-  | 'envelope:cc'
-  // TODO: These were removed and are not actually in use. See the created_at, updated_at (if status is completed)
-  //  and canceled_at fields to identify these states.
-  | 'created'
-  | 'completed'
-  | 'canceled'
-  | 'owner:updated_recipient_info'
-  | 'owner:canceled'
-  | 'owner:get_in_person_link';
-
-export type TEventDetail =
-  | 'in_app'
-  | 'mail'
-  | 'signer'
-  | 'sms'
-  | 'reminder'
-  | 'preparer'
-  | 'manual'
-  | 'in_person_link'
-  | 'guest'
-  | 'email'
-  | ''
-  | string; // Modification events have a string description
 
 export interface ICreateEnvelopeRole {
   /** The type of role to create. Most participants in standard flows will be "signer" recipients. */

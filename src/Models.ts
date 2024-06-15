@@ -1,7 +1,16 @@
-import {TDocumentFieldType, TEnvelopeStatus, TEventDetail, THistoryEvent, TRecipientStatus, TRecipientType} from './Envelopes/Types';
-import {TApiKeyPermission} from './Organizations/Types';
-import {TPermission, TPlan, TRole} from './Users/Types';
-import {TTemplateSenderType} from './Templates/Types';
+import {
+  TApiKeyPermission,
+  TEnvelopeStatus,
+  TEventDetail,
+  TFieldType,
+  THistoryEvent,
+  TPermission,
+  TPlan,
+  TRecipientStatus,
+  TRecipientType,
+  TRole,
+  TTemplateSenderType,
+} from './BaseTypes';
 
 /////////////////////////////// NOTIFICATIONS /////////////////////////////
 
@@ -232,6 +241,21 @@ export interface IInPersonAccessKey {
   envelope?: IEnvelope;
 }
 
+export interface IInAppAccessKey {
+  id: string;
+  type: 'in_app';
+  authentication?: string | null;
+  recipient_name: string;
+  envelope_id: string;
+  key: string;
+  expiration_date: string | null;
+  created_at: string;
+  first_used: string | null;
+  last_used: string | null;
+
+  envelope?: IEnvelope;
+}
+
 export interface IEmailAccessKey {
   id: string;
   type: 'email';
@@ -262,7 +286,7 @@ export interface ISMSAccessKey {
   envelope?: IEnvelope;
 }
 
-export type TAccessKey = IInPersonAccessKey | IEmailAccessKey | ISMSAccessKey;
+export type TAccessKey = IInPersonAccessKey | IInAppAccessKey | IEmailAccessKey | ISMSAccessKey;
 
 /**
  * An Envelope is a workflow wrapper that shepherds one or more Documents through the various recipients in a signing
@@ -328,7 +352,7 @@ export interface IEnvelopeField {
   /** The ID of the role in the recipients list, e.g. `Recipient 2` */
   recipient_role: string;
   /** The type of the field */
-  type: TDocumentFieldType;
+  type: TFieldType;
   /** If true, the field will be required */
   required: boolean;
   settings?: IEnvelopeFieldSettings;
@@ -624,7 +648,7 @@ export interface ITemplateField {
   template_id: string;
   /** The ID of the document the field is for. */
   document_id: string;
-  type: TDocumentFieldType;
+  type: TFieldType;
   required: boolean;
   settings: ITemplateFieldSetting;
   page: number;

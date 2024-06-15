@@ -5,9 +5,10 @@
  * @module
  */
 
+import {TSortTemplateBy, TTemplateSenderType} from '../BaseTypes';
+import {ITemplateOwnerInfo, ITemplateSummary} from './Types';
 import {IRole, ITemplate, ITemplateField} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {ITemplateOwnerInfo, ITemplateSummary, TSortTemplateBy, TTemplateSenderType} from './Types';
 
 export interface IGetTemplatesParams {
   is_starred?: boolean;

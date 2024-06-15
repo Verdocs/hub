@@ -1,6 +1,6 @@
-import {TEnvelopeUpdateResult, TEnvelopeStatus, TRecipientStatus, ICreateEnvelopeRequest, IEnvelopesSummary} from './Types';
+import {ICreateEnvelopeRequest, IEnvelopesSearchResult, IEnvelopesSummary, ISigningSessionRequest} from './Types';
 import {IEnvelope, IEnvelopeDocument, IEnvelopeFieldSettings, IRecipient} from '../Models';
-import {IEnvelopesSearchResult, ISigningSessionRequest} from './Types';
+import {TEnvelopeStatus, TEnvelopeUpdateResult, TRecipientStatus} from '../BaseTypes';
 import {decodeAccessTokenBody} from '../Utils/Token';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {ISigningSession} from '../Sessions/Types';

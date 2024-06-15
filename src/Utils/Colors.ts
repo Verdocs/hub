@@ -1,6 +1,4 @@
-/* tslint:disable:no-bitwise */
-
-import {TRole} from '../Users/Types';
+import {TRole} from '../BaseTypes';
 
 /**
  * Given a `rgba(r,g,b,a)` string value, returns the hex equivalent, dropping the alpha channel.
@@ -73,9 +71,11 @@ export function nameToRGBA(str: string) {
     }
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
+      // tslint:disable-next-line:no-bitwise
       hash = str.charCodeAt(i) + ((hash << 5) - hash);
     }
     hash = Math.round(hash / 1.3);
+    // tslint:disable-next-line:no-bitwise
     const c = (hash & 0x00ffff08).toString(16).toUpperCase();
     const hex = '#' + '00000'.substring(0, 6 - c.length) + c;
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex) as any[];

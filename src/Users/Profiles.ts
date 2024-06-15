@@ -1,13 +1,7 @@
-import {
-  ICreateBusinessAccountRequest,
-  ICreateProfileRequest,
-  TPermission,
-  ISwitchProfileResponse,
-  IUpdateProfileRequest,
-  TRole,
-} from './Types';
-import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {ICreateBusinessAccountRequest, ICreateProfileRequest, ISwitchProfileResponse, IUpdateProfileRequest} from './Types';
 import {IGroup, IOrganization, IProfile} from '../Models';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {TPermission, TRole} from '../BaseTypes';
 
 /**
  * Get the user's available profiles. The current profile will be marked with `current: true`.

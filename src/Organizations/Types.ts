@@ -1,4 +1,4 @@
-import {TRole} from '../Users/Types';
+import {TApiKeyPermission, TRole} from '../BaseTypes';
 
 export interface ICreateApiKeyRequest {
   name: string;
@@ -10,14 +10,10 @@ export interface IUpdateApiKeyRequest {
   permission?: TApiKeyPermission;
 }
 
-export type TApiKeyPermission = 'personal' | 'global_read' | 'global_write';
-
 export interface ICreateInvitationRequest {
   email: string;
   role: TRole;
 }
-
-export type TOrgPermission = 'org:create' | 'org:view' | 'org:update' | 'org:delete' | 'org:transfer' | 'org:list';
 
 export interface ISetWebhookRequest {
   url: string;

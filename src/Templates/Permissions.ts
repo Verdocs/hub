@@ -4,10 +4,10 @@
  * @module
  */
 
-import {ITemplate} from '../Models';
 import {userHasPermissions} from '../Sessions';
 import {TSession} from '../Sessions/Types';
 import {ITemplateSummary} from './Types';
+import {ITemplate} from '../Models';
 
 /**
  * Check to see if the user created the template.

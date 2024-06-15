@@ -9,7 +9,7 @@
  */
 
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {TPermission} from '../Users/Types';
+import {TPermission} from '../BaseTypes';
 import {IGroup} from '../Models';
 
 /**
@@ -69,12 +69,12 @@ export const deleteMembers = (endpoint: VerdocsEndpoint, organizationId: string,
     .put(`/organizations/${organizationId}/groups/${groupId}/delete_members`, params)
     .then((r) => r.data);
 
-export const addPermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permissionId: TPermission) =>
+export const addPermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permission: TPermission) =>
   endpoint.api //
-    .post(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`, {})
+    .post(`/organizations/${organizationId}/groups/${groupId}/permissions/${permission}`, {})
     .then((r) => r.data);
 
-export const deletePermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permissionId: TPermission) =>
+export const deletePermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permission: TPermission) =>
   endpoint.api //
-    .delete(`/organizations/${organizationId}/groups/${groupId}/permissions/${permissionId}`)
+    .delete(`/organizations/${organizationId}/groups/${groupId}/permissions/${permission}`)
     .then((r) => r.data);

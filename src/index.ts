@@ -10,6 +10,7 @@
  * @module
  */
 
+export * from './BaseTypes';
 export * from './Models';
 export * from './VerdocsEndpoint';
 
