@@ -10,7 +10,8 @@
  * @module
  */
 
-export * as Models from './Models';
+export * from './Models';
+export * from './VerdocsEndpoint';
 
 export * as Envelopes from './Envelopes';
 export * as Organizations from './Organizations';
@@ -18,4 +19,3 @@ export * as Sessions from './Sessions';
 export * as Templates from './Templates';
 export * as Users from './Users';
 export * as Utils from './Utils';
-export * from './VerdocsEndpoint';
