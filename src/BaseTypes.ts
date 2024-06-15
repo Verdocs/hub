@@ -1,4 +1,5 @@
 import {IEnvelope} from './Models';
+import {TEnvelopePermission} from './Envelopes';
 
 export type TRequestStatus = 'OK' | 'ERROR';
 
@@ -42,7 +43,7 @@ export type TApiKeyPermission = 'personal' | 'global_read' | 'global_write';
 /**
  * Operation within Verdocs that users may perform.
  */
-export type TPermission = TTemplatePermission | TOrgPermission | TAccountPermission;
+export type TPermission = TTemplatePermission | TOrgPermission | TAccountPermission | TEnvelopePermission;
 
 export type TRecipientAction = 'submit' | 'decline' | 'prepare' | 'update';
 
