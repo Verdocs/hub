@@ -2,6 +2,7 @@ import {TApiKeyPermission, TRole} from '../BaseTypes';
 
 export interface ICreateApiKeyRequest {
   name: string;
+  profile_id: string;
   permission: TApiKeyPermission;
 }
 
