@@ -1,6 +1,6 @@
 {
   "name": "@verdocs/js-sdk",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "private": false,
   "homepage": "https://github.com/Verdocs/js-sdk",
   "description": "Isomorphic JS SDK providing types and API wrappers for the Verdocs platform for Node and Browser clients",
@@ -51,7 +51,7 @@
     "axios": "^1.7.2"
   },
   "peerDependencies": {
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.2"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
@@ -71,6 +71,6 @@
     "tslint-config-prettier": "^1.18.0",
     "typedoc": "^0.25.13",
     "typedoc-plugin-markdown": "^4.0.3",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.2"
   }
 }

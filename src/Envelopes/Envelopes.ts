@@ -2,8 +2,8 @@ import {IEnvelope, IEnvelopeDocument, IEnvelopeFieldSettings, IRecipient} from '
 import {ICreateEnvelopeRequest, IEnvelopesSearchResult, IEnvelopesSummary} from './Types';
 import {TEnvelopeStatus, TEnvelopeUpdateResult, TRecipientStatus} from '../BaseTypes';
 import {ISigningSession, ISigningSessionRequest} from '../Sessions';
-import {decodeAccessTokenBody} from '../Utils/Token';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {decodeAccessTokenBody} from '../Utils';
 
 /**
  * Create an envelope
@@ -371,4 +371,15 @@ export interface IListEnvelopesParams {
 export const listEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesParams) =>
   endpoint.api //
     .post<{total: number; rows: number; page: number; envelopes: IEnvelope[]}>('/envelopes/list', params)
+    .then((r) => r.data);
+
+/**
+ * Get all of the envelopes that were sent using a given template.
+ * NOTE: This endpoint will be retired soon. Its response is not paginated and it is typically used only to retrieve
+ * "submitted data" for a template. A new endpoint will be introduced to provide this function more directly.
+ * @deprecated
+ */
+export const getEnvelopesByTemplateId = async (endpoint: VerdocsEndpoint, templateId: string) =>
+  endpoint.api //
+    .get<IEnvelope[]>(`/envelopes?template_id=${templateId}`)
     .then((r) => r.data);
