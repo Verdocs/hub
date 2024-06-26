@@ -1,3 +1,13 @@
+////////////////////////////// QA RULES ///////////////////////
+// When code-reviewing changes to these types, to align with
+// database models, optional fields should be e.g.
+//    field: string|null;
+// NOT:
+//    field?: string;
+// Whereas relations should be purely optional:
+//    other_things?: OtherThing[]
+///////////////////////////////////////////////////////////////
+
 import {
   TApiKeyPermission,
   TEnvelopeStatus,
@@ -50,7 +60,7 @@ export interface IApiKey {
   name: string;
   organization_id: string;
   profile_id: string;
-  client_secret?: string;
+  client_secret?: string | null;
   permission: TApiKeyPermission;
 
   profile?: IProfile;
@@ -83,7 +93,7 @@ export interface IOAuth2App {
   organization_id: string;
   name: string;
   client_id: string;
-  client_secret?: string;
+  client_secret?: string | null;
   redirect_uris: string;
   origins: string;
   friendly_name: string;
@@ -118,10 +128,10 @@ export interface IOrganization {
   thumbnail_url: string | null;
   primary_color: string | null;
   secondary_color: string | null;
-  entitlements?: Record<string, any>;
-  mtd_usage?: Record<string, any>;
-  ytd_usage?: Record<string, any>;
-  data?: Record<string, any>;
+  entitlements: Record<string, any> | null;
+  mtd_usage: Record<string, any> | null;
+  ytd_usage: Record<string, any> | null;
+  data: Record<string, any> | null;
   /** Creation date/time. */
   created_at: string;
   /** Last-update date/time. */
@@ -145,7 +155,7 @@ export interface IOrganizationInvitation {
   status: 'pending';
   role: TRole;
   generated_at: string;
-  token?: string;
+  token?: string | null;
 
   organization?: IOrganization;
 }
@@ -363,7 +373,7 @@ export interface IEnvelopeField {
   /** If set, the placeholder/label for the field. */
   label: string | null;
   /** Not sent by the server. Used in the UI to identify prepared fields. */
-  prepared?: boolean;
+  prepared: boolean | null;
   /** The 1-based page number the field is displayed on. "Self-placed" fields that the user must apply will be on page 0. */
   page: number;
   /** The X position of the field. */
@@ -398,17 +408,17 @@ export interface IEnvelopeFieldOptions {
   y: number;
 
   /** For checkboxes, whether it is currently checked */
-  checked?: boolean;
+  checked: boolean | null;
 
   /** For radio buttons, whether it is currently selected */
-  selected?: boolean;
+  selected: boolean | null;
 
   /** The visible label for the field e.g. 'Not Applicable' */
   value: string;
 }
 
 export interface IEnvelopeFieldSettings {
-  type?: string;
+  type: string;
   x: number;
   y: number;
   width?: number;
@@ -445,11 +455,11 @@ export interface IEnvelopeHistory {
 }
 
 export interface IInitial {
-  id?: string;
+  id: string | null;
   profile_id: string;
-  created_at?: string;
-  updated_at?: string;
-  deleted_at?: string;
+  created_at: string | null;
+  updated_at: string | null;
+  deleted_at: string | null;
 
   profile?: IProfile;
 }
@@ -503,7 +513,7 @@ export interface IReminder {
   key: string;
   setup_time: number;
   interval_time: number;
-  created_at?: string;
+  created_at: string | null;
   last_time: number | null;
   next_time: number | null;
 }
@@ -535,12 +545,12 @@ export interface IRole {
    * arrange recipients to match related business processes so this field allows for that.
    */
   order: number;
-  delegator?: boolean;
+  delegator: boolean | null;
   /**
    * If set, "KBA required" will carry through to automatically enable the same setting in Envelopes
    * created from this template.
    */
-  kba_method?: string;
+  kba_method: string | null;
 }
 
 export interface ISignature {
@@ -654,8 +664,8 @@ export interface ITemplateDocument {
   mime: string;
   order: number;
   page_sizes: {width: number; height: number}[];
-  created_at?: string;
-  updated_at?: string;
+  created_at: string | null;
+  updated_at: string | null;
 
   template?: ITemplate;
 }
