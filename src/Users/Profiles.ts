@@ -1,7 +1,7 @@
 import {ICreateBusinessAccountRequest, ICreateProfileRequest, ISwitchProfileResponse, IUpdateProfileRequest} from './Types';
 import {IGroup, IOrganization, IProfile} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {TPermission, TRole} from '../BaseTypes';
+import {TRole} from '../BaseTypes';
 
 /**
  * Get the user's available profiles. The current profile will be marked with `current: true`.
@@ -46,20 +46,6 @@ export const getRoles = (endpoint: VerdocsEndpoint) =>
     .then((r) => r.data);
 
 /**
- * Get a list of system roles.
- *
- * ```typescript
- * import {Profiles} from '@verdocs/js-sdk/Users';
- *
- * const permissions = await Profiles.getPermissions();
- * ```
- */
-export const getPermissions = (endpoint: VerdocsEndpoint) =>
-  endpoint.api //
-    .get<TPermission[]>('/permissions')
-    .then((r: any) => r.data);
-
-/**
  * Create a profile. If the caller does not have a "current" profile set, the new profile will be made current.
  *
  * ```typescript
@@ -86,20 +72,6 @@ export const createProfile = (endpoint: VerdocsEndpoint, params: ICreateProfileR
 export const getProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
     .get<IProfile>(`/profiles/${profileId}`)
-    .then((r) => r.data);
-
-/**
- * Get a profile's permissions. The caller must have admin access to the given profile.
- *
- * ```typescript
- * import {Profiles} from '@verdocs/js-sdk/Users';
- *
- * const permissions = await Profiles.getProfilePermissions('PROFILEID');
- * ```
- */
-export const getProfilePermissions = (endpoint: VerdocsEndpoint, profileId: string) =>
-  endpoint.api //
-    .get<TPermission[]>(`/profiles/${profileId}/permissions`)
     .then((r) => r.data);
 
 /**
@@ -143,8 +115,12 @@ export const switchProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  */
 export const updateProfile = (endpoint: VerdocsEndpoint, profileId: string, params: IUpdateProfileRequest) =>
   endpoint.api //
-    .put<IProfile>(`/profiles/${profileId}`, params)
+    .put<IProfile>(`/profiles/${profileId}`, params, {baseURL: endpoint.getBaseURLv2()})
     .then((r) => r.data);
+
+//   endpoint.api //
+//     .post<IEnvelopeSummaries>('/envelopes/list', params, {baseURL: endpoint.getBaseURLv2()})
+//     .then((r) => r.data);
 
 /**
  * Delete a profile. If the requested profile is the caller's curent profile, the next available profile will be selected.

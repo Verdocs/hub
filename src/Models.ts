@@ -118,6 +118,9 @@ export interface IOrganization {
   thumbnail_url: string | null;
   primary_color: string | null;
   secondary_color: string | null;
+  entitlements?: Record<string, any>;
+  mtd_usage?: Record<string, any>;
+  ytd_usage?: Record<string, any>;
   data?: Record<string, any>;
   /** Creation date/time. */
   created_at: string;
@@ -482,6 +485,13 @@ export interface IRecipient {
   created_at: string;
   updated_at: string;
   last_attempt_at: string;
+  /**
+   * If set, "KBA required" will carry through to automatically enable the same setting in Envelopes
+   * created from this template.
+   */
+  kba_method: string | null;
+  kba_completed: boolean;
+  kba_details: Record<string, any>;
 
   envelope?: IEnvelope;
   profile?: IProfile;
@@ -526,6 +536,11 @@ export interface IRole {
    */
   order: number;
   delegator?: boolean;
+  /**
+   * If set, "KBA required" will carry through to automatically enable the same setting in Envelopes
+   * created from this template.
+   */
+  kba_method?: string;
 }
 
 export interface ISignature {
@@ -582,14 +597,20 @@ export interface ITemplate {
   /**
    * If true, the template is only visible to the creator. If false, the template will also be visible to the user's
    * organization, if any.
+   * @deprecated. See "visibility".
    */
   is_personal: boolean;
   /**
    * If true, the template is visible publicly. Note that this does not necessarily mean it is also visible to the
    * user's organization. It may be desirable to create documents that are public but that do not appear in the
    * organization's shared templates list. To achieve this, set both `is_personal` and `is_public` to TRUE.
+   * @deprecated. See "visibility".
    */
   is_public: boolean;
+  /**
+   * If set, the visibility level for the template.
+   */
+  visibility?: string;
   /**
    * If true, the template is considered "sendable" (it has at least one signer, and every signer has at least one field.)
    */

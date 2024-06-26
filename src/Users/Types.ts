@@ -1,5 +1,5 @@
-import {TRequestStatus} from '../BaseTypes';
-import {IProfile} from '../Models';
+import {TPermission, TPlan, TRequestStatus, TRole} from '../BaseTypes';
+import {IApiKey, IGroup, IGroupProfile, IInitial, INotification, IOAuth2App, IOrganization, IProfile, ISignature} from '../Models';
 
 export interface ICreateProfileRequest {
   first_name: string;
@@ -18,7 +18,10 @@ export interface ISwitchProfileResponse {
 export interface IUpdateProfileRequest {
   first_name?: string;
   last_name?: string;
+  // email?: string;
   phone?: string;
+  permissions?: TPermission[];
+  roles?: TRole[];
 }
 
 export interface IAuthenticateUserRequest {

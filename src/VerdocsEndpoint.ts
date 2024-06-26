@@ -1,11 +1,11 @@
 import axios, {AxiosInstance} from 'axios';
-import {TSession, TSessionType} from './Sessions/Types';
-import {decodeAccessTokenBody} from './Utils/Token';
+import {TSession, TSessionType} from './Sessions';
+import {decodeAccessTokenBody} from './Utils';
 import globalThis from './Utils/globalThis';
 
 // @credit https://derickbailey.com/2016/03/09/creating-a-true-singleton-in-node-js-with-es6-symbols/
 // Also see globalThis for comments about why we're doing this in the first place.
-const ENDPOINT_KEY = Symbol.for('verdocs-default-endpoint');
+const ENDPOINT_KEY = Symbol.for('vƒbaseerdocs-default-endpoint');
 
 const requestLogger = (r: any) => {
   // tslint:disable-next-line
@@ -19,6 +19,7 @@ export type TSessionChangedListener = (endpoint: VerdocsEndpoint, session: TSess
 
 export interface VerdocsEndpointOptions {
   baseURL?: string;
+  baseURLv2?: string;
   timeout?: number;
   environment?: TEnvironment;
   sessionType?: TSessionType;
@@ -52,6 +53,9 @@ export class VerdocsEndpoint {
   private baseURL = (window.location.origin === 'https://beta.verdocs.com' || window.location.origin === 'https://stage.verdocs.com'
     ? 'https://stage-api.verdocs.com'
     : 'https://api.verdocs.com') as string;
+  private baseURLv2 = (window.location.origin === 'https://beta.verdocs.com' || window.location.origin === 'https://stage.verdocs.com'
+    ? 'https://stage-api.verdocs.com/v2'
+    : 'https://api.verdocs.com/v2') as string;
   private clientID = 'not-set' as string;
   private timeout = 60000 as number;
   private token = null as string | null;
@@ -117,6 +121,14 @@ export class VerdocsEndpoint {
    */
   public getBaseURL() {
     return this.baseURL;
+  }
+
+  /**
+   * Get the current base URL for the v2 APIs.
+   * This should rarely be anything other than 'https://api-v2.verdocs.com'.
+   */
+  public getBaseURLv2() {
+    return this.baseURLv2;
   }
 
   /**
@@ -189,6 +201,22 @@ export class VerdocsEndpoint {
   public setBaseURL(url: string): VerdocsEndpoint {
     this.baseURL = url;
     this.api.defaults.baseURL = url;
+    return this;
+  }
+
+  /**
+   * Set the base URL for API calls. Should be called only upon direction from Verdocs Customer Solutions Engineering.
+   *
+   * ```typescript
+   * import {VerdocsEndpoint} from '@verdocs/js-sdk/HTTP';
+   *
+   * const endpoint = new VerdocsEndpoint();
+   * endpoint.setBaseURL('https://api.verdocs.com');
+   * ```
+   */
+  public setBaseURLv2(url: string): VerdocsEndpoint {
+    this.baseURLv2 = url;
+    // NOTE: We do not set this on the Axios instance because v1 is still the standard.
     return this;
   }
 
