@@ -367,8 +367,8 @@ export interface IEnvelopeField {
   /** The type of the field */
   type: TFieldType;
   /** If true, the field will be required */
-  required: boolean;
-  settings?: IEnvelopeFieldSettings;
+  required: boolean | null;
+  settings: IEnvelopeFieldSettings | null;
   validator: string | null;
   /** If set, the placeholder/label for the field. */
   label: string | null;
@@ -681,7 +681,7 @@ export interface ITemplateField {
   document_id: string;
   type: TFieldType;
   required: boolean;
-  settings: ITemplateFieldSetting;
+  settings: ITemplateFieldSetting | null;
   page: number;
   validator: string | null;
   label: string | null;

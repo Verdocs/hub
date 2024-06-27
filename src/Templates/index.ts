@@ -1,5 +1,6 @@
 export * from './Actions';
 export * from './Fields';
+export * from './Permissions';
 export * from './Reminders';
 export * from './Roles';
 export * from './Stars';
