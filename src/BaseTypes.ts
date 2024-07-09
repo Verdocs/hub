@@ -1,5 +1,5 @@
-import {IEnvelope} from './Models';
 import {TEnvelopePermission} from './Envelopes';
+import {IEnvelope} from './Models';
 
 export type TRequestStatus = 'OK' | 'ERROR';
 
@@ -56,7 +56,7 @@ export type TRecipientType = 'signer' | 'cc' | 'approver';
 /**
  * Plans provide access to Verdocs product features.
  */
-export type TPlan = 'env:essential' | 'org:standard';
+// export type TPlan = 'env:essential' | 'org:standard';
 
 /**
  * Roles provide access to groups of permissions. Note that for historical reasons there is some overlap in the

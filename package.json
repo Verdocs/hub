@@ -1,6 +1,6 @@
 {
   "name": "@verdocs/js-sdk",
-  "version": "4.0.11",
+  "version": "4.1.0",
   "private": false,
   "homepage": "https://github.com/Verdocs/js-sdk",
   "description": "Isomorphic JS SDK providing types and API wrappers for the Verdocs platform for Node and Browser clients",
@@ -32,6 +32,7 @@
     "url": "https://github.com/Verdocs/js-sdk/issues"
   },
   "scripts": {
+    "tsc": "yarn build",
     "build": "rollup -c --sourcemap --bundleConfigAsCjs",
     "prepare": "npm run build",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jestconfig.json",

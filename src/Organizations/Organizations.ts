@@ -8,27 +8,11 @@ import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {IOrganization} from '../Models';
 
 /**
- * Get a list of organizations the user has access to.
+ * Get a list of organizations the caller is a member of.
  */
 export const getOrganizations = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
-    .get<IOrganization[]>('/organizations')
-    .then((r) => r.data);
-
-/**
- * Create an organization.
- */
-export const createOrganization = (endpoint: VerdocsEndpoint) =>
-  endpoint.api //
-    .post<IOrganization>('/organizations')
-    .then((r) => r.data);
-
-/**
- * Delete an organization.
- */
-export const deleteOrganization = (endpoint: VerdocsEndpoint, organizationId: string) =>
-  endpoint.api //
-    .delete(`/organizations/${organizationId}`)
+    .get<IOrganization[]>('/v2/organizations')
     .then((r) => r.data);
 
 /**
@@ -36,13 +20,29 @@ export const deleteOrganization = (endpoint: VerdocsEndpoint, organizationId: st
  */
 export const getOrganization = (endpoint: VerdocsEndpoint, organizationId: string) =>
   endpoint.api //
-    .get<IOrganization>(`/organizations/${organizationId}`)
+    .get<IOrganization>(`/v2/organizations/${organizationId}`)
+    .then((r) => r.data);
+
+/**
+ * Create an organization.
+ */
+export const createOrganization = (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .post<IOrganization>('/v2/organizations')
+    .then((r) => r.data);
+
+/**
+ * Delete an organization.
+ */
+export const deleteOrganization = (endpoint: VerdocsEndpoint, organizationId: string) =>
+  endpoint.api //
+    .delete(`/v2/organizations/${organizationId}`)
     .then((r) => r.data);
 
 /**
  * Update an organization.
  */
-export const updateOrganization = (endpoint: VerdocsEndpoint, organizationId: string, params: any) =>
+export const updateOrganization = (endpoint: VerdocsEndpoint, organizationId: string, params: Partial<IOrganization>) =>
   endpoint.api //
-    .patch<IOrganization>(`/organizations/${organizationId}`, params)
+    .patch<IOrganization>(`/v2/organizations/${organizationId}`, params)
     .then((r) => r.data);

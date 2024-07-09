@@ -1,7 +1,7 @@
 import {jest} from '@jest/globals';
 import MockAdapter from 'axios-mock-adapter';
 import {VerdocsEndpoint} from '../../VerdocsEndpoint';
-import {authenticateApp, authenticateUser, refreshTokens, updateEmail, updatePassword, validateToken} from '../../Users';
+import {authenticateApp, authenticateUser, refreshTokens} from '../../Users';
 
 const endpoint = VerdocsEndpoint.getDefault();
 
@@ -32,19 +32,6 @@ it('authenticateApp should return access tokens', async () => {
   expect(catchFn).not.toBeCalled();
 });
 
-it('validateToken should return access tokens', async () => {
-  const catchFn = jest.fn();
-  const thenFn = jest.fn();
-
-  const mock = new MockAdapter(endpoint.api);
-  const response = {valid: true};
-  mock.onPost('/token/isValid').reply(200, response);
-
-  await validateToken(endpoint, {token: 'TOKEN'}).then(thenFn).catch(catchFn);
-  expect(thenFn).toBeCalledWith(response);
-  expect(catchFn).not.toBeCalled();
-});
-
 it('refreshTokens should return access tokens', async () => {
   const catchFn = jest.fn();
   const thenFn = jest.fn();
@@ -54,33 +41,6 @@ it('refreshTokens should return access tokens', async () => {
   mock.onGet('/token').reply(200, response);
 
   await refreshTokens(endpoint).then(thenFn).catch(catchFn);
-  expect(thenFn).toBeCalledWith(response);
-  expect(catchFn).not.toBeCalled();
-});
-
-it('updatePassword should return a success message', async () => {
-  const catchFn = jest.fn();
-  const thenFn = jest.fn();
-
-  const mock = new MockAdapter(endpoint.api);
-  const response = {status: 'OK', message: 'Password has been updated.'};
-  mock.onPut('/user/update_password').reply(200, response);
-
-  const request = {email: 'EMAIL', oldPassword: 'OLD', newPassword: 'NEW'};
-  await updatePassword(endpoint, request).then(thenFn).catch(catchFn);
-  expect(thenFn).toBeCalledWith(response);
-  expect(catchFn).not.toBeCalled();
-});
-
-it("updateEmail should return the user's profiles", async () => {
-  const catchFn = jest.fn();
-  const thenFn = jest.fn();
-
-  const mock = new MockAdapter(endpoint.api);
-  const response = {profiles: []};
-  mock.onPut('/user/update_email').reply(200, response);
-
-  await updateEmail(endpoint, {email: 'EMAIL'}).then(thenFn).catch(catchFn);
   expect(thenFn).toBeCalledWith(response);
   expect(catchFn).not.toBeCalled();
 });

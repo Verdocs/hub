@@ -8,52 +8,37 @@ import {ICreateInvitationRequest} from './Types';
  * @module
  */
 
-export const getOrganizationInvitations = (endpoint: VerdocsEndpoint, organizationId: string) =>
+export const getOrganizationInvitations = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
-    .get<IOrganizationInvitation[]>(`/organizations/${organizationId}/invitation`)
+    .get<IOrganizationInvitation[]>(`/v2/organization-invitations`)
     .then((r) => r.data);
 
-export const createOrganizationInvitation = (endpoint: VerdocsEndpoint, organizationId: string, params: ICreateInvitationRequest) =>
+export const createOrganizationInvitation = (endpoint: VerdocsEndpoint, params: ICreateInvitationRequest) =>
   endpoint.api //
-    .post<IOrganizationInvitation>(`/organizations/${organizationId}/invitation`, params)
+    .post<IOrganizationInvitation>(`/v2/organization-invitations`, params)
     .then((r) => r.data);
 
-export const deleteOrganizationInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string) =>
+export const deleteOrganizationInvitation = (endpoint: VerdocsEndpoint, email: string) =>
   endpoint.api //
-    .delete(`/organizations/${organizationId}/invitation/${email}`)
+    .delete(`/v2/organization-invitations/${email}`)
     .then((r) => r.data);
 
-export const updateOrganizationInvitation = (
-  endpoint: VerdocsEndpoint,
-  organizationId: string,
-  email: string,
-  params: Partial<ICreateInvitationRequest>,
-) =>
+export const updateOrganizationInvitation = (endpoint: VerdocsEndpoint, email: string, params: Partial<ICreateInvitationRequest>) =>
   endpoint.api //
-    .patch<IOrganizationInvitation>(`/organizations/${organizationId}/invitation/${email}`, params)
+    .patch<IOrganizationInvitation>(`/v2/organization-invitations/${email}`, params)
     .then((r) => r.data);
 
-export const resendOrganizationInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string) =>
+export const resendOrganizationInvitation = (endpoint: VerdocsEndpoint, email: string) =>
   endpoint.api //
-    .post(`/organizations/${organizationId}/invitation/${email}/resend`)
+    .post('/v2/organization-invitations/resend', {email})
     .then((r) => r.data);
 
-export const getOrganizationInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string, token: string) =>
+export const acceptOrganizationInvitation = (endpoint: VerdocsEndpoint, email: string, token: string) =>
   endpoint.api //
-    .get<IOrganizationInvitation>(`/organizations/${organizationId}/invitation/${email}/accept/${token}`)
+    .post<IProfile>('/v2/organization-invitations/accept', {email, token})
     .then((r) => r.data);
 
-export const acceptOrganizationInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string, token: string) =>
+export const declineOrganizationInvitation = (endpoint: VerdocsEndpoint, email: string, token: string) =>
   endpoint.api //
-    .post<IProfile>(`/organizations/${organizationId}/invitation/${email}/accept/${token}`)
-    .then((r) => r.data);
-
-export const declineOrganizationInvitation = (endpoint: VerdocsEndpoint, organizationId: string, email: string, token: string) =>
-  endpoint.api //
-    .post<{status: 'OK'}>(`/organizations/${organizationId}/invitation/${email}/decline/${token}`)
-    .then((r) => r.data);
-
-export const claimNewUser = (endpoint: VerdocsEndpoint, organizationId: string, email: string, token: string) =>
-  endpoint.api //
-    .put(`/organizations/${organizationId}/invitation/${email}/token/${token}/new_user`)
+    .post<{status: 'OK'}>('/v2/organization-invitations/decline', {email, token})
     .then((r) => r.data);

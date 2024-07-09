@@ -19,68 +19,68 @@ import {IApiKey} from '../Models';
  * Get a list of keys for a given organization. The caller must have admin access to the organization.
  *
  * ```typescript
- * import {ApiKeys} from '@verdocs/js-sdk/Organizations';
+ * import {ApiKeys} from '@verdocs/js-sdk';
  *
  * const keys = await ApiKeys.getKeys(ORGID);
  * ```
  */
-export const getApiKeys = (endpoint: VerdocsEndpoint, organizationId: string) =>
+export const getApiKeys = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
-    .get<IApiKey[]>(`/organizations/${organizationId}/api_key`)
+    .get<IApiKey[]>(`/v2/api-keys`)
     .then((r) => r.data);
 
 /**
  * Create an API key.
  *
  * ```typescript
- * import {ApiKeys} from '@verdocs/js-sdk/Organizations';
+ * import {ApiKeys} from '@verdocs/js-sdk';
  *
  * await ApiKeys.createKey(ORGID, {name: NEWNAME});
  * ```
  */
-export const createApiKey = (endpoint: VerdocsEndpoint, organizationId: string, params: ICreateApiKeyRequest) =>
+export const createApiKey = (endpoint: VerdocsEndpoint, params: ICreateApiKeyRequest) =>
   endpoint.api //
-    .post<IApiKey>(`/organizations/${organizationId}/api_key`, params)
+    .post<IApiKey>('/v2/api-keys', params)
     .then((r) => r.data);
 
 /**
  * Rotate the secret for an API key. The caller must have admin access to the organization.
  *
  * ```typescript
- * import {ApiKeys} from '@verdocs/js-sdk/Organizations';
+ * import {ApiKeys} from '@verdocs/js-sdk';
  *
  * const {client_secret: newSecret} = await ApiKeys.rotateKey(ORGID, CLIENTID);
  * ```
  */
-export const rotateApiKey = (endpoint: VerdocsEndpoint, organizationId: string, clientId: string) =>
+export const rotateApiKey = (endpoint: VerdocsEndpoint, clientId: string) =>
   endpoint.api //
-    .put<IApiKey>(`/organizations/${organizationId}/api_key/${clientId}/rotate`)
+    .post<IApiKey>(`/v2/api-keys/${clientId}/rotate`)
     .then((r) => r.data);
 
 /**
  * Update an API key to change its assigned Profile ID or Name.
  *
  * ```typescript
- * import {ApiKeys} from '@verdocs/js-sdk/Organizations';
+ * import {ApiKeys} from '@verdocs/js-sdk';
  *
  * await ApiKeys.updateKey(ORGID, CLIENTID, {name: NEWNAME});
  * ```
  */
-export const updateApiKey = (endpoint: VerdocsEndpoint, organizationId: string, clientId: string, params: IUpdateApiKeyRequest) =>
+export const updateApiKey = (endpoint: VerdocsEndpoint, clientId: string, params: IUpdateApiKeyRequest) =>
   endpoint.api //
-    .patch<IApiKey>(`/organizations/${organizationId}/api_key/${clientId}`, params)
+    .patch<IApiKey>(`/v2/api-keys/${clientId}`, params)
     .then((r) => r.data);
 
 /**
  * Delete an API key.
  *
  * ```typescript
- * import {ApiKeys} from '@verdocs/js-sdk/Organizations';
+ * import {ApiKeys} from '@verdocs/js-sdk';
  *
  * await ApiKeys.deleteKey(ORGID, CLIENTID);
  * ```
  */
-export const deleteApiKey = (endpoint: VerdocsEndpoint, organizationId: string, clientId: string) =>
+export const deleteApiKey = (endpoint: VerdocsEndpoint, clientId: string) =>
   endpoint.api //
-    .delete(`/organizations/${organizationId}/api_key/${clientId}`)
+    .delete(`/v2/api-keys/${clientId}`)
     .then((r) => r.data);

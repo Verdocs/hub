@@ -1,7 +1,6 @@
-import {ICreateBusinessAccountRequest, ICreateProfileRequest, ISwitchProfileResponse, IUpdateProfileRequest} from './Types';
-import {IGroup, IOrganization, IProfile} from '../Models';
+import type {ICreateAccountRequest, ICreateProfileRequest, ISwitchProfileResponse, IUpdateProfileRequest} from './Types';
+import type {IOrganization, IProfile} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {TRole} from '../BaseTypes';
 
 /**
  * Get the user's available profiles. The current profile will be marked with `current: true`.
@@ -14,7 +13,7 @@ import {TRole} from '../BaseTypes';
  */
 export const getProfiles = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
-    .get<IProfile[]>('/profiles')
+    .get<IProfile[]>('/v2/profiles')
     .then((r) => r.data);
 
 /**
@@ -28,22 +27,8 @@ export const getProfiles = (endpoint: VerdocsEndpoint) =>
  */
 export const getCurrentProfile = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
-    .get<IProfile[]>('/profiles')
+    .get<IProfile[]>('/v2/profiles')
     .then((r) => (r.data || []).find((profile) => profile.current));
-
-/**
- * Get a list of system roles.
- *
- * ```typescript
- * import {Profiles} from '@verdocs/js-sdk/Users';
- *
- * const roles = await Profiles.getRoles();
- * ```
- */
-export const getRoles = (endpoint: VerdocsEndpoint) =>
-  endpoint.api //
-    .get<TRole[]>('/roles')
-    .then((r) => r.data);
 
 /**
  * Create a profile. If the caller does not have a "current" profile set, the new profile will be made current.
@@ -56,7 +41,7 @@ export const getRoles = (endpoint: VerdocsEndpoint) =>
  */
 export const createProfile = (endpoint: VerdocsEndpoint, params: ICreateProfileRequest) =>
   endpoint.api //
-    .post<IProfile>('/profiles', params)
+    .post<IProfile>('/v2/profiles', params)
     .then((r) => r.data);
 
 /**
@@ -71,21 +56,7 @@ export const createProfile = (endpoint: VerdocsEndpoint, params: ICreateProfileR
  */
 export const getProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
-    .get<IProfile>(`/profiles/${profileId}`)
-    .then((r) => r.data);
-
-/**
- * Get a profile's groups.
- *
- * ```typescript
- * import {Profiles} from '@verdocs/js-sdk/Users';
- *
- * const groups = await Profiles.getProfileGroups('PROFILEID');
- * ```
- */
-export const getProfileGroups = (endpoint: VerdocsEndpoint, profileId: string) =>
-  endpoint.api //
-    .get<IGroup[]>(`/profiles/${profileId}/groups`)
+    .get<IProfile>(`/v2/profiles/${profileId}`)
     .then((r) => r.data);
 
 /**
@@ -100,7 +71,7 @@ export const getProfileGroups = (endpoint: VerdocsEndpoint, profileId: string) =
  */
 export const switchProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
-    .post<ISwitchProfileResponse>(`/profiles/${profileId}/switch`)
+    .post<ISwitchProfileResponse>(`/v2/profiles/${profileId}/switch`)
     .then((r) => r.data);
 
 /**
@@ -115,12 +86,8 @@ export const switchProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  */
 export const updateProfile = (endpoint: VerdocsEndpoint, profileId: string, params: IUpdateProfileRequest) =>
   endpoint.api //
-    .put<IProfile>(`/profiles/${profileId}`, params, {baseURL: endpoint.getBaseURLv2()})
+    .patch<IProfile>(`/v2/profiles/${profileId}`, params)
     .then((r) => r.data);
-
-//   endpoint.api //
-//     .post<IEnvelopeSummaries>('/envelopes/list', params, {baseURL: endpoint.getBaseURLv2()})
-//     .then((r) => r.data);
 
 /**
  * Delete a profile. If the requested profile is the caller's curent profile, the next available profile will be selected.
@@ -133,7 +100,7 @@ export const updateProfile = (endpoint: VerdocsEndpoint, profileId: string, para
  */
 export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
-    .delete(`/profiles/${profileId}`)
+    .delete(`/v2/profiles/${profileId}`)
     .then((r) => r.data);
 
 /**
@@ -148,7 +115,7 @@ export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  * });
  * ```
  */
-export const createBusinessAccount = (endpoint: VerdocsEndpoint, params: ICreateBusinessAccountRequest) =>
+export const createAccount = (endpoint: VerdocsEndpoint, params: ICreateAccountRequest) =>
   endpoint.api //
     .post<{profile: IProfile; organization: IOrganization}>('/user/business', params)
     .then((r) => r.data);

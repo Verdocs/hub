@@ -1,5 +1,5 @@
-import {TPermission, TPlan, TRequestStatus, TRole} from '../BaseTypes';
-import {IApiKey, IGroup, IGroupProfile, IInitial, INotification, IOAuth2App, IOrganization, IProfile, ISignature} from '../Models';
+import type {TPermission, TRequestStatus, TRole} from '../BaseTypes';
+import type {IProfile} from '../Models';
 
 export interface ICreateProfileRequest {
   first_name: string;
@@ -40,17 +40,6 @@ export interface IAuthenticateResponse {
   refreshToken: string;
 }
 
-export interface TokenValidationRequest {
-  token: string;
-}
-
-export interface TokenValidationResponse {
-  /** True if the token is valid */
-  valid: boolean;
-  /** The decoded and validated body of the JWT */
-  payload: any;
-}
-
 export interface IUpdatePasswordRequest {
   email: string;
   oldPassword: string;
@@ -63,26 +52,10 @@ export interface UpdatePasswordResponse {
   message: string;
 }
 
-export interface UpdateEmailRequest {
-  email: string;
-}
-
-export interface UpdateEmailResponse {
-  profiles: IProfile[];
-}
-
-export interface ICreateBusinessAccountRequest {
+export interface ICreateAccountRequest {
   email: string;
   password: string;
   firstName: string;
   lastName: string;
   orgName: string;
-}
-
-export interface ICreateUserRequest {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  fromInviteCode: string;
 }

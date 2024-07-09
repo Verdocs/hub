@@ -1,4 +1,4 @@
-import {TRole} from '../BaseTypes';
+import type {TRole} from '../BaseTypes';
 
 /**
  * Given a `rgba(r,g,b,a)` string value, returns the hex equivalent, dropping the alpha channel.

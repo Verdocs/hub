@@ -1,6 +1,6 @@
 /* tslint:disable:no-bitwise */
 
-import {TSession} from '../Sessions/Types';
+import type {TSession} from '../Sessions';
 
 const b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 // Regular expression to check formal correctness of base64 encoded strings
@@ -35,8 +35,8 @@ export const AtoB = (str: string) => {
       r1 === 64
         ? String.fromCharCode((bitmap >> 16) & 255)
         : r2 === 64
-        ? String.fromCharCode((bitmap >> 16) & 255, (bitmap >> 8) & 255)
-        : String.fromCharCode((bitmap >> 16) & 255, (bitmap >> 8) & 255, bitmap & 255);
+          ? String.fromCharCode((bitmap >> 16) & 255, (bitmap >> 8) & 255)
+          : String.fromCharCode((bitmap >> 16) & 255, (bitmap >> 8) & 255, bitmap & 255);
   }
   return result;
 };

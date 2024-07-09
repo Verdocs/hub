@@ -16,65 +16,46 @@ import {IGroup} from '../Models';
  * Get a list of groups for a given organization. The caller must have admin access to the organization.
  *
  * ```typescript
- * import {Groups} from '@verdocs/js-sdk/Organizations';
+ * import {getGroups} from '@verdocs/js-sdk';
  *
- * const groups = await Groups.getGroups(ORGID);
+ * const groups = await getGroups(ORGID);
  * ```
  */
-export const getGroups = (endpoint: VerdocsEndpoint, organizationId: string) =>
+export const getGroups = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
-    .get<IGroup[]>(`/organizations/${organizationId}/groups`)
+    .get<IGroup[]>(`/v2/organization-groups`)
     .then((r) => r.data);
 
 /**
- * Get a single group by name. Returns a detail record.
+ * Get the details for a group, including its member profiles and list of permissions.
  *
  * ```typescript
- * import {Groups} from '@verdocs/js-sdk/Organizations';
+ * import {getGroup} from '@verdocs/js-sdk/v2/organization-groups';
  *
- * const groups = await Groups.getGroups(ORGID);
+ * const groups = await getGroup(GROUPID);
  * ```
  */
-export const getGroupByName = (endpoint: VerdocsEndpoint, organizationId: string, name?: string) =>
+export const getGroup = (endpoint: VerdocsEndpoint, groupId: string) =>
   endpoint.api //
-    .get<IGroup>(`/organizations/${organizationId}/groups`, {params: {name}})
+    .get<IGroup>(`/v2/organization-groups/${groupId}`)
     .then((r) => r.data);
 
-/**
- * Get the details for a group.
- *
- * ```typescript
- * import {Groups} from '@verdocs/js-sdk/Organizations';
- *
- * const groups = await Groups.getGroups(ORGID);
- * ```
- */
-export const getGroup = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string) =>
+export const createGroup = (endpoint: VerdocsEndpoint, name: string) =>
   endpoint.api //
-    .get<IGroup>(`/organizations/${organizationId}/groups/${groupId}`)
+    .post('/v2/organization-groups', {name})
     .then((r) => r.data);
 
-export const getGroupMembers = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string) =>
+export const addGroupMember = (endpoint: VerdocsEndpoint, groupId: string, profile_id: string) =>
   endpoint.api //
-    .get(`/organizations/${organizationId}/groups/${groupId}/members`)
+    .post(`/v2/organization-groups/${groupId}/members`, {profile_id})
     .then((r) => r.data);
 
-export const addGroupMembers = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, params: any) =>
+export const deleteGroupMember = (endpoint: VerdocsEndpoint, groupId: string, profile_id: string) =>
   endpoint.api //
-    .post(`/organizations/${organizationId}/groups/${groupId}/members`, params)
+    .delete(`/v2/organization-groups/${groupId}/members/${profile_id}`)
     .then((r) => r.data);
 
-export const deleteGroupMembers = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, params: any) =>
+export const updateGroup = (endpoint: VerdocsEndpoint, groupId: string, params: {permissions: TPermission[]}) =>
   endpoint.api //
-    .put(`/organizations/${organizationId}/groups/${groupId}/delete_members`, params)
-    .then((r) => r.data);
-
-export const addGroupPermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permission: TPermission) =>
-  endpoint.api //
-    .post(`/organizations/${organizationId}/groups/${groupId}/permissions/${permission}`, {})
-    .then((r) => r.data);
-
-export const deleteGroupPermission = (endpoint: VerdocsEndpoint, organizationId: string, groupId: string, permission: TPermission) =>
-  endpoint.api //
-    .delete(`/organizations/${organizationId}/groups/${groupId}/permissions/${permission}`)
+    .patch(`/v2/organization-groups/${groupId}`, params)
     .then((r) => r.data);

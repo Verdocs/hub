@@ -8,14 +8,13 @@
 //    other_things?: OtherThing[]
 ///////////////////////////////////////////////////////////////
 
-import {
+import type {
   TApiKeyPermission,
   TEnvelopeStatus,
   TEventDetail,
   TFieldType,
   THistoryEvent,
   TPermission,
-  TPlan,
   TRecipientStatus,
   TRecipientType,
   TRole,
@@ -116,22 +115,18 @@ export interface IOrganization {
   address2: string | null;
   phone: string | null;
   /** If the organization is a business, its name. Note that a business name can be different from an organization name. */
-  business_name: string | null;
-  /** If true, the organization is a business */
-  is_business: boolean;
-  /** If the organization is a business, its name. Note that a business name can be different from an organization name. */
   contact_email: string | null;
-  slug: string | null;
+  slug?: string | null;
   /** Web site URL */
-  url: string | null;
-  full_logo_url: string | null;
-  thumbnail_url: string | null;
-  primary_color: string | null;
-  secondary_color: string | null;
-  entitlements: Record<string, any> | null;
-  mtd_usage: Record<string, any> | null;
-  ytd_usage: Record<string, any> | null;
-  data: Record<string, any> | null;
+  url?: string | null;
+  full_logo_url?: string | null;
+  thumbnail_url?: string | null;
+  primary_color?: string | null;
+  secondary_color?: string | null;
+  entitlements?: Record<string, any> | null;
+  mtd_usage?: Record<string, any> | null;
+  ytd_usage?: Record<string, any> | null;
+  data?: Record<string, any> | null;
   /** Creation date/time. */
   created_at: string;
   /** Last-update date/time. */
@@ -195,7 +190,6 @@ export interface IProfile {
   current: boolean;
   permissions: TPermission[];
   roles: TRole[];
-  plans: TPlan[];
   // Creation date/time.
   created_at: string;
   // Last-update date/time.

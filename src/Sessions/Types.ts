@@ -1,5 +1,5 @@
-import {IProfile} from '../Models';
-import {TPermission, TPlan, TRole} from '../BaseTypes';
+import type {TPermission, TRole} from '../BaseTypes';
+import type {IProfile} from '../Models';
 
 export interface ISigningSessionRequest {
   envelopeId: string;
@@ -41,9 +41,6 @@ export interface IUserSession {
   permissions: TPermission[];
   roles: TRole[];
   profile: IProfile;
-  plans?: TPlan[];
-
-  [key: string]: any;
 }
 
 /**

@@ -1,4 +1,4 @@
-import {ICountry} from './Types';
+import type {ICountry} from './Types';
 
 export const Countries: ICountry[] = [
   {code: '+7 840', name: 'Abkhazia', value: '+7'},

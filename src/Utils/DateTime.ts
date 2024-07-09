@@ -1,4 +1,4 @@
-import {ITimePeriod} from './Types';
+import type {ITimePeriod} from './Types';
 
 const YEAR = 365 * 24 * 60 * 60;
 // const MONTH = 30 * 24 * 60 * 60;

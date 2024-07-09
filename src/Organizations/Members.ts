@@ -1,5 +1,5 @@
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {IProfile, IRole} from '../Models';
+import {IProfile} from '../Models';
 
 /**
  * An Organization Member (aka Profile) is an individual user with access to an organization.
@@ -7,27 +7,17 @@ import {IProfile, IRole} from '../Models';
  * @module
  */
 
-export const getOrganizationMembers = (endpoint: VerdocsEndpoint, organizationId: string) =>
+export const getOrganizationMembers = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
-    .get<IProfile[]>(`/organizations/${organizationId}/profiles`)
+    .get<IProfile[]>(`/v2/organization-members`)
     .then((r) => r.data);
 
-export const deleteOrganizationMember = (endpoint: VerdocsEndpoint, organizationId: string, profileId: string) =>
+export const deleteOrganizationMember = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
-    .delete(`/organizations/${organizationId}/profiles/${profileId}`)
+    .delete(`/v2/organization-members/${profileId}`)
     .then((r) => r.data);
 
-export const addOrganizationMemberRole = (endpoint: VerdocsEndpoint, organizationId: string, profileId: string, roleId: string) =>
+export const updateOrganizationMember = (endpoint: VerdocsEndpoint, profileId: string, params: Pick<IProfile, 'roles' | 'permissions'>) =>
   endpoint.api //
-    .post<IRole>(`/organizations/${organizationId}/profiles/${profileId}/role/${roleId}`)
-    .then((r) => r.data);
-
-export const deleteOrganizationMemberRole = (endpoint: VerdocsEndpoint, organizationId: string, profileId: string, roleId: string) =>
-  endpoint.api //
-    .delete(`/organizations/${organizationId}/profiles/${profileId}/role/${roleId}`)
-    .then((r) => r.data);
-
-export const getOrganizationMemberPlans = (endpoint: VerdocsEndpoint, organizationId: string, profileId: string) =>
-  endpoint.api //
-    .get(`/organizations/${organizationId}/profiles/${profileId}/plans`)
+    .patch(`/v2/organization-members/${profileId}`, params)
     .then((r) => r.data);

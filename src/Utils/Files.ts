@@ -1,4 +1,4 @@
-import {IFileWithData} from './Types';
+import type {IFileWithData} from './Types';
 
 /**
  * Given a File, extract the file's content as a base64 encoded data URL. The response will have a prefix that
