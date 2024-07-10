@@ -164,7 +164,22 @@ export const getEnvelopeRecipients = async (endpoint: VerdocsEndpoint, envelopeI
 export const getEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string) =>
   endpoint.api //
     .get<IEnvelope>(`/envelopes/${envelopeId}`)
-    .then((r) => r.data);
+    .then((r) => {
+      const envelope = r.data;
+      // Post-process the envelope to upgrade to new data fields
+      envelope.documents?.forEach((document) => {
+        if (!document.order) {
+          document.order = 0;
+        }
+
+        if (document.page_numbers) {
+          document.pages = document.page_numbers;
+        }
+      });
+
+      return envelope;
+    });
+
 
 /**
  * Get an Envelope Document

@@ -344,6 +344,9 @@ export interface IEnvelopeDocument {
   created_at: string;
   updated_at: string;
 
+  // @deprecated. Use pages instead.
+  page_numbers: number;
+
   envelope?: IEnvelope | null;
   template_document?: ITemplateDocument | null;
   fields?: IEnvelopeField[];
@@ -645,6 +648,9 @@ export interface ITemplate {
   roles?: IRole[];
   documents?: ITemplateDocument[];
   fields?: ITemplateField[];
+
+  // @deprecated. Use documents instead.
+  template_documents?: ITemplateDocument[];
 }
 
 /**
@@ -660,6 +666,9 @@ export interface ITemplateDocument {
   page_sizes: {width: number; height: number}[];
   created_at: string | null;
   updated_at: string | null;
+
+  // @deprecated. Use pages instead.
+  page_numbers?: number;
 
   template?: ITemplate;
 }
@@ -693,6 +702,9 @@ export interface ITemplateField {
   placeholder: string | null;
   /** For fields that support grouping (radio buttons and check boxes) the value selected will be stored under this name. */
   group: string | null;
+
+  // @deprecated. Use settings instead.
+  setting?: ITemplateFieldSetting | null;
 }
 
 export interface ITextFieldSetting {

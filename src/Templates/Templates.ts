@@ -70,7 +70,31 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
 export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
     .get<ITemplate>(`/templates/${templateId}`)
-    .then((r) => r.data);
+    .then((r) => {
+      const template = r.data;
+      // Post-process the template to upgrade to new data fields
+      if (!template.documents && template.template_documents) {
+        template.documents = template.template_documents;
+      }
+
+      template.documents?.forEach((document) => {
+        if (!document.order) {
+          document.order = 0;
+        }
+
+        if (document.page_numbers) {
+          document.pages = document.page_numbers;
+        }
+      });
+
+      template.fields?.forEach((field) => {
+        if (field.setting) {
+          field.settings = field.setting;
+        }
+      });
+
+      return template;
+    });
 
 /**
  * Get owner information for a template.
