@@ -72,6 +72,9 @@ export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
     .get<ITemplate>(`/templates/${templateId}`)
     .then((r) => {
       const template = r.data;
+
+      window?.console?.log('[JS_SDK] Post-processing template', template);
+
       // Post-process the template to upgrade to new data fields
       if (!template.documents && template.template_documents) {
         template.documents = template.template_documents;
