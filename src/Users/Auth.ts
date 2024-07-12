@@ -1,41 +1,48 @@
-import type {IAuthenticateResponse, UpdatePasswordResponse, IAuthenticateAppRequest, IAuthenticateUserRequest} from './Types';
+import type {IAuthenticateResponse, IUpdatePasswordRequest, IUpdatePasswordResponse} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {IUpdatePasswordRequest} from './Types';
+
+export interface IROPCRequest {
+  grant_type: 'password';
+  username: string;
+  password: string;
+  client_id?: string;
+  scope?: string;
+}
+
+export interface IClientCredentialsRequest {
+  grant_type: 'client_credentials';
+  client_id: string;
+  client_secret: string;
+  scope?: string;
+}
+
+export interface IRefreshTokenRequest {
+  grant_type: 'refresh_token';
+  refresh_token: string;
+  client_id?: string;
+  scope?: string;
+}
+
+export type TAuthenticationRequest = IROPCRequest | IClientCredentialsRequest | IRefreshTokenRequest;
 
 /**
- * Authenticate to Verdocs via user/password authentication
+ * Authenticate to Verdocs.
  *
  * ```typescript
- * import {Auth} from '@verdocs/js-sdk/Auth';
- * import {Transport} from '@verdocs/js-sdk/HTTP';
+ * import {authenticate, VerdocsEndpoint} from '@verdocs/js-sdk';
  *
- * const {accessToken} = await Auth.authenticateUser({ username: 'test@test.com', password: 'PASSWORD' });
- * Transport.setAuthToken(accessToken);
+ * // Client-side call, suitable for Web and mobile apps:
+ * const {access_token} = await Auth.authenticate({ username: 'test@test.com', password: 'PASSWORD', grant_type:'password' });
+ * VerdocsEndpoint.getDefault().setAuthToken(access_token);
+ *
+ * // Server-side call, suitable for server apps. NEVER EXPOSE client_secret IN FRONT-END CODE:
+ * const {access_token} = await Auth.authenticate({ client_id: '...', client_secret: '...', grant_type:'client_credentials' });
+ * VerdocsEndpoint.getDefault().setAuthToken(access_token);
  * ```
  */
-export const authenticateUser = (endpoint: VerdocsEndpoint, params: IAuthenticateUserRequest) =>
+export const authenticate = (endpoint: VerdocsEndpoint, params: TAuthenticationRequest) =>
   endpoint.api //
-    .post<IAuthenticateResponse>('/authentication/login', params)
-    .then((r) => r.data);
-
-/**
- * Authenticate to Verdocs via client ID / Secret authentication. **NOTE: This is only suitable for
- * NodeJS server-side applications. Never expose your Client Secret in a Web or Mobile app!** Also note
- * that access tokens may be cached by server-side apps (and this is recommended) but do expire after 2
- * hours. This expiration may change based on future security needs. Application developers are encouraged
- * to check the `exp` expiration field in the response, and renew tokens after they expire.
- *
- * ```typescript
- * import {Auth} from '@verdocs/js-sdk/Auth';
- * import {Transport} from '@verdocs/js-sdk/HTTP';
- *
- * const {accessToken} = await Auth.authenticateApp({ client_id: 'CLIENTID', client_secret: 'SECRET' });
- * Transport.setAuthToken(accessToken);
- * ```
- */
-export const authenticateApp = (endpoint: VerdocsEndpoint, params: IAuthenticateAppRequest): Promise<IAuthenticateResponse> =>
-  endpoint.api //
-    .post('/authentication/login_client', {}, {headers: params as any})
+    .post<IAuthenticateResponse>('/v2/oauth2/token', params)
     .then((r) => r.data);
 
 /**
@@ -49,43 +56,41 @@ export const authenticateApp = (endpoint: VerdocsEndpoint, params: IAuthenticate
  * Transport.setAuthToken(accessToken);
  * ```
  */
-export const refreshTokens = (endpoint: VerdocsEndpoint): Promise<IAuthenticateResponse> =>
-  endpoint.api //
-    .get('/token')
-    .then((r) => r.data);
+export const refreshToken = (endpoint: VerdocsEndpoint, refreshToken: string) =>
+  authenticate(endpoint, {grant_type: 'refresh_token', refresh_token: refreshToken});
 
 /**
  * Update the caller's password when the old password is known (typically for logged-in users).
  *
  * ```typescript
- * import {Auth} from '@verdocs/js-sdk/Auth';
+ * import {changePassword} from '@verdocs/js-sdk/Auth';
  *
- * const {status, message} = await Auth.updatePassword({ email, oldPassword, newPassword });
+ * const {status, message} = await changePassword({ email, oldPassword, newPassword });
  * if (status !== 'OK') {
  *   window.alert(`Password reset error: ${message}`);
  * }
  * ```
  */
-export const changePassword = (endpoint: VerdocsEndpoint, params: IUpdatePasswordRequest): Promise<UpdatePasswordResponse> =>
+export const changePassword = (endpoint: VerdocsEndpoint, params: IUpdatePasswordRequest) =>
   endpoint.api //
-    .put('/user/update_password', params)
+    .post<IUpdatePasswordResponse>('/v2/users/change-password', params)
     .then((r) => r.data);
 
 /**
  * Request a password reset, when the old password is not known (typically in login forms).
  *
  * ```typescript
- * import {Auth} from '@verdocs/js-sdk/Auth';
+ * import {resetPassword} from '@verdocs/js-sdk/Auth';
  *
- * const {success} = await Auth.resetPassword({ email });
+ * const {success} = await resetPassword({ email });
  * if (status !== 'OK') {
  *   window.alert(`Please check your email for instructions on how to reset your password.`);
  * }
  * ```
  */
-export const resetPassword = (endpoint: VerdocsEndpoint, params: {email: string}): Promise<{success: boolean}> =>
+export const resetPassword = (endpoint: VerdocsEndpoint, params: {email: string}) =>
   endpoint.api //
-    .post('/user/reset_password', params)
+    .post<{success: boolean}>('/v2/users/reset-password', params)
     .then((r) => r.data);
 
 /**
@@ -101,7 +106,7 @@ export const resetPassword = (endpoint: VerdocsEndpoint, params: {email: string}
  * const result = await Auth.resendVerification();
  * ```
  */
-export const resendVerification = (endpoint: VerdocsEndpoint, accessToken?: string): Promise<{result: 'done'}> =>
+export const resendVerification = (endpoint: VerdocsEndpoint, accessToken?: string) =>
   endpoint.api //
-    .post('/user/email_verification', {}, accessToken ? {headers: {Authorization: `Bearer ${accessToken}`}} : {})
+    .post<{result: 'done'}>('/v2/users/resend-verification', {}, accessToken ? {headers: {Authorization: `Bearer ${accessToken}`}} : {})
     .then((r) => r.data);

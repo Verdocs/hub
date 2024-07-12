@@ -10,9 +10,11 @@ export interface ICreateProfileRequest {
 
 export interface ISwitchProfileResponse {
   profile: IProfile;
-  idToken: string;
   accessToken: string;
+  idToken: string;
   refreshToken: string;
+  accessTokenExp: number;
+  refreshTokenExp: number;
 }
 
 export interface IUpdateProfileRequest {
@@ -24,20 +26,13 @@ export interface IUpdateProfileRequest {
   roles?: TRole[];
 }
 
-export interface IAuthenticateUserRequest {
-  username: string;
-  password: string;
-}
-
-export interface IAuthenticateAppRequest {
-  client_id: string;
-  client_secret: string;
-}
-
 export interface IAuthenticateResponse {
-  idToken: string;
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  id_token: string;
+  refresh_token: string;
+  expires_in: number;
+  access_token_exp: number;
+  refresh_token_exp: number;
 }
 
 export interface IUpdatePasswordRequest {
@@ -46,7 +41,7 @@ export interface IUpdatePasswordRequest {
   newPassword: string;
 }
 
-export interface UpdatePasswordResponse {
+export interface IUpdatePasswordResponse {
   status: TRequestStatus;
   /** Success or failure message */
   message: string;

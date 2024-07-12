@@ -96,7 +96,7 @@ export class VerdocsEndpoint {
   public static getDefault(): VerdocsEndpoint {
     if (!globalThis[ENDPOINT_KEY]) {
       globalThis[ENDPOINT_KEY] = new VerdocsEndpoint();
-      window.console.debug('[JS_SDK] Created default endpoint', globalThis[ENDPOINT_KEY].baseURL);
+      // window.console.debug('[JS_SDK] Created default endpoint', globalThis[ENDPOINT_KEY].baseURL);
     }
 
     return globalThis[ENDPOINT_KEY];

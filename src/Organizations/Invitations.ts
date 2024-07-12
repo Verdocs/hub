@@ -33,7 +33,7 @@ export const resendOrganizationInvitation = (endpoint: VerdocsEndpoint, email: s
     .post('/v2/organization-invitations/resend', {email})
     .then((r) => r.data);
 
-export const gettOrganizationInvitation = (endpoint: VerdocsEndpoint, email: string, token: string) =>
+export const getOrganizationInvitation = (endpoint: VerdocsEndpoint, email: string, token: string) =>
   endpoint.api //
     .get<IOrganizationInvitation>(`/v2/organization-invitations/${email}/${token}`)
     .then((r) => r.data);
