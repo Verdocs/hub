@@ -127,19 +127,20 @@ export const createProfile = (endpoint: VerdocsEndpoint, params: ICreateAccountR
  * ```typescript
  * import {uploadProfilePhoto} from '@verdocs/js-sdk';
  *
- * await uploadProfilePhoto((VerdocsEndpoint.getDefault(), file);
+ * await uploadProfilePhoto((VerdocsEndpoint.getDefault(), profileId, file);
  * ```
  */
-export const uploadProfilePhoto = (
+export const updateProfilePhoto = (
   endpoint: VerdocsEndpoint,
+  profileId: string,
   file: File,
   onUploadProgress?: (percent: number, loadedBytes: number, totalBytes: number) => void,
 ) => {
   const formData = new FormData();
-  formData.append('document', file, file.name);
+  formData.append('picture', file, file.name);
 
   return endpoint.api //
-    .post<IProfile>(`/v2/profiles/picture`, formData, {
+    .patch<IProfile>(`/v2/profiles/${profileId}`, formData, {
       timeout: 120000,
       onUploadProgress: (event) => {
         const total = event.total || 1;
