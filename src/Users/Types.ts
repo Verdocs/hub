@@ -1,14 +1,4 @@
 import type {TPermission, TRequestStatus, TRole} from '../BaseTypes';
-import type {IProfile} from '../Models';
-
-export interface ISwitchProfileResponse {
-  profile: IProfile;
-  accessToken: string;
-  idToken: string;
-  refreshToken: string;
-  accessTokenExp: number;
-  refreshTokenExp: number;
-}
 
 export interface IUpdateProfileRequest {
   first_name?: string;

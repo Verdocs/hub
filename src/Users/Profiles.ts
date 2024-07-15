@@ -1,4 +1,4 @@
-import type {IAuthenticateResponse, ICreateAccountRequest, ISwitchProfileResponse, IUpdateProfileRequest} from './Types';
+import type {IAuthenticateResponse, ICreateAccountRequest, IUpdateProfileRequest} from './Types';
 import type {IOrganization, IProfile} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
@@ -58,7 +58,7 @@ export const getProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  */
 export const switchProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
-    .post<ISwitchProfileResponse>(`/v2/profiles/${profileId}/switch`)
+    .post<IAuthenticateResponse>(`/v2/profiles/${profileId}/switch`)
     .then((r) => r.data);
 
 /**
