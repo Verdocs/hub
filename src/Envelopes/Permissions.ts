@@ -5,8 +5,8 @@
  */
 
 import {IEnvelope, IRecipient} from '../Models';
-import {TSession} from '../Sessions/Types';
 import {IEnvelopeSummary} from './Types';
+import {TSession} from '../Sessions';
 
 /**
  * Check to see if the user owns the envelope.

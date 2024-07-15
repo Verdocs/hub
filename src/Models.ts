@@ -462,6 +462,10 @@ export interface IInitial {
   profile?: IProfile;
 }
 
+export interface IKbaPINRequired {
+  type: 'pin';
+}
+
 export interface IRecipient {
   envelope_id: string;
   role_name: string;
@@ -495,10 +499,25 @@ export interface IRecipient {
   last_attempt_at: string;
   /**
    * If set, "KBA required" will carry through to automatically enable the same setting in Envelopes
-   * created from this template.
+   * created from this template. For privacy reasons, this field will only be visible to the creator
+   * of the envelope and the recipient referenced.
    */
-  kba_method: string | null;
+  kba_method: 'pin' | 'identity' | null;
+  /**
+   * If KBA is set to "PIN" this will be set to the PIN code required. For security reasons, this
+   * field will only be visible to the creator of the envelope.
+   */
+  kba_pin?: string | null;
+  /**
+   * If KBA has been completed successfully, this will be set to true. For privacy reasons, this
+   * field will only be visible to the creator of the envelope and the recipient referenced.
+   */
   kba_completed: boolean;
+  /**
+   * If KBA has been completed (or partially successfully, this will contain metadata related to
+   * the questions and answers from the process. For privacy reasons, this field will only be visible
+   * to the recipient referenced.
+   */
   kba_details: Record<string, any>;
 
   envelope?: IEnvelope;
@@ -548,7 +567,7 @@ export interface IRole {
    * If set, "KBA required" will carry through to automatically enable the same setting in Envelopes
    * created from this template.
    */
-  kba_method: string | null;
+  kba_method: 'pin' | 'identity' | null;
 }
 
 export interface ISignature {

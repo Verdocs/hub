@@ -120,3 +120,32 @@ export const createProfile = (endpoint: VerdocsEndpoint, params: ICreateAccountR
   endpoint.api //
     .post<{profile: IProfile; organization: IOrganization}>('/v2/profiles', params)
     .then((r) => r.data);
+
+/**
+ * Update the caller's profile photo. This can only be called for the user's "current" profile.
+ *
+ * ```typescript
+ * import {uploadProfilePhoto} from '@verdocs/js-sdk';
+ *
+ * await uploadProfilePhoto((VerdocsEndpoint.getDefault(), file);
+ * ```
+ */
+export const uploadProfilePhoto = (
+  endpoint: VerdocsEndpoint,
+  file: File,
+  onUploadProgress?: (percent: number, loadedBytes: number, totalBytes: number) => void,
+) => {
+  const formData = new FormData();
+  formData.append('document', file, file.name);
+
+  return endpoint.api //
+    .post<IProfile>(`/v2/profiles/picture`, formData, {
+      timeout: 120000,
+      onUploadProgress: (event) => {
+        const total = event.total || 1;
+        const loaded = event.loaded || 0;
+        onUploadProgress?.(Math.floor((loaded * 100) / (total || 1)), loaded, total || 1);
+      },
+    })
+    .then((r) => r.data);
+};
