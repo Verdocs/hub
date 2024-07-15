@@ -186,6 +186,7 @@ export interface IProfile {
   last_name: string;
   email: string;
   phone: string | null;
+  picture: string | null;
   /** If true, this is the caller's "currently selected" profile. All operations will performed "as" this profile. */
   current: boolean;
   permissions: TPermission[];

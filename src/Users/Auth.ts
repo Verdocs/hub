@@ -49,11 +49,10 @@ export const authenticate = (endpoint: VerdocsEndpoint, params: TAuthenticationR
  * If called before the session expires, this will refresh the caller's session and tokens.
  *
  * ```typescript
- * import {Auth} from '@verdocs/js-sdk/Auth';
- * import {Transport} from '@verdocs/js-sdk/HTTP';
+ * import {Auth, VerdocsEndpoint} from '@verdocs/js-sdk';
  *
  * const {accessToken} = await Auth.refreshTokens();
- * Transport.setAuthToken(accessToken);
+ * VerdocsEndpoint.setAuthToken(accessToken);
  * ```
  */
 export const refreshToken = (endpoint: VerdocsEndpoint, refreshToken: string) =>
@@ -63,7 +62,7 @@ export const refreshToken = (endpoint: VerdocsEndpoint, refreshToken: string) =>
  * Update the caller's password when the old password is known (typically for logged-in users).
  *
  * ```typescript
- * import {changePassword} from '@verdocs/js-sdk/Auth';
+ * import {changePassword} from '@verdocs/js-sdk';
  *
  * const {status, message} = await changePassword({ email, oldPassword, newPassword });
  * if (status !== 'OK') {
@@ -80,7 +79,7 @@ export const changePassword = (endpoint: VerdocsEndpoint, params: IUpdatePasswor
  * Request a password reset, when the old password is not known (typically in login forms).
  *
  * ```typescript
- * import {resetPassword} from '@verdocs/js-sdk/Auth';
+ * import {resetPassword} from '@verdocs/js-sdk';
  *
  * const {success} = await resetPassword({ email });
  * if (status !== 'OK') {
@@ -101,9 +100,27 @@ export const resetPassword = (endpoint: VerdocsEndpoint, params: {email: string}
  * "anonymous" mode while verification is being performed.
  *
  * ```typescript
- * import {Auth} from '@verdocs/js-sdk/Auth';
+ * import {resendVerification} from '@verdocs/js-sdk';
  *
- * const result = await Auth.resendVerification();
+ * const result = await resendVerification();
+ * ```
+ */
+export const verifyEmail = (endpoint: VerdocsEndpoint, email: string, code: string) =>
+  endpoint.api //
+    .post<IAuthenticateResponse>('/v2/users/verify-email', {email, code})
+    .then((r) => r.data);
+
+/**
+ * Resend the email verification request. Note that to prevent certain forms of abuse, the email address is not
+ * a parameter here. Instead, the caller must be authenticated as the (unverified) user. To simplify this process,
+ * the access token to be used may be passed directly as a parameter here. This avoids the need to set it as the
+ * active token on an endpoint, which may be inconvenient in workflows where it is preferable to keep the user in
+ * "anonymous" mode while verification is being performed.
+ *
+ * ```typescript
+ * import {resendVerification} from '@verdocs/js-sdk';
+ *
+ * const result = await resendVerification();
  * ```
  */
 export const resendVerification = (endpoint: VerdocsEndpoint, accessToken?: string) =>
