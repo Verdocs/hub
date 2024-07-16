@@ -13,6 +13,8 @@ export interface IUpdateApiKeyRequest {
 
 export interface ICreateInvitationRequest {
   email: string;
+  first_name: string;
+  last_name: string;
   role: TRole;
 }
 

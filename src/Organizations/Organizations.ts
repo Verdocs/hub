@@ -16,21 +16,8 @@ import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {IOrganization, type IProfile} from '../Models';
 
 /**
- * Get a list of organizations the caller is a member of.
- *
- * ```typescript
- * import {getOrganizations} from '@verdocs/js-sdk';
- *
- * const organizations = await getOrganizations(VerdocsEndpoint.getDefault());
- * ```
- */
-export const getOrganizations = (endpoint: VerdocsEndpoint) =>
-  endpoint.api //
-    .get<IOrganization[]>('/v2/organizations')
-    .then((r) => r.data);
-
-/**
- * Get an organization by ID.
+ * Get an organization by ID. Note that this endpoint will return only a subset of fields
+ * if the caller is not a member of the organization (the public fields).
  *
  * ```typescript
  * import {getOrganization} from '@verdocs/js-sdk';
@@ -61,12 +48,12 @@ export const updateOrganization = (endpoint: VerdocsEndpoint, organizationId: st
  * Update the organization's logo. This can only be called by an admin or owner.
  *
  * ```typescript
- * import {uploadOrganizationLogo} from '@verdocs/js-sdk';
+ * import {updateOrganizationLogo} from '@verdocs/js-sdk';
  *
- * await uploadOrganizationLogo((VerdocsEndpoint.getDefault(), organizationId, file);
+ * await updateOrganizationLogo((VerdocsEndpoint.getDefault(), organizationId, file);
  * ```
  */
-export const uploadOrganizationLogo = (
+export const updateOrganizationLogo = (
   endpoint: VerdocsEndpoint,
   organizationId: string,
   file: File,
@@ -91,12 +78,12 @@ export const uploadOrganizationLogo = (
  * Update the organization's thumbnail. This can only be called by an admin or owner.
  *
  * ```typescript
- * import {uploadOrganizationThumbnail} from '@verdocs/js-sdk';
+ * import {updateOrganizationThumbnail} from '@verdocs/js-sdk';
  *
- * await uploadOrganizationThumbnail((VerdocsEndpoint.getDefault(), organizationId, file);
+ * await updateOrganizationThumbnail((VerdocsEndpoint.getDefault(), organizationId, file);
  * ```
  */
-export const uploadOrganizationThumbnail = (
+export const updateOrganizationThumbnail = (
   endpoint: VerdocsEndpoint,
   organizationId: string,
   file: File,
