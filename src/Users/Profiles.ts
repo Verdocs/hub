@@ -22,7 +22,7 @@ export const getProfiles = (endpoint: VerdocsEndpoint) =>
  * ```typescript
  * import {getCurrentProfile} from '@verdocs/js-sdk';
  *
- * const profiles = await getCurrentProfile();
+ * const profiles = await getCurrentProfile(VerdocsEndpoint.getDefault());
  * ```
  */
 export const getCurrentProfile = (endpoint: VerdocsEndpoint) =>
@@ -32,12 +32,11 @@ export const getCurrentProfile = (endpoint: VerdocsEndpoint) =>
 
 /**
  * Get a profile. The caller must have admin access to the given profile.
- * TODO: Add a "public" profile endpoint for public pages
  *
  * ```typescript
  * import {getProfile} from '@verdocs/js-sdk';
  *
- * const profile = await getProfile('PROFILEID');
+ * const profile = await getProfile(VerdocsEndpoint.getDefault(), 'PROFILEID');
  * ```
  */
 export const getProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
@@ -53,7 +52,7 @@ export const getProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  * ```typescript
  * import {switchProfile} from '@verdocs/js-sdk';
  *
- * const newProfile = await switchProfile('PROFILEID');
+ * const newProfile = await switchProfile(VerdocsEndpoint.getDefault(), 'PROFILEID');
  * ```
  */
 export const switchProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
@@ -68,7 +67,7 @@ export const switchProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  * ```typescript
  * import {updateProfile} from '@verdocs/js-sdk/Users';
  *
- * const newProfile = await updateProfile('PROFILEID');
+ * const newProfile = await updateProfile(VerdocsEndpoint.getDefault(), 'PROFILEID');
  * ```
  */
 export const updateProfile = (endpoint: VerdocsEndpoint, profileId: string, params: IUpdateProfileRequest) =>
@@ -83,7 +82,7 @@ export const updateProfile = (endpoint: VerdocsEndpoint, profileId: string, para
  * ```typescript
  * import {deleteProfile} from '@verdocs/js-sdk';
  *
- * await deleteProfile('PROFILEID');
+ * await deleteProfile(VerdocsEndpoint.getDefault(), 'PROFILEID');
  * ```
  */
 export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
@@ -111,7 +110,7 @@ export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  * ```typescript
  * import {createProfile} from '@verdocs/js-sdk';
  *
- * const newSession = await createProfile({
+ * const newSession = await createProfile(VerdocsEndpoint.getDefault(), {
  *   orgName: 'NEW ORG', email: 'a@b.com', password: '12345678', firstName: 'FIRST', lastName: 'LAST'
  * });
  * ```
