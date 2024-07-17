@@ -180,7 +180,6 @@ export const getEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string)
       return envelope;
     });
 
-
 /**
  * Get an Envelope Document
  */
@@ -367,8 +366,8 @@ export interface IListEnvelopesParams {
   status?: string[];
   created_at?: ITimeRange;
   is_owner?: boolean;
-  sort_by?: 'name' | 'created_at' | 'updated_at' | 'canceled_at' | 'status';
   template_id?: string;
+  sort_by?: 'name' | 'created_at' | 'updated_at' | 'canceled_at' | 'status';
   ascending?: boolean;
   rows?: number;
   page?: number;
@@ -383,18 +382,7 @@ export interface IListEnvelopesParams {
  * const {totals, envelopes} = await Envelopes.listEnvelopes((VerdocsEndpoint.getDefault(), { q: 'test', sort: 'created_at' });
  * ```
  */
-export const listEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesParams) =>
+export const getEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesParams) =>
   endpoint.api //
     .post<{total: number; rows: number; page: number; envelopes: IEnvelope[]}>('/envelopes/list', params)
-    .then((r) => r.data);
-
-/**
- * Get all of the envelopes that were sent using a given template.
- * NOTE: This endpoint will be retired soon. Its response is not paginated and it is typically used only to retrieve
- * "submitted data" for a template. A new endpoint will be introduced to provide this function more directly.
- * @deprecated
- */
-export const getEnvelopesByTemplateId = async (endpoint: VerdocsEndpoint, templateId: string) =>
-  endpoint.api //
-    .get<IEnvelope[]>(`/envelopes?template_id=${templateId}`)
     .then((r) => r.data);
