@@ -1,4 +1,4 @@
-import type {TRole} from '../BaseTypes';
+import type {TRole} from '../Sessions';
 
 /**
  * Given a `rgba(r,g,b,a)` string value, returns the hex equivalent, dropping the alpha channel.

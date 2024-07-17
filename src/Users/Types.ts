@@ -1,4 +1,5 @@
-import type {TPermission, TRequestStatus, TRole} from '../BaseTypes';
+import type {TRequestStatus} from '../BaseTypes';
+import {TPermission, TRole} from '../Sessions';
 
 export interface IUpdateProfileRequest {
   first_name?: string;

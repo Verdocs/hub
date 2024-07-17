@@ -1,4 +1,5 @@
-import {TApiKeyPermission, TRole} from '../BaseTypes';
+import {TApiKeyPermission} from '../BaseTypes';
+import {TRole} from '../Sessions';
 
 export interface ICreateApiKeyRequest {
   name: string;

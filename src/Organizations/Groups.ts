@@ -9,7 +9,7 @@
  */
 
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {TPermission} from '../BaseTypes';
+import {TPermission} from '../Sessions';
 import {IGroup} from '../Models';
 
 /**

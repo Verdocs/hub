@@ -23,17 +23,20 @@ export const userHasSharedTemplate = (profile: IProfile | null | undefined, temp
 /**
  * Check to see if the user can create a personal/private template.
  */
-export const userCanCreatePersonalTemplate = (profile: IProfile) => userHasPermissions(profile, ['template:creator:create:personal']);
+export const userCanCreatePersonalTemplate = (profile: IProfile | null | undefined) =>
+  userHasPermissions(profile, ['template:creator:create:personal']);
 
 /**
  * Check to see if the user can create an org-shared template.
  */
-export const userCanCreateOrgTemplate = (profile: IProfile) => userHasPermissions(profile, ['template:creator:create:org']);
+export const userCanCreateOrgTemplate = (profile: IProfile | null | undefined) =>
+  userHasPermissions(profile, ['template:creator:create:org']);
 
 /**
  * Check to see if the user can create a public template.
  */
-export const userCanCreatePublicTemplate = (profile: IProfile) => userHasPermissions(profile, ['template:creator:create:public']);
+export const userCanCreatePublicTemplate = (profile: IProfile | null | undefined) =>
+  userHasPermissions(profile, ['template:creator:create:public']);
 
 /**
  * Check to see if the user can read/view a template.
@@ -106,7 +109,7 @@ export const userCanSendTemplate = (profile: IProfile | null | undefined, templa
 /**
  * Confirm whether the user can create a new template.
  */
-export const userCanCreateTemplate = (profile: IProfile) =>
+export const userCanCreateTemplate = (profile: IProfile | null | undefined) =>
   userCanCreatePersonalTemplate(profile) || userCanCreateOrgTemplate(profile) || userCanCreatePublicTemplate(profile);
 
 /**

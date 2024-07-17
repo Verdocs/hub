@@ -191,4 +191,3 @@ export interface ICreateEnvelopeRequest {
   prepared_fields?: {name: string; value: string}[];
 }
 
-export type TEnvelopePermission = 'envelope:create' | 'envelope:cancel' | 'envelope:view';

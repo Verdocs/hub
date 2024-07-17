@@ -14,12 +14,11 @@ import type {
   TEventDetail,
   TFieldType,
   THistoryEvent,
-  TPermission,
   TRecipientStatus,
   TRecipientType,
-  TRole,
   TTemplateSenderType,
 } from './BaseTypes';
+import {TPermission, TRole} from './Sessions';
 
 /////////////////////////////// NOTIFICATIONS /////////////////////////////
 
@@ -198,7 +197,6 @@ export interface IProfile {
   // Last-update date/time.
   updated_at: string;
 
-  /** The organization */
   organization?: IOrganization;
   api_keys?: IApiKey[];
   group_profiles?: IGroupProfile[];

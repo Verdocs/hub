@@ -2,10 +2,12 @@ import axios, {AxiosInstance} from 'axios';
 import {TSession, TSessionType} from './Sessions';
 import {decodeAccessTokenBody} from './Utils';
 import globalThis from './Utils/globalThis';
+import {getCurrentProfile} from './Users';
+import {IProfile} from './Models';
 
 // @credit https://derickbailey.com/2016/03/09/creating-a-true-singleton-in-node-js-with-es6-symbols/
 // Also see globalThis for comments about why we're doing this in the first place.
-const ENDPOINT_KEY = Symbol.for('vƒbaseerdocs-default-endpoint');
+const ENDPOINT_KEY = Symbol.for('verdocs-default-endpoint');
 
 const requestLogger = (r: any) => {
   // tslint:disable-next-line
@@ -15,7 +17,7 @@ const requestLogger = (r: any) => {
 
 export type TEnvironment = 'verdocs' | 'verdocs-stage';
 
-export type TSessionChangedListener = (endpoint: VerdocsEndpoint, session: TSession) => void;
+export type TSessionChangedListener = (endpoint: VerdocsEndpoint, session: TSession, profile: IProfile | null) => void;
 
 export interface VerdocsEndpointOptions {
   baseURL?: string;
@@ -69,6 +71,14 @@ export class VerdocsEndpoint {
    * with Envelopes.
    */
   public session = null as TSession;
+
+  /**
+   * The current user's profile, if known. Note that while sessions are loaded and handled synchronously,
+   * profiles are loaded asynchronously and may not be available immediately after a session is loaded.
+   * To ensure both are available, developers should subscribe to the `onSessionChanged` event, which
+   * will not be fired until the profile is loaded and verified.
+   */
+  public profile = null as IProfile | null;
 
   public api: AxiosInstance;
 
@@ -310,7 +320,18 @@ export class VerdocsEndpoint {
 
     localStorage.setItem(this.sessionStorageKey(), token);
 
-    this.notifySessionListeners();
+    getCurrentProfile(this)
+      .then((r) => {
+        window?.console?.debug('[JS_SDK] Loaded profile', r);
+        this.profile = r || null;
+        this.notifySessionListeners();
+      })
+      .catch((e) => {
+        this.profile = null;
+        window?.console?.warn('Unable to load profile', e);
+        this.notifySessionListeners();
+      });
+
     return this;
   }
 
@@ -335,6 +356,7 @@ export class VerdocsEndpoint {
     delete this.api.defaults.headers.common.signer;
 
     this.session = null;
+    this.profile = null;
     this.token = null;
 
     this.notifySessionListeners();
@@ -350,6 +372,7 @@ export class VerdocsEndpoint {
     delete this.api.defaults.headers.common.Authorization;
 
     this.session = null;
+    this.profile = null;
     this.token = null;
 
     this.notifySessionListeners();
@@ -360,7 +383,7 @@ export class VerdocsEndpoint {
   private notifySessionListeners() {
     this.sessionListeners.forEach((listener: TSessionChangedListener) => {
       try {
-        listener(this, this.session);
+        listener(this, this.session, this.profile);
       } catch (e) {
         // NOOP
       }
@@ -382,8 +405,8 @@ export class VerdocsEndpoint {
   }
 
   /**
-   * Load a persisted session from localStorage. Typically called once after the endpoint is configured when the app
-   * or component starts.
+   * Load a persisted session from localStorage. Typically called once after the endpoint is configured
+   * when the app or component starts.
    */
   public loadSession() {
     const token = localStorage.getItem(this.sessionStorageKey());

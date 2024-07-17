@@ -1,4 +1,5 @@
-import {TPermission, TTemplateAction, TTemplatePermission} from '../BaseTypes';
+import {TPermission, TTemplatePermission} from '../Sessions';
+import {TTemplateAction} from '../BaseTypes';
 import {IProfile, ITemplate} from '../Models';
 import {ITemplateSummary} from './Types';
 

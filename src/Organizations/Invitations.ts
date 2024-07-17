@@ -1,7 +1,7 @@
+import {IAcceptOrganizationInvitationRequest, ICreateInvitationRequest} from './Types';
 import type {IAuthenticateResponse} from '../Users';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {IOrganizationInvitation} from '../Models';
-import {IAcceptOrganizationInvitationRequest, ICreateInvitationRequest} from './Types';
 
 /**
  * An invitation represents an opportunity for a Member to join an Organization.
