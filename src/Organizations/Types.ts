@@ -18,6 +18,14 @@ export interface ICreateInvitationRequest {
   role: TRole;
 }
 
+export interface IAcceptOrganizationInvitationRequest {
+  email: string;
+  token: string;
+  first_name: string;
+  last_name: string;
+  password: string;
+}
+
 export interface ISetWebhookRequest {
   url: string;
   active: boolean;

@@ -1,7 +1,7 @@
 import type {IAuthenticateResponse} from '../Users';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {IOrganizationInvitation} from '../Models';
-import {ICreateInvitationRequest} from './Types';
+import {IAcceptOrganizationInvitationRequest, ICreateInvitationRequest} from './Types';
 
 /**
  * An invitation represents an opportunity for a Member to join an Organization.
@@ -72,9 +72,9 @@ export const getOrganizationInvitation = (endpoint: VerdocsEndpoint, email: stri
  * and session tokens will be returned to access the new profile. The profile's email_verified flag will
  * also be set to true.
  */
-export const acceptOrganizationInvitation = (endpoint: VerdocsEndpoint, email: string, token: string) =>
+export const acceptOrganizationInvitation = (endpoint: VerdocsEndpoint, params: IAcceptOrganizationInvitationRequest) =>
   endpoint.api //
-    .post<IAuthenticateResponse>('/v2/organization-invitations/accept', {email, token})
+    .post<IAuthenticateResponse>('/v2/organization-invitations/accept', params)
     .then((r) => r.data);
 
 /**

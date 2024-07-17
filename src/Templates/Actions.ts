@@ -1,10 +1,9 @@
-import {TTemplateAction, TTemplatePermission} from '../BaseTypes';
+import {TPermission, TTemplateAction, TTemplatePermission} from '../BaseTypes';
+import {IProfile, ITemplate} from '../Models';
 import {ITemplateSummary} from './Types';
-import {TSession} from '../Sessions';
-import {ITemplate} from '../Models';
 
 export const canPerformTemplateAction = (
-  session: TSession,
+  profile: IProfile | null | undefined,
   action: TTemplateAction,
   template?: ITemplate | ITemplateSummary,
 ): {canPerform: boolean; message: string} => {
@@ -14,8 +13,8 @@ export const canPerformTemplateAction = (
 
   // We use BOGUS here to force the option-chain in things like template?.profile_id to NOT match profile?.profile_id because if both
   // were undefined, they would actually match.
-  const profile_id = session?.profile_id || 'BOGUS';
-  const organization_id = session?.organization_id || 'BOGUS';
+  const profile_id = profile?.id || 'BOGUS';
+  const organization_id = profile?.organization_id || 'BOGUS';
 
   if (!profile_id) {
     return {canPerform: false, message: 'Active session required'};
@@ -83,12 +82,12 @@ export const canPerformTemplateAction = (
       return {canPerform: false, message: 'Action is not defined'};
   }
 
-  if (hasRequiredPermissions(session, permissionsRequired)) {
+  if (hasRequiredPermissions(profile, permissionsRequired)) {
     return {canPerform: true, message: ''};
   }
 
   return {canPerform: false, message: `Insufficient access to perform '${action}'. Needed permissions: ${permissionsRequired.toString()}`};
 };
 
-export const hasRequiredPermissions = (session: TSession, permissions: string[]) =>
-  permissions.every((perm) => (session?.permissions || []).includes(perm));
+export const hasRequiredPermissions = (profile: IProfile | null | undefined, permissions: TPermission[]) =>
+  permissions.every((perm) => (profile?.permissions || []).includes(perm));

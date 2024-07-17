@@ -40,9 +40,9 @@ export const getGroup = (endpoint: VerdocsEndpoint, groupId: string) =>
     .get<IGroup>(`/v2/organization-groups/${groupId}`)
     .then((r) => r.data);
 
-export const createGroup = (endpoint: VerdocsEndpoint, name: string) =>
+export const createGroup = (endpoint: VerdocsEndpoint, params: {name: string; permissions: TPermission[]}) =>
   endpoint.api //
-    .post('/v2/organization-groups', {name})
+    .post('/v2/organization-groups', params)
     .then((r) => r.data);
 
 export const addGroupMember = (endpoint: VerdocsEndpoint, groupId: string, profile_id: string) =>
@@ -55,7 +55,7 @@ export const deleteGroupMember = (endpoint: VerdocsEndpoint, groupId: string, pr
     .delete(`/v2/organization-groups/${groupId}/members/${profile_id}`)
     .then((r) => r.data);
 
-export const updateGroup = (endpoint: VerdocsEndpoint, groupId: string, params: {permissions: TPermission[]}) =>
+export const updateGroup = (endpoint: VerdocsEndpoint, groupId: string, params: {name: string; permissions: TPermission[]}) =>
   endpoint.api //
     .patch(`/v2/organization-groups/${groupId}`, params)
     .then((r) => r.data);

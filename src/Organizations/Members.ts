@@ -9,6 +9,12 @@ import {IProfile} from '../Models';
 
 /**
  * Get a list of the members in the caller's organization.
+ *
+ * ```typescript
+ * import {getOrganizationMembers} from '@verdocs/js-sdk';
+ *
+ * const members = await deleteOrganizationMember(VerdocsEndpoint.getDefault()});
+ * ```
  */
 export const getOrganizationMembers = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -17,7 +23,13 @@ export const getOrganizationMembers = (endpoint: VerdocsEndpoint) =>
 
 /**
  * Delete a member from the caller's organization. Note that the caller must be an admin or owner,
- * may not delete him/herself
+ * may not delete him/herself.
+ *
+ * ```typescript
+ * import {deleteOrganizationMember} from '@verdocs/js-sdk';
+ *
+ * await deleteOrganizationMember(VerdocsEndpoint.getDefault(), 'PROFILEID'});
+ * ```
  */
 export const deleteOrganizationMember = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
@@ -26,6 +38,12 @@ export const deleteOrganizationMember = (endpoint: VerdocsEndpoint, profileId: s
 
 /**
  * Update a member.
+ *
+ * ```typescript
+ * import {updateOrganizationMember} from '@verdocs/js-sdk';
+ *
+ * const result = await updateOrganizationMember(VerdocsEndpoint.getDefault(), 'PROFILEID', {roles:['member']});
+ * ```
  */
 export const updateOrganizationMember = (
   endpoint: VerdocsEndpoint,

@@ -1,6 +1,3 @@
-import type {TPermission, TRole} from '../BaseTypes';
-import type {IProfile} from '../Models';
-
 export interface ISigningSessionRequest {
   envelopeId: string;
   roleId: string;
@@ -31,16 +28,15 @@ export interface ISigningSession {
  * A User Session connects a caller to a Verdocs profile, and can be used for any operations that profile may perform.
  */
 export interface IUserSession {
+  aud: string;
+  iss: string;
   sub: string;
   email: string;
   email_verified: boolean;
   iat: number;
   exp: number;
-  profile_id: string;
-  organization_id: string;
-  permissions: TPermission[];
-  roles: TRole[];
-  profile: IProfile;
+  'https://verdocs.com/profile_id': string;
+  'https://verdocs.com/organization_id': string;
 }
 
 /**

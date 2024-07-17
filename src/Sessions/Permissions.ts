@@ -1,8 +1,8 @@
 import {TPermission} from '../BaseTypes';
-import {TSession} from './Types';
+import {IProfile} from '../Models';
 
 /**
  * Confirm whether the user has all of the specified permissions.
  */
-export const userHasPermissions = (session: TSession, permissions: TPermission[]) =>
-  permissions.every((perm) => (session?.permissions || []).includes(perm));
+export const userHasPermissions = (profile: IProfile | null | undefined, permissions: TPermission[]) =>
+  permissions.every((perm) => (profile?.permissions || []).includes(perm));

@@ -19,9 +19,9 @@ import {IApiKey} from '../Models';
  * Get a list of keys for a given organization. The caller must have admin access to the organization.
  *
  * ```typescript
- * import {ApiKeys} from '@verdocs/js-sdk';
+ * import {getApiKeys} from '@verdocs/js-sdk';
  *
- * const keys = await ApiKeys.getKeys(ORGID);
+ * const keys = await getApiKeys(ORGID);
  * ```
  */
 export const getApiKeys = (endpoint: VerdocsEndpoint) =>
@@ -33,9 +33,9 @@ export const getApiKeys = (endpoint: VerdocsEndpoint) =>
  * Create an API key.
  *
  * ```typescript
- * import {ApiKeys} from '@verdocs/js-sdk';
+ * import {createApiKey} from '@verdocs/js-sdk';
  *
- * await ApiKeys.createKey(ORGID, {name: NEWNAME});
+ * await createApiKey(ORGID, {name: NEWNAME});
  * ```
  */
 export const createApiKey = (endpoint: VerdocsEndpoint, params: ICreateApiKeyRequest) =>
@@ -47,9 +47,9 @@ export const createApiKey = (endpoint: VerdocsEndpoint, params: ICreateApiKeyReq
  * Rotate the secret for an API key. The caller must have admin access to the organization.
  *
  * ```typescript
- * import {ApiKeys} from '@verdocs/js-sdk';
+ * import {rotateApiKey} from '@verdocs/js-sdk';
  *
- * const {client_secret: newSecret} = await ApiKeys.rotateKey(ORGID, CLIENTID);
+ * const {client_secret: newSecret} = await rotateApiKey(ORGID, CLIENTID);
  * ```
  */
 export const rotateApiKey = (endpoint: VerdocsEndpoint, clientId: string) =>
@@ -61,9 +61,9 @@ export const rotateApiKey = (endpoint: VerdocsEndpoint, clientId: string) =>
  * Update an API key to change its assigned Profile ID or Name.
  *
  * ```typescript
- * import {ApiKeys} from '@verdocs/js-sdk';
+ * import {updateApiKey} from '@verdocs/js-sdk';
  *
- * await ApiKeys.updateKey(ORGID, CLIENTID, {name: NEWNAME});
+ * await updateApiKey(ORGID, CLIENTID, {name: NEWNAME});
  * ```
  */
 export const updateApiKey = (endpoint: VerdocsEndpoint, clientId: string, params: IUpdateApiKeyRequest) =>
@@ -75,9 +75,9 @@ export const updateApiKey = (endpoint: VerdocsEndpoint, clientId: string, params
  * Delete an API key.
  *
  * ```typescript
- * import {ApiKeys} from '@verdocs/js-sdk';
+ * import {deleteApiKey} from '@verdocs/js-sdk';
  *
- * await ApiKeys.deleteKey(ORGID, CLIENTID);
+ * await deleteApiKey(ORGID, CLIENTID);
  * ```
  */
 export const deleteApiKey = (endpoint: VerdocsEndpoint, clientId: string) =>

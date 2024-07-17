@@ -147,6 +147,8 @@ export interface IOrganization {
 export interface IOrganizationInvitation {
   organization_id: string;
   email: string;
+  first_name: string;
+  last_name: string;
   status: 'pending';
   role: TRole;
   generated_at: string;

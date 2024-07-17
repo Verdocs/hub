@@ -10,7 +10,13 @@ import {ISetWebhookRequest} from './Types';
 import {IWebhook} from '../Models';
 
 /**
- * Get the registered Webhooks for the caller's organization.
+ * Get the registered Webhook configuration for the caller's organization.
+ *
+ * ```typescript
+ * import {getWebhooks} from '@verdocs/js-sdk';
+ *
+ * await getWebhooks(ORGID, params);
+ * ```
  */
 export const getWebhooks = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -18,7 +24,15 @@ export const getWebhooks = (endpoint: VerdocsEndpoint) =>
     .then((r) => r.data);
 
 /**
- * Update the registered Webhooks for the caller's organization.
+ * Update the registered Webhook configuration for the caller's organization. Note that
+ * Webhooks cannot currently be deleted, but may be easily disabled by setting `active`
+ * to `false` and/or setting the `url` to an empty string.
+ *
+ * ```typescript
+ * import {setWebhooks} from '@verdocs/js-sdk';
+ *
+ * await setWebhooks(ORGID, params);
+ * ```
  */
 export const setWebhooks = (endpoint: VerdocsEndpoint, params: ISetWebhookRequest) =>
   endpoint.api //
