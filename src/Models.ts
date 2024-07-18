@@ -755,22 +755,3 @@ export interface ITemplateFieldSetting {
 
   [key: string]: any;
 }
-
-export interface IActivityEntry {
-  id: string;
-  name: string;
-  canceled_at: string;
-  created_at: string;
-  updated_at: string;
-  profile_id: string;
-  status: TEnvelopeStatus;
-  template_id: string;
-  recipient: {
-    claimed: boolean;
-    email: string;
-    name: string;
-    profile_id: string;
-    status: TRecipientStatus;
-    type: TRecipientType;
-  };
-}

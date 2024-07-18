@@ -57,8 +57,11 @@ export interface IRecipientKbaChallengeRequired {
   kba_required: true;
   kba_completed: false;
   kba_method: 'challenge';
-  message: string;
-  options: string[];
+  challenges: {
+    type: string;
+    message: string;
+    options: string[];
+  }[];
 }
 
 /**
@@ -71,7 +74,7 @@ export interface IRecipientKbaStatusFailed {
   kba_required: true;
   kba_completed: false;
   kba_method: 'failed';
-  meesage: string;
+  message: string;
 }
 
 export type TRecipientKbaStatus =

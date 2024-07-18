@@ -1,60 +1,27 @@
-import {IActivityEntry, IEnvelopeDocument, IEnvelopeField, IEnvelopeHistory, IRecipient, TAccessKey} from '../Models';
-import {TEnvelopeStatus, TRecipientStatus, TRecipientType} from '../BaseTypes';
-
-/**
- * One entry in an envelope search result.
- * NOTE: Many of the fields here are undefined unless "summary=true" is included in the search terms
- */
-export interface IEnvelopesSearchResultEntry {
-  id: string;
-  canceled_at: string;
-  certificate_document_id: string;
-  created_at: string;
-  histories: IEnvelopeHistory[];
-  indexed_at: string;
-  name: string;
-  no_contact: boolean;
-  organization_id: string;
-  profile_id: string;
-  recipients: IRecipient[];
-  reminder_id: string | null;
-  status: TEnvelopeStatus;
-  /** Defaults to 'private'. If set to 'shared', this envelope will be visible to other users in the same organization. Ignored for personal profiles. */
-  visibility: 'private' | 'shared';
-  next_recipient: {
-    claimed: boolean;
-    email: string;
-    name: string;
-    profile_id: string;
-    status: TRecipientStatus;
-    type: TRecipientType;
-  };
-  template_id: string;
-  total_count: number;
-  updated_at: string;
-}
+import {TEnvelopeStatus, TRecipientType} from '../BaseTypes';
+import {IEnvelope, IRecipient, TAccessKey} from '../Models';
 
 export interface IEnvelopesSearchResult {
   page: number;
   total: number;
-  result: IEnvelopesSearchResultEntry[];
+  result: IEnvelope[];
 }
 
 export interface IEnvelopesSummary {
   action_required: {
     page: number;
     total: number;
-    result: IActivityEntry[];
+    result: IEnvelope[];
   };
   completed: {
     page: number;
     total: number;
-    result: IActivityEntry[];
+    result: IEnvelope[];
   };
   waiting_others: {
     page: number;
     total: number;
-    result: IActivityEntry[];
+    result: IEnvelope[];
   };
 }
 
@@ -106,31 +73,11 @@ export interface ICreateEnvelopeRole {
   message: string;
 }
 
-export interface IEnvelopeSummary {
-  id: string;
-  profile_id: string;
-  organization_id: string | null;
-  name: string;
-  status: TEnvelopeStatus;
-  template_id: string;
-  created_at: string;
-  updated_at: string;
-  canceled_at: string;
-  envelope_document_id: string;
-  certificate_document_id: string | null;
-  reminder_id: string | null;
-  no_contact: boolean;
-  visibility: 'private' | 'shared';
-  documents: IEnvelopeDocument[];
-  recipients: IRecipient[];
-  fields: IEnvelopeField[];
-}
-
 export interface IEnvelopeSummaries {
   page: number;
   count: number;
   total: number;
-  records: IEnvelopeSummary[];
+  records: IEnvelope[];
 }
 
 export interface IInPersonLinkResponse {
@@ -190,4 +137,3 @@ export interface ICreateEnvelopeRequest {
   environment?: string;
   prepared_fields?: {name: string; value: string}[];
 }
-

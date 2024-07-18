@@ -1,7 +1,7 @@
 import {IEnvelope, IEnvelopeDocument, IEnvelopeFieldSettings, IRecipient} from '../Models';
-import {ICreateEnvelopeRequest, IEnvelopesSearchResult, IEnvelopesSummary} from './Types';
-import {TEnvelopeStatus, TEnvelopeUpdateResult, TRecipientStatus} from '../BaseTypes';
 import {ISigningSession, ISigningSessionRequest} from '../Sessions';
+import {ICreateEnvelopeRequest, IEnvelopesSummary} from './Types';
+import {TEnvelopeUpdateResult} from '../BaseTypes';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {decodeAccessTokenBody} from '../Utils';
 
@@ -46,84 +46,14 @@ export const createEnvelope = async (endpoint: VerdocsEndpoint, request: ICreate
  * Get a summary of currently active envelopes.
  *
  * ```typescript
- * import {Envelopes} from '@verdocs/js-sdk/Envelopes';
+ * import {getEnvelopesSummary} from '@verdocs/js-sdk/Envelopes';
  *
- * const {action_required, completed, waiting_on_others} = await Envelopes.getSummary(VerdocsEndpoint.getDefault());
+ * const {action_required, completed, waiting_on_others} = await getEnvelopesSummary(VerdocsEndpoint.getDefault());
  * ```
  */
 export const getEnvelopesSummary = async (endpoint: VerdocsEndpoint, page: number) =>
   endpoint.api //
     .post<IEnvelopesSummary>('/envelopes/summary', {page})
-    .then((r) => r.data);
-
-export interface IEnvelopeSearchParams {
-  /** The envelope must have been created via the specified template ID. */
-  template_id?: string;
-  /** The envelope must match one of the specified statuses. */
-  envelope_status?: TEnvelopeStatus[];
-  /** At least one of the recipients must match one of the specified statuses. */
-  recipient_status?: TRecipientStatus[];
-  /** The envelope's name (inherited from the template) must match the specified string. */
-  envelope_name?: string;
-  /** At least one of the envelope's recipients must match the specified name. */
-  recipient_name?: string;
-  /** At least one of the envelope's recipients must match the specified email address. */
-  recipient_email?: string;
-  /** Match against envelope_name, recipient_name, or recipient_email all at once. */
-  name?: string;
-  /** At least one of the envelope's recipients must match the specified ID. */
-  recipient_id?: string;
-  /** The date-range in which the envelope was created. Values should be specified in ISO8601 "UTC" format. */
-  created_at?: {
-    start_time: string;
-    end_time: string;
-  };
-  /**
-   * The date-range in which the envelope was last updated. Values should be specified in ISO8601 "UTC" format.
-   * Note that any operations that alter the envelope are considered "updates", including status changes (cancellation),
-   * recipient actions (opening/signing), etc.
-   */
-  updated_at?: {
-    start_time: string;
-    end_time: string;
-  };
-  /** The date-range in which the envelope was canceled. Values should be specified in ISO8601 "UTC" format. */
-  canceled_at?: {
-    start_time: string;
-    end_time: string;
-  };
-  /** Perform a "contains" search where any of the attached documents' fields contains the specified value. */
-  text_field_value?: string;
-  /** Set to true to retrieve only summary records (IEnvelopeSummary). */
-  summary?: boolean;
-  /** Set to true to retrieve only those envelopes owned by the caller. */
-  is_owner?: boolean;
-  /** Set to true to retrieve only those envelopes in which the caller is one of the recipients. */
-  is_recipient?: boolean;
-  /** Whether the recipient has "claimed" the envelope. */
-  recipient_claimed?: boolean;
-  /** The maximum number of records to return. Should be used in place of `row`. */
-  limit?: number;
-  /** The page number to return. Page numbers are 0-based. */
-  page?: number;
-  /** The field to sort the results by. */
-  sort_by?: 'created_at' | 'updated_at' | 'envelope_name' | 'canceled_at' | 'envelope_status';
-  /** Whether to sort in ascending (default) or descending order. */
-  ascending?: boolean;
-}
-
-/**
- * Search for envelopes matching various criteria.
- *
- * ```typescript
- * import {Envelopes} from '@verdocs/js-sdk/Envelopes';
- *
- * const {result, page, total} = await Envelopes.search(VerdocsEndpoint.getDefault(), { ... });
- * ```
- */
-export const searchEnvelopes = async (endpoint: VerdocsEndpoint, params: IEnvelopeSearchParams) =>
-  endpoint.api //
-    .post<IEnvelopesSearchResult>('/envelopes/search', params)
     .then((r) => r.data);
 
 export interface ISigningSessionResult {
@@ -324,65 +254,35 @@ export const getEnvelopeDocumentPageDisplayUri = async (
     .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}/pages/${page}/image?type=${type}`, {timeout: 20000})
     .then((r) => r.data);
 
-const cachedEnvelopes: Record<string, {loaded: number; envelope: IEnvelope}> = {};
-
-/**
- * Wrapper for `getEnvelope()` that limits queries to one every 2 seconds per template ID.
- * This is intended for use in component hierarchies that all rely on the same template
- * to avoid unnecessary repeat server calls.
- */
-export const throttledGetEnvelope = (endpoint: VerdocsEndpoint, envelopeId: string) => {
-  if (cachedEnvelopes[envelopeId] && cachedEnvelopes[envelopeId].loaded + 2000 < new Date().getTime()) {
-    return cachedEnvelopes[envelopeId].envelope;
-  }
-
-  return getEnvelope(endpoint, envelopeId).then((envelope) => {
-    cachedEnvelopes[envelopeId] = {loaded: new Date().getTime(), envelope};
-    return envelope;
-  });
-};
-
 export interface ITimeRange {
   start: string;
   end: string;
 }
 
-// /**
-//  * Lists all templates accessible by the caller, with optional filters.
-//  *
-//  * ```typescript
-//  * import {Envelopes} from '@verdocs/js-sdk/Templates';
-//  *
-//  * await Envelopes.listEnvelopes((VerdocsEndpoint.getDefault(), { name: 'test', sort: 'updated_at' });
-//  * ```
-//  */
-// export const listEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesParams) =>
-//   endpoint.api //
-//     .post<IEnvelopeSummaries>('/envelopes/list', params, {baseURL: endpoint.getBaseURLv2()})
-//     .then((r) => r.data);
 export interface IListEnvelopesParams {
-  view?: 'inbox' | 'sent' | 'action' | 'waiting' | 'completed';
   q?: string;
-  status?: string[];
-  created_at?: ITimeRange;
-  is_owner?: boolean;
+  view?: 'inbox' | 'sent' | 'action' | 'waiting' | 'completed';
+  status?: ('complete' | 'pending' | 'in progress' | 'declined' | 'canceled')[];
+  include_org?: boolean;
   template_id?: string;
+  created_before?: string;
+  created_after?: string;
   sort_by?: 'name' | 'created_at' | 'updated_at' | 'canceled_at' | 'status';
   ascending?: boolean;
   rows?: number;
   page?: number;
 }
 
-/**a
+/**
  * Lists all envelopes accessible by the caller, with optional filters.
  *
  * ```typescript
- * import {Envelopes} from '@verdocs/js-sdk/Envelopes';
+ * import {getEnvelopes} from '@verdocs/js-sdk/Envelopes';
  *
- * const {totals, envelopes} = await Envelopes.listEnvelopes((VerdocsEndpoint.getDefault(), { q: 'test', sort: 'created_at' });
+ * const {count, envelopes} = await getEnvelopes((VerdocsEndpoint.getDefault(), { q: 'test' });
  * ```
  */
 export const getEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesParams) =>
   endpoint.api //
-    .post<{total: number; rows: number; page: number; envelopes: IEnvelope[]}>('/envelopes/list', params)
+    .get<{count: number; rows: number; page: number; envelopes: IEnvelope[]}>('/envelopes', {params})
     .then((r) => r.data);
