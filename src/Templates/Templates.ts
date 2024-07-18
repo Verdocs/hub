@@ -5,7 +5,7 @@
  * @module
  */
 
-import {ITemplateOwnerInfo, ITemplateSearchParams, ITemplateSearchResult, ITemplateSummary} from './Types';
+import {ITemplateSearchParams, ITemplateSearchResult} from './Types';
 import {TSortTemplateBy, TTemplateSenderType} from '../BaseTypes';
 import {IRole, ITemplate, ITemplateField} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
@@ -31,7 +31,7 @@ export interface IGetTemplatesParams {
  */
 export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesParams) =>
   endpoint.api //
-    .post<ITemplate[]>('/templates', {params})
+    .post<ITemplate[]>('/v2/templates', {params})
     .then((r) => r.data);
 
 // export interface IListTemplatesParams {
@@ -69,7 +69,7 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
  */
 export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
-    .get<ITemplate>(`/templates/${templateId}`)
+    .get<ITemplate>(`/v2/templates/${templateId}`)
     .then((r) => {
       const template = r.data;
 
@@ -98,20 +98,6 @@ export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
 
       return template;
     });
-
-/**
- * Get owner information for a template.
- *
- * ```typescript
- * import {Templates} from '@verdocs/js-sdk/Templates';
- *
- * const template = await Templates.getTemplateOwnerInfo((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');
- * ```
- */
-export const getTemplateOwnerInfo = (endpoint: VerdocsEndpoint, templateId: string) =>
-  endpoint.api //
-    .get<ITemplateOwnerInfo>(`/templates/${templateId}`)
-    .then((r) => r.data);
 
 /**
  * Represents a document to be attached to a template via an externally-accessible URI. A copy of the document will be
@@ -186,55 +172,10 @@ const ALLOWED_CREATE_FIELDS: (keyof ITemplateCreateParams)[] = [
  * ```typescript
  * import {Templates} from '@verdocs/js-sdk/Templates';
  *
- * const newTemplate = await Templates.createTemplate((VerdocsEndpoint.getDefault(), {...});
- * ```
- */
-export const createTemplate = (
-  endpoint: VerdocsEndpoint,
-  params: ITemplateCreateParams,
-  onUploadProgress?: (percent: number, loadedBytes: number, totalBytes: number) => void,
-) => {
-  const options = {
-    timeout: 120000,
-    onUploadProgress: (event: any) => {
-      const total = event.total || 1;
-      const loaded = event.loaded || 0;
-      onUploadProgress?.(Math.floor((loaded * 100) / (total || 1)), loaded, total || 1);
-    },
-  };
-
-  if (params.documents && params.documents[0] instanceof File) {
-    if (params.documents.length > 10) {
-      throw new Error('createTemplate() has a maximum of 10 documents that can be attached.');
-    }
-
-    const formData = new FormData();
-    ALLOWED_CREATE_FIELDS.forEach((allowedKey) => {
-      if (params[allowedKey as keyof ITemplateCreateParams] !== undefined) {
-        formData.append(allowedKey, params[allowedKey] as any);
-      }
-    });
-
-    params.documents.forEach((file) => {
-      formData.append('documents', file as never as File, file.name);
-    });
-
-    return endpoint.api.post<ITemplate>('/templates', formData, options).then((r) => r.data);
-  } else {
-    return endpoint.api.post<ITemplate>('/templates', params, options).then((r) => r.data);
-  }
-};
-
-/**
- * Create a template.
- *
- * ```typescript
- * import {Templates} from '@verdocs/js-sdk/Templates';
- *
  * const newTemplate = await Templates.createTemplatev2((VerdocsEndpoint.getDefault(), {...});
  * ```
  */
-export const createTemplatev2 = (
+export const createTemplate = (
   endpoint: VerdocsEndpoint,
   params: ITemplateCreateParams,
   onUploadProgress?: (percent: number, loadedBytes: number, totalBytes: number) => void,
@@ -365,38 +306,6 @@ export interface IGetTemplateSummaryParams {
   row?: number;
   page?: number;
 }
-
-/**
- * Get a summary of template data, typically used to populate admin panel dashboard pages.
- *
- * ```typescript
- * import {Templates} from '@verdocs/js-sdk/Templates';
- *
- * const summary = await Templates.getSummary((VerdocsEndpoint.getDefault(), 0);
- * ```
- */
-export const getTemplatesSummary = async (endpoint: VerdocsEndpoint, params: IGetTemplateSummaryParams = {}) =>
-  endpoint.api //
-    .post<ITemplateSummary>('/templates/summary', params)
-    .then((r) => r.data);
-
-const cachedTemplates: Record<string, {loaded: number; template: ITemplate}> = {};
-
-/**
- * Wrapper for `getTemplate()` that limits queries to one every 2 seconds per template ID.
- * This is intended for use in component hierarchies that all rely on the same template
- * to avoid unnecessary repeat server calls.
- */
-export const throttledGetTemplate = (endpoint: VerdocsEndpoint, templateId: string) => {
-  if (cachedTemplates[templateId] && cachedTemplates[templateId].loaded + 2000 < new Date().getTime()) {
-    return cachedTemplates[templateId].template;
-  }
-
-  return getTemplate(endpoint, templateId).then((template) => {
-    cachedTemplates[templateId] = {loaded: new Date().getTime(), template};
-    return template;
-  });
-};
 
 export interface ITemplateListParams {
   status?: string[];

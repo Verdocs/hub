@@ -1,33 +1,6 @@
-import {TSortTemplateBy, TTemplateAction, TTemplateSenderType} from '../BaseTypes';
+import {TSortTemplateBy} from '../BaseTypes';
 import {ITimePeriod} from '../Utils';
 import {ITemplate} from '../Models';
-
-/**
- * Some template search and list endpoints return only a partial set of fields for each entry via this structure.
- */
-export interface ITemplateSummary {
-  id: string;
-  name: string;
-  description: string | null;
-  sender: TTemplateSenderType;
-  counter: number;
-  star_counter: number;
-  created_at: string;
-  updated_at: string;
-  last_used_at: string | null;
-  /**
-   * If true, the template is considered "sendable" (it has at least one signer, and every signer has at least one field.)
-   */
-  is_sendable: boolean;
-  is_personal: boolean;
-  is_public: boolean;
-  profile_id: string;
-  organization_id: string;
-  reminder_id: string;
-  tags: string[];
-
-  allowed_operations: TTemplateAction[];
-}
 
 export interface ITemplateSearchParams {
   id?: string;
@@ -49,13 +22,6 @@ export interface ITemplateSearchParams {
   page?: number;
 }
 
-export interface ITemplateSummaries {
-  page: number;
-  count: number;
-  total: number;
-  records: ITemplateSummary[];
-}
-
 export interface ITemplateTag {
   tag_name: string;
   template_id: string;
@@ -70,12 +36,6 @@ export interface ITag {
 
 export interface IStar {
   template_id: string;
-  profile_id: string;
-}
-
-export interface ITemplateOwnerInfo {
-  email: string;
-  name: string;
   profile_id: string;
 }
 

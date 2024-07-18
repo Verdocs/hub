@@ -1,12 +1,11 @@
 import {TPermission, TTemplatePermission} from '../Sessions';
 import {TTemplateAction} from '../BaseTypes';
 import {IProfile, ITemplate} from '../Models';
-import {ITemplateSummary} from './Types';
 
 export const canPerformTemplateAction = (
   profile: IProfile | null | undefined,
   action: TTemplateAction,
-  template?: ITemplate | ITemplateSummary,
+  template?: ITemplate,
 ): {canPerform: boolean; message: string} => {
   if (!template && !action.includes('create')) {
     return {canPerform: false, message: 'Missing required template object'};

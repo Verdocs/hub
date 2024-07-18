@@ -1,5 +1,6 @@
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {IStar, ITemplateSummary} from './Types';
+import {ITemplate} from '../Models';
+import {IStar} from './Types';
 
 /**
  * Get the template stars for a template.
@@ -14,5 +15,5 @@ export const getStars = (endpoint: VerdocsEndpoint, templateId: string) =>
  */
 export const toggleStar = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
-    .post<ITemplateSummary>(`/templates/${templateId}/stars/toggle`)
+    .post<ITemplate>(`/templates/${templateId}/stars/toggle`)
     .then((r) => r.data);

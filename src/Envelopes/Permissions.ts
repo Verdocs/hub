@@ -5,35 +5,32 @@
  */
 
 import {IEnvelope, IProfile, IRecipient} from '../Models';
-import {IEnvelopeSummary} from './Types';
 
 /**
  * Check to see if the user owns the envelope.
  */
-export const userIsEnvelopeOwner = (profile: IProfile | null | undefined, envelope: IEnvelope | IEnvelopeSummary) =>
-  envelope.profile_id === profile?.id;
+export const userIsEnvelopeOwner = (profile: IProfile | null | undefined, envelope: IEnvelope) => envelope.profile_id === profile?.id;
 
 /**
  * Check to see if the user owns the envelope.
  */
-export const userIsEnvelopeRecipient = (profile: IProfile | null | undefined, envelope: IEnvelope | IEnvelopeSummary) =>
-  envelope.profile_id === profile?.id;
+export const userIsEnvelopeRecipient = (profile: IProfile | null | undefined, envelope: IEnvelope) => envelope.profile_id === profile?.id;
 
 /**
  * Check to see if the envelope has pending actions.
  */
-export const envelopeIsActive = (envelope: IEnvelope | IEnvelopeSummary) =>
+export const envelopeIsActive = (envelope: IEnvelope) =>
   envelope.status !== 'complete' && envelope.status !== 'declined' && envelope.status !== 'canceled';
 
 /**
  * Check to see if the envelope has been completed.
  */
-export const envelopeIsComplete = (envelope: IEnvelope | IEnvelopeSummary) => envelope.status !== 'complete';
+export const envelopeIsComplete = (envelope: IEnvelope) => envelope.status !== 'complete';
 
 /**
  * Check to see if the user owns the envelope.
  */
-export const userCanCancelEnvelope = (profile: IProfile | null | undefined, envelope: IEnvelope | IEnvelopeSummary) =>
+export const userCanCancelEnvelope = (profile: IProfile | null | undefined, envelope: IEnvelope) =>
   userIsEnvelopeOwner(profile, envelope) &&
   envelope.status !== 'complete' &&
   envelope.status !== 'declined' &&
@@ -42,7 +39,7 @@ export const userCanCancelEnvelope = (profile: IProfile | null | undefined, enve
 /**
  * Check to see if the user owns the envelope.
  */
-export const userCanFinishEnvelope = (profile: IProfile | null | undefined, envelope: IEnvelope | IEnvelopeSummary) =>
+export const userCanFinishEnvelope = (profile: IProfile | null | undefined, envelope: IEnvelope) =>
   userIsEnvelopeOwner(profile, envelope) &&
   envelope.status !== 'complete' &&
   envelope.status !== 'declined' &&
@@ -55,7 +52,7 @@ export const recipientHasAction = (recipient: IRecipient) => !['submitted', 'can
 /**
  * Returns the recipients who still have a pending action. Note that not all of these recipients may be able to act (yet).
  */
-export const getRecipientsWithActions = (envelope: IEnvelope | IEnvelopeSummary) => (envelope?.recipients || []).filter(recipientHasAction);
+export const getRecipientsWithActions = (envelope: IEnvelope) => (envelope?.recipients || []).filter(recipientHasAction);
 
 /**
  * Returns true if the recipient can act.
@@ -74,7 +71,7 @@ export const userCanAct = (email: string, recipientsWithActions: IRecipient[]) =
 /**
  * Returns true if the user can act.
  */
-export const userCanSignNow = (profile: IProfile | null | undefined, envelope: IEnvelope | IEnvelopeSummary) => {
+export const userCanSignNow = (profile: IProfile | null | undefined, envelope: IEnvelope) => {
   if (!profile) {
     return false;
   }
@@ -89,7 +86,7 @@ export const userCanSignNow = (profile: IProfile | null | undefined, envelope: I
   );
 };
 
-export const getNextRecipient = (envelope: IEnvelope | IEnvelopeSummary) => {
+export const getNextRecipient = (envelope: IEnvelope) => {
   const recipientsWithActions = getRecipientsWithActions(envelope);
   return recipientsWithActions?.[0];
 };

@@ -6,18 +6,17 @@
 
 import {userHasPermissions} from '../Sessions';
 import {IProfile, ITemplate} from '../Models';
-import {ITemplateSummary} from './Types';
 
 /**
  * Check to see if the user created the template.
  */
-export const userIsTemplateCreator = (profile: IProfile | null | undefined, template: ITemplate | ITemplateSummary) =>
+export const userIsTemplateCreator = (profile: IProfile | null | undefined, template: ITemplate) =>
   profile && template && profile.id === template.profile_id;
 
 /**
  * Check to see if a template is "shared" with the user.
  */
-export const userHasSharedTemplate = (profile: IProfile | null | undefined, template: ITemplate | ITemplateSummary) =>
+export const userHasSharedTemplate = (profile: IProfile | null | undefined, template: ITemplate) =>
   profile && template && !template.is_personal && profile.organization_id === template.organization_id;
 
 /**
@@ -41,7 +40,7 @@ export const userCanCreatePublicTemplate = (profile: IProfile | null | undefined
 /**
  * Check to see if the user can read/view a template.
  */
-export const userCanReadTemplate = (profile: IProfile | null | undefined, template: ITemplate | ITemplateSummary) =>
+export const userCanReadTemplate = (profile: IProfile | null | undefined, template: ITemplate) =>
   template.is_public ||
   userIsTemplateCreator(profile, template) ||
   (userHasSharedTemplate(profile, template) && userHasPermissions(profile, ['template:member:read']));
@@ -49,14 +48,14 @@ export const userCanReadTemplate = (profile: IProfile | null | undefined, templa
 /**
  * Check to see if the user can update a tempate.
  */
-export const userCanUpdateTemplate = (profile: IProfile | null | undefined, template: ITemplate | ITemplateSummary) =>
+export const userCanUpdateTemplate = (profile: IProfile | null | undefined, template: ITemplate) =>
   userIsTemplateCreator(profile, template) ||
   (userHasSharedTemplate(profile, template) && userHasPermissions(profile, ['template:member:read', 'template:member:write']));
 
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
  */
-export const userCanMakeTemplatePrivate = (profile: IProfile | null | undefined, template: ITemplate | ITemplateSummary) =>
+export const userCanMakeTemplatePrivate = (profile: IProfile | null | undefined, template: ITemplate) =>
   userIsTemplateCreator(profile, template)
     ? userHasPermissions(profile, ['template:creator:create:personal'])
     : userHasPermissions(profile, ['template:member:visibility']);
@@ -64,7 +63,7 @@ export const userCanMakeTemplatePrivate = (profile: IProfile | null | undefined,
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
  */
-export const userCanMakeTemplateShared = (profile: IProfile | null | undefined, template: ITemplate | ITemplateSummary) =>
+export const userCanMakeTemplateShared = (profile: IProfile | null | undefined, template: ITemplate) =>
   userIsTemplateCreator(profile, template)
     ? userHasPermissions(profile, ['template:creator:create:org'])
     : userHasPermissions(profile, ['template:member:visibility']);
@@ -72,7 +71,7 @@ export const userCanMakeTemplateShared = (profile: IProfile | null | undefined, 
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
  */
-export const userCanMakeTemplatePublic = (profile: IProfile | null | undefined, template: ITemplate | ITemplateSummary) =>
+export const userCanMakeTemplatePublic = (profile: IProfile | null | undefined, template: ITemplate) =>
   userIsTemplateCreator(profile, template)
     ? userHasPermissions(profile, ['template:creator:create:public'])
     : userHasPermissions(profile, ['template:member:visibility']);
@@ -80,13 +79,13 @@ export const userCanMakeTemplatePublic = (profile: IProfile | null | undefined, 
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
  */
-export const userCanChangeOrgVisibility = (profile: IProfile | null | undefined, template: ITemplate | ITemplateSummary) =>
+export const userCanChangeOrgVisibility = (profile: IProfile | null | undefined, template: ITemplate) =>
   userIsTemplateCreator(profile, template) && userHasPermissions(profile, ['template:creator:create:personal']);
 
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
  */
-export const userCanDeleteTemplate = (profile: IProfile | null | undefined, template: ITemplate | ITemplateSummary) =>
+export const userCanDeleteTemplate = (profile: IProfile | null | undefined, template: ITemplate) =>
   userIsTemplateCreator(profile, template)
     ? userHasPermissions(profile, ['template:creator:delete'])
     : userHasPermissions(profile, ['template:member:delete']);
@@ -94,7 +93,7 @@ export const userCanDeleteTemplate = (profile: IProfile | null | undefined, temp
 /**
  * Confirm whether the user can create an envelope using the specified template.
  */
-export const userCanSendTemplate = (profile: IProfile | null | undefined, template: ITemplate | ITemplateSummary) => {
+export const userCanSendTemplate = (profile: IProfile | null | undefined, template: ITemplate) => {
   switch (template.sender) {
     case 'creator':
       return userIsTemplateCreator(profile, template);
