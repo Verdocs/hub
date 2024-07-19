@@ -1,4 +1,4 @@
-import {
+import type {
   IInPersonLinkResponse,
   IUpdateRecipientSubmitParams,
   IUpdateRecipientClaimEnvelope,
@@ -7,8 +7,8 @@ import {
   IUpdateRecipientDeclineParams,
   IUpdateRecipientPrepareParams,
 } from './Types';
-import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {IEnvelope, IInPersonAccessKey, IRecipient} from '../Models';
+import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 /**
  * Update a recipient's status block
@@ -73,16 +73,30 @@ export const envelopeRecipientPrepare = (endpoint: VerdocsEndpoint, envelopeId: 
 export interface ISignerTokenResponse {
   recipient: IRecipient;
   envelope: IEnvelope;
-  signerToken: string;
-  inPersonAccessKey: IInPersonAccessKey;
+  access_token: string;
+  in_person_key: IInPersonAccessKey;
 }
 
 /**
- * Get a signing token.
+ * Get a signing session for an Envelope. Note that this should generally be called with a NON-default
+ * endpoint.
  */
-export const getSignerToken = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
+export const getSigningSession = async (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string, key: string) => {
+  return endpoint.api //
+    .post<ISignerTokenResponse>(`/v2/sign/start/${envelope_id}/${encodeURIComponent(role_name)}/${key}`)
+    .then((r) => {
+      endpoint.setToken(r.data.access_token);
+      return r.data;
+    });
+};
+
+/**
+ * Get a signing token for in-person signing. Authentication is required. This should be called
+ * by the logged-in user who wants to sign.
+ */
+export const getSignerToken = (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string) =>
   endpoint.api //
-    .get<ISignerTokenResponse>(`/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/signer-token`)
+    .get<ISignerTokenResponse>(`/envelopes/${envelope_id}/recipients/${encodeURIComponent(role_name)}/signer-token`)
     .then((r) => r.data);
 
 /**

@@ -1,9 +1,7 @@
 import {IEnvelope, IEnvelopeDocument, IEnvelopeFieldSettings, IRecipient} from '../Models';
-import {ISigningSession, ISigningSessionRequest} from '../Sessions';
 import {ICreateEnvelopeRequest, IEnvelopesSummary} from './Types';
 import {TEnvelopeUpdateResult} from '../BaseTypes';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {decodeAccessTokenBody} from '../Utils';
 
 /**
  * Create an envelope
@@ -55,30 +53,6 @@ export const getEnvelopesSummary = async (endpoint: VerdocsEndpoint, page: numbe
   endpoint.api //
     .post<IEnvelopesSummary>('/envelopes/summary', {page})
     .then((r) => r.data);
-
-export interface ISigningSessionResult {
-  recipient: IRecipient;
-  session: ISigningSession;
-  signerToken: string;
-}
-
-/**
- * Get a signing session for an Envelope.
- */
-export const getSigningSession = async (endpoint: VerdocsEndpoint, params: ISigningSessionRequest) => {
-  window.console.log('[JS_SDK] getSigningSession', params, endpoint.api);
-  return endpoint.api //
-    .get<IRecipient>(`/envelopes/${params.envelopeId}/recipients/${encodeURIComponent(params.roleId)}/invitation/${params.inviteCode}`)
-    .then((r) => {
-      // Avoiding a jsonwebtoken dependency here - we don't actually need the whole library
-      const signerToken = r.headers?.signer_token || '';
-      const session = decodeAccessTokenBody(signerToken) as ISigningSession;
-
-      endpoint.setToken(signerToken);
-
-      return {recipient: r.data, session, signerToken} as ISigningSessionResult;
-    });
-};
 
 /**
  * Get the list of recipients for an Envelope.
@@ -284,5 +258,5 @@ export interface IListEnvelopesParams {
  */
 export const getEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesParams) =>
   endpoint.api //
-    .get<{count: number; rows: number; page: number; envelopes: IEnvelope[]}>('/envelopes', {params})
+    .get<{count: number; rows: number; page: number; envelopes: IEnvelope[]}>('/v2/envelopes', {params})
     .then((r) => r.data);

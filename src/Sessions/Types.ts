@@ -1,27 +1,17 @@
-export interface ISigningSessionRequest {
-  envelopeId: string;
-  roleId: string;
-  inviteCode: string;
-}
-
 /**
  * A Signing Session connects a caller to a role within an envelope, and can be used only for calls related to signing that envelope.
  */
 export interface ISigningSession {
-  profile_id: string;
-  envelope_id: string;
-  role: string;
-  email: string;
-  access_key: {
-    id: string;
-    type: string;
-  };
-  iss: string;
   aud: string;
-  exp: number;
+  iss: string;
+  sub: string; // Verdocs access key ID
+  email: string;
+  email_verified: boolean;
   iat: number;
-
-  [key: string]: any;
+  exp: number;
+  'https://verdocs.com/session_type': 'signing';
+  'https://verdocs.com/envelope_id': string;
+  'https://verdocs.com/role_name': string;
 }
 
 /**
@@ -30,15 +20,27 @@ export interface ISigningSession {
 export interface IUserSession {
   aud: string;
   iss: string;
-  sub: string;
+  sub: string; // Auth0 user_id
   email: string;
   email_verified: boolean;
   iat: number;
   exp: number;
+  'https://verdocs.com/session_type': 'user';
   'https://verdocs.com/profile_id': string;
   'https://verdocs.com/organization_id': string;
 }
 
+export interface IIdToken {
+  aud: string;
+  iss: string;
+  sub: string; // Auth0 user_id
+  email: string;
+  email_verified: boolean;
+  organization_id: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+}
 /**
  * Verdocs supports two types of authenticated sessions: User and Signing. Both behave similarly and have similar
  * properties, but signing sessions only have access to a small set of signing-related functions.

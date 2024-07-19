@@ -78,17 +78,17 @@ export type TRecipientKbaStep =
  * `recipient.kba_method` is set (not null), and `recipient.kba_completed` is false, this endpoint
  * should be called to determine the next KBA step required.
  */
-export const getKbaStep = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
+export const getKbaStep = (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string) =>
   endpoint.api //
-    .get<TRecipientKbaStep>(`/v2/kba/${envelopeId}/${encodeURIComponent(roleName)}`)
+    .get<TRecipientKbaStep>(`/v2/kba/${envelope_id}/${encodeURIComponent(role_name)}`)
     .then((r) => r.data);
 
 /**
  * Submit a response to a KBA PIN challenge.
  */
-export const submitKbaPin = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, pin: string) =>
+export const submitKbaPin = (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string, pin: string) =>
   endpoint.api //
-    .post<TRecipientKbaStep>(`/v2/kba/pin`, {envelopeId, roleName, pin})
+    .post<TRecipientKbaStep>(`/v2/kba/pin`, {envelope_id, role_name, pin})
     .then((r) => r.data);
 
 export interface IKbaIdentity {
@@ -104,9 +104,9 @@ export interface IKbaIdentity {
 /**
  * Submit an identity response to a KBA challenge.
  */
-export const submitKbaIdentity = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, identity: IKbaIdentity) =>
+export const submitKbaIdentity = (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string, identity: IKbaIdentity) =>
   endpoint.api //
-    .post<TRecipientKbaStep>(`/v2/kba/identity`, {envelopeId, roleName, identity})
+    .post<TRecipientKbaStep>(`/v2/kba/identity`, {envelope_id, role_name, identity})
     .then((r) => r.data);
 
 export interface IKbaChallengeResponse {
@@ -122,10 +122,10 @@ export interface IKbaChallengeResponse {
  */
 export const submitKbaChallengeResponse = (
   endpoint: VerdocsEndpoint,
-  envelopeId: string,
-  roleName: string,
+  envelope_id: string,
+  role_name: string,
   response: IKbaChallengeResponse,
 ) =>
   endpoint.api //
-    .post<TRecipientKbaStep>(`/v2/kba/response`, {envelopeId, roleName, response})
+    .post<TRecipientKbaStep>(`/v2/kba/response`, {envelope_id, role_name, response})
     .then((r) => r.data);
