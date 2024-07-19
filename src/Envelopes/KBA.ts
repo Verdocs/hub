@@ -48,7 +48,7 @@ export interface IRecipientKbaStepChallenge {
   questions: {
     type: string;
     message: string;
-    options: string[];
+    options: (string | number)[];
   }[];
 }
 
@@ -92,13 +92,12 @@ export const submitKbaPin = (endpoint: VerdocsEndpoint, envelopeId: string, role
     .then((r) => r.data);
 
 export interface IKbaIdentity {
-  address1: string;
-  address2?: string;
+  firstName: string;
+  lastName: string;
+  address: string;
   city?: string;
   state?: string;
-  postalCode?: string;
-  country?: string;
-  ssn?: string;
+  zip?: string;
   ssnLast4?: string;
 }
 
@@ -113,7 +112,7 @@ export const submitKbaIdentity = (endpoint: VerdocsEndpoint, envelopeId: string,
 export interface IKbaChallengeResponse {
   responses: {
     type: string;
-    answer: string;
+    answer: string | number;
   }[];
 }
 
