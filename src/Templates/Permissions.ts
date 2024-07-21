@@ -100,6 +100,7 @@ export const userCanSendTemplate = (profile: IProfile | null | undefined, templa
     case 'organization_member':
     case 'organization_member_as_creator':
       return userIsTemplateCreator(profile, template) || template.organization_id === profile?.organization_id;
+    // 'everyone' | 'everyone_as_creator';
     default:
       return true;
   }
