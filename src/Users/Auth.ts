@@ -64,7 +64,7 @@ export const refreshToken = (endpoint: VerdocsEndpoint, refreshToken: string) =>
  * ```typescript
  * import {changePassword} from '@verdocs/js-sdk';
  *
- * const {status, message} = await changePassword({ email, oldPassword, newPassword });
+ * const {status, message} = await changePassword({ old_password, new_password });
  * if (status !== 'OK') {
  *   window.alert(`Password reset error: ${message}`);
  * }

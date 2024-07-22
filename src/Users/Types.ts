@@ -20,9 +20,8 @@ export interface IAuthenticateResponse {
 }
 
 export interface IUpdatePasswordRequest {
-  email: string;
-  oldPassword: string;
-  newPassword: string;
+  old_password: string;
+  new_password: string;
 }
 
 export interface IUpdatePasswordResponse {
