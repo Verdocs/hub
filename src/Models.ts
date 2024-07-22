@@ -186,6 +186,8 @@ export interface IProfile {
   first_name: string;
   last_name: string;
   email: string;
+  /** If true, this user's email address has been verified. Note that this field may not be present in all records. */
+  email_verified?: boolean;
   phone: string | null;
   picture: string | null;
   /** If true, this is the caller's "currently selected" profile. All operations will performed "as" this profile. */
