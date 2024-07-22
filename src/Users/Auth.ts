@@ -93,20 +93,6 @@ export const resetPassword = (endpoint: VerdocsEndpoint, params: {email: string}
     .then((r) => r.data);
 
 /**
- * Check whether email verification has been completed. Once it has, a new session will be generated.
- *
- * ```typescript
- * import {checkVerification} from '@verdocs/js-sdk';
- *
- * const result = await checkVerification();
- * ```
- */
-export const checkVerification = (endpoint: VerdocsEndpoint, email: string, code: string) =>
-  endpoint.api //
-    .post<{status: 'PENDING'} | IAuthenticateResponse>('/v2/users/check-verification', {email, code})
-    .then((r) => r.data);
-
-/**
  * Resend the email verification request. Note that to prevent certain forms of abuse, the email address is not
  * a parameter here. Instead, the caller must be authenticated as the (unverified) user. To simplify this process,
  * the access token to be used may be passed directly as a parameter here. This avoids the need to set it as the

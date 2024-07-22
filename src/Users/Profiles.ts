@@ -1,6 +1,6 @@
 import type {IAuthenticateResponse, ICreateAccountRequest, IUpdateProfileRequest} from './Types';
-import type {IOrganization, IProfile} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import type {IProfile} from '../Models';
 
 /**
  * Get the user's available profiles. The current profile will be marked with `current: true`.
@@ -117,7 +117,7 @@ export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  */
 export const createProfile = (endpoint: VerdocsEndpoint, params: ICreateAccountRequest) =>
   endpoint.api //
-    .post<{profile: IProfile; organization: IOrganization}>('/v2/profiles', params)
+    .post<IAuthenticateResponse>('/v2/profiles', params)
     .then((r) => r.data);
 
 /**

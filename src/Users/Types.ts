@@ -33,7 +33,7 @@ export interface IUpdatePasswordResponse {
 export interface ICreateAccountRequest {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  orgName: string;
+  first_name: string;
+  last_name: string;
+  org_name: string;
 }
