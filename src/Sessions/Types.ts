@@ -6,7 +6,6 @@ export interface ISigningSession {
   iss: string;
   sub: string; // Verdocs access key ID
   email: string;
-  email_verified: boolean;
   iat: number;
   exp: number;
   'https://verdocs.com/session_type': 'signing';
@@ -22,7 +21,6 @@ export interface IUserSession {
   iss: string;
   sub: string; // Auth0 user_id
   email: string;
-  email_verified: boolean;
   iat: number;
   exp: number;
   'https://verdocs.com/session_type': 'user';
@@ -35,7 +33,6 @@ export interface IIdToken {
   iss: string;
   sub: string; // Auth0 user_id
   email: string;
-  email_verified: boolean;
   organization_id: string;
   first_name: string;
   last_name: string;
