@@ -1,4 +1,4 @@
-import type {IAuthenticateResponse, ICreateAccountRequest, IUpdateProfileRequest} from './Types';
+import type {IAuthenticateResponse, IUpdateProfileRequest, ICreateProfileRequest} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import type {IProfile} from '../Models';
 
@@ -115,7 +115,7 @@ export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  * });
  * ```
  */
-export const createProfile = (endpoint: VerdocsEndpoint, params: ICreateAccountRequest) =>
+export const createProfile = (endpoint: VerdocsEndpoint, params: ICreateProfileRequest) =>
   endpoint.api //
     .post<IAuthenticateResponse>('/v2/profiles', params)
     .then((r) => r.data);

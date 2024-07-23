@@ -1,4 +1,4 @@
-import type {IAuthenticateResponse, IUpdatePasswordRequest, IUpdatePasswordResponse} from './Types';
+import {IAuthenticateResponse, IChangePasswordRequest, IChangePasswordResponse, IVerifyEmailRequest} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export interface IROPCRequest {
@@ -70,9 +70,9 @@ export const refreshToken = (endpoint: VerdocsEndpoint, refreshToken: string) =>
  * }
  * ```
  */
-export const changePassword = (endpoint: VerdocsEndpoint, params: IUpdatePasswordRequest) =>
+export const changePassword = (endpoint: VerdocsEndpoint, params: IChangePasswordRequest) =>
   endpoint.api //
-    .post<IUpdatePasswordResponse>('/v2/users/change-password', params)
+    .post<IChangePasswordResponse>('/v2/users/change-password', params)
     .then((r) => r.data);
 
 /**
@@ -108,4 +108,22 @@ export const resetPassword = (endpoint: VerdocsEndpoint, params: {email: string}
 export const resendVerification = (endpoint: VerdocsEndpoint, accessToken?: string) =>
   endpoint.api //
     .post<{result: 'done'}>('/v2/users/resend-verification', {}, accessToken ? {headers: {Authorization: `Bearer ${accessToken}`}} : {})
+    .then((r) => r.data);
+
+/**
+ * Resend the email verification request. Note that to prevent certain forms of abuse, the email address is not
+ * a parameter here. Instead, the caller must be authenticated as the (unverified) user. To simplify this process,
+ * the access token to be used may be passed directly as a parameter here. This avoids the need to set it as the
+ * active token on an endpoint, which may be inconvenient in workflows where it is preferable to keep the user in
+ * "anonymous" mode while verification is being performed.
+ *
+ * ```typescript
+ * import {resendVerification} from '@verdocs/js-sdk';
+ *
+ * const result = await resendVerification();
+ * ```
+ */
+export const verifyPassword = (endpoint: VerdocsEndpoint, params: IVerifyEmailRequest) =>
+  endpoint.api //
+    .post<IAuthenticateResponse>('/v2/users/verify', params)
     .then((r) => r.data);

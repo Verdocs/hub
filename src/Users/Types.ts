@@ -1,6 +1,14 @@
 import type {TRequestStatus} from '../BaseTypes';
 import {TPermission, TRole} from '../Sessions';
 
+export interface ICreateProfileRequest {
+  email: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+  org_name: string;
+}
+
 export interface IUpdateProfileRequest {
   first_name?: string;
   last_name?: string;
@@ -19,21 +27,25 @@ export interface IAuthenticateResponse {
   refresh_token_exp: number;
 }
 
-export interface IUpdatePasswordRequest {
+export interface IChangePasswordRequest {
   old_password: string;
   new_password: string;
 }
 
-export interface IUpdatePasswordResponse {
+export interface IChangePasswordResponse {
   status: TRequestStatus;
-  /** Success or failure message */
   message: string;
 }
 
-export interface ICreateAccountRequest {
+export interface IResetPasswordRequest {
   email: string;
-  password: string;
-  first_name: string;
-  last_name: string;
-  org_name: string;
+}
+
+export interface IResetPasswordResponse {
+  status: 'OK';
+}
+
+export interface IVerifyEmailRequest {
+  email: string;
+  token: string;
 }
