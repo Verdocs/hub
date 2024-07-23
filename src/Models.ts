@@ -186,8 +186,6 @@ export interface IProfile {
   first_name: string;
   last_name: string;
   email: string;
-  /** If true, this user's email address has been verified. Note that this field may not be present in all records. */
-  email_verified?: boolean;
   phone: string | null;
   picture: string | null;
   /** If true, this is the caller's "currently selected" profile. All operations will performed "as" this profile. */
@@ -199,6 +197,7 @@ export interface IProfile {
   // Last-update date/time.
   updated_at: string;
 
+  user?: IUser;
   organization?: IOrganization;
   api_keys?: IApiKey[];
   group_profiles?: IGroupProfile[];
@@ -207,6 +206,23 @@ export interface IProfile {
   oauth2_apps?: IOAuth2App[];
   signatures?: ISignature[];
   initials?: IInitial[];
+}
+
+export interface IUser {
+  id: string;
+  email: string;
+  email_verified: boolean;
+  pass_hash: string;
+  first_name?: string;
+  last_name?: string;
+  phone?: string;
+  picture?: string;
+  b2cId?: string;
+  googleId?: string;
+  appleId?: string;
+  githubId?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface IWebhookEvents {
