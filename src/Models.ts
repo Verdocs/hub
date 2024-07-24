@@ -176,12 +176,12 @@ export interface IProfile {
   /** The unique ID of the profile */
   id: string;
   /**
-   * The Verdocs back-end currently uses Auth0 for authentication. This value is a unique ID assigned by Auth0 to the
-   * user. This is typically used to identify multiple profiles owned by a single user, but its implementation may
-   * change in the future and developers should not develop code based on this field at this time.
+   * In Verdocs, a user may have multiple profiles. A user represents a single person. A profile
+   * represents that person within an organization. Some profiles may have no user atached, typically
+   * Contacts and Signers. This can change if that person registers for a user later.
    */
-  user_id: string;
-  /** The profile's organization ID, or a global "Realster" organization that all personal profiles are members of. */
+  user_id: string | null;
+  /** The profile's organization ID, or a global "Verdocs" organization that all personal profiles are members of. */
   organization_id: string;
   first_name: string;
   last_name: string;
