@@ -21,11 +21,12 @@ export type TSessionChangedListener = (endpoint: VerdocsEndpoint, session: TSess
 
 export interface VerdocsEndpointOptions {
   baseURL?: string;
-  baseURLv2?: string;
   timeout?: number;
   environment?: TEnvironment;
   sessionType?: TSessionType;
   clientID?: string;
+  /** By default, sessions will be persisted to localStorage. Set `persist` to false to bypass this. */
+  persist?: boolean;
 }
 
 /**
@@ -52,12 +53,10 @@ export interface VerdocsEndpointOptions {
 export class VerdocsEndpoint {
   private environment = 'verdocs' as TEnvironment;
   private sessionType = 'user' as TSessionType;
+  private persist = true;
   private baseURL = (window.location.origin === 'https://beta.verdocs.com' || window.location.origin === 'https://stage.verdocs.com'
     ? 'https://stage-api.verdocs.com'
     : 'https://api.verdocs.com') as string;
-  private baseURLv2 = (window.location.origin === 'https://beta.verdocs.com' || window.location.origin === 'https://stage.verdocs.com'
-    ? 'https://stage-api.verdocs.com/v2'
-    : 'https://api.verdocs.com/v2') as string;
   private clientID = 'not-set' as string;
   private timeout = 60000 as number;
   private token = null as string | null;
@@ -96,6 +95,7 @@ export class VerdocsEndpoint {
     this.environment = options?.environment || this.environment;
     this.sessionType = options?.sessionType || this.sessionType;
     this.clientID = options?.clientID || this.clientID;
+    this.persist = options?.persist || this.persist;
     this.api = axios.create({baseURL: this.baseURL, timeout: this.timeout});
   }
 
@@ -131,14 +131,6 @@ export class VerdocsEndpoint {
    */
   public getBaseURL() {
     return this.baseURL;
-  }
-
-  /**
-   * Get the current base URL for the v2 APIs.
-   * This should rarely be anything other than 'https://api-v2.verdocs.com'.
-   */
-  public getBaseURLv2() {
-    return this.baseURLv2;
   }
 
   /**
@@ -211,22 +203,6 @@ export class VerdocsEndpoint {
   public setBaseURL(url: string): VerdocsEndpoint {
     this.baseURL = url;
     this.api.defaults.baseURL = url;
-    return this;
-  }
-
-  /**
-   * Set the base URL for API calls. Should be called only upon direction from Verdocs Customer Solutions Engineering.
-   *
-   * ```typescript
-   * import {VerdocsEndpoint} from '@verdocs/js-sdk/HTTP';
-   *
-   * const endpoint = new VerdocsEndpoint();
-   * endpoint.setBaseURL('https://api.verdocs.com');
-   * ```
-   */
-  public setBaseURLv2(url: string): VerdocsEndpoint {
-    this.baseURLv2 = url;
-    // NOTE: We do not set this on the Axios instance because v1 is still the standard.
     return this;
   }
 
@@ -318,7 +294,9 @@ export class VerdocsEndpoint {
       this.api.defaults.headers.common.signer = `Bearer ${token}`;
     }
 
-    localStorage.setItem(this.sessionStorageKey(), token);
+    if (this.persist) {
+      localStorage.setItem(this.sessionStorageKey(), token);
+    }
 
     getCurrentProfile(this)
       .then((r) => {
@@ -351,7 +329,10 @@ export class VerdocsEndpoint {
    * Clear the active session.
    */
   public clearSession() {
-    localStorage.removeItem(this.sessionStorageKey());
+    if (this.persist) {
+      localStorage.removeItem(this.sessionStorageKey());
+    }
+
     delete this.api.defaults.headers.common.Authorization;
     delete this.api.defaults.headers.common.signer;
 
@@ -368,7 +349,10 @@ export class VerdocsEndpoint {
    * Clear the active signing session.
    */
   public clearSignerSession() {
-    localStorage.removeItem(this.sessionStorageKey());
+    if (this.persist) {
+      localStorage.removeItem(this.sessionStorageKey());
+    }
+
     delete this.api.defaults.headers.common.Authorization;
 
     this.session = null;
@@ -406,9 +390,13 @@ export class VerdocsEndpoint {
 
   /**
    * Load a persisted session from localStorage. Typically called once after the endpoint is configured
-   * when the app or component starts.
+   * when the app or component starts. Ignored if the endpoint is configured to not persist sessions.
    */
   public loadSession() {
+    if (!this.persist) {
+      return this;
+    }
+
     const token = localStorage.getItem(this.sessionStorageKey());
     if (!token) {
       return this.clearSession();
