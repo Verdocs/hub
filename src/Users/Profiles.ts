@@ -17,7 +17,8 @@ export const getProfiles = (endpoint: VerdocsEndpoint) =>
     .then((r) => r.data);
 
 /**
- * Get the user's available profiles. The current profile will be marked with `current: true`.
+ * Get the user's current profile. This is just a convenience accessor that calls `getProfiles()`
+ * and returns the first `current: true` entry.
  *
  * ```typescript
  * import {getCurrentProfile} from '@verdocs/js-sdk';
@@ -29,20 +30,6 @@ export const getCurrentProfile = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
     .get<IProfile[]>('/v2/profiles')
     .then((r) => (r.data || []).find((profile) => profile.current));
-
-/**
- * Get a profile. The caller must have admin access to the given profile.
- *
- * ```typescript
- * import {getProfile} from '@verdocs/js-sdk';
- *
- * const profile = await getProfile(VerdocsEndpoint.getDefault(), 'PROFILEID');
- * ```
- */
-export const getProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
-  endpoint.api //
-    .get<IProfile>(`/v2/profiles/${profileId}`)
-    .then((r) => r.data);
 
 /**
  * Switch the caller's "current" profile. The current profile is used for permissions checking

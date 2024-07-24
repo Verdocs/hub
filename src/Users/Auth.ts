@@ -1,5 +1,6 @@
 import {IAuthenticateResponse, IChangePasswordRequest, IChangePasswordResponse, IVerifyEmailRequest} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {IUser} from '../Models';
 
 export interface IROPCRequest {
   grant_type: 'password';
@@ -126,4 +127,9 @@ export const resendVerification = (endpoint: VerdocsEndpoint, accessToken?: stri
 export const verifyPassword = (endpoint: VerdocsEndpoint, params: IVerifyEmailRequest) =>
   endpoint.api //
     .post<IAuthenticateResponse>('/v2/users/verify', params)
+    .then((r) => r.data);
+
+export const getMyUser = (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .get<IUser>('/v2/users/me')
     .then((r) => r.data);

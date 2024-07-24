@@ -212,15 +212,15 @@ export interface IUser {
   id: string;
   email: string;
   email_verified: boolean;
-  pass_hash: string;
-  first_name?: string;
-  last_name?: string;
-  phone?: string;
-  picture?: string;
-  b2cId?: string;
-  googleId?: string;
-  appleId?: string;
-  githubId?: string;
+  pass_hash?: string;
+  first_name: string | null;
+  last_name: string | null;
+  phone: string | null;
+  picture: string | null;
+  b2cId: string | null;
+  googleId: string | null;
+  appleId: string | null;
+  githubId?: string | null;
   created_at: string;
   updated_at: string;
 }
