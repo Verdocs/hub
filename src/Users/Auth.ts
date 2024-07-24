@@ -124,7 +124,7 @@ export const resendVerification = (endpoint: VerdocsEndpoint, accessToken?: stri
  * const result = await resendVerification();
  * ```
  */
-export const verifyPassword = (endpoint: VerdocsEndpoint, params: IVerifyEmailRequest) =>
+export const verifyEmail = (endpoint: VerdocsEndpoint, params: IVerifyEmailRequest) =>
   endpoint.api //
     .post<IAuthenticateResponse>('/v2/users/verify', params)
     .then((r) => r.data);
