@@ -90,12 +90,12 @@ export class VerdocsEndpoint {
    * ```
    */
   constructor(options?: VerdocsEndpointOptions) {
-    this.baseURL = options?.baseURL || this.baseURL;
-    this.timeout = options?.timeout || this.timeout;
-    this.environment = options?.environment || this.environment;
-    this.sessionType = options?.sessionType || this.sessionType;
-    this.clientID = options?.clientID || this.clientID;
-    this.persist = options?.persist || this.persist;
+    this.baseURL = options?.baseURL ?? this.baseURL;
+    this.timeout = options?.timeout ?? this.timeout;
+    this.environment = options?.environment ?? this.environment;
+    this.sessionType = options?.sessionType ?? this.sessionType;
+    this.clientID = options?.clientID ?? this.clientID;
+    this.persist = options?.persist ?? this.persist;
     this.api = axios.create({baseURL: this.baseURL, timeout: this.timeout});
   }
 

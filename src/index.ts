@@ -11,6 +11,7 @@
  */
 
 export * from './BaseTypes';
+export * from './Lists';
 export * from './Models';
 export * from './VerdocsEndpoint';
 export * from './Envelopes';
