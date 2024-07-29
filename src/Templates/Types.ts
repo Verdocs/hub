@@ -1,26 +1,4 @@
-import {TSortTemplateBy} from '../BaseTypes';
-import {ITimePeriod} from '../Utils';
 import {ITemplate} from '../Models';
-
-export interface ITemplateSearchParams {
-  id?: string;
-  name?: string;
-  sender?: string;
-  description?: string;
-  profile_id?: string;
-  organization_id?: string;
-  updated_at?: ITimePeriod;
-  created_at?: ITimePeriod;
-  last_used_at?: ITimePeriod;
-  is_personal?: boolean;
-  is_public?: boolean;
-  tags?: string[];
-  document_name?: string;
-  sort_by?: TSortTemplateBy;
-  ascending?: boolean;
-  row?: number;
-  page?: number;
-}
 
 export interface ITemplateTag {
   tag_name: string;

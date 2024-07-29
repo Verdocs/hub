@@ -740,9 +740,6 @@ export interface ITemplateField {
   placeholder: string | null;
   /** For fields that support grouping (radio buttons and check boxes) the value selected will be stored under this name. */
   group: string | null;
-
-  // @deprecated. Use settings instead.
-  setting?: ITemplateFieldSetting | null;
 }
 
 export interface ITextFieldSetting {

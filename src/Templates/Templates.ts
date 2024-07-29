@@ -5,7 +5,6 @@
  * @module
  */
 
-import {ITemplateSearchParams, ITemplateSearchResult} from './Types';
 import {TSortTemplateBy, TTemplateSenderType} from '../BaseTypes';
 import {IRole, ITemplate, ITemplateField} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
@@ -21,12 +20,12 @@ export interface IGetTemplatesParams {
  * Get all templates accessible by the caller, with optional filters.
  *
  * ```typescript
- * import {Templates} from '@verdocs/js-sdk/Templates';
+ * import {getTemplates} from '@verdocs/js-sdk/Templates';
  *
- * await Templates.getTemplates((VerdocsEndpoint.getDefault());
- * await Templates.getTemplates((VerdocsEndpoint.getDefault(), { is_starred: true });
- * await Templates.getTemplates((VerdocsEndpoint.getDefault(), { is_creator: true });
- * await Templates.getTemplates((VerdocsEndpoint.getDefault(), { is_organization: true });
+ * await getTemplates((VerdocsEndpoint.getDefault());
+ * await getTemplates((VerdocsEndpoint.getDefault(), { is_starred: true });
+ * await getTemplates((VerdocsEndpoint.getDefault(), { is_creator: true });
+ * await getTemplates((VerdocsEndpoint.getDefault(), { is_organization: true });
  * ```
  */
 export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesParams) =>
@@ -48,9 +47,9 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
  * Lists all templates accessible by the caller, with optional filters.
  *
  * ```typescript
- * import {Templates} from '@verdocs/js-sdk/Templates';
+ * import {listTemplates} from '@verdocs/js-sdk/Templates';
  *
- * await Templates.listTemplates((VerdocsEndpoint.getDefault(), { sharing: 'personal', sort: 'last_used_at' });
+ * await listTemplates((VerdocsEndpoint.getDefault(), { sharing: 'personal', sort: 'last_used_at' });
  * ```
  */
 // export const listTemplates = (endpoint: VerdocsEndpoint, params?: IListTemplatesParams) =>
@@ -62,9 +61,9 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
  * Get one template by its ID.
  *
  * ```typescript
- * import {Templates} from '@verdocs/js-sdk/Templates';
+ * import {getTemplate} from '@verdocs/js-sdk/Templates';
  *
- * const template = await Templates.getTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');
+ * const template = await getTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');
  * ```
  */
 export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
@@ -90,9 +89,10 @@ export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
         }
       });
 
+      // Temporary upgrade from legacy app
       template.fields?.forEach((field) => {
-        if (field.setting) {
-          field.settings = field.setting;
+        if ((field as any).setting) {
+          field.settings = (field as any).setting;
         }
       });
 
@@ -170,9 +170,9 @@ const ALLOWED_CREATE_FIELDS: (keyof ITemplateCreateParams)[] = [
  * Create a template.
  *
  * ```typescript
- * import {Templates} from '@verdocs/js-sdk/Templates';
+ * import {createTemplate} from '@verdocs/js-sdk/Templates';
  *
- * const newTemplate = await Templates.createTemplatev2((VerdocsEndpoint.getDefault(), {...});
+ * const newTemplate = await createTemplate((VerdocsEndpoint.getDefault(), {...});
  * ```
  */
 export const createTemplate = (
@@ -226,9 +226,9 @@ export interface ITemplateCreateFromSharepointParams {
  * Create a template from a Sharepoint asset.
  *
  * ```typescript
- * import {Templates} from '@verdocs/js-sdk/Templates';
+ * import {createTemplateFromSharepoint} from '@verdocs/js-sdk/Templates';
  *
- * const newTemplate = await Templates.createTemplateFromSharepoint((VerdocsEndpoint.getDefault(), {...});
+ * const newTemplate = await createTemplateFromSharepoint((VerdocsEndpoint.getDefault(), {...});
  * ```
  */
 export const createTemplateFromSharepoint = (endpoint: VerdocsEndpoint, params: ITemplateCreateFromSharepointParams) => {
@@ -243,9 +243,9 @@ export const createTemplateFromSharepoint = (endpoint: VerdocsEndpoint, params: 
  * Update a template.
  *
  * ```typescript
- * import {Templates} from '@verdocs/js-sdk/Templates';
+ * import {updateTemplate} from '@verdocs/js-sdk/Templates';
  *
- * const updatedTemplate = await Templates.updateTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9', { name: 'New Name' });
+ * const updatedTemplate = await updateTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9', { name: 'New Name' });
  * ```
  */
 export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, params: Partial<ITemplateCreateParams>) =>
@@ -257,28 +257,14 @@ export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, pa
  * Delete a template.
  *
  * ```typescript
- * import {Templates} from '@verdocs/js-sdk/Templates';
+ * import {deleteTemplate} from '@verdocs/js-sdk/Templates';
  *
- * await Templates.deleteTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');
+ * await deleteTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');
  * ```
  */
 export const deleteTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
     .delete(`/templates/${templateId}`)
-    .then((r) => r.data);
-
-/**
- * Search for templates matching various criteria.
- *
- * ```typescript
- * import {Templates} from '@verdocs/js-sdk/Templates';
- *
- * const {result, page, total} = await Templates.search((VerdocsEndpoint.getDefault(), { ... });
- * ```
- */
-export const searchTemplates = async (endpoint: VerdocsEndpoint, params: ITemplateSearchParams) =>
-  endpoint.api //
-    .post<ITemplateSearchResult>('/templates/search', params)
     .then((r) => r.data);
 
 export interface ISearchTimeRange {
@@ -320,12 +306,12 @@ export interface ITemplateListParams {
 }
 
 /**
- * List templates.
+ * List
  *
  * ```typescript
  * import {Templates} from '@verdocs/js-sdk/Templates';
  *
- * const {totals, templates} = await Templates.listTemplates((VerdocsEndpoint.getDefault(), { q: 'test', sort: 'created_at' }); * ```
+ * const {totals, templates} = await listTemplates((VerdocsEndpoint.getDefault(), { q: 'test', sort: 'created_at' }); * ```
  */
 export const listTemplates = async (endpoint: VerdocsEndpoint, params: ITemplateListParams = {}) =>
   endpoint.api //
