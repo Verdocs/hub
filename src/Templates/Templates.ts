@@ -8,12 +8,31 @@
 import {TSortTemplateBy, TTemplateSenderType} from '../BaseTypes';
 import {IRole, ITemplate, ITemplateField} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {ITimePeriod} from '../Utils';
+
+export type ITemplateSortBy = 'created_at' | 'updated_at' | 'name' | 'last_used_at' | 'counter' | 'star_counter';
 
 export interface IGetTemplatesParams {
+  /** List only those templates whose names, descriptions, etc contain this search term. */
+  q?: string;
+  /** List only those templates with at least one "star". */
   is_starred?: boolean;
+  /** List only those templates created by the caller. */
   is_creator?: boolean;
-  is_organization?: boolean;
+  /**
+   * List only personal templates. To list shared templates, set this to false and is_public to false.
+   * To list all templates, omit this field.
+   */
+  is_personal?: boolean;
+  /** List only public templates */
+  is_public?: boolean;
+  /** Sort order */
+  sort_by?: TSortTemplateBy;
+  /** Set to true or false to control the sort order. Omit this field to sort dates descending, names ascending. */
+  ascending?: boolean;
+  /** Number of rows to retrieve. Defaults to 10. */
+  rows?: number;
+  /** Page to retrieve (0-based). Defaults to 0. */
+  page?: number;
 }
 
 /**
@@ -32,30 +51,6 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
   endpoint.api //
     .post<ITemplate[]>('/v2/templates', {params})
     .then((r) => r.data);
-
-// export interface IListTemplatesParams {
-//   name?: string;
-//   sharing?: 'all' | 'personal' | 'shared' | 'public';
-//   starred?: 'all' | 'starred' | 'unstarred';
-//   sort?: 'name' | 'created_at' | 'updated_at' | 'last_used_at' | 'counter' | 'star_counter';
-//   direction?: 'asc' | 'desc';
-//   page?: number;
-//   rows?: number;
-// }
-
-/**
- * Lists all templates accessible by the caller, with optional filters.
- *
- * ```typescript
- * import {listTemplates} from '@verdocs/js-sdk/Templates';
- *
- * await listTemplates((VerdocsEndpoint.getDefault(), { sharing: 'personal', sort: 'last_used_at' });
- * ```
- */
-// export const listTemplates = (endpoint: VerdocsEndpoint, params?: IListTemplatesParams) =>
-//   endpoint.api //
-//     .post<ITemplateSummaries>('/templates/list', params, {baseURL: endpoint.getBaseURLv2()})
-//     .then((r) => r.data);
 
 /**
  * Get one template by its ID.
@@ -236,7 +231,7 @@ export const createTemplateFromSharepoint = (endpoint: VerdocsEndpoint, params: 
     timeout: 120000,
   };
 
-  return endpoint.api.post<ITemplate>('/templates/from-sharepoint', params, options).then((r) => r.data);
+  return endpoint.api.post<ITemplate>('/v2/templates/from-sharepoint', params, options).then((r) => r.data);
 };
 
 /**
@@ -250,7 +245,7 @@ export const createTemplateFromSharepoint = (endpoint: VerdocsEndpoint, params: 
  */
 export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, params: Partial<ITemplateCreateParams>) =>
   endpoint.api //
-    .put<ITemplate>(`/templates/${templateId}`, params)
+    .put<ITemplate>(`/v2/templates/${templateId}`, params)
     .then((r) => r.data);
 
 /**
@@ -264,56 +259,5 @@ export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, pa
  */
 export const deleteTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
-    .delete(`/templates/${templateId}`)
-    .then((r) => r.data);
-
-export interface ISearchTimeRange {
-  start_time: string;
-  end_time: string;
-}
-
-export type IGetTemplateSummarySortBy = 'created_at' | 'updated_at' | 'name' | 'last_used_at' | 'counter' | 'star_counter';
-
-export interface IGetTemplateSummaryParams {
-  id?: string;
-  name?: string;
-  sender?: string;
-  profile_id?: string;
-  organization_id?: string;
-  description?: string;
-  created_at?: ISearchTimeRange;
-  updated_at?: ISearchTimeRange;
-  last_used_at?: ISearchTimeRange;
-  is_personal?: boolean;
-  is_public?: boolean;
-  is_starred?: boolean;
-  sort_by?: IGetTemplateSummarySortBy;
-  ascending?: boolean;
-  row?: number;
-  page?: number;
-}
-
-export interface ITemplateListParams {
-  status?: string[];
-  q?: string;
-  created_at?: ITimePeriod;
-  is_personal?: boolean;
-  is_public?: boolean;
-  sort_by?: TSortTemplateBy;
-  ascending?: boolean;
-  rows?: number;
-  page?: number;
-}
-
-/**
- * List
- *
- * ```typescript
- * import {Templates} from '@verdocs/js-sdk/Templates';
- *
- * const {totals, templates} = await listTemplates((VerdocsEndpoint.getDefault(), { q: 'test', sort: 'created_at' }); * ```
- */
-export const listTemplates = async (endpoint: VerdocsEndpoint, params: ITemplateListParams = {}) =>
-  endpoint.api //
-    .post<{total: number; rows: number; page: number; templates: ITemplate[]}>('/templates/list', params)
+    .delete(`/v2/templates/${templateId}`)
     .then((r) => r.data);
