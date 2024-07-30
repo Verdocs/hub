@@ -49,7 +49,7 @@ export interface IGetTemplatesParams {
  */
 export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesParams) =>
   endpoint.api //
-    .post<ITemplate[]>('/v2/templates', {params})
+    .post<{count: number; rows: number; page: number; templates: ITemplate[]}>('/v2/templates', {params})
     .then((r) => r.data);
 
 /**
