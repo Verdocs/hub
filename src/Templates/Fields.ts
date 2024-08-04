@@ -26,7 +26,7 @@ export const createField = (endpoint: VerdocsEndpoint, templateId: string, param
  */
 export const updateField = (endpoint: VerdocsEndpoint, templateId: string, name: string, params: Partial<ITemplateField>) =>
   endpoint.api //
-    .patch<ITemplateField>(`/fields/${templateId}/${name}`, params)
+    .patch<ITemplateField>(`/v2/fields/${templateId}/${name}`, params)
     .then((r) => r.data);
 
 /**
@@ -40,5 +40,5 @@ export const updateField = (endpoint: VerdocsEndpoint, templateId: string, name:
  */
 export const deleteField = (endpoint: VerdocsEndpoint, templateId: string, name: string) =>
   endpoint.api //
-    .delete(`/fields/${templateId}/${name}`)
+    .delete(`/v2/fields/${templateId}/${name}`)
     .then((r) => r.data);
