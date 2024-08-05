@@ -384,6 +384,7 @@ export interface IEnvelopeField {
   type: TFieldType;
   /** If true, the field will be required */
   required: boolean | null;
+  /** @deprecated. Use top-level fields instead. */
   settings: IEnvelopeFieldSettings | null;
   validator: string | null;
   /** If set, the placeholder/label for the field. */
@@ -404,6 +405,8 @@ export interface IEnvelopeField {
   default: string | null;
   /** The placeholder to show in the field. */
   placeholder: string | null;
+  /** For text boxes, allows more than one line of text to be entered. */
+  multiline: boolean;
   /** For fields that support grouping (radio buttons and check boxes) the value selected will be stored under this name. */
   group: string | null;
   value: string | null;
@@ -722,6 +725,7 @@ export interface ITemplateField {
   document_id: string;
   type: TFieldType;
   required: boolean;
+  /** @deprecated. Use top-level fields instead. */
   settings: ITemplateFieldSetting | null;
   page: number;
   validator: string | null;
@@ -738,6 +742,8 @@ export interface ITemplateField {
   default: string | null;
   /** The placeholder to show in the field. */
   placeholder: string | null;
+  /** For text boxes, allows more than one line of text to be entered. */
+  multiline: boolean;
   /** For fields that support grouping (radio buttons and check boxes) the value selected will be stored under this name. */
   group: string | null;
 }
