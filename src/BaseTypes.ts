@@ -75,9 +75,7 @@ export type TEnvelopeUpdateResult = Omit<IEnvelope, 'histories' | 'recipients' |
 export type TFieldType =
   | 'signature'
   | 'initial'
-  | 'checkbox_group'
   | 'checkbox'
-  | 'radio_button_group'
   | 'radio'
   | 'textbox'
   | 'timestamp'

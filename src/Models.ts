@@ -371,12 +371,17 @@ export interface IEnvelopeDocument {
   fields?: IEnvelopeField[];
 }
 
+export interface IDropdownOption {
+  label: string;
+  value: string;
+}
+
 export interface IEnvelopeField {
   /** The ID of the envelope the field is for. */
   envelope_id: string;
   /** The ID of the document the field is for. */
   document_id: string;
-  /** The machine name of the field, e.g. `checkbox_groupP1-18` */
+  /** The machine name of the field, e.g. `Buyer-textbox-1` */
   name: string;
   /** The ID of the role in the recipients list, e.g. `Recipient 2` */
   recipient_role: string;
@@ -409,6 +414,8 @@ export interface IEnvelopeField {
   multiline: boolean;
   /** For fields that support grouping (radio buttons and check boxes) the value selected will be stored under this name. */
   group: string | null;
+  /** For dropdowns, the options that are selectable. */
+  options: IDropdownOption[] | null;
   value: string | null;
   is_valid: boolean;
 
@@ -715,7 +722,7 @@ export interface ITemplateDocument {
 }
 
 export interface ITemplateField {
-  /** The machine name of the field, e.g. `checkbox_groupP1-18` */
+  /** The machine name of the field, e.g. `Buyer-textbox-1` */
   name: string;
   /** The ID of the role in the recipients list, e.g. `Recipient 2` */
   role_name: string;
@@ -746,6 +753,8 @@ export interface ITemplateField {
   multiline: boolean;
   /** For fields that support grouping (radio buttons and check boxes) the value selected will be stored under this name. */
   group: string | null;
+  /** For dropdowns, the options that are selectable. */
+  options: IDropdownOption[] | null;
 }
 
 export interface ITextFieldSetting {

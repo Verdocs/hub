@@ -17,6 +17,7 @@ export interface ISigningSession {
  * A User Session connects a caller to a Verdocs profile, and can be used for any operations that profile may perform.
  */
 export interface IUserSession {
+  jti: string;
   aud: string;
   iss: string;
   sub: string; // Auth0 user_id
