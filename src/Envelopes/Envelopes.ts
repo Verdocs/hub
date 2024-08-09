@@ -1,7 +1,7 @@
 import {IEnvelope, IEnvelopeDocument, IEnvelopeFieldSettings, IRecipient} from '../Models';
-import {ICreateEnvelopeRequest, IEnvelopesSummary} from './Types';
 import {TEnvelopeUpdateResult} from '../BaseTypes';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {TCreateEnvelopeRequest} from './Types';
 
 /**
  * Create an envelope
@@ -35,23 +35,9 @@ import {VerdocsEndpoint} from '../VerdocsEndpoint';
  * const {id, recipients} = await Envelopes.createEnvelope(VerdocsEndpoint.getDefault(), request);
  * ```
  */
-export const createEnvelope = async (endpoint: VerdocsEndpoint, request: ICreateEnvelopeRequest) =>
+export const createEnvelope = async (endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest) =>
   endpoint.api //
     .post<IEnvelope>('/envelopes', request)
-    .then((r) => r.data);
-
-/**
- * Get a summary of currently active envelopes.
- *
- * ```typescript
- * import {getEnvelopesSummary} from '@verdocs/js-sdk/Envelopes';
- *
- * const {action_required, completed, waiting_on_others} = await getEnvelopesSummary(VerdocsEndpoint.getDefault());
- * ```
- */
-export const getEnvelopesSummary = async (endpoint: VerdocsEndpoint, page: number) =>
-  endpoint.api //
-    .post<IEnvelopesSummary>('/envelopes/summary', {page})
     .then((r) => r.data);
 
 /**

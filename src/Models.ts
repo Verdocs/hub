@@ -362,13 +362,6 @@ export interface IEnvelopeDocument {
   mime: string;
   created_at: string;
   updated_at: string;
-
-  // @deprecated. Use pages instead.
-  page_numbers: number;
-
-  envelope?: IEnvelope | null;
-  template_document?: ITemplateDocument | null;
-  fields?: IEnvelopeField[];
 }
 
 export interface IDropdownOption {

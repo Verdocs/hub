@@ -1,28 +1,10 @@
 import {TEnvelopeStatus, TRecipientType} from '../BaseTypes';
-import {IEnvelope, IRecipient, TAccessKey} from '../Models';
+import {IEnvelope, IEnvelopeDocument, IEnvelopeField, IRecipient, TAccessKey} from '../Models';
 
 export interface IEnvelopesSearchResult {
   page: number;
   total: number;
   result: IEnvelope[];
-}
-
-export interface IEnvelopesSummary {
-  action_required: {
-    page: number;
-    total: number;
-    result: IEnvelope[];
-  };
-  completed: {
-    page: number;
-    total: number;
-    result: IEnvelope[];
-  };
-  waiting_others: {
-    page: number;
-    total: number;
-    result: IEnvelope[];
-  };
 }
 
 export interface IDocumentSearchOptions {
@@ -36,7 +18,7 @@ export interface IDocumentSearchOptions {
   recipient_status?: TEnvelopeStatus[];
 }
 
-export interface ICreateEnvelopeRole {
+export interface ICreateEnvelopeRecipient {
   /** The type of role to create. Most participants in standard flows will be "signer" recipients. */
   type: TRecipientType;
 
@@ -46,8 +28,9 @@ export interface ICreateEnvelopeRole {
    */
   name: string;
 
-  /** The full name of the recipient as it will be displayed in reports and queries, e.g. 'Paige Turner'. */
-  full_name: string;
+  /** The name of the recipient as it will be displayed in reports and queries, e.g. 'Paige Turner'. */
+  first_name: string;
+  last_name: string;
 
   /** The email address of the recipient. One of `email` or `phone` must be provided. */
   email?: string;
@@ -59,25 +42,30 @@ export interface ICreateEnvelopeRole {
   phone?: string;
 
   /**
-   *  The 1-based sequence number for the recipient. This can be used to override the template's workflow. Recipients
-   *  are processed in parallel for each matching sequence number (e.g. all recipients at level "1" may act in parallel)
-   *  and in series between sequence numbers (e.g. all recipients at level "1" must complete their tasks before
-   *  recipients at level "2" may act).
+   * The 1-based sequence number for the recipient. This can be used to override the template's workflow. Recipients
+   * are processed in parallel for each matching sequence number (e.g. all recipients at level "1" may act in parallel)
+   * and in series between sequence numbers (e.g. all recipients at level "1" must complete their tasks before
+   * recipients at level "2" may act).
    */
   sequence: number;
 
+  /**
+   * The 1-based order within the sequence for the recipient. Recipients at the same sequence act in parallel, so
+   * this is only for display purposes.
+   */
+  order: number;
+
   /** Whether the recipient may delegate their tasks to others. Should be false for most standard workflows. */
-  delegator: boolean;
+  delegator?: boolean;
 
   /** A custom message to include in the email or SMS invitation. May be left blank for a default message. */
-  message: string;
-}
+  message?: string;
 
-export interface IEnvelopeSummaries {
-  page: number;
-  count: number;
-  total: number;
-  records: IEnvelope[];
+  /** To enable KBA for the recipient, set to 'pin' or 'identity'. */
+  kba_method?: 'pin' | 'identity' | null;
+
+  /** If PIN-based KBA is used, the PIN to challenge the user to enter. */
+  kba_pin?: string;
 }
 
 export interface IInPersonLinkResponse {
@@ -130,10 +118,25 @@ export interface ICreateEnvelopeReminderRequest {
   interval_time: number;
 }
 
-export interface ICreateEnvelopeRequest {
+export interface ICreateEnvelopeFromTemplateRequest {
   template_id: string;
-  roles: ICreateEnvelopeRole[];
+  recipients: ICreateEnvelopeRecipient[];
   name: string;
+  description?: string;
+  fields?: Pick<IEnvelopeField, 'name' | 'recipient_role' | 'default'>[];
   environment?: string;
-  prepared_fields?: {name: string; value: string}[];
+  no_contact?: boolean;
 }
+
+export interface ICreateEnvelopeDirectlyRequest {
+  name: string;
+  description?: string;
+  visiblity?: 'private' | 'shared';
+  recipients: ICreateEnvelopeRecipient[];
+  documents: IEnvelopeDocument[];
+  fields: Pick<IEnvelopeField, 'name' | 'recipient_role' | 'default'>[];
+  environment?: string;
+  no_contact?: boolean;
+}
+
+export type TCreateEnvelopeRequest = ICreateEnvelopeFromTemplateRequest | ICreateEnvelopeDirectlyRequest;
