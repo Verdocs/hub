@@ -495,6 +495,14 @@ export interface IRecipient {
   email: string;
   phone: string | null;
   full_name: string;
+
+  first_name: string;
+  last_name: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  ssn_last_4: string;
   /**
    * The sequence number indicates the order in which Recipients act. Multiple recipients may have the same sequence
    * number, in which case they may act in parallel. (e.g. all Recipients at sequence 2 will receive invites once
