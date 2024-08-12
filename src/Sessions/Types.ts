@@ -1,3 +1,5 @@
+import {TAccessKeyType} from '../BaseTypes';
+
 /**
  * A Signing Session connects a caller to a role within an envelope, and can be used only for calls related to signing that envelope.
  */
@@ -8,6 +10,7 @@ export interface ISigningSession {
   email: string;
   iat: number;
   exp: number;
+  'https://verdocs.com/key_type': TAccessKeyType;
   'https://verdocs.com/session_type': 'signing';
   'https://verdocs.com/envelope_id': string;
   'https://verdocs.com/role_name': string;

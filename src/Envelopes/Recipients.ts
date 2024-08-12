@@ -71,10 +71,8 @@ export const envelopeRecipientPrepare = (endpoint: VerdocsEndpoint, envelopeId: 
   updateRecipient(endpoint, envelopeId, roleName, {action: 'prepare', recipients});
 
 export interface ISignerTokenResponse {
-  recipient: IRecipient;
   envelope: IEnvelope;
   access_token: string;
-  in_person_key: IInPersonAccessKey;
 }
 
 /**

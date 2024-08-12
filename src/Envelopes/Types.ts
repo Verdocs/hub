@@ -26,7 +26,7 @@ export interface ICreateEnvelopeRecipient {
    * The Role name of the recipient. Please note this is not the person's name. It is the ID of the role, e.g.
    * 'Recipient 1', 'Seller', etc. This must match one of the pre-defined roles in the template's Recipients list.
    */
-  name: string;
+  role_name: string;
 
   /** The name of the recipient as it will be displayed in reports and queries, e.g. 'Paige Turner'. */
   first_name: string;
@@ -66,6 +66,24 @@ export interface ICreateEnvelopeRecipient {
 
   /** If PIN-based KBA is used, the PIN to challenge the user to enter. */
   kba_pin?: string;
+
+  /*
+   * Pre-fill data for the recipient, if known. NOTE: If address and zip are both provided, an initial ID query
+   * will be made for the recipient. If questions are returned immediately, the first challenge will be skipped and
+   * the recipient will be immediately shown those questions, instead.
+   */
+  address?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  ssn_last_4?: string;
+
+  /**
+   * Only returned in creation/getEnvelopeById requests by the creator. May be used for in-person signing. Note that
+   * signing sessions started with this key will be marked as "In App" authenticated. For higher authentication levels,
+   * e.g. email, the signer must follow a link send via the appropriate channel (email).
+   */
+  in_app_key?: string;
 }
 
 export interface IInPersonLinkResponse {
