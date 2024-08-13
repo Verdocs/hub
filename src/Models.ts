@@ -326,18 +326,18 @@ export interface IEnvelope {
   organization_id: string;
   reminder_id: string | null;
   name: string;
-  no_contact: boolean;
+  no_contact?: boolean;
   created_at: string;
   updated_at: string;
   canceled_at: string;
   /** Defaults to 'private'. If set to 'shared', this envelope will be visible to other users in the same organization. Ignored for personal profiles. */
   visibility: 'private' | 'shared';
-  search_key: string | null;
+  search_key?: string | null;
   /**
    * Storage for arbitrary data that may be used e.g. to track source database/record IDs to relate Envelopes back to
    * internal systems/applications.
    */
-  data: Record<string, any> | null;
+  data?: Record<string, any> | null;
 
   profile?: IProfile;
   template?: ITemplate | null;
@@ -488,6 +488,9 @@ export interface IKbaPINRequired {
 }
 
 export interface IRecipient {
+  /** Used only by the Web SDK during builder processes. Not stored in the backend. */
+  id?: string | null;
+
   envelope_id: string;
   role_name: string;
   profile_id: string;
@@ -571,6 +574,9 @@ export interface IReminder {
  * "Unknown" roles are dynamic, and will be filled in later when the envelope is created.
  */
 export interface IRole {
+  /** Used only by the Web SDK during builder processes. Not stored in the backend. */
+  id?: string | null;
+
   template_id: string;
   // The name of the recipient. Note that recipients do not have a separate ID - they are uniquely identified by name.
   name: string;
