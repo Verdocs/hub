@@ -28,7 +28,7 @@ import {IRole} from '../Models';
  */
 export const createTemplateRole = (endpoint: VerdocsEndpoint, template_id: string, params: IRole) =>
   endpoint.api //
-    .post<IRole>(`/v2/templates/${template_id}/roles`, params)
+    .post<IRole>(`/v2/roles/${template_id}`, params)
     .then((r) => r.data);
 
 /**
@@ -42,7 +42,7 @@ export const createTemplateRole = (endpoint: VerdocsEndpoint, template_id: strin
  */
 export const updateTemplateRole = (endpoint: VerdocsEndpoint, template_id: string, name: string, params: Partial<IRole>) =>
   endpoint.api //
-    .put<IRole>(`/v2/templates/${template_id}/roles/${name}`, params)
+    .put<IRole>(`/v2/roles/${template_id}/${encodeURIComponent(name)}`, params)
     .then((r) => r.data);
 
 /**
@@ -56,5 +56,5 @@ export const updateTemplateRole = (endpoint: VerdocsEndpoint, template_id: strin
  */
 export const deleteTemplateRole = (endpoint: VerdocsEndpoint, template_id: string, name: string) =>
   endpoint.api //
-    .delete(`/v2/templates/${template_id}/roles/${name}`)
+    .delete(`/v2/roles/${template_id}/${encodeURIComponent(name)}`)
     .then((r) => r.data);
