@@ -42,7 +42,7 @@ export const createTemplateRole = (endpoint: VerdocsEndpoint, template_id: strin
  */
 export const updateTemplateRole = (endpoint: VerdocsEndpoint, template_id: string, name: string, params: Partial<IRole>) =>
   endpoint.api //
-    .put<IRole>(`/v2/roles/${template_id}/${encodeURIComponent(name)}`, params)
+    .patch<IRole>(`/v2/roles/${template_id}/${encodeURIComponent(name)}`, params)
     .then((r) => r.data);
 
 /**

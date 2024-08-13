@@ -377,7 +377,7 @@ export interface IEnvelopeField {
   /** The machine name of the field, e.g. `Buyer-textbox-1` */
   name: string;
   /** The ID of the role in the recipients list, e.g. `Recipient 2` */
-  recipient_role: string;
+  role_name: string;
   /** The type of the field */
   type: TFieldType;
   /** If true, the field will be required */
@@ -411,9 +411,6 @@ export interface IEnvelopeField {
   options: IDropdownOption[] | null;
   value: string | null;
   is_valid: boolean;
-
-  envelope?: IEnvelope;
-  document?: IEnvelopeDocument;
 }
 
 export interface IEnvelopeFieldOptions {
@@ -762,6 +759,9 @@ export interface ITemplateField {
   group: string | null;
   /** For dropdowns, the options that are selectable. */
   options: IDropdownOption[] | null;
+
+  value?: string | null;
+  is_valid?: boolean;
 }
 
 export interface ITextFieldSetting {

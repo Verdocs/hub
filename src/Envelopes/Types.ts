@@ -141,7 +141,7 @@ export interface ICreateEnvelopeFromTemplateRequest {
   recipients: ICreateEnvelopeRecipient[];
   name: string;
   description?: string;
-  fields?: Pick<IEnvelopeField, 'name' | 'recipient_role' | 'default'>[];
+  fields?: Pick<IEnvelopeField, 'name' | 'role_name' | 'default'>[];
   environment?: string;
   no_contact?: boolean;
 }
@@ -152,7 +152,7 @@ export interface ICreateEnvelopeDirectlyRequest {
   visiblity?: 'private' | 'shared';
   recipients: ICreateEnvelopeRecipient[];
   documents: IEnvelopeDocument[];
-  fields: Pick<IEnvelopeField, 'name' | 'recipient_role' | 'default'>[];
+  fields: Pick<IEnvelopeField, 'name' | 'role_name' | 'default'>[];
   environment?: string;
   no_contact?: boolean;
 }
