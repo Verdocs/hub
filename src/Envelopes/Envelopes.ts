@@ -37,15 +37,7 @@ import {TCreateEnvelopeRequest} from './Types';
  */
 export const createEnvelope = async (endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest) =>
   endpoint.api //
-    .post<IEnvelope>('/envelopes', request)
-    .then((r) => r.data);
-
-/**
- * Get the list of recipients for an Envelope.
- */
-export const getEnvelopeRecipients = async (endpoint: VerdocsEndpoint, envelopeId: string) =>
-  endpoint.api //
-    .get<IRecipient[]>(`/envelopes/${envelopeId}/recipients`)
+    .post<IEnvelope>('/v2/envelopes', request)
     .then((r) => r.data);
 
 /**
@@ -87,7 +79,7 @@ export const getDocumentPreviewLink = async (endpoint: VerdocsEndpoint, envelope
  */
 export const cancelEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string) =>
   endpoint.api //
-    .put<TEnvelopeUpdateResult>(`/envelopes/${envelopeId}`, {action: 'cancel'})
+    .put<TEnvelopeUpdateResult>(`/v2/envelopes/${envelopeId}`, {action: 'cancel'})
     .then((r) => r.data);
 
 /**
