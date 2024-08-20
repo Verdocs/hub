@@ -13,7 +13,7 @@ import {IProfile} from '../Models';
  * ```typescript
  * import {getOrganizationMembers} from '@verdocs/js-sdk';
  *
- * const members = await deleteOrganizationMember(VerdocsEndpoint.getDefault()});
+ * const members = await getOrganizationMembers(VerdocsEndpoint.getDefault()});
  * ```
  */
 export const getOrganizationMembers = (endpoint: VerdocsEndpoint) =>

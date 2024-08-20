@@ -7,7 +7,7 @@ import type {
   IUpdateRecipientDeclineParams,
   IUpdateRecipientPrepareParams,
 } from './Types';
-import {IEnvelope, IInPersonAccessKey, IRecipient} from '../Models';
+import {IEnvelope, IRecipient} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 /**
@@ -15,8 +15,8 @@ import {VerdocsEndpoint} from '../VerdocsEndpoint';
  */
 export const updateRecipient = async (
   endpoint: VerdocsEndpoint,
-  envelopeId: string,
-  roleName: string,
+  envelope_id: string,
+  role_name: string,
   params:
     | IUpdateRecipientSubmitParams
     | IUpdateRecipientClaimEnvelope
@@ -26,7 +26,7 @@ export const updateRecipient = async (
     | IUpdateRecipientPrepareParams,
 ) =>
   endpoint.api //
-    .put<IRecipient>(`/envelopes/${envelopeId}/recipients/${roleName}`, params)
+    .put<IRecipient>(`/envelopes/${envelope_id}/recipients/${role_name}`, params)
     .then((r) => r.data);
 
 /**
@@ -46,11 +46,12 @@ export const envelopeRecipientDecline = (endpoint: VerdocsEndpoint, envelopeId: 
  */
 export const envelopeRecipientChangeOwner = (
   endpoint: VerdocsEndpoint,
-  envelopeId: string,
-  roleName: string,
+  envelope_id: string,
+  role_name: string,
   email: string,
-  fullName: string,
-) => updateRecipient(endpoint, envelopeId, roleName, {action: 'owner_update', email, full_name: fullName});
+  first_name: string,
+  last_name: string,
+) => updateRecipient(endpoint, envelope_id, role_name, {action: 'owner_update', email, first_name, last_name});
 
 /**
  * Agree to electronic signing.
@@ -61,8 +62,13 @@ export const envelopeRecipientAgree = (endpoint: VerdocsEndpoint, envelopeId: st
 /**
  * Change a recipient's name.
  */
-export const envelopeRecipientUpdateName = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, fullName: string) =>
-  updateRecipient(endpoint, envelopeId, roleName, {action: 'update', new_full_name: fullName});
+export const envelopeRecipientUpdateName = (
+  endpoint: VerdocsEndpoint,
+  envelopeId: string,
+  roleName: string,
+  first_name: string,
+  last_name: string,
+) => updateRecipient(endpoint, envelopeId, roleName, {action: 'update', first_name, last_name});
 
 /**
  * Change a recipient's name.

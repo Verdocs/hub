@@ -1,4 +1,4 @@
-import {IEnvelope, IEnvelopeDocument, IEnvelopeFieldSettings, IRecipient} from '../Models';
+import {IEnvelope, IEnvelopeDocument, IEnvelopeFieldSettings} from '../Models';
 import {TEnvelopeUpdateResult} from '../BaseTypes';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {TCreateEnvelopeRequest} from './Types';
@@ -12,7 +12,8 @@ import {TCreateEnvelopeRequest} from './Types';
  * const role1: ICreateEnvelopeRole = {
  *   type: 'signer',
  *   name: 'Seller',
- *   full_name: 'Paige Turner',
+ *   first_name: 'Paige',
+ *   last_name: 'Turner',
  *   email: 'paige.turner@nomail.com',
  *   phone: '',
  *   sequence: 1,
@@ -23,7 +24,8 @@ import {TCreateEnvelopeRequest} from './Types';
  * const role2: ICreateEnvelopeRole = {
  *   type: 'signer',
  *   name: 'Buyer',
- *   full_name: 'Will Power',
+ *   first_name: 'Power',
+ *   last_name: 'Power',
  *   email: 'will.power@nomail.com',
  *   phone: '',
  *   sequence: 2,

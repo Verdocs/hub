@@ -494,7 +494,7 @@ export interface IRecipient {
   status: TRecipientStatus;
   email: string;
   phone: string | null;
-  full_name: string;
+  full_name?: string | null;
 
   first_name: string;
   last_name: string;
@@ -579,6 +579,8 @@ export interface IRole {
   name: string;
   type: TRecipientType;
   full_name: string | null;
+  first_name: string | null;
+  last_name: string | null;
   email: string | null;
   phone: string | null;
   message: string | null;

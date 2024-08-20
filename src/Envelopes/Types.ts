@@ -106,12 +106,14 @@ export interface IUpdateRecipientDeclineParams {
 
 export interface IUpdateRecipientClaimEnvelope {
   action: 'owner_update';
-  full_name: string;
+  first_name: string;
+  last_name: string;
   email: string;
 }
 
 export interface IUpdateRecipientStatus {
-  new_full_name?: string;
+  first_name?: string;
+  last_name?: string;
   agreed?: boolean;
   action?: 'prepare' | 'update';
 }
@@ -123,7 +125,8 @@ export interface IUpdateRecipientAgreedParams {
 
 export interface IUpdateRecipientNameParams {
   action: 'update';
-  new_full_name: string;
+  first_name: string;
+  last_name: string;
 }
 
 export interface IUpdateRecipientPrepareParams {
