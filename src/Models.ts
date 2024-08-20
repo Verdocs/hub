@@ -493,16 +493,16 @@ export interface IRecipient {
   profile_id: string;
   status: TRecipientStatus;
   email: string;
-  phone: string | null;
+  phone?: string | null;
   full_name?: string | null;
 
   first_name: string;
   last_name: string;
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
-  ssn_last_4: string;
+  address?: string | null;
+  city?: string | null;
+  state?: string | null;
+  zip?: string | null;
+  ssn_last_4?: string | null;
   /**
    * The sequence number indicates the order in which Recipients act. Multiple recipients may have the same sequence
    * number, in which case they may act in parallel. (e.g. all Recipients at sequence 2 will receive invites once
@@ -522,16 +522,16 @@ export interface IRecipient {
   claimed: boolean;
   agreed: boolean;
   key_used_to_conclude?: string;
-  environment: string;
+  environment?: string;
   created_at: string;
   updated_at: string;
-  last_attempt_at: string;
+  last_attempt_at?: string;
   /**
    * If set, "KBA required" will carry through to automatically enable the same setting in Envelopes
    * created from this template. For privacy reasons, this field will only be visible to the creator
    * of the envelope and the recipient referenced.
    */
-  kba_method: 'pin' | 'identity' | null;
+  kba_method?: 'pin' | 'identity' | null;
   /**
    * If KBA is set to "PIN" this will be set to the PIN code required. For security reasons, this
    * field will only be visible to the creator of the envelope.
@@ -541,13 +541,13 @@ export interface IRecipient {
    * If KBA has been completed successfully, this will be set to true. For privacy reasons, this
    * field will only be visible to the creator of the envelope and the recipient referenced.
    */
-  kba_completed: boolean;
+  kba_completed?: boolean;
   /**
    * If KBA has been completed (or partially successfully, this will contain metadata related to
    * the questions and answers from the process. For privacy reasons, this field will only be visible
    * to the recipient referenced.
    */
-  kba_details: Record<string, any>;
+  kba_details?: Record<string, any>;
 
   envelope?: IEnvelope;
   profile?: IProfile;

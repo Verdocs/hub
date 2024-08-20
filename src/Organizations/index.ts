@@ -8,6 +8,7 @@
  */
 
 export * from './ApiKeys';
+export * from './Contacts';
 export * from './Groups';
 export * from './Invitations';
 export * from './Members';
