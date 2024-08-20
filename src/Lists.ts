@@ -42,3 +42,14 @@ export const DEFAULT_FIELD_HEIGHTS: Record<TFieldType, number> = {
   attachment: 24,
   payment: 24,
 };
+
+export const WEBHOOK_EVENTS = [
+  'envelope_created',
+  'envelope_completed',
+  'envelope_canceled',
+
+  'template_created',
+  'template_updated',
+  'template_deleted',
+  'template_used',
+];

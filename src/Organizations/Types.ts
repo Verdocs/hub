@@ -1,4 +1,4 @@
-import {TApiKeyPermission} from '../BaseTypes';
+import {TApiKeyPermission, TWebhookEvent} from '../BaseTypes';
 import {TRole} from '../Sessions';
 
 export interface ICreateApiKeyRequest {
@@ -30,14 +30,5 @@ export interface IAcceptOrganizationInvitationRequest {
 export interface ISetWebhookRequest {
   url: string;
   active: boolean;
-  events: {
-    envelope_created: boolean;
-    envelope_completed: boolean;
-    envelope_canceled: boolean;
-
-    template_created: boolean;
-    template_updated: boolean;
-    template_deleted: boolean;
-    template_used: boolean;
-  };
+  events: Record<TWebhookEvent, boolean>;
 }

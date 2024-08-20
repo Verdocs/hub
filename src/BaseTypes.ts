@@ -1,4 +1,5 @@
 import {IEnvelope} from './Models';
+import {WEBHOOK_EVENTS} from './Lists';
 
 export type TRequestStatus = 'OK' | 'ERROR';
 
@@ -84,3 +85,12 @@ export type TFieldType =
   | 'textarea'
   | 'attachment'
   | 'payment';
+
+export type TWebhookEvent =
+  | 'envelope_created'
+  | 'envelope_completed'
+  | 'envelope_canceled'
+  | 'template_created'
+  | 'template_updated'
+  | 'template_deleted'
+  | 'template_used';
