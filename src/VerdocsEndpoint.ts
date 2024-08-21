@@ -15,7 +15,7 @@ const requestLogger = (r: any) => {
   return r;
 };
 
-export type TEnvironment = 'verdocs' | 'verdocs-stage';
+export type TEnvironment = '' | 'beta';
 
 export type TSessionChangedListener = (endpoint: VerdocsEndpoint, session: TSession, profile: IProfile | null) => void;
 

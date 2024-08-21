@@ -90,6 +90,7 @@ export type TWebhookEvent =
   | 'envelope_created'
   | 'envelope_completed'
   | 'envelope_canceled'
+  | 'envelope_updated'
   | 'template_created'
   | 'template_updated'
   | 'template_deleted'
