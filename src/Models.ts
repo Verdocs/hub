@@ -256,7 +256,7 @@ export interface IInPersonAccessKey {
   id: string;
   type: 'in_person_link';
   authentication?: string | null;
-  recipient_name: string;
+  role_name: string;
   envelope_id: string;
   key: string;
   expiration_date: string | null;

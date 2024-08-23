@@ -86,14 +86,35 @@ export interface ICreateEnvelopeRecipient {
   in_app_key?: string;
 }
 
+export interface ISignerTokenResponse {
+  /**
+   * An access token that may be used with a VerdocsEndpoint to perform signing operations.
+   * When signing, the caller's "authentication" status will be recorded as "in-person".
+   */
+  access_token: string;
+
+  /**
+   * A copy of the envelope related to the signing session. This is almost always needed when
+   * a signing session is being started, so it is included here for convenience.
+   */
+  envelope: IEnvelope;
+}
+
 export interface IInPersonLinkResponse {
+  /** A valid Verdocs Web URL that hosts a signing experience. */
   link: string;
-  envelope_id: string;
-  profile_id: string;
-  role_name: string;
-  access_key: string;
-  expiration_date: string;
-  type: TAccessKey;
+  /**
+   * An access token that may be used with a VerdocsEndpoint to perform signing operations.
+   * When signing, the caller's "authentication" status will be recorded as "in-person".
+   */
+  access_token: string;
+  /**
+   * The access key that matches the signing session. May be used for later initiation requests
+   * if in-person signing was desired, but not necessarily instant (e.g. to hand-off to a
+   * companion application. **NOTE: Access keys are as sensitive as Bearer Tokens and must be
+   * protected from theft and unauthorized sharing!**
+   */
+  access_key: TAccessKey;
 }
 
 export interface IUpdateRecipientSubmitParams {

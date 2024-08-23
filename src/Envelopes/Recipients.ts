@@ -6,6 +6,7 @@ import type {
   IUpdateRecipientNameParams,
   IUpdateRecipientDeclineParams,
   IUpdateRecipientPrepareParams,
+  ISignerTokenResponse,
 } from './Types';
 import {IEnvelope, IRecipient} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
@@ -76,18 +77,16 @@ export const envelopeRecipientUpdateName = (
 export const envelopeRecipientPrepare = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, recipients: IRecipient[]) =>
   updateRecipient(endpoint, envelopeId, roleName, {action: 'prepare', recipients});
 
-export interface ISignerTokenResponse {
-  envelope: IEnvelope;
-  access_token: string;
-}
-
 /**
- * Get a signing session for an Envelope. Note that this should generally be called with a NON-default
- * endpoint.
+ * Begin a signing session for an Envelope. This path requires an invite code, and should generally
+ * be called with a NON-default endpoint to avoid conflicting with any active user session the user
+ * may have. To initiate in-person signing by an authenticated user (e.g. self-signing), call
+ * getInPersonLink() instead. The response from that call includes both a link for direct signing
+ * via a Web browser as well as an in-person access_key. That access_key.key may be used here as well.
  */
-export const getSigningSession = async (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string, key: string) => {
+export const startSigningSession = async (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string, key: string) => {
   return endpoint.api //
-    .post<ISignerTokenResponse>(`/v2/sign/start/${envelope_id}/${encodeURIComponent(role_name)}/${key}`)
+    .post<ISignerTokenResponse>(`/v2/sign/unauth/${envelope_id}/${encodeURIComponent(role_name)}/${key}`)
     .then((r) => {
       endpoint.setToken(r.data.access_token);
       return r.data;
@@ -95,20 +94,11 @@ export const getSigningSession = async (endpoint: VerdocsEndpoint, envelope_id: 
 };
 
 /**
- * Get a signing token for in-person signing. Authentication is required. This should be called
- * by the logged-in user who wants to sign.
- */
-export const getSignerToken = (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string) =>
-  endpoint.api //
-    .get<ISignerTokenResponse>(`/envelopes/${envelope_id}/recipients/${encodeURIComponent(role_name)}/signer-token`)
-    .then((r) => r.data);
-
-/**
  * Get an in-person signing link.
  */
-export const getInPersonLink = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
+export const getInPersonLink = (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string) =>
   endpoint.api //
-    .get<IInPersonLinkResponse>(`/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}?in_person_link=true`)
+    .post<IInPersonLinkResponse>(`/v2/sign/in-person/${envelope_id}/${encodeURIComponent(role_name)}`)
     .then((r) => r.data);
 
 /**
@@ -116,7 +106,7 @@ export const getInPersonLink = (endpoint: VerdocsEndpoint, envelopeId: string, r
  */
 export const sendDelegate = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
   endpoint.api //
-    .post<IEnvelope>(`/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/delegate`)
+    .post<IEnvelope>(`/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`)
     .then((r) => r.data);
 
 /**
@@ -124,5 +114,5 @@ export const sendDelegate = (endpoint: VerdocsEndpoint, envelopeId: string, role
  */
 export const resendInvitation = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
   endpoint.api //
-    .post(`/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/resend_invitation`)
+    .put(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'resend'})
     .then((r) => r.data);
