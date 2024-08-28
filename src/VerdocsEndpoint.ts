@@ -304,12 +304,19 @@ export class VerdocsEndpoint {
     }
 
     if (this.sub !== session.sub) {
+      // The main purpose for this var is to prevent dupe getCurrentProfile calls and the trigger for the dupe
+      // is usually two components calling loadSession() at the same time to ensure we've done all we could
+      // to load it. We expose it in case it's useful, but have to set it here instead of in the async callbacks
+      // even though their might be a brief window of time where it's set but something might go wrong (profile
+      // doesn't load) because we need it to serve that original purpose more.
+      this.sub = session.sub;
+
       window?.console?.debug('[JS_SDK] userId changed, loading current profile...', session.sub);
+
       getCurrentProfile(this)
         .then((r) => {
           window?.console?.debug('[JS_SDK] Loaded profile', r);
           this.profile = r || null;
-          this.sub = session.sub;
           this.notifySessionListeners();
         })
         .catch((e) => {
