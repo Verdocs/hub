@@ -13,8 +13,8 @@ export const integerSequence = (start: number, count: number): number[] =>
 /**
  * Format a profile's full name
  */
-export const formatFullName = (profile?: IProfile) =>
-  profile ? `${capitalize(profile.first_name)} ${capitalize(profile.last_name)}` : 'Invalid User';
+export const formatFullName = (source?: {first_name?: string | null; last_name?: string | null; [key: string]: any} | null) =>
+  `${capitalize(source?.first_name || '')} ${capitalize(source?.last_name || '')}`.trim();
 
 /**
  * Format a profile's initials

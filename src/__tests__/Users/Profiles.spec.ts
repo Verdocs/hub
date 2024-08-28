@@ -1,6 +1,6 @@
 import {jest} from '@jest/globals';
 import MockAdapter from 'axios-mock-adapter';
-import {createProfile, deleteProfile, getProfile, getProfiles, switchProfile, updateProfile} from '../../Users';
+import {createProfile, deleteProfile, getProfiles, switchProfile, updateProfile} from '../../Users';
 import {VerdocsEndpoint} from '../../VerdocsEndpoint';
 import type {IProfile} from '../../Models';
 
@@ -16,6 +16,7 @@ const MockProfile: IProfile = {
   last_name: 'last',
   email: 'test@test.com',
   phone: null,
+  picture: null,
   current: true,
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
@@ -50,25 +51,11 @@ it('createProfile should return the new profile', async () => {
   const thenFn = jest.fn();
 
   const mock = new MockAdapter(endpoint.api);
-  const profile = {first_name: 'FIRST', last_name: 'LAST', email: 'EMAIL', organization_id: 'ORGID', user_id: 'TEST'};
+  const profile = {email: 'EMAIL', password: 'BOGUS', first_name: 'FIRST', last_name: 'LAST', org_name: 'ORG'};
   mock.onPost('/v2/profiles').reply(200, profile);
 
   await createProfile(endpoint, profile).then(thenFn).catch(catchFn);
   expect(thenFn).toHaveBeenCalledWith(profile);
-  expect(catchFn).not.toHaveBeenCalled();
-});
-
-it('getProfile should return a profile', async () => {
-  const catchFn = jest.fn();
-  const thenFn = jest.fn();
-
-  const mock = new MockAdapter(endpoint.api);
-  const profileId = 'TEST';
-  const response = {id: 'TEST'};
-  mock.onGet('/v2/profiles/TEST').reply(200, response);
-
-  await getProfile(endpoint, profileId).then(thenFn).catch(catchFn);
-  expect(thenFn).toHaveBeenCalledWith(response);
   expect(catchFn).not.toHaveBeenCalled();
 });
 

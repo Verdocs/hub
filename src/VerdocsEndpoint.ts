@@ -402,6 +402,9 @@ export class VerdocsEndpoint {
       return this.clearSession();
     }
 
-    return this.setToken(token);
+    // We sometimes get multiple loadSession calls from stacked components all needing to just ensure
+    // we've done our best to load it. We only set it the first time to avoid dupe profile reloads
+    // and upstream component notifications.
+    return this.token ? this : this.setToken(token);
   }
 }
