@@ -65,6 +65,11 @@ export class VerdocsEndpoint {
   private requestLoggerId: number | null = null;
 
   /**
+   * The current user's userId (NOT profileId), or null if not authenticated.
+   */
+  public sub = null as string | null;
+
+  /**
    * The current user session, or null if not authenticated. May be either a User or Signing session. If set, the
    * presence of the `document_id` field can be used to differentiate the types. Only signing sessions are associated
    * with Envelopes.
@@ -298,17 +303,22 @@ export class VerdocsEndpoint {
       localStorage.setItem(this.sessionStorageKey(), token);
     }
 
-    getCurrentProfile(this)
-      .then((r) => {
-        window?.console?.debug('[JS_SDK] Loaded profile', r);
-        this.profile = r || null;
-        this.notifySessionListeners();
-      })
-      .catch((e) => {
-        this.profile = null;
-        window?.console?.warn('Unable to load profile', e);
-        this.notifySessionListeners();
-      });
+    if (this.sub !== session.sub) {
+      window?.console?.debug('[JS_SDK] userId changed, loading current profile...', session.sub);
+      getCurrentProfile(this)
+        .then((r) => {
+          window?.console?.debug('[JS_SDK] Loaded profile', r);
+          this.profile = r || null;
+          this.sub = session.sub;
+          this.notifySessionListeners();
+        })
+        .catch((e) => {
+          this.profile = null;
+          this.sub = null;
+          window?.console?.warn('Unable to load profile', e);
+          this.notifySessionListeners();
+        });
+    }
 
     return this;
   }
@@ -339,6 +349,7 @@ export class VerdocsEndpoint {
     this.session = null;
     this.profile = null;
     this.token = null;
+    this.sub = null;
 
     this.notifySessionListeners();
 
@@ -358,6 +369,7 @@ export class VerdocsEndpoint {
     this.session = null;
     this.profile = null;
     this.token = null;
+    this.sub = null;
 
     this.notifySessionListeners();
 
