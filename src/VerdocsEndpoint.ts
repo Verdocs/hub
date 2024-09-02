@@ -1,6 +1,6 @@
 import axios, {AxiosInstance} from 'axios';
 import {TSession, TSessionType} from './Sessions';
-import {decodeAccessTokenBody} from './Utils';
+import {decodeAccessTokenBody, randomString} from './Utils';
 import globalThis from './Utils/globalThis';
 import {getCurrentProfile} from './Users';
 import {IProfile} from './Models';
@@ -64,6 +64,8 @@ export class VerdocsEndpoint {
   private sessionListeners = new Map<symbol, TSessionChangedListener>();
   private requestLoggerId: number | null = null;
 
+  public endpointId = randomString(8);
+
   /**
    * The current user's userId (NOT profileId), or null if not authenticated.
    */
@@ -106,12 +108,12 @@ export class VerdocsEndpoint {
 
   public setDefault() {
     globalThis[ENDPOINT_KEY] = this;
+    window?.console?.debug('[JS_SDK] Set default endpoint', this.endpointId);
   }
 
   public static getDefault(): VerdocsEndpoint {
     if (!globalThis[ENDPOINT_KEY]) {
       globalThis[ENDPOINT_KEY] = new VerdocsEndpoint();
-      // window.console.debug('[JS_SDK] Created default endpoint', globalThis[ENDPOINT_KEY].baseURL);
     }
 
     return globalThis[ENDPOINT_KEY];
@@ -303,29 +305,27 @@ export class VerdocsEndpoint {
       localStorage.setItem(this.sessionStorageKey(), token);
     }
 
-    if (this.sub !== session.sub) {
-      // The main purpose for this var is to prevent dupe getCurrentProfile calls and the trigger for the dupe
-      // is usually two components calling loadSession() at the same time to ensure we've done all we could
-      // to load it. We expose it in case it's useful, but have to set it here instead of in the async callbacks
-      // even though their might be a brief window of time where it's set but something might go wrong (profile
-      // doesn't load) because we need it to serve that original purpose more.
-      this.sub = session.sub;
+    // NOTE: We don't attempt to de-dupe session/network operations because there are cases where we
+    // operate within an IFRAME and multiple siblings need to operate on the same session. This happens
+    // a lot in Storybook but may also happen in other environments as well. Rather than try to coordinate
+    // something weird that might break (e.g. in a mobile app), we just allow the dupe calls. We generate
+    // a unique ID for each endpoint just to help with debugging. It should not be taken as a bug if more
+    // than one endpoint ID is seen within the app's logs.
+    window?.console?.debug('[JS_SDK] Loading current profile...', this.endpointId, this.sub, session.sub);
+    this.sub = session.sub;
 
-      window?.console?.debug('[JS_SDK] userId changed, loading current profile...', session.sub);
-
-      getCurrentProfile(this)
-        .then((r) => {
-          window?.console?.debug('[JS_SDK] Loaded profile', r);
-          this.profile = r || null;
-          this.notifySessionListeners();
-        })
-        .catch((e) => {
-          this.profile = null;
-          this.sub = null;
-          window?.console?.warn('Unable to load profile', e);
-          this.notifySessionListeners();
-        });
-    }
+    getCurrentProfile(this)
+      .then((r) => {
+        window?.console?.debug('[JS_SDK] Loaded profile', this.endpointId, r);
+        this.profile = r || null;
+        this.notifySessionListeners();
+      })
+      .catch((e) => {
+        this.profile = null;
+        this.sub = null;
+        window?.console?.warn('Unable to load profile', e);
+        this.notifySessionListeners();
+      });
 
     return this;
   }
@@ -346,6 +346,7 @@ export class VerdocsEndpoint {
    * Clear the active session.
    */
   public clearSession() {
+    window?.console?.debug('[JS_SDK] Clearing session', this.endpointId);
     if (this.persist) {
       localStorage.removeItem(this.sessionStorageKey());
     }
@@ -367,6 +368,7 @@ export class VerdocsEndpoint {
    * Clear the active signing session.
    */
   public clearSignerSession() {
+    window?.console?.debug('[JS_SDK] Clearing signer session', this.endpointId);
     if (this.persist) {
       localStorage.removeItem(this.sessionStorageKey());
     }
@@ -401,6 +403,10 @@ export class VerdocsEndpoint {
     this.nextListenerId++;
     const listenerSymbol = Symbol.for('' + this.nextListenerId);
     this.sessionListeners.set(listenerSymbol, listener);
+
+    // Perform an immediate notification in case this listener subscribed after the endpoint's session was
+    // already loaded.
+    listener(this, this.session, this.profile);
 
     return () => {
       this.sessionListeners.delete(listenerSymbol);

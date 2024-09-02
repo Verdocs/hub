@@ -31,3 +31,10 @@ export const convertToE164 = (input: string) => {
   // already entering a prefix so they'd shortcut out of this routine via the + prefix check.
   return `+1${temp}`;
 };
+
+// Generate a random string of a given length. This is NOT cryptographically strong. It is meant for light-duty
+// uses such as assigning IDs to DOM elements.
+export const randomString = (length: number) =>
+  Math.random()
+    .toString(36)
+    .substring(2, 2 + length + 1);
