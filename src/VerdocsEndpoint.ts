@@ -284,9 +284,11 @@ export class VerdocsEndpoint {
    */
   public setToken(token: string | null): VerdocsEndpoint {
     if (!token) {
+      window.console.log('[JS_SDK] Clearing token');
       return this.clearSession();
     }
 
+    window.console.log('[JS_SDK] Setting token', token.length);
     const session = decodeAccessTokenBody(token);
     if (session === null || (session.exp && session.exp * 1000 < new Date().getTime())) {
       window.console.warn('[JS_SDK] Ignoring attempt to use expired session token');
@@ -324,7 +326,7 @@ export class VerdocsEndpoint {
         this.profile = null;
         this.sub = null;
         window?.console?.warn('Unable to load profile', e);
-        this.notifySessionListeners();
+        this.clearSession();
       });
 
     return this;
@@ -404,9 +406,10 @@ export class VerdocsEndpoint {
     const listenerSymbol = Symbol.for('' + this.nextListenerId);
     this.sessionListeners.set(listenerSymbol, listener);
 
-    // Perform an immediate notification in case this listener subscribed after the endpoint's session was
-    // already loaded.
-    listener(this, this.session, this.profile);
+    // Perform an immediate notification if this listener subscribed after the session was already loaded.
+    if (this.profile) {
+      listener(this, this.session, this.profile);
+    }
 
     return () => {
       this.sessionListeners.delete(listenerSymbol);
@@ -424,6 +427,7 @@ export class VerdocsEndpoint {
 
     const token = localStorage.getItem(this.sessionStorageKey());
     if (!token) {
+      window?.console?.debug('[JS_SDK] No cached session found', this.endpointId);
       return this.clearSession();
     }
 
