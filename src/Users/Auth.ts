@@ -86,9 +86,16 @@ export const changePassword = (endpoint: VerdocsEndpoint, params: IChangePasswor
  * if (status !== 'OK') {
  *   window.alert(`Please check your email for instructions on how to reset your password.`);
  * }
+ *
+ * // Collect code and new password from the user, then call:
+ *
+ * const {success} = await resetPassword({ email, code, new_password });
+ * if (status !== 'OK') {
+ *   window.alert(`Please check your verification code and try again.`);
+ * }
  * ```
  */
-export const resetPassword = (endpoint: VerdocsEndpoint, params: {email: string}) =>
+export const resetPassword = (endpoint: VerdocsEndpoint, params: {email: string; code?: string; new_password?: string}) =>
   endpoint.api //
     .post<{success: boolean}>('/v2/users/reset-password', params)
     .then((r) => r.data);
