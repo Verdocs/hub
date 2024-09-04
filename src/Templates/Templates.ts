@@ -138,15 +138,10 @@ export interface ITemplateCreateParams {
   is_public?: boolean;
   /** Optional (defaults to EVERYONE_AS_CREATOR). Who may create and send envelopes using this template. */
   sender?: TTemplateSenderType;
-  /** Optional (defaults to inactive). Enable reminders for the template. */
-  reminders?: {
-    /** Set to false to deactivate. */
-    is_on: boolean;
-    /** Delay (in ms) before the first reminder will be sent (min: 4hrs). If on, defaults to 86400000 (1 day). */
-    setup_time: number;
-    /** Delay (in ms) between subsequent reminders (min: 12hrs). If on, defaults to 86400000 (1 day). */
-    interval_time: number;
-  };
+  /** Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable. */
+  initial_reminder: number;
+  /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */
+  followup_reminders: number;
   /** Optional description for the template to help identify it. */
   description?: string;
   /**

@@ -168,6 +168,10 @@ export interface ICreateEnvelopeFromTemplateRequest {
   fields?: Pick<IEnvelopeField, 'name' | 'role_name' | 'default'>[];
   environment?: string;
   no_contact?: boolean;
+  /** Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable. */
+  initial_reminder: number;
+  /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */
+  followup_reminders: number;
 }
 
 export interface ICreateEnvelopeDirectlyRequest {
@@ -179,6 +183,10 @@ export interface ICreateEnvelopeDirectlyRequest {
   fields: Pick<IEnvelopeField, 'name' | 'role_name' | 'default'>[];
   environment?: string;
   no_contact?: boolean;
+  /** Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable. */
+  initial_reminder: number;
+  /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */
+  followup_reminders: number;
 }
 
 export type TCreateEnvelopeRequest = ICreateEnvelopeFromTemplateRequest | ICreateEnvelopeDirectlyRequest;

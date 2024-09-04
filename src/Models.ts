@@ -325,9 +325,12 @@ export interface IEnvelope {
   profile_id: string;
   template_id: string | null;
   organization_id: string;
-  reminder_id: string | null;
   name: string;
   no_contact?: boolean;
+  /** Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable. */
+  initial_reminder: number;
+  /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */
+  followup_reminders: number;
   created_at: string;
   updated_at: string;
   canceled_at: string;
@@ -343,7 +346,6 @@ export interface IEnvelope {
   profile?: IProfile;
   template?: ITemplate | null;
   organization?: IOrganization;
-  reminder?: IReminder | null;
   access_keys?: TAccessKey[];
   fields?: IEnvelopeField[];
   history_entries?: IEnvelopeHistory[];
@@ -554,17 +556,6 @@ export interface IRecipient {
   profile?: IProfile;
 }
 
-export interface IReminder {
-  id?: string;
-  is_on: boolean;
-  key: string;
-  setup_time: number;
-  interval_time: number;
-  created_at: string | null;
-  last_time: number | null;
-  next_time: number | null;
-}
-
 /**
  * A placeholder for an individual recipient, CC, or other party in a signing flow. Roles may be "known" or "unknown."
  * "Known" roles will have their email address supplied in the template which will get copied to envelopes created from
@@ -633,10 +624,6 @@ export interface ITemplate {
    */
   organization_id: string;
   /**
-   * If set, the template has reminders enabled.
-   */
-  reminder_id: string | null;
-  /**
    * Who may create new documents from the template.
    */
   sender: TTemplateSenderType;
@@ -656,6 +643,10 @@ export interface ITemplate {
    * Number of times the template has been "starred".
    */
   star_counter: number;
+  /** Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable. */
+  initial_reminder: number;
+  /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */
+  followup_reminders: number;
   /**
    * If true, the template is only visible to the creator. If false, the template will also be visible to the user's
    * organization, if any.
@@ -699,7 +690,6 @@ export interface ITemplate {
 
   profile?: IProfile;
   organization?: IOrganization;
-  reminder?: IReminder | null;
   roles?: IRole[];
   documents?: ITemplateDocument[];
   fields?: ITemplateField[];
