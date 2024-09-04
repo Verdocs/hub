@@ -20,7 +20,7 @@ import {IWebhook} from '../Models';
  */
 export const getWebhooks = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
-    .get<IWebhook>(`/v2/webhooks/organization`)
+    .get<IWebhook>(`/v2/webhooks`)
     .then((r) => r.data);
 
 /**
@@ -36,5 +36,5 @@ export const getWebhooks = (endpoint: VerdocsEndpoint) =>
  */
 export const setWebhooks = (endpoint: VerdocsEndpoint, params: ISetWebhookRequest) =>
   endpoint.api //
-    .patch<IWebhook>(`/v2/webhooks/organization`, params)
+    .patch<IWebhook>(`/v2/webhooks`, params)
     .then((r) => r.data);
