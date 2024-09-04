@@ -55,6 +55,13 @@ export const WEBHOOK_EVENTS = [
 ];
 
 export const ALL_PERMISSIONS = [
+  // TODO: Are these permissions still relevant?
+  // 'member:view',
+  // 'org:create',
+  // 'org:view',
+  // 'org:list',
+  // 'org:transfer',
+
   'template:creator:create:public',
   'template:creator:create:org',
   'template:creator:create:personal',
