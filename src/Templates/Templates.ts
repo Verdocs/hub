@@ -5,7 +5,7 @@
  * @module
  */
 
-import {TSortTemplateBy, TTemplateSenderType} from '../BaseTypes';
+import {TSortTemplateBy, TTemplateSenderType, TTemplateVisibility} from '../BaseTypes';
 import {IRole, ITemplate, ITemplateField} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
@@ -122,16 +122,31 @@ export interface ITemplateCreateParams {
   /** Name for the template to create. */
   name: string;
   /**
+   * If set, the visibility level for the template.
+   */
+  visibility?: TTemplateVisibility;
+  /**
    * Optional (defaults to true). Personal templates are only visible to the owner. Non-personal templates are shared
    * within the user's organization.
+   * @deprecated. See visibility.
    */
   is_personal?: boolean;
   /**
    * Optional (defaults to false). Public templates may be found (via search) and viewed by anyone.
+   * @deprecated. See visibility.
    */
   is_public?: boolean;
   /** Optional (defaults to EVERYONE_AS_CREATOR). Who may create and send envelopes using this template. */
   sender?: TTemplateSenderType;
+  /** Optional (defaults to inactive). Enable reminders for the template. */
+  reminders?: {
+    /** Set to false to deactivate. */
+    is_on: boolean;
+    /** Delay (in ms) before the first reminder will be sent (min: 4hrs). If on, defaults to 86400000 (1 day). */
+    setup_time: number;
+    /** Delay (in ms) between subsequent reminders (min: 12hrs). If on, defaults to 86400000 (1 day). */
+    interval_time: number;
+  };
   /** Optional description for the template to help identify it. */
   description?: string;
   /**

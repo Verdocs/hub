@@ -95,3 +95,5 @@ export type TWebhookEvent =
   | 'template_updated'
   | 'template_deleted'
   | 'template_used';
+
+export type TTemplateVisibility = 'private' | 'shared' | 'public';

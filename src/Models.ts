@@ -8,7 +8,7 @@
 //    other_things?: OtherThing[]
 ///////////////////////////////////////////////////////////////
 
-import type {
+import {
   TApiKeyPermission,
   TEnvelopeStatus,
   TEventDetail,
@@ -17,6 +17,7 @@ import type {
   TRecipientStatus,
   TRecipientType,
   TTemplateSenderType,
+  TTemplateVisibility,
 } from './BaseTypes';
 import {TPermission, TRole} from './Sessions';
 
@@ -671,7 +672,7 @@ export interface ITemplate {
   /**
    * If set, the visibility level for the template.
    */
-  visibility?: string;
+  visibility?: TTemplateVisibility;
   /**
    * If true, the template is considered "sendable" (it has at least one signer, and every signer has at least one field.)
    */
