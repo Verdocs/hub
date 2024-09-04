@@ -245,7 +245,7 @@ export const createTemplateFromSharepoint = (endpoint: VerdocsEndpoint, params: 
  */
 export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, params: Partial<ITemplateCreateParams>) =>
   endpoint.api //
-    .put<ITemplate>(`/v2/templates/${templateId}`, params)
+    .patch<ITemplate>(`/v2/templates/${templateId}`, params)
     .then((r) => r.data);
 
 /**
