@@ -43,6 +43,7 @@ export type THistoryEvent =
   | 'recipient:claimed'
   | 'recipient:agreed'
   | 'recipient:invited'
+  | 'recipient:reminder'
   | 'recipient:delegated'
   | 'recipient:updated_info'
   | 'recipient:declined'

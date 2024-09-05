@@ -9,6 +9,8 @@ import {IProfile} from './Models';
 // Also see globalThis for comments about why we're doing this in the first place.
 const ENDPOINT_KEY = Symbol.for('verdocs-default-endpoint');
 
+const BETA_ORIGINS = ['https://beta.verdocs.com', 'https://stage.verdocs.com', 'http://localhost:6006', 'http://localhost:5173'];
+
 const requestLogger = (r: any) => {
   // tslint:disable-next-line
   console.debug(`[JS-SDK] ${r.method.toUpperCase()} ${r.baseURL}${r.url}`, r.data ? JSON.stringify(r.data) : '');
@@ -54,9 +56,7 @@ export class VerdocsEndpoint {
   private environment = 'verdocs' as TEnvironment;
   private sessionType = 'user' as TSessionType;
   private persist = true;
-  private baseURL = (window.location.origin === 'https://beta.verdocs.com' || window.location.origin === 'https://stage.verdocs.com'
-    ? 'https://stage-api.verdocs.com'
-    : 'https://api.verdocs.com') as string;
+  private baseURL = BETA_ORIGINS.includes(window.location.origin) ? 'https://stage-api.verdocs.com' : 'https://api.verdocs.com';
   private clientID = 'not-set' as string;
   private timeout = 60000 as number;
   private token = null as string | null;
