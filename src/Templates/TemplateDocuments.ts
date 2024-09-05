@@ -105,5 +105,10 @@ export const getTemplateDocumentThumbnail = async (endpoint: VerdocsEndpoint, te
  * for DISPLAY ONLY, are not legally binding documents, and do not contain any encoded metadata from participants. The
  * original asset may be obtained by calling `getTemplateDocumentFile()` or similar.
  */
-export const getTemplateDocumentPageDisplayUri = async (endpoint: VerdocsEndpoint, templateId: string, documentId: string, page: number) =>
-  endpoint.api.get<string>(`/templates/${templateId}/documents/${documentId}/pages/${page}/image`).then((r) => r.data);
+export const getTemplateDocumentPageDisplayUri = async (
+  endpoint: VerdocsEndpoint,
+  documentId: string,
+  page: number,
+  variant: 'original' | 'tagged' = 'original',
+) =>
+  endpoint.api.get<string>(`/v2/template-documents/page-image/${documentId}/${variant}/${page}`, {timeout: 20000}).then((r) => r.data);

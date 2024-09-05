@@ -185,14 +185,10 @@ export const getFieldAttachment = async (endpoint: VerdocsEndpoint, envelopeId: 
  */
 export const getEnvelopeDocumentPageDisplayUri = async (
   endpoint: VerdocsEndpoint,
-  envelopeId: string,
   documentId: string,
   page: number,
-  type: 'original' | 'filled' | 'certificate' = 'original',
-) =>
-  endpoint.api
-    .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}/pages/${page}/image?type=${type}`, {timeout: 20000})
-    .then((r) => r.data);
+  variant: 'original' | 'filled' | 'certificate' = 'original',
+) => endpoint.api.get<string>(`/v2/envelope-documents/page-image/${documentId}/${variant}/${page}`, {timeout: 20000}).then((r) => r.data);
 
 export interface ITimeRange {
   start: string;

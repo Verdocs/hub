@@ -139,9 +139,9 @@ export interface ITemplateCreateParams {
   /** Optional (defaults to EVERYONE_AS_CREATOR). Who may create and send envelopes using this template. */
   sender?: TTemplateSenderType;
   /** Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable. */
-  initial_reminder: number;
+  initial_reminder?: number;
   /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */
-  followup_reminders: number;
+  followup_reminders?: number;
   /** Optional description for the template to help identify it. */
   description?: string;
   /**
