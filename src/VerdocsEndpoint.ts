@@ -282,52 +282,53 @@ export class VerdocsEndpoint {
    * endpoint.setToken(accessToken);
    * ```
    */
-  public setToken(token: string | null): VerdocsEndpoint {
+  public setToken(token: string | null, sessionType: TSessionType = 'user'): VerdocsEndpoint {
     if (!token) {
       window.console.log('[JS_SDK] Clearing token');
       return this.clearSession();
     }
 
-    window.console.log('[JS_SDK] Setting token', token.length);
     const session = decodeAccessTokenBody(token);
     if (session === null || (session.exp && session.exp * 1000 < new Date().getTime())) {
       window.console.warn('[JS_SDK] Ignoring attempt to use expired session token');
       return this.clearSession();
     }
 
+    window.console.log('[JS_SDK] Setting token', sessionType);
+
     this.token = token;
     this.session = session;
+    this.sub = session.sub;
+    this.sessionType = sessionType;
     if (this.sessionType === 'user') {
       this.api.defaults.headers.common.Authorization = `Bearer ${token}`;
     } else {
+      // Required for legacy calls to rForm
       this.api.defaults.headers.common.signer = `Bearer ${token}`;
+      this.api.defaults.headers.common.Authorization = `Bearer ${token}`;
     }
 
-    if (this.persist) {
+    if (this.persist && sessionType === 'user') {
       localStorage.setItem(this.sessionStorageKey(), token);
     }
 
-    // NOTE: We don't attempt to de-dupe session/network operations because there are cases where we
-    // operate within an IFRAME and multiple siblings need to operate on the same session. This happens
-    // a lot in Storybook but may also happen in other environments as well. Rather than try to coordinate
-    // something weird that might break (e.g. in a mobile app), we just allow the dupe calls. We generate
-    // a unique ID for each endpoint just to help with debugging. It should not be taken as a bug if more
-    // than one endpoint ID is seen within the app's logs.
-    window?.console?.debug('[JS_SDK] Loading current profile...', this.endpointId, this.sub, session.sub);
-    this.sub = session.sub;
-
-    getCurrentProfile(this)
-      .then((r) => {
-        window?.console?.debug('[JS_SDK] Loaded profile', this.endpointId, r);
-        this.profile = r || null;
-        this.notifySessionListeners();
-      })
-      .catch((e) => {
-        this.profile = null;
-        this.sub = null;
-        window?.console?.warn('Unable to load profile', e);
-        this.clearSession();
-      });
+    if (this.sessionType === 'user') {
+      window?.console?.debug('[JS_SDK] Loading current profile...', this.endpointId, this.sub, session.sub);
+      getCurrentProfile(this)
+        .then((r) => {
+          window?.console?.debug('[JS_SDK] Loaded profile', this.endpointId, r);
+          this.profile = r || null;
+          this.notifySessionListeners();
+        })
+        .catch((e) => {
+          this.profile = null;
+          this.sub = null;
+          window?.console?.warn('Unable to load profile', e);
+          this.clearSession();
+        });
+    } else {
+      this.notifySessionListeners();
+    }
 
     return this;
   }

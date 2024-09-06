@@ -98,6 +98,12 @@ export interface ISignerTokenResponse {
    * a signing session is being started, so it is included here for convenience.
    */
   envelope: IEnvelope;
+
+  /**
+   * A copy of the recipient record related to the signing session. This is almost always needed when
+   * a signing session is being started, so it is included here for convenience.
+   */
+  recipient: IRecipient;
 }
 
 export interface IInPersonLinkResponse {
