@@ -307,7 +307,7 @@ export class VerdocsEndpoint {
       }
     } else {
       // Required for legacy calls to rForm
-      this.api.defaults.headers.common.signer = `Bearer ${token}`;
+      this.api.defaults.headers.common.signer = token;
       this.api.defaults.headers.common.Authorization = `Bearer ${token}`;
     }
 
