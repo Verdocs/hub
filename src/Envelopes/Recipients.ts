@@ -88,7 +88,7 @@ export const startSigningSession = async (endpoint: VerdocsEndpoint, envelope_id
   return endpoint.api //
     .post<ISignerTokenResponse>(`/v2/sign/unauth/${envelope_id}/${encodeURIComponent(role_name)}/${key}`)
     .then((r) => {
-      endpoint.setToken(r.data.access_token);
+      endpoint.setToken(r.data.access_token, 'signing');
       return r.data;
     });
 };

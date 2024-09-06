@@ -302,14 +302,13 @@ export class VerdocsEndpoint {
     this.sessionType = sessionType;
     if (this.sessionType === 'user') {
       this.api.defaults.headers.common.Authorization = `Bearer ${token}`;
+      if (this.persist) {
+        localStorage.setItem(this.sessionStorageKey(), token);
+      }
     } else {
       // Required for legacy calls to rForm
       this.api.defaults.headers.common.signer = `Bearer ${token}`;
       this.api.defaults.headers.common.Authorization = `Bearer ${token}`;
-    }
-
-    if (this.persist && sessionType === 'user') {
-      localStorage.setItem(this.sessionStorageKey(), token);
     }
 
     if (this.sessionType === 'user') {
