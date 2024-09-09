@@ -1,5 +1,4 @@
 import {IEnvelope} from './Models';
-import {WEBHOOK_EVENTS} from './Lists';
 
 export type TRequestStatus = 'OK' | 'ERROR';
 
@@ -35,6 +34,9 @@ export type TAccessKeyType = 'email' | 'in_app' | 'in_person_link' | 'sms';
 
 export type TApiKeyPermission = 'personal' | 'global_read' | 'global_write';
 
+/** @deprecated. See envelope.created_at, .updated_at, and .canceled_at. */
+export type TDeprecatedHistoryEvent = 'envelope:created' | 'envelope:completed';
+
 export type THistoryEvent =
   | 'recipient:signed'
   | 'recipient:opened'
@@ -49,14 +51,10 @@ export type THistoryEvent =
   | 'recipient:declined'
   | 'invitation:resent'
   | 'envelope:cc'
-  // TODO: These were removed and are not actually in use. See the created_at, updated_at (if status is completed)
-  //  and canceled_at fields to identify these states.
-  | 'created'
-  | 'completed'
-  | 'canceled'
+  | 'envelope:canceled'
   | 'owner:updated_recipient_info'
-  | 'owner:canceled'
-  | 'owner:get_in_person_link';
+  | 'owner:get_in_person_link'
+  | TDeprecatedHistoryEvent;
 
 export type TEventDetail =
   | 'in_app'
