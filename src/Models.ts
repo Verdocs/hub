@@ -328,9 +328,11 @@ export interface IEnvelope {
   name: string;
   no_contact?: boolean;
   /** Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable. */
-  initial_reminder: number;
+  initial_reminder: number | null;
   /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */
-  followup_reminders: number;
+  followup_reminders: number | null;
+  /** When the next reminder is scheduled to be sent. */
+  next_reminder: string | null;
   created_at: string;
   updated_at: string;
   canceled_at: string;
@@ -368,8 +370,8 @@ export interface IEnvelopeDocument {
 }
 
 export interface IDropdownOption {
+  id: string;
   label: string;
-  value: string;
 }
 
 export interface IEnvelopeField {
@@ -644,9 +646,9 @@ export interface ITemplate {
    */
   star_counter: number;
   /** Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable. */
-  initial_reminder: number;
+  initial_reminder: number | null;
   /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */
-  followup_reminders: number;
+  followup_reminders: number | null;
   /**
    * If true, the template is only visible to the creator. If false, the template will also be visible to the user's
    * organization, if any.

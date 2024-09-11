@@ -95,6 +95,18 @@ export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, envelopeId: str
     .then((r) => r.data);
 
 /**
+ * Update an envelope. Currently, only reminder settings may be changed.
+ */
+export const updateEnvelope = async (
+  endpoint: VerdocsEndpoint,
+  envelopeId: string,
+  params: Pick<IEnvelope, 'initial_reminder' | 'followup_reminders'>,
+) =>
+  endpoint.api //
+    .patch<IEnvelope>(`/envelopes/${envelopeId}`, params)
+    .then((r) => r.data);
+
+/**
  * Update a Document field. Typically called during the signing process as a Recipient fills in fields.
  */
 export const updateEnvelopeField = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string, value: any) =>
@@ -148,25 +160,12 @@ export const uploadEnvelopeFieldAttachment = async (
 /**
  * Delete an attachment.
  */
-export const deleteEnvelopeFieldAttachment = async (
-  endpoint: VerdocsEndpoint,
-  envelopeId: string,
-  fieldName: string,
-  file: File,
-  onUploadProgress?: (percent: number, loadedBytes: number, totalBytes: number) => void,
-) => {
+export const deleteEnvelopeFieldAttachment = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string) => {
   const formData = new FormData();
   // Omitting file is the trigger here
 
   return endpoint.api //
-    .put<IEnvelopeFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}`, formData, {
-      timeout: 120000,
-      onUploadProgress: (event) => {
-        const total = event.total || 1;
-        const loaded = event.loaded || 0;
-        onUploadProgress?.(Math.floor((loaded * 100) / (total || 1)), loaded, total || 1);
-      },
-    })
+    .put<IEnvelopeFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}`, formData)
     .then((r) => r.data);
 };
 
