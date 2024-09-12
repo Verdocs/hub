@@ -12,6 +12,7 @@
  * @module
  */
 
+import {IAuthenticateResponse} from '../Users';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {IOrganization, type IProfile} from '../Models';
 
@@ -31,7 +32,9 @@ export const getOrganization = (endpoint: VerdocsEndpoint, organizationId: strin
     .then((r) => r.data);
 
 /**
- * Create an organization.
+ * Create an organization. The caller will be assigned an "Owner" profile in the new organization,
+ * and it will be set to "current" automatically. A new set of session tokens will be issued to
+ * the caller, and the caller should update their endpoint to use the new tokens.
  *
  * ```typescript
  * import {createOrganization} from '@verdocs/js-sdk';
@@ -56,11 +59,11 @@ export const createOrganization = (
   >,
 ) =>
   endpoint.api //
-    .post<IOrganization>(`/v2/organizations`, params)
+    .post<IAuthenticateResponse>(`/v2/organizations`, params)
     .then((r) => r.data);
 
 /**
- * Update an organization.  This can only be called by an admin or owner.
+ * Update an organization. This can only be called by an admin or owner.
  *
  * ```typescript
  * import {updateOrganization} from '@verdocs/js-sdk';
@@ -71,6 +74,21 @@ export const createOrganization = (
 export const updateOrganization = (endpoint: VerdocsEndpoint, organizationId: string, params: Partial<IOrganization>) =>
   endpoint.api //
     .patch<IOrganization>(`/v2/organizations/${organizationId}`, params)
+    .then((r) => r.data);
+
+/**
+ * Delete an organization. This can only be called by an owner. Inclusion of the organization ID to delete
+ * is just a safety check. The caller may only delete the organization they have currently selected.
+ *
+ * ```typescript
+ * import {deleteOrganization} from '@verdocs/js-sdk';
+ *
+ * const newSession = await deleteOrganization(VerdocsEndpoint.getDefault(), organizationId);
+ * ```
+ */
+export const deleteOrganization = (endpoint: VerdocsEndpoint, organizationId: string) =>
+  endpoint.api //
+    .delete<IAuthenticateResponse | null>(`/v2/organizations/${organizationId}`)
     .then((r) => r.data);
 
 /**
