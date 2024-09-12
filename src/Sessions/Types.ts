@@ -10,8 +10,8 @@ export interface ISigningSession {
   email: string;
   iat: number;
   exp: number;
-  'https://verdocs.com/key_type': TAccessKeyType;
   'https://verdocs.com/session_type': 'signing';
+  'https://verdocs.com/key_type': TAccessKeyType;
   'https://verdocs.com/envelope_id': string;
   'https://verdocs.com/role_name': string;
 }
@@ -30,6 +30,7 @@ export interface IUserSession {
   'https://verdocs.com/session_type': 'user';
   'https://verdocs.com/profile_id': string;
   'https://verdocs.com/organization_id': string;
+  'https://verdocs.com/global_admin': boolean;
 }
 
 export interface IIdToken {
@@ -42,6 +43,7 @@ export interface IIdToken {
   last_name: string;
   phone: string;
 }
+
 /**
  * Verdocs supports two types of authenticated sessions: User and Signing. Both behave similarly and have similar
  * properties, but signing sessions only have access to a small set of signing-related functions.
