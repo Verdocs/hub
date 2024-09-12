@@ -103,7 +103,7 @@ export const updateEnvelope = async (
   params: Pick<IEnvelope, 'initial_reminder' | 'followup_reminders'>,
 ) =>
   endpoint.api //
-    .patch<IEnvelope>(`/envelopes/${envelopeId}`, params)
+    .patch<IEnvelope>(`/v2/envelopes/${envelopeId}`, params)
     .then((r) => r.data);
 
 /**

@@ -31,6 +31,35 @@ export const getOrganization = (endpoint: VerdocsEndpoint, organizationId: strin
     .then((r) => r.data);
 
 /**
+ * Create an organization.
+ *
+ * ```typescript
+ * import {createOrganization} from '@verdocs/js-sdk';
+ *
+ * const organization = await createOrganization(VerdocsEndpoint.getDefault(), {name: 'NewOrg'});
+ * ```
+ */
+export const createOrganization = (
+  endpoint: VerdocsEndpoint,
+  params: Pick<
+    IOrganization,
+    | 'name'
+    | 'address'
+    | 'address2'
+    | 'phone'
+    | 'contact_email'
+    | 'url'
+    | 'full_logo_url'
+    | 'thumbnail_url'
+    | 'primary_color'
+    | 'secondary_color'
+  >,
+) =>
+  endpoint.api //
+    .post<IOrganization>(`/v2/organizations`, params)
+    .then((r) => r.data);
+
+/**
  * Update an organization.  This can only be called by an admin or owner.
  *
  * ```typescript
