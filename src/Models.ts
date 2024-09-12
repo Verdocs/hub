@@ -59,6 +59,7 @@ export interface IApiKey {
   name: string;
   organization_id: string;
   profile_id: string;
+  global_admin: boolean;
   client_secret?: string | null;
   permission: TApiKeyPermission;
 
