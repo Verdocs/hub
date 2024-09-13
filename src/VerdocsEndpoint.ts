@@ -324,7 +324,11 @@ export class VerdocsEndpoint {
           this.profile = null;
           this.sub = null;
           window?.console?.warn('Unable to load profile', e);
-          this.clearSession();
+
+          // We can't clear the token verdocs-auth may be using temporarily during registration
+          if (this.persist) {
+            this.clearSession();
+          }
         });
     } else {
       this.notifySessionListeners();
