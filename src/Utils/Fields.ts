@@ -40,9 +40,9 @@ export function sortFields(fields: ITemplateField[] | IEnvelopeField[]) {
     const aPage = a.page || 0;
     const bPage = b.page || 0;
     const aX = a.x || 0;
-    const aY = a.y || 0;
+    const aY = (a.y || 0) + (a.height || 0);
     const bX = b.x || 0;
-    const bY = b.y || 0;
+    const bY = (b.y || 0) + (b.height || 0);
 
     if (aPage !== bPage) {
       return aPage - bPage;
