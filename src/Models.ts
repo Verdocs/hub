@@ -366,6 +366,7 @@ export interface IEnvelopeDocument {
   name: string;
   pages: number;
   mime: string;
+  page_sizes: {width: number; height: number}[];
   created_at: string;
   updated_at: string;
 }

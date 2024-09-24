@@ -212,6 +212,21 @@ export const createTemplate = (
   }
 };
 
+/**
+ * Duplicate a template. Creates a complete clone, including all settings (e.g. reminders), fields,
+ * roles, and documents.
+ *
+ * ```typescript
+ * import {duplicateTemplate} from '@verdocs/js-sdk/Templates';
+ *
+ * const newTemplate = await duplicateTemplate((VerdocsEndpoint.getDefault(), originalTemplateId, 'My Template Copy');
+ * ```
+ */
+export const duplicateTemplate = (endpoint: VerdocsEndpoint, templateId: string, name: string) =>
+  endpoint.api //
+    .put<ITemplate>(`/v2/templates/${templateId}`, {action: 'duplicate', name})
+    .then((r) => r.data);
+
 export interface ITemplateCreateFromSharepointParams {
   /** Name for the template to create. */
   name: string;
