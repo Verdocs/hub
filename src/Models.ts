@@ -366,6 +366,7 @@ export interface IEnvelopeDocument {
   name: string;
   pages: number;
   mime: string;
+  size: number;
   page_sizes: {width: number; height: number}[];
   created_at: string;
   updated_at: string;
@@ -709,9 +710,10 @@ export interface ITemplateDocument {
   id: string;
   name: string;
   template_id: string;
+  order: number;
   pages: number;
   mime: string;
-  order: number;
+  size: number;
   page_sizes: {width: number; height: number}[];
   created_at: string | null;
   updated_at: string | null;
