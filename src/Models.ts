@@ -442,9 +442,9 @@ export interface IEnvelopeFieldOptions {
 }
 
 export interface IEnvelopeFieldSettings {
-  type: string;
-  x: number;
-  y: number;
+  type?: string;
+  x?: number;
+  y?: number;
   width?: number;
   height?: number;
   value?: number | string;
