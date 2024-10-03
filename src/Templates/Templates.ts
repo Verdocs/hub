@@ -18,13 +18,8 @@ export interface IGetTemplatesParams {
   is_starred?: boolean;
   /** List only those templates created by the caller. */
   is_creator?: boolean;
-  /**
-   * List only personal templates. To list shared templates, set this to false and is_public to false.
-   * To list all templates, omit this field.
-   */
-  is_personal?: boolean;
-  /** List only public templates */
-  is_public?: boolean;
+  /** Visibility status of templates to include. private_shared is the default (private + shared) */
+  visibility: 'private_shared' | 'private' | 'shared' | 'public';
   /** Sort order */
   sort_by?: TSortTemplateBy;
   /** Set to true or false to control the sort order. Omit this field to sort dates descending, names ascending. */
