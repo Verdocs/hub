@@ -5,11 +5,13 @@
  * @module
  */
 
-import {TSortTemplateBy, TTemplateSenderType, TTemplateVisibility} from '../BaseTypes';
-import {IRole, ITemplate, ITemplateField} from '../Models';
+import type {TSortTemplateBy, TTemplateSender, TTemplateVisibility} from '../BaseTypes';
+import type {IRole, ITemplate, ITemplateField} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export type ITemplateSortBy = 'created_at' | 'updated_at' | 'name' | 'last_used_at' | 'counter' | 'star_counter';
+
+export type TTemplateVisibilityFilter = 'private_shared' | 'private' | 'shared' | 'public';
 
 export interface IGetTemplatesParams {
   /** List only those templates whose names, descriptions, etc contain this search term. */
@@ -19,7 +21,7 @@ export interface IGetTemplatesParams {
   /** List only those templates created by the caller. */
   is_creator?: boolean;
   /** Visibility status of templates to include. private_shared is the default (private + shared) */
-  visibility: 'private_shared' | 'private' | 'shared' | 'public';
+  visibility: TTemplateVisibilityFilter;
   /** Sort order */
   sort_by?: TSortTemplateBy;
   /** Set to true or false to control the sort order. Omit this field to sort dates descending, names ascending. */
@@ -132,7 +134,7 @@ export interface ITemplateCreateParams {
    */
   is_public?: boolean;
   /** Optional (defaults to EVERYONE_AS_CREATOR). Who may create and send envelopes using this template. */
-  sender?: TTemplateSenderType;
+  sender?: TTemplateSender;
   /** Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable. */
   initial_reminder?: number;
   /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */

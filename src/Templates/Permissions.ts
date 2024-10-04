@@ -94,14 +94,14 @@ export const userCanDeleteTemplate = (profile: IProfile | null | undefined, temp
  * Confirm whether the user can create an envelope using the specified template.
  */
 export const userCanSendTemplate = (profile: IProfile | null | undefined, template: ITemplate) => {
-  switch (template.sender) {
-    case 'creator':
+  switch (template.visibility) {
+    case 'private':
       return userIsTemplateCreator(profile, template);
-    case 'organization_member':
-    case 'organization_member_as_creator':
+
+    case 'shared':
       return userIsTemplateCreator(profile, template) || template.organization_id === profile?.organization_id;
-    // 'everyone' | 'everyone_as_creator';
-    default:
+
+    case 'public':
       return true;
   }
 };

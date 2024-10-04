@@ -8,7 +8,7 @@
 //    other_things?: OtherThing[]
 ///////////////////////////////////////////////////////////////
 
-import {
+import type {
   TApiKeyPermission,
   TEnvelopeStatus,
   TEventDetail,
@@ -16,7 +16,7 @@ import {
   THistoryEvent,
   TRecipientStatus,
   TRecipientType,
-  TTemplateSenderType,
+  TTemplateSender,
   TTemplateVisibility,
 } from './BaseTypes';
 import {TPermission, TRole} from './Sessions';
@@ -629,9 +629,11 @@ export interface ITemplate {
    */
   organization_id: string;
   /**
-   * Who may create new documents from the template.
+   * Who will "own" envelopes created from this template. Note that while either option is
+   * technically allowed for all visibility settings, "template_owner" only has an effect if
+   * visibility is "shared" or "public".
    */
-  sender: TTemplateSenderType;
+  sender: TTemplateSender;
   /*
    The user-supplied name of the template.
   */

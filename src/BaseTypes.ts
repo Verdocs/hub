@@ -2,7 +2,7 @@ import {IEnvelope} from './Models';
 
 export type TRequestStatus = 'OK' | 'ERROR';
 
-export type TTemplateSenderType = 'creator' | 'organization_member' | 'organization_member_as_creator' | 'everyone' | 'everyone_as_creator';
+export type TTemplateSender = 'envelope_creator' | 'template_owner';
 
 export type TTemplateAction =
   | 'create_personal'
