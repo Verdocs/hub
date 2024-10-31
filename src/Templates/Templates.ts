@@ -21,7 +21,7 @@ export interface IGetTemplatesParams {
   /** List only those templates created by the caller. */
   is_creator?: boolean;
   /** Visibility status of templates to include. private_shared is the default (private + shared) */
-  visibility: TTemplateVisibilityFilter;
+  visibility?: TTemplateVisibilityFilter;
   /** Sort order */
   sort_by?: TSortTemplateBy;
   /** Set to true or false to control the sort order. Omit this field to sort dates descending, names ascending. */
