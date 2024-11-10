@@ -38,9 +38,10 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jestconfig.json",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
-    "docs-md": "typedoc --tsconfig ./tsconfig-typedoc.json",
-    "docs-html": "typedoc --tsconfig ./tsconfig-typedoc.json --out docs-html",
-    "docs": "npm run docs-md && npm run docs-html",
+    "docs": "typedoc",
+    "generate-openapi": "npx tsx openapi/generate-openapi.ts",
+    "edit-openapi": "docker run -p 8081:80 -v $(pwd):/sdk -v $(pwd):/sdk swaggerapi/swagger-editor:next-v5",
+    "view-openapi": "docker run -p 8081:80 -v $(pwd):/sdk swaggerapi/swagger-ui",
     "clear-docs": "aws --profile=verdocs cloudfront create-invalidation --distribution-id E29UFGU4KEH1GQ --paths \"/*\"",
     "deploy-docs": "npm run docs && aws --profile=verdocs s3 sync --acl public-read --delete docs-html s3://verdocs-developers-js-sdk/ && yarn clear-docs",
     "push": "npm run build && npm publish"
@@ -70,8 +71,7 @@
     "ts-jest": "^29.2.4",
     "tslint": "^6.1.3",
     "tslint-config-prettier": "^1.18.0",
-    "typedoc": "^0.26.5",
-    "typedoc-plugin-markdown": "^4.2.3",
+    "typedoc": "^0.27.0-beta.0",
     "typescript": "^5.5.4"
   }
 }

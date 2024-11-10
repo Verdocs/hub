@@ -5,6 +5,7 @@
     "lib": ["es2017", "es7", "es6", "dom"],
     "declaration": true,
     "allowJs": true,
+    "resolveJsonModule": true,
     "strict": true,
     "noEmit": false,
     "esModuleInterop": true,

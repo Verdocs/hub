@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+  "tagDefinitions": [
+    {"tagName": "@apiParam", "syntaxKind": "block", "allowMultiple": true},
+    {"tagName": "@apiQuery", "syntaxKind": "block", "allowMultiple": true},
+    {"tagName": "@apiBody", "syntaxKind": "block", "allowMultiple": true},
+    {"tagName": "@apiSuccess", "syntaxKind": "block", "allowMultiple": true},
+    {"tagName": "@apiGroup", "syntaxKind": "block"},
+    {"tagName": "@apiName", "syntaxKind": "block"},
+    {"tagName": "@api", "syntaxKind": "block"},
+    {"tagName": "@group", "syntaxKind": "block"}
+  ]
+}

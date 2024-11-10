@@ -1,0 +1,31 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "includeVersion": true,
+  "gitRevision": "main",
+  "hideGenerator": true,
+  "excludePrivate": true,
+  "notRenderedTags": [
+    "@category",
+    "@group",
+    "@api",
+    "@apiName",
+    "@apiGroup",
+    "@apiParam",
+    "@apiQuery",
+    "@apiBody",
+    "@apiSuccess",
+    "@apiSuccessExample",
+    "@apiError",
+    "@apiErrorExample"
+  ],
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": true,
+    "includeFolders": true
+  },
+  "categorizeByGroup": true,
+  "outputs": [
+    {"name": "html", "path": "docs"},
+    {"name": "json", "path": "docs.json"}
+  ]
+}

@@ -43,7 +43,14 @@ export const createEnvelope = async (endpoint: VerdocsEndpoint, request: TCreate
     .then((r) => r.data);
 
 /**
- * Get all metadata for an Envelope.
+ * Get all metadata for an envelope. Note that when called by non-creators (e.g. Recipients)
+ * this will return only the **metadata** the caller is allowed to view.
+ * [Account capabilities](https://stripe.com/docs/connect/account-capabilities)
+ *
+ * @group Envelopes
+ * @api GET /v2/envelopes/:id Get Envelope Details
+ * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
+ * @apiSuccess IEnvelope . The detailed metadata for the envelope requested
  */
 export const getEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string) =>
   endpoint.api //
@@ -216,6 +223,21 @@ export interface IListEnvelopesParams {
  *
  * const {count, envelopes} = await getEnvelopes((VerdocsEndpoint.getDefault(), { q: 'test' });
  * ```
+ *
+ * @group Envelopes
+ * @api GET /v2/envelopes List Envelopes
+ * @apiQuery string q? Match envelopes whose name contains this string
+ * @apiQuery string(enum: 'inbox' | 'sent' | 'action' | 'waiting' | 'completed') view? Request pre-defined view. `inbox` returns envelopes where action is required by the caller. `sent` returns envelopes created by the caller. `action` returns envelopes where action is required by the caller. `waiting` returns envelopes where action is required by anyone. `completed` returns envelopes where all actions are complete.
+ * @apiQuery array(items: 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled') status? Match envelopes in one of the specified states.
+ * @apiQuery boolean(default: false) include_org? If true, include organizations-shared envelopes
+ * @apiQuery string(format: uuid) template_id? Match envelopes created from the specified template ID
+ * @apiQuery string(format: date-time) created_before? Match envelopes created before this date
+ * @apiQuery string(format: date-time) created_after? Match envelopes created after this date
+ * @apiQuery string(enum: 'name' | 'created_at' | 'updated_at' | 'canceled_at' | 'status') sort_by? Return results sorted by this criteria
+ * @apiQuery boolean ascending? Set true/false to override the sort direction. Note that the default depends on `sort_by`. Date-based sorts default to descending, while name and status default to ascending.
+ * @apiQuery integer(default: 20) rows? Limit the number of rows returned
+ * @apiQuery integer(default: 0) page? Specify which page of results to return
+ * @apiSuccess IEnvelope[] . An array of the envelopes matching the request params
  */
 export const getEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesParams) =>
   endpoint.api //
