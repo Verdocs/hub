@@ -96,12 +96,13 @@ const parseApiOptionTag = (option: string) => {
 
 // TSDoc expects {} around inline blocks so we have to use something like /path/:id in this tag.
 // OpenAPI expects /path/{id}
-// See https://regex101.com/r/52SPf4/1
+// See https://regex101.com/r/6jcMUu/1
 // Test strings
 // /v2/envelopes/:id
+// /v2/envelopes/:envelope_id/
 // /v2/envelopes/:id/
 // /v2/envelopes/:id/path/:otherParam/path2
-const PATH_REGEX = /\/:([a-zA-Z0-9-]+)/g;
+const PATH_REGEX = /\/:([a-zA-Z0-9-_]+)/g;
 
 const parseResponseType = (currentResponseSchema: any, param: string) => {
   const parsed = parseApiOptionTag(param);

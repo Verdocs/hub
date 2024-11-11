@@ -6,6 +6,12 @@ import {ISignature} from '../Models';
  * a signature block to be used for all signature fields in the document. Thus, this is typically called one time to
  * create and store a signature block. Thereafter, the ID of the signature block may be re-used for each signature field
  * to be "stamped" by the user.
+ *
+ * @group Signatures and Initials
+ * @api POST /signatures Create Signature Block
+ *
+ * @apiBody string signature Blob containing signature image to store.
+ * @apiSuccess ISignature . The newly-created signature block.
  */
 export const createSignature = (endpoint: VerdocsEndpoint, name: string, signature: Blob) => {
   const data = new FormData();
@@ -17,7 +23,12 @@ export const createSignature = (endpoint: VerdocsEndpoint, name: string, signatu
 };
 
 /**
- * Get the availbable signatures for a user.
+ * Get the available signatures for a user.
+ *
+ * @group Signatures and Initials
+ * @api GET /signatures Create Signature Block
+ *
+ * @apiSuccess array(items:ISignature) . A list of signatures previously stored for the user.
  */
 export const getSignatures = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -26,6 +37,11 @@ export const getSignatures = (endpoint: VerdocsEndpoint) =>
 
 /**
  * Get a user's signature by ID.
+ *
+ * @group Signatures and Initials
+ * @api GET /signatures/:id Delete Signature Block
+ * @apiParam string(format: 'uuid') id The ID of the signature to delete.
+ * @apiSuccess ISignature . The signature metadata requested.
  */
 export const getSignature = (endpoint: VerdocsEndpoint, signatureId: string) =>
   endpoint.api //
@@ -34,6 +50,11 @@ export const getSignature = (endpoint: VerdocsEndpoint, signatureId: string) =>
 
 /**
  * Delete a user's signature.
+ *
+ * @group Signatures and Initials
+ * @api DELETE /signatures/:id Delete Signature Block
+ * @apiParam string(format: 'uuid') id The ID of the signature to delete.
+ * @apiSuccess string . OK
  */
 export const deleteSignature = (endpoint: VerdocsEndpoint, signatureId: string) =>
   endpoint.api //

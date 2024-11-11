@@ -7,35 +7,15 @@ export const Preamble = {
     version: pkg.version,
     description:
       'The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.',
-    license: {
-      name: 'MIT',
-      url: 'https://opensource.org/licenses/MIT',
-    },
+    license: {name: 'MIT', url: 'https://opensource.org/licenses/MIT'},
   },
-  externalDocs: {
-    description: 'Verdocs Developer Portal',
-    url: 'https://developers.verdocs.com/',
-  },
-  servers: [
-    {
-      url: 'https://api.verdocs.com',
-      description: 'Production API endpoint.',
-    },
-  ],
-  tags: [
-    {
-      name: 'Books',
-      description: 'Entries related to books',
-    },
-  ],
+  externalDocs: {description: 'Verdocs Developer Portal', url: 'https://developers.verdocs.com/'},
+  servers: [{url: 'https://api.verdocs.com', description: 'Production API endpoint.'}],
+  tags: [],
   paths: {},
   components: {
     securitySchemes: {
-      BearerAuth: {
-        type: 'http',
-        scheme: 'bearer',
-        description: 'Bearer Token',
-      },
+      BearerAuth: {type: 'http', scheme: 'bearer', description: 'Bearer Token'},
       OAuth2: {
         type: 'oauth2',
         flows: {

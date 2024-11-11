@@ -6,6 +6,11 @@ import {IInitial} from '../Models';
  * an initials block to be used for all initials fields in the document. Thus, this is typically called one time to
  * create and store an initials block. Thereafter, the ID of the initials block may be re-used for each initials field
  * to be "stamped" by the user.
+ *
+ * @group Signatures and Initials
+ * @api POST /initials Create Initial Block
+ * @apiBody string initial Blob containing initials image to store.
+ * @apiSuccess IInitial . The newly-created initial block.
  */
 export const createInitials = (endpoint: VerdocsEndpoint, name: string, initials: Blob) => {
   const data = new FormData();

@@ -36,6 +36,18 @@ import {TCreateEnvelopeRequest} from './Types';
  * const request: ICreateEnvelopeRequest = {template_id: 'd2338742-f3a1-465b-8592-806587413cc1', name: 'Bill of Sale', roles: [role1, role2]};
  * const {id, recipients} = await Envelopes.createEnvelope(VerdocsEndpoint.getDefault(), request);
  * ```
+ *
+ * @group Envelopes
+ * @api POST /v2/envelopes Create Envelope
+ * @apiBody string(format:uuid) template_id The template to base the new Envelope from
+ * @apiBody array(items:ICreateEnvelopeRecipient) recipients A list of recipients to include in the workflow. Must specify one recipient to match each template Role.
+ * @apiBody string name? Override the name of the envelope (defaults to the template name).
+ * @apiBody string description? Override the description of the envelope (defaults to the template description).
+ * @apiBody array(items:IEnvelopeField) fields? Provide default values for fields in the envelope. Note that only "name", "role_name", and "default" should be set in this array.
+ * @apiBody boolean no_contact? If set to true, no email or SMS messages will be sent to any recipients.
+ * @apiBody integer(min: 0) initial_reminder? Override the template initial-reminder setting.
+ * @apiBody integer(min: 0) followup_reminders? Override the template initial-reminder setting.
+ * @apiSuccess IEnvelope . The newly-created envelope.
  */
 export const createEnvelope = async (endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest) =>
   endpoint.api //
@@ -45,7 +57,6 @@ export const createEnvelope = async (endpoint: VerdocsEndpoint, request: TCreate
 /**
  * Get all metadata for an envelope. Note that when called by non-creators (e.g. Recipients)
  * this will return only the **metadata** the caller is allowed to view.
- * [Account capabilities](https://stripe.com/docs/connect/account-capabilities)
  *
  * @group Envelopes
  * @api GET /v2/envelopes/:id Get Envelope Details
@@ -58,12 +69,13 @@ export const getEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string)
     .then((r) => r.data);
 
 /**
- * Get an Envelope Document
+ * Get all metadata for an envelope document. Note that when called by non-creators (e.g. Recipients)
+ * this will return only the **metadata** the caller is allowed to view.
  *
  * @group Envelopes
- * @api GET /v2/envelopes/:id Get Envelope Details
- * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
- * @apiSuccess IEnvelopeDocument . The detailed metadata for the envelope requested
+ * @api GET /envelopes/:id Get Envelope Details
+ * @apiParam string(format: 'uuid') id The ID of the document to retrieve.
+ * @apiSuccess IEnvelopeDocument . The detailed metadata for the document requested
  */
 export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
   endpoint.api //
@@ -75,8 +87,13 @@ export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, envelopeId:
  * be accessed immediately and never shared. Content-Disposition will be set to "download".
  *
  * @group Envelopes
- * @api GET /v2/envelopes/:id Get Envelope Details
- * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
+ * @api GET /envelopes/:envelope_id/envelope_documents/:document_id Preview, Download, or Link to a Document
+ * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to retrieve.
+ * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
+ * @apiQuery boolean download? Set to true to generate a download link (content-disposition: download).
+ * @apiQuery boolean preview? Set to true to generate a preview link (content-disposition: inline).
+ * @apiQuery boolean file? Set to true to return the raw binary BLOB data of the file rather than a link.
+ * @apiSuccess string . The generated link.
  */
 export const getDocumentDownloadLink = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
   endpoint.api //
@@ -86,10 +103,6 @@ export const getDocumentDownloadLink = async (endpoint: VerdocsEndpoint, envelop
 /**
  * Get a pre-signed preview link for an Envelope Document. This link expires quickly, so it should
  * be accessed immediately and never shared. Content-Disposition will be set to "inline".
- *
- * @group Envelopes
- * @api GET /v2/envelopes/:id Get Envelope Details
- * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
  */
 export const getDocumentPreviewLink = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
   endpoint.api //
@@ -100,8 +113,10 @@ export const getDocumentPreviewLink = async (endpoint: VerdocsEndpoint, envelope
  * Cancel an Envelope.
  *
  * @group Envelopes
- * @api GET /v2/envelopes/:id Get Envelope Details
- * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
+ * @api PUT /v2/envelopes/:id Cancel envelope
+ * @apiParam string(format: 'uuid') id The ID of the envelope to cancel.
+ * @apiBody string(enum: 'cancel') action The action to perform (currently only "cancel" is supported).
+ * @apiSuccess IEnvelope . The updated envelope.
  */
 export const cancelEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string) =>
   endpoint.api //
@@ -112,10 +127,6 @@ export const cancelEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: stri
  * Get (binary download) a file attached to an Envelope. It is important to use this method
  * rather than a direct A HREF or similar link to set the authorization headers for the
  * request.
- *
- * @group Envelopes
- * @api GET /v2/envelopes/:id Get Envelope Details
- * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
  */
 export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
   endpoint.api //
@@ -126,8 +137,9 @@ export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, envelopeId: str
  * Update an envelope. Currently, only reminder settings may be changed.
  *
  * @group Envelopes
- * @api GET /v2/envelopes/:id Get Envelope Details
- * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
+ * @api PATCH /v2/envelopes/:id Update Envelope
+ * @apiParam string(format: 'uuid') id The ID of the envelope to update.
+ * @apiBody IEnvelope . Set of fields to update. Omit (leave undefined) any fields that should not be changed.
  * @apiSuccess IEnvelope . A copy of the newly-updated envelope.
  */
 export const updateEnvelope = async (
@@ -143,8 +155,11 @@ export const updateEnvelope = async (
  * Update a Document field. Typically called during the signing process as a Recipient fills in fields.
  *
  * @group Envelopes
- * @api GET /v2/envelopes/:id Get Envelope Details
- * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
+ * @api PUT /envelopes/:envelope_id/fields/:field_name Update Envelope Field
+ * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to retrieve.
+ * @apiParam string field_name The name of the field to update. Be sure to URL-encode the value.
+ * @apiBody IEnvelopeFieldSettings . Set of properties to update. Leave undefined any properties that should not be changed.
+ * @apiSuccess IEnvelope . A copy of the newly-updated field.
  */
 export const updateEnvelopeField = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string, value: any) =>
   endpoint.api //
@@ -152,12 +167,16 @@ export const updateEnvelopeField = async (endpoint: VerdocsEndpoint, envelopeId:
     .then((r) => r.data);
 
 /**
- * Update a Document signature field. Signature fields are ID-driven. Call `Document.createSignature()` first to create a
- * signature for a Recipient, then call `Documents.updateDocumentFieldSignature()` to attach it to a field.
+ * Apply a signature to a signature field. Signature fields are ID-driven. Call `createSignature()`
+ * first to create a signature for a Recipient, then call `updateEnvelopeFieldSignature()` to
+ * attach it to a field.
  *
  * @group Envelopes
- * @api GET /v2/envelopes/:id Get Envelope Details
- * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
+ * @api PUT /envelopes/:envelope_id/fields/:field_name/signature/:signature_id Update Envelope
+ * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to update.
+ * @apiParam string field_name The name of the field to update. Be sure to URL-encode the value.
+ * @apiParam string(format: 'uuid') signature_id The ID of the signature to attach.
+ * @apiSuccess IEnvelopeFieldSettings . A copy of the newly-updated field.
  */
 export const updateEnvelopeFieldSignature = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string, signatureId: string) =>
   endpoint.api //
@@ -165,12 +184,16 @@ export const updateEnvelopeFieldSignature = async (endpoint: VerdocsEndpoint, en
     .then((r) => r.data);
 
 /**
- * Update a Document signature field. Signature fields are ID-driven. Call `Document.createSignature()` first to create a
- * signature for a Recipient, then call `Documents.updateDocumentFieldSignature()` to attach it to a field.
+ * Apply an initial to an initials field. Initial fields are ID-driven. Call `createInitial()`
+ * first to create an initial block for a Recipient, then call `supdateEnvelopeFieldInitials()` to
+ * attach it to a field.
  *
  * @group Envelopes
- * @api GET /v2/envelopes/:id Get Envelope Details
- * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
+ * @api PUT /envelopes/:envelope_id/fields/:field_name/initial/:initial_id Update Envelope
+ * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to update.
+ * @apiParam string field_name The name of the field to update. Be sure to URL-encode the value.
+ * @apiParam string(format: 'uuid') initial_id The ID of the initial block to attach.
+ * @apiSuccess IEnvelopeFieldSettings . A copy of the newly-updated field.
  */
 export const updateEnvelopeFieldInitials = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string, initialId: string) =>
   endpoint.api //
@@ -178,11 +201,14 @@ export const updateEnvelopeFieldInitials = async (endpoint: VerdocsEndpoint, env
     .then((r) => r.data);
 
 /**
- * Upload an attachment.
+ * Upload an attachment to an attachment field
  *
  * @group Envelopes
- * @api GET /v2/envelopes/:id Get Envelope Details
- * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
+ * @api PUT /envelopes/:envelope_id/fields/:field_name Upload or Delete Attachment
+ * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to update.
+ * @apiParam string field_name The name of the field to update. Be sure to URL-encode the value.
+ * @apiBody string document The file to attach. Must contain standard File object fields. If omitted, the attachment will be deleted instead.
+ * @apiSuccess IEnvelopeFieldSettings . A copy of the newly-updated field.
  */
 export const uploadEnvelopeFieldAttachment = async (
   endpoint: VerdocsEndpoint,
@@ -207,11 +233,9 @@ export const uploadEnvelopeFieldAttachment = async (
 };
 
 /**
- * Delete an attachment.
- *
- * @group Envelopes
- * @api GET /v2/envelopes/:id Get Envelope Details
- * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
+ * Delete an attachment. Note that this is not a DELETE endpoint because the field itself is not
+ * being deleted. Instead, it is a similar operation to uploading a new attachment, but the
+ * omission of the attachment signals the server to delete the current entry.
  */
 export const deleteEnvelopeFieldAttachment = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string) => {
   const formData = new FormData();
@@ -226,8 +250,10 @@ export const deleteEnvelopeFieldAttachment = async (endpoint: VerdocsEndpoint, e
  * Get the attached file for an attachment field (if any).
  *
  * @group Envelopes
- * @api GET /v2/envelopes/:id Get Envelope Details
- * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
+ * @api GET /envelopes/:envelope_id/fields/:field_name/document Download attachment in binary format
+ * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to retrieve.
+ * @apiParam string field_name The name of the field from which to download the attachment.
+ * @apiSuccess string . The file binary data.
  */
 export const getFieldAttachment = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string) =>
   endpoint.api //
@@ -240,8 +266,11 @@ export const getFieldAttachment = async (endpoint: VerdocsEndpoint, envelopeId: 
  * for DISPLAY ONLY, are not legally binding documents, and do not contain any encoded metadata from participants.
  *
  * @group Envelopes
- * @api GET /v2/envelopes/:id Get Envelope Details
- * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
+ * @api GET /v2/envelope-documnets/page-image/:document_id/:variant/:page Get Document Page Display URI
+ * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
+ * @apiParam string(enum: 'original'|'filled') variant The variant of the document to retrieve.
+ * @apiParam integer page The page number to retrieve
+ * @apiSuccess string . The page display URI. Note that this is a signed URL with a short expiration. It should be used immediately and never databased or cached.
  */
 export const getEnvelopeDocumentPageDisplayUri = async (
   endpoint: VerdocsEndpoint,
