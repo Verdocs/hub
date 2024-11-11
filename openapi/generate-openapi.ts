@@ -104,27 +104,21 @@ const parseApiOptionTag = (option: string) => {
 const PATH_REGEX = /\/:([a-zA-Z0-9-]+)/g;
 
 const parseResponseType = (currentResponseSchema: any, param: string) => {
-  // const property = parseProperty(param);
-  // console.log('Parsed property', property);
-  //                   $ref: "#/components/schemas/User"
-  // if (['string', 'number', 'integer', 'boolean', 'array', 'object'].includes(type)){
-  //   return {
-  //
-  //   }
-  // } ? type : 'string';
-  // $ref: "#/components/schemas/User"
-  //
-  // string (this includes dates and files)
-  // number
-  // integer
-  // boolean
-  // array
-  // object
+  const parsed = parseApiOptionTag(param);
+  const schema = jsTypeToSchema(parsed.type, parsed.options);
+
+  if (parsed.name === '.') {
+    Object.keys(currentResponseSchema).forEach((key) => delete currentResponseSchema[key]);
+    Object.assign(currentResponseSchema, schema);
+  } else {
+    currentResponseSchema.type = 'object';
+    currentResponseSchema.properties = currentResponseSchema.properties || {};
+    currentResponseSchema.properties[parsed.name] = {description: parsed.desc, ...schema};
+  }
 };
 
 const parseParam = (paramIn: 'cookie' | 'header' | 'path' | 'query', param: string) => {
   const {type, options, name, desc} = parseApiOptionTag(param);
-  console.log('ao', param, {type, options, name, desc});
 
   const entry = {
     in: paramIn,
@@ -144,10 +138,6 @@ const processChild = (child: Record<string, any>) => {
   const description = comment?.summary?.[0]?.text || '';
 
   if (kind === 256) {
-    // console.log('Processing type definition', name);
-    // console.log(comment);
-    // console.log(JSON.stringify(child, null, 2));
-
     Preamble.components = Preamble.components ?? {};
     Preamble.components.schemas = Preamble.components.schemas ?? {};
 
@@ -181,11 +171,8 @@ const processChild = (child: Record<string, any>) => {
   }
 
   if (kind !== 64 || !description) {
-    // console.log('Other', {kind, comment, child});
     return;
   }
-
-  console.log('Processing endpoint', name);
 
   //
   //   if (metadata.bodySchema) {
@@ -248,7 +235,94 @@ const processChild = (child: Record<string, any>) => {
     description,
     tags: [],
     parameters: [],
-    responses: {'200': {description: 'Success'}},
+    responses: {
+      '200': {
+        description: 'Success',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {},
+            },
+          },
+        },
+      },
+      // TODO: Although this is a documented approach, (see
+      //  https://swagger.io/docs/specification/v3_0/describing-responses/#default-response), this causes
+      //  the error "Resolver error at responses.default.content.application/json.schema.$ref Could not
+      //  resolve reference: JSON Pointer evaluation failed while evaluating token "Error" against an
+      //  ObjectElement" to appear in Swagger Editor Next. The old Swagger Editor is just broken entirely
+      //  displaying JSON-format OpenAPI v3.1 specs. Disabling it for now and hard-coding responses.
+      //  see https://github.com/swagger-api/swagger-ui/issues/9304
+      // default: {
+      //   description: 'An error occurred.',
+      //   content: {
+      //     'application/json': {
+      //       schema: {$ref: '#/components/schemas/Error'},
+      //     },
+      //   },
+      // },
+      '400': {
+        description: 'Request Error',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              required_properties: ['status', 'error'],
+              properties: {
+                status: {type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".'},
+                error: {type: 'string', description: 'Description of the error that occurred.'},
+              },
+            },
+          },
+        },
+      },
+      '401': {
+        description: 'Access Denied',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              required_properties: ['status', 'error'],
+              properties: {
+                status: {type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".'},
+                error: {type: 'string', description: 'Description of the error that occurred.'},
+              },
+            },
+          },
+        },
+      },
+      '404': {
+        description: 'Not Found',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              required_properties: ['status', 'error'],
+              properties: {
+                status: {type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".'},
+                error: {type: 'string', description: 'Description of the error that occurred.'},
+              },
+            },
+          },
+        },
+      },
+      '406': {
+        description: 'Invalid Parameter',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              required_properties: ['status', 'error'],
+              properties: {
+                status: {type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".'},
+                error: {type: 'string', description: 'Description of the error that occurred.'},
+              },
+            },
+          },
+        },
+      },
+    },
   };
 
   child.comment?.blockTags?.forEach((tag: IBlockTag) => {
@@ -299,18 +373,14 @@ const processChild = (child: Record<string, any>) => {
 
       case '@apiSuccess':
         // @apiSuccess IEnvelope . The detailed metadata for the envelope requested
-        parseResponseType({}, tag.content[0].text);
-        entry.responses['200'] = {
-          // IEnvelope[] . An array of the envelopes matching the request params
-          description: 'Success',
-          content: {
-            'application/json': {
-              schema: {},
-              // metadata.responseSchema
-            },
-          },
-        };
+        // TODO: Description
+        parseResponseType(entry.responses['200'].content['application/json'].schema, tag.content[0].text);
         break;
+
+      // case '@apiErrors':
+      //   const errors = tag.content[0].text.split(',').map((e) => e.trim());
+      //   console.log('errors', errors);
+      // @apiSuccess IEnvelope . The detailed metadata for the envelope requested
     }
   });
 

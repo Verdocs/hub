@@ -29,13 +29,15 @@ export const processBaseType = (type: string) => {
   return {baseType: match?.[1] || type, options: match?.[2]};
 };
 
-// See https://regex101.com/r/T6vREp/1
+// See https://regex101.com/r/jaLDYm/1
 // Test strings:
 //   format:uuid
 //   format: uuid
 //   format: int32
 //   format:int32
 //   enum: 'a' | 'b'
+//   enum: 'created_at' | 'name'
+//   enum: 'created at' | 'name'
 //   enum: 0|1
 //   enum: 0 | 1
 //   minimum: 1, maximum:100, default: 20)
@@ -44,7 +46,7 @@ export const processBaseType = (type: string) => {
 //   items: 'a'|'b'
 //   items: 0|1
 //   items: SomeModel
-const SCHEMA_REGEX = /(format|enum|minimum|maximum|default|items|type):\s?([a-zA-Z0-9'| ]+)/g;
+const SCHEMA_REGEX = /(format|enum|minimum|maximum|default|items|type):\s?([a-zA-Z0-9'_| ]+)/g;
 
 export const processSchemaOptions = (options: string) =>
   Array.from((options || '').matchAll(SCHEMA_REGEX) || []).map((match) => [match[1], match[2]]);
@@ -55,7 +57,9 @@ export const unionToEnumArray = (union: string) =>
     .map((v) => v.trim().replace(/'/g, '').trim())
     .map((v) => (isFinite(Number(v)) ? Number(v) : v));
 
-export const jsTypeToSchema = (type: string, options?: any) => {
+// string (enum: 'name' | 'created_at' | 'updated_at' | 'canceled_at' | 'status')
+// IEnvelope undefined
+export const jsTypeToSchema = (type: string, options?: string) => {
   const typeComponents = processBaseType(type);
 
   const schema: any = {type: typeComponents.baseType};
@@ -67,9 +71,10 @@ export const jsTypeToSchema = (type: string, options?: any) => {
   } else if (schema.type === 'object') {
     // TODO: Do we want to do something with these? It would be super hard to define a
     //  complex object inline in TSDoc tags, so maybe we should just only support refs?
-  } else if (schema.type.includes('|')) {
-    // For cases like when we recurse handling enum arrays
-    schema.enum = unionToEnumArray(schema.type);
+  } else if (type.includes('|')) {
+    // We don't come in here for root items like `'a'|'b' aOrB One of A or B`. We do when
+    // we recurse e.g. `string(enum: 'a'|'b') aOrB One of A or B`.
+    schema.enum = unionToEnumArray(type);
     schema.type = typeof schema.enum[0];
   } else {
     schema.$ref = `#/components/schemas/${schema.type}`;
@@ -79,7 +84,9 @@ export const jsTypeToSchema = (type: string, options?: any) => {
   if (options) {
     const schemaOptions = processSchemaOptions(options);
     schemaOptions.forEach((schemaOption) => {
-      const [option, value] = schemaOption as [string, string];
+      const [option, _value] = schemaOption as [string, string];
+      const value = _value.replace(/'/g, '').trim();
+
       switch (option) {
         case 'items':
           schema.type = 'array';

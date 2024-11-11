@@ -16,7 +16,8 @@
     "@apiSuccess",
     "@apiSuccessExample",
     "@apiError",
-    "@apiErrorExample"
+    "@apiErrorExample",
+    "@apiErrors"
   ],
   "navigation": {
     "includeCategories": true,

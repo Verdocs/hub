@@ -291,10 +291,10 @@ export interface IListEnvelopesParams {
  * @apiQuery boolean ascending? Set true/false to override the sort direction. Note that the default depends on `sort_by`. Date-based sorts default to descending, while name and status default to ascending.
  * @apiQuery integer(default: 20) rows? Limit the number of rows returned
  * @apiQuery integer(default: 0) page? Specify which page of results to return
- * @apiSuccess integer count The total number of records matching the query, helpful for pagination
- * @apiSuccess integer rows The number of rows returned in this response page
- * @apiSuccess integer page The page number of this response
- * @apiSuccess array(items: IEnvelope) List of envelopes found
+ * @apiSuccess integer(format: int32) count The total number of records matching the query, helpful for pagination
+ * @apiSuccess integer(format: int32) rows The number of rows returned in this response page
+ * @apiSuccess integer(format: int32) page The page number of this response
+ * @apiSuccess array(items: IEnvelope) envelopes List of envelopes found
  */
 export const getEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesParams) =>
   endpoint.api //

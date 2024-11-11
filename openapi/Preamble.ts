@@ -51,25 +51,17 @@ export const Preamble = {
         },
       },
     },
-    schemas: {},
-    responses: {
-      InvalidRequest: {
-        description:
-          'The request was invalid. Typically thrown for invalid operations, such as trying to cancel an envelope that has already been canceled.',
-      },
-      InvalidParameter: {
-        description: 'One or more parameters were invalid.',
-      },
-      AccessDenied: {
-        description:
-          'Access was denied. Check to be sure the Authorization header contains a valid, non-expired token, and that you have appropriate access to the objects related to the request.',
-      },
-      NotFound: {
-        description: 'The requested resource was not found.',
-      },
-      ServerError: {
-        description: 'A server error has occurred.',
+    schemas: {
+      Error: {
+        description: 'An error occurred. Refer to the response error message for details.',
+        type: 'object',
+        required_properties: ['status', 'error'],
+        properties: {
+          status: {type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".'},
+          error: {type: 'string', description: 'Description of the error that occurred.'},
+        },
       },
     },
+    responses: {},
   },
 };
