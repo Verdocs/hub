@@ -321,12 +321,19 @@ export type TAccessKey = IInPersonAccessKey | IInAppAccessKey | IEmailAccessKey 
  * process.
  */
 export interface IEnvelope {
+  /** Unique identifier for the envelope (UUID) */
   id: string;
+  /** Current status of the envelope. Note that 'complete', 'declined', and 'canceled' are immutable/permanent end states. */
   status: TEnvelopeStatus;
+  /** ID of the envelope's creator. */
   profile_id: string;
+  /** ID of the template from which the envelope was created. */
   template_id: string | null;
+  /** ID of the organization to which the envelope belongs. */
   organization_id: string;
+  /** Name of the envelope. By defaut, inherited from the envelope's template, but may be overridden when the envelope is created. */
   name: string;
+  /** If set to true, no email or SMS messages will be sent to any of the envelope's recipients. */
   no_contact?: boolean;
   /** Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable. */
   initial_reminder: number | null;
@@ -334,8 +341,11 @@ export interface IEnvelope {
   followup_reminders: number | null;
   /** When the next reminder is scheduled to be sent. */
   next_reminder: string | null;
+  /** Date/time when the envelope was created. */
   created_at: string;
+  /** Date/time when the envelope was created. */
   updated_at: string;
+  /** Date/time when the envelope was canceled, or null. */
   canceled_at: string;
   /** Defaults to 'private'. If set to 'shared', this envelope will be visible to other users in the same organization. Ignored for personal profiles. */
   visibility: 'private' | 'shared';

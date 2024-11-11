@@ -3,6 +3,7 @@
 import {writeFileSync} from 'node:fs';
 import docsJson from '../docs.json';
 import {Preamble} from './Preamble';
+import {jsTypeToSchema} from './utils';
 
 // 1. Reuse some tags from TSDoc (Name->actionId, Summary/Description from comment, @group->tags
 // 2. Adds support for root-level apiSuccess results (e.g. body of response is object)
@@ -65,34 +66,33 @@ interface IBlockTag {
   content: IBlockTagContent[];
 }
 
-// See https://regex101.com/r/xJRB26/1
+// See https://regex101.com/r/yG7Inq/1
 // Test strings:
-// string(format: email, xyz:a) id The ID of the envelope to retrieve.
-// string(format: 'email', xyz:a) id The ID of the envelope to retrieve.
-// string(format: email, xyz:a) id The ID of the envelope to retrieve.
-// string(format: 'email',xyz:a) id The ID of the envelope to retrieve.
-// string id The ID of the envelope to retrieve.
-// string(format: email, xyz:a) id? The ID of the envelope to retrieve.
-// string(format: 'email', format:date-time) id? The ID of the envelope to retrieve.
-// string(format: email, xyz:a) id? The ID of the envelope to retrieve.
-// string(format: 'email',xyz:a) id? The ID of the envelope to retrieve.
-// string id? The ID of the envelope to retrieve.
-// array(items: 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled') enumArray? Match envelopes whose name contains this string
-// array(items: string) stringArray? Match envelopes whose name contains this string
-const PARAM_REGEX = /^(string|number|integer|boolean|array|object)(\(.+\))?\s([a-zA-Z0-9?-]+)\s(.+?)$/;
+//   string(format: email, xyz:a) id Test
+//   string(format: email, xyz:a) id The ID of the envelope to retrieve.
+//   string(format: 'email', xyz:a) i_d The ID of the envelope to retrieve.
+//   string(format: email, xyz:a) id The ID of the envelope to retrieve.
+//   string(format: 'email',xyz:a) id The ID of the envelope to retrieve.
+//   string id The ID of the envelope to retrieve.
+//   string(format: email, xyz:a) id? The ID of the envelope to retrieve.
+//   string(format: 'email', xyz:a) id? The ID of the envelope to retrieve.
+//   string(format: email, xyz:a) id? The ID of the envelope to retrieve.
+//   string(format: 'email',xyz:a) id? The ID of the envelope to retrieve.
+//   string id? The ID of the envelope to retrieve.
+//   array(items: 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled') enumArray? Match envelopes whose name contains this string
+//   array(items: string) string_array Match envelopes whose name contains this string
+//   IEnvelope . The detailed metadata for the envelope requested
+const API_OPTION_REGEX = /([a-zA-Z0-9]+)(\([^)]*\))?\s([a-zA-Z0-9_?.]+)\s?([^\n]*)/;
 
-// See https://regex101.com/r/V8mGWv/1
-// Test strings:
-// (format: 'uuid', xyz:a)
-// (format: 'uuid',xyz:a)
-// (format: uuid, xyz:a)
-// (format: uuid,format:date-time)
-// (format: uuid)
-// (format: 'uuid')
-// ()
-// array(items: 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled')
-// array(items: string)
-const SCHEMA_REGEX = /([a-zA-Z0-9]+):\s?'?([a-zA-Z0-9\[\]'|\s]+)'?/g;
+const parseApiOptionTag = (option: string) => {
+  const matchArr = Array.from(option.match(API_OPTION_REGEX) || []);
+  return {
+    type: matchArr[1],
+    options: matchArr[2],
+    name: matchArr[3],
+    desc: matchArr[4],
+  };
+};
 
 // TSDoc expects {} around inline blocks so we have to use something like /path/:id in this tag.
 // OpenAPI expects /path/{id}
@@ -103,76 +103,90 @@ const SCHEMA_REGEX = /([a-zA-Z0-9]+):\s?'?([a-zA-Z0-9\[\]'|\s]+)'?/g;
 // /v2/envelopes/:id/path/:otherParam/path2
 const PATH_REGEX = /\/:([a-zA-Z0-9-]+)/g;
 
-const unionToEnumArray = (union: string) => union.split('|').map((v) => v.trim().replace(/'/g, '').trim());
+const parseResponseType = (currentResponseSchema: any, param: string) => {
+  // const property = parseProperty(param);
+  // console.log('Parsed property', property);
+  //                   $ref: "#/components/schemas/User"
+  // if (['string', 'number', 'integer', 'boolean', 'array', 'object'].includes(type)){
+  //   return {
+  //
+  //   }
+  // } ? type : 'string';
+  // $ref: "#/components/schemas/User"
+  //
+  // string (this includes dates and files)
+  // number
+  // integer
+  // boolean
+  // array
+  // object
+};
 
 const parseParam = (paramIn: 'cookie' | 'header' | 'path' | 'query', param: string) => {
-  const [_fullMatch, _type, options, _name, description] = Array.from(param.match(PARAM_REGEX) || []);
-  if (!_type || !_name) {
-    return null;
-  }
+  const {type, options, name, desc} = parseApiOptionTag(param);
+  console.log('ao', param, {type, options, name, desc});
 
-  // We cannot include required:false in the latest spec - we're supposed to omit it UNLESS
-  // it's a "path" param - those are always required
-  const required = !(_name || '').includes('?') || paramIn === 'path' || undefined;
-
-  const name = (_name || '').replace('?', '');
-  let type = _type.includes('|') ? unionToEnumArray(_type) : _type;
-
-  const decodedSchema = Array.from((options || '').matchAll(SCHEMA_REGEX) || []);
-  const parsedSchema: any = {};
-  decodedSchema.forEach(([_fullOptionMatch, optionName, optionValue]) => {
-    if (optionName === 'items') {
-      if (optionValue.includes('|')) {
-        const enumType = unionToEnumArray(optionValue);
-        parsedSchema.type = 'array';
-        parsedSchema.items = {type: 'string', enum: enumType};
-      } else {
-        parsedSchema.type = 'array';
-        parsedSchema.items = {type: optionValue};
-      }
-      return;
-    } else if (optionName === 'enum') {
-      // TODO: Infer the type of the enum from the type of the first item? Is it worth the bother?
-      //  We would also have to do this for array-of-enums.
-      type = 'string';
-      parsedSchema.enum = unionToEnumArray(optionValue);
-      return;
-    }
-
-    const intrinsicValue = isFinite(Number(optionValue)) ? Number(optionValue) : optionValue.trim();
-    parsedSchema[optionName.trim()] = intrinsicValue;
-  });
+  const entry = {
+    in: paramIn,
+    name: (name || '').replace('?', '').trim(),
+    description: (desc || '').trim,
+    required: !(name || '').includes('?') || paramIn === 'path' || undefined,
+    schema: jsTypeToSchema(type, options),
+  };
 
   if (type && name) {
-    return {
-      in: paramIn,
-      name: name.trim(),
-      description: (description || '').trim,
-      required,
-      schema: {type, ...parsedSchema},
-    };
+    return entry;
   }
 };
 
 const processChild = (child: Record<string, any>) => {
   const {name, kind, comment} = child;
   const description = comment?.summary?.[0]?.text || '';
-  if (kind !== 64 || !description) {
+
+  if (kind === 256) {
+    // console.log('Processing type definition', name);
+    // console.log(comment);
+    // console.log(JSON.stringify(child, null, 2));
+
+    Preamble.components = Preamble.components ?? {};
+    Preamble.components.schemas = Preamble.components.schemas ?? {};
+
+    const schemaEntry: any = {
+      type: 'object',
+      description: (description || '').trim(),
+      required_properties: [],
+      properties: {},
+    };
+
+    child.children.forEach((child: Record<string, any>) => {
+      const {name, kind, comment, type} = child;
+      if (kind !== 1024 || !comment) {
+        return;
+      }
+
+      schemaEntry.properties[name] = {
+        // TODO
+        type: type.name === 'number' ? 'integer' : 'string',
+        description: comment.summary[0].text,
+      };
+
+      if (child.flags?.isOptional !== true) {
+        schemaEntry.required_properties.push(name);
+      }
+    });
+
+    // @ts-ignore
+    Preamble.components.schemas[name] = schemaEntry;
     return;
   }
 
-  //   // Parameters need a bit of reformatting for compatibility
-  //   if (metadata.querySchema) {
-  //     Object.entries(metadata.querySchema._def.shape()).forEach(([name, param]: [string, any]) => {
-  //       entry.parameters.push(zodTypeToOpenAPI('query', name, param));
-  //     });
-  //   }
-  //
-  //   if (metadata.pathSchema) {
-  //     Object.entries(metadata.pathSchema._def.shape()).forEach(([name, param]: [string, any]) => {
-  //       entry.parameters.push(zodTypeToOpenAPI('path', name, param));
-  //     });
-  //   }
+  if (kind !== 64 || !description) {
+    // console.log('Other', {kind, comment, child});
+    return;
+  }
+
+  console.log('Processing endpoint', name);
+
   //
   //   if (metadata.bodySchema) {
   //     entry.requestBody = {
@@ -285,6 +299,17 @@ const processChild = (child: Record<string, any>) => {
 
       case '@apiSuccess':
         // @apiSuccess IEnvelope . The detailed metadata for the envelope requested
+        parseResponseType({}, tag.content[0].text);
+        entry.responses['200'] = {
+          // IEnvelope[] . An array of the envelopes matching the request params
+          description: 'Success',
+          content: {
+            'application/json': {
+              schema: {},
+              // metadata.responseSchema
+            },
+          },
+        };
         break;
     }
   });

@@ -40,6 +40,11 @@ export type TAuthenticationRequest = IROPCRequest | IClientCredentialsRequest | 
  * const {access_token} = await Auth.authenticate({ client_id: '...', client_secret: '...', grant_type:'client_credentials' });
  * VerdocsEndpoint.getDefault().setAuthToken(access_token);
  * ```
+ *
+ * @group Authentication
+ * @api POST /v2/oauth2/token Authenticate
+ * @apiBody string(format: 'uuid') id The ID of the envelope to retrieve.
+ * @apiSuccess IAuthenticateResponse . The detailed metadata for the envelope requested
  */
 export const authenticate = (endpoint: VerdocsEndpoint, params: TAuthenticationRequest) =>
   endpoint.api //

@@ -1,4 +1,3 @@
-import * as Schemas from './schemas';
 import pkg from '../package.json';
 
 export const Preamble = {
@@ -52,10 +51,11 @@ export const Preamble = {
         },
       },
     },
-    schemas: Schemas,
+    schemas: {},
     responses: {
       InvalidRequest: {
-        description: 'The request was invalid. Typically thrown for invalid operations, such as trying to cancel an envelope that has already been canceled.',
+        description:
+          'The request was invalid. Typically thrown for invalid operations, such as trying to cancel an envelope that has already been canceled.',
       },
       InvalidParameter: {
         description: 'One or more parameters were invalid.',
