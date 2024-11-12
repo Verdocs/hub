@@ -18,7 +18,7 @@ import {VerdocsEndpoint} from '../VerdocsEndpoint';
  * @api PUT /envelopes/:envelope_id/recipients/:role_name Update Recipient Status
  * @apiParam string(format:uuid) envelope_id The envelope to operate on.
  * @apiParam string role_name The role to adjust.
- * @apiBody string(enum:'submit'|'decline'|'owner_update'|'update'|'decline'|'prepare') action The action to take. Adjusts the status, and may also perform other operations.
+ * @apiBody string(enum:'submit'|'decline'|'owner_update'|'update'|'prepare') action The action to take. Adjusts the status, and may also perform other operations.
  * @apiBody string first_name? Ignored unless action is 'owner_update' or 'update'. The new owner's or recipient's first name.
  * @apiBody string last_name? Ignored unless action is 'owner_update' or 'update'. The new owner's or recipient's last name.
  * @apiBody string email? Ignored unless action is 'owner_update'. The new owner's email address.

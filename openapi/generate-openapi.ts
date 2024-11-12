@@ -1,9 +1,10 @@
 /* tslint:disable:no-console */
 
 import {writeFileSync} from 'node:fs';
-import docsJson from '../docs.json';
-import {Preamble} from './Preamble';
 import {jsTypeToSchema} from './utils';
+import {Preamble} from './Preamble';
+import docsJson from '../docs.json';
+import {generateSnippets} from './snippets';
 
 // 1. Reuse some tags from TSDoc (Name->actionId, Summary/Description from comment, @group->tags
 // 2. Adds support for root-level apiSuccess results (e.g. body of response is object)
@@ -118,13 +119,13 @@ const parseResponseType = (currentResponseSchema: any, param: string) => {
   }
 };
 
-const parseParam = (paramIn: 'cookie' | 'header' | 'path' | 'query', param: string) => {
+const parseParam = (paramIn: 'body' | 'cookie' | 'header' | 'path' | 'query', param: string) => {
   const {type, options, name, desc} = parseApiOptionTag(param);
 
   const entry = {
     in: paramIn,
     name: (name || '').replace('?', '').trim(),
-    description: (desc || '').trim,
+    description: (desc || '').trim(),
     required: !(name || '').includes('?') || paramIn === 'path' || undefined,
     schema: jsTypeToSchema(type, options),
   };
@@ -145,7 +146,7 @@ const processChild = (child: Record<string, any>) => {
     const schemaEntry: any = {
       type: 'object',
       description: (description || '').trim(),
-      required_properties: [],
+      required: [],
       properties: {},
     };
 
@@ -162,7 +163,7 @@ const processChild = (child: Record<string, any>) => {
       };
 
       if (child.flags?.isOptional !== true) {
-        schemaEntry.required_properties.push(name);
+        schemaEntry.required.push(name);
       }
     });
 
@@ -269,7 +270,7 @@ const processChild = (child: Record<string, any>) => {
           'application/json': {
             schema: {
               type: 'object',
-              required_properties: ['status', 'error'],
+              required: ['status', 'error'],
               properties: {
                 status: {type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".'},
                 error: {type: 'string', description: 'Description of the error that occurred.'},
@@ -284,7 +285,7 @@ const processChild = (child: Record<string, any>) => {
           'application/json': {
             schema: {
               type: 'object',
-              required_properties: ['status', 'error'],
+              required: ['status', 'error'],
               properties: {
                 status: {type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".'},
                 error: {type: 'string', description: 'Description of the error that occurred.'},
@@ -299,7 +300,7 @@ const processChild = (child: Record<string, any>) => {
           'application/json': {
             schema: {
               type: 'object',
-              required_properties: ['status', 'error'],
+              required: ['status', 'error'],
               properties: {
                 status: {type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".'},
                 error: {type: 'string', description: 'Description of the error that occurred.'},
@@ -314,7 +315,7 @@ const processChild = (child: Record<string, any>) => {
           'application/json': {
             schema: {
               type: 'object',
-              required_properties: ['status', 'error'],
+              required: ['status', 'error'],
               properties: {
                 status: {type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".'},
                 error: {type: 'string', description: 'Description of the error that occurred.'},
@@ -369,7 +370,29 @@ const processChild = (child: Record<string, any>) => {
         break;
 
       case '@apiBody':
-        // @apiParam String envelopeId The ID of the envelope to retrieve.
+        const parsedBodyParam = parseParam('body', tag.content[0].text);
+        if (parsedBodyParam) {
+          entry.requestBody = entry.requestBody || {
+            description: 'Body Parameters',
+            required: true,
+            content: {
+              'application/json': {
+                schema: {
+                  // OR $ref: "#/components/schemas/Pet"
+                  type: 'object',
+                  required: [],
+                  properties: {},
+                },
+              },
+            },
+          };
+
+          entry.requestBody.content['application/json'].schema.properties[parsedBodyParam.name] = parsedBodyParam.schema;
+
+          if (parsedBodyParam.required) {
+            entry.requestBody.content['application/json'].schema.required.push(parsedBodyParam.name);
+          }
+        }
         break;
 
       case '@apiSuccess':
@@ -386,6 +409,11 @@ const processChild = (child: Record<string, any>) => {
   });
 
   if (path && method) {
+    entry['x-codeSamples'] = generateSnippets(method, path, {
+      showQuery: entry.parameters.find((p: any) => p.in === 'query'),
+      showBody: true,
+    });
+
     (Preamble.paths as any)[path] = (Preamble.paths as any)[path] ?? {};
     (Preamble.paths as any)[path][method] = entry;
   }

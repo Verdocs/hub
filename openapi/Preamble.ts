@@ -7,7 +7,13 @@ export const Preamble = {
     version: pkg.version,
     description:
       'The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.',
+    termsOfService: 'https://verdocs.com/en/eula/',
     license: {name: 'MIT', url: 'https://opensource.org/licenses/MIT'},
+    contact: {
+      name: 'Verdocs Support',
+      url: 'https://verdocs.com/en/contact/',
+      email: 'support@verdocs.com',
+    },
   },
   externalDocs: {description: 'Verdocs Developer Portal', url: 'https://developers.verdocs.com/'},
   servers: [{url: 'https://api.verdocs.com', description: 'Production API endpoint.'}],
