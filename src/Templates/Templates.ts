@@ -43,6 +43,21 @@ export interface IGetTemplatesParams {
  * await getTemplates((VerdocsEndpoint.getDefault(), { is_creator: true });
  * await getTemplates((VerdocsEndpoint.getDefault(), { is_organization: true });
  * ```
+ *
+ * @group Templates
+ * @api GET /v2/templates Get Templates
+ * @apiQuery string q? Find templates whose names/descriptions contain the specified query string
+ * @apiQuery boolean is_starred? If true, returns only templates with at least one "star".
+ * @apiQuery boolean is_creator? If true, returns only templates that the caller created.
+ * @apiQuery string(enum: 'private_shared' | 'private' | 'shared' | 'public') visibility? Return only templates with the specified visibility.
+ * @apiQuery string(enum: 'created_at' | 'updated_at' | 'name' | 'last_used_at' | 'counter' | 'star_counter') sort_by? Return results sorted by this criteria
+ * @apiQuery boolean ascending? Set true/false to override the sort direction. Note that the default depends on `sort_by`. Date-based sorts default to descending, while name defaults to ascending.
+ * @apiQuery integer(default: 20) rows? Limit the number of rows returned
+ * @apiQuery integer(default: 0) page? Specify which page of results to return
+ * @apiSuccess integer(format: int32) count The total number of records matching the query, helpful for pagination
+ * @apiSuccess integer(format: int32) rows The number of rows returned in this response page
+ * @apiSuccess integer(format: int32) page The page number of this response
+ * @apiSuccess array(items: ITemplate) templates List of templates found
  */
 export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesParams) =>
   endpoint.api //

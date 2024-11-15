@@ -110,10 +110,8 @@ export const submitKbaIdentity = (endpoint: VerdocsEndpoint, envelope_id: string
     .then((r) => r.data);
 
 export interface IKbaChallengeResponse {
-  responses: {
-    type: string;
-    answer: string | number;
-  }[];
+  type: string;
+  answer: string | number;
 }
 
 /**
@@ -124,8 +122,8 @@ export const submitKbaChallengeResponse = (
   endpoint: VerdocsEndpoint,
   envelope_id: string,
   role_name: string,
-  response: IKbaChallengeResponse,
+  responses: IKbaChallengeResponse[],
 ) =>
   endpoint.api //
-    .post<TRecipientKbaStep>(`/v2/kba/response`, {envelope_id, role_name, response})
+    .post<TRecipientKbaStep>(`/v2/kba/response`, {envelope_id, role_name, responses})
     .then((r) => r.data);
