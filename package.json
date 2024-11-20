@@ -1,9 +1,9 @@
 {
   "name": "@verdocs/js-sdk",
-  "version": "4.2.148",
+  "version": "4.2.156",
   "private": false,
   "homepage": "https://github.com/Verdocs/js-sdk",
-  "description": "Isomorphic JS SDK providing types and API wrappers for the Verdocs platform for Node and Browser clients",
+  "description": "Isomorphic JS/TS SDK providing types and API wrappers for the Verdocs platform for Node and browser clients",
   "keywords": [
     "pdf",
     "document",

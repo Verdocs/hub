@@ -73,8 +73,10 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
  * const template = await getTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');
  * ```
  */
-export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
-  endpoint.api //
+export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) => {
+  window?.console?.log('[JS_SDK] Loading template', templateId);
+
+  return endpoint.api //
     .get<ITemplate>(`/v2/templates/${templateId}`)
     .then((r) => {
       const template = r.data;
@@ -105,7 +107,7 @@ export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
 
       return template;
     });
-
+};
 /**
  * Represents a document to be attached to a template via an externally-accessible URI. A copy of the document will be
  * downloaded from the specified URI. Note that the URI will be accessed without headers or other authorization methods
