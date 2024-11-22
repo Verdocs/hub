@@ -230,6 +230,7 @@ export interface IUser {
 export interface IWebhookEvents {
   envelope_created: boolean;
   envelope_completed: boolean;
+  envelope_updated: boolean;
   envelope_canceled: boolean;
 
   template_created: boolean;
