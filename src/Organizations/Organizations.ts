@@ -25,6 +25,10 @@ import {IOrganization, type IProfile} from '../Models';
  *
  * const organizations = await getOrganization(VerdocsEndpoint.getDefault(), 'ORGID');
  * ```
+ *
+ * @group Organizations
+ * @api GET /v2/organizations/:organization_id Get organization
+ * @apiSuccess IOrganization . The requested organization. The caller must be a member.
  */
 export const getOrganization = (endpoint: VerdocsEndpoint, organizationId: string) =>
   endpoint.api //
@@ -41,6 +45,17 @@ export const getOrganization = (endpoint: VerdocsEndpoint, organizationId: strin
  *
  * const organization = await createOrganization(VerdocsEndpoint.getDefault(), {name: 'NewOrg'});
  * ```
+ *
+ * @group Organizations
+ * @api POST /v2/organizations Create organization
+ * @apiBody string name The name of the new organization
+ * @apiBody string contact_email? Contact email for the new organization
+ * @apiBody string url? URL for the new organization
+ * @apiBody string full_logo_url? URL of a large-format PNG logo
+ * @apiBody string thumbnail_url? URL of a small-format (square is recommended) PNG logo
+ * @apiBody string primary_color? URL of a small-format (square is recommended) PNG logo
+ * @apiBody string secondary_color? URL of a small-format (square is recommended) PNG logo
+ * @apiSuccess IAuthenticateResponse . Authentication credentials for user in the new organization. The user will be made an Owner automatically.
  */
 export const createOrganization = (
   endpoint: VerdocsEndpoint,
@@ -70,6 +85,17 @@ export const createOrganization = (
  *
  * const organizations = await updateOrganization(VerdocsEndpoint.getDefault(), organizationId, {name:'ORGNAME'});
  * ```
+ *
+ * @group Organizations
+ * @api PATCH /v2/organizations/:organization_id Update organization
+ * @apiBody string name The name of the new organization
+ * @apiBody string contact_email? Contact email for the new organization
+ * @apiBody string url? URL for the new organization
+ * @apiBody string full_logo_url? URL of a large-format PNG logo
+ * @apiBody string thumbnail_url? URL of a small-format (square is recommended) PNG logo
+ * @apiBody string primary_color? URL of a small-format (square is recommended) PNG logo
+ * @apiBody string secondary_color? URL of a small-format (square is recommended) PNG logo
+ * @apiSuccess IOrganization . The details for the updated organization
  */
 export const updateOrganization = (endpoint: VerdocsEndpoint, organizationId: string, params: Partial<IOrganization>) =>
   endpoint.api //
@@ -85,6 +111,10 @@ export const updateOrganization = (endpoint: VerdocsEndpoint, organizationId: st
  *
  * const newSession = await deleteOrganization(VerdocsEndpoint.getDefault(), organizationId);
  * ```
+ *
+ * @group Organizations
+ * @api DELETE /v2/organizations/:organization_id Delete organization
+ * @apiSuccess IAuthenticateResponse . If the caller is a member of another organization, authentication credentials for the next organization available. If not, this will be null and the caller will be logged out.
  */
 export const deleteOrganization = (endpoint: VerdocsEndpoint, organizationId: string) =>
   endpoint.api //
@@ -92,13 +122,19 @@ export const deleteOrganization = (endpoint: VerdocsEndpoint, organizationId: st
     .then((r) => r.data);
 
 /**
- * Update the organization's logo. This can only be called by an admin or owner.
+ * Update the organization's full or thumbnail logo. This can only be called by an admin or owner.
  *
  * ```typescript
  * import {updateOrganizationLogo} from '@verdocs/js-sdk';
  *
  * await updateOrganizationLogo((VerdocsEndpoint.getDefault(), organizationId, file);
  * ```
+ *
+ * @group Organizations
+ * @api PATCH /v2/organizations/:organization_id Update organization full or thumbnail logo.
+ * @apiBody image/png(type:string, format:binary) logo? Form-url-encoded file to upload
+ * @apiBody image/png(type:string, format:binary) thumbnail? Form-url-encoded file to upload
+ * @apiSuccess IOrganization . The updated organization.
  */
 export const updateOrganizationLogo = (
   endpoint: VerdocsEndpoint,
@@ -110,7 +146,7 @@ export const updateOrganizationLogo = (
   formData.append('logo', file, file.name);
 
   return endpoint.api //
-    .patch<IProfile>(`/v2/organizations/${organizationId}`, formData, {
+    .patch<IOrganization>(`/v2/organizations/${organizationId}`, formData, {
       timeout: 120000,
       onUploadProgress: (event) => {
         const total = event.total || 1;
@@ -140,7 +176,7 @@ export const updateOrganizationThumbnail = (
   formData.append('thumbnail', file, file.name);
 
   return endpoint.api //
-    .patch<IProfile>(`/v2/organizations/${organizationId}`, formData, {
+    .patch<IOrganization>(`/v2/organizations/${organizationId}`, formData, {
       timeout: 120000,
       onUploadProgress: (event) => {
         const total = event.total || 1;

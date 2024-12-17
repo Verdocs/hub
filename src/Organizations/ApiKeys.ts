@@ -23,6 +23,10 @@ import {IApiKey} from '../Models';
  *
  * const keys = await getApiKeys(ORGID);
  * ```
+ *
+ * @group API Keys
+ * @api GET /v2/api-keys Get API keys
+ * @apiSuccess array(items: IApiKey) . A list of the API keys for the caller's organization. Secrets will not be included.
  */
 export const getApiKeys = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -37,6 +41,13 @@ export const getApiKeys = (endpoint: VerdocsEndpoint) =>
  *
  * await createApiKey(ORGID, {name: NEWNAME});
  * ```
+ *
+ * @group API Keys
+ * @api POST /v2/api-keys Create API key
+ * @apiBody string name A name used to identify the key in the Verdocs Web App
+ * @apiBody string(format:uuid) profile_id The profile ID that calls made using the key will act as
+ * @apiBody array(items:TApiKeyPermission) permission An array of permissions to assign to the new key. Extends (but does not override) the API key's profile permissions.
+ * @apiSuccess IAPIKey . The newly-created API key, including its secret.
  */
 export const createApiKey = (endpoint: VerdocsEndpoint, params: ICreateApiKeyRequest) =>
   endpoint.api //
@@ -51,6 +62,11 @@ export const createApiKey = (endpoint: VerdocsEndpoint, params: ICreateApiKeyReq
  *
  * const {client_secret: newSecret} = await rotateApiKey(ORGID, CLIENTID);
  * ```
+ *
+ * @group API Keys
+ * @api POST /v2/api-keys/:client_id/rotate Rotate API key
+ * @apiParam string(format:uuid) client_id The client ID of the key to rotate
+ * @apiSuccess IAPIKey . The updated API key with its new secret.
  */
 export const rotateApiKey = (endpoint: VerdocsEndpoint, clientId: string) =>
   endpoint.api //
@@ -65,6 +81,12 @@ export const rotateApiKey = (endpoint: VerdocsEndpoint, clientId: string) =>
  *
  * await updateApiKey(ORGID, CLIENTID, {name: NEWNAME});
  * ```
+ *
+ * @group API Keys
+ * @api PATCH /v2/api-keys/:client_id Update API key
+ * @apiBody string name? New name for the API key
+ * @apiBody array(items:TApiKeyPermission) permission New array of permissions to assign to the new key. Extends (but does not override) the API key's profile permissions.
+ * @apiSuccess IAPIKey . The updated API key. The secret will not be included.
  */
 export const updateApiKey = (endpoint: VerdocsEndpoint, clientId: string, params: IUpdateApiKeyRequest) =>
   endpoint.api //
@@ -79,6 +101,10 @@ export const updateApiKey = (endpoint: VerdocsEndpoint, clientId: string, params
  *
  * await deleteApiKey(ORGID, CLIENTID);
  * ```
+ *
+ * @group API Keys
+ * @api DELETE /v2/api-keys/:client_id Delete API key
+ * @apiSuccess string . Success.
  */
 export const deleteApiKey = (endpoint: VerdocsEndpoint, clientId: string) =>
   endpoint.api //
