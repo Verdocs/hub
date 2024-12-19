@@ -83,7 +83,7 @@ interface IBlockTag {
 //   array(items: 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled') enumArray? Match envelopes whose name contains this string
 //   array(items: string) string_array Match envelopes whose name contains this string
 //   IEnvelope . The detailed metadata for the envelope requested
-const API_OPTION_REGEX = /([a-zA-Z0-9]+)(\([^)]*\))?\s([a-zA-Z0-9_?.]+)\s?([^\n]*)/;
+const API_OPTION_REGEX = /([a-zA-Z0-9\/]+)(\([^)]*\))?\s([a-zA-Z0-9_?.]+)\s?([^\n]*)/;
 
 const parseApiOptionTag = (option: string) => {
   const matchArr = Array.from(option.match(API_OPTION_REGEX) || []);
@@ -136,8 +136,23 @@ const parseParam = (paramIn: 'body' | 'cookie' | 'header' | 'path' | 'query', pa
 };
 
 const processChild = (child: Record<string, any>) => {
-  const {name, kind, comment} = child;
+  const {name, kind, comment} = child as {name: string; kind: number; comment: any; child: any};
   const description = comment?.summary?.[0]?.text || '';
+
+  // console.log('Processing child', name, kind);
+  if (kind === 2097152) {
+    Preamble.components = Preamble.components ?? {};
+    Preamble.components.schemas = Preamble.components.schemas ?? {};
+    // console.log('Type', {name, kind, comment, description, child});
+
+    // TODO: Support for any other enum types?
+    (Preamble.components.schemas as any)[name] = {
+      type: 'string',
+      description: (description || '').trim(),
+      enum: child?.type?.types?.map((type: any) => type.value) || [],
+    };
+    return;
+  }
 
   if (kind === 256) {
     Preamble.components = Preamble.components ?? {};
@@ -167,8 +182,7 @@ const processChild = (child: Record<string, any>) => {
       }
     });
 
-    // @ts-ignore
-    Preamble.components.schemas[name] = schemaEntry;
+    (Preamble.components.schemas as any)[name] = schemaEntry;
     return;
   }
 

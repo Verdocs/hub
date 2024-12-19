@@ -72,6 +72,10 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
  *
  * const template = await getTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');
  * ```
+ *
+ * @group Templates
+ * @api GET /v2/templates/:template_id Get a template. Note that the caller must have at least View access to the template.
+ * @apiSuccess ITemplate . The requested template
  */
 export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) => {
   window?.console?.log('[JS_SDK] Loading template', templateId);
@@ -193,6 +197,21 @@ const ALLOWED_CREATE_FIELDS: (keyof ITemplateCreateParams)[] = [
  *
  * const newTemplate = await createTemplate((VerdocsEndpoint.getDefault(), {...});
  * ```
+ *
+ * @group Templates
+ * @api POST /v2/templates Create a template
+ * @apiBody string name Template name
+ * @apiBody string description? Optional description
+ * @apiBody TTemplateVisibility visibility? Visibility setting
+ * @apiBody boolean is_personal? Deprecated. If true, the template is personal and can only be seen by the caller. (Use "visibility" for new calls.)
+ * @apiBody boolean is_public? Deprecated. If true, the template is public and can be seen by anybody. (Use "visibility" for new calls.)
+ * @apiBody TTemplateSender sender? Who may send envelopes using this template
+ * @apiBody number initial_reminder? Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable.
+ * @apiBody number followup_reminders? Delay (in seconds) before the subsequent reminders are sent (min: 12hrs). Set to 0 or null to disable.
+ * @apiBody array(items:object) documents? Optional list of documents to attach to the template
+ * @apiBody array(items:IRole) roles? Optional list of roles to create. Note that if roles are not included in the request, fields will be ignored.
+ * @apiBody array(fields:ITemplateField) fields? Optional list of fields to create. Note that if fields that do not match a role will be ignored.
+ * @apiSuccess ITemplate . The newly-created template
  */
 export const createTemplate = (
   endpoint: VerdocsEndpoint,
@@ -281,6 +300,18 @@ export const createTemplateFromSharepoint = (endpoint: VerdocsEndpoint, params: 
  *
  * const updatedTemplate = await updateTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9', { name: 'New Name' });
  * ```
+ *
+ * @group Templates
+ * @api PATCH /v2/templates/:template_id Update a template
+ * @apiBody string name? Template name
+ * @apiBody string description? Optional description
+ * @apiBody TTemplateVisibility visibility? Visibility setting
+ * @apiBody boolean is_personal? Deprecated. If true, the template is personal and can only be seen by the caller. (Use "visibility" for new calls.)
+ * @apiBody boolean is_public? Deprecated. If true, the template is public and can be seen by anybody. (Use "visibility" for new calls.)
+ * @apiBody TTemplateSender sender? Who may send envelopes using this template
+ * @apiBody number initial_reminder? Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable.
+ * @apiBody number followup_reminders? Delay (in seconds) before the subsequent reminders are sent (min: 12hrs). Set to 0 or null to disable.
+ * @apiSuccess ITemplate . The updated template
  */
 export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, params: Partial<ITemplateCreateParams>) =>
   endpoint.api //
@@ -295,8 +326,12 @@ export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, pa
  *
  * await deleteTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');
  * ```
+ *
+ * @group Templates
+ * @api DELETE /v2/templates/:temlate_id Delete a template
+ * @apiSuccess string . Success
  */
 export const deleteTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
-    .delete(`/v2/templates/${templateId}`)
+    .delete<string>(`/v2/templates/${templateId}`)
     .then((r) => r.data);

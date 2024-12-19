@@ -132,8 +132,8 @@ export const deleteOrganization = (endpoint: VerdocsEndpoint, organizationId: st
  *
  * @group Organizations
  * @api PATCH /v2/organizations/:organization_id Update organization full or thumbnail logo.
- * @apiBody image/png(type:string, format:binary) logo? Form-url-encoded file to upload
- * @apiBody image/png(type:string, format:binary) thumbnail? Form-url-encoded file to upload
+ * @apiBody image/png logo? Form-url-encoded file to upload
+ * @apiBody image/png thumbnail? Form-url-encoded file to upload
  * @apiSuccess IOrganization . The updated organization.
  */
 export const updateOrganizationLogo = (

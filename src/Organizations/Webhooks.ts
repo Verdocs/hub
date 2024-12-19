@@ -17,6 +17,10 @@ import {IWebhook} from '../Models';
  *
  * await getWebhooks(ORGID, params);
  * ```
+ *
+ * @group Webhooks
+ * @api GET /v2/webhooks Get organization Webhooks config
+ * @apiSuccess IWebhook . The current Webhooks config for the caller's organization.
  */
 export const getWebhooks = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -33,6 +37,13 @@ export const getWebhooks = (endpoint: VerdocsEndpoint) =>
  *
  * await setWebhooks(ORGID, params);
  * ```
+ *
+ * @group Webhooks
+ * @api PATCH /v2/webhooks Update organization Webhooks config
+ * @apiBody string url URL to send Webhook events to. An empty or invalid URL will disable Webhook calls.
+ * @apiBody boolean active Set to true to enable Webhooks calls.
+ * @apiBody object events Record<TWebhookEvent, boolean> map of events to enable/disable.
+ * @apiSuccess IWebhook . The updated Webhooks config for the caller's organization.
  */
 export const setWebhooks = (endpoint: VerdocsEndpoint, params: ISetWebhookRequest) =>
   endpoint.api //

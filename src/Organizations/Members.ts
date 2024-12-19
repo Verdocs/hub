@@ -15,6 +15,10 @@ import {IProfile} from '../Models';
  *
  * const members = await getOrganizationMembers(VerdocsEndpoint.getDefault()});
  * ```
+ *
+ * @group Organization Members
+ * @api GET /v2/organization-members List current organization's members
+ * @apiSuccess array(items:IProfile) . List of caller's current organization's members
  */
 export const getOrganizationMembers = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -30,6 +34,10 @@ export const getOrganizationMembers = (endpoint: VerdocsEndpoint) =>
  *
  * await deleteOrganizationMember(VerdocsEndpoint.getDefault(), 'PROFILEID'});
  * ```
+ *
+ * @group Organization Members
+ * @api DELETE /v2/organization-members/:profile_id Delete a member from the organization
+ * @apiSuccess string . Success
  */
 export const deleteOrganizationMember = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
@@ -44,6 +52,13 @@ export const deleteOrganizationMember = (endpoint: VerdocsEndpoint, profileId: s
  *
  * const result = await updateOrganizationMember(VerdocsEndpoint.getDefault(), 'PROFILEID', {roles:['member']});
  * ```
+ *
+ * @group Organization Members
+ * @api PATCH /v2/organization-members/:profile_id Update an organization member.
+ * @apiBody array(items:TRole) roles URL to send Webhook events to. An empty or invalid URL will disable Webhook calls.
+ * @apiBody string first_name Set to true to enable Webhooks calls.
+ * @apiBody string last_name Record<TWebhookEvent, boolean> map of events to enable/disable.
+ * @apiSuccess array(items:IProfile) . List of caller's current organization's members
  */
 export const updateOrganizationMember = (
   endpoint: VerdocsEndpoint,

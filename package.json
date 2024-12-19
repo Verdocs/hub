@@ -1,6 +1,6 @@
 {
   "name": "@verdocs/js-sdk",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "private": false,
   "homepage": "https://github.com/Verdocs/js-sdk",
   "description": "Isomorphic JS/TS SDK providing types and API wrappers for the Verdocs platform for Node and browser clients",
@@ -43,7 +43,8 @@
     "edit-openapi": "docker run -p 8081:80 -v $(pwd):/sdk -v $(pwd):/sdk swaggerapi/swagger-editor:next-v5",
     "view-openapi": "docker run -p 8081:80 -v $(pwd):/sdk swaggerapi/swagger-ui",
     "clear-docs": "aws --profile=verdocs cloudfront create-invalidation --distribution-id E29UFGU4KEH1GQ --paths \"/*\"",
-    "deploy-docs": "npm run docs && aws --profile=verdocs s3 sync --acl public-read --delete docs-html s3://verdocs-developers-js-sdk/ && yarn clear-docs",
+    "deploy-docs": "npm run docs",
+    "deploy-docsX": "npm run docs && aws --profile=verdocs s3 sync --acl public-read --delete docs-html s3://verdocs-developers-js-sdk/ && yarn clear-docs",
     "push": "npm run build && npm publish"
   },
   "publishConfig": {

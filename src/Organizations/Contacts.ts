@@ -16,6 +16,12 @@ import {IProfile} from '../Models';
  *
  * const members = await getOrganizationContacts(VerdocsEndpoint.getDefault()});
  * ```
+ *
+ * @group Organization Contacts
+ * @api GET /v2/organization-contacts Get a list of organization contacts
+ * @apiBody string email Email address for the invitee
+ * @apiBody string token Invite token for the invitee
+ * @apiSuccess string . Success. The invitation will be marked declined and the token will be invalidated.
  */
 export const getOrganizationContacts = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -31,6 +37,12 @@ export const getOrganizationContacts = (endpoint: VerdocsEndpoint) =>
  *
  * await deleteOrganizationContact(VerdocsEndpoint.getDefault(), 'PROFILEID'});
  * ```
+ *
+ * @group Organization Contacts
+ * @api POST /v2/organization-invitations/decline GET a list of pending invitations
+ * @apiBody string email Email address for the invitee
+ * @apiBody string token Invite token for the invitee
+ * @apiSuccess string . Success. The invitation will be marked declined and the token will be invalidated.
  */
 export const deleteOrganizationContact = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //

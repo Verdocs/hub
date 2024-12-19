@@ -22,7 +22,7 @@
 //     array(items: 'a'|'b'
 //     array(items: 0|1)
 //     0|1
-const BASE_TYPE_REGEX = /^([0-9a-zA-Z|]+)\(?([^)]*)\)?/;
+const BASE_TYPE_REGEX = /^([0-9a-zA-Z|\/]+)\(?([^)]*)\)?/;
 
 export const processBaseType = (type: string) => {
   const match = type.match(BASE_TYPE_REGEX);
@@ -66,6 +66,10 @@ export const jsTypeToSchema = (type: string, options?: string) => {
 
   if (['string', 'integer', 'number', 'boolean'].includes(schema.type)) {
     //
+  } else if (schema.type === 'image/jpeg' || schema.type === 'image/png') {
+    // This will be handled when we find the "items" option below
+    schema.type = 'string';
+    schema.format = 'binary';
   } else if (schema.type === 'array') {
     // This will be handled when we find the "items" option below
   } else if (schema.type === 'object') {
@@ -102,6 +106,9 @@ export const jsTypeToSchema = (type: string, options?: string) => {
           if (['int32', 'int64'].includes(value)) {
             schema.type = 'integer';
             schema.format = value;
+          } else if (['image/png', 'image/jpeg'].includes(value)) {
+            schema.type = 'string';
+            schema.format = 'binary';
           } else if (['float', 'double'].includes(value)) {
             schema.type = 'number';
             schema.format = value;
