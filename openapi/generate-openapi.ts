@@ -385,6 +385,7 @@ const processChild = (child: Record<string, any>) => {
 
       case '@apiBody':
         const parsedBodyParam = parseParam('body', tag.content[0].text);
+        console.log('pbp', parsedBodyParam);
         if (parsedBodyParam) {
           entry.requestBody = entry.requestBody || {
             description: 'Body Parameters',
@@ -402,6 +403,7 @@ const processChild = (child: Record<string, any>) => {
           };
 
           entry.requestBody.content['application/json'].schema.properties[parsedBodyParam.name] = parsedBodyParam.schema;
+          entry.requestBody.content['application/json'].schema.properties[parsedBodyParam.name].description = parsedBodyParam.description;
 
           if (parsedBodyParam.required) {
             entry.requestBody.content['application/json'].schema.required.push(parsedBodyParam.name);

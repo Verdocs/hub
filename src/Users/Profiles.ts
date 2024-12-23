@@ -3,13 +3,17 @@ import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import type {IProfile} from '../Models';
 
 /**
- * Get the user's available profiles. The current profile will be marked with `current: true`.
+ * Get the caller's available profiles. The current profile will be marked with `current: true`.
  *
  * ```typescript
  * import {getProfiles} from '@verdocs/js-sdk';
  *
  * const profiles = await getProfiles();
  * ```
+ *
+ * @group Profiles
+ * @api GET /v2/profiles Get the caller's profiles. A user may have multiple profiles, one for each organization of which they are a member. Only one profile may be "current" at a time.
+ * @apiSuccess IProfile[] . The caller's profiles
  */
 export const getProfiles = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -17,7 +21,7 @@ export const getProfiles = (endpoint: VerdocsEndpoint) =>
     .then((r) => r.data);
 
 /**
- * Get the user's current profile. This is just a convenience accessor that calls `getProfiles()`
+ * Get the caller's current profile. This is just a convenience accessor that calls `getProfiles()`
  * and returns the first `current: true` entry.
  *
  * ```typescript
@@ -41,6 +45,10 @@ export const getCurrentProfile = (endpoint: VerdocsEndpoint) =>
  *
  * const newProfile = await switchProfile(VerdocsEndpoint.getDefault(), 'PROFILEID');
  * ```
+ *
+ * @group Profiles
+ * @api POST /v2/profiles/:profile_id/switch Change the "current" profile for the caller
+ * @apiSuccess IAuthenticateResponse . New authentication credentials
  */
 export const switchProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
@@ -56,6 +64,15 @@ export const switchProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  *
  * const newProfile = await updateProfile(VerdocsEndpoint.getDefault(), 'PROFILEID');
  * ```
+ *
+ * @group Profiles
+ * @api PATCH /v2/profiles/:profile_id Update a profile
+ * @apiBody string first_name? First name
+ * @apiBody string last_name? Last name
+ * @apiBody string phone? Phone number
+ * @apiBody array(items:TPermission) permissions? New permissions to directly apply to the profile
+ * @apiBody array(items:TRole) roles? New roles to assign to the profile
+ * @apiSuccess IProfile . The updated profile
  */
 export const updateProfile = (endpoint: VerdocsEndpoint, profileId: string, params: IUpdateProfileRequest) =>
   endpoint.api //
@@ -71,6 +88,10 @@ export const updateProfile = (endpoint: VerdocsEndpoint, profileId: string, para
  *
  * await deleteProfile(VerdocsEndpoint.getDefault(), 'PROFILEID');
  * ```
+ *
+ * @group Profiles
+ * @api DELETE /v2/profiles/:profile_id Delete a profile
+ * @apiSuccess IAuthenticateResponse . New session tokens for the next available profile for the caller, or null if none.
  */
 export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
@@ -80,7 +101,7 @@ export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
     .then((r) => r.data);
 
 /**
- * Create a new user account. Note that there are two registration paths for creation:
+ * Create a new profile. Note that there are two registration paths for creation:
  *   - Get invited to an organization, by an admin or owner of that org.
  *   - Created a new organization. The caller will become the first owner of the new org.
  *
@@ -115,6 +136,11 @@ export const createProfile = (endpoint: VerdocsEndpoint, params: ICreateProfileR
  *
  * await uploadProfilePhoto((VerdocsEndpoint.getDefault(), profileId, file);
  * ```
+ *
+ * @group Profiles
+ * @api PATCH /v2/templates/:template_id Change a profile's photo
+ * @apiBody string(format:binary) file File to upload
+ * @apiSuccess IProfile . The updated profile
  */
 export const updateProfilePhoto = (
   endpoint: VerdocsEndpoint,

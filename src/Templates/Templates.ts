@@ -112,6 +112,7 @@ export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) => {
       return template;
     });
 };
+
 /**
  * Represents a document to be attached to a template via an externally-accessible URI. A copy of the document will be
  * downloaded from the specified URI. Note that the URI will be accessed without headers or other authorization methods
@@ -254,6 +255,12 @@ export const createTemplate = (
  *
  * const newTemplate = await duplicateTemplate((VerdocsEndpoint.getDefault(), originalTemplateId, 'My Template Copy');
  * ```
+ *
+ * @group Templates
+ * @api PUT /v2/templates/:template_id Perform an operation on a template
+ * @apiBody string(enum:'duplicate') action Action to perform
+ * @apiBody string name? If duplicating the template, a name for the new copy
+ * @apiSuccess ITemplate . The newly-copied template
  */
 export const duplicateTemplate = (endpoint: VerdocsEndpoint, templateId: string, name: string) =>
   endpoint.api //
@@ -283,6 +290,14 @@ export interface ITemplateCreateFromSharepointParams {
  *
  * const newTemplate = await createTemplateFromSharepoint((VerdocsEndpoint.getDefault(), {...});
  * ```
+ *
+ * @group Templates
+ * @api POST /v2/templates/from-sharepoint Create a template from an asset in Sharepoint
+ * @apiBody string name Name for the new template
+ * @apiBody string siteId Name for the new template
+ * @apiBody string itemId Name for the new template
+ * @apiBody string oboToken On-Behalf-Of token for calls to Sharepoint. Should be generated as a short-expiration token with at least Read privileges to the siteId/itemId. This token will be discarded after being used.
+ * @apiSuccess ITemplate . The newly-created template
  */
 export const createTemplateFromSharepoint = (endpoint: VerdocsEndpoint, params: ITemplateCreateFromSharepointParams) => {
   const options = {
@@ -328,7 +343,7 @@ export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, pa
  * ```
  *
  * @group Templates
- * @api DELETE /v2/templates/:temlate_id Delete a template
+ * @api DELETE /v2/templates/:template_id Delete a template
  * @apiSuccess string . Success
  */
 export const deleteTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>

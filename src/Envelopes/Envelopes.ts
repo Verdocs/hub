@@ -38,8 +38,8 @@ import {TCreateEnvelopeRequest} from './Types';
  * ```
  *
  * @group Envelopes
- * @api POST /v2/envelopes Create Envelope
- * @apiBody string(format:uuid) template_id The template to base the new Envelope from
+ * @api POST /v2/envelopes Create Envelope From Template
+ * @apiBody string(format:uuid) template_id The ID of the template to copy
  * @apiBody array(items:ICreateEnvelopeRecipient) recipients A list of recipients to include in the workflow. Must specify one recipient to match each template Role.
  * @apiBody string name? Override the name of the envelope (defaults to the template name).
  * @apiBody string description? Override the description of the envelope (defaults to the template description).

@@ -15,6 +15,10 @@ import {ITemplateDocument} from '../Models';
  *
  * await TemplateDocument.geTemplateDocuments((VerdocsEndpoint.getDefault(), templateId);
  * ```
+ *
+ * @group Template Documents
+ * @api GET /v2/templates/:template_id/documents List the documents assigned to a template
+ * @apiSuccess ITemplateDocument[] . Template documents
  */
 export const getTemplateDocuments = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
@@ -29,6 +33,10 @@ export const getTemplateDocuments = (endpoint: VerdocsEndpoint, templateId: stri
  *
  * await TemplateDocument.geTemplateDocument((VerdocsEndpoint.getDefault(), templateId,documentId);
  * ```
+ *
+ * @group Template Documents
+ * @api GET /v2/templates/:template_id/documents/:document_id Get an individual template document
+ * @apiSuccess ITemplateDocument . Template document
  */
 export const getTemplateDocument = (endpoint: VerdocsEndpoint, templateId: string, documentId: string) =>
   endpoint.api //
@@ -43,6 +51,11 @@ export const getTemplateDocument = (endpoint: VerdocsEndpoint, templateId: strin
  *
  * await TemplateDocument.createDocument((VerdocsEndpoint.getDefault(), templateID, params);
  * ```
+ *
+ * @group Template Documents
+ * @api POST /v2/templates/:template_id/documents Attach a document to a template
+ * @apiBody string(format:binary) file Document file to attach. The file name will automatically be used as the document name.
+ * @apiSuccess ITemplateDocument . Template document
  */
 export const createTemplateDocument = (
   endpoint: VerdocsEndpoint,
@@ -73,6 +86,10 @@ export const createTemplateDocument = (
  *
  * await TemplateDocument.deleteDocument((VerdocsEndpoint.getDefault(), templateID, documentID);
  * ```
+ *
+ * @group Template Documents
+ * @api DELETE /v2/templates/:temlate_id/documents/:document_id Delete a template document
+ * @apiSuccess string . Success
  */
 export const deleteTemplateDocument = (endpoint: VerdocsEndpoint, templateId: string, documentId: string) =>
   endpoint.api //

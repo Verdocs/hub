@@ -43,7 +43,13 @@ export type TAuthenticationRequest = IROPCRequest | IClientCredentialsRequest | 
  *
  * @group Authentication
  * @api POST /v2/oauth2/token Authenticate
- * @apiBody string(format: 'uuid') id The ID of the envelope to retrieve.
+ * @apiBody string(enum: 'client_credentials'|'refresh_token'|'password') grant_type The type of grant to request. API callers should nearly always use 'client_credentials'.
+ * @apiBody string(format: 'uuid') client_id? If grant_type is client_credentials or refresh_token, the client ID of the API key to use.
+ * @apiBody string(format: 'uuid') client_secret? If grant_type is client_credentials, the secret key of the API key to use.
+ * @apiBody string username? If grant_type is password, the username to authenticate with.
+ * @apiBody string password? If grant_type is password, the password to authenticate with.
+ * @apiBody string password? If grant_type is password, the password to authenticate with.
+ * @apiBody string scope? Optional scope to limit the auth token to. Do not specify this unless you are instructed to by a Verdocs Support rep.
  * @apiSuccess IAuthenticateResponse . The detailed metadata for the envelope requested
  */
 export const authenticate = (endpoint: VerdocsEndpoint, params: TAuthenticationRequest) =>
@@ -75,6 +81,12 @@ export const refreshToken = (endpoint: VerdocsEndpoint, refreshToken: string) =>
  *   window.alert(`Password reset error: ${message}`);
  * }
  * ```
+ *
+ * @group Authentication
+ * @api POST /v2/users/change-password Change the caller's password
+ * @apiBody string old_password Current password for the caller
+ * @apiBody string new_password New password to set for the caller. Must meet strength requirements.
+ * @apiSuccess string . Success
  */
 export const changePassword = (endpoint: VerdocsEndpoint, params: IChangePasswordRequest) =>
   endpoint.api //
@@ -99,6 +111,13 @@ export const changePassword = (endpoint: VerdocsEndpoint, params: IChangePasswor
  *   window.alert(`Please check your verification code and try again.`);
  * }
  * ```
+ *
+ * @group Authentication
+ * @api POST /v2/users/reset-password Reset a password for a user
+ * @apiBody string email Email address for the user account
+ * @apiBody string code? To initiate a reset request, omit this field. To complete it, provide the emailed code received by the user.
+ * @apiBody string new_password? To initiate a reset request, omit this field. To complete it, provide the new password the user wishes to use.
+ * @apiSuccess string . Success
  */
 export const resetPassword = (endpoint: VerdocsEndpoint, params: {email: string; code?: string; new_password?: string}) =>
   endpoint.api //
@@ -106,17 +125,19 @@ export const resetPassword = (endpoint: VerdocsEndpoint, params: {email: string;
     .then((r) => r.data);
 
 /**
- * Resend the email verification request. Note that to prevent certain forms of abuse, the email address is not
- * a parameter here. Instead, the caller must be authenticated as the (unverified) user. To simplify this process,
- * the access token to be used may be passed directly as a parameter here. This avoids the need to set it as the
- * active token on an endpoint, which may be inconvenient in workflows where it is preferable to keep the user in
- * "anonymous" mode while verification is being performed.
+ * Resend the email verification request if the email or token are unknown. Instead, an accessToken
+ * may be supplied through which the user will be identified. This is intended to be used in post-signup
+ * cases where the user is "partially" authenticated (has a session, but is not yet verified).
  *
  * ```typescript
  * import {resendVerification} from '@verdocs/js-sdk';
  *
  * const result = await resendVerification();
  * ```
+ *
+ * @group Authentication
+ * @api POST /v2/users/verify Resend an email verification request for a "partially" authenticated user (authenticated, but not yet verified)
+ * @apiSuccess string . Success
  */
 export const resendVerification = (endpoint: VerdocsEndpoint, accessToken?: string) =>
   endpoint.api //
@@ -124,23 +145,31 @@ export const resendVerification = (endpoint: VerdocsEndpoint, accessToken?: stri
     .then((r) => r.data);
 
 /**
- * Resend the email verification request. Note that to prevent certain forms of abuse, the email address is not
- * a parameter here. Instead, the caller must be authenticated as the (unverified) user. To simplify this process,
- * the access token to be used may be passed directly as a parameter here. This avoids the need to set it as the
- * active token on an endpoint, which may be inconvenient in workflows where it is preferable to keep the user in
- * "anonymous" mode while verification is being performed.
+ * Resend the email verification request if the user is unauthenticated, but the email and token are known.
+ * Used if the token is valid but has expired.
  *
  * ```typescript
  * import {resendVerification} from '@verdocs/js-sdk';
  *
  * const result = await resendVerification();
  * ```
+ *
+ * @group Authentication
+ * @api POST /v2/users/verify Resend the email verification request if both the email and token are known. Used if the token is valid but has expired.
+ * @apiSuccess IAuthenticateResponse . Updated authentication details
  */
 export const verifyEmail = (endpoint: VerdocsEndpoint, params: IVerifyEmailRequest) =>
   endpoint.api //
     .post<IAuthenticateResponse>('/v2/users/verify', params)
     .then((r) => r.data);
 
+/**
+ * Get the caller's current user record.
+ *
+ * @group Authentication
+ * @api GET /v2/users/me Get the caller's user record.
+ * @apiSuccess IUser . User record
+ */
 export const getMyUser = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
     .get<IUser>('/v2/users/me')
