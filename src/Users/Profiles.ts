@@ -13,7 +13,7 @@ import type {IProfile} from '../Models';
  *
  * @group Profiles
  * @api GET /v2/profiles Get the caller's profiles. A user may have multiple profiles, one for each organization of which they are a member. Only one profile may be "current" at a time.
- * @apiSuccess IProfile[] . The caller's profiles
+ * @apiSuccess array(items: IProfile) . The caller's profiles
  */
 export const getProfiles = (endpoint: VerdocsEndpoint) =>
   endpoint.api //

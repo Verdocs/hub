@@ -67,7 +67,7 @@ interface IBlockTag {
   content: IBlockTagContent[];
 }
 
-// See https://regex101.com/r/yG7Inq/1
+// See https://regex101.com/r/UFWvl2/1
 // Test strings:
 //   string(format: email, xyz:a) id Test
 //   string(format: email, xyz:a) id The ID of the envelope to retrieve.
@@ -83,7 +83,8 @@ interface IBlockTag {
 //   array(items: 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled') enumArray? Match envelopes whose name contains this string
 //   array(items: string) string_array Match envelopes whose name contains this string
 //   IEnvelope . The detailed metadata for the envelope requested
-const API_OPTION_REGEX = /([a-zA-Z0-9\/]+)(\([^)]*\))?\s([a-zA-Z0-9_?.]+)\s?([^\n]*)/;
+//   IEnvelope[] . The caller's envelopes
+const API_OPTION_REGEX = /([a-zA-Z0-9\[\]\/]+)(\([^)]*\))?\s([a-zA-Z0-9_?.]+)\s?([^\n]*)/;
 
 const parseApiOptionTag = (option: string) => {
   const matchArr = Array.from(option.match(API_OPTION_REGEX) || []);
@@ -385,7 +386,6 @@ const processChild = (child: Record<string, any>) => {
 
       case '@apiBody':
         const parsedBodyParam = parseParam('body', tag.content[0].text);
-        console.log('pbp', parsedBodyParam);
         if (parsedBodyParam) {
           entry.requestBody = entry.requestBody || {
             description: 'Body Parameters',

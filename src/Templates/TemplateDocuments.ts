@@ -18,7 +18,7 @@ import {ITemplateDocument} from '../Models';
  *
  * @group Template Documents
  * @api GET /v2/templates/:template_id/documents List the documents assigned to a template
- * @apiSuccess ITemplateDocument[] . Template documents
+ * @apiSuccess array(items: ITemplateDocument) . Template documents
  */
 export const getTemplateDocuments = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
