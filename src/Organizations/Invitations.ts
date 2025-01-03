@@ -102,7 +102,7 @@ export const getOrganizationInvitation = (endpoint: VerdocsEndpoint, email: stri
     .then((r) => r.data);
 
 /**
- * Accept an invitation. This will automatically create an Auth0 user for the caller as well as a profile
+ * Accept an invitation. This will automatically create a user record for the caller as well as a profile
  * with the appropriate role as specified in the invite. The profile will be set as "current" for the caller,
  * and session tokens will be returned to access the new profile. The profile's email_verified flag will
  * also be set to true.
@@ -128,6 +128,7 @@ export const acceptOrganizationInvitation = (endpoint: VerdocsEndpoint, params: 
  *
  * @group Organization Invitations
  * @api POST /v2/organization-invitations/decline Decline an invitation
+ * @apiDescription Mark the status "declined," providing a visual indication to the organization's admins that the invite was declined, preventing further invites from being created to the same email address, and also preventing the invitee from receiving reminders to join.
  * @apiBody string email Email address for the invitee
  * @apiBody string token Invite token for the invitee
  * @apiSuccess string . Success. The invitation will be marked declined and the token will be invalidated.

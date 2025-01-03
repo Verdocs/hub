@@ -5,6 +5,7 @@
     {"tagName": "@apiQuery", "syntaxKind": "block", "allowMultiple": true},
     {"tagName": "@apiBody", "syntaxKind": "block", "allowMultiple": true},
     {"tagName": "@apiSuccess", "syntaxKind": "block", "allowMultiple": true},
+    {"tagName": "@apiDescription", "syntaxKind": "block"},
     {"tagName": "@apiErrors", "syntaxKind": "block"},
     {"tagName": "@apiGroup", "syntaxKind": "block"},
     {"tagName": "@apiName", "syntaxKind": "block"},

@@ -59,7 +59,7 @@ export const createEnvelope = async (endpoint: VerdocsEndpoint, request: TCreate
  * this will return only the **metadata** the caller is allowed to view.
  *
  * @group Envelopes
- * @api GET /v2/envelopes/:id Get Envelope Details
+ * @api GET /v2/envelopes/:id Get envelope details
  * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
  * @apiSuccess IEnvelope . The detailed metadata for the envelope requested
  */
@@ -72,8 +72,8 @@ export const getEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string)
  * Get all metadata for an envelope document. Note that when called by non-creators (e.g. Recipients)
  * this will return only the **metadata** the caller is allowed to view.
  *
- * @group Envelopes
- * @api GET /envelopes/:id Get Envelope Details
+ * @group Envelope Documents
+ * @api GET /envelopes/:id Get envelope document
  * @apiParam string(format: 'uuid') id The ID of the document to retrieve.
  * @apiSuccess IEnvelopeDocument . The detailed metadata for the document requested
  */
@@ -86,7 +86,7 @@ export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, envelopeId:
  * Get a pre-signed download link for an Envelope Document. This link expires quickly, so it should
  * be accessed immediately and never shared. Content-Disposition will be set to "download".
  *
- * @group Envelopes
+ * @group Envelope Documents
  * @api GET /envelopes/:envelope_id/envelope_documents/:document_id Preview, Download, or Link to a Document
  * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to retrieve.
  * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
@@ -266,7 +266,7 @@ export const getFieldAttachment = async (endpoint: VerdocsEndpoint, envelopeId: 
  * for DISPLAY ONLY, are not legally binding documents, and do not contain any encoded metadata from participants.
  *
  * @group Envelopes
- * @api GET /v2/envelope-documnets/page-image/:document_id/:variant/:page Get Document Page Display URI
+ * @api GET /v2/envelope-documnets/page-image/:document_id/:variant/:page Get envelope document page display URI
  * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
  * @apiParam string(enum: 'original'|'filled') variant The variant of the document to retrieve.
  * @apiParam integer page The page number to retrieve
@@ -308,7 +308,7 @@ export interface IListEnvelopesParams {
  * ```
  *
  * @group Envelopes
- * @api GET /v2/envelopes List Envelopes
+ * @api GET /v2/envelopes List envelopes
  * @apiQuery string q? Match envelopes whose name contains this string
  * @apiQuery string(enum: 'inbox' | 'sent' | 'action' | 'waiting' | 'completed') view? Request pre-defined view. `inbox` returns envelopes where action is required by the caller. `sent` returns envelopes created by the caller. `action` returns envelopes where action is required by the caller. `waiting` returns envelopes where action is required by anyone. `completed` returns envelopes where all actions are complete.
  * @apiQuery array(items: 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled') status? Match envelopes in one of the specified states.

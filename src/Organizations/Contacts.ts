@@ -29,8 +29,7 @@ export const getOrganizationContacts = (endpoint: VerdocsEndpoint) =>
     .then((r) => r.data);
 
 /**
- * Delete a contact from the caller's organization. Note that the caller must be an admin or owner,
- * may not delete him/herself.
+ * Delete a contact from the caller's organization. Note that the caller must be an admin or owner.
  *
  * ```typescript
  * import {deleteOrganizationContact} from '@verdocs/js-sdk';

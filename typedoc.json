@@ -9,6 +9,7 @@
     "@group",
     "@api",
     "@apiName",
+    "@apiDescription",
     "@apiGroup",
     "@apiParam",
     "@apiQuery",

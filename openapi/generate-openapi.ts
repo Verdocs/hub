@@ -138,7 +138,7 @@ const parseParam = (paramIn: 'body' | 'cookie' | 'header' | 'path' | 'query', pa
 
 const processChild = (child: Record<string, any>) => {
   const {name, kind, comment} = child as {name: string; kind: number; comment: any; child: any};
-  const description = comment?.summary?.[0]?.text || '';
+  const summary = comment?.summary?.[0]?.text || '';
 
   // console.log('Processing child', name, kind);
   if (kind === 2097152) {
@@ -149,7 +149,7 @@ const processChild = (child: Record<string, any>) => {
     // TODO: Support for any other enum types?
     (Preamble.components.schemas as any)[name] = {
       type: 'string',
-      description: (description || '').trim(),
+      description: (summary || '').trim(),
       enum: child?.type?.types?.map((type: any) => type.value) || [],
     };
     return;
@@ -161,7 +161,7 @@ const processChild = (child: Record<string, any>) => {
 
     const schemaEntry: any = {
       type: 'object',
-      description: (description || '').trim(),
+      description: (summary || '').trim(),
       required: [],
       properties: {},
     };
@@ -187,69 +187,16 @@ const processChild = (child: Record<string, any>) => {
     return;
   }
 
-  if (kind !== 64 || !description) {
+  if (kind !== 64 || !summary) {
     return;
   }
 
-  //
-  //   if (metadata.bodySchema) {
-  //     entry.requestBody = {
-  //       // TODO
-  //       description: '',
-  //       required: true,
-  //       content: {
-  //         'application/json': {
-  //           schema: zodToJsonSchema(metadata.bodySchema),
-  //         },
-  //       },
-  //     };
-  //   }
-  //
-  //   if (metadata.security) {
-  //     entry.security = metadata.security;
-  //   }
-  //
-  //   if (metadata.errors) {
-  //     metadata.errors.forEach((errorCode) => {
-  //       switch (errorCode) {
-  //         case 400:
-  //           entry.responses['400'] = {$ref: '#/components/responses/InvalidRequest'};
-  //           break;
-  //
-  //         case 401:
-  //           entry.responses['401'] = {$ref: '#/components/responses/AccessDenied'};
-  //           break;
-  //
-  //         case 404:
-  //           entry.responses['404'] = {$ref: '#/components/responses/NotFound'};
-  //           break;
-  //
-  //         case 406:
-  //           entry.responses['406'] = {$ref: '#/components/responses/InvalidParameter'};
-  //           break;
-  //
-  //         case 500:
-  //           entry.responses['500'] = {$ref: '#/components/responses/ServerError'};
-  //           break;
-  //       }
-  //     });
-  //   }
-  //
-  //   if (metadata.responseSchema) {
-  //     entry.responses['200'] = {
-  //       description: 'Success',
-  //       content: {'application/json': {schema: metadata.responseSchema}},
-  //     };
-  //   }
-  //
-  //   Preamble.paths[realPath][method] = entry;
   let path = '';
   let method = '';
 
   const entry: any = {
     operationId: name,
-    summary: '',
-    description,
+    summary,
     tags: [],
     parameters: [],
     responses: {
@@ -352,6 +299,10 @@ const processChild = (child: Record<string, any>) => {
 
       case '@apiName':
         entry.operationId = tag.content[0].text;
+        break;
+
+      case '@apiDescription':
+        entry.description = tag.content[0].text;
         break;
 
       case '@api':

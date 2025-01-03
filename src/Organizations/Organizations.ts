@@ -12,9 +12,9 @@
  * @module
  */
 
+import {IOrganization} from '../Models';
 import {IAuthenticateResponse} from '../Users';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {IOrganization, type IProfile} from '../Models';
 
 /**
  * Get an organization by ID. Note that this endpoint will return only a subset of fields
@@ -48,6 +48,7 @@ export const getOrganization = (endpoint: VerdocsEndpoint, organizationId: strin
  *
  * @group Organizations
  * @api POST /v2/organizations Create organization
+ * @apiDescription The caller will be assigned an "Owner" profile in the new organization, and it will be set to "current" automatically. A new set of session tokens will be issued to  the caller, and the caller should update their endpoint to use the new tokens.
  * @apiBody string name The name of the new organization
  * @apiBody string contact_email? Contact email for the new organization
  * @apiBody string url? URL for the new organization

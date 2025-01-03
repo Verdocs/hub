@@ -40,6 +40,7 @@ export const getWebhooks = (endpoint: VerdocsEndpoint) =>
  *
  * @group Webhooks
  * @api PATCH /v2/webhooks Update organization Webhooks config
+ * @apiDescription Note that Webhooks cannot currently be deleted, but may be easily disabled by setting `active` to `false` and/or setting the `url` to an empty string.
  * @apiBody string url URL to send Webhook events to. An empty or invalid URL will disable Webhook calls.
  * @apiBody boolean active Set to true to enable Webhooks calls.
  * @apiBody object events Record<TWebhookEvent, boolean> map of events to enable/disable.
