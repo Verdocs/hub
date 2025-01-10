@@ -12,7 +12,7 @@
  * @module
  */
 
-import {IOrganization} from '../Models';
+import {IOrganization, IProfile} from '../Models';
 import {IAuthenticateResponse} from '../Users';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
@@ -75,7 +75,7 @@ export const createOrganization = (
   >,
 ) =>
   endpoint.api //
-    .post<IAuthenticateResponse>(`/v2/organizations`, params)
+    .post<IAuthenticateResponse & {profile: IProfile; organization: IOrganization}>(`/v2/organizations`, params)
     .then((r) => r.data);
 
 /**
