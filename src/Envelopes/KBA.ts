@@ -99,6 +99,7 @@ export interface IKbaIdentity {
   state?: string;
   zip?: string;
   ssnLast4?: string;
+  email?: string;
 }
 
 /**

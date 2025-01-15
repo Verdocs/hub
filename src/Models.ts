@@ -401,6 +401,8 @@ export interface IEnvelopeField {
   type: TFieldType;
   /** If true, the field will be required */
   required: boolean | null;
+  /** If true, the field will be not be editable by the participant(s). NOTE: Fields may not be both required and readonly. */
+  readonly: boolean | null;
   /** @deprecated. Use top-level fields instead. */
   settings: IEnvelopeFieldSettings | null;
   validator: string | null;
@@ -748,6 +750,8 @@ export interface ITemplateField {
   document_id: string;
   type: TFieldType;
   required: boolean;
+  /** If true, the field will be not be editable by the participant(s). NOTE: Fields may not be both required and readonly. */
+  readonly: boolean | null;
   /** @deprecated. Use top-level fields instead. */
   settings: ITemplateFieldSetting | null;
   page: number;
