@@ -174,7 +174,7 @@ export interface ICreateEnvelopeFromTemplateRequest {
   fields?: Pick<IEnvelopeField, 'name' | 'role_name' | 'default'>[];
   environment?: string;
   no_contact?: boolean;
-  /** Override the sender name of the envelope in email and other notifications. */
+  /** Override the sender name of the envelope in email and other notifications. NOTE: To prevent spam filters from blocking messages, only the NAME may be overidden. The "from" email address will be notifications@verdocs.com and cannot be changed. */
   sender_name?: string;
   /** Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable. */
   initial_reminder?: number;
