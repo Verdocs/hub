@@ -102,3 +102,5 @@ export type TWebhookEvent =
   | 'template_used';
 
 export type TTemplateVisibility = 'private' | 'shared' | 'public';
+
+export type TKBAMethod = 'pin' | 'kba' | 'id' | 'sms' | '' | null;

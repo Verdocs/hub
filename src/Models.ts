@@ -8,12 +8,12 @@
 //    other_things?: OtherThing[]
 ///////////////////////////////////////////////////////////////
 
-import type {
+import {
   TApiKeyPermission,
   TEnvelopeStatus,
   TEventDetail,
   TFieldType,
-  THistoryEvent,
+  THistoryEvent, TKBAMethod,
   TRecipientStatus,
   TRecipientType,
   TTemplateSender,
@@ -552,7 +552,7 @@ export interface IRecipient {
    * created from this template. For privacy reasons, this field will only be visible to the creator
    * of the envelope and the recipient referenced.
    */
-  kba_method?: 'pin' | 'kba' | 'id' | 'sms' | '' | null;
+  kba_method?: TKBAMethod;
   /**
    * If KBA is set to "PIN" this will be set to the PIN code required. For security reasons, this
    * field will only be visible to the creator of the envelope.
@@ -611,7 +611,7 @@ export interface IRole {
    * If set, "KBA required" will carry through to automatically enable the same setting in Envelopes
    * created from this template.
    */
-  kba_method: 'pin' | 'identity' | '' | null;
+  kba_method: TKBAMethod;
 }
 
 export interface ISignature {
