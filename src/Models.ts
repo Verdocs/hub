@@ -513,17 +513,27 @@ export interface IRecipient {
   role_name: string;
   profile_id: string;
   status: TRecipientStatus;
+  first_name: string;
+  last_name: string;
   email: string;
+  /** Phone number for SMS invites */
   phone?: string | null;
   full_name?: string | null;
 
-  first_name: string;
-  last_name: string;
+  /** Phone number for SMS verification */
+  phone_otp?: string | null;
+  /** Street address. Only used in KBA workflows. Combine two-line addresses into a single string. */
   address?: string | null;
+  /** Zip code. Only used in KBA workflows. */
   city?: string | null;
+  /** Zip code. Only used in KBA workflows. */
   state?: string | null;
+  /** Zip code. Only used in KBA workflows. */
   zip?: string | null;
+  /** @deprecated. Use dob instead. */
   ssn_last_4?: string | null;
+  /** Date of birth. Only used in KBA workflows. */
+  dob?: string | null;
   /**
    * The sequence number indicates the order in which Recipients act. Multiple recipients may have the same sequence
    * number, in which case they may act in parallel. (e.g. all Recipients at sequence 2 will receive invites once
@@ -609,7 +619,8 @@ export interface IRole {
   delegator: boolean | null;
   /**
    * If set, "KBA required" will carry through to automatically enable the same setting in Envelopes
-   * created from this template.
+   * created from this template. Note that KBA details may not be specified here. They must be unique to
+   * each individual recipient and therefore cannot be set as defaults in the template.
    */
   kba_method: TKBAMethod;
 }
