@@ -10,10 +10,10 @@ export interface ISigningSession {
   email: string;
   iat: number;
   exp: number;
-  'https://verdocs.com/session_type': 'signing';
-  'https://verdocs.com/key_type': TAccessKeyType;
-  'https://verdocs.com/envelope_id': string;
-  'https://verdocs.com/role_name': string;
+  ['https://verdocs.com/session_type']: 'signing';
+  ['https://verdocs.com/key_type']: TAccessKeyType;
+  ['https://verdocs.com/envelope_id']: string;
+  ['https://verdocs.com/role_name']: string;
 }
 
 /**
@@ -23,20 +23,20 @@ export interface IUserSession {
   jti: string;
   aud: string;
   iss: string;
-  sub: string; // Auth0 user_id
+  sub: string; // Verdocs user_id
   email: string;
   iat: number;
   exp: number;
-  session_type: 'user';
-  profile_id: string;
-  organization_id: string;
-  global_admin: boolean;
+  ['https://verdocs.com/session_type']: 'user';
+  ['https://verdocs.com/profile_id']: string;
+  ['https://verdocs.com/organization_id']: string;
+  ['https://verdocs.com/global_admin']: boolean;
 }
 
 export interface IIdToken {
   aud: string;
   iss: string;
-  sub: string; // Auth0 user_id
+  sub: string; // Verdocs user_id
   email: string;
   organization_id: string;
   first_name: string;

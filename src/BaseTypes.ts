@@ -104,3 +104,5 @@ export type TWebhookEvent =
 export type TTemplateVisibility = 'private' | 'shared' | 'public';
 
 export type TKBAMethod = 'pin' | 'kba' | 'id' | 'sms' | '' | null;
+
+export type TEntitlement = 'envelope' | 'kba_auth' | 'passcode_auth' | 'sms_auth' | 'kba_id_auth' | 'id_auth';

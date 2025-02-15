@@ -8,17 +8,8 @@
 //    other_things?: OtherThing[]
 ///////////////////////////////////////////////////////////////
 
-import {
-  TApiKeyPermission,
-  TEnvelopeStatus,
-  TEventDetail,
-  TFieldType,
-  THistoryEvent, TKBAMethod,
-  TRecipientStatus,
-  TRecipientType,
-  TTemplateSender,
-  TTemplateVisibility,
-} from './BaseTypes';
+import {THistoryEvent, TKBAMethod, TRecipientStatus, TRecipientType, TTemplateSender, TTemplateVisibility} from './BaseTypes';
+import {TApiKeyPermission, TEntitlement, TEnvelopeStatus, TEventDetail, TFieldType} from './BaseTypes';
 import {TPermission, TRole} from './Sessions';
 
 /////////////////////////////// NOTIFICATIONS /////////////////////////////
@@ -107,6 +98,20 @@ export interface IOAuth2App {
   profile?: IProfile;
 }
 
+export interface IEntitlement {
+  id: string;
+  organization_id: string;
+  feature: TEntitlement;
+  contract_id?: string | null;
+  notes?: string | null;
+  starts_at: string;
+  ends_at: string;
+  monthly_max: number;
+  yearly_max: number;
+  created_at: string;
+  organization?: IOrganization;
+}
+
 export interface IOrganization {
   /** The unique ID of the organization */
   id: string;
@@ -124,9 +129,6 @@ export interface IOrganization {
   thumbnail_url?: string | null;
   primary_color?: string | null;
   secondary_color?: string | null;
-  entitlements?: Record<string, any> | null;
-  mtd_usage?: Record<string, any> | null;
-  ytd_usage?: Record<string, any> | null;
   data?: Record<string, any> | null;
   /** Creation date/time. */
   created_at: string;
@@ -136,6 +138,7 @@ export interface IOrganization {
   api_keys?: IApiKey[];
   groups?: IGroup[];
   oauth2_apps?: IOAuth2App[];
+  entitlements?: IEntitlement[];
   organization_invitations?: IOrganizationInvitation[];
   profiles?: IProfile[];
   webhooks?: IWebhook[];

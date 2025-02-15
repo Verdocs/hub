@@ -12,9 +12,10 @@
  * @module
  */
 
-import {IOrganization, IProfile} from '../Models';
+import {IEntitlement, IOrganization, IProfile} from '../Models';
 import {IAuthenticateResponse} from '../Users';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {TEntitlement} from '../BaseTypes';
 
 /**
  * Get an organization by ID. Note that this endpoint will return only a subset of fields
@@ -186,4 +187,48 @@ export const updateOrganizationThumbnail = (
       },
     })
     .then((r) => r.data);
+};
+
+export const getEntitlements = async (endpoint: VerdocsEndpoint) =>
+  endpoint.api.get<IEntitlement[]>(`/v2/organizations/entitlements`).then((r) => r.data);
+
+/**
+ * Largely intended to be used internally by Web SDK components but may be informative for other cases.
+ * Entitlements are feature grants such as "ID-based KBA" that require paid contracts to enable, typically
+ * because the underlying services that support them are fee-based. Entitlements may run concurrently,
+ * and may have different start/end dates e.g. "ID-based KBA" may run 1/1/2026-12/31/2026 while
+ * "SMS Authentication" may be added later and run 6/1/2026-5/31/2027. The entitlements list is a simple
+ * array of enablements and may include entries that are not YET enabled or have now expired.
+ *
+ * In client code it is helpful to simply know "is XYZ feature currently enabled?" This function collapses
+ * the entitlements list to a simplified dictionary of current/active entitlements. Note that it is async
+ * because it calls the server to obtain the "most current" entitlements list. Existence of an entry in the
+ * resulting dictionary implies the feature is active. Metadata inside each entry can be used to determine
+ * limits, etc.
+ *
+ * ```typescript
+ * import {getActiveEntitlements} from '@verdocs/js-sdk';
+ *
+ * const activeEntitlements = await getActiveEntitlements((VerdocsEndpoint.getDefault());
+ * const isSMSEnabled = !!activeEntitlements.sms_auth;
+ * const monthlyKBALimit = activeEntitlements.kba_auth?.monthly_max;
+ * ```
+ */
+export const getActiveEntitlements = async (endpoint: VerdocsEndpoint) => {
+  if (!endpoint.session) {
+    throw new Error('No active session');
+  }
+
+  const now = new Date();
+  const allEntitlements = await getEntitlements(endpoint);
+  const activeEntitlements: Partial<Record<TEntitlement, IEntitlement>> = {};
+  allEntitlements.forEach((entitlement) => {
+    const start = new Date(entitlement.starts_at);
+    const end = new Date(entitlement.ends_at);
+    if (now >= start && now <= end && !activeEntitlements[entitlement.feature]) {
+      activeEntitlements[entitlement.feature] = entitlement;
+    }
+  });
+
+  return activeEntitlements;
 };
