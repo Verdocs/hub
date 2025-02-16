@@ -21,6 +21,7 @@ const TestFieldBase: ITemplateField = {
   multiline: false,
   group: null,
   options: null,
+  readonly: false,
 };
 
 it('sortFields should work as expected', async () => {

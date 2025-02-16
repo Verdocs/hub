@@ -1,6 +1,6 @@
 {
   "transform": {
-    "^.+\\.(t|j)s?$": ["ts-jest", {"useESM": true}]
+    "^.+\\.(t|j)s?$": ["ts-jest", {"useESM": true, "isolatedModules": true}]
   },
   "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
   "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],

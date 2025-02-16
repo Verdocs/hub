@@ -1,15 +1,5 @@
-////////////////////////////// QA RULES ///////////////////////
-// When code-reviewing changes to these types, to align with
-// database models, optional fields should be e.g.
-//    field: string|null;
-// NOT:
-//    field?: string;
-// Whereas relations should be purely optional:
-//    other_things?: OtherThing[]
-///////////////////////////////////////////////////////////////
-
-import {THistoryEvent, TKBAMethod, TRecipientStatus, TRecipientType, TTemplateSender, TTemplateVisibility} from './BaseTypes';
-import {TApiKeyPermission, TEntitlement, TEnvelopeStatus, TEventDetail, TFieldType} from './BaseTypes';
+import {THistoryEvent, TRecipientAuthMethod, TRecipientAuthStep, TRecipientStatus, TTemplateSender, TTemplateVisibility} from './BaseTypes';
+import {TApiKeyPermission, TEntitlement, TEnvelopeStatus, TEventDetail, TFieldType, TRecipientType} from './BaseTypes';
 import {TPermission, TRole} from './Sessions';
 
 /////////////////////////////// NOTIFICATIONS /////////////////////////////
@@ -560,31 +550,35 @@ export interface IRecipient {
   created_at: string;
   updated_at: string;
   last_attempt_at?: string;
+  /** The type of authentication required for this recipient. */
+  auth_method?: TRecipientAuthMethod;
   /**
-   * If set, "KBA required" will carry through to automatically enable the same setting in Envelopes
-   * created from this template. For privacy reasons, this field will only be visible to the creator
-   * of the envelope and the recipient referenced.
-   */
-  kba_method?: TKBAMethod;
-  /**
-   * If KBA is set to "PIN" this will be set to the PIN code required. For security reasons, this
+   * If auth_method is set to "passcode" this is the passcode required. For security reasons, this
    * field will only be visible to the creator of the envelope.
    */
-  kba_pin?: string | null;
+  passcode?: string | null;
   /**
-   * If KBA has been completed successfully, this will be set to true. For privacy reasons, this
-   * field will only be visible to the creator of the envelope and the recipient referenced.
+   * If SMS-based authentication is used, the phone number to which one-time codes should be sent.
+   * NOTE: This may be different from the phone number used for notifications, but leaving it blank
+   * will trigger an error rather than defaulting to the notifications phone number to avoid mistaken
+   * assumptions (e.g. if SMS notifications are not enabled for the organization, but SMS authentication
+   * is).
    */
-  kba_completed?: boolean;
+  phone_auth?: string;
   /**
-   * If KBA has been completed (or partially successfully, this will contain metadata related to
-   * the questions and answers from the process. For privacy reasons, this field will only be visible
-   * to the recipient referenced.
+   * If authentication has been completed successfully, this will be set to 'complete'. This is a union type
+   * to allow for future expansion with authentication modules that may require multiple steps.
    */
-  kba_details?: Record<string, any>;
-
+  auth_step?: TRecipientAuthStep | null;
   envelope?: IEnvelope;
   profile?: IProfile;
+
+  /**
+   * Only returned in creation/getEnvelopeById requests by the creator. May be used for in-person signing. Note that
+   * signing sessions started with this key will be marked as "In App" authenticated. For higher authentication levels,
+   * e.g. email, the signer must follow a link send via the appropriate channel (email).
+   */
+  in_app_key?: string;
 }
 
 /**
@@ -620,12 +614,6 @@ export interface IRole {
    */
   order: number;
   delegator: boolean | null;
-  /**
-   * If set, "KBA required" will carry through to automatically enable the same setting in Envelopes
-   * created from this template. Note that KBA details may not be specified here. They must be unique to
-   * each individual recipient and therefore cannot be set as defaults in the template.
-   */
-  kba_method: TKBAMethod;
 }
 
 export interface ISignature {

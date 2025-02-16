@@ -1,5 +1,6 @@
 export * from './Colors';
 export * from './DateTime';
+export * from './Entitlements';
 export * from './Fields';
 export * from './Files';
 export * from './Locales';

@@ -1,4 +1,4 @@
-import {TEnvelopeStatus, TRecipientType} from '../BaseTypes';
+import {TEnvelopeStatus, TRecipientAuthMethod, TRecipientType} from '../BaseTypes';
 import {IEnvelope, IEnvelopeDocument, IEnvelopeField, IRecipient, TAccessKey} from '../Models';
 
 export interface IEnvelopesSearchResult {
@@ -61,29 +61,32 @@ export interface ICreateEnvelopeRecipient {
   /** A custom message to include in the email or SMS invitation. May be left blank for a default message. */
   message?: string;
 
-  /** To enable KBA for the recipient, set to 'pin' or 'identity'. */
-  kba_method?: 'pin' | 'identity' | null;
+  /** To enable authentication for the recipient, set to 'pin' or 'identity'. */
+  auth_method?: TRecipientAuthMethod;
 
-  /** If PIN-based KBA is used, the PIN to challenge the user to enter. */
-  kba_pin?: string;
+  /** If Passcode-based authentication is used, the passcode to challenge the user to enter. */
+  passcode?: string;
+
+  /**
+   * If SMS-based authentication is used, the phone number to which one-time codes should be sent.
+   * NOTE: This may be different from the phone number used for notifications, but leaving it blank
+   * will trigger an error rather than defaulting to the notifications phone number to avoid mistaken
+   * assumptions (e.g. if SMS notifications are not enabled for the organization, but SMS authentication
+   * is).
+   */
+  phone_auth?: string;
 
   /*
-   * Pre-fill data for the recipient, if known. NOTE: If address and zip are both provided, an initial ID query
-   * will be made for the recipient. If questions are returned immediately, the first challenge will be skipped and
-   * the recipient will be immediately shown those questions, instead.
+   * Pre-fill data for the recipient, if known. NOTE: Even when pre-filling these fields for a recipient, if
+   * KBA is enabled, the recipient must be provided with the option to confirm those details before proceeding,
+   * provide at least one data point themselves (typically date of birth). Providing every value here will
+   trigger an error.
    */
   address?: string;
   city?: string;
   state?: string;
   zip?: string;
-  ssn_last_4?: string;
-
-  /**
-   * Only returned in creation/getEnvelopeById requests by the creator. May be used for in-person signing. Note that
-   * signing sessions started with this key will be marked as "In App" authenticated. For higher authentication levels,
-   * e.g. email, the signer must follow a link send via the appropriate channel (email).
-   */
-  in_app_key?: string;
+  dob?: string;
 }
 
 export interface ISignerTokenResponse {

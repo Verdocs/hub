@@ -13,9 +13,9 @@
  */
 
 import {IEntitlement, IOrganization, IProfile} from '../Models';
-import {IAuthenticateResponse} from '../Users';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {TEntitlement} from '../BaseTypes';
+import {IAuthenticateResponse} from '../Users';
+import {collapseEntitlements} from '../Utils';
 
 /**
  * Get an organization by ID. Note that this endpoint will return only a subset of fields
@@ -219,16 +219,6 @@ export const getActiveEntitlements = async (endpoint: VerdocsEndpoint) => {
     throw new Error('No active session');
   }
 
-  const now = new Date();
-  const allEntitlements = await getEntitlements(endpoint);
-  const activeEntitlements: Partial<Record<TEntitlement, IEntitlement>> = {};
-  allEntitlements.forEach((entitlement) => {
-    const start = new Date(entitlement.starts_at);
-    const end = new Date(entitlement.ends_at);
-    if (now >= start && now <= end && !activeEntitlements[entitlement.feature]) {
-      activeEntitlements[entitlement.feature] = entitlement;
-    }
-  });
-
-  return activeEntitlements;
+  const entitlements = await getEntitlements(endpoint);
+  return collapseEntitlements(entitlements);
 };
