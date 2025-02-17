@@ -508,13 +508,11 @@ export interface IRecipient {
   status: TRecipientStatus;
   first_name: string;
   last_name: string;
+  /** @deprecated. Use first_name/last_name instead. */
+  full_name?: string | null;
   email: string;
   /** Phone number for SMS invites */
   phone?: string | null;
-  full_name?: string | null;
-
-  /** Phone number for SMS verification */
-  phone_otp?: string | null;
   /** Street address. Only used in KBA workflows. Combine two-line addresses into a single string. */
   address?: string | null;
   /** Zip code. Only used in KBA workflows. */
@@ -564,7 +562,7 @@ export interface IRecipient {
    * assumptions (e.g. if SMS notifications are not enabled for the organization, but SMS authentication
    * is).
    */
-  phone_auth?: string;
+  phone_auth?: string | null;
   /**
    * If authentication has been completed successfully, this will be set to 'complete'. This is a union type
    * to allow for future expansion with authentication modules that may require multiple steps.

@@ -105,6 +105,6 @@ export type TTemplateVisibility = 'private' | 'shared' | 'public';
 
 export type TEntitlement = 'envelope' | 'kba_auth' | 'passcode_auth' | 'sms_auth' | 'kba_id_auth' | 'id_auth';
 
-export type TRecipientAuthMethod = 'kba' | 'passcode' | 'sms' | 'id' | 'kba_id' | null;
+export type TRecipientAuthMethod = 'kba' | 'passcode' | 'sms' | 'email' | 'id' | 'kba_id' | null;
 
 export type TRecipientAuthStep = 'complete' | null;
