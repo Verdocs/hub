@@ -549,20 +549,12 @@ export interface IRecipient {
   updated_at: string;
   last_attempt_at?: string;
   /** The type of authentication required for this recipient. */
-  auth_method?: TRecipientAuthMethod;
+  auth_methods?: TRecipientAuthMethod[] | null;
   /**
    * If auth_method is set to "passcode" this is the passcode required. For security reasons, this
    * field will only be visible to the creator of the envelope.
    */
   passcode?: string | null;
-  /**
-   * If SMS-based authentication is used, the phone number to which one-time codes should be sent.
-   * NOTE: This may be different from the phone number used for notifications, but leaving it blank
-   * will trigger an error rather than defaulting to the notifications phone number to avoid mistaken
-   * assumptions (e.g. if SMS notifications are not enabled for the organization, but SMS authentication
-   * is).
-   */
-  phone_auth?: string | null;
   /**
    * If authentication has been completed successfully, this will be set to 'complete'. This is a union type
    * to allow for future expansion with authentication modules that may require multiple steps.

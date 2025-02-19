@@ -105,6 +105,13 @@ export type TTemplateVisibility = 'private' | 'shared' | 'public';
 
 export type TEntitlement = 'envelope' | 'kba_auth' | 'passcode_auth' | 'sms_auth' | 'kba_id_auth' | 'id_auth';
 
-export type TRecipientAuthMethod = 'kba' | 'passcode' | 'sms' | 'email' | 'id' | 'kba_id' | null;
+/**
+ * The authentication method(s) required for a recipient to access an envelope. "Passcode" will require a
+ * PIN or passcode to be entered, which is intended to be known to the sender and recipient ahead of time
+ * and communicated by means of their choosing. "SMS" and "Email" will send a one-time-code via the respective
+ * channel for the recipient to enter. "KBA" will require the recipient to confirm personal information such
+ * as prior addresses, phone numbers, etc. "ID" will require the recipient to perform full ID-based verification.
+ */
+export type TRecipientAuthMethod = 'kba' | 'passcode' | 'sms' | 'email' | 'id';
 
 export type TRecipientAuthStep = 'complete' | null;
