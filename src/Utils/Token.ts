@@ -65,12 +65,5 @@ export const decodeAccessTokenBody = (token: string): TSession => {
     return null;
   }
 
-  Object.keys(decoded).forEach((key: any) => {
-    if (typeof key === 'string' && key.startsWith('https://verdocs.com/')) {
-      decoded[key.replace('https://verdocs.com/', '')] = decoded[key];
-      delete decoded[key];
-    }
-  });
-
   return decoded;
 };
