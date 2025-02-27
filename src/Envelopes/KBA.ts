@@ -75,7 +75,7 @@ export type TRecipientKbaStep =
  * Get the current KBA status. Note that this may only be called by the recipient and requires a
  * valid signing session to proceed. Although the Recipient object itself contains indications of
  * whether KBA is required, it will not contain the current status of the process. If
- * `recipient.kba_method` is set (not null), and `recipient.kba_completed` is false, this endpoint
+ * `recipient.auth_methods` is set (not empty), and `recipient.kba_completed` is false, this endpoint
  * should be called to determine the next KBA step required.
  */
 export const getKbaStep = (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string) =>

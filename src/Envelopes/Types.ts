@@ -107,6 +107,17 @@ export interface ISignerTokenResponse {
    * a signing session is being started, so it is included here for convenience.
    */
   recipient: IRecipient;
+
+  /**
+   * The next authentication step the recipient must perform, or null if no auth steps are needed.
+   */
+  auth_step: TRecipientAuthMethod | null;
+
+  /**
+   * If an authentication step must be performed, details related to it. Open-ended type to support
+   * the modularity of the authentication system.
+   */
+  auth_details: Record<string, any> | null;
 }
 
 export interface IInPersonLinkResponse {
