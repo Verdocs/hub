@@ -1,4 +1,4 @@
-import type {
+import {
   IInPersonLinkResponse,
   IUpdateRecipientSubmitParams,
   IUpdateRecipientClaimEnvelope,
@@ -7,6 +7,7 @@ import type {
   IUpdateRecipientDeclineParams,
   IUpdateRecipientPrepareParams,
   ISignerTokenResponse,
+  TAuthenticateRecipientRequest,
 } from './Types';
 import {IEnvelope, IRecipient} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
@@ -129,6 +130,36 @@ export const startSigningSession = async (endpoint: VerdocsEndpoint, envelope_id
 export const getInPersonLink = (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string) =>
   endpoint.api //
     .post<IInPersonLinkResponse>(`/v2/sign/in-person/${envelope_id}/${encodeURIComponent(role_name)}`)
+    .then((r) => r.data);
+
+/**
+ * Authenticate a signing session. All signing sessions use an invite code at a minimum, but
+ * many scenarios require more robust verification of recipients so one or more verification
+ * methods may be attached to each recipient. If an authentication method is enabled, the
+ * signer must first accept the e-signature disclosures, then complete each verification step
+ * before attempting to view/display documents, complete any fields, or submit the envelope.
+ * This endpoint should be called to complete each step. If the call fails an error will be
+ * thrown.
+ *
+ * @group Recipients
+ * @api POST /v2/sign/authenticate Authenticate signing session
+ * @apiParam string(enum:'passcode'|'email'|'sms'|'kba'|'id') auth_method The authentication method being completed
+ * @apiParam string code? The passcode or OTP entered. Required for passcode, email, and SMS methods.
+ * @apiParam boolean resend? For SMS or email methods, set to send a new code.
+ * @apiParam boolean first_name? For KBA, the recipient's first name
+ * @apiParam boolean last_name? For KBA, the recipient's last name
+ * @apiParam boolean address? For KBA, the recipient's address
+ * @apiParam boolean city? For KBA, the recipient's city
+ * @apiParam boolean state? For KBA, the recipient's state
+ * @apiParam boolean zip? For KBA, the recipient's zip code
+ * @apiParam boolean ssn_last_4? For KBA, the last 4 digits of the recipient's SSN
+ * @apiParam boolean dob? For KBA, the recipient's date of birth
+ * @apiParam array(items:IKBAResponse) responses? For KBA, responses to any challenge questions presented
+ * @apiSuccess string . Success message
+ */
+export const authenticateSigner = (endpoint: VerdocsEndpoint, params: TAuthenticateRecipientRequest) =>
+  endpoint.api //
+    .post<{status: 'OK'}>(`/v2/sign/authenticate`)
     .then((r) => r.data);
 
 /**

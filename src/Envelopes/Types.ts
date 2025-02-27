@@ -212,3 +212,44 @@ export interface ICreateEnvelopeDirectlyRequest {
 }
 
 export type TCreateEnvelopeRequest = ICreateEnvelopeFromTemplateRequest | ICreateEnvelopeDirectlyRequest;
+
+export interface IAuthenticateRecipientViaPasscodeRequest {
+  auth_method: 'passcode';
+  code: string;
+}
+
+export interface IAuthenticateRecipientViaEmailRequest {
+  auth_method: 'email';
+  code: string;
+  resend?: boolean;
+}
+
+export interface IAuthenticateRecipientViaSMSRequest {
+  auth_method: 'sms';
+  code: string;
+  resend?: boolean;
+}
+
+export interface IKBAResponse {
+  type: string;
+  answer: string | number;
+}
+
+export interface IAuthenticateRecipientViaKBARequest {
+  auth_method: 'kba';
+  first_name?: string;
+  last_name?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  ssn_last_4?: string;
+  dob?: string;
+  responses?: IKBAResponse[];
+}
+
+export type TAuthenticateRecipientRequest =
+  | IAuthenticateRecipientViaPasscodeRequest
+  | IAuthenticateRecipientViaEmailRequest
+  | IAuthenticateRecipientViaSMSRequest
+  | IAuthenticateRecipientViaKBARequest;
