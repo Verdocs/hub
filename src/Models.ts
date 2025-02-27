@@ -550,6 +550,8 @@ export interface IRecipient {
   last_attempt_at?: string;
   /** The type of authentication required for this recipient. */
   auth_methods?: TRecipientAuthMethod[] | null;
+  /** The status of each auth method enabled. */
+  auth_method_states?: Record<TRecipientAuthMethod,string> | null;
   /**
    * If auth_method is set to "passcode" this is the passcode required. For security reasons, this
    * field will only be visible to the creator of the envelope.
@@ -560,15 +562,22 @@ export interface IRecipient {
    * to allow for future expansion with authentication modules that may require multiple steps.
    */
   auth_step?: TRecipientAuthStep | null;
-  envelope?: IEnvelope;
-  profile?: IProfile;
-
   /**
    * Only returned in creation/getEnvelopeById requests by the creator. May be used for in-person signing. Note that
    * signing sessions started with this key will be marked as "In App" authenticated. For higher authentication levels,
    * e.g. email, the signer must follow a link send via the appropriate channel (email).
    */
   in_app_key?: string;
+  /**
+   * If KBA is enabled, any confirmation questions to challenge the recipient with.
+   */
+  kba_questions?: any;
+  /**
+   * Details related to the active KBA session, if any.
+   */
+  kba_details?: any;
+  envelope?: IEnvelope;
+  profile?: IProfile;
 }
 
 /**

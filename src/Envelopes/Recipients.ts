@@ -159,7 +159,7 @@ export const getInPersonLink = (endpoint: VerdocsEndpoint, envelope_id: string, 
  */
 export const authenticateSigner = (endpoint: VerdocsEndpoint, params: TAuthenticateRecipientRequest) =>
   endpoint.api //
-    .post<{status: 'OK'}>(`/v2/sign/authenticate`)
+    .post<{status: 'OK'}>(`/v2/sign/authenticate`, params)
     .then((r) => r.data);
 
 /**
