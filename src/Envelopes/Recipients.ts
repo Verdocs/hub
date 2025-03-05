@@ -11,6 +11,7 @@ import {
 } from './Types';
 import {IEnvelope, IRecipient} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {TRecipientAuthStep} from '../BaseTypes';
 
 /**
  * Update a recipient's status.
@@ -159,7 +160,7 @@ export const getInPersonLink = (endpoint: VerdocsEndpoint, envelope_id: string, 
  */
 export const authenticateSigner = (endpoint: VerdocsEndpoint, params: TAuthenticateRecipientRequest) =>
   endpoint.api //
-    .post<{status: 'OK'}>(`/v2/sign/authenticate`, params)
+    .post<{status: 'OK'; auth_step: TRecipientAuthStep | null; auth_details: any}>(`/v2/sign/authenticate`, params)
     .then((r) => r.data);
 
 /**

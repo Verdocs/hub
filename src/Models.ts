@@ -551,7 +551,7 @@ export interface IRecipient {
   /** The type of authentication required for this recipient. */
   auth_methods?: TRecipientAuthMethod[] | null;
   /** The status of each auth method enabled. */
-  auth_method_states?: Record<TRecipientAuthMethod,string> | null;
+  auth_method_states?: Record<TRecipientAuthMethod, string> | null;
   /**
    * If auth_method is set to "passcode" this is the passcode required. For security reasons, this
    * field will only be visible to the creator of the envelope.
@@ -575,7 +575,7 @@ export interface IRecipient {
   /**
    * Details related to the active KBA session, if any.
    */
-  kba_details?: any;
+  kba_details?: Record<TRecipientAuthMethod, 'complete' | 'failed' | 'questions' | 'differentiator'> | null;
   envelope?: IEnvelope;
   profile?: IProfile;
 }

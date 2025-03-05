@@ -114,4 +114,4 @@ export type TEntitlement = 'envelope' | 'kba_auth' | 'passcode_auth' | 'sms_auth
  */
 export type TRecipientAuthMethod = 'kba' | 'passcode' | 'sms' | 'email' | 'id';
 
-export type TRecipientAuthStep = 'complete' | null;
+export type TRecipientAuthStep = TRecipientAuthMethod | null;
