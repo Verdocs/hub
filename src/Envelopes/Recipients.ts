@@ -134,8 +134,8 @@ export const getInPersonLink = (endpoint: VerdocsEndpoint, envelope_id: string, 
     .then((r) => r.data);
 
 /**
- * Authenticate a signing session. All signing sessions use an invite code at a minimum, but
- * many scenarios require more robust verification of recipients so one or more verification
+ * Verify a recipient within a signing session. All signing sessions use an invite code at a minimum,
+ * but many scenarios require more robust verification of recipients, so one or more verification
  * methods may be attached to each recipient. If an authentication method is enabled, the
  * signer must first accept the e-signature disclosures, then complete each verification step
  * before attempting to view/display documents, complete any fields, or submit the envelope.
@@ -143,7 +143,7 @@ export const getInPersonLink = (endpoint: VerdocsEndpoint, envelope_id: string, 
  * thrown.
  *
  * @group Recipients
- * @api POST /v2/sign/authenticate Authenticate signing session
+ * @api POST /v2/sign/verify Verify recipient/signer
  * @apiParam string(enum:'passcode'|'email'|'sms'|'kba'|'id') auth_method The authentication method being completed
  * @apiParam string code? The passcode or OTP entered. Required for passcode, email, and SMS methods.
  * @apiParam boolean resend? For SMS or email methods, set to send a new code.
@@ -156,11 +156,11 @@ export const getInPersonLink = (endpoint: VerdocsEndpoint, envelope_id: string, 
  * @apiParam boolean ssn_last_4? For KBA, the last 4 digits of the recipient's SSN
  * @apiParam boolean dob? For KBA, the recipient's date of birth
  * @apiParam array(items:IKBAResponse) responses? For KBA, responses to any challenge questions presented
- * @apiSuccess string . Success message
+ * @apiSuccess ISignerTokenResponse . Updated signing session.
  */
-export const authenticateSigner = (endpoint: VerdocsEndpoint, params: TAuthenticateRecipientRequest) =>
+export const verifySigner = (endpoint: VerdocsEndpoint, params: TAuthenticateRecipientRequest) =>
   endpoint.api //
-    .post<{status: 'OK'; auth_step: TRecipientAuthStep | null; auth_details: any}>(`/v2/sign/authenticate`, params)
+    .post<ISignerTokenResponse>(`/v2/sign/verify`, params)
     .then((r) => r.data);
 
 /**

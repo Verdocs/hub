@@ -548,20 +548,6 @@ export interface IRecipient {
   created_at: string;
   updated_at: string;
   last_attempt_at?: string;
-  /** The type of authentication required for this recipient. */
-  auth_methods?: TRecipientAuthMethod[] | null;
-  /** The status of each auth method enabled. */
-  auth_method_states?: Record<TRecipientAuthMethod, string> | null;
-  /**
-   * If auth_method is set to "passcode" this is the passcode required. For security reasons, this
-   * field will only be visible to the creator of the envelope.
-   */
-  passcode?: string | null;
-  /**
-   * If authentication has been completed successfully, this will be set to 'complete'. This is a union type
-   * to allow for future expansion with authentication modules that may require multiple steps.
-   */
-  auth_step?: TRecipientAuthStep | null;
   /**
    * Only returned in creation/getEnvelopeById requests by the creator. May be used for in-person signing. Note that
    * signing sessions started with this key will be marked as "In App" authenticated. For higher authentication levels,
@@ -569,13 +555,23 @@ export interface IRecipient {
    */
   in_app_key?: string;
   /**
-   * If KBA is enabled, any confirmation questions to challenge the recipient with.
+   * The next verification step that must be performed.
    */
-  kba_questions?: any;
+  auth_step?: TRecipientAuthStep | null;
+  /** The types of authentication/verification required for this recipient. */
+  auth_methods?: TRecipientAuthMethod[] | null;
+  /** The status of each auth method enabled. */
+  auth_method_states?: Record<TRecipientAuthMethod, 'complete' | 'failed' | 'challenge' | 'questions' | 'differentiator' | null> | null;
   /**
-   * Details related to the active KBA session, if any.
+   * If auth_method is set to "passcode" this is the passcode required. For security reasons, this
+   * field will only be visible to the creator of the envelope.
    */
-  kba_details?: Record<TRecipientAuthMethod, 'complete' | 'failed' | 'questions' | 'differentiator'> | null;
+  passcode?: string | null;
+  /**
+   * If a KBA step requires the user to answer a challenge/differentiator question, the
+   * question(s) to ask.
+   */
+  kba_questions?: {type: string; answer: string[]; prompt: string} | null;
   envelope?: IEnvelope;
   profile?: IProfile;
 }
