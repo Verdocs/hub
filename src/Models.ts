@@ -504,7 +504,7 @@ export interface IRecipient {
 
   envelope_id: string;
   role_name: string;
-  profile_id: string;
+  profile_id?: string | null;
   status: TRecipientStatus;
   first_name: string;
   last_name: string;
