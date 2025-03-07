@@ -498,6 +498,12 @@ export interface IKbaPINRequired {
   type: 'pin';
 }
 
+export interface IKBAQuestion {
+  type: string;
+  answer: string[];
+  prompt: string;
+}
+
 export interface IRecipient {
   /** Used only by the Web SDK during builder processes. Not stored in the backend. */
   id?: string | null;
@@ -571,7 +577,7 @@ export interface IRecipient {
    * If a KBA step requires the user to answer a challenge/differentiator question, the
    * question(s) to ask.
    */
-  kba_questions?: {type: string; answer: string[]; prompt: string} | null;
+  kba_questions?: IKBAQuestion[] | null;
   envelope?: IEnvelope;
   profile?: IProfile;
 }

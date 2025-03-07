@@ -95,13 +95,11 @@ export interface ISignerTokenResponse {
    * When signing, the caller's "authentication" status will be recorded as "in-person".
    */
   access_token: string;
-
   /**
    * A copy of the envelope related to the signing session. This is almost always needed when
    * a signing session is being started, so it is included here for convenience.
    */
   envelope: IEnvelope;
-
   /**
    * A copy of the recipient record related to the signing session. This is almost always needed when
    * a signing session is being started, so it is included here for convenience.
@@ -124,6 +122,16 @@ export interface IInPersonLinkResponse {
    * protected from theft and unauthorized sharing!**
    */
   access_key: TAccessKey;
+  /**
+   * A copy of the envelope related to the signing session. This is almost always needed when
+   * a signing session is being started, so it is included here for convenience.
+   */
+  envelope: IEnvelope;
+  /**
+   * A copy of the recipient record related to the signing session. This is almost always needed when
+   * a signing session is being started, so it is included here for convenience.
+   */
+  recipient: IRecipient;
 }
 
 export interface IUpdateRecipientSubmitParams {
