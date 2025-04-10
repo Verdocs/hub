@@ -119,6 +119,7 @@ export interface IOrganization {
   thumbnail_url?: string | null;
   primary_color?: string | null;
   secondary_color?: string | null;
+  disclaimer?: string | null;
   data?: Record<string, any> | null;
   /** Creation date/time. */
   created_at: string;

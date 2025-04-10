@@ -25,6 +25,7 @@ export interface IAuthenticateResponse {
   expires_in: number;
   access_token_exp: number;
   refresh_token_exp: number;
+  intercom_key: string;
 }
 
 export interface IChangePasswordRequest {
