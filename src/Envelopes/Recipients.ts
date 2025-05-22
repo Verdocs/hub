@@ -71,8 +71,13 @@ export const envelopeRecipientChangeOwner = (
 /**
  * Agree to electronic signing.
  */
-export const envelopeRecipientAgree = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, agreed: boolean) =>
-  updateRecipient(endpoint, envelopeId, roleName, {action: 'update', agreed});
+export const envelopeRecipientAgree = (
+  endpoint: VerdocsEndpoint,
+  envelopeId: string,
+  roleName: string,
+  agreed: boolean,
+  disclosure?: string,
+) => updateRecipient(endpoint, envelopeId, roleName, {action: 'update', agreed, disclosure});
 
 /**
  * Change a recipient's name.

@@ -159,6 +159,7 @@ export interface IUpdateRecipientStatus {
 export interface IUpdateRecipientAgreedParams {
   action: 'update';
   agreed: boolean;
+  disclosure?: string;
 }
 
 export interface IUpdateRecipientNameParams {
