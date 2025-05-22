@@ -467,6 +467,9 @@ export interface IEnvelopeFieldSettings {
   base64?: string;
   hash?: string;
   ip_address?: string;
+  browser?: string;
+  platform?: string;
+  mobile?: boolean;
   signature_id?: string;
   signed_at?: string;
   /** Checkbox settings */
@@ -528,8 +531,12 @@ export interface IRecipient {
   state?: string | null;
   /** Zip code. Only used in KBA workflows. */
   zip?: string | null;
-  /** @deprecated. Use dob instead. */
+  /** Last 4 digits of SSN. Only used in KBA workflows. */
   ssn_last_4?: string | null;
+  /** The disclosure text the recipient accepted. */
+  disclosure?: string | null;
+  /** Date/time the recipient agreed to their e-signing disclosures. */
+  disclosure_accepted_at?: string | null;
   /** Date of birth. Only used in KBA workflows. */
   dob?: string | null;
   /**
