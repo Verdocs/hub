@@ -119,6 +119,7 @@ export interface IOrganization {
   thumbnail_url?: string | null;
   primary_color?: string | null;
   secondary_color?: string | null;
+  parent_id: string | null;
   disclaimer?: string | null;
   data?: Record<string, any> | null;
   /** Creation date/time. */
@@ -127,6 +128,7 @@ export interface IOrganization {
   updated_at: string;
 
   api_keys?: IApiKey[];
+  children?: IOrganization[];
   groups?: IGroup[];
   oauth2_apps?: IOAuth2App[];
   entitlements?: IEntitlement[];
