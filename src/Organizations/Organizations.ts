@@ -37,6 +37,24 @@ export const getOrganization = (endpoint: VerdocsEndpoint, organizationId: strin
     .then((r) => r.data);
 
 /**
+ * Get an organization's "children".
+ *
+ * ```typescript
+ * import {getOrganizationChildren} from '@verdocs/js-sdk';
+ *
+ * const children = await getOrganizationChildren(VerdocsEndpoint.getDefault(), 'ORGID');
+ * ```
+ *
+ * @group Organizations
+ * @api GET /v2/organizations/:organization_id/children Get an organization's children
+ * @apiSuccess IOrganization[] . Any child organizations found.
+ */
+export const getOrganizationChildren = (endpoint: VerdocsEndpoint, organizationId: string) =>
+  endpoint.api //
+    .get<IOrganization>(`/v2/organizations/${organizationId}/children`)
+    .then((r) => r.data);
+
+/**
  * Create an organization. The caller will be assigned an "Owner" profile in the new organization,
  * and it will be set to "current" automatically. A new set of session tokens will be issued to
  * the caller, and the caller should update their endpoint to use the new tokens.

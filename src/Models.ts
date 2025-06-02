@@ -129,6 +129,7 @@ export interface IOrganization {
 
   api_keys?: IApiKey[];
   children?: IOrganization[];
+  parent?: IOrganization;
   groups?: IGroup[];
   oauth2_apps?: IOAuth2App[];
   entitlements?: IEntitlement[];
