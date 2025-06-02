@@ -91,6 +91,7 @@ export const createOrganization = (
     | 'thumbnail_url'
     | 'primary_color'
     | 'secondary_color'
+    | 'parent_id'
   >,
 ) =>
   endpoint.api //
