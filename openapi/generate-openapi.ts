@@ -140,7 +140,7 @@ const processChild = (child: Record<string, any>) => {
   const {name, kind, comment} = child as {name: string; kind: number; comment: any; child: any};
   const summary = comment?.summary?.[0]?.text || '';
 
-  // console.log('Processing child', name, kind);
+  console.log('Processing child', name, kind, child);
   if (kind === 2097152) {
     Preamble.components = Preamble.components ?? {};
     Preamble.components.schemas = Preamble.components.schemas ?? {};
@@ -188,6 +188,7 @@ const processChild = (child: Record<string, any>) => {
   }
 
   if (kind !== 64 || !summary) {
+    console.log('returning', {kind, summary});
     return;
   }
 

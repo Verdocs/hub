@@ -94,6 +94,7 @@ export const getOrganizationUsage = (
  * @api POST /v2/organizations Create organization
  * @apiDescription The caller will be assigned an "Owner" profile in the new organization, and it will be set to "current" automatically. A new set of session tokens will be issued to  the caller, and the caller should update their endpoint to use the new tokens.
  * @apiBody string name The name of the new organization
+ * @apiBody string parent_id? If set, the new organization will be created as a child of the specified parent organization. The caller must be an admin of the parent organization.
  * @apiBody string contact_email? Contact email for the new organization
  * @apiBody string url? URL for the new organization
  * @apiBody string full_logo_url? URL of a large-format PNG logo

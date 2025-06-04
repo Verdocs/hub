@@ -6,8 +6,6 @@
  * - Templates - A template for a document containing a PDF file, metadata for signature fields, and other information.
  * - Users - All operations related to authentication and user-related operations.
  * - Utils - General support functions used by the other modules and exported for convenience.
- *
- * @module
  */
 
 export * from './BaseTypes';

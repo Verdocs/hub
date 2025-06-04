@@ -242,6 +242,8 @@ export interface IWebhookEvents {
   template_updated: boolean;
   template_deleted: boolean;
   template_used: boolean;
+
+  entitlement_used: boolean;
 }
 
 export interface IWebhook {
