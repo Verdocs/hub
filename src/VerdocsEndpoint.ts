@@ -16,6 +16,8 @@ const requestLogger = (r: any) => {
   return r;
 };
 
+const isBrowser = typeof globalThis.window !== 'undefined';
+
 export type TEnvironment = '' | 'beta';
 
 export type TSessionChangedListener = (endpoint: VerdocsEndpoint, session: TSession, profile: IProfile | null) => void;
@@ -55,7 +57,7 @@ export class VerdocsEndpoint {
   private environment = 'verdocs' as TEnvironment;
   private sessionType = 'user' as TSessionType;
   private persist = true;
-  private baseURL = BETA_ORIGINS.includes(window?.location?.origin || '') ? 'https://stage-api.verdocs.com' : 'https://api.verdocs.com';
+  private baseURL = BETA_ORIGINS.includes(globalThis.window?.location?.origin || '') ? 'https://stage-api.verdocs.com' : 'https://api.verdocs.com';
   private clientID = 'not-set' as string;
   private timeout = 60000 as number;
   private token = null as string | null;
@@ -296,8 +298,8 @@ export class VerdocsEndpoint {
     this.sessionType = sessionType;
     if (this.sessionType === 'user') {
       this.api.defaults.headers.common.Authorization = `Bearer ${token}`;
-      if (this.persist) {
-        localStorage.setItem(this.sessionStorageKey(), token);
+      if (this.persist && isBrowser) {
+        globalThis.localStorage.setItem(this.sessionStorageKey(), token);
       }
     } else {
       // Required for legacy calls to rForm
