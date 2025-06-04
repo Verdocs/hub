@@ -76,7 +76,7 @@ export const getOrganizationUsage = (
   params?: {start_date?: string; end_date?: string; usage_type?: TUsageType},
 ) =>
   endpoint.api //
-    .get<TOrganizationUsage>(`/v2/organizations/${organizationId}/children`, {params})
+    .get<TOrganizationUsage>(`/v2/organizations/${organizationId}/usage`, {params})
     .then((r) => r.data);
 
 /**
