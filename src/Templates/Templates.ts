@@ -78,8 +78,6 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
  * @apiSuccess ITemplate . The requested template
  */
 export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) => {
-  window?.console?.log('[JS_SDK] Loading template', templateId);
-
   return endpoint.api //
     .get<ITemplate>(`/v2/templates/${templateId}`)
     .then((r) => {

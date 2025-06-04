@@ -41,6 +41,5 @@ const SAMPLE_ENTITLEMENTS: IEntitlement[] = [
 ];
 
 it('collapseEntitlements should properly distill entitlements', async () => {
-  const e = collapseEntitlements(SAMPLE_ENTITLEMENTS);
-  console.log('e', e);
+  collapseEntitlements(SAMPLE_ENTITLEMENTS);
 });

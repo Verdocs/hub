@@ -12,8 +12,7 @@ const ENDPOINT_KEY = Symbol.for('verdocs-default-endpoint');
 const BETA_ORIGINS = ['https://beta.verdocs.com', 'https://stage.verdocs.com', 'http://localhost:6006', 'http://localhost:5173'];
 
 const requestLogger = (r: any) => {
-  // tslint:disable-next-line
-  console.debug(`[JS-SDK] ${r.method.toUpperCase()} ${r.baseURL}${r.url}`, r.data ? JSON.stringify(r.data) : '');
+  // TODO: Re-activate logging via an isomorphic approach
   return r;
 };
 
@@ -108,7 +107,6 @@ export class VerdocsEndpoint {
 
   public setDefault() {
     globalThis[ENDPOINT_KEY] = this;
-    window?.console?.debug('[JS_SDK] Set default endpoint', this.endpointId);
   }
 
   public static getDefault(): VerdocsEndpoint {
@@ -284,17 +282,13 @@ export class VerdocsEndpoint {
    */
   public setToken(token: string | null, sessionType: TSessionType = 'user'): VerdocsEndpoint {
     if (!token) {
-      window?.console?.log('[JS_SDK] Clearing token');
       return this.clearSession();
     }
 
     const session = decodeAccessTokenBody(token);
     if (session === null || (session.exp && session.exp * 1000 < new Date().getTime())) {
-      window?.console?.warn('[JS_SDK] Ignoring attempt to use expired session token');
       return this.clearSession();
     }
-
-    window?.console?.log('[JS_SDK] Setting token', sessionType);
 
     this.token = token;
     this.session = session;
@@ -313,17 +307,14 @@ export class VerdocsEndpoint {
     }
 
     if (this.sessionType === 'user') {
-      window?.console?.debug('[JS_SDK] Loading current profile...', this.endpointId, this.sub, session.sub);
       getCurrentProfile(this)
         .then((r) => {
-          window?.console?.debug('[JS_SDK] Loaded profile', this.endpointId, r);
           this.profile = r || null;
           this.notifySessionListeners();
         })
         .catch((e) => {
           this.profile = null;
           this.sub = null;
-          window?.console?.warn('Unable to load profile', e);
 
           // We can't clear the token verdocs-auth may be using temporarily during registration
           if (this.persist) {
@@ -353,7 +344,6 @@ export class VerdocsEndpoint {
    * Clear the active session.
    */
   public clearSession() {
-    window?.console?.debug('[JS_SDK] Clearing session', this.endpointId);
     if (this.persist) {
       localStorage.removeItem(this.sessionStorageKey());
     }
@@ -375,7 +365,6 @@ export class VerdocsEndpoint {
    * Clear the active signing session.
    */
   public clearSignerSession() {
-    window?.console?.debug('[JS_SDK] Clearing signer session', this.endpointId);
     if (this.persist) {
       localStorage.removeItem(this.sessionStorageKey());
     }
@@ -432,7 +421,6 @@ export class VerdocsEndpoint {
 
     const token = localStorage.getItem(this.sessionStorageKey());
     if (!token) {
-      window?.console?.debug('[JS_SDK] No cached session found', this.endpointId);
       return this.clearSession();
     }
 
