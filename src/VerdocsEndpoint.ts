@@ -56,7 +56,7 @@ export class VerdocsEndpoint {
   private environment = 'verdocs' as TEnvironment;
   private sessionType = 'user' as TSessionType;
   private persist = true;
-  private baseURL = BETA_ORIGINS.includes(window.location.origin) ? 'https://stage-api.verdocs.com' : 'https://api.verdocs.com';
+  private baseURL = BETA_ORIGINS.includes(window?.location?.origin || '') ? 'https://stage-api.verdocs.com' : 'https://api.verdocs.com';
   private clientID = 'not-set' as string;
   private timeout = 60000 as number;
   private token = null as string | null;
@@ -284,17 +284,17 @@ export class VerdocsEndpoint {
    */
   public setToken(token: string | null, sessionType: TSessionType = 'user'): VerdocsEndpoint {
     if (!token) {
-      window.console.log('[JS_SDK] Clearing token');
+      window?.console?.log('[JS_SDK] Clearing token');
       return this.clearSession();
     }
 
     const session = decodeAccessTokenBody(token);
     if (session === null || (session.exp && session.exp * 1000 < new Date().getTime())) {
-      window.console.warn('[JS_SDK] Ignoring attempt to use expired session token');
+      window?.console?.warn('[JS_SDK] Ignoring attempt to use expired session token');
       return this.clearSession();
     }
 
-    window.console.log('[JS_SDK] Setting token', sessionType);
+    window?.console?.log('[JS_SDK] Setting token', sessionType);
 
     this.token = token;
     this.session = session;
