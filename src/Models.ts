@@ -1,4 +1,12 @@
-import {THistoryEvent, TRecipientAuthMethod, TRecipientAuthStep, TRecipientStatus, TTemplateSender, TTemplateVisibility} from './BaseTypes';
+import {
+  THistoryEvent,
+  TRecipientAuthMethod,
+  TRecipientAuthStep,
+  TRecipientStatus,
+  TTemplateSender,
+  TTemplateVisibility,
+  TUsageType,
+} from './BaseTypes';
 import {TApiKeyPermission, TEntitlement, TEnvelopeStatus, TEventDetail, TFieldType, TRecipientType} from './BaseTypes';
 import {TPermission, TRole} from './Sessions';
 
@@ -822,3 +830,5 @@ export interface ITemplateFieldSetting {
 
   [key: string]: any;
 }
+
+export type TOrganizationUsage = Record<string, Record<TUsageType, number>>;

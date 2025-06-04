@@ -12,10 +12,11 @@
  * @module
  */
 
-import {IEntitlement, IOrganization, IProfile} from '../Models';
+import {IEntitlement, IOrganization, IProfile, TOrganizationUsage} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {IAuthenticateResponse} from '../Users';
 import {collapseEntitlements} from '../Utils';
+import {TUsageType} from '../BaseTypes';
 
 /**
  * Get an organization by ID. Note that this endpoint will return only a subset of fields
@@ -55,6 +56,30 @@ export const getOrganizationChildren = (endpoint: VerdocsEndpoint, organizationI
     .then((r) => r.data);
 
 /**
+ * Get an organization's usage data. If the organization is a parent, usage data for children
+ * will be included as well. The response will be a nested object keyed by organization ID,
+ * with each entry being a dictionary of usageType:count entries.
+ *
+ * ```typescript
+ * import {getOrganizationUsage} from '@verdocs/js-sdk';
+ *
+ * const usage = await getOrganizationUsage(VerdocsEndpoint.getDefault(), 'ORGID');
+ * ```
+ *
+ * @group Organizations
+ * @api GET /v2/organizations/:organization_id/usage Get an organization's usage metrics
+ * @apiSuccess TOrganizationUsage . Usage data grouped by organization ID
+ */
+export const getOrganizationUsage = (
+  endpoint: VerdocsEndpoint,
+  organizationId: string,
+  params?: {start_date?: string; end_date?: string; usage_type?: TUsageType},
+) =>
+  endpoint.api //
+    .get<TOrganizationUsage>(`/v2/organizations/${organizationId}/children`, {params})
+    .then((r) => r.data);
+
+/**
  * Create an organization. The caller will be assigned an "Owner" profile in the new organization,
  * and it will be set to "current" automatically. A new set of session tokens will be issued to
  * the caller, and the caller should update their endpoint to use the new tokens.
@@ -79,19 +104,20 @@ export const getOrganizationChildren = (endpoint: VerdocsEndpoint, organizationI
  */
 export const createOrganization = (
   endpoint: VerdocsEndpoint,
-  params: Pick<
-    IOrganization,
-    | 'name'
-    | 'address'
-    | 'address2'
-    | 'phone'
-    | 'contact_email'
-    | 'url'
-    | 'full_logo_url'
-    | 'thumbnail_url'
-    | 'primary_color'
-    | 'secondary_color'
-    | 'parent_id'
+  params: {name: string} & Partial<
+    Pick<
+      IOrganization,
+      | 'address'
+      | 'address2'
+      | 'phone'
+      | 'contact_email'
+      | 'url'
+      | 'full_logo_url'
+      | 'thumbnail_url'
+      | 'primary_color'
+      | 'secondary_color'
+      | 'parent_id'
+    >
   >,
 ) =>
   endpoint.api //

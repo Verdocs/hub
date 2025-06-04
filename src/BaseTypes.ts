@@ -99,7 +99,8 @@ export type TWebhookEvent =
   | 'template_created'
   | 'template_updated'
   | 'template_deleted'
-  | 'template_used';
+  | 'template_used'
+  | 'entitlement_used';
 
 export type TTemplateVisibility = 'private' | 'shared' | 'public';
 
@@ -115,3 +116,14 @@ export type TEntitlement = 'envelope' | 'kba_auth' | 'passcode_auth' | 'sms_auth
 export type TRecipientAuthMethod = 'kba' | 'passcode' | 'sms' | 'email' | 'id';
 
 export type TRecipientAuthStep = TRecipientAuthMethod | null;
+
+export type TUsageType =
+  | 'envelope'
+  | 'envelope_canceled'
+  | 'sms_invite'
+  | 'template'
+  | 'auth_email'
+  | 'auth_sms'
+  | 'auth_kba'
+  | 'auth_id'
+  | 'auth_passcode';
