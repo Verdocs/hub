@@ -120,6 +120,7 @@ export type TRecipientAuthStep = TRecipientAuthMethod | null;
 export type TUsageType =
   | 'envelope'
   | 'envelope_canceled'
+  | 'envelope_completed'
   | 'sms_invite'
   | 'template'
   | 'auth_email'
