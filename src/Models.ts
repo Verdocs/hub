@@ -237,6 +237,7 @@ export interface IWebhookEvents {
   envelope_completed: boolean;
   envelope_updated: boolean;
   envelope_canceled: boolean;
+  envelope_expired: boolean;
 
   template_created: boolean;
   template_updated: boolean;

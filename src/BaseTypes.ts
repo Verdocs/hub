@@ -58,6 +58,7 @@ export type THistoryEvent =
   | 'invitation:resent'
   | 'envelope:cc'
   | 'envelope:canceled'
+  | 'envelope:expired'
   | 'owner:updated_recipient_info'
   | 'owner:get_in_person_link'
   | TDeprecatedHistoryEvent;

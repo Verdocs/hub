@@ -38,15 +38,17 @@ import {TCreateEnvelopeRequest} from './Types';
  * ```
  *
  * @group Envelopes
- * @api POST /v2/envelopes Create Envelope From Template
- * @apiBody string(format:uuid) template_id The ID of the template to copy
+ * @api POST /v2/envelopes Create Envelope
+ * @apiBody string(format:uuid) template_id If using a template, the ID of the template to copy
  * @apiBody array(items:ICreateEnvelopeRecipient) recipients A list of recipients to include in the workflow. Must specify one recipient to match each template Role.
+ * @apiBody array(items:IEnvelopeDocument) documents? If not using a template, a list of documents to include in the envelope.
+ * @apiBody array(items:IEnvelopeField) fields? If not using a template, a list of fields to include in the envelope.
  * @apiBody string name? Override the name of the envelope (defaults to the template name).
  * @apiBody string description? Override the description of the envelope (defaults to the template description).
- * @apiBody array(items:IEnvelopeField) fields? Provide default values for fields in the envelope. Note that only "name", "role_name", and "default" should be set in this array.
  * @apiBody boolean no_contact? If set to true, no email or SMS messages will be sent to any recipients.
  * @apiBody integer(min: 0) initial_reminder? Override the template initial-reminder setting.
  * @apiBody integer(min: 0) followup_reminders? Override the template initial-reminder setting.
+ * @apiBody string expires_at? If set, the envelope will automatically expire (be canceled) at this date and time. Expirations must be at least 1 day in the future.
  * @apiSuccess IEnvelope . The newly-created envelope.
  */
 export const createEnvelope = async (endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest) =>
