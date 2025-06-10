@@ -355,6 +355,8 @@ export interface IEnvelope {
   updated_at: string;
   /** Date/time when the envelope was canceled, or null. */
   canceled_at: string;
+  /** Date/time when the envelope will automatically expire, or null. */
+  expires_at?: string;
   /** Defaults to 'private'. If set to 'shared', this envelope will be visible to other users in the same organization. Ignored for personal profiles. */
   visibility: 'private' | 'shared';
   search_key?: string | null;

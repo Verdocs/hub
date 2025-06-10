@@ -185,6 +185,7 @@ export interface ICreateEnvelopeFromTemplateRequest {
   description?: string;
   fields?: Pick<IEnvelopeField, 'name' | 'role_name' | 'default'>[];
   environment?: string;
+  /** If set, Verdocs will not attempt to contact the recipient via email or SMS. */
   no_contact?: boolean;
   /** Override the sender name of the envelope in email and other notifications. NOTE: To prevent spam filters from blocking messages, only the NAME may be overidden. The "from" email address will be notifications@verdocs.com and cannot be changed. */
   sender_name?: string;
@@ -192,6 +193,8 @@ export interface ICreateEnvelopeFromTemplateRequest {
   initial_reminder?: number;
   /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */
   followup_reminders?: number;
+  /** If set, the envelope will automatically expire at the specified date/time (ISO8601, UTC) */
+  expires_at?: string;
 }
 
 export interface ICreateEnvelopeDirectlyRequest {
@@ -202,11 +205,14 @@ export interface ICreateEnvelopeDirectlyRequest {
   documents: IEnvelopeDocument[];
   fields: Pick<IEnvelopeField, 'name' | 'role_name' | 'default'>[];
   environment?: string;
+  /** If set, Verdocs will not attempt to contact the recipient via email or SMS. */
   no_contact?: boolean;
   /** Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable. */
   initial_reminder: number;
   /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */
   followup_reminders: number;
+  /** If set, the envelope will automatically expire at the specified date/time (ISO8601, UTC) */
+  expires_at?: string;
 }
 
 export type TCreateEnvelopeRequest = ICreateEnvelopeFromTemplateRequest | ICreateEnvelopeDirectlyRequest;
