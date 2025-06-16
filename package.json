@@ -1,6 +1,6 @@
 {
   "name": "@verdocs/js-sdk",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "private": false,
   "homepage": "https://github.com/Verdocs/js-sdk",
   "description": "Isomorphic JS/TS SDK providing types and API wrappers for the Verdocs platform for Node and browser clients",
@@ -48,7 +48,7 @@
     "access": "public"
   },
   "dependencies": {
-    "axios": "^1.9.0"
+    "axios": "^1.10.0"
   },
   "peerDependencies": {
     "typescript": "^5.7.3"
