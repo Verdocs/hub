@@ -1,4 +1,4 @@
-import {
+import type {
   IInPersonLinkResponse,
   IUpdateRecipientSubmitParams,
   IUpdateRecipientClaimEnvelope,
@@ -9,9 +9,8 @@ import {
   ISignerTokenResponse,
   TAuthenticateRecipientRequest,
 } from './Types';
-import {IEnvelope, IRecipient} from '../Models';
+import type {IEnvelope, IRecipient} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {TRecipientAuthStep} from '../BaseTypes';
 
 /**
  * Update a recipient's status.
@@ -28,7 +27,7 @@ import {TRecipientAuthStep} from '../BaseTypes';
  * @apiBody array(items:IRecipient) recipients? Ignored unless action is 'prepare'. A list of recipients and their fields to set defaults for.
  * @apiSuccess IRecipient . The updated Recipient.
  */
-export const updateRecipient = async (
+export const updateRecipientStatus = async (
   endpoint: VerdocsEndpoint,
   envelope_id: string,
   role_name: string,
@@ -48,13 +47,13 @@ export const updateRecipient = async (
  * Submit an envelope (signing is finished). Note that all fields must be valid/completed for this to succeed.
  */
 export const envelopeRecipientSubmit = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
-  updateRecipient(endpoint, envelopeId, roleName, {action: 'submit'});
+  updateRecipientStatus(endpoint, envelopeId, roleName, {action: 'submit'});
 
 /**
  * Decline to complete an envelope (signing will not terminated).
  */
 export const envelopeRecipientDecline = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
-  updateRecipient(endpoint, envelopeId, roleName, {action: 'decline'});
+  updateRecipientStatus(endpoint, envelopeId, roleName, {action: 'decline'});
 
 /**
  * Claim / change ownership of an envelope. This is a special-case operation only available in certain workflows.
@@ -66,7 +65,7 @@ export const envelopeRecipientChangeOwner = (
   email: string,
   first_name: string,
   last_name: string,
-) => updateRecipient(endpoint, envelope_id, role_name, {action: 'owner_update', email, first_name, last_name});
+) => updateRecipientStatus(endpoint, envelope_id, role_name, {action: 'owner_update', email, first_name, last_name});
 
 /**
  * Agree to electronic signing.
@@ -77,7 +76,7 @@ export const envelopeRecipientAgree = (
   roleName: string,
   agreed: boolean,
   disclosure?: string,
-) => updateRecipient(endpoint, envelopeId, roleName, {action: 'update', agreed, disclosure});
+) => updateRecipientStatus(endpoint, envelopeId, roleName, {action: 'update', agreed, disclosure});
 
 /**
  * Change a recipient's name.
@@ -88,13 +87,13 @@ export const envelopeRecipientUpdateName = (
   roleName: string,
   first_name: string,
   last_name: string,
-) => updateRecipient(endpoint, envelopeId, roleName, {action: 'update', first_name, last_name});
+) => updateRecipientStatus(endpoint, envelopeId, roleName, {action: 'update', first_name, last_name});
 
 /**
  * Change a recipient's name.
  */
 export const envelopeRecipientPrepare = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, recipients: IRecipient[]) =>
-  updateRecipient(endpoint, envelopeId, roleName, {action: 'prepare', recipients});
+  updateRecipientStatus(endpoint, envelopeId, roleName, {action: 'prepare', recipients});
 
 /**
  * Begin a signing session for an Envelope. This path requires an invite code, and should generally
@@ -191,5 +190,34 @@ export const sendDelegate = (endpoint: VerdocsEndpoint, envelopeId: string, role
  */
 export const resendInvitation = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
   endpoint.api //
-    .put(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'resend'})
+    .put<{status: 'OK'}>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'resend'})
+    .then((r) => r.data);
+
+/**
+ * Update a recipient. NOTE: User interfaces should rate-limit this operation to
+ * avoid spamming recipients. Excessive use of this endpoint may result in Verdocs rate-limiting
+ * the calling application to prevent abuse. This endpoint will return a 200 OK even if the
+ * no_contact flag is set on the envelope (in which case the call will be ignored).
+ *
+ * @group Recipients
+ * @api PATCH /envelopes/:envelope_id/recipients/:role_name Update Recipient
+ * @apiParam string(format:uuid) envelope_id The envelope to operate on.
+ * @apiParam string role_name The role name to update.
+ * @apiBody string first_name? Update the recipient's first name.
+ * @apiBody string last_name? Update the recipient's last name.
+ * @apiBody string email? Update the recipient's email address. Updating this value will trigger a new invitation.
+ * @apiBody string message? Update the recipient's invite message. Updating this value will trigger a new invitation.
+ * @apiBody string phone? Update the recipient's phone number.
+ * @apiBody string passcode? If passcode authentication is used, the recipient's address to prefill. May only be changed if the recipient has not already completed passcode-based auth.
+ * @apiBody string address? If KBA-based authentication is used, the recipient's address to prefill. May only be changed if the recipient has not already completed KBA-based auth.
+ * @apiBody string city? If KBA-based authentication is used, the recipient's city to prefill. May only be changed if the recipient has not already completed KBA-based auth.
+ * @apiBody string state? If KBA-based authentication is used, the recipient's state to prefill. May only be changed if the recipient has not already completed KBA-based auth.
+ * @apiBody string zip? If KBA-based authentication is used, the recipient's zip code to prefill. May only be changed if the recipient has not already completed KBA-based auth.
+ * @apiBody string dob? If KBA-based authentication is used, the recipient's date of birth to prefill. May only be changed if the recipient has not already completed KBA-based auth.
+ * @apiBody string ssn_last_4? If KBA-based authentication is used, the recipient's SSN-last-4 to prefill. May only be changed if the recipient has not already completed KBA-based auth.
+ * @apiSuccess IRecipient . The updated Recipient.
+ */
+export const updateRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
+  endpoint.api //
+    .patch<IRecipient>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'resend'})
     .then((r) => r.data);

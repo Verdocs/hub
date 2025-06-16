@@ -87,6 +87,7 @@ export interface ICreateEnvelopeRecipient {
   state?: string;
   zip?: string;
   dob?: string;
+  ssn_last_4?: string;
 }
 
 export interface ISignerTokenResponse {
@@ -176,6 +177,32 @@ export interface IUpdateRecipientPrepareParams {
 export interface ICreateEnvelopeReminderRequest {
   setup_time: number;
   interval_time: number;
+}
+
+export interface IUpdateRecipientParams {
+  /** The name of the recipient as it will be displayed in reports and queries, e.g. 'Paige Turner'. */
+  first_name?: string;
+  last_name?: string;
+  /** The email address of the recipient. If changed, a new invite will be sent. */
+  email?: string;
+  /** The phone number of the recipient. If changed, a new invite will be sent. */
+  phone?: string;
+  /** A custom message to include in the email or SMS invitation. May be left blank for a default message. */
+  message?: string;
+  /** If Passcode-based authentication is used, the passcode to challenge the user to enter. May only be changed if the recipient has not already completed passcode-based auth. */
+  passcode?: string;
+  /** If KBA-based authentication is used, the recipient's address to prefill. May only be changed if the recipient has not already completed KBA-based auth. */
+  address?: string;
+  /** If KBA-based authentication is used, the recipient's city to prefill. May only be changed if the recipient has not already completed KBA-based auth. */
+  city?: string;
+  /** If KBA-based authentication is used, the recipient's state to prefill. May only be changed if the recipient has not already completed KBA-based auth. */
+  state?: string;
+  /** If KBA-based authentication is used, the recipient's zip code to prefill. May only be changed if the recipient has not already completed KBA-based auth. */
+  zip?: string;
+  /** If KBA-based authentication is used, the recipient's date of birth to prefill. May only be changed if the recipient has not already completed KBA-based auth. */
+  dob?: string;
+  /** If KBA-based authentication is used, the recipient's SSN-Last-4 to prefill. May only be changed if the recipient has not already completed KBA-based auth. */
+  ssn_last_4?: string;
 }
 
 export interface ICreateEnvelopeFromTemplateRequest {
