@@ -8,6 +8,7 @@ import type {
   IUpdateRecipientPrepareParams,
   ISignerTokenResponse,
   TAuthenticateRecipientRequest,
+  IUpdateRecipientParams,
 } from './Types';
 import type {IEnvelope, IRecipient} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
@@ -217,7 +218,7 @@ export const resendInvitation = (endpoint: VerdocsEndpoint, envelopeId: string, 
  * @apiBody string ssn_last_4? If KBA-based authentication is used, the recipient's SSN-last-4 to prefill. May only be changed if the recipient has not already completed KBA-based auth.
  * @apiSuccess IRecipient . The updated Recipient.
  */
-export const updateRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
+export const updateRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, params: IUpdateRecipientParams) =>
   endpoint.api //
-    .patch<IRecipient>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'resend'})
+    .patch<IRecipient>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, params)
     .then((r) => r.data);
