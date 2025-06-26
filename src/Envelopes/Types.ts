@@ -1,5 +1,5 @@
-import {TEnvelopeStatus, TRecipientAuthMethod, TRecipientType} from '../BaseTypes';
-import {IEnvelope, IEnvelopeDocument, IEnvelopeField, IRecipient, TAccessKey} from '../Models';
+import {TEnvelopeStatus, TFieldType, TRecipientAuthMethod, TRecipientType} from '../BaseTypes';
+import {IDropdownOption, IEnvelope, IEnvelopeDocument, IEnvelopeField, IEnvelopeFieldSettings, IRecipient, TAccessKey} from '../Models';
 
 export interface IEnvelopesSearchResult {
   page: number;
@@ -211,6 +211,7 @@ export interface ICreateEnvelopeFromTemplateRequest {
   name?: string;
   description?: string;
   fields?: Pick<IEnvelopeField, 'name' | 'role_name' | 'default'>[];
+  /** Environment in which to execute the envelope. Do not set this unless instructed to do so by Verdocs support. */
   environment?: string;
   /** If set, Verdocs will not attempt to contact the recipient via email or SMS. */
   no_contact?: boolean;
@@ -230,7 +231,15 @@ export interface ICreateEnvelopeDirectlyRequest {
   visiblity?: 'private' | 'shared';
   recipients: ICreateEnvelopeRecipient[];
   documents: IEnvelopeDocument[];
-  fields: Pick<IEnvelopeField, 'name' | 'role_name' | 'default'>[];
+  /** Fields to create in the envelope. Note that document_id is a number in this call and should match the index of the document in the documents array. */
+  fields: (Pick<IEnvelopeField, 'name' | 'role_name' | 'type' | 'page' | 'x' | 'y'> &
+    Partial<
+      Pick<
+        IEnvelopeField,
+        'default' | 'placeholder' | 'multiline' | 'group' | 'options' | 'required' | 'readonly' | 'label' | 'page' | 'width' | 'height'
+      >
+    > & {document_id: number})[];
+  /** Environment in which to execute the envelope. Do not set this unless instructed to do so by Verdocs support. */
   environment?: string;
   /** If set, Verdocs will not attempt to contact the recipient via email or SMS. */
   no_contact?: boolean;
