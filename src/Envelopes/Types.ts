@@ -1,5 +1,5 @@
-import {TEnvelopeStatus, TFieldType, TRecipientAuthMethod, TRecipientType} from '../BaseTypes';
-import {IDropdownOption, IEnvelope, IEnvelopeDocument, IEnvelopeField, IEnvelopeFieldSettings, IRecipient, TAccessKey} from '../Models';
+import type {TEnvelopeStatus, TFieldType, TRecipientAuthMethod, TRecipientType} from '../BaseTypes';
+import type {IDropdownOption, IEnvelope, IRecipient, TAccessKey} from '../Models';
 
 export interface IEnvelopesSearchResult {
   page: number;
@@ -18,13 +18,66 @@ export interface IDocumentSearchOptions {
   recipient_status?: TEnvelopeStatus[];
 }
 
-export interface ICreateEnvelopeRecipient {
+export interface ICreateEnvelopeRecipientFromTemplate {
+  /**
+   * Unique identifier for the recipient. When using a template, must match one of the pre-defined roles in the template's Recipients list.
+   */
+  role_name: string;
+
+  /** The name of the recipient as it will be displayed in reports and queries, e.g. 'Paige Turner'. */
+  first_name: string;
+  last_name: string;
+
+  /** The email address of the recipient. One of `email` or `phone` must be provided. */
+  email?: string;
+
+  /**
+   * The phone number of the recipient. One of `email` or `phone` must be provided. If `phone` is included, the
+   * recipient will receive an SMS notification for the document.
+   */
+  phone?: string;
+
+  /** Whether the recipient may delegate their tasks to others. Should be false for most standard workflows. */
+  delegator?: boolean;
+
+  /** A custom message to include in the email or SMS invitation. May be left blank for a default message. */
+  message?: string;
+
+  /** To enable authentication for the recipient, set to 'pin' or 'identity'. */
+  auth_methods?: TRecipientAuthMethod;
+
+  /** If Passcode-based authentication is used, the passcode to challenge the user to enter. */
+  passcode?: string;
+
+  /**
+   * If SMS-based authentication is used, the phone number to which one-time codes should be sent.
+   * NOTE: This may be different from the phone number used for notifications, but leaving it blank
+   * will trigger an error rather than defaulting to the notifications phone number to avoid mistaken
+   * assumptions (e.g. if SMS notifications are not enabled for the organization, but SMS authentication
+   * is).
+   */
+  phone_auth?: string;
+
+  /** Pre-fill KBA address for the recipient, if known. */
+  address?: string;
+  /** Pre-fill KBA city for the recipient, if known. */
+  city?: string;
+  /** Pre-fill KBA state for the recipient, if known. */
+  state?: string;
+  /** Pre-fill KBA zip for the recipient, if known. */
+  zip?: string;
+  /** Pre-fill KBA date-of-birth for the recipient, if known. */
+  dob?: string;
+  /** Pre-fill KBA SSN-Last-4 for the recipient, if known. */
+  ssn_last_4?: string;
+}
+
+export interface ICreateEnvelopeRecipientDirectly {
   /** The type of role to create. Most participants in standard flows will be "signer" recipients. */
   type: TRecipientType;
 
   /**
-   * The Role name of the recipient. Please note this is not the person's name. It is the ID of the role, e.g.
-   * 'Recipient 1', 'Seller', etc. This must match one of the pre-defined roles in the template's Recipients list.
+   * Unique identifier for the recipient. When using a template, must match one of the pre-defined roles in the template's Recipients list.
    */
   role_name: string;
 
@@ -47,13 +100,13 @@ export interface ICreateEnvelopeRecipient {
    * and in series between sequence numbers (e.g. all recipients at level "1" must complete their tasks before
    * recipients at level "2" may act).
    */
-  sequence: number;
+  sequence?: number;
 
   /**
    * The 1-based order within the sequence for the recipient. Recipients at the same sequence act in parallel, so
    * this is only for display purposes.
    */
-  order: number;
+  order?: number;
 
   /** Whether the recipient may delegate their tasks to others. Should be false for most standard workflows. */
   delegator?: boolean;
@@ -62,7 +115,7 @@ export interface ICreateEnvelopeRecipient {
   message?: string;
 
   /** To enable authentication for the recipient, set to 'pin' or 'identity'. */
-  auth_method?: TRecipientAuthMethod;
+  auth_methods?: TRecipientAuthMethod;
 
   /** If Passcode-based authentication is used, the passcode to challenge the user to enter. */
   passcode?: string;
@@ -76,17 +129,17 @@ export interface ICreateEnvelopeRecipient {
    */
   phone_auth?: string;
 
-  /*
-   * Pre-fill data for the recipient, if known. NOTE: Even when pre-filling these fields for a recipient, if
-   * KBA is enabled, the recipient must be provided with the option to confirm those details before proceeding,
-   * provide at least one data point themselves (typically date of birth). Providing every value here will
-   trigger an error.
-   */
+  /** Pre-fill KBA address for the recipient, if known. */
   address?: string;
+  /** Pre-fill KBA city for the recipient, if known. */
   city?: string;
+  /** Pre-fill KBA state for the recipient, if known. */
   state?: string;
+  /** Pre-fill KBA zip for the recipient, if known. */
   zip?: string;
+  /** Pre-fill KBA date-of-birth for the recipient, if known. */
   dob?: string;
+  /** Pre-fill KBA SSN-Last-4 for the recipient, if known. */
   ssn_last_4?: string;
 }
 
@@ -205,50 +258,154 @@ export interface IUpdateRecipientParams {
   ssn_last_4?: string;
 }
 
+export interface ICreateEnvelopeDocumentFromData {
+  /** The order in which the document should be displayed. */
+  order?: number;
+  /** Override the detected MIME type for the document. */
+  mime?: string;
+  /** The name of the document. Will be used to generate the final filename. */
+  name?: string;
+  /** Base-64 encoded content of the document. */
+  data: string;
+}
+
+export interface ICreateEnvelopeDocumentFromUri {
+  /** The order in which the document should be displayed. */
+  order?: number;
+  /** Override the detected MIME type for the document. */
+  mime?: string;
+  /** The name of the document. Will be used to generate the final filename. */
+  name?: string;
+  /** URI from which Verdocs should download a copy of the document. Pre-signed URLs with short (<60s) expirations are strongly recommended. */
+  uri: string;
+}
+
+export interface ICreateEnvelopeDocumentFromFile {
+  /** The order in which the document should be displayed. */
+  order?: number;
+  /** Override the detected MIME type for the document. */
+  mime?: string;
+  /** The name of the document. Will be used to generate the final filename. */
+  name?: string;
+  /** Directly attach a file via form-url-encoded POST attachment. */
+  file?: any;
+}
+
+export interface ICreateEnvelopeFieldFromTemplate {
+  /** The machine name of the field, e.g. `Buyer-textbox-1` */
+  name: string;
+  /** The ID of the role in the recipients list, e.g. `Recipient 2` */
+  role_name: string;
+  /** Override the "required" setting from the template. */
+  required?: boolean;
+  /** Override the "readonly" setting from the template. */
+  readonly?: boolean;
+  /** Override the "label" setting from the template. */
+  label?: string;
+  /** Override the "default" setting from the template. If a default is provided, the field will be marked as "prepared". */
+  default?: string;
+  /** Override the "placeholder" setting from the template. */
+  placeholder?: string;
+  /** Override the "multiline" setting from the template. */
+  multiline?: boolean;
+  /** For fields that support grouping (radio buttons and check boxes) the value selected will be stored under this name. */
+  group?: string;
+  /** Override the "options" setting from the template. */
+  options: IDropdownOption[] | null;
+}
+
+export interface ICreateEnvelopeFieldDirectly {
+  /** The array index of the document the field is for. */
+  document_id: number;
+  /** The machine name of the field, e.g. `Buyer-textbox-1` */
+  name: string;
+  /** The ID of the role in the recipients list, e.g. `Recipient 2` */
+  role_name: string;
+  /** The type of the field */
+  type: TFieldType;
+  /** The 1-based page number the field is displayed on. "Self-placed" fields that the user must apply will be on page 0. */
+  page: number;
+  /** The X position of the field. */
+  x: number;
+  /** The Y position of the field. */
+  y: number;
+  /** The width of the field. */
+  width?: number;
+  /** The height of the field. */
+  height?: number;
+  /** If true, the field will be required */
+  required?: boolean;
+  /** If true, the field will be not be editable by the participant(s). NOTE: Fields may not be both required and readonly. */
+  readonly?: boolean;
+  /** If set, the placeholder/label for the field. */
+  label?: string;
+  /** The default value for the field. */
+  default?: string;
+  /** The placeholder to show in the field. */
+  placeholder?: string;
+  /** For text boxes, allows more than one line of text to be entered. */
+  multiline?: boolean;
+  /** For fields that support grouping (radio buttons and check boxes) the value selected will be stored under this name. */
+  group?: string;
+  /** For dropdowns, the options that are selectable. */
+  options?: IDropdownOption[] | null;
+}
+
 export interface ICreateEnvelopeFromTemplateRequest {
   template_id: string;
-  recipients: ICreateEnvelopeRecipient[];
+  /** Override the name of the envelope to create. */
   name?: string;
+  /** Override the description of the envelope to create. */
   description?: string;
-  fields?: Pick<IEnvelopeField, 'name' | 'role_name' | 'default'>[];
-  /** Environment in which to execute the envelope. Do not set this unless instructed to do so by Verdocs support. */
-  environment?: string;
-  /** If set, Verdocs will not attempt to contact the recipient via email or SMS. */
-  no_contact?: boolean;
   /** Override the sender name of the envelope in email and other notifications. NOTE: To prevent spam filters from blocking messages, only the NAME may be overidden. The "from" email address will be notifications@verdocs.com and cannot be changed. */
   sender_name?: string;
+  /** If set, Verdocs will not attempt to contact the recipient via email or SMS. */
+  no_contact?: boolean;
+  /** If set, the envelope will automatically expire at the specified date/time (ISO8601, UTC) */
+  expires_at?: string;
+  /** Environment in which to execute the envelope. Do not set this unless instructed to do so by Verdocs support. */
+  environment?: string;
+  /** Visibility of the envelope. If set to 'shared', the envelope will be visible to all users in the organization. If set to 'private', only the creator and recipients will see it. */
+  visibility?: 'private' | 'shared';
   /** Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable. */
   initial_reminder?: number;
   /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */
   followup_reminders?: number;
-  /** If set, the envelope will automatically expire at the specified date/time (ISO8601, UTC) */
-  expires_at?: string;
+  /** List of recipients to configure. */
+  recipients: ICreateEnvelopeRecipientFromTemplate[];
+  /** Optional metadata to attach to the envelope. This is not used by Verdocs, but may be used for internal tracking purposes by the caller. This is not shown to recipients, but is not private and should not be used to store sensitive data. */
+  data?: any;
+  /** Fields to create in the envelope. Note that document_id is a number in this call and should match the index of the document in the documents array. */
+  fields?: ICreateEnvelopeFieldFromTemplate;
 }
 
 export interface ICreateEnvelopeDirectlyRequest {
+  /** The name of the envelope to create. */
   name: string;
+  /** The description of the envelope to create. */
   description?: string;
-  visiblity?: 'private' | 'shared';
-  recipients: ICreateEnvelopeRecipient[];
-  documents: IEnvelopeDocument[];
-  /** Fields to create in the envelope. Note that document_id is a number in this call and should match the index of the document in the documents array. */
-  fields: (Pick<IEnvelopeField, 'name' | 'role_name' | 'type' | 'page' | 'x' | 'y'> &
-    Partial<
-      Pick<
-        IEnvelopeField,
-        'default' | 'placeholder' | 'multiline' | 'group' | 'options' | 'required' | 'readonly' | 'label' | 'page' | 'width' | 'height'
-      >
-    > & {document_id: number})[];
-  /** Environment in which to execute the envelope. Do not set this unless instructed to do so by Verdocs support. */
-  environment?: string;
+  /** Override the sender name of the envelope in email and other notifications. NOTE: To prevent spam filters from blocking messages, only the NAME may be overidden. The "from" email address will be notifications@verdocs.com and cannot be changed. */
+  sender_name?: string;
   /** If set, Verdocs will not attempt to contact the recipient via email or SMS. */
   no_contact?: boolean;
+  /** If set, the envelope will automatically expire at the specified date/time (ISO8601, UTC) */
+  expires_at?: string;
+  /** Environment in which to execute the envelope. Do not set this unless instructed to do so by Verdocs support. */
+  environment?: string;
+  /** Visibility of the envelope. If set to 'shared', the envelope will be visible to all users in the organization. If set to 'private', only the creator and recipients will see it. */
+  visibility?: 'private' | 'shared';
   /** Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable. */
   initial_reminder: number;
   /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */
   followup_reminders: number;
-  /** If set, the envelope will automatically expire at the specified date/time (ISO8601, UTC) */
-  expires_at?: string;
+  /** Optional metadata to attach to the envelope. This is not used by Verdocs, but may be used for internal tracking purposes by the caller. This is not shown to recipients, but is not private and should not be used to store sensitive data. */
+  data?: any;
+  /** List of recipients to configure. */
+  recipients: ICreateEnvelopeRecipientDirectly[];
+  /** Documents to attach to the envelope. */
+  documents: (ICreateEnvelopeDocumentFromData | ICreateEnvelopeDocumentFromUri | ICreateEnvelopeDocumentFromFile)[];
+  /** Fields to create in the envelope. Note that document_id is a number in this call and should match the index of the document in the documents array. */
+  fields: ICreateEnvelopeFieldDirectly[];
 }
 
 export type TCreateEnvelopeRequest = ICreateEnvelopeFromTemplateRequest | ICreateEnvelopeDirectlyRequest;
