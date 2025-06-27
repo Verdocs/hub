@@ -44,7 +44,7 @@ export interface ICreateEnvelopeRecipientFromTemplate {
   message?: string;
 
   /** To enable authentication for the recipient, set to 'pin' or 'identity'. */
-  auth_methods?: TRecipientAuthMethod;
+  auth_methods?: TRecipientAuthMethod[];
 
   /** If Passcode-based authentication is used, the passcode to challenge the user to enter. */
   passcode?: string;
@@ -115,7 +115,7 @@ export interface ICreateEnvelopeRecipientDirectly {
   message?: string;
 
   /** To enable authentication for the recipient, set to 'pin' or 'identity'. */
-  auth_methods?: TRecipientAuthMethod;
+  auth_methods?: TRecipientAuthMethod[];
 
   /** If Passcode-based authentication is used, the passcode to challenge the user to enter. */
   passcode?: string;
