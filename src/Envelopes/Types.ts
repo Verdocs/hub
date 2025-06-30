@@ -311,7 +311,7 @@ export interface ICreateEnvelopeFieldFromTemplate {
   /** For fields that support grouping (radio buttons and check boxes) the value selected will be stored under this name. */
   group?: string;
   /** Override the "options" setting from the template. */
-  options: IDropdownOption[] | null;
+  options?: IDropdownOption[] | null;
 }
 
 export interface ICreateEnvelopeFieldDirectly {
