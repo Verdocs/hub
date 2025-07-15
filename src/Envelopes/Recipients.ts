@@ -168,14 +168,7 @@ export const verifySigner = (endpoint: VerdocsEndpoint, params: TAuthenticateRec
     .post<ISignerTokenResponse>(`/v2/sign/verify`, params)
     .then((r) => r.data);
 
-/**
- * Send a delegation request.
- */
-export const sendDelegate = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
-  endpoint.api //
-    .post<IEnvelope>(`/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`)
-    .then((r) => r.data);
-
+// TODO: Use "oneOf" to describe the unions of these two calls.
 /**
  * Resend a recipient's invitation. NOTE: User interfaces should rate-limit this operation to
  * avoid spamming recipients. Excessive use of this endpoint may result in Verdocs rate-limiting
@@ -186,12 +179,49 @@ export const sendDelegate = (endpoint: VerdocsEndpoint, envelopeId: string, role
  * @api PUT /v2/envelopes/:envelope_id/recipients/:role_name Resend Invitation
  * @apiParam string(format:uuid) envelope_id The envelope to operate on.
  * @apiParam string role_name The role to operate on.
- * @apiBody string(enum:'resend') action The operation to perform.
+ * @apiBody string(enum:'resend') action The operation to perform (resend).
  * @apiSuccess string . Success message.
  */
 export const resendInvitation = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
   endpoint.api //
     .put<{status: 'OK'}>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'resend'})
+    .then((r) => r.data);
+
+/**
+ * Delegate a recipient's signing responsibility. The envelope sender must enable this before the
+ * recipient calls this endpoint, and only the recipient may call it, or the call will be rejected.
+ * The recipient's role will be renamed and configured to indicate to whom the delegation was made,
+ * and a new recipient entry with the updated details (e.g. name and email address) will be added
+ * to the flow with the same role_name, order, and sequence of the original recipient. Unless
+ * no_contact is set on the envelope, the delegation recipient and envelope creator will also be
+ * notified.
+ *
+ * @group Recipients
+ * @api PUT /v2/envelopes/:envelope_id/recipients/:role_name Delegate Recipient
+ * @apiParam string(format:uuid) envelope_id The envelope to operate on.
+ * @apiParam string role_name The role to operate on.
+ * @apiBody string(enum:'delegate') action The operation to perform (delegate).
+ * @apiBody string first_name The first name of the new recipient.
+ * @apiBody string last_name The last name of the new recipient.
+ * @apiBody string email The email address of the new recipient.
+ * @apiBody string phone? Optional phone number for the new recipient.
+ * @apiBody string message? Optional phone number for the new recipient's invitation.
+ * @apiSuccess string . Success message.
+ */
+export const delegateRecipient = (
+  endpoint: VerdocsEndpoint,
+  envelopeId: string,
+  roleName: string,
+  params: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone?: string;
+    message?: string;
+  },
+) =>
+  endpoint.api //
+    .put<{status: 'OK'}>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'delegate', ...params})
     .then((r) => r.data);
 
 /**
