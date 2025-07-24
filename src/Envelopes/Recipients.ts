@@ -69,15 +69,12 @@ export const envelopeRecipientChangeOwner = (
 ) => updateRecipientStatus(endpoint, envelope_id, role_name, {action: 'owner_update', email, first_name, last_name});
 
 /**
- * Agree to electronic signing.
+ * Agree to electronic signing disclosures.
  */
-export const envelopeRecipientAgree = (
-  endpoint: VerdocsEndpoint,
-  envelopeId: string,
-  roleName: string,
-  agreed: boolean,
-  disclosures?: string,
-) => updateRecipientStatus(endpoint, envelopeId, roleName, {action: 'update', agreed, disclosures});
+export const envelopeRecipientAgree = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, disclosures?: string) =>
+  endpoint.api //
+    .put<IRecipient>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'accept', disclosures})
+    .then((r) => r.data);
 
 /**
  * Change a recipient's name.
