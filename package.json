@@ -1,6 +1,6 @@
 {
   "name": "@verdocs/js-sdk",
-  "version": "5.3.3",
+  "version": "5.3.4",
   "private": false,
   "homepage": "https://github.com/Verdocs/js-sdk",
   "description": "Isomorphic JS/TS SDK providing types and API wrappers for the Verdocs platform for Node and browser clients",
@@ -42,7 +42,7 @@
     "generate-openapi": "npx tsx openapi/generate-openapi.ts",
     "edit-openapi": "docker run -p 8081:80 -v $(pwd):/sdk -v $(pwd):/sdk swaggerapi/swagger-editor:next-v5",
     "view-openapi": "docker run -p 8081:80 -v $(pwd):/sdk swaggerapi/swagger-ui",
-    "push": "npm run build && npm publish"
+    "push": "npm run build && npm publish && npm run docs"
   },
   "publishConfig": {
     "access": "public"

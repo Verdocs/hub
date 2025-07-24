@@ -550,9 +550,9 @@ export interface IRecipient {
   /** Last 4 digits of SSN. Only used in KBA workflows. */
   ssn_last_4?: string | null;
   /** The disclosure text the recipient accepted. */
-  disclosure?: string | null;
+  disclosures?: string | null;
   /** Date/time the recipient agreed to their e-signing disclosures. */
-  disclosure_accepted_at?: string | null;
+  disclosures_accepted_at?: string | null;
   /** Date of birth. Only used in KBA workflows. */
   dob?: string | null;
   /**

@@ -10,7 +10,7 @@ import type {
   TAuthenticateRecipientRequest,
   IUpdateRecipientParams,
 } from './Types';
-import type {IEnvelope, IRecipient} from '../Models';
+import type {IRecipient} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 /**
@@ -76,8 +76,8 @@ export const envelopeRecipientAgree = (
   envelopeId: string,
   roleName: string,
   agreed: boolean,
-  disclosure?: string,
-) => updateRecipientStatus(endpoint, envelopeId, roleName, {action: 'update', agreed, disclosure});
+  disclosures?: string,
+) => updateRecipientStatus(endpoint, envelopeId, roleName, {action: 'update', agreed, disclosures});
 
 /**
  * Change a recipient's name.

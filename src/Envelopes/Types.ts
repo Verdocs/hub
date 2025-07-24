@@ -213,7 +213,7 @@ export interface IUpdateRecipientStatus {
 export interface IUpdateRecipientAgreedParams {
   action: 'update';
   agreed: boolean;
-  disclosure?: string;
+  disclosures?: string;
 }
 
 export interface IUpdateRecipientNameParams {
