@@ -98,6 +98,7 @@ export type TWebhookEvent =
   | 'envelope_canceled'
   | 'envelope_updated'
   | 'envelope_expired'
+  | 'recipient_delegated'
   | 'template_created'
   | 'template_updated'
   | 'template_deleted'

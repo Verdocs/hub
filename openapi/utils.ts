@@ -106,7 +106,7 @@ export const jsTypeToSchema = (type: string, options?: string) => {
           if (['int32', 'int64'].includes(value)) {
             schema.type = 'integer';
             schema.format = value;
-          } else if (['image/png', 'image/jpeg'].includes(value)) {
+          } else if (['binary', 'byte', 'image/png', 'image/jpeg'].includes(value)) {
             schema.type = 'string';
             schema.format = 'binary';
           } else if (['float', 'double'].includes(value)) {
