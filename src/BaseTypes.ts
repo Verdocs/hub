@@ -103,6 +103,7 @@ export type TWebhookEvent =
   | 'template_updated'
   | 'template_deleted'
   | 'template_used'
+  | 'kba_event'
   | 'entitlement_used';
 
 export type TTemplateVisibility = 'private' | 'shared' | 'public';
