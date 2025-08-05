@@ -232,6 +232,7 @@ export interface IUser {
   updated_at: string;
 }
 
+// TODO: Combine this with TWebhookEvent in BaseTypes.
 export interface IWebhookEvents {
   envelope_created: boolean;
   envelope_completed: boolean;
@@ -244,6 +245,7 @@ export interface IWebhookEvents {
   template_deleted: boolean;
   template_used: boolean;
 
+  recipient_delegated: boolean;
   kba_event: boolean;
   entitlement_used: boolean;
 }
