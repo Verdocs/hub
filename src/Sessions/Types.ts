@@ -10,9 +10,17 @@ export interface ISigningSession {
   email: string;
   iat: number;
   exp: number;
+  session_type: 'signing';
+  key_type: TAccessKeyType;
+  envelope_id: string;
+  role_name: string;
+  // @deprecated
   ['https://verdocs.com/session_type']: 'signing';
+  // @deprecated
   ['https://verdocs.com/key_type']: TAccessKeyType;
+  // @deprecated
   ['https://verdocs.com/envelope_id']: string;
+  // @deprecated
   ['https://verdocs.com/role_name']: string;
 }
 
@@ -27,9 +35,17 @@ export interface IUserSession {
   email: string;
   iat: number;
   exp: number;
+  session_type: 'user';
+  profile_id: string;
+  organization_id: string;
+  global_admin: boolean;
+  // @deprecated
   ['https://verdocs.com/session_type']: 'user';
+  // @deprecated
   ['https://verdocs.com/profile_id']: string;
+  // @deprecated
   ['https://verdocs.com/organization_id']: string;
+  // @deprecated
   ['https://verdocs.com/global_admin']: boolean;
 }
 
