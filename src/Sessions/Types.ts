@@ -7,11 +7,12 @@ export interface ISigningSession {
   aud: string;
   iss: string;
   sub: string; // Verdocs access key ID
-  email: string;
   iat: number;
   exp: number;
   session_type: 'signing';
   key_type: TAccessKeyType;
+  email: string;
+  profile_id: string;
   envelope_id: string;
   role_name: string;
   // @deprecated
@@ -32,10 +33,10 @@ export interface IUserSession {
   aud: string;
   iss: string;
   sub: string; // Verdocs user_id
-  email: string;
   iat: number;
   exp: number;
   session_type: 'user';
+  email: string;
   profile_id: string;
   organization_id: string;
   global_admin: boolean;
