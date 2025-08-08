@@ -75,40 +75,48 @@ export const getEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string)
  * this will return only the **metadata** the caller is allowed to view.
  *
  * @group Envelope Documents
- * @api GET /envelopes/:id Get envelope document
- * @apiParam string(format: 'uuid') id The ID of the document to retrieve.
+ * @api GET /v2/envelope-documents/:id Get envelope document
+ * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
  * @apiSuccess IEnvelopeDocument . The detailed metadata for the document requested
  */
-export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
+export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string) =>
   endpoint.api //
-    .get<IEnvelopeDocument>(`/envelopes/${envelopeId}/envelope_documents/${documentId}`)
+    .get<IEnvelopeDocument>(`/v2/envelope-documents/${documentId}`)
     .then((r) => r.data);
 
 /**
- * Get a pre-signed download link for an Envelope Document. This link expires quickly, so it should
- * be accessed immediately and never shared. Content-Disposition will be set to "download".
+ * Download a document directly.
+ */
+export const downloadDocument = async (endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string) =>
+  endpoint.api //
+    .get<string>(`/v2/envelope-documents/${documentId}?type=file`)
+    .then((r) => r.data);
+
+/**
+ * Get an envelope document's metadata, or the document itself. If no "type" parameter is specified,
+ * the document metadata is returned. If "type" is set to "file", the document binary content is
+ * returned with Content-Type set to the MIME type of the file. If "type" is set to "download", a
+ * string download link will be returned. If "type" is set to "preview" a string preview link will
+ * be returned. This link expires quickly, so it should be accessed immediately and never shared.
  *
  * @group Envelope Documents
- * @api GET /envelopes/:envelope_id/envelope_documents/:document_id Preview, Download, or Link to a Document
- * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to retrieve.
+ * @api GET /v2/envelope-documents/:document_id Preview, Download, or Link to a Document
  * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
- * @apiQuery boolean download? Set to true to generate a download link (content-disposition: download).
- * @apiQuery boolean preview? Set to true to generate a preview link (content-disposition: inline).
- * @apiQuery boolean file? Set to true to return the raw binary BLOB data of the file rather than a link.
+ * @apiQuery string(enum:'file'|'download'|'preview') type? Download the file directly, generate a download link, or generate a preview link.
  * @apiSuccess string . The generated link.
  */
-export const getDocumentDownloadLink = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
+export const getDocumentDownloadLink = async (endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string) =>
   endpoint.api //
-    .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}?download=true`)
+    .get<string>(`/v2/envelope-documents/${documentId}?type=download`)
     .then((r) => r.data);
 
 /**
  * Get a pre-signed preview link for an Envelope Document. This link expires quickly, so it should
  * be accessed immediately and never shared. Content-Disposition will be set to "inline".
  */
-export const getDocumentPreviewLink = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
+export const getDocumentPreviewLink = async (endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string) =>
   endpoint.api //
-    .get<string>(`/envelopes/${envelopeId}/envelope_documents/${documentId}?preview=true`)
+    .get<string>(`/v2/envelope-documents/${documentId}?type=preview`)
     .then((r) => r.data);
 
 /**
