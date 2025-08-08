@@ -89,7 +89,7 @@ export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, _envelopeId
  */
 export const downloadDocument = async (endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string) =>
   endpoint.api //
-    .get<string>(`/v2/envelope-documents/${documentId}?type=file`)
+    .get(`/v2/envelope-documents/${documentId}?type=file`, {responseType: 'blob'})
     .then((r) => r.data);
 
 /**
@@ -137,10 +137,12 @@ export const cancelEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: stri
  * Get (binary download) a file attached to an Envelope. It is important to use this method
  * rather than a direct A HREF or similar link to set the authorization headers for the
  * request.
+ *
+ * @deprecated Use getDocumentPreviewLink/getDocumentDownloadLink/downloadDocument instead.
  */
 export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
   endpoint.api //
-    .get(`/envelopes/${envelopeId}/envelope_documents/${documentId}?file=true`, {responseType: 'blob'})
+    .get(`/v2/envelope-documents/${documentId}?type=file`, {responseType: 'blob'})
     .then((r) => r.data);
 
 /**

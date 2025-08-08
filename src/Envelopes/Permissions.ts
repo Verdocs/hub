@@ -7,14 +7,38 @@
 import {IEnvelope, IProfile, IRecipient} from '../Models';
 
 /**
+ * Check to see if the profile ID owns the envelope.
+ */
+export const isEnvelopeOwner = (profile_id: string | null | undefined, envelope: IEnvelope) => envelope.profile_id === profile_id;
+
+/**
+ * Check to see if the profile ID is a recipient within the envelope.
+ */
+export const isEnvelopeRecipient = (profile_id: string | null | undefined, envelope: IEnvelope) =>
+  (envelope.recipients || []).some((recipient) => recipient.profile_id === profile_id);
+
+/**
+ * Check to see if the profile ID is the envelope's sender or one of the recipients.
+ */
+export const canAccessEnvelope = (profile_id: string | null | undefined, envelope: IEnvelope) =>
+  isEnvelopeOwner(profile_id, envelope) || isEnvelopeRecipient(profile_id, envelope);
+
+/**
  * Check to see if the user owns the envelope.
  */
 export const userIsEnvelopeOwner = (profile: IProfile | null | undefined, envelope: IEnvelope) => envelope.profile_id === profile?.id;
 
 /**
- * Check to see if the user owns the envelope.
+ * Check to see if the user is a recipient within the envelope.
  */
-export const userIsEnvelopeRecipient = (profile: IProfile | null | undefined, envelope: IEnvelope) => envelope.profile_id === profile?.id;
+export const userIsEnvelopeRecipient = (profile: IProfile | null | undefined, envelope: IEnvelope) =>
+  (envelope.recipients || []).some((recipient) => recipient.profile_id === profile?.id);
+
+/**
+ * Check to see if the profile ID is the envelope's sender or one of the recipients.
+ */
+export const useCanAccessEnvelope = (profile: IProfile | null | undefined, envelope: IEnvelope) =>
+  userIsEnvelopeOwner(profile, envelope) || userIsEnvelopeRecipient(profile, envelope);
 
 /**
  * Check to see if the envelope has pending actions.
