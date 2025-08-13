@@ -165,23 +165,9 @@ export const verifySigner = (endpoint: VerdocsEndpoint, params: TAuthenticateRec
     .post<ISignerTokenResponse>(`/v2/sign/verify`, params)
     .then((r) => r.data);
 
-// TODO: Use "oneOf" to describe the unions of these two calls.
-/**
- * Resend a recipient's invitation. NOTE: User interfaces should rate-limit this operation to
- * avoid spamming recipients. Excessive use of this endpoint may result in Verdocs rate-limiting
- * the calling application to prevent abuse. This endpoint will return a 200 OK even if the
- * no_contact flag is set on the envelope (in which case the call will be ignored).
- *
- * @group Recipients
- * @api PUT /v2/envelopes/:envelope_id/recipients/:role_name Resend Invitation
- * @apiParam string(format:uuid) envelope_id The envelope to operate on.
- * @apiParam string role_name The role to operate on.
- * @apiBody string(enum:'resend') action The operation to perform (resend).
- * @apiSuccess string . Success message.
- */
-export const resendInvitation = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
+export const resendInvitation = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, message: string) =>
   endpoint.api //
-    .put<{status: 'OK'}>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'resend'})
+    .patch<{status: 'OK'}>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {message})
     .then((r) => r.data);
 
 /**
@@ -222,10 +208,13 @@ export const delegateRecipient = (
     .then((r) => r.data);
 
 /**
- * Update a recipient. NOTE: User interfaces should rate-limit this operation to
- * avoid spamming recipients. Excessive use of this endpoint may result in Verdocs rate-limiting
- * the calling application to prevent abuse. This endpoint will return a 200 OK even if the
- * no_contact flag is set on the envelope (in which case the call will be ignored).
+ * Update a recipient. NOTE: User interfaces should rate-limit this operation to avoid spamming recipients.
+ * Excessive use of this endpoint may result in Verdocs rate-limiting the calling application to prevent
+ * abuse. This endpoint will return a 200 OK even if the no_contact flag is set on the envelope (in which
+ * case the call will be silently ignored).
+ *
+ * If the recipient's first_name, last_name, email, or message are updated, a new invitation will be sent
+ * to the recipient. This may also be used to trigger a reminder.
  *
  * @group Recipients
  * @api PATCH /envelopes/:envelope_id/recipients/:role_name Update Recipient
