@@ -165,11 +165,6 @@ export const verifySigner = (endpoint: VerdocsEndpoint, params: TAuthenticateRec
     .post<ISignerTokenResponse>(`/v2/sign/verify`, params)
     .then((r) => r.data);
 
-export const resendInvitation = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, message: string) =>
-  endpoint.api //
-    .patch<{status: 'OK'}>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {message})
-    .then((r) => r.data);
-
 /**
  * Delegate a recipient's signing responsibility. The envelope sender must enable this before the
  * recipient calls this endpoint, and only the recipient may call it, or the call will be rejected.
@@ -213,17 +208,15 @@ export const delegateRecipient = (
  * abuse. This endpoint will return a 200 OK even if the no_contact flag is set on the envelope (in which
  * case the call will be silently ignored).
  *
- * If the recipient's first_name, last_name, email, or message are updated, a new invitation will be sent
- * to the recipient. This may also be used to trigger a reminder.
- *
  * @group Recipients
  * @api PATCH /envelopes/:envelope_id/recipients/:role_name Update Recipient
  * @apiParam string(format:uuid) envelope_id The envelope to operate on.
  * @apiParam string role_name The role name to update.
+ * @apiBody string(enum:'remind'|'reset') action? Trigger a reminder, or fully reset the recipient
  * @apiBody string first_name? Update the recipient's first name.
  * @apiBody string last_name? Update the recipient's last name.
- * @apiBody string email? Update the recipient's email address. Updating this value will trigger a new invitation.
- * @apiBody string message? Update the recipient's invite message. Updating this value will trigger a new invitation.
+ * @apiBody string email? Update the recipient's email address.
+ * @apiBody string message? Update the recipient's invite message.
  * @apiBody string phone? Update the recipient's phone number.
  * @apiBody string passcode? If passcode authentication is used, the recipient's address to prefill. May only be changed if the recipient has not already completed passcode-based auth.
  * @apiBody string address? If KBA-based authentication is used, the recipient's address to prefill. May only be changed if the recipient has not already completed KBA-based auth.
@@ -237,4 +230,23 @@ export const delegateRecipient = (
 export const updateRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, params: IUpdateRecipientParams) =>
   endpoint.api //
     .patch<IRecipient>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, params)
+    .then((r) => r.data);
+
+/**
+ * Send a reminder to a recipient. The recipient must still be an active member of the signing flow
+ * (e.g. not declined, already submitted, etc.)
+ */
+export const remindRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
+  endpoint.api //
+    .patch<{status: 'OK'}>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'remind'})
+    .then((r) => r.data);
+
+/**
+ * Fully reset a recipient. This allows the recipient to restart failed KBA flows, change
+ * fields they may have filled in incorrectly while signing, etc. This cannot be used on a
+ * canceled or completed envelope, but may be used to restart an envelope marked declined.
+ */
+export const resetRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
+  endpoint.api //
+    .patch<{status: 'OK'}>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'reset'})
     .then((r) => r.data);

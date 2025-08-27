@@ -1,4 +1,4 @@
-import type {TEnvelopeStatus, TFieldType, TRecipientAuthMethod, TRecipientType} from '../BaseTypes';
+import type {TEnvelopeStatus, TFieldType, TRecipientAuthMethod, TRecipientStatus, TRecipientType} from '../BaseTypes';
 import type {IDropdownOption, IEnvelope, IRecipient, TAccessKey} from '../Models';
 
 export interface IEnvelopesSearchResult {
@@ -15,7 +15,7 @@ export interface IDocumentSearchOptions {
   is_owner?: boolean;
   is_recipient?: boolean;
   envelope_status?: TEnvelopeStatus[];
-  recipient_status?: TEnvelopeStatus[];
+  recipient_status?: TRecipientStatus[];
 }
 
 export interface ICreateEnvelopeRecipientFromTemplate {
@@ -233,6 +233,8 @@ export interface ICreateEnvelopeReminderRequest {
 }
 
 export interface IUpdateRecipientParams {
+  /** Trigger a reminder invite, or fully reset the recipient's status. */
+  action?: 'remind' | 'reset';
   /** The name of the recipient as it will be displayed in reports and queries, e.g. 'Paige Turner'. */
   first_name?: string;
   last_name?: string;
