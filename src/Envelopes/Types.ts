@@ -420,3 +420,23 @@ export type TAuthenticateRecipientRequest =
   | IAuthenticateRecipientViaEmailRequest
   | IAuthenticateRecipientViaSMSRequest
   | IAuthenticateRecipientViaKBARequest;
+
+/**
+ * These disclosures will be used if no overrides are supplied by the caller. Overrides must
+ * be applied at the Organization level before creating an envelope.
+ */
+export const DEFAULT_DISCLOSURES = `
+<ul>
+  <li>
+    Agree to use electronic records and signatures, and confirm you have read the
+    <a href="https://verdocs.com/en/electronic-record-signature-disclosure/" target="_blank">
+      Electronic Record and Signatures Disclosure</a>.</li>
+  <li>
+    Agree to Verdocs'
+    <a href="https://verdocs.com/en/eula" target="_blank">
+      End User License Agreement</a>
+    and confirm you have read Verdocs'
+    <a href="https://verdocs.com/en/privacy-policy/" target="_blank">
+      Privacy Policy</a>.
+  </li>
+</ul>`;
