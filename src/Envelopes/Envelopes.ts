@@ -289,3 +289,11 @@ export const getEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesP
   endpoint.api //
     .get<{count: number; rows: number; page: number; envelopes: IEnvelope[]}>('/v2/envelopes', {params})
     .then((r) => r.data);
+
+/**
+ * Generate a ZIP file containing all data for the specified envelopes. The caller must be the
+ * owner of each envelope. The returned ZIP file contains a folder for each envelope.
+ */
+export const getEnvelopesZip = (endpoint: VerdocsEndpoint, envelope_ids: string[]) =>
+  endpoint.api //
+    .get(`/v2/envelopes/zip/${envelope_ids.join(',')}`);
