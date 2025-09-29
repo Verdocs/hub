@@ -296,4 +296,4 @@ export const getEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesP
  */
 export const getEnvelopesZip = (endpoint: VerdocsEndpoint, envelope_ids: string[]) =>
   endpoint.api //
-    .get(`/v2/envelopes/zip/${envelope_ids.join(',')}`);
+    .get(`/v2/envelopes/zip/${envelope_ids.join(',')}`, {responseType: 'blob', timeout: 120000});
