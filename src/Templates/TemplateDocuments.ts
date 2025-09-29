@@ -23,11 +23,13 @@ import {ITemplate, ITemplateDocument} from '../Models';
  */
 export const createTemplateDocument = (
   endpoint: VerdocsEndpoint,
+  template_id: string,
   file: File,
   onUploadProgress?: (percent: number, loadedBytes: number, totalBytes: number) => void,
 ) => {
   const formData = new FormData();
   formData.append('document', file, file.name);
+  formData.append('template_id', template_id);
 
   return endpoint.api //
     .post<ITemplateDocument>(`/v2/template-documents`, formData, {
