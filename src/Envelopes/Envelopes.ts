@@ -1,4 +1,4 @@
-import {IEnvelope, IEnvelopeDocument, IEnvelopeFieldSettings} from '../Models';
+import {IEnvelope, IEnvelopeDocument, IEnvelopeField, IEnvelopeFieldSettings} from '../Models';
 import {TEnvelopeUpdateResult} from '../BaseTypes';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {TCreateEnvelopeRequest} from './Types';
@@ -79,7 +79,7 @@ export const getEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string)
  * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
  * @apiSuccess IEnvelopeDocument . The detailed metadata for the document requested
  */
-export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string) =>
+export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, documentId: string) =>
   endpoint.api //
     .get<IEnvelopeDocument>(`/v2/envelope-documents/${documentId}`)
     .then((r) => r.data);
@@ -87,7 +87,7 @@ export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, _envelopeId
 /**
  * Download a document directly.
  */
-export const downloadDocument = async (endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string) =>
+export const downloadEnvelopeDocument = async (endpoint: VerdocsEndpoint, documentId: string) =>
   endpoint.api //
     .get(`/v2/envelope-documents/${documentId}?type=file`, {responseType: 'blob'})
     .then((r) => r.data);
@@ -105,7 +105,7 @@ export const downloadDocument = async (endpoint: VerdocsEndpoint, _envelopeId: s
  * @apiQuery string(enum:'file'|'download'|'preview') type? Download the file directly, generate a download link, or generate a preview link.
  * @apiSuccess string . The generated link.
  */
-export const getDocumentDownloadLink = async (endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string) =>
+export const getEnvelopeDocumentDownloadLink = async (endpoint: VerdocsEndpoint, documentId: string) =>
   endpoint.api //
     .get<string>(`/v2/envelope-documents/${documentId}?type=download`)
     .then((r) => r.data);
@@ -114,7 +114,7 @@ export const getDocumentDownloadLink = async (endpoint: VerdocsEndpoint, _envelo
  * Get a pre-signed preview link for an Envelope Document. This link expires quickly, so it should
  * be accessed immediately and never shared. Content-Disposition will be set to "inline".
  */
-export const getDocumentPreviewLink = async (endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string) =>
+export const getEnvelopeDocumentPreviewLink = async (endpoint: VerdocsEndpoint, documentId: string) =>
   endpoint.api //
     .get<string>(`/v2/envelope-documents/${documentId}?type=preview`)
     .then((r) => r.data);
@@ -140,7 +140,7 @@ export const cancelEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: stri
  *
  * @deprecated Use getDocumentPreviewLink/getDocumentDownloadLink/downloadDocument instead.
  */
-export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, envelopeId: string, documentId: string) =>
+export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, documentId: string) =>
   endpoint.api //
     .get(`/v2/envelope-documents/${documentId}?type=file`, {responseType: 'blob'})
     .then((r) => r.data);
@@ -167,64 +167,26 @@ export const updateEnvelope = async (
  * Update a Document field. Typically called during the signing process as a Recipient fills in fields.
  *
  * @group Envelopes
- * @api PUT /envelopes/:envelope_id/fields/:field_name Update Envelope Field
+ * @api PUT /v2/envelopes/:envelope_id/fields/:field_name Update Envelope Field
  * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to retrieve.
+ * @apiParam string role_name The role to submit. Be sure to URL-encode the value.
  * @apiParam string field_name The name of the field to update. Be sure to URL-encode the value.
- * @apiBody IEnvelopeFieldSettings . Set of properties to update. Leave undefined any properties that should not be changed.
- * @apiSuccess IEnvelope . A copy of the newly-updated field.
+ * @apiParam string value The value to set. For signature/initial fields, the UUID of the signature/initial block. For attachment fields, a file uploaded in a FORM-POST field named "document". For checkbox/radio buttons, a boolean. For all other fields, a string.
+ * @apiBody value . Value to set.
+ * @apiSuccess IEnvelopeField . A copy of the newly-updated field.
  */
-export const updateEnvelopeField = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string, value: any) =>
+export const updateEnvelopeField = async (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, fieldName: string, value: any) =>
   endpoint.api //
-    .put<IEnvelopeFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}`, value)
+    .put<IEnvelopeField>(`/v2/envelopes/${envelopeId}/recipients/${roleName}/fields/${fieldName}`, {value})
     .then((r) => r.data);
 
 /**
- * Apply a signature to a signature field. Signature fields are ID-driven. Call `createSignature()`
- * first to create a signature for a Recipient, then call `updateEnvelopeFieldSignature()` to
- * attach it to a field.
- *
- * @group Envelopes
- * @api PUT /envelopes/:envelope_id/fields/:field_name/signature/:signature_id Update Envelope
- * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to update.
- * @apiParam string field_name The name of the field to update. Be sure to URL-encode the value.
- * @apiParam string(format: 'uuid') signature_id The ID of the signature to attach.
- * @apiSuccess IEnvelopeFieldSettings . A copy of the newly-updated field.
- */
-export const updateEnvelopeFieldSignature = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string, signatureId: string) =>
-  endpoint.api //
-    .put<IEnvelopeFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}/signature/${signatureId}`)
-    .then((r) => r.data);
-
-/**
- * Apply an initial to an initials field. Initial fields are ID-driven. Call `createInitial()`
- * first to create an initial block for a Recipient, then call `supdateEnvelopeFieldInitials()` to
- * attach it to a field.
- *
- * @group Envelopes
- * @api PUT /envelopes/:envelope_id/fields/:field_name/initial/:initial_id Update Envelope
- * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to update.
- * @apiParam string field_name The name of the field to update. Be sure to URL-encode the value.
- * @apiParam string(format: 'uuid') initial_id The ID of the initial block to attach.
- * @apiSuccess IEnvelopeFieldSettings . A copy of the newly-updated field.
- */
-export const updateEnvelopeFieldInitials = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string, initialId: string) =>
-  endpoint.api //
-    .put<IEnvelopeFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}/initial/${initialId}`)
-    .then((r) => r.data);
-
-/**
- * Upload an attachment to an attachment field
- *
- * @group Envelopes
- * @api PUT /envelopes/:envelope_id/fields/:field_name Upload or Delete Attachment
- * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to update.
- * @apiParam string field_name The name of the field to update. Be sure to URL-encode the value.
- * @apiBody string document The file to attach. Must contain standard File object fields. If omitted, the attachment will be deleted instead.
- * @apiSuccess IEnvelopeFieldSettings . A copy of the newly-updated field.
+ * Upload an attachment to an attachment field.
  */
 export const uploadEnvelopeFieldAttachment = async (
   endpoint: VerdocsEndpoint,
   envelopeId: string,
+  roleName: string,
   fieldName: string,
   file: File,
   onUploadProgress?: (percent: number, loadedBytes: number, totalBytes: number) => void,
@@ -233,7 +195,7 @@ export const uploadEnvelopeFieldAttachment = async (
   formData.append('document', file, file.name);
 
   return endpoint.api //
-    .put<IEnvelopeFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}`, formData, {
+    .put<IEnvelopeFieldSettings>(`/v2/envelopes/${envelopeId}/recipients/${roleName}/fields/${fieldName}`, formData, {
       timeout: 120000,
       onUploadProgress: (event) => {
         const total = event.total || 1;
@@ -249,28 +211,14 @@ export const uploadEnvelopeFieldAttachment = async (
  * being deleted. Instead, it is a similar operation to uploading a new attachment, but the
  * omission of the attachment signals the server to delete the current entry.
  */
-export const deleteEnvelopeFieldAttachment = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string) => {
+export const deleteEnvelopeFieldAttachment = async (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, fieldName: string) => {
   const formData = new FormData();
   // Omitting file is the trigger here
 
   return endpoint.api //
-    .put<IEnvelopeFieldSettings>(`/envelopes/${envelopeId}/fields/${fieldName}`, formData)
+    .put<IEnvelopeFieldSettings>(`/v2/envelopes/${envelopeId}/recipients/${roleName}/fields/${fieldName}`, formData)
     .then((r) => r.data);
 };
-
-/**
- * Get the attached file for an attachment field (if any).
- *
- * @group Envelopes
- * @api GET /envelopes/:envelope_id/fields/:field_name/document Download attachment in binary format
- * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to retrieve.
- * @apiParam string field_name The name of the field from which to download the attachment.
- * @apiSuccess string . The file binary data.
- */
-export const getFieldAttachment = async (endpoint: VerdocsEndpoint, envelopeId: string, fieldName: string) =>
-  endpoint.api //
-    .get(`/envelopes/${envelopeId}/fields/${fieldName}/document`, {responseType: 'blob'})
-    .then((r) => r.data);
 
 /**
  * Get a display URI for a given page in a file attached to an envelope document. These pages are rendered server-side

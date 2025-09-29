@@ -188,43 +188,11 @@ export interface IInPersonLinkResponse {
   recipient: IRecipient;
 }
 
-export interface IUpdateRecipientSubmitParams {
-  action: 'submit';
-}
-
-export interface IUpdateRecipientDeclineParams {
-  action: 'decline';
-}
-
-export interface IUpdateRecipientClaimEnvelope {
-  action: 'owner_update';
-  first_name: string;
-  last_name: string;
-  email: string;
-}
-
 export interface IUpdateRecipientStatus {
   first_name?: string;
   last_name?: string;
   agreed?: boolean;
   action?: 'prepare' | 'update';
-}
-
-export interface IUpdateRecipientAgreedParams {
-  action: 'update';
-  agreed: boolean;
-  disclosures?: string;
-}
-
-export interface IUpdateRecipientNameParams {
-  action: 'update';
-  first_name: string;
-  last_name: string;
-}
-
-export interface IUpdateRecipientPrepareParams {
-  action: 'prepare';
-  recipients: IRecipient[];
 }
 
 export interface ICreateEnvelopeReminderRequest {

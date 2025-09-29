@@ -76,7 +76,8 @@ export const recipientHasAction = (recipient: IRecipient) => !['submitted', 'can
 /**
  * Returns the recipients who still have a pending action. Note that not all of these recipients may be able to act (yet).
  */
-export const getRecipientsWithActions = (envelope: IEnvelope) => (envelope?.recipients || []).filter(recipientHasAction);
+export const getRecipientsWithActions = (envelope: IEnvelope) =>
+  ['complete', 'declined', 'canceled'].includes(envelope.status) ? [] : (envelope?.recipients || []).filter(recipientHasAction);
 
 /**
  * Returns true if the recipient can act.

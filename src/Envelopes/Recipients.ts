@@ -1,97 +1,50 @@
-import type {
-  IInPersonLinkResponse,
-  IUpdateRecipientSubmitParams,
-  IUpdateRecipientClaimEnvelope,
-  IUpdateRecipientAgreedParams,
-  IUpdateRecipientNameParams,
-  IUpdateRecipientDeclineParams,
-  IUpdateRecipientPrepareParams,
-  ISignerTokenResponse,
-  TAuthenticateRecipientRequest,
-  IUpdateRecipientParams,
-} from './Types';
-import type {IRecipient} from '../Models';
+import type {IInPersonLinkResponse, ISignerTokenResponse, TAuthenticateRecipientRequest, IUpdateRecipientParams} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import type {IRecipient} from '../Models';
 
 /**
- * Update a recipient's status.
+ * Agree to electronic signing dislosures.
  *
  * @group Recipients
- * @api PUT /envelopes/:envelope_id/recipients/:role_name Update Recipient Status
+ * @api POST /envelopes/:envelope_id/recipients/:role_name/agree Agree to e-Signing Disclosures
  * @apiParam string(format:uuid) envelope_id The envelope to operate on.
- * @apiParam string role_name The role to adjust.
- * @apiBody string(enum:'submit'|'decline'|'owner_update'|'update'|'prepare') action The action to take. Adjusts the status, and may also perform other operations.
- * @apiBody string first_name? Ignored unless action is 'owner_update' or 'update'. The new owner's or recipient's first name.
- * @apiBody string last_name? Ignored unless action is 'owner_update' or 'update'. The new owner's or recipient's last name.
- * @apiBody string email? Ignored unless action is 'owner_update'. The new owner's email address.
- * @apiBody boolean agreed? Ignored unless action is 'update'. Set to true to accept the e-signing disclosures.
- * @apiBody array(items:IRecipient) recipients? Ignored unless action is 'prepare'. A list of recipients and their fields to set defaults for.
+ * @apiParam string role_name The role to operate on.
  * @apiSuccess IRecipient . The updated Recipient.
  */
-export const updateRecipientStatus = async (
-  endpoint: VerdocsEndpoint,
-  envelope_id: string,
-  role_name: string,
-  params:
-    | IUpdateRecipientSubmitParams
-    | IUpdateRecipientClaimEnvelope
-    | IUpdateRecipientAgreedParams
-    | IUpdateRecipientNameParams
-    | IUpdateRecipientDeclineParams
-    | IUpdateRecipientPrepareParams,
-) =>
+export const envelopeRecipientAgree = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, disclosures?: string) =>
   endpoint.api //
-    .put<IRecipient>(`/envelopes/${envelope_id}/recipients/${role_name}`, params)
+    .post<IRecipient>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/agree`, {disclosures})
+    .then((r) => r.data);
+
+/**
+ * Decline electronic signing dislosures. Note that if any recipient declines, the entire envelope
+ * becomes non-viable and later recipients may no longer act. The creator will receive a notification
+ * when this occurs.
+ *
+ * @group Recipients
+ * @api POST /envelopes/:envelope_id/recipients/:role_name/decline Decline e-Signing Disclosures
+ * @apiParam string(format:uuid) envelope_id The envelope to operate on.
+ * @apiParam string role_name The role to adjust.
+ * @apiSuccess IRecipient . The updated Recipient.
+ */
+export const envelopeRecipientDecline = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
+  endpoint.api //
+    .post<IRecipient>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/decline`)
     .then((r) => r.data);
 
 /**
  * Submit an envelope (signing is finished). Note that all fields must be valid/completed for this to succeed.
+ *
+ * @group Recipients
+ * @api POST /envelopes/:envelope_id/recipients/:role_name/submit Submit envelope
+ * @apiParam string(format:uuid) envelope_id The envelope to operate on.
+ * @apiParam string role_name The role to submit.
+ * @apiSuccess IRecipient . The updated Recipient.
  */
 export const envelopeRecipientSubmit = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
-  updateRecipientStatus(endpoint, envelopeId, roleName, {action: 'submit'});
-
-/**
- * Decline to complete an envelope (signing will not terminated).
- */
-export const envelopeRecipientDecline = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
-  updateRecipientStatus(endpoint, envelopeId, roleName, {action: 'decline'});
-
-/**
- * Claim / change ownership of an envelope. This is a special-case operation only available in certain workflows.
- */
-export const envelopeRecipientChangeOwner = (
-  endpoint: VerdocsEndpoint,
-  envelope_id: string,
-  role_name: string,
-  email: string,
-  first_name: string,
-  last_name: string,
-) => updateRecipientStatus(endpoint, envelope_id, role_name, {action: 'owner_update', email, first_name, last_name});
-
-/**
- * Agree to electronic signing disclosures.
- */
-export const envelopeRecipientAgree = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, disclosures?: string) =>
   endpoint.api //
-    .put<IRecipient>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'accept', disclosures})
+    .put<IRecipient>(`/v2/envelopes/${envelopeId}/recipients/${roleName}/submit`)
     .then((r) => r.data);
-
-/**
- * Change a recipient's name.
- */
-export const envelopeRecipientUpdateName = (
-  endpoint: VerdocsEndpoint,
-  envelopeId: string,
-  roleName: string,
-  first_name: string,
-  last_name: string,
-) => updateRecipientStatus(endpoint, envelopeId, roleName, {action: 'update', first_name, last_name});
-
-/**
- * Change a recipient's name.
- */
-export const envelopeRecipientPrepare = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, recipients: IRecipient[]) =>
-  updateRecipientStatus(endpoint, envelopeId, roleName, {action: 'prepare', recipients});
 
 /**
  * Begin a signing session for an Envelope. This path requires an invite code, and should generally

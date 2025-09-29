@@ -245,6 +245,8 @@ export interface IWebhookEvents {
   template_deleted: boolean;
   template_used: boolean;
 
+  recipient_submitted: boolean;
+  recipient_updated: boolean;
   recipient_delegated: boolean;
   kba_event: boolean;
   entitlement_used: boolean;

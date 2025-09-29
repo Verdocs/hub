@@ -5,43 +5,7 @@
  */
 
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {ITemplateDocument} from '../Models';
-
-/**
- * Get all the Template Documents associated to a particular Template.
- *
- * ```typescript
- * import {TemplateDocument} from '@verdocs/js-sdk/Templates';
- *
- * await TemplateDocument.geTemplateDocuments((VerdocsEndpoint.getDefault(), templateId);
- * ```
- *
- * @group Template Documents
- * @api GET /v2/templates/:template_id/documents List the documents assigned to a template
- * @apiSuccess array(items: ITemplateDocument) . Template documents
- */
-export const getTemplateDocuments = (endpoint: VerdocsEndpoint, templateId: string) =>
-  endpoint.api //
-    .get<ITemplateDocument[]>(`/templates/${templateId}/documents/`)
-    .then((r) => r.data);
-
-/**
- * Get a specific Document.
- *
- * ```typescript
- * import {TemplateDocument} from '@verdocs/js-sdk/Templates';
- *
- * await TemplateDocument.geTemplateDocument((VerdocsEndpoint.getDefault(), templateId,documentId);
- * ```
- *
- * @group Template Documents
- * @api GET /v2/templates/:template_id/documents/:document_id Get an individual template document
- * @apiSuccess ITemplateDocument . Template document
- */
-export const getTemplateDocument = (endpoint: VerdocsEndpoint, templateId: string, documentId: string) =>
-  endpoint.api //
-    .get<ITemplateDocument>(`/templates/${templateId}/documents/${documentId}`)
-    .then((r) => r.data);
+import {ITemplate, ITemplateDocument} from '../Models';
 
 /**
  * Create a Document for a particular Template.
@@ -59,7 +23,6 @@ export const getTemplateDocument = (endpoint: VerdocsEndpoint, templateId: strin
  */
 export const createTemplateDocument = (
   endpoint: VerdocsEndpoint,
-  templateId: string,
   file: File,
   onUploadProgress?: (percent: number, loadedBytes: number, totalBytes: number) => void,
 ) => {
@@ -67,7 +30,7 @@ export const createTemplateDocument = (
   formData.append('document', file, file.name);
 
   return endpoint.api //
-    .post<ITemplateDocument>(`/templates/${templateId}/documents`, formData, {
+    .post<ITemplateDocument>(`/v2/template-documents`, formData, {
       timeout: 120000,
       onUploadProgress: (event) => {
         const total = event.total || 1;
@@ -93,7 +56,56 @@ export const createTemplateDocument = (
  */
 export const deleteTemplateDocument = (endpoint: VerdocsEndpoint, templateId: string, documentId: string) =>
   endpoint.api //
-    .delete(`/templates/${templateId}/documents/${documentId}`)
+    .delete<ITemplate>(`/v2/templates/${templateId}/documents/${documentId}`)
+    .then((r) => r.data);
+
+/**
+ * Get all metadata for a template document. Note that when called by non-creators (e.g. Org Collaborators)
+ * this will return only the **metadata** the caller is allowed to view.
+ *
+ * @group Template Documents
+ * @api GET /v2/envelope-documents/:id Get envelope document
+ * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
+ * @apiSuccess IEnvelopeDocument . The detailed metadata for the document requested
+ */
+export const getTemplateDocument = async (endpoint: VerdocsEndpoint, documentId: string) =>
+  endpoint.api //
+    .get<ITemplateDocument>(`/v2/template-documents/${documentId}`)
+    .then((r) => r.data);
+
+/**
+ * Download a document directly.
+ */
+export const downloadTemplateDocument = async (endpoint: VerdocsEndpoint, documentId: string) =>
+  endpoint.api //
+    .get(`/v2/template-documents/${documentId}?type=file`, {responseType: 'blob'})
+    .then((r) => r.data);
+
+/**
+ * Get an envelope document's metadata, or the document itself. If no "type" parameter is specified,
+ * the document metadata is returned. If "type" is set to "file", the document binary content is
+ * returned with Content-Type set to the MIME type of the file. If "type" is set to "download", a
+ * string download link will be returned. If "type" is set to "preview" a string preview link will
+ * be returned. This link expires quickly, so it should be accessed immediately and never shared.
+ *
+ * @group Template Documents
+ * @api GET /v2/envelope-documents/:document_id Preview, Download, or Link to a Document
+ * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
+ * @apiQuery string(enum:'file'|'download'|'preview') type? Download the file directly, generate a download link, or generate a preview link.
+ * @apiSuccess string . The generated link.
+ */
+export const getTemplateDocumentDownloadLink = async (endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string) =>
+  endpoint.api //
+    .get<string>(`/v2/template-documents/${documentId}?type=download`)
+    .then((r) => r.data);
+
+/**
+ * Get a pre-signed preview link for an Envelope Document. This link expires quickly, so it should
+ * be accessed immediately and never shared. Content-Disposition will be set to "inline".
+ */
+export const getTemplateDocumentPreviewLink = async (endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string) =>
+  endpoint.api //
+    .get<string>(`/v2/envelope-documents/${documentId}?type=preview`)
     .then((r) => r.data);
 
 /**
@@ -103,7 +115,7 @@ export const deleteTemplateDocument = (endpoint: VerdocsEndpoint, templateId: st
  */
 export const getTemplateDocumentFile = async (endpoint: VerdocsEndpoint, templateId: string, documentId: string) =>
   endpoint.api //
-    .get(`/templates/${templateId}/documents/${documentId}?file=true`, {responseType: 'blob'})
+    .get(`/v2/templates/${templateId}/documents/${documentId}?file=true`, {responseType: 'blob'})
     .then((r) => r.data);
 
 /**
@@ -113,7 +125,7 @@ export const getTemplateDocumentFile = async (endpoint: VerdocsEndpoint, templat
  */
 export const getTemplateDocumentThumbnail = async (endpoint: VerdocsEndpoint, templateId: string, documentId: string) =>
   endpoint.api //
-    .get(`/templates/${templateId}/documents/${documentId}?thumbnail=true`, {responseType: 'blob'})
+    .get(`/v2/templates/${templateId}/documents/${documentId}?thumbnail=true`, {responseType: 'blob'})
     .then((r) => r.data);
 
 /**
@@ -127,5 +139,4 @@ export const getTemplateDocumentPageDisplayUri = async (
   documentId: string,
   page: number,
   variant: 'original' | 'tagged' = 'original',
-) =>
-  endpoint.api.get<string>(`/v2/template-documents/page-image/${documentId}/${variant}/${page}`, {timeout: 20000}).then((r) => r.data);
+) => endpoint.api.get<string>(`/v2/template-documents/page-image/${documentId}/${variant}/${page}`, {timeout: 20000}).then((r) => r.data);

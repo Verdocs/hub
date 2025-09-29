@@ -102,6 +102,8 @@ export type TWebhookEvent =
   | 'template_updated'
   | 'template_deleted'
   | 'template_used'
+  | 'recipient_submitted'
+  | 'recipient_updated'
   | 'recipient_delegated'
   | 'kba_event'
   | 'entitlement_used';

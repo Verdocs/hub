@@ -346,3 +346,21 @@ export const deleteTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
     .delete<string>(`/v2/templates/${templateId}`)
     .then((r) => r.data);
+
+/**
+ * Toggle the template star for a template.
+ *
+ * ```typescript
+ * import {toggleTemplateStar} from '@verdocs/js-sdk/Templates';
+ *
+ * await toggleTemplateStar((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');
+ * ```
+ *
+ * @group Templates
+ * @api POST /v2/templates/:template_id/star Star or unstar a template (toggle state)
+ * @apiSuccess ITemplate . Success
+ */
+export const toggleTemplateStar = (endpoint: VerdocsEndpoint, templateId: string) =>
+  endpoint.api //
+    .post<ITemplate>(`/v2/templates/${templateId}/stars/toggle`)
+    .then((r) => r.data);

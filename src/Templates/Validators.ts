@@ -1,4 +1,3 @@
-import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {IRole} from '../Models';
 
 export interface IValidator {
@@ -6,33 +5,42 @@ export interface IValidator {
   regex: string;
 }
 
-/**
- * Get all defined validators
- *
- * ```typescript
- * import {Documents} from '@verdocs/js-sdk/Templates';
- *
- * await Documents.getDocuments(templateID);
- * ```
- */
-export const getValidators = (endpoint: VerdocsEndpoint) =>
-  endpoint.api //
-    .get<IValidator[]>('/validators')
-    .then((r) => r.data);
-
-export const getValidator = (endpoint: VerdocsEndpoint, validatorName: string) =>
-  endpoint.api //
-    .get<IValidator>(`/validators/${validatorName}`)
-    .then((r) => r.data);
-
 const EMAIL_REGEX =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-export const isValidEmail = (email: string | undefined) => !!email && EMAIL_REGEX.test(email);
 
 // @see https://www.regextester.com/1978
 const PHONE_REGEX =
   /((?:\+|00)[17](?: |\-)?|(?:\+|00)[1-9]\d{0,2}(?: |\-)?|(?:\+|00)1\-\d{3}(?: |\-)?)?(0\d|\([0-9]{3}\)|[1-9]{0,3})(?:((?: |\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\-)[0-9]{3}(?: |\-)[0-9]{4})|([0-9]{7}))/;
+
+const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+
+const POSTAL_CODE_REGEX = /^[A-Za-z0-9-\s]{3,10}$/;
+
+const NUMBER_REGEX = /^\d+$/;
+
+const DATE_REGEX = /^(\d{4}[-\/]\d{2}[-\/]\d{2})|(\d{2}[-\/]\d{2}[-\/]\d{4})$/;
+
+const VALIDATORS = {
+  email: {regex: EMAIL_REGEX, label: 'Email Address'},
+  phone: {regex: PHONE_REGEX, label: 'Phone Number'},
+  url: {regex: URL_REGEX, label: 'URL'},
+  postal_code: {regex: POSTAL_CODE_REGEX, label: 'Zip/Postal Code'},
+  number: {regex: NUMBER_REGEX, label: 'Number'},
+  date: {regex: DATE_REGEX, label: 'Date'},
+};
+
+export const isValidInput = (value: string, validator: string) =>
+  Object.keys(VALIDATORS).includes(validator) && VALIDATORS[validator as keyof typeof VALIDATORS].regex.test(value);
+
+/**
+ * Get a list of available validators for field inputs. Note that validators always check strings,
+ * because that is all a user can enter in an HTML input field. Numeric-format validators should
+ * perform any necessary conversions internally. Validators never throw - they just return a boolean.
+ * indicating whether the value is valid.
+ */
+export const getValidators = () => Object.keys(VALIDATORS);
+
+export const isValidEmail = (email: string | undefined) => !!email && EMAIL_REGEX.test(email);
 
 export const isValidPhone = (phone: string | undefined) => !!phone && PHONE_REGEX.test(phone);
 

@@ -2,8 +2,6 @@ export * from './Actions';
 export * from './Fields';
 export * from './Permissions';
 export * from './Roles';
-export * from './Stars';
-export * from './Tags';
 export * from './Templates';
 export * from './TemplateDocuments';
 export * from './Types';
