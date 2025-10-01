@@ -13,12 +13,13 @@ import {ITemplate, ITemplateDocument} from '../Models';
  * ```typescript
  * import {TemplateDocument} from '@verdocs/js-sdk/Templates';
  *
- * await TemplateDocument.createDocument((VerdocsEndpoint.getDefault(), templateID, params);
+ * await TemplateDocument.createDocument(VerdocsEndpoint.getDefault(), templateID, params);
  * ```
  *
  * @group Template Documents
  * @api POST /v2/templates/:template_id/documents Attach a document to a template
  * @apiBody string(format:binary) file Document file to attach. The file name will automatically be used as the document name.
+ * @apiBody string(format:uuid) template_id Template ID to attach the document to
  * @apiSuccess ITemplateDocument . Template document
  */
 export const createTemplateDocument = (
@@ -28,7 +29,7 @@ export const createTemplateDocument = (
   onUploadProgress?: (percent: number, loadedBytes: number, totalBytes: number) => void,
 ) => {
   const formData = new FormData();
-  formData.append('document', file, file.name);
+  formData.append('file', file, file.name);
   formData.append('template_id', template_id);
 
   return endpoint.api //
@@ -47,18 +48,18 @@ export const createTemplateDocument = (
  * Delete a specific Document.
  *
  * ```typescript
- * import {TemplateDocument} from '@verdocs/js-sdk/Templates';
+ * import {deleteTemplateDocument} from '@verdocs/js-sdk/Templates';
  *
- * await TemplateDocument.deleteDocument((VerdocsEndpoint.getDefault(), templateID, documentID);
+ * await deleteTemplateDocument(VerdocsEndpoint.getDefault(), documentID);
  * ```
  *
  * @group Template Documents
- * @api DELETE /v2/templates/:temlate_id/documents/:document_id Delete a template document
+ * @api DELETE /v2/template-documents/:document_id Delete a template document
  * @apiSuccess string . Success
  */
-export const deleteTemplateDocument = (endpoint: VerdocsEndpoint, templateId: string, documentId: string) =>
+export const deleteTemplateDocument = (endpoint: VerdocsEndpoint, documentId: string) =>
   endpoint.api //
-    .delete<ITemplate>(`/v2/templates/${templateId}/documents/${documentId}`)
+    .delete<ITemplate>(`/v2/template-documents/${documentId}`)
     .then((r) => r.data);
 
 /**

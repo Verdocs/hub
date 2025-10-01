@@ -49,6 +49,7 @@ export const isFieldFilled = (field: IEnvelopeField, allRecipientFields: IEnvelo
   }
 };
 
+// TODO: Only allow !required to bypass validation if the field is empty.
 export const isFieldValid = (field: IEnvelopeField, allRecipientFields: IEnvelopeField[]) => {
   return !field.required || isFieldFilled(field, allRecipientFields);
 };

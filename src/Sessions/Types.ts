@@ -11,14 +11,13 @@ export interface ISigningSession {
   exp: number;
   session_type: 'signing';
   key_type: TAccessKeyType;
+
   email: string;
   profile_id: string;
   envelope_id: string;
   role_name: string;
   // @deprecated
   ['https://verdocs.com/session_type']: 'signing';
-  // @deprecated
-  ['https://verdocs.com/key_type']: TAccessKeyType;
   // @deprecated
   ['https://verdocs.com/envelope_id']: string;
   // @deprecated
