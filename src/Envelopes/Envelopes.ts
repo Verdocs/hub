@@ -175,9 +175,16 @@ export const updateEnvelope = async (
  * @apiBody value . Value to set.
  * @apiSuccess IEnvelopeField . A copy of the newly-updated field.
  */
-export const updateEnvelopeField = async (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, fieldName: string, value: any) =>
+export const updateEnvelopeField = async (
+  endpoint: VerdocsEndpoint,
+  envelopeId: string,
+  roleName: string,
+  fieldName: string,
+  value: string,
+  prepared: boolean,
+) =>
   endpoint.api //
-    .put<IEnvelopeField>(`/v2/envelopes/${envelopeId}/recipients/${roleName}/fields/${fieldName}`, {value})
+    .put<IEnvelopeField>(`/v2/envelopes/${envelopeId}/recipients/${roleName}/fields/${fieldName}`, {value, prepared})
     .then((r) => r.data);
 
 /**
@@ -193,6 +200,7 @@ export const uploadEnvelopeFieldAttachment = async (
 ) => {
   const formData = new FormData();
   formData.append('document', file, file.name);
+  formData.append('value', '');
 
   return endpoint.api //
     .put<IEnvelopeFieldSettings>(`/v2/envelopes/${envelopeId}/recipients/${roleName}/fields/${fieldName}`, formData, {
