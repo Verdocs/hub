@@ -43,7 +43,7 @@ export const envelopeRecipientDecline = (endpoint: VerdocsEndpoint, envelopeId: 
  */
 export const envelopeRecipientSubmit = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
   endpoint.api //
-    .put<IRecipient>(`/v2/envelopes/${envelopeId}/recipients/${roleName}/submit`)
+    .post<IRecipient>(`/v2/envelopes/${envelopeId}/recipients/${roleName}/submit`)
     .then((r) => r.data);
 
 /**
