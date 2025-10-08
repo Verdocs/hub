@@ -152,7 +152,7 @@ export const delegateRecipient = (
   },
 ) =>
   endpoint.api //
-    .put<{status: 'OK'}>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'delegate', ...params})
+    .post<{status: 'OK'}>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/delegate`, params)
     .then((r) => r.data);
 
 /**
