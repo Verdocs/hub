@@ -46,8 +46,8 @@ import {TCreateEnvelopeRequest} from './Types';
  * @apiBody string name? Override the name of the envelope (defaults to the template name).
  * @apiBody string description? Override the description of the envelope (defaults to the template description).
  * @apiBody boolean no_contact? If set to true, no email or SMS messages will be sent to any recipients.
- * @apiBody integer(min: 0) initial_reminder? Override the template initial-reminder setting.
- * @apiBody integer(min: 0) followup_reminders? Override the template initial-reminder setting.
+ * @apiBody integer(min: 0) initial_reminder? Override the template initial-reminder setting (in milliseconds).
+ * @apiBody integer(min: 0) followup_reminders? Override the template initial-reminder setting (in milliseconds).
  * @apiBody string expires_at? If set, the envelope will automatically expire (be canceled) at this date and time. Expirations must be at least 1 day in the future.
  * @apiSuccess IEnvelope . The newly-created envelope.
  */
