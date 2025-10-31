@@ -383,18 +383,35 @@ export interface IEnvelope {
   documents?: IEnvelopeDocument[] | null;
 }
 
+/**
+ * An EnvelopeDocument is an individual document inside an Envelope package.
+ */
 export interface IEnvelopeDocument {
+  /** Unique identifier for the document (UUID) */
   id: string;
+  /** Unique identifier for the envelope (UUID) */
   envelope_id: string;
+  /** Unique identifier for the template (UUID). May be null for envelopes created without templates */
   template_document_id: string | null;
+  /**
+   * The order in which the document appears in the envelope.
+   */
   order: number;
+  /** Whether the document is a signer-supplied attachment or a Verdocs-generated certificate */
   type: 'attachment' | 'certificate';
+  /** The name of the document */
   name: string;
+  /** Page count */
   pages: number;
+  /** MIME type */
   mime: string;
+  /** File size (bytes) */
   size: number;
+  /** Collection of width/height dimensions for each page */
   page_sizes: {width: number; height: number}[];
+  /** Date/time when the document was created. */
   created_at: string;
+  /** Date/time when the document was created. */
   updated_at: string;
 }
 

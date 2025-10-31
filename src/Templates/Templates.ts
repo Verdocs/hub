@@ -320,8 +320,8 @@ export const createTemplateFromSharepoint = (endpoint: VerdocsEndpoint, params: 
  * @apiBody boolean is_personal? Deprecated. If true, the template is personal and can only be seen by the caller. (Use "visibility" for new calls.)
  * @apiBody boolean is_public? Deprecated. If true, the template is public and can be seen by anybody. (Use "visibility" for new calls.)
  * @apiBody TTemplateSender sender? Who may send envelopes using this template
- * @apiBody number initial_reminder? Delay (in milliseconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable.
- * @apiBody number followup_reminders? Delay (in milliseconds) before the subsequent reminders are sent (min: 12hrs). Set to 0 or null to disable.
+ * @apiBody number initial_reminder? Delay in ms before the first reminder is sent (min: 4hrs). Set to 0 or null to disable.
+ * @apiBody number followup_reminders? Delay in ms before the subsequent reminders are sent (min: 12hrs). Set to 0 or null to disable.
  * @apiSuccess ITemplate . The updated template
  */
 export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, params: Partial<ITemplateCreateParams>) =>
