@@ -329,6 +329,8 @@ export interface ICreateEnvelopeFromTemplateRequest {
   description?: string;
   /** Override the sender name of the envelope in email and other notifications. NOTE: To prevent spam filters from blocking messages, only the NAME may be overidden. The "from" email address will be notifications@verdocs.com and cannot be changed. */
   sender_name?: string;
+  /** Override the sender email of the envelope in email and other notifications. NOTE: This will change areas that reflect the sender's email in the Web UI and certificate. It cannot change the email address used for notifications. */
+  sender_email?: string;
   /** If set, Verdocs will not attempt to contact the recipient via email or SMS. */
   no_contact?: boolean;
   /** If set, the envelope will automatically expire at the specified date/time (ISO8601, UTC) */
@@ -356,6 +358,8 @@ export interface ICreateEnvelopeDirectlyRequest {
   description?: string;
   /** Override the sender name of the envelope in email and other notifications. NOTE: To prevent spam filters from blocking messages, only the NAME may be overidden. The "from" email address will be notifications@verdocs.com and cannot be changed. */
   sender_name?: string;
+  /** Override the sender email of the envelope in email and other notifications. NOTE: This will change areas that reflect the sender's email in the Web UI and certificate. It cannot change the email address used for notifications. */
+  sender_email?: string;
   /** If set, Verdocs will not attempt to contact the recipient via email or SMS. */
   no_contact?: boolean;
   /** If set, the envelope will automatically expire at the specified date/time (ISO8601, UTC) */

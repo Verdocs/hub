@@ -46,8 +46,8 @@ import {TCreateEnvelopeRequest} from './Types';
  * @apiBody string name? Override the name of the envelope (defaults to the template name).
  * @apiBody string description? Override the description of the envelope (defaults to the template description).
  * @apiBody boolean no_contact? If set to true, no email or SMS messages will be sent to any recipients.
- * @apiBody integer(min: 0) initial_reminder? Override the template initial-reminder setting (in milliseconds).
- * @apiBody integer(min: 0) followup_reminders? Override the template initial-reminder setting (in milliseconds).
+ * @apiBody integer(min: 0) initial_reminder? Override the template initial-reminder setting in ms.
+ * @apiBody integer(min: 0) followup_reminders? Override the template initial-reminder setting in ms.
  * @apiBody string expires_at? If set, the envelope will automatically expire (be canceled) at this date and time. Expirations must be at least 1 day in the future.
  * @apiSuccess IEnvelope . The newly-created envelope.
  */
@@ -164,7 +164,7 @@ export const updateEnvelope = async (
     .then((r) => r.data);
 
 /**
- * Update a Document field. Typically called during the signing process as a Recipient fills in fields.
+ * Update an Envelope field. Typically called during the signing process as a Recipient fills in fields.
  *
  * @group Envelopes
  * @api PUT /v2/envelopes/:envelope_id/fields/:field_name Update Envelope Field
@@ -172,7 +172,7 @@ export const updateEnvelope = async (
  * @apiParam string role_name The role to submit. Be sure to URL-encode the value.
  * @apiParam string field_name The name of the field to update. Be sure to URL-encode the value.
  * @apiParam string value The value to set. For signature/initial fields, the UUID of the signature/initial block. For attachment fields, a file uploaded in a FORM-POST field named "document". For checkbox/radio buttons, a boolean. For all other fields, a string.
- * @apiBody value . Value to set.
+ * @apiBody string value Value to set.
  * @apiSuccess IEnvelopeField . A copy of the newly-updated field.
  */
 export const updateEnvelopeField = async (
