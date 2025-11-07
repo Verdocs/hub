@@ -165,17 +165,19 @@ export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, documentId: str
 export const updateEnvelope = async (
   endpoint: VerdocsEndpoint,
   envelopeId: string,
-  params: Pick<
-    IEnvelope,
-    | 'name'
-    | 'sender_name'
-    | 'sender_email'
-    | 'initial_reminder'
-    | 'followup_reminders'
-    | 'expires_at'
-    | 'visibility'
-    | 'no_contact'
-    | 'data'
+  params: Partial<
+    Pick<
+      IEnvelope,
+      | 'name'
+      | 'sender_name'
+      | 'sender_email'
+      | 'initial_reminder'
+      | 'followup_reminders'
+      | 'expires_at'
+      | 'visibility'
+      | 'no_contact'
+      | 'data'
+    >
   >,
 ) =>
   endpoint.api //
