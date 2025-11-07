@@ -347,6 +347,10 @@ export interface IEnvelope {
   organization_id: string;
   /** Name of the envelope. By defaut, inherited from the envelope's template, but may be overridden when the envelope is created. */
   name: string;
+  /** Override the sender "name" in places like the Certificate. */
+  sender_name: string;
+  /** Override the sender "email address" in places like the Certificate. */
+  sender_email: string;
   /** If set to true, no email or SMS messages will be sent to any of the envelope's recipients. */
   no_contact?: boolean;
   /** Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable. */
@@ -365,7 +369,6 @@ export interface IEnvelope {
   expires_at?: string;
   /** Defaults to 'private'. If set to 'shared', this envelope will be visible to other users in the same organization. Ignored for personal profiles. */
   visibility: 'private' | 'shared';
-  search_key?: string | null;
   /**
    * Storage for arbitrary data that may be used e.g. to track source database/record IDs to relate Envelopes back to
    * internal systems/applications.

@@ -151,13 +151,32 @@ export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, documentId: str
  * @group Envelopes
  * @api PATCH /v2/envelopes/:id Update Envelope
  * @apiParam string(format: 'uuid') id The ID of the envelope to update.
- * @apiBody IEnvelope . Set of fields to update. Omit (leave undefined) any fields that should not be changed.
+ * @apiBody string name? New name for the envelope
+ * @apiBody string sender_name? New Sender Name for the envelope
+ * @apiBody string sender_email? New Sender Email for the envelope
+ * @apiBody integer(min: 0) initial_reminder? Change the initial-reminder setting (in ms).
+ * @apiBody integer(min: 0) followup_reminders? Change the followup-reminder setting (in ms).
+ * @apiBody string expires_at? If set, the envelope will automatically expire (be canceled) at this date and time. Expirations must be at least 1 day in the future.
+ * @apiBody string(enum:'private'|'shared') visibility? Change the envelope's visibility setting
+ * @apiBody boolean no_contact? If set to true, no email or SMS messages will be sent to any recipients.
+ * @apiBody object data? Update the developer-supplied metadata attached to the envelope.
  * @apiSuccess IEnvelope . A copy of the newly-updated envelope.
  */
 export const updateEnvelope = async (
   endpoint: VerdocsEndpoint,
   envelopeId: string,
-  params: Pick<IEnvelope, 'initial_reminder' | 'followup_reminders'>,
+  params: Pick<
+    IEnvelope,
+    | 'name'
+    | 'sender_name'
+    | 'sender_email'
+    | 'initial_reminder'
+    | 'followup_reminders'
+    | 'expires_at'
+    | 'visibility'
+    | 'no_contact'
+    | 'data'
+  >,
 ) =>
   endpoint.api //
     .patch<IEnvelope>(`/v2/envelopes/${envelopeId}`, params)
