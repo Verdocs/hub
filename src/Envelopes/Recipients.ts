@@ -203,3 +203,20 @@ export const resetRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, ro
   endpoint.api //
     .patch<{status: 'OK'}>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'reset'})
     .then((r) => r.data);
+
+/**
+ * Ask the sender a question. This will email the envelope's sender (via sender_email, if set when
+ * the envelope was created) with the recipient's information and their question. It is up to the
+ * sender to determine how to reply.
+ *
+ * @group Recipients
+ * @api POST /envelopes/:envelope_id/recipients/:role_name/ask-sender Ask Sender a Question
+ * @apiParam string(format:uuid) envelope_id The envelope to operate on.
+ * @apiParam string role_name The role name to update.
+ * @apiBody string question The question to ask.
+ * @apiSuccess string . Success message.
+ */
+export const askQuestion = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, params: {question: string}) =>
+  endpoint.api //
+    .post<IRecipient>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/ask-question`, params)
+    .then((r) => r.data);
