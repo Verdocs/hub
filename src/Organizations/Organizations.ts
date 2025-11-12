@@ -117,6 +117,10 @@ export const createOrganization = (
       | 'thumbnail_url'
       | 'primary_color'
       | 'secondary_color'
+      | 'terms_use_url'
+      | 'privacy_policy_url'
+      | 'powered_by_label'
+      | 'powered_by_url'
       | 'parent_id'
     >
   >,

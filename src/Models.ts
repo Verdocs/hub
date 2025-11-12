@@ -129,6 +129,10 @@ export interface IOrganization {
   secondary_color?: string | null;
   parent_id: string | null;
   disclaimer?: string | null;
+  terms_use_url?: string | null;
+  privacy_policy_url?: string | null;
+  powered_by_label?: string | null;
+  powered_by_url?: string | null;
   data?: Record<string, any> | null;
   /** Creation date/time. */
   created_at: string;
