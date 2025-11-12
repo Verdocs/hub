@@ -101,6 +101,10 @@ export const getOrganizationUsage = (
  * @apiBody string thumbnail_url? URL of a small-format (square is recommended) PNG logo
  * @apiBody string primary_color? URL of a small-format (square is recommended) PNG logo
  * @apiBody string secondary_color? URL of a small-format (square is recommended) PNG logo
+ * @apiBody string terms_use_url? URL of a Terms of Use page, shown in bottom-right of signing experience. Hidden if not set.
+ * @apiBody string privacy_policy_url? URL of a Privacy Policy page, shown in bottom-right of signing experience. Hidden if not set.
+ * @apiBody string powered_by_label? "Powered-by..." label, shown in bottom-left of signing experience. Hidden if not set.
+ * @apiBody string powered_by_url? URL for the Powered By label to show when clicked. Rendered as a static label if not set.
  * @apiSuccess IAuthenticateResponse . Authentication credentials for user in the new organization. The user will be made an Owner automatically.
  */
 export const createOrganization = (
@@ -147,6 +151,10 @@ export const createOrganization = (
  * @apiBody string thumbnail_url? URL of a small-format (square is recommended) PNG logo
  * @apiBody string primary_color? URL of a small-format (square is recommended) PNG logo
  * @apiBody string secondary_color? URL of a small-format (square is recommended) PNG logo
+ * @apiBody string terms_use_url? URL of a Terms of Use page, shown in bottom-right of signing experience. Hidden if not set.
+ * @apiBody string privacy_policy_url? URL of a Privacy Policy page, shown in bottom-right of signing experience. Hidden if not set.
+ * @apiBody string powered_by_label? "Powered-by..." label, shown in bottom-left of signing experience. Hidden if not set.
+ * @apiBody string powered_by_url? URL for the Powered By label to show when clicked. Rendered as a static label if not set.
  * @apiSuccess IOrganization . The details for the updated organization
  */
 export const updateOrganization = (endpoint: VerdocsEndpoint, organizationId: string, params: Partial<IOrganization>) =>
