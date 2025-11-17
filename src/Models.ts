@@ -373,6 +373,10 @@ export interface IEnvelope {
   expires_at?: string;
   /** Defaults to 'private'. If set to 'shared', this envelope will be visible to other users in the same organization. Ignored for personal profiles. */
   visibility: 'private' | 'shared';
+  /** If true, the attachments have been signed with the Verdocs AATL signing certificate. */
+  signed: boolean;
+  /** If true, the envelope certificate has been generated and signed. */
+  certified: boolean;
   /**
    * Storage for arbitrary data that may be used e.g. to track source database/record IDs to relate Envelopes back to
    * internal systems/applications.

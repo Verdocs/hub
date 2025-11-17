@@ -2,6 +2,7 @@ import {IEnvelope, IEnvelopeDocument, IEnvelopeField, IEnvelopeFieldSettings} fr
 import {TEnvelopeUpdateResult} from '../BaseTypes';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {TCreateEnvelopeRequest} from './Types';
+import axiosRetry from 'axios-retry';
 
 /**
  * Create an envelope
@@ -89,7 +90,10 @@ export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, documentId:
  */
 export const downloadEnvelopeDocument = async (endpoint: VerdocsEndpoint, documentId: string) =>
   endpoint.api //
-    .get(`/v2/envelope-documents/${documentId}?type=file`, {responseType: 'blob'})
+    .get(`/v2/envelope-documents/${documentId}?type=file`, {
+      responseType: 'blob',
+      'axios-retry': {retries: 5, retryDelay: axiosRetry.linearDelay(3000)},
+    })
     .then((r) => r.data);
 
 /**
@@ -107,7 +111,9 @@ export const downloadEnvelopeDocument = async (endpoint: VerdocsEndpoint, docume
  */
 export const getEnvelopeDocumentDownloadLink = async (endpoint: VerdocsEndpoint, documentId: string) =>
   endpoint.api //
-    .get<string>(`/v2/envelope-documents/${documentId}?type=download`)
+    .get<string>(`/v2/envelope-documents/${documentId}?type=download`, {
+      'axios-retry': {retries: 5, retryDelay: axiosRetry.linearDelay(3000)},
+    })
     .then((r) => r.data);
 
 /**
@@ -116,7 +122,9 @@ export const getEnvelopeDocumentDownloadLink = async (endpoint: VerdocsEndpoint,
  */
 export const getEnvelopeDocumentPreviewLink = async (endpoint: VerdocsEndpoint, documentId: string) =>
   endpoint.api //
-    .get<string>(`/v2/envelope-documents/${documentId}?type=preview`)
+    .get<string>(`/v2/envelope-documents/${documentId}?type=preview`, {
+      'axios-retry': {retries: 5, retryDelay: axiosRetry.linearDelay(3000)},
+    })
     .then((r) => r.data);
 
 /**

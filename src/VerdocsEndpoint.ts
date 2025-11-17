@@ -4,6 +4,7 @@ import {decodeAccessTokenBody, randomString} from './Utils';
 import globalThis from './Utils/globalThis';
 import {getCurrentProfile} from './Users';
 import {IProfile} from './Models';
+import axiosRetry from 'axios-retry';
 
 // @credit https://derickbailey.com/2016/03/09/creating-a-true-singleton-in-node-js-with-es6-symbols/
 // Also see globalThis for comments about why we're doing this in the first place.
@@ -113,6 +114,9 @@ export class VerdocsEndpoint {
     this.clientID = options?.clientID ?? this.clientID;
     this.persist = options?.persist ?? this.persist;
     this.api = axios.create({baseURL: this.baseURL, timeout: this.timeout});
+
+    // Enable the module but not for any requests, only a few get this
+    axiosRetry(this.api, {retries: 0});
   }
 
   public setDefault() {
