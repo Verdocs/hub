@@ -210,7 +210,7 @@ export const resetRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, ro
  * sender to determine how to reply.
  *
  * @group Recipients
- * @api POST /envelopes/:envelope_id/recipients/:role_name/ask-sender Ask Sender a Question
+ * @api POST /envelopes/:envelope_id/recipients/:role_name/ask-question Ask Sender a Question
  * @apiParam string(format:uuid) envelope_id The envelope to operate on.
  * @apiParam string role_name The role name to update.
  * @apiBody string question The question to ask.
