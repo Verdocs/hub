@@ -260,6 +260,7 @@ export interface IWebhook {
   id: string;
   organization_id: string;
   url: string;
+  secret_key?: string;
   active: boolean;
   events: IWebhookEvents;
   status: string | null;
