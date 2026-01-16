@@ -1,5 +1,5 @@
 import type {TEnvelopeStatus, TFieldType, TRecipientAuthMethod, TRecipientStatus, TRecipientType} from '../BaseTypes';
-import type {IDropdownOption, IEnvelope, IRecipient, TAccessKey} from '../Models';
+import type {IDropdownOption, IEnvelope, IInitial, IRecipient, ISignature, TAccessKey} from '../Models';
 
 export interface IEnvelopesSearchResult {
   page: number;
@@ -158,7 +158,17 @@ export interface ISignerTokenResponse {
    * A copy of the recipient record related to the signing session. This is almost always needed when
    * a signing session is being started, so it is included here for convenience.
    */
-  recipient: IRecipient;
+  recipient: IRecipient[];
+  /**
+   * Stored signature blocks for the recipient. All entries are returned to support workflows in
+   * which that is required, but for most use-cases, only the first entry should be used.
+   */
+  signatures?: ISignature[];
+  /**
+   * Stored initials blocks for the recipient. All entries are returned to support workflows in
+   * which that is required, but for most use-cases, only the first entry should be used.
+   */
+  initials?: IInitial[];
 }
 
 export interface IInPersonLinkResponse {
