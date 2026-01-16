@@ -158,7 +158,7 @@ export interface ISignerTokenResponse {
    * A copy of the recipient record related to the signing session. This is almost always needed when
    * a signing session is being started, so it is included here for convenience.
    */
-  recipient: IRecipient[];
+  recipient: IRecipient;
   /**
    * Stored signature blocks for the recipient. All entries are returned to support workflows in
    * which that is required, but for most use-cases, only the first entry should be used.
