@@ -63,3 +63,23 @@ export function sortFields(fields: ITemplateField[] | IEnvelopeField[]) {
 
   return fields;
 }
+
+/**
+ * Utility function to sort documents by their order, falling back to created_at.
+ * NOTE: This function mutates the input array.
+ */
+export function sortDocuments(documents: {order: number; created_at: Date | string}[]) {
+  return documents.sort((a, b) =>
+    // The Date conversion is unnecessary 90% of the time but is safer, and this isn't something
+    // we do much of so in reality it has almmost no impact.
+    a.order !== b.order ? a.order - b.order : new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+  );
+}
+
+/**
+ * Utility function to sort documents by their order, falling back to created_at.
+ * NOTE: This function mutates the input array.
+ */
+export function sortRecipients(recipients?: {sequence: number; order: number}[]) {
+  return recipients?.sort((a, b) => (a.sequence !== b.sequence ? b.sequence - a.sequence : b.order - a.order));
+}
