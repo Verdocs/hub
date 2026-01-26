@@ -334,3 +334,63 @@ export const getEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesP
 export const getEnvelopesZip = (endpoint: VerdocsEndpoint, envelope_ids: string[]) =>
   endpoint.api //
     .get(`/v2/envelopes/zip/${envelope_ids.join(',')}`, {responseType: 'blob', timeout: 120000});
+
+/**
+ * Utility function to sort fields by page, then by Y coordinate, then by X coordinate.
+ * NOTE: This function mutates the input array.
+ */
+export function sortFields(
+  fields: {
+    page?: number | null | undefined;
+    x?: number | null | undefined;
+    y?: number | null | undefined;
+    height?: number | null | undefined;
+  }[],
+) {
+  fields.sort((a, b) => {
+    const aPage = a.page || 0;
+    const bPage = b.page || 0;
+    const aX = a.x || 0;
+    const aY = (a.y || 0) + (a.height || 0);
+    const bX = b.x || 0;
+    const bY = (b.y || 0) + (b.height || 0);
+
+    if (aPage !== bPage) {
+      return aPage - bPage;
+    }
+
+    // NOTE: Logic looks a little strange X vs Y. It's because we go top down,
+    // left to right. But Y coordinates are inverted in PDFs. The reason for
+    // the division is because no human makes perfect templates and frequently
+    // two fields on the "same line" will be slightly offset vertically.
+    const divaY = Math.floor(aY / 5);
+    const divbY = Math.floor(bY / 5);
+    if (divaY !== divbY) {
+      return divbY - divaY;
+    }
+
+    return aX - bX;
+  });
+
+  return fields;
+}
+
+/**
+ * Utility function to sort documents by their order, falling back to created_at.
+ * NOTE: This function mutates the input array.
+ */
+export function sortDocuments(documents: {order: number; created_at: Date | string}[]) {
+  return documents.sort((a, b) =>
+    // The Date conversion is unnecessary 90% of the time but is safer, and this isn't something
+    // we do much of so in reality it has almmost no impact.
+    a.order !== b.order ? a.order - b.order : new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+  );
+}
+
+/**
+ * Utility function to sort documents by their order, falling back to created_at.
+ * NOTE: This function mutates the input array.
+ */
+export function sortRecipients(recipients?: {sequence: number; order: number}[]) {
+  return recipients?.sort((a, b) => (a.sequence !== b.sequence ? b.sequence - a.sequence : b.order - a.order));
+}
