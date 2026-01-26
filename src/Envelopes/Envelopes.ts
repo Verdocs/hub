@@ -359,13 +359,11 @@ export function sortFields(
       return aPage - bPage;
     }
 
-    // NOTE: Logic looks a little strange X vs Y. It's because we go top down,
-    // left to right. But Y coordinates are inverted in PDFs. The reason for
-    // the division is because no human makes perfect templates and frequently
-    // two fields on the "same line" will be slightly offset vertically.
     const divaY = Math.floor(aY / 5);
     const divbY = Math.floor(bY / 5);
     if (divaY !== divbY) {
+      // Unlike the other properties, Y coordinates have 0,0 at the BOTTOM LEFT corner, so
+      // we need to sort descending (b first) on this one.
       return divbY - divaY;
     }
 
@@ -380,11 +378,9 @@ export function sortFields(
  * NOTE: This function mutates the input array.
  */
 export function sortDocuments(documents: {order: number; created_at: Date | string}[]) {
-  return documents.sort((a, b) =>
-    // The Date conversion is unnecessary 90% of the time but is safer, and this isn't something
-    // we do much of so in reality it has almmost no impact.
-    a.order !== b.order ? a.order - b.order : new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
-  );
+  // The Date conversion is unnecessary 90% of the time but is safer, and this isn't something
+  // we do much of so in reality it has almmost no impact.
+  return documents.sort((a, b) => a.order - b.order || new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
 }
 
 /**
@@ -392,5 +388,5 @@ export function sortDocuments(documents: {order: number; created_at: Date | stri
  * NOTE: This function mutates the input array.
  */
 export function sortRecipients(recipients?: {sequence: number; order: number}[]) {
-  return recipients?.sort((a, b) => (a.sequence !== b.sequence ? b.sequence - a.sequence : b.order - a.order));
+  return recipients?.sort((a, b) => a.sequence - b.sequence || a.order - b.order);
 }
