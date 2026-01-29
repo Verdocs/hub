@@ -255,6 +255,7 @@ export interface IWebhook {
   secret_key?: string;
   client_id?: string;
   client_secret?: string;
+  token_endpoint?: string;
   auth_method: BaseTypes.TWebhookAuthMethod;
   active: boolean;
   events: IWebhookEvents;
