@@ -135,3 +135,8 @@ export type TUsageType =
   | 'auth_kba'
   | 'auth_id'
   | 'auth_passcode';
+
+/**
+ * Methods for authenticating webhook requests.
+ */
+export type TWebhookAuthMethod = 'none' | 'hmac' | 'client_credentials';
