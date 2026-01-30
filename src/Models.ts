@@ -1,6 +1,20 @@
-import {TApiKeyPermission, TEntitlement, TEnvelopeStatus, TEventDetail, TFieldType, TRecipientType} from './BaseTypes';
+import type {
+  TApiKeyPermission,
+  TEntitlement,
+  TEnvelopeStatus,
+  TEventDetail,
+  TFieldType,
+  THistoryEvent,
+  TRecipientAuthMethod,
+  TRecipientAuthStep,
+  TRecipientStatus,
+  TRecipientType,
+  TTemplateSender,
+  TTemplateVisibility,
+  TUsageType,
+  TWebhookAuthMethod,
+} from './BaseTypes';
 import {TPermission, TRole} from './Sessions';
-import * as BaseTypes from './BaseTypes';
 
 /////////////////////////////// NOTIFICATIONS /////////////////////////////
 
@@ -228,7 +242,7 @@ export interface IUser {
   updated_at: string;
 }
 
-// TODO: Combine this with TWebhookEvent in BaseTypes.
+// TODO: Combine this with TWebhookEvent in
 export interface IWebhookEvents {
   envelope_created: boolean;
   envelope_completed: boolean;
@@ -256,7 +270,7 @@ export interface IWebhook {
   client_id?: string;
   client_secret?: string;
   token_endpoint?: string;
-  auth_method: BaseTypes.TWebhookAuthMethod;
+  auth_method: TWebhookAuthMethod;
   active: boolean;
   events: IWebhookEvents;
   status: string | null;
@@ -527,7 +541,7 @@ export interface IEnvelopeHistory {
   id: string;
   envelope_id: string;
   role_name: string;
-  event: BaseTypes.THistoryEvent;
+  event: THistoryEvent;
   event_detail: TEventDetail;
   created_at: string;
 
@@ -561,7 +575,7 @@ export interface IRecipient {
   envelope_id: string;
   role_name: string;
   profile_id?: string | null;
-  status: BaseTypes.TRecipientStatus;
+  status: TRecipientStatus;
   first_name: string;
   last_name: string;
   /** @deprecated. Use first_name/last_name instead. */
@@ -617,14 +631,11 @@ export interface IRecipient {
   /**
    * The next verification step that must be performed.
    */
-  auth_step?: BaseTypes.TRecipientAuthStep | null;
+  auth_step?: TRecipientAuthStep | null;
   /** The types of authentication/verification required for this recipient. */
-  auth_methods?: BaseTypes.TRecipientAuthMethod[] | null;
+  auth_methods?: TRecipientAuthMethod[] | null;
   /** The status of each auth method enabled. */
-  auth_method_states?: Record<
-    BaseTypes.TRecipientAuthMethod,
-    'complete' | 'failed' | 'challenge' | 'questions' | 'differentiator' | null
-  > | null;
+  auth_method_states?: Record<TRecipientAuthMethod, 'complete' | 'failed' | 'challenge' | 'questions' | 'differentiator' | null> | null;
   /**
    * If auth_method is set to "passcode" this is the passcode required. For security reasons, this
    * field will only be visible to the creator of the envelope.
@@ -706,7 +717,7 @@ export interface ITemplate {
    * technically allowed for all visibility settings, "template_owner" only has an effect if
    * visibility is "shared" or "public".
    */
-  sender: BaseTypes.TTemplateSender;
+  sender: TTemplateSender;
   /*
    The user-supplied name of the template.
   */
@@ -743,7 +754,7 @@ export interface ITemplate {
   /**
    * If set, the visibility level for the template.
    */
-  visibility?: BaseTypes.TTemplateVisibility;
+  visibility?: TTemplateVisibility;
   /**
    * If true, the template is considered "sendable" (it has at least one signer, and every signer has at least one field.)
    */
@@ -869,4 +880,4 @@ export interface ITemplateFieldSetting {
   [key: string]: any;
 }
 
-export type TOrganizationUsage = Record<string, Record<BaseTypes.TUsageType, number>>;
+export type TOrganizationUsage = Record<string, Record<TUsageType, number>>;
