@@ -108,6 +108,23 @@ export type TWebhookEvent =
   | 'kba_event'
   | 'entitlement_used';
 
+export const WEBHOOK_EVENTS = [
+  'envelope_created',
+  'envelope_completed',
+  'envelope_canceled',
+  'envelope_updated',
+  'envelope_expired',
+  'template_created',
+  'template_updated',
+  'template_deleted',
+  'template_used',
+  'recipient_submitted',
+  'recipient_updated',
+  'recipient_delegated',
+  'kba_event',
+  'entitlement_used',
+] as const;
+
 export type TTemplateVisibility = 'private' | 'shared' | 'public';
 
 export type TEntitlement = 'envelope' | 'kba_auth' | 'passcode_auth' | 'sms_auth' | 'kba_id_auth' | 'id_auth' | 'custom_disclaimer';
