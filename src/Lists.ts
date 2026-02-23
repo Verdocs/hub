@@ -43,17 +43,6 @@ export const DEFAULT_FIELD_HEIGHTS: Record<TFieldType, number> = {
   payment: 24,
 };
 
-export const WEBHOOK_EVENTS = [
-  'envelope_created',
-  'envelope_completed',
-  'envelope_canceled',
-
-  'template_created',
-  'template_updated',
-  'template_deleted',
-  'template_used',
-];
-
 export const ALL_PERMISSIONS = [
   // TODO: Are these permissions still relevant?
   // 'member:view',

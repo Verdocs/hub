@@ -386,8 +386,6 @@ export interface IEnvelope {
   visibility: 'private' | 'shared';
   /** If true, the attachments have been signed with the Verdocs AATL signing certificate. */
   signed: boolean;
-  /** If true, the envelope certificate has been generated and signed. */
-  certified: boolean;
   /**
    * Storage for arbitrary data that may be used e.g. to track source database/record IDs to relate Envelopes back to
    * internal systems/applications.
