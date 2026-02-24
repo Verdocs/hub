@@ -1,5 +1,6 @@
-import {TApiKeyPermission, TWebhookEvent} from '../BaseTypes';
+import {TApiKeyPermission, type TWebhookAuthMethod, TWebhookEvent} from '../BaseTypes';
 import {TRole} from '../Sessions';
+import {IWebhookEvents} from '../Models';
 
 export interface ICreateApiKeyRequest {
   name: string;
@@ -30,5 +31,10 @@ export interface IAcceptOrganizationInvitationRequest {
 export interface ISetWebhookRequest {
   url: string;
   active: boolean;
+  client_id?: string | null;
+  client_secret?: string | null;
+  scope?: string | null;
+  token_endpoint?: string | null;
+  auth_method: TWebhookAuthMethod;
   events: Record<TWebhookEvent, boolean>;
 }

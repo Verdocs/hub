@@ -266,10 +266,11 @@ export interface IWebhook {
   id: string;
   organization_id: string;
   url: string;
-  secret_key?: string;
-  client_id?: string;
-  client_secret?: string;
-  token_endpoint?: string;
+  secret_key?: string | null;
+  client_id?: string | null;
+  client_secret?: string | null;
+  scope?: string | null;
+  token_endpoint?: string | null;
   auth_method: TWebhookAuthMethod;
   active: boolean;
   events: IWebhookEvents;
