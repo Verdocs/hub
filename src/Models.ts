@@ -616,6 +616,7 @@ export interface IRecipient {
   message: string | null;
   claimed: boolean;
   agreed: boolean;
+  name_locked: boolean;
   key_used_to_conclude?: string;
   environment?: string;
   created_at: string;
@@ -681,7 +682,10 @@ export interface IRole {
    * arrange recipients to match related business processes so this field allows for that.
    */
   order: number;
+  // TODO: Most booleans should probably become non-nullable
   delegator: boolean | null;
+  /** If set, the recipient will not be allowed to change their legal name. */
+  name_locked: boolean;
 }
 
 export interface ISignature {

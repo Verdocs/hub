@@ -58,7 +58,7 @@ import {generateSnippets} from './snippets';
 // @apiHeader {String} Authorization Bearer: access_token
 
 interface IBlockTagContent {
-  kind: 'text';
+  kind: 'text' | 'code';
   text: string;
 }
 
@@ -67,7 +67,9 @@ interface IBlockTag {
   content: IBlockTagContent[];
 }
 
-// See https://regex101.com/r/UFWvl2/1
+const joinTagContent = (content: IBlockTagContent[]) => content.map((c) => c.text).join('');
+
+// See https://regex101.com/r/dJUzdP/1
 // Test strings:
 //   string(format: email, xyz:a) id Test
 //   string(format: email, xyz:a) id The ID of the envelope to retrieve.
@@ -84,10 +86,12 @@ interface IBlockTag {
 //   array(items: string) string_array Match envelopes whose name contains this string
 //   IEnvelope . The detailed metadata for the envelope requested
 //   IEnvelope[] . The caller's envelopes
+//   string(format: 'email',xyz:a) id? The ID of the `IEnvelope` to retrieve.
 const API_OPTION_REGEX = /([a-zA-Z0-9\[\]\/]+)(\([^)]*\))?\s([a-zA-Z0-9_?.]+)\s?([^\n]*)/;
 
 const parseApiOptionTag = (option: string) => {
   const matchArr = Array.from(option.match(API_OPTION_REGEX) || []);
+
   return {
     type: matchArr[1],
     options: matchArr[2],
@@ -320,7 +324,7 @@ const processChild = (child: Record<string, any>) => {
 
       case '@apiParam':
         {
-          const parsedParam = parseParam('path', tag.content[0].text);
+          const parsedParam = parseParam('path', joinTagContent(tag.content));
           if (parsedParam) {
             entry.parameters.push(parsedParam);
           }
@@ -329,7 +333,7 @@ const processChild = (child: Record<string, any>) => {
 
       case '@apiQuery':
         {
-          const parsedParam = parseParam('query', tag.content[0].text);
+          const parsedParam = parseParam('query', joinTagContent(tag.content));
           if (parsedParam) {
             entry.parameters.push(parsedParam);
           }
@@ -337,7 +341,7 @@ const processChild = (child: Record<string, any>) => {
         break;
 
       case '@apiBody':
-        const parsedBodyParam = parseParam('body', tag.content[0].text);
+        const parsedBodyParam = parseParam('body', joinTagContent(tag.content));
         if (parsedBodyParam) {
           entry.requestBody = entry.requestBody || {
             description: 'Body Parameters',
@@ -366,7 +370,7 @@ const processChild = (child: Record<string, any>) => {
       case '@apiSuccess':
         // @apiSuccess IEnvelope . The detailed metadata for the envelope requested
         // TODO: Description
-        parseResponseType(entry.responses['200'].content['application/json'].schema, tag.content[0].text);
+        parseResponseType(entry.responses['200'].content['application/json'].schema, joinTagContent(tag.content));
         break;
 
       // case '@apiErrors':

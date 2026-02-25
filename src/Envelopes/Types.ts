@@ -236,6 +236,8 @@ export interface IUpdateRecipientParams {
   dob?: string;
   /** If KBA-based authentication is used, the recipient's SSN-Last-4 to prefill. May only be changed if the recipient has not already completed KBA-based auth. */
   ssn_last_4?: string;
+  /** If set, the recipient will not be allowed to change their legal name. */
+  name_locked?: string;
 }
 
 export interface ICreateEnvelopeDocumentFromData {

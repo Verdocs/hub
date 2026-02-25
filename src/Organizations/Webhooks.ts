@@ -10,7 +10,8 @@ import {ISetWebhookRequest} from './Types';
 import {IWebhook} from '../Models';
 
 /**
- * Get the registered Webhook configuration for the caller's organization.
+ * Get the registered Webhook configuration for the caller's organization. Note that an organization
+ * may only have a single Webhook configuration.
  *
  * ```typescript
  * import {getWebhooks} from '@verdocs/js-sdk';
@@ -43,6 +44,11 @@ export const getWebhooks = (endpoint: VerdocsEndpoint) =>
  * @apiDescription Note that Webhooks cannot currently be deleted, but may be easily disabled by setting `active` to `false` and/or setting the `url` to an empty string.
  * @apiBody string url URL to send Webhook events to. An empty or invalid URL will disable Webhook calls.
  * @apiBody boolean active Set to true to enable Webhooks calls.
+ * @apiBody string(enum:'none'|'hmac'|'client_credentials') auth_method? Enable HMAC or Client Credentials authentication for Webhooks calls.
+ * @apiBody string token_endpoint? Required if `auth_method` is set to `client_credentials`. Token endpoint to use for authenticating Webhooks calls.
+ * @apiBody string client_id? Required if `auth_method` is set to `client_credentials`. Client ID to use for authenticating Webhooks calls.
+ * @apiBody string client_secret? Required if `auth_method` is set to `client_credentials`. Client secret to use for authenticating Webhooks calls.
+ * @apiBody string scope? Optional scope to include in authentication calls if `auth_method` is set to `client_credentials`.
  * @apiBody object events Record<TWebhookEvent, boolean> map of events to enable/disable.
  * @apiSuccess IWebhook . The updated Webhooks config for the caller's organization.
  */

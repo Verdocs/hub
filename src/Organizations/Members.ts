@@ -36,6 +36,7 @@ export const getOrganizationMembers = (endpoint: VerdocsEndpoint) =>
  * ```
  *
  * @group Organization Members
+ * @apiParam string(format:uuid) profile_id The Profile ID to remove.
  * @api DELETE /v2/organization-members/:profile_id Delete a member from the organization
  * @apiSuccess string . Success
  */
@@ -45,7 +46,7 @@ export const deleteOrganizationMember = (endpoint: VerdocsEndpoint, profileId: s
     .then((r) => r.data);
 
 /**
- * Update a member.
+ * Update an organization member.
  *
  * ```typescript
  * import {updateOrganizationMember} from '@verdocs/js-sdk';
@@ -55,16 +56,17 @@ export const deleteOrganizationMember = (endpoint: VerdocsEndpoint, profileId: s
  *
  * @group Organization Members
  * @api PATCH /v2/organization-members/:profile_id Update an organization member.
- * @apiBody array(items:TRole) roles URL to send Webhook events to. An empty or invalid URL will disable Webhook calls.
- * @apiBody string first_name Set to true to enable Webhooks calls.
- * @apiBody string last_name Record<TWebhookEvent, boolean> map of events to enable/disable.
- * @apiSuccess array(items:IProfile) . List of caller's current organization's members
+ * @apiParam string(format:uuid) profile_id The Profile ID to update.
+ * @apiBody string first_name? First name for the member
+ * @apiBody string last_name? Last name for the member
+ * @apiBody array(items:TRole) roles? Roles (e.g. "member" or "admin") to assign to the user.
+ * @apiSuccess IProfile . The updated profile for the member.
  */
 export const updateOrganizationMember = (
   endpoint: VerdocsEndpoint,
   profileId: string,
-  params: Pick<IProfile, 'roles' | 'first_name' | 'last_name'>,
+  params: Partial<Pick<IProfile, 'roles' | 'first_name' | 'last_name'>>,
 ) =>
   endpoint.api //
-    .patch(`/v2/organization-members/${profileId}`, params)
+    .patch<IProfile>(`/v2/organization-members/${profileId}`, params)
     .then((r) => r.data);

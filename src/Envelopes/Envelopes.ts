@@ -1,8 +1,12 @@
+import axiosRetry from 'axios-retry';
 import {IEnvelope, IEnvelopeDocument, IEnvelopeField, IEnvelopeFieldSettings} from '../Models';
 import {TEnvelopeUpdateResult} from '../BaseTypes';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {TCreateEnvelopeRequest} from './Types';
-import axiosRetry from 'axios-retry';
+
+// TODO: We need to re-review all of the models and input types/docs to be sure they match the latest
+//  API work.
+// INIT
 
 /**
  * Create an envelope
