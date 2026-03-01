@@ -353,7 +353,7 @@ export type TAccessKey = IInPersonAccessKey | IInAppAccessKey | IEmailAccessKey 
 export interface IEnvelope {
   /** Unique identifier for the envelope (UUID) */
   id: string;
-  /** Current status of the envelope. Note that 'complete', 'declined', and 'canceled' are immutable/permanent end states. */
+  /** Current status of the envelope. Note that 'complete', 'declined', and 'canceled' are immutable/permanent end states. Also, 'complete' does NOT mean "fully signed in all aspects" (see "signed" for that). 'complete' means complete from a user's perspective: all required data has been submitted and workflow steps completed. */
   status: TEnvelopeStatus;
   /** ID of the envelope's creator. */
   profile_id: string;
@@ -385,7 +385,7 @@ export interface IEnvelope {
   expires_at?: string;
   /** Defaults to 'private'. If set to 'shared', this envelope will be visible to other users in the same organization. Ignored for personal profiles. */
   visibility: 'private' | 'shared';
-  /** If true, the attachments have been signed with the Verdocs AATL signing certificate. */
+  /** If true, the envelope is fully submitted, processed, certificate-generated, and all documents have been stamped and signed. */
   signed: boolean;
   /**
    * Storage for arbitrary data that may be used e.g. to track source database/record IDs to relate Envelopes back to
@@ -428,6 +428,8 @@ export interface IEnvelopeDocument {
   mime: string;
   /** File size (bytes) */
   size: number;
+  /** Whether the file has been signed. Note that document.signed is different from envelope.signed. Documents are signed first, then the certificate is created and signed, then the envelope is finally marked signed. */
+  signed: boolean;
   /** Collection of width/height dimensions for each page */
   page_sizes: {width: number; height: number}[];
   /** Date/time when the document was created. */

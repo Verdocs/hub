@@ -178,7 +178,7 @@ const processChild = (child: Record<string, any>) => {
 
       schemaEntry.properties[name] = {
         // TODO
-        type: type.name === 'number' ? 'integer' : 'string',
+        type: type.name === 'number' ? 'integer' : type.name === 'boolean' ? 'boolean' : 'string',
         description: comment.summary[0].text,
       };
 
