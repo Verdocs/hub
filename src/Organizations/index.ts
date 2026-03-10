@@ -12,6 +12,7 @@ export * from './Contacts';
 export * from './Groups';
 export * from './Invitations';
 export * from './Members';
+export * from './Notifications';
 export * from './Organizations';
 export * from './Types';
 export * from './Webhooks';

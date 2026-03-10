@@ -11,6 +11,8 @@ import type {
   TRecipientType,
   TTemplateSender,
   TTemplateVisibility,
+  TEventName,
+  TNotificationType,
   TUsageType,
   TWebhookAuthMethod,
 } from './BaseTypes';
@@ -45,6 +47,19 @@ export interface INotification {
   time: string;
 
   profile?: IProfile;
+}
+
+export interface INotificationTemplate {
+  id: string;
+  organization_id: string;
+  type: TNotificationType;
+  event_name: TEventName;
+  template_id?: string;
+  html_template?: string;
+  text_template?: string;
+
+  template?: ITemplate;
+  organization: IOrganization;
 }
 
 //////////////////////////////////////// IAM //////////////////////////////

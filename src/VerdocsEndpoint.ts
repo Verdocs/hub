@@ -1,10 +1,10 @@
+import axiosRetry from 'axios-retry';
 import axios, {AxiosInstance} from 'axios';
-import {TSession, TSessionType} from './Sessions';
 import {decodeAccessTokenBody, randomString} from './Utils';
+import {TSession, TSessionType} from './Sessions';
 import globalThis from './Utils/globalThis';
 import {getCurrentProfile} from './Users';
 import {IProfile} from './Models';
-import axiosRetry from 'axios-retry';
 
 // @credit https://derickbailey.com/2016/03/09/creating-a-true-singleton-in-node-js-with-es6-symbols/
 // Also see globalThis for comments about why we're doing this in the first place.

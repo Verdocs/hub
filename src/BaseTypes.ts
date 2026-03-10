@@ -157,3 +157,27 @@ export type TUsageType =
  * Methods for authenticating webhook requests.
  */
 export type TWebhookAuthMethod = 'none' | 'hmac' | 'client_credentials';
+
+export type TNotificationType = 'sms' | 'email' | 'app';
+
+export type TEventName =
+  | 'invitation:canceled'
+  | 'transaction:completed'
+  | 'envelope:failed'
+  | 'envelope:expired'
+  | 'envelope:declined'
+  | 'envelope:cc'
+  | 'recipient:reminder'
+  | 'transaction:requested'
+  | 'envelope:delegated'
+  | 'envelope:completed'
+  | 'transaction:canceled'
+  | 'user:invited'
+  | 'recipient:invited'
+  | 'envelope:canceled'
+  | 'transaction:sent'
+  | 'envelope:signed'
+  | 'email:verify'
+  | 'email:otp'
+  | 'password:reset'
+  | 'recipient:question';

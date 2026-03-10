@@ -1,4 +1,4 @@
-import {TApiKeyPermission, type TWebhookAuthMethod, TWebhookEvent} from '../BaseTypes';
+import {TApiKeyPermission, TEventName, TNotificationType, type TWebhookAuthMethod, TWebhookEvent} from '../BaseTypes';
 import {TRole} from '../Sessions';
 import {IWebhookEvents} from '../Models';
 
@@ -37,4 +37,17 @@ export interface ISetWebhookRequest {
   token_endpoint?: string | null;
   auth_method: TWebhookAuthMethod;
   events: Record<TWebhookEvent, boolean>;
+}
+
+export interface ICreateNotificationTemplateRequest {
+  type: TNotificationType;
+  event_name: TEventName;
+  template_id?: string;
+  html_template?: string;
+  text_template?: string;
+}
+
+export interface IUpdateNotificationTemplateRequest {
+  html_template?: string;
+  text_template?: string;
 }
