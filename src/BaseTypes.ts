@@ -106,7 +106,13 @@ export type TWebhookEvent =
   | 'recipient_updated'
   | 'recipient_delegated'
   | 'kba_event'
-  | 'entitlement_used';
+  | 'entitlement_used'
+  | 'recipient_invited'
+  | 'recipient_reminded'
+  | 'recipient_auth_fail'
+  | 'recipient_disclosure_accepted'
+  | 'recipient_docs_downloaded'
+  | 'recipient_invite_failed';
 
 export const WEBHOOK_EVENTS = [
   'envelope_created',
@@ -123,6 +129,12 @@ export const WEBHOOK_EVENTS = [
   'recipient_delegated',
   'kba_event',
   'entitlement_used',
+  'recipient_invited',
+  'recipient_reminded',
+  'recipient_auth_fail',
+  'recipient_disclosure_accepted',
+  'recipient_docs_downloaded',
+  'recipient_invite_failed',
 ] as const;
 
 export type TTemplateVisibility = 'private' | 'shared' | 'public';

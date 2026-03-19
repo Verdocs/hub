@@ -15,6 +15,7 @@ import type {
   TNotificationType,
   TUsageType,
   TWebhookAuthMethod,
+  TWebhookEvent,
 } from './BaseTypes';
 import {TPermission, TRole} from './Sessions';
 
@@ -257,25 +258,7 @@ export interface IUser {
   updated_at: string;
 }
 
-// TODO: Combine this with TWebhookEvent in
-export interface IWebhookEvents {
-  envelope_created: boolean;
-  envelope_completed: boolean;
-  envelope_updated: boolean;
-  envelope_canceled: boolean;
-  envelope_expired: boolean;
-
-  template_created: boolean;
-  template_updated: boolean;
-  template_deleted: boolean;
-  template_used: boolean;
-
-  recipient_submitted: boolean;
-  recipient_updated: boolean;
-  recipient_delegated: boolean;
-  kba_event: boolean;
-  entitlement_used: boolean;
-}
+export type IWebhookEvents = Record<TWebhookEvent, boolean>;
 
 export interface IWebhook {
   id: string;
