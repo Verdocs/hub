@@ -53,6 +53,7 @@ import {TCreateEnvelopeRequest} from './Types';
  * @apiBody boolean no_contact? If set to true, no email or SMS messages will be sent to any recipients.
  * @apiBody integer(min: 0) initial_reminder? Override the template initial-reminder setting in ms.
  * @apiBody integer(min: 0) followup_reminders? Override the template initial-reminder setting in ms.
+ * @apiBody number max_reminder_days? Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14.
  * @apiBody string expires_at? If set, the envelope will automatically expire (be canceled) at this date and time. Expirations must be at least 1 day in the future.
  * @apiSuccess IEnvelope . The newly-created envelope.
  */
@@ -168,6 +169,7 @@ export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, documentId: str
  * @apiBody string sender_email? New Sender Email for the envelope
  * @apiBody integer(min: 0) initial_reminder? Change the initial-reminder setting (in ms).
  * @apiBody integer(min: 0) followup_reminders? Change the followup-reminder setting (in ms).
+ * @apiBody number max_reminder_days? Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14.
  * @apiBody string expires_at? If set, the envelope will automatically expire (be canceled) at this date and time. Expirations must be at least 1 day in the future.
  * @apiBody string(enum:'private'|'shared') visibility? Change the envelope's visibility setting
  * @apiBody boolean no_contact? If set to true, no email or SMS messages will be sent to any recipients.

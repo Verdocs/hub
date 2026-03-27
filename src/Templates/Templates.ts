@@ -157,6 +157,8 @@ export interface ITemplateCreateParams {
   initial_reminder?: number;
   /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */
   followup_reminders?: number;
+  /** Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14. */
+  max_reminder_days?: number;
   /** Optional description for the template to help identify it. */
   description?: string;
   /**
@@ -205,6 +207,7 @@ const ALLOWED_CREATE_FIELDS: (keyof ITemplateCreateParams)[] = [
  * @apiBody TTemplateSender sender? Who may send envelopes using this template
  * @apiBody number initial_reminder? Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable.
  * @apiBody number followup_reminders? Delay (in seconds) before the subsequent reminders are sent (min: 12hrs). Set to 0 or null to disable.
+ * @apiBody number max_reminder_days? Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14.
  * @apiBody array(items:object) documents? Optional list of documents to attach to the template
  * @apiBody array(items:IRole) roles? Optional list of roles to create. Note that if roles are not included in the request, fields will be ignored.
  * @apiBody array(fields:ITemplateField) fields? Optional list of fields to create. Note that if fields that do not match a role will be ignored.
@@ -322,6 +325,7 @@ export const createTemplateFromSharepoint = (endpoint: VerdocsEndpoint, params: 
  * @apiBody TTemplateSender sender? Who may send envelopes using this template
  * @apiBody number initial_reminder? Delay in ms before the first reminder is sent (min: 4hrs). Set to 0 or null to disable.
  * @apiBody number followup_reminders? Delay in ms before the subsequent reminders are sent (min: 12hrs). Set to 0 or null to disable.
+ * @apiBody number max_reminder_days? Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14.
  * @apiSuccess ITemplate . The updated template
  */
 export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, params: Partial<ITemplateCreateParams>) =>

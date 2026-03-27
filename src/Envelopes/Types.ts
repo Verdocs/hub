@@ -355,6 +355,8 @@ export interface ICreateEnvelopeFromTemplateRequest {
   initial_reminder?: number;
   /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */
   followup_reminders?: number;
+  /** Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14. */
+  max_reminder_days?: number;
   /** List of recipients to configure. */
   recipients: ICreateEnvelopeRecipientFromTemplate[];
   /** Optional metadata to attach to the envelope. This is not used by Verdocs, but may be used for internal tracking purposes by the caller. This is not shown to recipients, but is not private and should not be used to store sensitive data. */
@@ -384,6 +386,8 @@ export interface ICreateEnvelopeDirectlyRequest {
   initial_reminder: number;
   /** Delay (in seconds) before subsequent remidners are sent (min: 12hrs). Set to 0 or null to disable. */
   followup_reminders: number;
+  /** Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14. */
+  max_reminder_days?: number;
   /** Optional metadata to attach to the envelope. This is not used by Verdocs, but may be used for internal tracking purposes by the caller. This is not shown to recipients, but is not private and should not be used to store sensitive data. */
   data?: any;
   /** List of recipients to configure. */
