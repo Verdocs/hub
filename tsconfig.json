@@ -1,4 +1,5 @@
 {
+  "extends": "@tsconfig/node24/tsconfig.json",
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
@@ -12,6 +13,6 @@
     "moduleResolution": "node",
     "strictNullChecks": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist", "**/__tests__/*"]
+  "include": ["src", "**/*.ts"],
+  "exclude": ["node_modules/", "dist", "**/*.js", "openapi/generate/"]
 }
