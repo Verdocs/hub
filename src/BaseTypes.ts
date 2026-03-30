@@ -112,7 +112,8 @@ export type TWebhookEvent =
   | 'recipient_auth_fail'
   | 'recipient_disclosure_accepted'
   | 'recipient_docs_downloaded'
-  | 'recipient_invite_failed';
+  | 'recipient_invite_failed'
+  | 'recipient_declined';
 
 export const WEBHOOK_EVENTS = [
   'envelope_created',
@@ -135,6 +136,7 @@ export const WEBHOOK_EVENTS = [
   'recipient_disclosure_accepted',
   'recipient_docs_downloaded',
   'recipient_invite_failed',
+  'recipient_declined',
 ] as const;
 
 export type TTemplateVisibility = 'private' | 'shared' | 'public';
