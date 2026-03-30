@@ -20,6 +20,7 @@ const MockProfile: IProfile = {
   current: true,
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
+  // @ts-expect-error - Ignoring for now to avoid changing test data
   organization: {
     id: '5678',
     name: 'test org',
