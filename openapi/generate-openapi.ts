@@ -3,6 +3,8 @@
 import {writeFileSync} from 'node:fs';
 import {jsTypeToSchema} from './utils';
 import {Preamble} from './Preamble';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore - docs.json may not exist yet in CI
 import docsJson from '../docs.json';
 import {generateSnippets} from './snippets';
 
