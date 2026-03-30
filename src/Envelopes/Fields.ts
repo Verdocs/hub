@@ -38,7 +38,7 @@ export const isFieldFilled = (field: IEnvelopeField, allRecipientFields: IEnvelo
       return value === 'true';
 
     case 'radio':
-      if (!!field.group) {
+      if (field.group) {
         return allRecipientFields.filter((f) => f.group === field.group).some((field) => field.value === 'true');
       }
 

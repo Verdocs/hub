@@ -64,7 +64,7 @@ export function getRGBA(roleIndex: number) {
  * is not specified explicitly, but will be the same for every call with the same input value.
  */
 export function nameToRGBA(str: string) {
-  if (!!str) {
+  if (str) {
     const validNum = parseInt(str.slice(-1), 10);
     if (!isNaN(validNum)) {
       str += (validNum * 99).toString();
