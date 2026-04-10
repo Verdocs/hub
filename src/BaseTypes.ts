@@ -109,6 +109,7 @@ export type TWebhookEvent =
   | 'entitlement_used'
   | 'recipient_invited'
   | 'recipient_reminded'
+  | 'recipient_opened'
   | 'recipient_auth_fail'
   | 'recipient_disclosure_accepted'
   | 'recipient_docs_downloaded'
@@ -132,6 +133,7 @@ export const WEBHOOK_EVENTS = [
   'entitlement_used',
   'recipient_invited',
   'recipient_reminded',
+  'recipient_opened',
   'recipient_auth_fail',
   'recipient_disclosure_accepted',
   'recipient_docs_downloaded',
