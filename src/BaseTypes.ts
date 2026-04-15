@@ -19,7 +19,7 @@ export type TRecipientAction = 'submit' | 'decline' | 'prepare' | 'update';
 
 export type TEnvelopeStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
 
-export type TRecipientStatus = 'invited' | 'opened' | 'signed' | 'submitted' | 'canceled' | 'pending' | 'declined';
+export type TRecipientStatus = 'invited' | 'opened' | 'signed' | 'submitted' | 'canceled' | 'pending' | 'declined' | 'failed';
 
 export type TRecipientType = 'signer' | 'cc' | 'approver';
 

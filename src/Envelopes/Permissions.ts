@@ -89,7 +89,22 @@ export const recipientCanAct = (recipient: IRecipient, recipientsWithActions: IR
  * Returns true if the user can act.
  */
 export const userCanAct = (email: string, recipientsWithActions: IRecipient[]) => {
-  const recipient = recipientsWithActions.find((r) => r.email === email);
+  const recipient = recipientsWithActions.find((r) => r.email?.toLowerCase() === email?.toLowerCase());
+  return recipient && recipient.sequence === recipientsWithActions?.[0]?.sequence;
+};
+
+/**
+ * Get a recipient from an envelope via an email match.
+ */
+export const getRecipient = (email: string, envelope: IEnvelope) =>
+  (envelope.recipients || []).find((r) => r.email?.toLowerCase() === email?.toLowerCase());
+
+/**
+ * Get a recipient that can act from an envelope via an email match.
+ */
+export const getRecipientWithActions = (email: string, envelope: IEnvelope) => {
+  const recipientsWithActions = getRecipientsWithActions(envelope);
+  const recipient = recipientsWithActions.find((r) => r.email?.toLowerCase() === email?.toLowerCase());
   return recipient && recipient.sequence === recipientsWithActions?.[0]?.sequence;
 };
 
@@ -102,7 +117,9 @@ export const userCanSignNow = (profile: IProfile | null | undefined, envelope: I
   }
 
   const recipientsWithActions = getRecipientsWithActions(envelope);
-  const myRecipient = recipientsWithActions.find((r) => r.profile_id === profile?.id || r.email === profile?.email);
+  const myRecipient = recipientsWithActions.find(
+    (r) => r.profile_id === profile?.id || r.email?.toLowerCase() === profile?.email?.toLowerCase(),
+  );
   return (
     myRecipient &&
     envelopeIsActive(envelope) &&

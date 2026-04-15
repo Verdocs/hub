@@ -104,6 +104,14 @@ export const userCanSendTemplate = (profile: IProfile | null | undefined, templa
     case 'public':
       return true;
   }
+
+  if (!template.roles || !template.roles.length) {
+    return false;
+  }
+
+  if (!template.fields || !template.fields.length) {
+    return false;
+  }
 };
 
 /**
