@@ -458,6 +458,7 @@ export interface IEnvelopeField {
   required: boolean | null;
   /** If true, the field will be not be editable by the participant(s). NOTE: Fields may not be both required and readonly. */
   readonly: boolean | null;
+  // TODO: In the future, let's decide on the fate of the `settings` object
   /** @deprecated. Use top-level fields instead. */
   settings: IEnvelopeFieldSettings | null;
   validator: string | null;
@@ -536,6 +537,8 @@ export interface IEnvelopeFieldSettings {
   /** Checkbox settings */
   minimum_checked?: number;
   maximum_checked?: number;
+  canvasHeight?: number;
+  canvasWidth?: number;
 }
 
 export interface IEnvelopeHistory {
