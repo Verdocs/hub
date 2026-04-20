@@ -536,6 +536,8 @@ export interface IEnvelopeFieldSettings {
   /** Checkbox settings */
   minimum_checked?: number;
   maximum_checked?: number;
+  canvasHeight?: number;
+  canvasWidth?: number;
 }
 
 export interface IEnvelopeHistory {
