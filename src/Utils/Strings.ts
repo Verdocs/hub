@@ -3,6 +3,8 @@
  */
 export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
+// TODO: In the API, we introduced 'libphonenumber-js', which will match this functionality, but we need to be mindful of
+// the differences.
 /**
  * Convert a phone-number-like string to E164 format.
  * @see https://46elks.com/kb/e164
