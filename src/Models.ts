@@ -150,6 +150,8 @@ export interface IOrganization {
   primary_color?: string | null;
   secondary_color?: string | null;
   parent_id: string | null;
+  style_overrides?: string | null;
+  hipaa_complaint?: string | null;
   disclaimer?: string | null;
   terms_use_url?: string | null;
   privacy_policy_url?: string | null;
