@@ -196,4 +196,8 @@ export type TEventName =
   | 'email:verify'
   | 'email:otp'
   | 'password:reset'
-  | 'recipient:question';
+  | 'recipient:question'
+  | 'delegate:requested'
+  | 'delegate:send_confirmed'
+  | 'delegate:accepted'
+  | 'delegate:declined';
