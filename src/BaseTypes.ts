@@ -185,7 +185,6 @@ export type TEventName =
   | 'envelope:cc'
   | 'recipient:reminder'
   | 'transaction:requested'
-  // | 'envelope:delegated'
   | 'envelope:completed'
   | 'transaction:canceled'
   | 'user:invited'
@@ -199,5 +198,3 @@ export type TEventName =
   | 'recipient:question'
   | 'delegate:requested'
   | 'delegate:send_confirmed';
-// | 'delegate:accepted'
-// | 'delegate:declined';
