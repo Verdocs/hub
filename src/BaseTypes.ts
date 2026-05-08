@@ -185,7 +185,7 @@ export type TEventName =
   | 'envelope:cc'
   | 'recipient:reminder'
   | 'transaction:requested'
-  | 'envelope:delegated'
+  // | 'envelope:delegated'
   | 'envelope:completed'
   | 'transaction:canceled'
   | 'user:invited'
@@ -198,6 +198,6 @@ export type TEventName =
   | 'password:reset'
   | 'recipient:question'
   | 'delegate:requested'
-  | 'delegate:send_confirmed'
-  | 'delegate:accepted'
-  | 'delegate:declined';
+  | 'delegate:send_confirmed';
+// | 'delegate:accepted'
+// | 'delegate:declined';
