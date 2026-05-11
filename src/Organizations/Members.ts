@@ -70,3 +70,48 @@ export const updateOrganizationMember = (
   endpoint.api //
     .patch<IProfile>(`/v2/organization-members/${profileId}`, params)
     .then((r) => r.data);
+
+/**
+ * Lock an organization member's account. The member will be unable to sign in until an admin
+ * unlocks them or they complete the password-reset flow. Caller must be an admin or owner,
+ * may not lock him/herself, and the target must have a linked user account.
+ *
+ * ```typescript
+ * import {lockOrganizationMember} from '@verdocs/js-sdk';
+ *
+ * const result = await lockOrganizationMember(VerdocsEndpoint.getDefault(), 'PROFILEID', 'Departed employee');
+ * ```
+ *
+ * @group Organization Members
+ * @api PUT /v2/organization-members/:profile_id Perform an operation on an organization member.
+ * @apiParam string(format:uuid) profile_id The Profile ID to operate on.
+ * @apiBody string(enum:'lock') action Action to perform
+ * @apiBody string reason Reason the account is being locked. Stored on the user record and shown to admins.
+ * @apiSuccess IProfile . The updated profile for the member, with the joined user record.
+ */
+export const lockOrganizationMember = (endpoint: VerdocsEndpoint, profileId: string, reason: string) =>
+  endpoint.api //
+    .put<IProfile>(`/v2/organization-members/${profileId}`, {action: 'lock', reason})
+    .then((r) => r.data);
+
+/**
+ * Unlock a member whose account has been locked (typically after too many failed sign-in attempts
+ * or via an earlier admin lock). Caller must be an admin or owner, may not unlock him/herself, and
+ * the target must have a linked user account. Clears `locked`, `lock_reason`, and `login_failures`.
+ *
+ * ```typescript
+ * import {unlockOrganizationMember} from '@verdocs/js-sdk';
+ *
+ * const result = await unlockOrganizationMember(VerdocsEndpoint.getDefault(), 'PROFILEID');
+ * ```
+ *
+ * @group Organization Members
+ * @api PUT /v2/organization-members/:profile_id Perform an operation on an organization member.
+ * @apiParam string(format:uuid) profile_id The Profile ID to operate on.
+ * @apiBody string(enum:'unlock') action Action to perform
+ * @apiSuccess IProfile . The updated profile for the member, with the joined user record.
+ */
+export const unlockOrganizationMember = (endpoint: VerdocsEndpoint, profileId: string) =>
+  endpoint.api //
+    .put<IProfile>(`/v2/organization-members/${profileId}`, {action: 'unlock'})
+    .then((r) => r.data);

@@ -150,6 +150,8 @@ export interface IOrganization {
   primary_color?: string | null;
   secondary_color?: string | null;
   parent_id: string | null;
+  style_overrides?: string | null;
+  hipaa_complaint?: boolean | null;
   disclaimer?: string | null;
   terms_use_url?: string | null;
   privacy_policy_url?: string | null;
@@ -243,19 +245,32 @@ export interface IProfile {
 
 export interface IUser {
   id: string;
+  /** Email address. */
   email: string;
+  /** If true, the email has been verified in some way (e.g. OTP verification or trusted third party. */
   email_verified: boolean;
+  /** Password hash, present only for type consistency. Marked optional, but will never be returned by the backend. */
   pass_hash?: string;
   first_name: string | null;
   last_name: string | null;
   phone: string | null;
   picture: string | null;
+  /** If set, the Azure B2C ID for the user. Generally set only for Teams/PowerAutomate users. */
   b2cId: string | null;
+  /** If set, the Google account ID for the user. Set only for users logging in via Google. */
   googleId: string | null;
+  /** If set, the Apple account ID for the user. Set only for users logging in via Apple. */
   appleId: string | null;
+  /** If set, the Github account ID for the user. Set only for users logging in via Github. */
   githubId?: string | null;
   created_at: string;
   updated_at: string;
+  /** True if the account is locked, typically due to failed sign-in attempts. Only visible to admins or owners. */
+  locked?: boolean;
+  /** Reason the account is locked. Only visible to admins or owners. */
+  lock_reason?: string | null;
+  /** Consecutive failed sign-in attempts. Only visible to admins or owners. */
+  login_failures?: number;
 }
 
 export type IWebhookEvents = Record<TWebhookEvent, boolean>;
@@ -458,6 +473,7 @@ export interface IEnvelopeField {
   required: boolean | null;
   /** If true, the field will be not be editable by the participant(s). NOTE: Fields may not be both required and readonly. */
   readonly: boolean | null;
+  // TODO: In the future, let's decide on the fate of the `settings` object
   /** @deprecated. Use top-level fields instead. */
   settings: IEnvelopeFieldSettings | null;
   validator: string | null;
@@ -536,6 +552,8 @@ export interface IEnvelopeFieldSettings {
   /** Checkbox settings */
   minimum_checked?: number;
   maximum_checked?: number;
+  canvasHeight?: number;
+  canvasWidth?: number;
 }
 
 export interface IEnvelopeHistory {
