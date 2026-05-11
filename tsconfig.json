@@ -11,7 +11,8 @@
     "noEmit": false,
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "skipLibCheck": true
   },
   "include": ["src", "**/*.ts"],
   "exclude": ["node_modules/", "dist", "**/*.js", "openapi/generate/"]

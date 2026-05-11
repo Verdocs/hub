@@ -52,7 +52,7 @@ it('createProfile should return the new profile', async () => {
   const thenFn = jest.fn();
 
   const mock = new MockAdapter(endpoint.api);
-  const profile = {email: 'EMAIL', password: 'BOGUS', first_name: 'FIRST', last_name: 'LAST', org_name: 'ORG'};
+  const profile = {email: 'EMAIL', password: 'BOGUS', first_name: 'FIRST', last_name: 'LAST', org_name: 'ORG', phone: 'ORG'};
   mock.onPost('/v2/profiles').reply(200, profile);
 
   await createProfile(endpoint, profile).then(thenFn).catch(catchFn);
