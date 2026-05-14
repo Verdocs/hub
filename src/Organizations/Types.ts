@@ -38,6 +38,52 @@ export interface ISetWebhookRequest {
   events: Record<TWebhookEvent, boolean>;
 }
 
+export interface ICreateBrandRequest {
+  key: string;
+  name?: string;
+  full_logo_url?: string;
+  thumbnail_url?: string;
+  favicon_url?: string;
+  page_title?: string;
+  primary_color?: string;
+  secondary_color?: string;
+  powered_by_label?: string;
+  powered_by_url?: string;
+  style_overrides?: string;
+  disclaimer?: string;
+  terms_use_url?: string;
+  privacy_policy_url?: string;
+  support_contact?: string;
+  pdf_signature_reason?: string;
+  pdf_signature_location?: string;
+}
+
+export interface IUpdateBrandRequest {
+  name?: string | null;
+  full_logo_url?: string | null;
+  thumbnail_url?: string | null;
+  favicon_url?: string | null;
+  page_title?: string | null;
+  primary_color?: string | null;
+  secondary_color?: string | null;
+  powered_by_label?: string | null;
+  powered_by_url?: string | null;
+  style_overrides?: string | null;
+  disclaimer?: string | null;
+  terms_use_url?: string | null;
+  privacy_policy_url?: string | null;
+  support_contact?: string | null;
+  pdf_signature_reason?: string | null;
+  pdf_signature_location?: string | null;
+}
+
+export interface IAddBrandEmailDomainRequest {
+  subdomain: string;
+  local_part: string;
+  display_name?: string;
+  reply_to?: string;
+}
+
 export interface ICreateNotificationTemplateRequest {
   type: TNotificationType;
   event_name: TEventName;

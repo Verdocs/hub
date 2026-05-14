@@ -158,12 +158,11 @@ export interface IOrganization {
   powered_by_label?: string | null;
   powered_by_url?: string | null;
   data?: Record<string, any> | null;
-  /** Creation date/time. */
   created_at: string;
-  /** Last-update date/time. */
   updated_at: string;
 
   api_keys?: IApiKey[];
+  brands?: IBrand[];
   children?: IOrganization[];
   parent?: IOrganization;
   groups?: IGroup[];
@@ -176,6 +175,49 @@ export interface IOrganization {
   templates?: ITemplate[];
   group_profiles?: IGroupProfile[];
   pending_webhooks?: IPendingWebhook[];
+}
+
+export type TDomainStatus = 'pending' | 'active' | 'failed' | 'suspended';
+
+export type TEmailDomainStatus = 'pending' | 'verified' | 'failed' | 'suspended';
+
+export interface IBrand {
+  id: string;
+  organization_id: string;
+  key: string;
+  name: string | null;
+  full_logo_url: string | null;
+  thumbnail_url: string | null;
+  favicon_url: string | null;
+  page_title: string | null;
+  primary_color: string | null;
+  secondary_color: string | null;
+  powered_by_label: string | null;
+  powered_by_url: string | null;
+  style_overrides: string | null;
+  disclaimer: string | null;
+  terms_use_url: string | null;
+  privacy_policy_url: string | null;
+  support_contact: string | null;
+  pdf_signature_reason: string | null;
+  pdf_signature_location: string | null;
+  app_domain: string | null;
+  app_domain_status: TDomainStatus | null;
+  app_domain_cf_id: string | null;
+  app_domain_dcv_token: string | null;
+  email_domain: string | null;
+  email_local_part: string | null;
+  email_display_name: string | null;
+  email_reply_to: string | null;
+  email_reply_to_verified: boolean;
+  email_domain_status: TEmailDomainStatus | null;
+  email_spf_verified: boolean;
+  email_dkim_verified: boolean;
+  email_dmarc_verified: boolean;
+  email_dkim_tokens: string[];
+  created_at: string;
+  updated_at: string;
+  organization?: IOrganization;
 }
 
 export interface IOrganizationInvitation {
