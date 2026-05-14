@@ -158,6 +158,7 @@ export interface IOrganization {
   powered_by_label?: string | null;
   powered_by_url?: string | null;
   data?: Record<string, any> | null;
+  default_brand_id?: string | null;
   created_at: string;
   updated_at: string;
 
