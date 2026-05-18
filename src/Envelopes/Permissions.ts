@@ -69,6 +69,7 @@ export const userCanFinishEnvelope = (profile: IProfile | null | undefined, enve
   envelope.status !== 'complete' &&
   envelope.status !== 'declined' &&
   envelope.status !== 'canceled';
+
 /**
  * Returns true if the recipient has a pending action. Note that this does not necessarily mean the recipient can act (yet).
  */
