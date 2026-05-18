@@ -87,7 +87,7 @@ export const recipientCanAct = (recipient: IRecipient, recipientsWithActions: IR
   recipient.sequence === recipientsWithActions?.[0]?.sequence;
 
 /**
- * Regardless of if the session is `user` or `signer`, returns true if the viewer is a recipient.
+ * Regardless of if the session is `user` or `signer`, returns the envelope's recipient that matches the user's session
  */
 export const getMyRecipient = (session: TSession, envelope: IEnvelope) =>
   (envelope?.recipients || []).find((r) => r.email === session?.email);
