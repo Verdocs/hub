@@ -24,7 +24,23 @@ export interface IRefreshTokenRequest {
   scope?: string;
 }
 
-export type TAuthenticationRequest = IROPCRequest | IClientCredentialsRequest | IRefreshTokenRequest;
+export interface IAuthorizationCodeRequest {
+  grant_type: 'authorization_code';
+  code: string;
+  client_id: string;
+  client_secret: string;
+  redirect_uri: string;
+}
+
+export type TAuthenticationRequest = IROPCRequest | IClientCredentialsRequest | IRefreshTokenRequest | IAuthorizationCodeRequest;
+
+export interface IOAuth2AuthorizeParams {
+  client_id: string;
+  redirect_uri: string;
+  response_type: 'code';
+  state?: string;
+  scope?: string;
+}
 
 /**
  * Authenticate to Verdocs.
@@ -33,29 +49,70 @@ export type TAuthenticationRequest = IROPCRequest | IClientCredentialsRequest | 
  * import {authenticate, VerdocsEndpoint} from '@verdocs/js-sdk';
  *
  * // Client-side call, suitable for Web and mobile apps:
- * const {access_token} = await Auth.authenticate({ username: 'test@test.com', password: 'PASSWORD', grant_type:'password' });
+ * const {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { username: 'test@test.com', password: 'PASSWORD', grant_type:'password' });
  * VerdocsEndpoint.getDefault().setAuthToken(access_token);
  *
  * // Server-side call, suitable for server apps. NEVER EXPOSE client_secret IN FRONT-END CODE:
- * const {access_token} = await Auth.authenticate({ client_id: '...', client_secret: '...', grant_type:'client_credentials' });
+ * const {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { client_id: '...', client_secret: '...', grant_type:'client_credentials' });
  * VerdocsEndpoint.getDefault().setAuthToken(access_token);
+ *
+ * // OAuth2 authorization code exchange (used by third-party integrations like PowerAutomate):
+ * const {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { grant_type: 'authorization_code', code: '...', client_id: '...', client_secret: '...', redirect_uri: '...' });
  * ```
  *
  * @group Authentication
  * @api POST /v2/oauth2/token Authenticate
- * @apiBody string(enum: 'client_credentials'|'refresh_token'|'password') grant_type The type of grant to request. API callers should nearly always use 'client_credentials'.
- * @apiBody string(format: 'uuid') client_id? If grant_type is client_credentials or refresh_token, the client ID of the API key to use.
- * @apiBody string(format: 'uuid') client_secret? If grant_type is client_credentials, the secret key of the API key to use.
+ * @apiBody string(enum: 'client_credentials'|'refresh_token'|'password'|'authorization_code') grant_type The type of grant to request. API callers should nearly always use 'client_credentials'. Third-party OAuth2 integrations use 'authorization_code'.
+ * @apiBody string(format: 'uuid') client_id? If grant_type is client_credentials, refresh_token, or authorization_code, the client ID to use.
+ * @apiBody string(format: 'uuid') client_secret? If grant_type is client_credentials or authorization_code, the secret key to use.
  * @apiBody string username? If grant_type is password, the username to authenticate with.
  * @apiBody string password? If grant_type is password, the password to authenticate with.
- * @apiBody string password? If grant_type is password, the password to authenticate with.
+ * @apiBody string code? If grant_type is authorization_code, the authorization code received from the authorize endpoint.
+ * @apiBody string(format: 'uri') redirect_uri? If grant_type is authorization_code, must match the redirect_uri used in the authorize request.
  * @apiBody string scope? Optional scope to limit the auth token to. Do not specify this unless you are instructed to by a Verdocs Support rep.
- * @apiSuccess IAuthenticateResponse . The detailed metadata for the envelope requested
+ * @apiSuccess IAuthenticateResponse . Authentication tokens and expiration details
  */
 export const authenticate = (endpoint: VerdocsEndpoint, params: TAuthenticationRequest) =>
   endpoint.api //
     .post<IAuthenticateResponse>('/v2/oauth2/token', params)
     .then((r) => r.data);
+
+/**
+ * Build the URL that starts an OAuth2 authorization code flow. Redirect the user's browser to this URL
+ * to begin the flow. After the user authenticates and authorizes, they will be redirected to
+ * `redirect_uri` with a `code` query parameter that can be exchanged for tokens via `authenticate()`
+ * with `grant_type: 'authorization_code'`.
+ *
+ * ```typescript
+ * import {getOAuth2AuthorizeUrl} from '@verdocs/js-sdk';
+ *
+ * const url = getOAuth2AuthorizeUrl(VerdocsEndpoint.getDefault(), {
+ *   client_id: 'your-client-id',
+ *   redirect_uri: 'https://your-app.com/callback',
+ *   response_type: 'code',
+ *   state: 'random-csrf-token',
+ * });
+ * window.location.href = url;
+ * ```
+ *
+ * @group Authentication
+ * @api GET /v2/oauth2/authorize Initiate an OAuth2 authorization code flow
+ * @apiQuery string(format: 'uuid') client_id The client ID of the registered OAuth2 application.
+ * @apiQuery string(format: 'uri') redirect_uri The URI to redirect to after authorization. Must match a registered redirect URI for the application.
+ * @apiQuery string(enum: 'code') response_type Must be 'code' for authorization code flow.
+ * @apiQuery string state? An opaque value used to prevent CSRF attacks. Returned unchanged in the redirect.
+ * @apiQuery string scope? Optional scope to request.
+ */
+export const getOAuth2AuthorizeUrl = (endpoint: VerdocsEndpoint, params: IOAuth2AuthorizeParams): string => {
+  const baseUrl = endpoint.getBaseURL?.() || 'https://api.verdocs.com';
+  const url = new URL('/v2/oauth2/authorize', baseUrl);
+  url.searchParams.set('client_id', params.client_id);
+  url.searchParams.set('redirect_uri', params.redirect_uri);
+  url.searchParams.set('response_type', params.response_type);
+  if (params.state) url.searchParams.set('state', params.state);
+  if (params.scope) url.searchParams.set('scope', params.scope);
+  return url.toString();
+};
 
 /**
  * If called before the session expires, this will refresh the caller's session and tokens.
