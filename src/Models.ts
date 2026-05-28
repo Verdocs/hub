@@ -16,6 +16,7 @@ import type {
   TUsageType,
   TWebhookAuthMethod,
   TWebhookEvent,
+  TEnvelopeDocumentType,
 } from './BaseTypes';
 import {TPermission, TRole} from './Sessions';
 
@@ -477,7 +478,7 @@ export interface IEnvelopeDocument {
    */
   order: number;
   /** Whether the document is a signer-supplied attachment or a Verdocs-generated certificate */
-  type: 'attachment' | 'certificate';
+  type: TEnvelopeDocumentType;
   /** The name of the document */
   name: string;
   /** Page count */
