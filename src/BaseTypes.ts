@@ -79,7 +79,7 @@ export type TEventDetail =
 
 export type TEnvelopeUpdateResult = Omit<IEnvelope, 'histories' | 'recipients' | 'certificate' | 'document' | 'fields' | 'profile'>;
 
-export type TEnvelopeDocumentType = 'attachment' | 'certificate' | 'combined';
+export type TEnvelopeDocumentType = 'attachment' | 'certificate';
 
 export type TFieldType =
   | 'signature'
