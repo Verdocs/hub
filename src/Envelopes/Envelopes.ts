@@ -122,6 +122,24 @@ export const getEnvelopeDocumentDownloadLink = async (endpoint: VerdocsEndpoint,
     .then((r) => r.data);
 
 /**
+ * Generates a single, signed PDF that combines all of an envelope’s attached documents along with its completion certificate.
+ * Pages within the combined PDF are organized in the order of recipients’ actions, preserving the signing workflow sequence.
+ *
+ * @group Envelope Documents
+ * @api GET /v2/envelope-documents/:document_id Preview, Download, or Link to a Document
+ * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
+ * @apiQuery string(enum:'file'|'download'|'preview') type? Download the file directly, generate a download link, or generate a preview link.
+ * @apiQuery boolean(default: false) combined?
+ * @apiSuccess string . The generated link.
+ */
+export const getCombinedEnvelopeDocumentDownloadLink = async (endpoint: VerdocsEndpoint, documentId: string) =>
+  endpoint.api //
+    .get<string>(`/v2/envelope-documents/${documentId}?type=download&combined=true`, {
+      'axios-retry': {retries: 5, retryDelay: axiosRetry.linearDelay(3000)},
+    })
+    .then((r) => r.data);
+
+/**
  * Get a pre-signed preview link for an Envelope Document. This link expires quickly, so it should
  * be accessed immediately and never shared. Content-Disposition will be set to "inline".
  */
