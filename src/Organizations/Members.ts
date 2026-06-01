@@ -1,5 +1,6 @@
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {IProfile} from '../Models';
+import {TRole} from '../Sessions';
 
 /**
  * An Organization Member (aka Profile) is an individual user with access to an organization.
@@ -43,6 +44,32 @@ export const getOrganizationMembers = (endpoint: VerdocsEndpoint) =>
 export const deleteOrganizationMember = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
     .delete(`/v2/organization-members/${profileId}`)
+    .then((r) => r.data);
+
+/**
+ * Create an organization member directly, bypassing the invite process.
+ *
+ * ```typescript
+ * import {createOrganizationMember} from '@verdocs/js-sdk';
+ *
+ * const result = await createOrganizationMember(VerdocsEndpoint.getDefault(), {email:'a@b.com', first_name: 'A', last_name: 'B', roles:['member']});
+ * ```
+ *
+ * @group Organization Members
+ * @api POST /v2/organization-members Create an organization member directly, bypassing the invite process.
+ * @apiBody string email Email address for the member
+ * @apiBody string first_name First name for the member
+ * @apiBody string last_name Last name for the member
+ * @apiBody string password? If set, will be used as the initial password. If omitted, a password will be generated and returned.
+ * @apiBody array(items:TRole) roles? Roles (e.g. "member" or "admin") to assign to the user.
+ * @apiSuccess IProfile . The new profile for the member. If a password was generated, it will be included in the response.
+ */
+export const createOrganizationMember = (
+  endpoint: VerdocsEndpoint,
+  params: {email: string; first_name: string; last_name: string; password?: string; roles?: TRole[]},
+) =>
+  endpoint.api //
+    .post<IProfile>(`/v2/organization-members`, params)
     .then((r) => r.data);
 
 /**

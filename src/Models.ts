@@ -163,6 +163,14 @@ export interface IOrganization {
   created_at: string;
   updated_at: string;
 
+  /**
+   * If creating a child organization, an API key will be automatically created and returned. This saves a few API calls
+   * doing so in subsequent operations. Please note that this is a synthetic field and not part of the formal IOrganization
+   * definition. In API v3, this field will move to the top level, outside the organization response object.
+   * @deprecated
+   */
+  api_key?: {client_id: string; client_secret: string; name: 'Default'};
+
   api_keys?: IApiKey[];
   brands?: IBrand[];
   children?: IOrganization[];
