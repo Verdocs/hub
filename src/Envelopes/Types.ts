@@ -169,6 +169,8 @@ export interface ISignerTokenResponse {
    * which that is required, but for most use-cases, only the first entry should be used.
    */
   initials?: IInitial[];
+  /** The org's default brand, if one is set. Contains style_overrides CSS and other branding fields. */
+  brand?: Record<string, any> | null;
 }
 
 export interface IInPersonLinkResponse {

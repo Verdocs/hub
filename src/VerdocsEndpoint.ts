@@ -61,7 +61,7 @@ export interface VerdocsEndpointOptions {
  * ```
  */
 export class VerdocsEndpoint {
-  private environment = 'verdocs' as TEnvironment;
+  private environment: TEnvironment = BETA_ORIGINS.includes(globalThis.window?.location?.origin || '') ? 'beta' : '';
   private sessionType = 'user' as TSessionType;
   private persist = true;
   private baseURL = BETA_ORIGINS.includes(globalThis.window?.location?.origin || '')
