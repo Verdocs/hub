@@ -160,6 +160,8 @@ export interface IOrganization {
   powered_by_url?: string | null;
   data?: Record<string, any> | null;
   default_brand_id?: string | null;
+  /** If set, the organization may not be deleted. Must be set to false before calling DELETE. Defaults to true (protected). */
+  deletion_protected: boolean;
   created_at: string;
   updated_at: string;
 

@@ -99,12 +99,15 @@ export const getOrganizationUsage = (
  * @apiBody string url? URL for the new organization
  * @apiBody string full_logo_url? URL of a large-format PNG logo
  * @apiBody string thumbnail_url? URL of a small-format (square is recommended) PNG logo
- * @apiBody string primary_color? URL of a small-format (square is recommended) PNG logo
- * @apiBody string secondary_color? URL of a small-format (square is recommended) PNG logo
+ * @apiBody string primary_color? Primary brand color (hex string, e.g. "#FF0000")
+ * @apiBody string secondary_color? Secondary brand color (hex string)
  * @apiBody string terms_use_url? URL of a Terms of Use page, shown in bottom-right of signing experience. Hidden if not set.
  * @apiBody string privacy_policy_url? URL of a Privacy Policy page, shown in bottom-right of signing experience. Hidden if not set.
  * @apiBody string powered_by_label? "Powered-by..." label, shown in bottom-left of signing experience. Hidden if not set.
  * @apiBody string powered_by_url? URL for the Powered By label to show when clicked. Rendered as a static label if not set.
+ * @apiBody string disclaimer? Custom disclaimer/disclosure block to present to envelope recipients. May contain basic HTML (e.g. ol/ul/li tags) but complex or dangerous (e.g. script) tags will be rejected.
+ * @apiBody object data? Developer-supplied metadata attached to the organization.
+ * @apiBody boolean deletion_protected? Prevents the organization from being deleted until turned off. Defaults to true.
  * @apiSuccess IAuthenticateResponse . Authentication credentials for user in the new organization. The user will be made an Owner automatically.
  */
 export const createOrganization = (
@@ -112,9 +115,7 @@ export const createOrganization = (
   params: {name: string} & Partial<
     Pick<
       IOrganization,
-      | 'address'
-      | 'address2'
-      | 'phone'
+      | 'parent_id'
       | 'contact_email'
       | 'url'
       | 'full_logo_url'
@@ -125,7 +126,9 @@ export const createOrganization = (
       | 'privacy_policy_url'
       | 'powered_by_label'
       | 'powered_by_url'
-      | 'parent_id'
+      | 'disclaimer'
+      | 'data'
+      | 'deletion_protected'
     >
   >,
 ) =>
@@ -149,12 +152,15 @@ export const createOrganization = (
  * @apiBody string url? URL for the new organization
  * @apiBody string full_logo_url? URL of a large-format PNG logo
  * @apiBody string thumbnail_url? URL of a small-format (square is recommended) PNG logo
- * @apiBody string primary_color? URL of a small-format (square is recommended) PNG logo
- * @apiBody string secondary_color? URL of a small-format (square is recommended) PNG logo
+ * @apiBody string primary_color? Primary brand color (hex string, e.g. "#FF0000")
+ * @apiBody string secondary_color? Secondary brand color (hex string)
  * @apiBody string terms_use_url? URL of a Terms of Use page, shown in bottom-right of signing experience. Hidden if not set.
  * @apiBody string privacy_policy_url? URL of a Privacy Policy page, shown in bottom-right of signing experience. Hidden if not set.
  * @apiBody string powered_by_label? "Powered-by..." label, shown in bottom-left of signing experience. Hidden if not set.
  * @apiBody string powered_by_url? URL for the Powered By label to show when clicked. Rendered as a static label if not set.
+ * @apiBody string disclaimer? Custom disclaimer/disclosure block to present to envelope recipients. May contain basic HTML (e.g. ol/ul/li tags) but complex or dangerous (e.g. script) tags will be rejected.
+ * @apiBody object data? Developer-supplied metadata attached to the organization.
+ * @apiBody boolean deletion_protected? Prevents the organization from being deleted until turned off.
  * @apiSuccess IOrganization . The details for the updated organization
  */
 export const updateOrganization = (endpoint: VerdocsEndpoint, organizationId: string, params: Partial<IOrganization>) =>
