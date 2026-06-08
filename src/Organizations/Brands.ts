@@ -20,6 +20,7 @@ export const getBrands = (endpoint: VerdocsEndpoint, organizationId: string) =>
  * @group Brands
  * @api POST /v2/organizations/:organizationId/brands Create brand
  * @apiBody string key A unique key for the brand (lowercase alphanumeric + hyphens)
+ * @apiBody ILocaleData localeData? The locale and timezone codes, as provided by the client browser.
  * @apiSuccess IBrand . The newly created brand.
  */
 export const createBrand = (endpoint: VerdocsEndpoint, organizationId: string, params: ICreateBrandRequest) =>

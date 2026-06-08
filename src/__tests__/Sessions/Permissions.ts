@@ -17,6 +17,8 @@ it('userHasPermissions should work as expected', async () => {
     roles: ['member'],
     // Directly-applied permission that normal members don't have
     permissions: ['admin:add'],
+    locale: null,
+    timezone: null,
     group_profiles: [
       {
         group_id: 'BOGUS',

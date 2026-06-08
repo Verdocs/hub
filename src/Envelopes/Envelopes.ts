@@ -55,6 +55,7 @@ import {TCreateEnvelopeRequest} from './Types';
  * @apiBody integer(min: 0) followup_reminders? Override the template initial-reminder setting in ms.
  * @apiBody number max_reminder_days? Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14.
  * @apiBody string expires_at? If set, the envelope will automatically expire (be canceled) at this date and time. Expirations must be at least 1 day in the future.
+ * @apiBody ILocaleData localeData? The locale and timezone codes, as provided by the client browser.
  * @apiSuccess IEnvelope . The newly-created envelope.
  */
 export const createEnvelope = async (endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest) =>
@@ -237,7 +238,10 @@ export const updateEnvelopeField = async (
   prepared: boolean,
 ) =>
   endpoint.api //
-    .put<IEnvelopeField>(`/v2/envelopes/${envelopeId}/recipients/${roleName}/fields/${fieldName}`, {value, prepared})
+    .put<IEnvelopeField>(`/v2/envelopes/${envelopeId}/recipients/${roleName}/fields/${fieldName}`, {
+      value,
+      prepared,
+    })
     .then((r) => r.data);
 
 /**

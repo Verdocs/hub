@@ -1,4 +1,4 @@
-import type {TEnvelopeStatus, TFieldType, TRecipientAuthMethod, TRecipientStatus, TRecipientType} from '../BaseTypes';
+import type {ILocaleData, TEnvelopeStatus, TFieldType, TRecipientAuthMethod, TRecipientStatus, TRecipientType} from '../BaseTypes';
 import type {IDropdownOption, IEnvelope, IInitial, IRecipient, ISignature, TAccessKey} from '../Models';
 
 export interface IEnvelopesSearchResult {
@@ -141,6 +141,13 @@ export interface ICreateEnvelopeRecipientDirectly {
   dob?: string;
   /** Pre-fill KBA SSN-Last-4 for the recipient, if known. */
   ssn_last_4?: string;
+}
+export interface IRecipientDisclosureAgreeBody {
+  localeData?: ILocaleData;
+}
+
+export interface IRecipientSubmitBody {
+  localeData?: ILocaleData;
 }
 
 export interface ISignerTokenResponse {
@@ -365,6 +372,8 @@ export interface ICreateEnvelopeFromTemplateRequest {
   data?: any;
   /** Fields to create in the envelope. Note that document_id is a number in this call and should match the index of the document in the documents array. */
   fields?: ICreateEnvelopeFieldFromTemplate;
+  /** The locale and timezone codes, as determined by the client browser. */
+  localeData?: ILocaleData;
 }
 
 export interface ICreateEnvelopeDirectlyRequest {
@@ -398,6 +407,8 @@ export interface ICreateEnvelopeDirectlyRequest {
   documents: (ICreateEnvelopeDocumentFromData | ICreateEnvelopeDocumentFromUri | ICreateEnvelopeDocumentFromFile)[];
   /** Fields to create in the envelope. Note that document_id is a number in this call and should match the index of the document in the documents array. */
   fields: ICreateEnvelopeFieldDirectly[];
+  /** The locale and timezone codes, as determined by the client browser. */
+  localeData?: ILocaleData;
 }
 
 export type TCreateEnvelopeRequest = ICreateEnvelopeFromTemplateRequest | ICreateEnvelopeDirectlyRequest;

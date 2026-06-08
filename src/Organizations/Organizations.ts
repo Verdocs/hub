@@ -16,7 +16,7 @@ import {IEntitlement, IOrganization, IProfile, TOrganizationUsage} from '../Mode
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {IAuthenticateResponse} from '../Users';
 import {collapseEntitlements} from '../Utils';
-import {TUsageType} from '../BaseTypes';
+import {ILocaleData, TUsageType} from '../BaseTypes';
 
 /**
  * Get an organization by ID. Note that this endpoint will return only a subset of fields
@@ -105,6 +105,7 @@ export const getOrganizationUsage = (
  * @apiBody string privacy_policy_url? URL of a Privacy Policy page, shown in bottom-right of signing experience. Hidden if not set.
  * @apiBody string powered_by_label? "Powered-by..." label, shown in bottom-left of signing experience. Hidden if not set.
  * @apiBody string powered_by_url? URL for the Powered By label to show when clicked. Rendered as a static label if not set.
+ * @apiBody ILocaleData localeData? The locale and timezone codes, as provided by the client browser.
  * @apiBody string disclaimer? Custom disclaimer/disclosure block to present to envelope recipients. May contain basic HTML (e.g. ol/ul/li tags) but complex or dangerous (e.g. script) tags will be rejected.
  * @apiBody object data? Developer-supplied metadata attached to the organization.
  * @apiBody boolean deletion_protected? Prevents the organization from being deleted until turned off. Defaults to true.
@@ -112,7 +113,7 @@ export const getOrganizationUsage = (
  */
 export const createOrganization = (
   endpoint: VerdocsEndpoint,
-  params: {name: string} & Partial<
+  params: {name: string; localeData?: ILocaleData} & Partial<
     Pick<
       IOrganization,
       | 'parent_id'

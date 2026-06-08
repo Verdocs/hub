@@ -120,7 +120,7 @@ export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  * import {createProfile} from '@verdocs/js-sdk';
  *
  * const newSession = await createProfile(VerdocsEndpoint.getDefault(), {
- *   orgName: 'NEW ORG', email: 'a@b.com', password: '12345678', firstName: 'FIRST', lastName: 'LAST'
+ *   orgName: 'NEW ORG', email: 'a@b.com', password: '12345678', firstName: 'FIRST', lastName: 'LAST', localeData: { locale: 'en-US', timezone: 'America/New_York' }
  * });
  * ```
  */
