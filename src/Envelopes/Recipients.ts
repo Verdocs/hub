@@ -10,7 +10,8 @@ import type {IRecipient} from '../Models';
  * @api POST /envelopes/:envelope_id/recipients/:role_name/agree Agree to e-Signing Disclosures
  * @apiParam string(format:uuid) envelope_id The envelope to operate on.
  * @apiParam string role_name The role to operate on.
- * @apiBody ILocaleData localeData? The locale and timezone codes, as provided by the client browser.
+ * @apiBody string timezone? Define the long-form timezone.
+ * @apiBody string locale? Define the locale code.
  * @apiSuccess IRecipient . The updated Recipient.
  */
 export const envelopeRecipientAgree = (
@@ -47,7 +48,8 @@ export const envelopeRecipientDecline = (endpoint: VerdocsEndpoint, envelopeId: 
  * @api POST /envelopes/:envelope_id/recipients/:role_name/submit Submit envelope
  * @apiParam string(format:uuid) envelope_id The envelope to operate on.
  * @apiParam string role_name The role to submit.
- * @apiBody ILocaleData localeData? The locale and timezone codes, as provided by the client browser.
+ * @apiBody string timezone? Define the long-form timezone.
+ * @apiBody string locale? Define the locale code.
  * @apiSuccess IRecipient . The updated Recipient.
  */
 export const envelopeRecipientSubmit = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, data?: IRecipientSubmitBody) =>

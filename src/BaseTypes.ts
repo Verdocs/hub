@@ -202,8 +202,3 @@ export type TEventName =
   | 'recipient:question'
   | 'delegate:requested'
   | 'delegate:send_confirmed';
-
-export interface ILocaleData {
-  locale?: string;
-  timezone?: string;
-}

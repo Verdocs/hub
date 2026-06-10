@@ -1,4 +1,4 @@
-import type {ILocaleData, TEnvelopeStatus, TFieldType, TRecipientAuthMethod, TRecipientStatus, TRecipientType} from '../BaseTypes';
+import type {TEnvelopeStatus, TFieldType, TRecipientAuthMethod, TRecipientStatus, TRecipientType} from '../BaseTypes';
 import type {IDropdownOption, IEnvelope, IInitial, IRecipient, ISignature, TAccessKey} from '../Models';
 
 export interface IEnvelopesSearchResult {
@@ -143,11 +143,13 @@ export interface ICreateEnvelopeRecipientDirectly {
   ssn_last_4?: string;
 }
 export interface IRecipientDisclosureAgreeBody {
-  localeData?: ILocaleData;
+  locale?: string | null;
+  timezone?: string | null;
 }
 
 export interface IRecipientSubmitBody {
-  localeData?: ILocaleData;
+  locale?: string | null;
+  timezone?: string | null;
 }
 
 export interface ISignerTokenResponse {
@@ -372,8 +374,10 @@ export interface ICreateEnvelopeFromTemplateRequest {
   data?: any;
   /** Fields to create in the envelope. Note that document_id is a number in this call and should match the index of the document in the documents array. */
   fields?: ICreateEnvelopeFieldFromTemplate;
-  /** The locale and timezone codes, as determined by the client browser. */
-  localeData?: ILocaleData;
+  /** The long-form timezone. */
+  locale?: string | null;
+  /** The locale code */
+  timezone?: string | null;
 }
 
 export interface ICreateEnvelopeDirectlyRequest {
@@ -407,8 +411,10 @@ export interface ICreateEnvelopeDirectlyRequest {
   documents: (ICreateEnvelopeDocumentFromData | ICreateEnvelopeDocumentFromUri | ICreateEnvelopeDocumentFromFile)[];
   /** Fields to create in the envelope. Note that document_id is a number in this call and should match the index of the document in the documents array. */
   fields: ICreateEnvelopeFieldDirectly[];
-  /** The locale and timezone codes, as determined by the client browser. */
-  localeData?: ILocaleData;
+  /** The long-form timezone. */
+  locale?: string | null;
+  /** The locale code */
+  timezone?: string | null;
 }
 
 export type TCreateEnvelopeRequest = ICreateEnvelopeFromTemplateRequest | ICreateEnvelopeDirectlyRequest;

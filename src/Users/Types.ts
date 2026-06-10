@@ -1,4 +1,4 @@
-import type {ILocaleData, TRequestStatus} from '../BaseTypes';
+import type {TRequestStatus} from '../BaseTypes';
 import {TPermission, TRole} from '../Sessions';
 
 export interface ICreateProfileRequest {
@@ -8,7 +8,8 @@ export interface ICreateProfileRequest {
   last_name: string;
   org_name: string;
   phone: string;
-  localeData?: ILocaleData;
+  timezone?: string | null;
+  locale?: string | null;
 }
 
 export interface IUpdateProfileRequest {
@@ -16,6 +17,8 @@ export interface IUpdateProfileRequest {
   last_name?: string;
   // email?: string;
   phone?: string;
+  timezone?: string | null;
+  locale?: string | null;
   permissions?: TPermission[];
   roles?: TRole[];
 }

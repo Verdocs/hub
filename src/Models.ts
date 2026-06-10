@@ -160,8 +160,10 @@ export interface IOrganization {
   powered_by_url?: string | null;
   data?: Record<string, any> | null;
   default_brand_id?: string | null;
-  timezone: string | null;
-  locale: string | null;
+  /** The long-form timezone. */
+  locale?: string | null;
+  /** The locale code */
+  timezone?: string | null;
   /** If set, the organization may not be deleted. Must be set to false before calling DELETE. Defaults to true (protected). */
   deletion_protected: boolean;
   created_at: string;
@@ -229,8 +231,10 @@ export interface IBrand {
   email_dkim_verified: boolean;
   email_dmarc_verified: boolean;
   email_dkim_tokens: string[];
-  timezone: string | null;
-  locale: string | null;
+  /** The long-form timezone. */
+  locale?: string | null;
+  /** The locale code */
+  timezone?: string | null;
   created_at: string;
   updated_at: string;
   organization?: IOrganization;
@@ -285,8 +289,10 @@ export interface IProfile {
   current: boolean;
   permissions: TPermission[];
   roles: TRole[];
-  timezone: string | null;
-  locale: string | null;
+  /** The long-form timezone. */
+  locale?: string | null;
+  /** The locale code */
+  timezone?: string | null;
   // Creation date/time.
   created_at: string;
   // Last-update date/time.
@@ -329,8 +335,10 @@ export interface IUser {
   lock_reason?: string | null;
   /** Consecutive failed sign-in attempts. Only visible to admins or owners. */
   login_failures?: number;
-  timezone: string | null;
-  locale: string | null;
+  /** The long-form timezone. */
+  locale?: string | null;
+  /** The locale code */
+  timezone?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -704,8 +712,10 @@ export interface IRecipient {
   created_at: string;
   updated_at: string;
   last_attempt_at?: string;
-  timezone: string | null;
-  locale: string | null;
+  /** The long-form timezone. */
+  locale?: string | null;
+  /** The locale code */
+  timezone?: string | null;
   /**
    * Only returned in creation/getEnvelopeById requests by the creator. May be used for in-person signing. Note that
    * signing sessions started with this key will be marked as "In App" authenticated. For higher authentication levels,

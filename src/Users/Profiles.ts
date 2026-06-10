@@ -73,6 +73,8 @@ export const switchProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  * @apiBody string phone? Phone number
  * @apiBody array(items:TPermission) permissions? New permissions to directly apply to the profile
  * @apiBody array(items:TRole) roles? New roles to assign to the profile
+ * @apiBody string timezone? Define the long-form timezone.
+ * @apiBody string locale? Define the locale code.
  * @apiSuccess IProfile . The updated profile
  */
 export const updateProfile = (endpoint: VerdocsEndpoint, profileId: string, params: IUpdateProfileRequest) =>
@@ -120,7 +122,7 @@ export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  * import {createProfile} from '@verdocs/js-sdk';
  *
  * const newSession = await createProfile(VerdocsEndpoint.getDefault(), {
- *   orgName: 'NEW ORG', email: 'a@b.com', password: '12345678', firstName: 'FIRST', lastName: 'LAST', localeData: { locale: 'en-US', timezone: 'America/New_York' }
+ *   orgName: 'NEW ORG', email: 'a@b.com', password: '12345678', firstName: 'FIRST', lastName: 'LAST', locale: 'en-US', timezone: 'America/New_York'
  * });
  * ```
  */

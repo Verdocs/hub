@@ -20,7 +20,8 @@ export const getBrands = (endpoint: VerdocsEndpoint, organizationId: string) =>
  * @group Brands
  * @api POST /v2/organizations/:organizationId/brands Create brand
  * @apiBody string key A unique key for the brand (lowercase alphanumeric + hyphens)
- * @apiBody ILocaleData localeData? The locale and timezone codes, as provided by the client browser.
+ * @apiBody string timezone? Define the long-form timezone.
+ * @apiBody string locale? Define the locale code.
  * @apiSuccess IBrand . The newly created brand.
  */
 export const createBrand = (endpoint: VerdocsEndpoint, organizationId: string, params: ICreateBrandRequest) =>
@@ -45,6 +46,8 @@ export const getBrand = (endpoint: VerdocsEndpoint, organizationId: string, bran
  *
  * @group Brands
  * @api PATCH /v2/organizations/:organizationId/brands/:brandId Update brand
+ * @apiBody string timezone? Define the long-form timezone.
+ * @apiBody string locale? Define the locale code.
  * @apiSuccess IBrand . The updated brand.
  */
 export const updateBrand = (endpoint: VerdocsEndpoint, organizationId: string, brandId: string, params: IUpdateBrandRequest) =>
