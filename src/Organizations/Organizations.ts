@@ -12,7 +12,7 @@
  * @module
  */
 
-import {IEntitlement, IOrganization, IProfile, TOrganizationUsage} from '../Models';
+import {IEntitlement, IOrganization, IPipelineSettings, IProfile, TOrganizationUsage} from '../Models';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {IAuthenticateResponse} from '../Users';
 import {collapseEntitlements} from '../Utils';
@@ -172,6 +172,47 @@ export const createOrganization = (
 export const updateOrganization = (endpoint: VerdocsEndpoint, organizationId: string, params: Partial<IOrganization>) =>
   endpoint.api //
     .patch<IOrganization>(`/v2/organizations/${organizationId}`, params)
+    .then((r) => r.data);
+
+/**
+ * Get an organization's document-pipeline settings. The caller must be an admin of the organization.
+ *
+ * ```typescript
+ * import {getOrganizationPipelineSettings} from '@verdocs/js-sdk';
+ *
+ * const settings = await getOrganizationPipelineSettings(VerdocsEndpoint.getDefault(), 'ORGID');
+ * ```
+ *
+ * @group Organizations
+ * @api GET /v2/organizations/:organization_id/pipeline-settings Get organization pipeline settings
+ * @apiSuccess IPipelineSettings . The organization's pipeline settings, with every flag normalized to a boolean.
+ */
+export const getOrganizationPipelineSettings = (endpoint: VerdocsEndpoint, organizationId: string) =>
+  endpoint.api //
+    .get<IPipelineSettings>(`/v2/organizations/${organizationId}/pipeline-settings`)
+    .then((r) => r.data);
+
+/**
+ * Update an organization's document-pipeline settings. Note that all fields are optional. Flags that are omitted will be ignored
+ * and left unchanged.
+ *
+ * ```typescript
+ * import {updateOrganizationPipelineSettings} from '@verdocs/js-sdk';
+ *
+ * const settings = await updateOrganizationPipelineSettings(VerdocsEndpoint.getDefault(), 'ORGID', {process_acroforms: true});
+ * ```
+ *
+ * @group Organizations
+ * @api PATCH /v2/organizations/:organization_id/pipeline-settings Update organization pipeline settings
+ * @apiBody boolean process_acroforms? Auto-detect AcroForm (fillable PDF) fields when a document has no text tags.
+ * @apiBody boolean process_tags? Process {{...}} text tags in uploaded documents.
+ * @apiBody boolean ignore_invalid_roles? Skip (rather than reject) document tags with an empty/invalid role name.
+ * @apiBody boolean ignore_invalid_fields? Skip (rather than reject) document tags that don't form a valid field.
+ * @apiSuccess IPipelineSettings . The updated pipeline settings, with every flag normalized to a boolean.
+ */
+export const updateOrganizationPipelineSettings = (endpoint: VerdocsEndpoint, organizationId: string, params: Partial<IPipelineSettings>) =>
+  endpoint.api //
+    .patch<IPipelineSettings>(`/v2/organizations/${organizationId}/pipeline-settings`, params)
     .then((r) => r.data);
 
 /**

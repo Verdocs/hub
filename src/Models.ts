@@ -159,6 +159,8 @@ export interface IOrganization {
   powered_by_label?: string | null;
   powered_by_url?: string | null;
   data?: Record<string, any> | null;
+  /** Org-level document-pipeline automation flags. */
+  pipeline_settings?: Partial<IPipelineSettings> | null;
   default_brand_id?: string | null;
   /** The long-form timezone. */
   locale?: string | null;
@@ -191,6 +193,21 @@ export interface IOrganization {
   templates?: ITemplate[];
   group_profiles?: IGroupProfile[];
   pending_webhooks?: IPendingWebhook[];
+}
+
+/**
+ * Org-level document-pipeline automation flags. Note that these flags are all "opt-in" and default to false if not set.
+ *
+ *  - process_acroforms:     Auto-detect AcroForm (fillable PDF) fields when a document has no text tags.
+ *  - process_tags:          Process {{...}} text tags in uploaded documents.
+ *  - ignore_invalid_roles:  Skip (vs. reject) document tags whose role name is empty/invalid.
+ *  - ignore_invalid_fields: Skip (vs. reject) document tags that don't form a valid field.
+ */
+export interface IPipelineSettings {
+  process_acroforms: boolean;
+  process_tags: boolean;
+  ignore_invalid_roles: boolean;
+  ignore_invalid_fields: boolean;
 }
 
 export type TDomainStatus = 'pending' | 'active' | 'failed' | 'suspended';
