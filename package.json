@@ -39,7 +39,7 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "typecheck": "tsc --noEmit",
-    "docs": "typedoc && npm run generate-openapi && cp openapi.json ../developers.verdocs.com/public/openapi.json",
+    "docs": "typedoc && npm run generate-openapi && cp openapi.json ../dev-docs/app/openapi.json",
     "generate-openapi": "npx tsx openapi/generate-openapi.ts",
     "edit-openapi": "docker run -p 8081:80 -v $(pwd):/sdk -v $(pwd):/sdk swaggerapi/swagger-editor:next-v5",
     "view-openapi": "docker run -p 8081:80 -v $(pwd):/sdk swaggerapi/swagger-ui",
