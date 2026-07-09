@@ -1,0 +1,151 @@
+@import '../../../theme.scss';
+
+verdocs-envelopes-list {
+  display: flex;
+  padding: 10px;
+  font-size: 18px;
+  flex-wrap: nowrap;
+  border-radius: 6px;
+  color: $label-color;
+  flex-direction: column;
+  font-family: $primary-font;
+
+  @media screen and (max-width: 800px) {
+    font-size: 14px;
+  }
+
+  .envelope-placeholder {
+    height: 48px;
+    flex: 0 0 48px;
+    margin: 5px 0;
+    border-radius: 5px;
+    background: $verdocs-grey-3;
+  }
+
+  .header {
+    width: 100%;
+    row-gap: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 12px;
+    margin: 0 0 10px 0;
+    align-items: center;
+    flex-direction: row;
+
+    .filter {
+      width: 300px;
+    }
+
+    verdocs-text-input {
+      margin: 0;
+
+      input {
+        height: 32px;
+      }
+    }
+  }
+
+  .filter {
+    align-items: center;
+  }
+
+  .envelope {
+    width: 100%;
+    margin: 3px 0;
+    background: $verdocs-grey-4;
+
+    &:hover {
+      cursor: pointer;
+      background: $verdocs-grey-3;
+    }
+
+    .inner {
+      gap: 12px;
+      display: flex;
+      padding: 8px 14px;
+      border-radius: 5px;
+      flex-direction: row;
+      align-items: center;
+      container-type: inline-size;
+
+      svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
+  .vert-spacer {
+    height: 50px;
+    display: flex;
+    flex: 0 0 1px;
+    border-right: 1px solid #dad8dd;
+
+    @media screen and (max-width: 800px) {
+      display: none;
+    }
+  }
+
+  .envelope-icon {
+    @media screen and (max-width: 800px) {
+      display: none;
+    }
+  }
+
+  verdocs-checkbox {
+    @media screen and (max-width: 800px) {
+      display: none;
+    }
+  }
+
+  .last-modified {
+    color: #444;
+    display: flex;
+    flex: 0 0 180px;
+    flex-direction: row;
+    align-items: center;
+    white-space: nowrap;
+
+    @media screen and (max-width: 800px) {
+      display: none;
+    }
+  }
+
+  .envelope-name {
+    flex: 1;
+    display: flex;
+    color: #000000;
+    line-height: 28px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .envelope-recipients {
+    color: #4b5563;
+    font-weight: 700;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .empty-text {
+    text-align: center;
+    margin: 16px 0 0 0;
+    padding: 80px 80px;
+    border: 2px solid #ccc;
+  }
+
+  .containing {
+    gap: 12px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  verdocs-status-indicator {
+    @media screen and (max-width: 800px) {
+      font-size: 14px;
+    }
+  }
+}

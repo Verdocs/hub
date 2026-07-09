@@ -1,0 +1,68 @@
+@import '../../../theme.scss';
+
+verdocs-otp-dialog {
+  font-family: $primary-font;
+  box-sizing: border-box;
+
+  div {
+    box-sizing: border-box;
+  }
+
+  // NOTE: background-overlay and .dialog are handled by verdocs-dialog
+
+  .heading {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+      font-size: 20px;
+      font-weight: 500;
+    }
+  }
+
+  .step {
+    margin-left: 6px;
+    color: #666;
+  }
+
+  .help-box {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    align-items: center;
+    color: black;
+    margin-bottom: 20px;
+  }
+
+  .help-details {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0;
+    font-size: 14px;
+    gap: 5px;
+  }
+
+  .help-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .help-text {
+    font-weight: 400;
+  }
+
+  .buttons {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+
+    verdocs-button {
+      margin-left: 16px;
+    }
+  }
+}

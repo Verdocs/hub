@@ -1,0 +1,181 @@
+@import '../../../theme.scss';
+
+verdocs-field-textbox {
+  font-family: $verdocs-primary-font;
+  box-sizing: border-box;
+  width: 150px;
+  height: 15px;
+  display: block;
+  font-size: 11px;
+  position: relative;
+  scroll-margin: 20px 0;
+  letter-spacing: -0.2px;
+  background-color: var(--verdocs-field-background, transparent);
+  transform-origin: bottom left;
+  border: var(--verdocs-field-border, 1px solid rgba(0, 0, 0, 0.2));
+  border-radius: var(--verdocs-field-radius);
+
+  &.small input,
+  &.small textarea {
+    font-size: 8px;
+  }
+
+  .edge-top,
+  .edge-right,
+  .edge-left,
+  .edge-bottom {
+    position: absolute;
+    z-index: 10;
+  }
+
+  .edge-top {
+    top: -2px;
+    left: 0;
+    right: 0;
+    height: 5px;
+  }
+
+  .edge-right {
+    top: 0;
+    bottom: 0;
+    right: -2px;
+    width: 5px;
+  }
+
+  .edge-left {
+    top: 0;
+    left: -2px;
+    bottom: 0;
+    width: 5px;
+  }
+
+  .edge-bottom {
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 5px;
+  }
+
+  input {
+    // This is needed to bring down the cursor from the parent element, which is where interactjs applies it
+    cursor: inherit;
+
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    padding: 0 3px;
+    font-size: 11px;
+    background: none;
+    font-weight: 500;
+    position: absolute;
+    transform-origin: 0 0;
+    box-sizing: border-box;
+    color: var(--verdocs-field-text-color, rgba(0, 0, 0, 0.87));
+
+    &.hide {
+      display: none;
+    }
+  }
+
+  &.disabled input {
+    opacity: 0.5;
+  }
+
+  textarea {
+    // This is needed to bring down the cursor from the parent element, which is where interactjs applies it
+    cursor: inherit;
+
+    width: 100%;
+    height: 100%;
+    resize: none;
+    border: none;
+    outline: none;
+    padding: 0 3px;
+    font-size: 11px;
+    background: none;
+    font-weight: 500;
+    line-height: 13px;
+    transform-origin: 0 0;
+    box-sizing: border-box;
+    color: var(--verdocs-field-text-color, rgba(0, 0, 0, 0.87));
+
+    &.hide {
+      display: none;
+    }
+  }
+
+  &.disabled textarea {
+    opacity: 0.5;
+  }
+
+  label {
+    top: -14px;
+    left: -1px;
+    height: 14px;
+    color: white;
+    padding: 0 4px;
+    font-size: 9px;
+    line-height: 13px;
+    position: absolute;
+    background: #4a4a99;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+  }
+
+  &.required {
+    &.required {
+      border: 1px solid var(--verdocs-required-field-border);
+    }
+  }
+
+  verdocs-button-panel {
+    top: -3px;
+    left: -2px;
+    opacity: 0.5;
+    z-index: 1000;
+    cursor: pointer;
+    position: absolute;
+    transform: scale(0.6);
+
+    &[data-active],
+    &:hover {
+      opacity: 1;
+    }
+
+    .icon {
+      svg {
+        fill: #333333;
+      }
+
+      &:hover {
+        svg {
+          fill: #000000;
+        }
+      }
+    }
+  }
+
+  // @see https://community.logmein.com/t5/LastPass-Support-Discussions/placeholder-text-overrides-data-lpignore-quot-true-quot/td-p/295135
+  // LastPass is ignoring the data-lpignore attribute in some cases
+  [data-lastpass-icon-root] {
+    display: none !important;
+  }
+
+  .settings-icon {
+    position: absolute;
+    top: -4px;
+    left: -18px;
+    display: inline-block;
+    cursor: pointer;
+    opacity: 0.3;
+
+    svg {
+      fill: $border-color;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

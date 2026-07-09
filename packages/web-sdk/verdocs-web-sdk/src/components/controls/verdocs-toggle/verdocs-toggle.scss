@@ -1,0 +1,64 @@
+@import '../../../theme.scss';
+
+verdocs-toggle {
+  font-family: $primary-font;
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    background-color: $container-bg;
+  }
+
+  .label {
+    font-size: 24px;
+    font-weight: 700;
+    color: $medium-bg;
+    align-self: center;
+    margin-right: 27px;
+    font-family: sans-serif;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  .buttons button {
+    width: 60px;
+    height: 60px;
+    border: 2px solid $item-border-color;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .buttons button:not(:last-child) {
+    margin-right: 11px;
+  }
+
+  .buttons svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .buttons button:hover {
+    background-color: $item-border-color;
+    transition: 0.25s;
+  }
+
+  .buttons button:hover svg {
+    fill: $container-bg;
+    transition: 0.25s;
+  }
+
+  .selected {
+    background-color: $border-color;
+    transition: 0.25s;
+  }
+
+  .selected svg {
+    fill: #ffffff;
+    transition: 0.25s;
+  }
+}

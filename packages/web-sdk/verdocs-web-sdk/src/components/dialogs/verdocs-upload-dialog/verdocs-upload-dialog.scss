@@ -1,0 +1,138 @@
+@import '../../../theme.scss';
+
+verdocs-upload-dialog {
+  position: fixed;
+  box-sizing: border-box;
+  font-family: $primary-font;
+
+  div {
+    box-sizing: border-box;
+  }
+
+  .background-overlay {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    z-index: 10000;
+    position: fixed;
+    align-items: center;
+    background: #0000007f;
+    justify-content: center;
+  }
+
+  // Not simple .dialog to avoid conflicts with ok-dialog. Should review that more.
+  .upload-dialog-content {
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    overflow: hidden;
+    background: $verdocs-grey-4;
+    padding: 16px;
+    box-shadow: 3px 3px 5px 1px rgba(40, 40, 40, 0.4);
+  }
+
+  .heading {
+    display: flex;
+    font-size: 20px;
+    font-weight: 500;
+    flex-direction: row;
+  }
+
+  .buttons {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    verdocs-button {
+      margin-left: 16px;
+    }
+  }
+
+  .current-label {
+    margin: 20px 0 5px 0;
+  }
+
+  .drop-target {
+    opacity: 1;
+    width: 100%;
+    display: flex;
+    margin: 20px 0;
+    min-height: 260px;
+    padding: 30px 15px;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #f5f5f5;
+    color: $verdocs-grey-1;
+    border: 2px dashed #979797;
+
+    p {
+      margin: 12px 0;
+      font-weight: 500;
+
+      &.subscript {
+        margin: 20px;
+        color: $verdocs-bg-4;
+        font-size: 14px;
+      }
+    }
+
+    &.dragging-over {
+      border: 5px solid $verdocs-deep-blue;
+    }
+
+    > verdocs-button {
+      margin: 12px 0;
+      display: inline-block;
+    }
+  }
+
+  .attachments {
+    height: 56px;
+    font-size: 0;
+    margin: 20px 0;
+    padding: 0 16px;
+    line-height: 56px;
+    white-space: normal;
+    box-shadow:
+      0 1px 3px 0 rgb(0 0 0 / 20%),
+      0 2px 2px 0 rgb(0 0 0 / 12%),
+      0 0 2px 0 rgb(0 0 0 / 14%);
+
+    .attachment {
+      gap: 10px;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+
+      .icon {
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+
+        &.trash {
+          cursor: pointer;
+        }
+      }
+
+      .name {
+        flex: 1;
+        font-size: 14px;
+        overflow: hidden;
+        font-weight: 400;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  .error {
+    margin: 20px 0;
+    color: $verdocs-red-1;
+  }
+}
