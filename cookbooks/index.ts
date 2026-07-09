@@ -1,0 +1,1 @@
+export const cookbooks = 'All of our cookbooks will go in this dir'

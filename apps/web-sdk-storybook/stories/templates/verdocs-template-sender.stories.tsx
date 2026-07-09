@@ -1,0 +1,15 @@
+import {html} from 'lit';
+import {Meta} from '@storybook/web-components-vite';
+
+export default {
+  title: 'Templates/Sender',
+  component: 'verdocs-template-sender',
+  args: {
+    templateId: '',
+  },
+  argTypes: {
+    onClose: {action: 'close'},
+  },
+} as Meta;
+
+export const Sender = ({value, onClose}) => html`<verdocs-template-sender-dialog .value=${value} @close=${onClose} />`;
