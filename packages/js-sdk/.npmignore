@@ -1,0 +1,10 @@
+/.idea
+__mocks__
+/dist
+/docs
+/docs-md
+/docs-html
+/src
+.prettierrc.js
+jestconfig.json
+tsconfig.json

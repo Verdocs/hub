@@ -1,0 +1,83 @@
+{
+  "name": "@verdocs/js-sdk",
+  "version": "6.10.0",
+  "private": false,
+  "homepage": "https://github.com/Verdocs/js-sdk",
+  "description": "Isomorphic JS/TS SDK providing types and API wrappers for the Verdocs platform for Node and browser clients",
+  "keywords": [
+    "pdf",
+    "document",
+    "signing",
+    "Verdocs",
+    "embed"
+  ],
+  "author": "Verdocs",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "source": "./src/index.ts",
+  "browser": "dist/browser.js",
+  "files": [
+    "dist/*",
+    "node.js",
+    "browser.js",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Verdocs/js-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Verdocs/js-sdk/issues"
+  },
+  "scripts": {
+    "tsc": "yarn build",
+    "build": "rollup -c --sourcemap --bundleConfigAsCjs",
+    "prepare": "npm run build",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jestconfig.json",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "tslint -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "docs": "typedoc && npm run generate-openapi && cp openapi.json ../dev-docs/app/openapi.json",
+    "generate-openapi": "npx tsx openapi/generate-openapi.ts",
+    "edit-openapi": "docker run -p 8081:80 -v $(pwd):/sdk -v $(pwd):/sdk swaggerapi/swagger-editor:next-v5",
+    "view-openapi": "docker run -p 8081:80 -v $(pwd):/sdk swaggerapi/swagger-ui",
+    "push-beta": "npm run build && npm publish --tag beta && npm run docs",
+    "push": "npm run build && npm publish && npm run docs"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "axios": "^1.18.1",
+    "axios-retry": "^4.5.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "@jest/globals": "^30.2.0",
+    "@rollup/plugin-commonjs": "^28.0.9",
+    "@types/jest": "^30.0.0",
+    "axios-mock-adapter": "^2.1.0",
+    "esbuild": "^0.25.10",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.2.0",
+    "prettier": "^3.8.2",
+    "rollup": "^4.60.3",
+    "rollup-plugin-clear": "^2.0.7",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-ts": "^3.4.5",
+    "ts-jest": "^29.4.9",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "typedoc": "0.27.0-beta.0",
+    "typescript": "^5.5.4"
+  },
+  "overrides": {
+    "ts-jest": {
+      "handlebars": "^4.7.9"
+    }
+  }
+}
