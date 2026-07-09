@@ -1,0 +1,274 @@
+@import '../../../theme.scss';
+
+verdocs-envelope-sidebar {
+  font-family: $verdocs-primary-font;
+  flex-direction: row;
+  display: flex;
+  flex: 0 0 56px;
+  width: 56px;
+  min-height: 400px;
+  height: 100%;
+  background: #41435e;
+  transition: 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+
+  &.open {
+    flex: 0 0 400px;
+    max-width: 100%;
+    width: 400px;
+
+    @media screen and (max-width: 500px) {
+      flex: 0 0 300px;
+      width: 300px;
+    }
+  }
+
+  .side-buttons {
+    flex-direction: column;
+    flex: 0 0 56px;
+    display: flex;
+
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 50px;
+      outline: none;
+      border: none;
+      border-left: 2px solid transparent;
+      background: none;
+      width: 100%;
+
+      &.active {
+        border-left: 2px solid #50bd80;
+      }
+
+      svg {
+        color: white;
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
+  .content {
+    flex: 1;
+    display: none;
+    color: white;
+    flex-direction: column;
+    padding: 12px 16px 16px;
+  }
+
+  &.open .content {
+    display: flex;
+    overflow-y: scroll;
+  }
+
+  verdocs-ok-dialog .content {
+    color: black;
+  }
+
+  .title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 12px;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    //flex: 0;
+  }
+
+  .label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    line-height: 16px;
+    color: rgba(255, 255, 255, 0.54);
+    //flex: 0;
+  }
+
+  .value {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 14px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    color: #fff;
+    //flex: 0;
+  }
+
+  .manage-recipients-button {
+    align-self: center;
+    white-space: nowrap;
+    width: 100%;
+    margin: 0 0 10px 0;
+
+    .label {
+      color: #ffffff;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .recipient-detail {
+    flex: 0;
+    padding: 8px;
+    font-size: 14px;
+    position: relative;
+    flex-direction: column;
+    border: solid 1px #979797;
+    margin-bottom: 16px;
+  }
+
+  .recipient-header {
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .recipient-number {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    border: solid 1px #979797;
+  }
+
+  .recipient-name {
+    flex: 1;
+    box-sizing: border-box;
+    text-transform: capitalize;
+  }
+
+  .recipient-email {
+    flex: 1;
+    box-sizing: border-box;
+  }
+
+  .recipient-phone {
+    flex: 1;
+    box-sizing: border-box;
+  }
+
+  .recipient-status {
+    flex: 0 0 100px;
+    border-radius: 5px;
+    text-align: center;
+    box-sizing: border-box;
+    max-width: 100px;
+    min-width: 100px;
+    background-color: #616161; // Default
+    text-transform: capitalize;
+    font-size: 14px;
+    padding: 3px 0;
+
+    &.invited {
+      background-color: #ff8f00;
+    }
+    &.opened {
+      background-color: #616161;
+    }
+    &.signed,
+    &.submitted {
+      background-color: #2e7d32;
+    }
+    &.pending {
+      background-color: #0277bd;
+    }
+    &.canceled,
+    &.declined {
+      background-color: #c62828;
+    }
+
+    @media screen and (max-width: 500px) {
+      flex: 1 1 60px;
+      max-width: 60px;
+      min-width: 60px;
+    }
+  }
+
+  .recipient-content {
+    flex-direction: column;
+  }
+
+  .recipient-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .history-entry {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 8px 0 0;
+    margin: 8px 0 0;
+    border-top: 1px solid #dddddd;
+
+    .activity-icon {
+      margin-right: 14px;
+
+      svg {
+        width: 24px;
+        height: 24px;
+        fill: #ffffff;
+      }
+    }
+
+    .activity-details {
+    }
+
+    .activity-text {
+      font-size: 14px;
+      line-height: 16px;
+      margin-bottom: 4px;
+    }
+
+    .activity-date {
+      font-size: 12px;
+      line-height: 16px;
+      color: rgba(255, 255, 255, 0.54);
+    }
+  }
+
+  .content .history-entry:first-of-type {
+    border-top: none;
+  }
+
+  .reminders {
+    margin: 15px 0 30px 0;
+
+    .form-row {
+      margin: 8px 0 0;
+      display: flex;
+      flex-direction: row;
+
+      .reminders-label {
+        display: flex;
+        flex: 1;
+      }
+
+      .form-label {
+        flex: 1;
+      }
+
+      verdocs-text-input {
+        margin: 0;
+        width: 100px;
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>Verdocs Web SDK</title>
+
+    <script type="module" src="/build/verdocs-web-sdk.esm.js"></script>
+    <script nomodule src="/build/verdocs-web-sdk.js"></script>
+    <link rel="stylesheet" href="/build/verdocs-web-sdk.css" />
+  </head>
+  <body>
+    <div style="border: 1px solid #cccccc; background: #ffffff; padding: 30px; width: 300px; margin: 30px auto">
+      <verdocs-organization-card id="component" />
+    </div>
+
+    <script>
+      document.getElementById('component').organization = {
+        name: 'Verdocs',
+        is_business: true,
+        created_at: new Date().toISOString(),
+        url: 'https://verdocs.com/',
+        full_logo_url: 'https://app.verdocs.com/assets/blue-logo.svg',
+        thumbnail_url: 'https://app.verdocs.com/assets/verdocs-v.svg',
+      };
+    </script>
+  </body>
+</html>

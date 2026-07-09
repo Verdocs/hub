@@ -1,0 +1,38 @@
+@import '../../../theme.scss';
+
+verdocs-select-input {
+  font-family: $primary-font;
+  box-sizing: border-box;
+  margin: 0 0 10px 0;
+  display: block;
+
+  .input-element {
+    box-sizing: border-box;
+    background: $verdocs-grey-4;
+    border: 1px solid $border-color-extralight;
+    border-radius: 4px;
+    background: $verdocs-grey-4;
+    color: $verdocs-grey-0;
+    width: 100%;
+    font-size: 14px;
+    height: 34px;
+    padding: 2px 20px 2px 3px;
+
+    &::placeholder {
+      color: $light-disabled-color;
+      opacity: 1;
+    }
+
+    &:focus {
+      //border: 1px solid $border-color-highlight;
+    }
+  }
+
+  .input-label {
+    display: block;
+    color: $label-color-light;
+    font-weight: 700;
+    font-size: 14px;
+    margin: 0 0 4px 0;
+  }
+}

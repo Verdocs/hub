@@ -1,0 +1,46 @@
+{
+  "name": "@verdocs/web-sdk-vue",
+  "version": "6.9.12",
+  "description": "Verdocs Web SDK for React",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "push": "npm i && npm run build && npm publish",
+    "push-beta": "npm i && npm run build && npm publish --tag beta",
+    "build": "npm run clean && npm run compile",
+    "clean": "rm -rf dist",
+    "compile": "npm run tsc && cp lib/globals.css dist/globals.css && cp lib/overrides.css dist/overrides.css",
+    "tsc": "tsc -p .",
+    "rollup": "rollup -c"
+  },
+  "dependencies": {
+    "@stencil/vue-output-target": "^0.11.8",
+    "@verdocs/web-sdk": "^6.9.12"
+  },
+  "peerDependencies": {
+    "vue": "^4",
+    "vue-router": "^4"
+  },
+  "devDependencies": {
+    "@types/jest": "29.5.14",
+    "@types/node": "24.1.0",
+    "jest": "^29.7.0",
+    "jest-dom": "^4.0.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.3",
+    "vue": "^3.5.13"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "setupTestFrameworkScriptFile": "<rootDir>/jest.setup.js",
+    "testPathIgnorePatterns": [
+      "node_modules",
+      "dist"
+    ]
+  }
+}

@@ -1,0 +1,362 @@
+import {format} from 'date-fns';
+import {downloadBlob, getEnvelopeFile, getEnvelopesZip, IEnvelope, IEnvelopeField, ITemplateField, rescale, TFieldType, VerdocsEndpoint} from '@verdocs/js-sdk';
+import {FORMAT_DATE, IDocumentPageInfo} from './Types';
+
+export const defaultWidth = (type: TFieldType) => {
+  // checkbox was a legacy field type
+  switch (type as any) {
+    case 'textarea':
+      return 150;
+    case 'textbox':
+      return 150;
+    case 'timestamp':
+      return 105;
+    case 'date':
+      return 75;
+    case 'dropdown':
+      return 85;
+    case 'attachment':
+    case 'payment':
+      return 24;
+    case 'radio':
+    case 'checkbox':
+      return 14;
+    case 'signature':
+    case 'initial':
+      return 71;
+  }
+
+  return 150;
+};
+
+export const defaultHeight = (type: TFieldType) => {
+  switch (type as any) {
+    case 'textarea':
+      return 41;
+    case 'textbox':
+      return 15;
+    case 'timestamp':
+      return 15;
+    case 'date':
+      return 15;
+    case 'dropdown':
+      return 20;
+    case 'attachment':
+    case 'payment':
+      return 24;
+    case 'radio':
+    case 'checkbox':
+      return 14;
+    case 'signature':
+    case 'initial':
+      return 36;
+  }
+
+  return 50;
+};
+
+export const setControlStyles = (el: HTMLElement, field: ITemplateField | IEnvelopeField, xScale: number, yScale: number) => {
+  let {x = 0, y = 0, width = defaultWidth(field.type), height = defaultHeight(field.type), settings} = field;
+  const isCanvasField = field.type === 'signature' || field.type === 'initial';
+  const canvasWidth = !isCanvasField ? width : (settings?.canvasWidth ?? width);
+  const canvasHeight = !isCanvasField ? height : (settings?.canvasHeight ?? height);
+
+  el.style.width = `${canvasWidth}px`;
+  el.style.height = `${canvasHeight}px`;
+  el.style.position = 'absolute';
+  el.style.left = `${rescale(xScale, x)}px`;
+  el.style.bottom = `${rescale(yScale, y)}px`;
+  el.style.transform = `scale(${xScale}, ${yScale})`;
+};
+
+export const getControlStyles = (field: ITemplateField | IEnvelopeField, xScale: number, yScale: number) => {
+  let {x = 0, y = 0, width = defaultWidth(field.type), height = defaultHeight(field.type)} = field;
+
+  return {
+    zIndex: '100',
+    width: `${width}px`,
+    height: `${height}px`,
+    position: 'absolute',
+    left: `${rescale(xScale, x)}px`,
+    bottom: `${rescale(yScale, y)}px`,
+    transform: `scale(${xScale}, ${yScale})`,
+  };
+};
+
+export const getFieldId = (field: ITemplateField | IEnvelopeField) => {
+  return `verdocs-doc-fld-${field.name}`;
+};
+
+interface IFieldOptions {
+  disabled?: boolean;
+  editable?: boolean;
+  draggable?: boolean;
+  done?: boolean;
+}
+
+export const updateDocumentFieldValue = (field: ITemplateField | IEnvelopeField) => {
+  const id = getFieldId(field);
+  const existingField = document.getElementById(id) as any;
+  if (existingField) {
+    existingField.field = field;
+    existingField.roleindex = field;
+    existingField.setAttribute('id', id); // We need this to trigger a re-render
+    existingField.setAttribute('disabled', true); // We need this to trigger a re-render
+    existingField.setAttribute('disabled', false); // We need this to trigger a re-render
+  }
+};
+
+export const renderDocumentField = (
+  source: 'envelope' | 'template',
+  field: ITemplateField | IEnvelopeField,
+  docPage: IDocumentPageInfo,
+  fieldOptions: IFieldOptions,
+  tabIndex: number = 1,
+) => {
+  const {disabled = false, editable = false, draggable = false, done = false} = fieldOptions;
+  const controlsDiv = document.getElementById(docPage.containerId + '-controls');
+  if (!controlsDiv) {
+    // TODO: This gets emitted a lot by the builder naturally, when placing or updating fields, because Store.updateTemplate
+    //  triggers a re-render but we still have async code pending in contexts with references to the old/wrong controls DIV
+    //  IDs. It doesn't break anything because the re-render fixes it all up. But we do want to trap this for "other" situations.
+    // console.log('[renderDocumentField] No controls DIV found', docPage.containerId + '-controls', docPage);
+    return;
+  }
+
+  switch (field.type as any) {
+    case 'radio':
+    case 'checkbox':
+    case 'attachment':
+    case 'date':
+    case 'dropdown':
+    case 'initial':
+    case 'payment':
+    case 'signature':
+    case 'timestamp':
+    case 'textarea':
+    case 'textbox': {
+      const id = getFieldId(field);
+      const existingField = document.getElementById(id) as any;
+      if (existingField) {
+        existingField.field = field;
+        existingField.done = done;
+        setControlStyles(existingField, field, docPage.xScale, docPage.yScale);
+        return existingField;
+      }
+
+      let {type} = field;
+      if (type === 'textbox') {
+        if (field['setting']?.leading > 0 || field['settings']?.leading > 0) {
+          type = 'textarea';
+        }
+      }
+
+      const el: any = document.createElement(`verdocs-field-${type}`);
+      el.field = field;
+      el.setAttribute('id', id);
+      el.setAttribute('fieldname', field.name);
+      el.setAttribute('source', source);
+      el.setAttribute('sourceid', 'template_id' in field ? field.template_id : field.envelope_id);
+
+      if (disabled) {
+        el.setAttribute('tabindex', -1);
+        el.setAttribute('disabled', true);
+      } else {
+        el.setAttribute('tabindex', tabIndex);
+      }
+
+      el.setAttribute('editable', editable);
+      el.setAttribute('draggable', draggable);
+      el.setAttribute('done', done);
+
+      setControlStyles(el, field, docPage.xScale, docPage.yScale);
+      controlsDiv.appendChild(el);
+
+      return el;
+    }
+
+    default:
+      console.log('[PREVIEW] Skipping unsupported field type', field);
+      return null;
+  }
+};
+
+/**
+ * Helper function to safely set/update components in a CSS transform attribute. Transform is normally set as a string of
+ * `operation1(param) operation2(param) ...` components, which makes updating them a bit of a pain. This will remove the
+ * specified component if it's already set and replace it with the new value, without touching the other components that
+ * may already be set. Note that this operation moves the component to the end of the transform chain so it's not meant
+ * to be used for order-sensitive components e.g. translate-then-rotate.
+ */
+export const updateCssTransform = (el: HTMLElement, key: string, value: string) => {
+  const currentTransform = el.style.transform || '';
+
+  const newValue = `${key}(${value})`;
+  if (currentTransform.includes(key)) {
+    el.style.transform = currentTransform.replace(new RegExp(`${key}\\(.+?\\)`), newValue);
+  } else {
+    el.style.transform = currentTransform + ' ' + newValue;
+  }
+};
+
+export const removeCssTransform = (el: HTMLElement) => {
+  // const currentTransform = el.style.transform || '';
+  el.style.transform = el.style.transform.split(')')[0] + ')';
+  // TODO: This is not working
+  // el.style.transform = currentTransform.replace(new RegExp(`\(${key}\\(.+?\\)\)`), '');
+};
+
+// TODO: Shift to getDownloadLilnk
+export const saveAttachment = async (endpoint: VerdocsEndpoint, envelope: IEnvelope, documentId: string) => {
+  // e.g. "Colorado-Motor-Vehicle-Bill-of-Sale.pdf"
+  const date = format(new Date(envelope.updated_at), FORMAT_DATE);
+  const fileName = `${envelope.name} - ${date}.pdf`;
+  const data = await getEnvelopeFile(endpoint, documentId);
+  downloadBlob(data, fileName);
+};
+
+export const saveEnvelopesAsZip = async (endpoint: VerdocsEndpoint, envelopes: IEnvelope[]) => {
+  const formattedDate = format(envelopes.length === 1 ? new Date(envelopes[0].updated_at) : new Date(), FORMAT_DATE);
+  const zipFileName = envelopes.length === 1 ? `${envelopes[0].name} - ${formattedDate}.zip` : `Verdocs-Envelopes-${formattedDate}`;
+  console.log('Downloading envelopes as ZIP', envelopes, zipFileName);
+  const result = await getEnvelopesZip(
+    endpoint,
+    envelopes.map(e => e.id),
+  );
+  downloadBlob(result.data, zipFileName);
+};
+
+/**
+ * Throttle a given function by a delay value. Useful for things like resizeObserver.
+ */
+export const throttle = (f: Function, delay: number) => {
+  let timer: any = 0;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => f.apply(this, args), delay);
+  };
+};
+
+/**
+ * Compute the rendered width of a given text string, using a given font.
+ */
+export const renderedTextWidth = (text: string, font: string = '16px Arial') => {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  ctx.font = font;
+  return ctx.measureText(text).width;
+};
+
+// "(212) 555-1212" => +12125551212
+// "+46766861004" => "+46766861004"
+// "212-555-1212" => +12125551212
+// "212.555.1212" => +12125551212
+// "212 555 1212" => +12125551212
+// @see https://46elks.com/kb/e164
+export const convertToE164 = (input: string) => {
+  let temp = (input || '').trim();
+  // If we are already prefixed, assume the user did it deliberately and attempt to use what they entered. We also short-circuit blanks.
+  if (!temp || temp.startsWith('+')) {
+    return temp;
+  }
+
+  // Remove any spaces, parenthesis or other punctuation.
+  temp = temp.replace(/[^0-9]/g, '');
+
+  // If the number begins with a zero, remove the leading zero. Do not combine this with the previous step because it needs to be removed
+  // whether it's the actual first character e.g. `0(5)` or just the first digit e.g. `(05`.
+  temp = temp.replace(/^0/g, '');
+
+  // Prepend the country code and +. We're assuming US in this case given the target demographic. Users in other countries would/should be
+  // already entering a prefix so they'd shortcut out of this routine via the + prefix check.
+  return `+1${temp}`;
+};
+
+export interface IFlagOptions {
+  variant: 'fill' | 'next';
+  label: string;
+  showSkip?: boolean;
+  onSkip?: () => void;
+  onClick?: () => void;
+  id?: string;
+}
+
+export const renderDocumentFlag = (
+  docPage: IDocumentPageInfo,
+  y: number, // Bottom position from field
+  height: number, // Field height
+  options: IFlagOptions,
+) => {
+  const controlsDiv = document.getElementById(docPage.containerId + '-controls');
+  if (!controlsDiv) {
+    return;
+  }
+
+  const el: any = document.createElement('verdocs-flag');
+  el.variant = options.variant;
+  el.label = options.label;
+  el.showSkip = options.showSkip;
+  if (options.id) {
+    el.setAttribute('id', options.id);
+  }
+  el.classList.add('verdocs-flag-instance'); // Marker class for easy removal
+
+  if (options.onSkip) {
+    el.addEventListener('skip', options.onSkip);
+  }
+  if (options.onClick) {
+    el.addEventListener('flagClick', options.onClick);
+  }
+
+  // Position the flag to stick out of the right edge of the page
+  el.style.position = 'absolute';
+
+  // The flag has a left-pointing arrow that is 14px wide (15% of 97px ~= 14.5px).
+  // We want the "body" of the rectangle (starting after the arrow) to align with the
+  // right edge of the page.
+  el.style.left = 'calc(100% - 14px)';
+
+  /*
+   * Positioning Logic:
+   * Field Y is distance from bottom.
+   * Fields have `transform-origin: bottom left`.
+   * Visual Bottom = y * scale.
+   * Visual Top = (y * scale) + (height * scale).
+   * Visual Center = (y * scale) + (height * scale) / 2.
+   */
+  // const flagHeight = 24; // Matches CSS
+  const scaledY = rescale(docPage.yScale, y);
+  const scaledHeight = rescale(docPage.yScale, height);
+
+  // Align Flag Bottom with Field Top
+  const bottom = scaledY + scaledHeight;
+
+  el.style.bottom = `${bottom}px`;
+
+  controlsDiv.appendChild(el);
+  return el;
+};
+
+/**
+ * Helper to generate a human-readable label for a field.
+ */
+export const getFieldLabel = (field: IEnvelopeField | ITemplateField) => {
+  if (!field) return '';
+  const typeMap: Record<string, string> = {
+    signature: 'Signature',
+    initial: 'Initials',
+    date: 'Date',
+    textbox: 'Text Field',
+    checkbox: 'Checkbox',
+    radio: 'Radio Button',
+    dropdown: 'Dropdown',
+    attachment: 'Attachment',
+    payment: 'Payment',
+  };
+
+  const typeName = typeMap[field.type] || 'Field';
+  if (field.required) {
+    return `Required ${typeName}*`;
+  }
+  return `Optional ${typeName}`;
+};
