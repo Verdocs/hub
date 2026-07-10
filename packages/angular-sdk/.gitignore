@@ -1,0 +1,2 @@
+# Build artifact copied into dist by ng-packagr assets
+/styles.css

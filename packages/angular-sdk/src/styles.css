@@ -1,0 +1,47 @@
+/*
+ * Compiled to styles.css (shipped in dist) at build time. Consumers import it
+ * once, e.g. in angular.json styles or a root stylesheet:
+ *
+ *   @import '@verdocs/angular-sdk/styles.css';
+ *
+ * Preflight is intentionally not imported so this stylesheet never resets host
+ * page styles. All utilities are prefixed (vdocs:) and every design token below
+ * is emitted as a --vdocs-* custom property on :root, so white-labeling is a
+ * matter of overriding those variables. The token names are shared with
+ * @verdocs/react-sdk; both SDKs theme identically.
+ */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme) prefix(vdocs);
+@import 'tailwindcss/utilities.css' layer(utilities) prefix(vdocs);
+
+@source './';
+
+@theme {
+  /* Drop the stock palette and font stacks; the tokens below are the entire
+     theming surface for Verdocs components. */
+  --color-*: initial;
+  --font-*: initial;
+
+  --font-sans: 'Inter', -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+
+  --color-white: #ffffff;
+  --color-primary: #55bc81;
+  --color-primary-dark: #2b995b;
+  --color-primary-light: #54d68c;
+  --color-accent: #654dcb;
+  --color-accent-dark: #4c56cb;
+  --color-accent-light: #707ae5;
+  --color-ink: #092c4c;
+  --color-muted: #5c6575;
+  --color-surface: #ffffff;
+  --color-canvas: #f5f5fa;
+  --color-edge: #aeb4bf;
+  --color-edge-light: #dad8dd;
+  --color-danger: #cc0000;
+  --color-success: #3dc763;
+  --color-info: #2379c7;
+  --color-disabled: #6c727f;
+
+  --radius-ctl: 4px;
+  --radius-row: 5px;
+}

@@ -37,5 +37,10 @@ yarn-error.log*
 .DS_Store
 *.pem
 
-# Storybook
-.storybook
+# Storybook build output (.storybook config dirs are tracked)
+storybook-static
+
+# Angular caches and build byproducts
+.angular/
+out-tsc/
+packages/angular-sdk/styles.css

@@ -1,0 +1,7 @@
+{
+  "extends": "@verdocs/typescript-config/vite.json",
+  "compilerOptions": {
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
+  },
+  "include": ["src"]
+}
