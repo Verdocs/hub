@@ -1,0 +1,7 @@
+{
+  "extends": "@verdocs/typescript-config/vite.json",
+  "compilerOptions": {
+    "types": ["node", "vitest/globals"]
+  },
+  "include": ["src", "vitest.config.ts"]
+}

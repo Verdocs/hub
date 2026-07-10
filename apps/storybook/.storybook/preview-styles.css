@@ -1,0 +1,4 @@
+/* Compile the react-sdk stylesheet from source so stories always reflect the
+   latest component classes without a package build step. */
+@import '../../../packages/react-sdk/src/styles.css';
+@source '../../../packages/react-sdk/src';

@@ -1,0 +1,7 @@
+{
+  "extends": "@verdocs/typescript-config/vite.json",
+  "compilerOptions": {
+    "types": ["vite/client"]
+  },
+  "include": [".storybook/**/*.ts", ".storybook/**/*.tsx"]
+}
