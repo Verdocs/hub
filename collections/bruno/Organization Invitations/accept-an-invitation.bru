@@ -1,0 +1,21 @@
+meta {
+  name: Accept an invitation
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/v2/organization-invitations/accept
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "string",
+    "token": "string",
+    "first_name": "string",
+    "last_name": "string",
+    "password": "string"
+  }
+}

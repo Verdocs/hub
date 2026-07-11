@@ -140,7 +140,7 @@ export const Countries: ICountry[] = [
   {code: '+596', name: 'Martinique', value: '+596'},
   {code: '+222', name: 'Mauritania', value: '+222'},
   {code: '+230', name: 'Mauritius', value: '+230'},
-  {code: '+262', name: 'Mayotte or Réunion', value: '+262'},
+  {code: '+262', name: 'Mayotte or R\u00e9union', value: '+262'},
   {code: '+52', name: 'Mexico', value: '+52'},
   {code: '+691', name: 'Micronesia', value: '+691'},
   {code: '+1', name: 'Midway Island', value: '+1'},
@@ -250,7 +250,7 @@ export function getCountryByCode(code: string): ICountry | null {
   } else if (isMartinique(code)) {
     return {code: '+596', name: 'Martinique', value: '+596'};
   } else if (isMayotte(code)) {
-    return {code: '+262', name: 'Mayotte or Réunion', value: '+262'};
+    return {code: '+262', name: 'Mayotte or R\u00e9union', value: '+262'};
   }
 
   return null;

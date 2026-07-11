@@ -1,0 +1,40 @@
+meta {
+  name: List envelopes
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url}}/v2/envelopes
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~q:
+  ~view: inbox
+  ~status: complete
+  ~include_org: false
+  ~template_id: 00000000-0000-0000-0000-000000000000
+  ~created_before: 2024-01-01
+  ~created_after: 2024-01-01
+  ~sort_by: name
+  ~ascending: true
+  ~rows: 20
+  ~page: 0
+}
+
+docs {
+  Query parameters:
+  - q (optional): Match envelopes whose name contains this string
+  - view (optional): Request pre-defined view. `inbox` returns envelopes where action is required by the caller. `sent` returns envelopes created by the caller. `action` returns envelopes where action is required by the caller. `waiting` returns envelopes where action is required by anyone. `completed` returns envelopes where all actions are complete.
+  - status (optional): Match envelopes in one of the specified states.
+  - include_org (optional): If true, include organizations-shared envelopes
+  - template_id (optional): Match envelopes created from the specified template ID
+  - created_before (optional): Match envelopes created before this date
+  - created_after (optional): Match envelopes created after this date
+  - sort_by (optional): Return results sorted by this criteria
+  - ascending (optional): Set true/false to override the sort direction. Note that the default depends on `sort_by`. Date-based sorts default to descending, while name and status default to ascending.
+  - rows (optional): Limit the number of rows returned
+  - page (optional): Specify which page of results to return
+}

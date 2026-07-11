@@ -1,0 +1,37 @@
+meta {
+  name: Add a field to a template
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/v2/fields/:template_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  template_id:
+}
+
+body:json {
+  {
+    "name": "string",
+    "role_name": "string",
+    "document_id": "string",
+    "type": "signature",
+    "required": "false",
+    "page": 0,
+    "x": 0,
+    "y": 0,
+    "label": "string",
+    "width": 0,
+    "height": 0,
+    "placeholder": "string",
+    "group": "string",
+    "options": [
+      {}
+    ],
+    "value": "string"
+  }
+}

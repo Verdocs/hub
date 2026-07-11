@@ -1,0 +1,16 @@
+meta {
+  name: Get a pending invitation (_Authenticated via invite token, not an active session._). Intended to be called by the invitee to get details about the invitation they are about to accept.
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/v2/organization-invitations/:email/:token
+  body: none
+  auth: inherit
+}
+
+params:path {
+  email:
+  token:
+}

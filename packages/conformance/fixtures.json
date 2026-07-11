@@ -1,0 +1,44 @@
+{
+  "comment": "Shared conformance fixture definitions. Every SDK conformance lane (TS here, xunit in Verdocs.Sdk, pytest in verdocs-python) runs these same cases against live beta: call the endpoint with raw HTTP and with the SDK, normalize volatile fields, compare status, shape, and data. Env vars: VERDOCS_API_BASE, VERDOCS_TEST_EMAIL, VERDOCS_TEST_PASSWORD from hub/.env.",
+  "volatileKeyPattern": "(_at|_exp)$|^(access_token|id_token|refresh_token|expires_in|last_polled)",
+  "volatileKeyPatternFlags": "i",
+  "cases": [
+    {
+      "id": "authenticate",
+      "sdk": "authenticate",
+      "method": "POST",
+      "path": "/v2/oauth2/token",
+      "auth": false,
+      "body": { "username": "$VERDOCS_TEST_EMAIL", "password": "$VERDOCS_TEST_PASSWORD", "grant_type": "password" }
+    },
+    {
+      "id": "users-me",
+      "sdk": "getMyUser",
+      "method": "GET",
+      "path": "/v2/users/me",
+      "auth": true
+    },
+    {
+      "id": "profiles-current",
+      "sdk": "getCurrentProfile",
+      "method": "GET",
+      "path": "/v2/profiles",
+      "auth": true,
+      "note": "The raw response is an array; the SDK returns the entry with current=true. Lanes compare the SDK result to that entry."
+    },
+    {
+      "id": "templates-list",
+      "sdk": "getTemplates",
+      "method": "GET",
+      "path": "/v2/templates",
+      "auth": true,
+      "query": { "visibility": "private_shared", "rows": 10, "page": 0 }
+    }
+  ],
+  "frozen": [
+    {
+      "id": "template-star-toggle",
+      "note": "Star toggle is server-broken (400 for every client) and frozen pending Monday retirement discussion. The TS lane asserts curl/SDK equivalence only. New lanes skip it entirely."
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+meta {
+  name: Delegate Recipient
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{base_url}}/v2/envelopes/:envelope_id/recipients/:role_name
+  body: json
+  auth: inherit
+}
+
+params:path {
+  envelope_id: 00000000-0000-0000-0000-000000000000
+  role_name:
+}
+
+body:json {
+  {
+    "action": "delegate",
+    "first_name": "string",
+    "last_name": "string",
+    "email": "string",
+    "phone": "string",
+    "message": "string"
+  }
+}
+
+docs {
+  Path parameters:
+  - envelope_id: The envelope to operate on.
+  - role_name: The role to operate on.
+}

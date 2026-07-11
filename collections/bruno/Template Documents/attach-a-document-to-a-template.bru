@@ -1,0 +1,22 @@
+meta {
+  name: Attach a document to a template
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/v2/templates/:template_id/documents
+  body: json
+  auth: inherit
+}
+
+params:path {
+  template_id:
+}
+
+body:json {
+  {
+    "file": "string",
+    "template_id": "00000000-0000-0000-0000-000000000000"
+  }
+}

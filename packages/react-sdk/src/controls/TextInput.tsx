@@ -1,4 +1,4 @@
-import { useState, type FC, type InputHTMLAttributes, type Ref } from 'react';
+import { useState, type InputHTMLAttributes, type Ref } from 'react';
 import { ClearIcon, CopyIcon, EyeIcon, EyeSlashIcon } from './icons';
 import { showToast } from '../utils/toast';
 
@@ -25,7 +25,7 @@ export interface TextInputProps extends Omit<InputHTMLAttributes<HTMLInputElemen
  * A standard text input field with minimal markup, styled to match the other
  * controls. This is a controlled component: supply value and onChange.
  */
-export const TextInput: FC<TextInputProps> = ({
+export default function TextInput({
   label,
   description,
   clearable = false,
@@ -37,7 +37,7 @@ export const TextInput: FC<TextInputProps> = ({
   value,
   ref,
   ...rest
-}) => {
+}: TextInputProps) {
   const [showingPw, setShowingPw] = useState(false);
 
   const copyToClipboard = () => {
@@ -110,4 +110,4 @@ export const TextInput: FC<TextInputProps> = ({
       )}
     </label>
   );
-};
+}

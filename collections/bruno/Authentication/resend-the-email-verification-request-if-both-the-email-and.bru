@@ -1,0 +1,11 @@
+meta {
+  name: Resend the email verification request if both the email and token are known. Used if the token is valid but has expired.
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/v2/users/verify
+  body: none
+  auth: inherit
+}

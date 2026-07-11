@@ -1,5 +1,5 @@
-import axiosRetry from 'axios-retry';
 import {IEnvelope, IEnvelopeDocument, IEnvelopeField, IEnvelopeFieldSettings} from '../Models';
+import {retryOnceOnTimeout} from '../Utils/Retry';
 import {TEnvelopeUpdateResult} from '../BaseTypes';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {TCreateEnvelopeRequest} from './Types';
@@ -84,7 +84,7 @@ export const getEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string)
  *
  * @group Envelope Documents
  * @api GET /v2/envelope-documents/:id Get envelope document
- * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
+ * @apiParam string(format: 'uuid') id The ID of the document to retrieve.
  * @apiSuccess IEnvelopeDocument . The detailed metadata for the document requested
  */
 export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, documentId: string) =>
@@ -96,12 +96,11 @@ export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, documentId:
  * Download a document directly.
  */
 export const downloadEnvelopeDocument = async (endpoint: VerdocsEndpoint, documentId: string) =>
-  endpoint.api //
-    .get(`/v2/envelope-documents/${documentId}?type=file`, {
-      responseType: 'blob',
-      'axios-retry': {retries: 5, retryDelay: axiosRetry.linearDelay(3000)},
-    })
-    .then((r) => r.data);
+  retryOnceOnTimeout(() =>
+    endpoint.api //
+      .get(`/v2/envelope-documents/${documentId}?type=file`, {responseType: 'blob'})
+      .then((r) => r.data),
+  );
 
 /**
  * Get an envelope document's metadata, or the document itself. If no "type" parameter is specified,
@@ -117,15 +116,15 @@ export const downloadEnvelopeDocument = async (endpoint: VerdocsEndpoint, docume
  * @apiSuccess string . The generated link.
  */
 export const getEnvelopeDocumentDownloadLink = async (endpoint: VerdocsEndpoint, documentId: string) =>
-  endpoint.api //
-    .get<string>(`/v2/envelope-documents/${documentId}?type=download`, {
-      'axios-retry': {retries: 5, retryDelay: axiosRetry.linearDelay(3000)},
-    })
-    .then((r) => r.data);
+  retryOnceOnTimeout(() =>
+    endpoint.api //
+      .get<string>(`/v2/envelope-documents/${documentId}?type=download`)
+      .then((r) => r.data),
+  );
 
 /**
- * Generates a single, signed PDF that combines all of an envelope’s attached documents along with its completion certificate.
- * Pages within the combined PDF are organized in the order of recipients’ actions, preserving the signing workflow sequence.
+ * Generates a single, signed PDF that combines all of an envelope's attached documents along with its completion certificate.
+ * Pages within the combined PDF are organized in the order of recipients' actions, preserving the signing workflow sequence.
  *
  * @group Envelope Documents
  * @api GET /v2/envelope-documents/:document_id Preview, Download, or Link to a Document
@@ -135,22 +134,22 @@ export const getEnvelopeDocumentDownloadLink = async (endpoint: VerdocsEndpoint,
  * @apiSuccess string . The generated link.
  */
 export const getCombinedEnvelopeDocumentDownloadLink = async (endpoint: VerdocsEndpoint, documentId: string) =>
-  endpoint.api //
-    .get<string>(`/v2/envelope-documents/${documentId}?type=download&combined=true`, {
-      'axios-retry': {retries: 5, retryDelay: axiosRetry.linearDelay(3000)},
-    })
-    .then((r) => r.data);
+  retryOnceOnTimeout(() =>
+    endpoint.api //
+      .get<string>(`/v2/envelope-documents/${documentId}?type=download&combined=true`)
+      .then((r) => r.data),
+  );
 
 /**
  * Get a pre-signed preview link for an Envelope Document. This link expires quickly, so it should
  * be accessed immediately and never shared. Content-Disposition will be set to "inline".
  */
 export const getEnvelopeDocumentPreviewLink = async (endpoint: VerdocsEndpoint, documentId: string) =>
-  endpoint.api //
-    .get<string>(`/v2/envelope-documents/${documentId}?type=preview`, {
-      'axios-retry': {retries: 5, retryDelay: axiosRetry.linearDelay(3000)},
-    })
-    .then((r) => r.data);
+  retryOnceOnTimeout(() =>
+    endpoint.api //
+      .get<string>(`/v2/envelope-documents/${documentId}?type=preview`)
+      .then((r) => r.data),
+  );
 
 /**
  * Cancel an Envelope.
@@ -224,10 +223,8 @@ export const updateEnvelope = async (
  * @group Envelopes
  * @api PUT /v2/envelopes/:envelope_id/fields/:field_name Update Envelope Field
  * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to retrieve.
- * @apiParam string role_name The role to submit. Be sure to URL-encode the value.
  * @apiParam string field_name The name of the field to update. Be sure to URL-encode the value.
- * @apiParam string value The value to set. For signature/initial fields, the UUID of the signature/initial block. For attachment fields, a file uploaded in a FORM-POST field named "document". For checkbox/radio buttons, a boolean. For all other fields, a string.
- * @apiBody string value Value to set.
+ * @apiBody string value The value to set. For signature/initial fields, the UUID of the signature/initial block. For attachment fields, a file uploaded in a FORM-POST field named "document". For checkbox/radio buttons, a boolean. For all other fields, a string.
  * @apiSuccess IEnvelopeField . A copy of the newly-updated field.
  */
 export const updateEnvelopeField = async (

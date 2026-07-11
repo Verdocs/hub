@@ -1,0 +1,30 @@
+meta {
+  name: Verify recipient/signer
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{base_url}}/v2/sign/verify
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "auth_method": "passcode",
+    "code": "string",
+    "resend": true,
+    "first_name": "string",
+    "last_name": "string",
+    "address": "string",
+    "city": "string",
+    "state": "string",
+    "zip": "string",
+    "ssn_last_4": "string",
+    "dob": "string",
+    "responses": [
+      {}
+    ]
+  }
+}

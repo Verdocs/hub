@@ -1,0 +1,15 @@
+meta {
+  name: Get a template. Note that the caller must have at least View access to the template.
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url}}/v2/templates/:template_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  template_id:
+}

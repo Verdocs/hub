@@ -1,0 +1,20 @@
+meta {
+  name: Rotate API key
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/v2/api-keys/:client_id/rotate
+  body: none
+  auth: inherit
+}
+
+params:path {
+  client_id: 00000000-0000-0000-0000-000000000000
+}
+
+docs {
+  Path parameters:
+  - client_id: The client ID of the key to rotate
+}

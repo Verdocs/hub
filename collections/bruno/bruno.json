@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Verdocs Platform API",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

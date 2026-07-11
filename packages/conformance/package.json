@@ -6,15 +6,17 @@
   "type": "module",
   "scripts": {
     "conformance": "vitest run",
-    "lint": "eslint src",
-    "check-types": "tsc --noEmit"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "eslint . --fix"
   },
   "dependencies": {
-    "@verdocs/js-sdk": "workspace:*"
+    "@verdocs/js-sdk": "workspace:^"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
     "@verdocs/eslint-config": "^1.0.0",
+    "imapflow": "^1.4.7",
     "@verdocs/typescript-config": "^1.0.0",
     "eslint": "^9.39.1",
     "typescript": "5.9.3",

@@ -13,10 +13,11 @@ Layout notes:
 - `packages/react-sdk`, `packages/angular-sdk`: the new native SDKs (React 19 is primary; Angular, Vue, and raw web components are mirrored independently from the React work, never generated).
 - `apps/`: Storybook, quick-starts, and other runnable projects.
 
-New SDK packages are versioned 1.0.0 and consumed via `workspace:*`. Publishing to npm happens only when instructed.
+New SDK packages are versioned 1.0.0 and consumed via `workspace:^`. Publishing to npm happens only when instructed.
 
 ## Rules
 
 1. Never commit or push anything unless instructed.
 2. If instructed to commit, keep commit messages short and focused on the specific change. Never add attribution or authored-by notes.
-3. Never use AI markers in commit messages, code comments, or documentation: no em-dashes, no overly formal or structured language. More rules will be added here.
+3. Never use AI markers in commit messages, code comments, or documentation: no em-dashes, no emoji, no smart quotes or other high-ASCII characters, no overly formal or structured language.
+4. The standards docs in `docs/standards/` are binding for all code in this repo. `comments.md` applies to every line; each framework doc applies to its SDK and apps. Read the relevant one before writing code. The frozen Stencil line (`packages/web-sdk`) is exempt and untouched.

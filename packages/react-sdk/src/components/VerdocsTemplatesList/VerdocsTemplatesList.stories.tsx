@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { VerdocsTemplatesList } from './VerdocsTemplatesList';
+import VerdocsTemplatesList from './VerdocsTemplatesList';
 import { useSession } from '../../hooks/useSession';
 import { showToast } from '../../utils/toast';
 
@@ -20,7 +20,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const RequireSession = ({ children }: { children: React.ReactNode }) => {
+function RequireSession({ children }: { children: React.ReactNode }) {
   const { loaded, authenticated } = useSession();
 
   if (!loaded) {
@@ -40,7 +40,7 @@ const RequireSession = ({ children }: { children: React.ReactNode }) => {
   }
 
   return children;
-};
+}
 
 export const LiveList: Story = {
   args: {

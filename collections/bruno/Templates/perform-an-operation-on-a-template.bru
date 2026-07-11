@@ -1,0 +1,22 @@
+meta {
+  name: Perform an operation on a template
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{base_url}}/v2/templates/:template_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  template_id:
+}
+
+body:json {
+  {
+    "action": "duplicate",
+    "name": "string"
+  }
+}

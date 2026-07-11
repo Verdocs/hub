@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router';
 import { useSession, VerdocsAuth } from '@verdocs/react-sdk';
 
-export const LoginView = () => {
+export default function LoginView() {
   const { loaded, authenticated } = useSession();
 
   // Session state drives routing: when VerdocsAuth completes a login, the
@@ -15,4 +15,4 @@ export const LoginView = () => {
       <VerdocsAuth onSdkError={error => console.warn('SDK error', error)} />
     </div>
   );
-};
+}

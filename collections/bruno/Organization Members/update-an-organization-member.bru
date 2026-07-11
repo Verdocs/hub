@@ -1,0 +1,30 @@
+meta {
+  name: Update an organization member.
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{base_url}}/v2/organization-members/:profile_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  profile_id: 00000000-0000-0000-0000-000000000000
+}
+
+body:json {
+  {
+    "first_name": "string",
+    "last_name": "string",
+    "roles": [
+      "contact"
+    ]
+  }
+}
+
+docs {
+  Path parameters:
+  - profile_id: The Profile ID to update.
+}

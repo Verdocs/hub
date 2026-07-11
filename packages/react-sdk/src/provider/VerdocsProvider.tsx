@@ -1,5 +1,5 @@
 import { VerdocsEndpoint } from '@verdocs/js-sdk';
-import { useMemo, useState, type FC, type ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { VerdocsContext } from './VerdocsContext';
 
@@ -35,7 +35,7 @@ export interface VerdocsProviderProps {
  * </VerdocsProvider>
  * ```
  */
-export const VerdocsProvider: FC<VerdocsProviderProps> = ({ baseUrl, endpoint, queryClient, children }) => {
+export default function VerdocsProvider({ baseUrl, endpoint, queryClient, children }: VerdocsProviderProps) {
   const [resolvedEndpoint] = useState(() => {
     const resolved = endpoint ?? new VerdocsEndpoint(baseUrl ? { baseURL: baseUrl } : undefined);
     if (!endpoint) {
@@ -70,4 +70,4 @@ export const VerdocsProvider: FC<VerdocsProviderProps> = ({ baseUrl, endpoint, q
       </QueryClientProvider>
     </VerdocsContext.Provider>
   );
-};
+}

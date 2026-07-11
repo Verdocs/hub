@@ -1,4 +1,3 @@
-import axiosRetry from 'axios-retry';
 import axios, {AxiosInstance} from 'axios';
 import {decodeAccessTokenBody, randomString} from './Utils';
 import {TSession, TSessionType} from './Sessions';
@@ -114,9 +113,6 @@ export class VerdocsEndpoint {
     this.clientID = options?.clientID ?? this.clientID;
     this.persist = options?.persist ?? this.persist;
     this.api = axios.create({baseURL: this.baseURL, timeout: this.timeout});
-
-    // Enable the module but not for any requests, only a few get this
-    axiosRetry(this.api, {retries: 0});
   }
 
   public setDefault() {
@@ -399,7 +395,7 @@ export class VerdocsEndpoint {
     this.sessionListeners.forEach((listener: TSessionChangedListener) => {
       try {
         listener(this, this.session, this.profile);
-      } catch (e) {
+      } catch {
         // NOOP
       }
     });

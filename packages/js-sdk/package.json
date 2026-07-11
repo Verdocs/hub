@@ -36,22 +36,21 @@
     "build": "rollup -c --sourcemap --bundleConfigAsCjs",
     "prepare": "npm run build",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jestconfig.json",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "lint": "tslint -p tsconfig.json",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "docs": "typedoc && npm run generate-openapi && cp openapi.json ../dev-docs/app/openapi.json",
     "generate-openapi": "npx tsx openapi/generate-openapi.ts",
     "edit-openapi": "docker run -p 8081:80 -v $(pwd):/sdk -v $(pwd):/sdk swaggerapi/swagger-editor:next-v5",
     "view-openapi": "docker run -p 8081:80 -v $(pwd):/sdk swaggerapi/swagger-ui",
     "push-beta": "npm run build && npm publish --tag beta && npm run docs",
-    "push": "npm run build && npm publish && npm run docs"
+    "push": "npm run build && npm publish && npm run docs",
+    "format": "eslint . --fix"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "axios": "^1.18.1",
-    "axios-retry": "^4.5.0"
+    "axios": "^1.18.1"
   },
   "peerDependencies": {
     "typescript": "^5.7.3"
@@ -64,20 +63,26 @@
     "esbuild": "^0.25.10",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.2.0",
-    "prettier": "^3.8.2",
     "rollup": "^4.60.3",
     "rollup-plugin-clear": "^2.0.7",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-ts": "^3.4.5",
     "ts-jest": "^29.4.9",
-    "tslint": "^6.1.3",
-    "tslint-config-prettier": "^1.18.0",
     "typedoc": "0.27.0-beta.0",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "@verdocs/eslint-config": "^1.0.0",
+    "eslint": "^9.39.4"
   },
   "overrides": {
     "ts-jest": {
       "handlebars": "^4.7.9"
+    }
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     }
   }
 }

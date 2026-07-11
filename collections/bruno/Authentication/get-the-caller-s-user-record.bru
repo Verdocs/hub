@@ -1,0 +1,11 @@
+meta {
+  name: Get the caller's user record.
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/v2/users/me
+  body: none
+  auth: inherit
+}

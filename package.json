@@ -5,13 +5,15 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types",
+    "format": "turbo run format",
+    "typecheck": "turbo run typecheck",
     "test": "turbo run test",
+    "test:report": "vitest run",
     "test:conformance": "pnpm --filter @verdocs/conformance conformance"
   },
   "devDependencies": {
-    "prettier": "^3.7.4",
+    "@changesets/cli": "^2.31.0",
+    "@vitest/ui": "^4.1.10",
     "turbo": "^2.10.4",
     "typescript": "5.9.3",
     "vitest": "^4.1.10"
@@ -19,12 +21,5 @@
   "packageManager": "pnpm@10.34.4",
   "engines": {
     "node": ">=24"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"],
-    "overrides": {
-      "@verdocs/eslint-config": "link:../platform/packages/eslint-config",
-      "@verdocs/typescript-config": "link:../platform/packages/typescript-config"
-    }
   }
 }

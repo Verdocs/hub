@@ -110,18 +110,18 @@ export const getInPersonLink = (endpoint: VerdocsEndpoint, envelope_id: string, 
  *
  * @group Recipients
  * @api POST /v2/sign/verify Verify recipient/signer
- * @apiParam string(enum:'passcode'|'email'|'sms'|'kba'|'id') auth_method The authentication method being completed
- * @apiParam string code? The passcode or OTP entered. Required for passcode, email, and SMS methods.
- * @apiParam boolean resend? For SMS or email methods, set to send a new code.
- * @apiParam boolean first_name? For KBA, the recipient's first name
- * @apiParam boolean last_name? For KBA, the recipient's last name
- * @apiParam boolean address? For KBA, the recipient's address
- * @apiParam boolean city? For KBA, the recipient's city
- * @apiParam boolean state? For KBA, the recipient's state
- * @apiParam boolean zip? For KBA, the recipient's zip code
- * @apiParam boolean ssn_last_4? For KBA, the last 4 digits of the recipient's SSN
- * @apiParam boolean dob? For KBA, the recipient's date of birth
- * @apiParam array(items:IKBAResponse) responses? For KBA, responses to any challenge questions presented
+ * @apiBody string(enum:'passcode'|'email'|'sms'|'kba'|'id') auth_method The authentication method being completed
+ * @apiBody string code? The passcode or OTP entered. Required for passcode, email, and SMS methods.
+ * @apiBody boolean resend? For SMS or email methods, set to send a new code.
+ * @apiBody string first_name? For KBA, the recipient's first name
+ * @apiBody string last_name? For KBA, the recipient's last name
+ * @apiBody string address? For KBA, the recipient's address
+ * @apiBody string city? For KBA, the recipient's city
+ * @apiBody string state? For KBA, the recipient's state
+ * @apiBody string zip? For KBA, the recipient's zip code
+ * @apiBody string ssn_last_4? For KBA, the last 4 digits of the recipient's SSN
+ * @apiBody string dob? For KBA, the recipient's date of birth
+ * @apiBody array(items:IKBAResponse) responses? For KBA, responses to any challenge questions presented
  * @apiSuccess ISignerTokenResponse . Updated signing session.
  */
 export const verifySigner = (endpoint: VerdocsEndpoint, params: TAuthenticateRecipientRequest) =>

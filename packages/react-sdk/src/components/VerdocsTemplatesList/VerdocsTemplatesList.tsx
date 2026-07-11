@@ -1,17 +1,17 @@
 import { canPerformTemplateAction } from '@verdocs/js-sdk';
-import { useEffect, useMemo, useRef, useState, type FC } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { IGetTemplatesParams, ITemplate, TSortTemplateBy, TTemplateVisibilityFilter, VerdocsEndpoint } from '@verdocs/js-sdk';
 import { BuildingOfficeIcon, CalendarCreatedIcon, CalendarLastUsedIcon, CalendarUpdatedIcon, EnvelopeIcon, GlobeAltIcon, LockClosedIcon } from '../../controls/icons';
-import { QuickFilter, type IFilterOption } from '../../controls/QuickFilter';
-import { Dropdown, type IMenuOption } from '../../controls/Dropdown';
+import QuickFilter, { type IFilterOption } from '../../controls/QuickFilter';
+import Dropdown, { type IMenuOption } from '../../controls/Dropdown';
 import { useResolvedEndpoint } from '../../provider/VerdocsContext';
 import { SDKError, type ITemplateEvent } from '../../types';
 import { useTemplates } from '../../hooks/useTemplates';
-import { Pagination } from '../../controls/Pagination';
-import { TextInput } from '../../controls/TextInput';
 import { useSession } from '../../hooks/useSession';
-import { Spinner } from '../../controls/Spinner';
-import { TemplateStar } from './TemplateStar';
+import Pagination from '../../controls/Pagination';
+import TextInput from '../../controls/TextInput';
+import Spinner from '../../controls/Spinner';
+import TemplateStar from './TemplateStar';
 
 export type TStarredFilter = 'all' | 'starred' | 'unstarred';
 
@@ -91,7 +91,7 @@ const dateFormatter = new Intl.DateTimeFormat(undefined, { dateStyle: 'short' })
  * sorting, starring, and pagination. Row-level actions fire callbacks so the
  * host application can route to its own views.
  */
-export const VerdocsTemplatesList: FC<VerdocsTemplatesListProps> = ({
+export default function VerdocsTemplatesList({
   endpoint,
   visibility: initialVisibility = 'private_shared',
   starred: initialStarred = 'all',
@@ -109,7 +109,7 @@ export const VerdocsTemplatesList: FC<VerdocsTemplatesListProps> = ({
   onChangeVisibility,
   onChangeStarred,
   onChangeName,
-}) => {
+}: VerdocsTemplatesListProps) {
   const resolvedEndpoint = useResolvedEndpoint(endpoint);
   const { profile } = useSession(endpoint);
 
@@ -353,4 +353,4 @@ export const VerdocsTemplatesList: FC<VerdocsTemplatesListProps> = ({
       )}
     </div>
   );
-};
+}

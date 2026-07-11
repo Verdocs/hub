@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "ng serve",
     "build": "ng build",
-    "lint": "eslint src",
-    "check-types": "tsc --noEmit"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "eslint . --fix"
   },
   "dependencies": {
     "@angular/common": "^22.0.6",
@@ -14,8 +15,8 @@
     "@angular/core": "^22.0.6",
     "@angular/platform-browser": "^22.0.6",
     "@angular/router": "^22.0.6",
-    "@verdocs/angular-sdk": "workspace:*",
-    "@verdocs/js-sdk": "workspace:*",
+    "@verdocs/angular-sdk": "workspace:^",
+    "@verdocs/js-sdk": "workspace:^",
     "rxjs": "^7.8.2",
     "tslib": "^2.8.1"
   },

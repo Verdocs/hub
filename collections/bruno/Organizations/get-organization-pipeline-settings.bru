@@ -1,0 +1,15 @@
+meta {
+  name: Get organization pipeline settings
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{base_url}}/v2/organizations/:organization_id/pipeline-settings
+  body: none
+  auth: inherit
+}
+
+params:path {
+  organization_id:
+}

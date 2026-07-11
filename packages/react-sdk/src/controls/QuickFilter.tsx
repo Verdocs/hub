@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FC } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CaretDownIcon } from './icons';
 
 export interface IFilterOption {
@@ -24,7 +24,7 @@ export interface QuickFilterProps {
  * Display a drop-down menu of quick filter options, as a compact "Label: Value"
  * pill. Used above lists and tables.
  */
-export const QuickFilter: FC<QuickFilterProps> = ({ options, label = 'Filter', value = '', placeholder = 'Select...', onChange }) => {
+export default function QuickFilter({ options, label = 'Filter', value = '', placeholder = 'Select...', onChange }: QuickFilterProps) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -87,4 +87,4 @@ export const QuickFilter: FC<QuickFilterProps> = ({ options, label = 'Filter', v
       )}
     </div>
   );
-};
+}

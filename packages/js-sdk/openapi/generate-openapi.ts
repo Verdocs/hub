@@ -383,6 +383,8 @@ const processChild = (child: Record<string, any>) => {
   });
 
   if (path && method) {
+    reconcilePathParameters(entry, method, path);
+
     entry['x-codeSamples'] = generateSnippets(method, path, {
       showQuery: entry.parameters.find((p: any) => p.in === 'query'),
       showBody: true,
@@ -391,6 +393,43 @@ const processChild = (child: Record<string, any>) => {
     (Preamble.paths as any)[path] = (Preamble.paths as any)[path] ?? {};
     (Preamble.paths as any)[path][method] = entry;
   }
+};
+
+// The @apiParam tags feeding this generator drifted from the @api path templates over the
+// years (missing declarations, renamed params, body fields tagged as path params). The path
+// template is what the SDK actually calls, so it wins: every {placeholder} gets exactly one
+// in:path parameter, declared metadata is kept when the names line up (or when a rename is
+// unambiguous), and declarations with no matching placeholder are dropped with a warning so
+// the doc tags can be fixed at the source.
+const reconcilePathParameters = (entry: any, method: string, path: string) => {
+  const placeholders = Array.from(path.matchAll(/\{([a-zA-Z0-9-_]+)\}/g)).map((m) => m[1]);
+  const declared = entry.parameters.filter((p: any) => p.in === 'path');
+  const others = entry.parameters.filter((p: any) => p.in !== 'path');
+
+  const unmatched = declared.filter((p: any) => !placeholders.includes(p.name));
+  const reconciled = placeholders.map((name) => {
+    const match = declared.find((p: any) => p.name === name);
+    if (match) {
+      return {...match, required: true};
+    }
+
+    // A single placeholder with a single stray declaration is a rename; keep its metadata.
+    if (placeholders.length === 1 && unmatched.length === 1) {
+      return {...unmatched[0], name, required: true};
+    }
+
+    return {in: 'path', name, description: '', required: true, schema: {type: 'string'}};
+  });
+
+  const dropped = unmatched.filter((p: any) => !(placeholders.length === 1 && unmatched.length === 1));
+  if (dropped.length) {
+    console.warn(
+      `${method.toUpperCase()} ${path}: dropping @apiParam entries with no matching path placeholder: ` +
+        `${dropped.map((p: any) => p.name).join(', ')}. If these are body fields, tag them @apiBody.`,
+    );
+  }
+
+  entry.parameters = [...reconciled, ...others];
 };
 
 const processEntry = (child: Record<string, any>) => {
