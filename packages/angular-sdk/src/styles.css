@@ -45,3 +45,33 @@
   --radius-ctl: 4px;
   --radius-row: 5px;
 }
+
+/* Per-signer field coloring. Plain :root + classes rather than @theme so the
+   tokens always survive to the compiled sheet (unused theme tokens get
+   tree-shaken) and the signer classes stay a documented white-label hook the
+   way the legacy signer-N classes were. Values match the legacy palette. */
+@layer components {
+  :root {
+    --vdocs-color-signer-1: #ffe69c;
+    --vdocs-color-signer-2: #e3c3e9;
+    --vdocs-color-signer-3: #c1e1fb;
+    --vdocs-color-signer-4: #dce775;
+    --vdocs-color-signer-5: #7986cb;
+    --vdocs-color-signer-6: #4db6ac;
+    --vdocs-color-signer-7: #ffcaa5;
+    --vdocs-color-signer-8: #02f7be;
+    --vdocs-color-signer-9: #ff8a65;
+    --vdocs-color-signer-10: #52ff4f;
+  }
+
+  .vdocs-signer-1 { background-color: var(--vdocs-color-signer-1); }
+  .vdocs-signer-2 { background-color: var(--vdocs-color-signer-2); }
+  .vdocs-signer-3 { background-color: var(--vdocs-color-signer-3); }
+  .vdocs-signer-4 { background-color: var(--vdocs-color-signer-4); }
+  .vdocs-signer-5 { background-color: var(--vdocs-color-signer-5); }
+  .vdocs-signer-6 { background-color: var(--vdocs-color-signer-6); }
+  .vdocs-signer-7 { background-color: var(--vdocs-color-signer-7); }
+  .vdocs-signer-8 { background-color: var(--vdocs-color-signer-8); }
+  .vdocs-signer-9 { background-color: var(--vdocs-color-signer-9); }
+  .vdocs-signer-10 { background-color: var(--vdocs-color-signer-10); }
+}

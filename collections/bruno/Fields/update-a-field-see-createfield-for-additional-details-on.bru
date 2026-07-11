@@ -1,0 +1,38 @@
+meta {
+  name: Update a field. See createField for additional details on the supported parameters.
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{base_url}}/v2/fields/:template_id/:field_name
+  body: json
+  auth: inherit
+}
+
+params:path {
+  template_id:
+  field_name:
+}
+
+body:json {
+  {
+    "name": "string",
+    "role_name": "string",
+    "document_id": "string",
+    "type": "signature",
+    "required": "false",
+    "page": 0,
+    "x": 0,
+    "y": 0,
+    "label": "string",
+    "width": 0,
+    "height": 0,
+    "placeholder": "string",
+    "group": "string",
+    "options": [
+      {}
+    ],
+    "value": "string"
+  }
+}

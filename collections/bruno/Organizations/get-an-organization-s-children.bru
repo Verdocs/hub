@@ -1,0 +1,15 @@
+meta {
+  name: Get an organization's children
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/v2/organizations/:organization_id/children
+  body: none
+  auth: inherit
+}
+
+params:path {
+  organization_id:
+}

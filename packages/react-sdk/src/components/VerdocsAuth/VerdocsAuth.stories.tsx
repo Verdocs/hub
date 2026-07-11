@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { VerdocsAuth } from './VerdocsAuth';
+import VerdocsAuth from './VerdocsAuth';
 
 const meta = {
   title: 'Embeds/VerdocsAuth',

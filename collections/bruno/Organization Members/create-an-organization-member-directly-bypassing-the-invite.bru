@@ -1,0 +1,23 @@
+meta {
+  name: Create an organization member directly, bypassing the invite process.
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/v2/organization-members
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "string",
+    "first_name": "string",
+    "last_name": "string",
+    "password": "string",
+    "roles": [
+      "contact"
+    ]
+  }
+}

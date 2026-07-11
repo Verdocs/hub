@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { TextInput } from './TextInput';
+import TextInput from './TextInput';
 
 const meta = {
   title: 'Controls/TextInput',
@@ -10,10 +10,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const StatefulInput = (props: React.ComponentProps<typeof TextInput>) => {
+function StatefulInput(props: React.ComponentProps<typeof TextInput>) {
   const [value, setValue] = useState(String(props.value ?? ''));
   return <TextInput {...props} value={value} onChange={e => setValue(e.target.value)} onClear={() => setValue('')} />;
-};
+}
 
 export const Basic: Story = {
   render: () => <StatefulInput label="Name" placeholder="Enter your name..." />,

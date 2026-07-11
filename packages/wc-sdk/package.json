@@ -1,0 +1,47 @@
+{
+  "name": "@verdocs/wc-sdk",
+  "version": "1.0.0",
+  "description": "Native Lit web components for building document workflows with Verdocs",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "customElements": "custom-elements.json",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "dist",
+    "custom-elements.json"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && tailwindcss -i ./src/styles.css -o ./dist/styles.css --minify && cem analyze",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "format": "eslint . --fix"
+  },
+  "dependencies": {
+    "@verdocs/js-sdk": "workspace:^",
+    "lit": "^3.3.0"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.11.0",
+    "@tailwindcss/cli": "^4.3.2",
+    "@verdocs/eslint-config": "^1.0.0",
+    "@verdocs/typescript-config": "^1.0.0",
+    "@vitest/browser-playwright": "^4.1.10",
+    "axios": "^1.18.1",
+    "axios-mock-adapter": "^2.1.0",
+    "eslint": "^9.39.1",
+    "playwright": "^1.61.1",
+    "tailwindcss": "^4.3.2",
+    "typescript": "5.9.3",
+    "vitest": "^4.1.10"
+  }
+}

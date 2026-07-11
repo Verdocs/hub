@@ -1,0 +1,15 @@
+meta {
+  name: Get the caller's profiles
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/v2/profiles
+  body: none
+  auth: inherit
+}
+
+docs {
+  A user may have multiple profiles, one for each organization of which they are a member. Only one profile may be "current" at a time.
+}

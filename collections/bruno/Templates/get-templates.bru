@@ -1,0 +1,34 @@
+meta {
+  name: Get Templates
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/v2/templates
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~q:
+  ~is_starred: true
+  ~is_creator: true
+  ~visibility: private_shared
+  ~sort_by: created_at
+  ~ascending: true
+  ~rows: 20
+  ~page: 0
+}
+
+docs {
+  Query parameters:
+  - q (optional): Find templates whose names/descriptions contain the specified query string
+  - is_starred (optional): If true, returns only templates with at least one "star".
+  - is_creator (optional): If true, returns only templates that the caller created.
+  - visibility (optional): Return only templates with the specified visibility.
+  - sort_by (optional): Return results sorted by this criteria
+  - ascending (optional): Set true/false to override the sort direction. Note that the default depends on `sort_by`. Date-based sorts default to descending, while name defaults to ascending.
+  - rows (optional): Limit the number of rows returned
+  - page (optional): Specify which page of results to return
+}

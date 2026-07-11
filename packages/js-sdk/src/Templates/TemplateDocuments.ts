@@ -67,8 +67,8 @@ export const deleteTemplateDocument = (endpoint: VerdocsEndpoint, documentId: st
  * this will return only the **metadata** the caller is allowed to view.
  *
  * @group Template Documents
- * @api GET /v2/template-documents/:id Get envelope document
- * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
+ * @api GET /v2/template-documents/:id Get template document
+ * @apiParam string(format: 'uuid') id The ID of the document to retrieve.
  * @apiSuccess ITemplateDocument . The detailed metadata for the document requested
  */
 export const getTemplateDocument = async (endpoint: VerdocsEndpoint, documentId: string) =>

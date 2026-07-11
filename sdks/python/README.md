@@ -1,0 +1,96 @@
+# Verdocs Python SDK
+
+Python SDK for the Verdocs e-signing platform. This is the seed package: it covers
+authentication, users, profiles, and templates, and it establishes the patterns the
+rest of the surface will follow (endpoint sessions, sync/async parity, pydantic wire
+models, the shared conformance lane). The binding rules live in
+`docs/standards/python.md` at the hub root.
+
+## Install
+
+The package is private and installs from a checkout. From this directory:
+
+```
+python3 -m venv .venv
+.venv/bin/python -m pip install -e . --group dev
+```
+
+The dev group brings in pytest, pytest-asyncio, respx, and ruff (dev tooling lives in
+`[dependency-groups]`, not extras, so it is `--group dev` rather than `.[dev]`). Drop
+the flag if you only need the SDK itself.
+
+## Quickstart
+
+```python
+from verdocs import TemplateListParams, VerdocsEndpoint
+
+with VerdocsEndpoint() as endpoint:
+    tokens = endpoint.auth.authenticate(username="you@example.com", password="secret")
+    endpoint.set_token(tokens.access_token)
+
+    me = endpoint.users.me()
+    page = endpoint.templates.list(TemplateListParams(visibility="private_shared", rows=10, page=0))
+    for template in page.templates:
+        print(template.id, template.name)
+```
+
+`AsyncVerdocsEndpoint` is the method-for-method async twin:
+
+```python
+import asyncio
+
+from verdocs import AsyncVerdocsEndpoint
+
+
+async def main() -> None:
+    async with AsyncVerdocsEndpoint() as endpoint:
+        tokens = await endpoint.auth.authenticate(username="you@example.com", password="secret")
+        endpoint.set_token(tokens.access_token)
+        page = await endpoint.templates.list()
+        print(page.count)
+
+
+asyncio.run(main())
+```
+
+## Sessions
+
+An endpoint is one session context. Verdocs has two session types, user and signing,
+and an app can run one of each side by side: authenticate a user endpoint for regular
+operations, and hand a signing token to a second endpoint for an ephemeral signing
+flow, then discard it. `set_token()` decodes the token, keeps its claims on
+`endpoint.session`, and sets the right auth header for the session type; a malformed
+or expired token clears the session instead of raising, mirroring the js-sdk.
+
+```python
+user_endpoint = VerdocsEndpoint()
+user_endpoint.set_token(user_access_token)
+
+signing_endpoint = VerdocsEndpoint(session_type="signing")
+signing_endpoint.set_token(signing_token)
+```
+
+Everything the SDK raises derives from `VerdocsError`: API failures are
+`VerdocsAPIError` (with `AuthenticationError`, `NotFoundError`, and `RateLimitError`
+for the common statuses, plus `status_code`, `response`, and `body` on every one),
+and transport failures are `VerdocsConnectionError`.
+
+## Checks
+
+```
+.venv/bin/python -m ruff format --check .
+.venv/bin/python -m ruff check .
+.venv/bin/python -m pytest
+```
+
+Unit tests mock every route with respx and never touch the live API.
+
+The conformance lane is the exception: it runs the shared cases from
+`packages/conformance/fixtures.json` against live beta, comparing SDK results to raw
+httpx calls with volatile fields normalized. It is excluded from the default run and
+needs `VERDOCS_API_BASE`, `VERDOCS_TEST_EMAIL`, and `VERDOCS_TEST_PASSWORD`, read
+from the hub root `.env` (or the environment):
+
+```
+.venv/bin/python -m pytest -m conformance
+```

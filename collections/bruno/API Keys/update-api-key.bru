@@ -1,0 +1,24 @@
+meta {
+  name: Update API key
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{base_url}}/v2/api-keys/:client_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  client_id:
+}
+
+body:json {
+  {
+    "name": "string",
+    "permission": [
+      "string"
+    ]
+  }
+}

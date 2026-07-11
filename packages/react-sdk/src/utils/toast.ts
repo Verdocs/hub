@@ -56,7 +56,7 @@ box-shadow: 0 3px 7px 2px rgba(0, 0, 0, 0.12), 0 10px 36px -4px rgba(77, 96, 232
 
   const closeEl = document.createElement('div');
   closeEl.style.cssText = 'padding: 12px 10px; background: rgba(0, 0, 0, 0.2); cursor: pointer;';
-  closeEl.textContent = '✕';
+  closeEl.textContent = '\u2715';
   closeEl.addEventListener('click', e => {
     e.stopPropagation();
     removeToasts();

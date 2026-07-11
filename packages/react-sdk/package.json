@@ -21,13 +21,14 @@
   "scripts": {
     "build": "tsup && tailwindcss -i ./src/styles.css -o ./dist/styles.css --minify",
     "dev": "tsup --watch",
-    "lint": "eslint src",
-    "check-types": "tsc --noEmit",
-    "test": "vitest run"
+    "lint": "eslint .",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "format": "eslint . --fix"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.2",
-    "@verdocs/js-sdk": "workspace:*"
+    "@verdocs/js-sdk": "workspace:^"
   },
   "peerDependencies": {
     "react": "^19.0.0",

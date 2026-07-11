@@ -1,0 +1,20 @@
+meta {
+  name: Delete notification template
+  type: http
+  seq: 1
+}
+
+delete {
+  url: {{base_url}}/v2/notifications/templates/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 00000000-0000-0000-0000-000000000000
+}
+
+docs {
+  Path parameters:
+  - id: The notification template ID
+}

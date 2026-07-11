@@ -1,0 +1,24 @@
+meta {
+  name: Get envelope document page display URI
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/v2/envelope-documnets/page-image/:document_id/:variant/:page
+  body: none
+  auth: inherit
+}
+
+params:path {
+  document_id: 00000000-0000-0000-0000-000000000000
+  variant: original
+  page: 0
+}
+
+docs {
+  Path parameters:
+  - document_id: The ID of the document to retrieve.
+  - variant: The variant of the document to retrieve.
+  - page: The page number to retrieve
+}

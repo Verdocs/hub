@@ -1,0 +1,29 @@
+meta {
+  name: Add a role to a template
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/v2/roles/:template_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  template_id:
+}
+
+body:json {
+  {
+    "name": "string",
+    "type": "signer",
+    "full_name": "string",
+    "email": "string",
+    "phone": "string",
+    "message": "string",
+    "sequence": 1,
+    "order": 1,
+    "delegator": true
+  }
+}

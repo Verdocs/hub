@@ -1,4 +1,3 @@
-import type { FC } from 'react';
 import type { ITemplate, VerdocsEndpoint } from '@verdocs/js-sdk';
 import { StarOutlineIcon, StarSolidIcon } from '../../controls/icons';
 import { useToggleTemplateStar } from '../../hooks/useTemplates';
@@ -15,7 +14,7 @@ export interface TemplateStarProps {
  * runs a mutation that invalidates template list queries on completion.
  * Internal to VerdocsTemplatesList.
  */
-export const TemplateStar: FC<TemplateStarProps> = ({ template, endpoint, onSdkError }) => {
+export default function TemplateStar({ template, endpoint, onSdkError }: TemplateStarProps) {
   const toggleStar = useToggleTemplateStar(endpoint);
 
   return (
@@ -39,4 +38,4 @@ export const TemplateStar: FC<TemplateStarProps> = ({ template, endpoint, onSdkE
       </div>
     </div>
   );
-};
+}

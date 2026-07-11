@@ -20,4 +20,6 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm exec turbo run lint check-types test build
+      - run: pnpm exec turbo run lint typecheck test build
+
+      - run: pnpm --filter @verdocs/collections check

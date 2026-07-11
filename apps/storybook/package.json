@@ -6,12 +6,13 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "storybook build",
-    "lint": "eslint .storybook",
-    "check-types": "tsc --noEmit"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "eslint . --fix"
   },
   "dependencies": {
-    "@verdocs/js-sdk": "workspace:*",
-    "@verdocs/react-sdk": "workspace:*",
+    "@verdocs/js-sdk": "workspace:^",
+    "@verdocs/react-sdk": "workspace:^",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },

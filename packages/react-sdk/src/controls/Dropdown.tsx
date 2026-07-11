@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FC } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MenuArrowIcon } from './icons';
 
 export interface IMenuOption {
@@ -22,7 +22,7 @@ export interface DropdownProps {
  * user clicks elsewhere. Separators may be created by supplying an entry with
  * an empty label.
  */
-export const Dropdown: FC<DropdownProps> = ({ options, onSelect }) => {
+export default function Dropdown({ options, onSelect }: DropdownProps) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -82,4 +82,4 @@ export const Dropdown: FC<DropdownProps> = ({ options, onSelect }) => {
       )}
     </div>
   );
-};
+}

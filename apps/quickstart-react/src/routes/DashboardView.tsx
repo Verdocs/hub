@@ -1,6 +1,6 @@
 import { Button, showToast, useSession, VerdocsTemplatesList } from '@verdocs/react-sdk';
 
-export const DashboardView = () => {
+export default function DashboardView() {
   const { profile, endpoint } = useSession();
 
   // Clearing the session re-renders the route guard, which redirects to /login.
@@ -30,4 +30,4 @@ export const DashboardView = () => {
       </main>
     </div>
   );
-};
+}

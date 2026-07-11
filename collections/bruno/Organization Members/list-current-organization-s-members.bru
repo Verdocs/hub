@@ -1,0 +1,11 @@
+meta {
+  name: List current organization's members
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/v2/organization-members
+  body: none
+  auth: inherit
+}

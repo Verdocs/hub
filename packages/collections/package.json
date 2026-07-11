@@ -1,0 +1,24 @@
+{
+  "name": "@verdocs/collections",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Generates the committed Postman and Bruno collections in collections/ from the js-sdk OpenAPI spec",
+  "type": "module",
+  "scripts": {
+    "generate": "tsx src/generate.ts",
+    "check": "tsx src/check.ts",
+    "test": "vitest run",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "eslint . --fix"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@verdocs/eslint-config": "^1.0.0",
+    "@verdocs/typescript-config": "^1.0.0",
+    "eslint": "^9.39.1",
+    "tsx": "^4.23.0",
+    "typescript": "5.9.3",
+    "vitest": "^4.1.10"
+  }
+}

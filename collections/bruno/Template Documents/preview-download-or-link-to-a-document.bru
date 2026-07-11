@@ -1,0 +1,27 @@
+meta {
+  name: Preview, Download, or Link to a Document
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/v2/envelope-documents/:document_id
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~type: file
+}
+
+params:path {
+  document_id: 00000000-0000-0000-0000-000000000000
+}
+
+docs {
+  Path parameters:
+  - document_id: The ID of the document to retrieve.
+
+  Query parameters:
+  - type (optional): Download the file directly, generate a download link, or generate a preview link.
+}

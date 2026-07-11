@@ -1,0 +1,22 @@
+meta {
+  name: Update organization full or thumbnail logo.
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{base_url}}/v2/organizations/:organization_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  organization_id:
+}
+
+body:json {
+  {
+    "logo": "string",
+    "thumbnail": "string"
+  }
+}

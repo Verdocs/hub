@@ -1,0 +1,20 @@
+meta {
+  name: Get template document
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/v2/template-documents/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 00000000-0000-0000-0000-000000000000
+}
+
+docs {
+  Path parameters:
+  - id: The ID of the document to retrieve.
+}

@@ -1,12 +1,12 @@
 import { VerdocsEndpoint } from '@verdocs/js-sdk';
 import type { IAuthenticateResponse } from '@verdocs/js-sdk';
-import { useEffect, useMemo, useRef, useState, type FC, type FormEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { authenticate, convertToE164, createProfile, getMyUser, resendVerification, resetPassword, verifyEmail } from '@verdocs/js-sdk';
 import { SDKError, type IAuthStatus } from '../../types';
-import { TextInput } from '../../controls/TextInput';
 import { useSession } from '../../hooks/useSession';
-import { Button } from '../../controls/Button';
+import TextInput from '../../controls/TextInput';
 import { showToast } from '../../utils/toast';
+import Button from '../../controls/Button';
 
 export type TAuthMode = 'login' | 'forgot' | 'reset' | 'signup' | 'verify';
 
@@ -68,7 +68,7 @@ const PASSWORD_COMPLEXITY_MESSAGE =
  * session listeners never observe a partially-verified login. Tokens are
  * pushed to the real endpoint only once verification checks pass.
  */
-export const VerdocsAuth: FC<VerdocsAuthProps> = ({
+export default function VerdocsAuth({
   endpoint,
   visible = true,
   logo = 'https://app.verdocs.com/assets/blue-logo.svg',
@@ -76,7 +76,7 @@ export const VerdocsAuth: FC<VerdocsAuthProps> = ({
   syncHash = false,
   onAuthenticated,
   onSdkError,
-}) => {
+}: VerdocsAuthProps) {
   const { loaded, session, profile, endpoint: resolvedEndpoint } = useSession(endpoint);
 
   const [mode, setMode] = useState<TAuthMode>(initialMode);
@@ -498,4 +498,4 @@ export const VerdocsAuth: FC<VerdocsAuthProps> = ({
       </form>
     </div>
   );
-};
+}

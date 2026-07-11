@@ -61,7 +61,7 @@ export const decodeAccessTokenBody = (token: string): TSession => {
     if (decoded === null) {
       return null;
     }
-  } catch (e) {
+  } catch {
     return null;
   }
 

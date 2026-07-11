@@ -1,0 +1,31 @@
+meta {
+  name: Update a role. See createRole for additional details on the parameters available.
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{base_url}}/v2/roles/:template_id/:role_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  template_id:
+  role_id:
+}
+
+body:json {
+  {
+    "name": "string",
+    "type": "signer",
+    "full_name": "string",
+    "email": "string",
+    "phone": "string",
+    "message": "string",
+    "sequence": 1,
+    "order": 1,
+    "delegator": true,
+    "kba_method": "pin"
+  }
+}

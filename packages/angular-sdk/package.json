@@ -7,12 +7,13 @@
   "typings": "dist/types/verdocs-angular-sdk.d.ts",
   "scripts": {
     "build": "tailwindcss -i ./src/styles.css -o ./styles.css --minify && ng build",
-    "lint": "eslint src",
-    "check-types": "tsc --noEmit",
-    "test": "ng test --no-watch"
+    "lint": "eslint .",
+    "test": "ng test --no-watch",
+    "typecheck": "tsc --noEmit",
+    "format": "eslint . --fix"
   },
   "dependencies": {
-    "@verdocs/js-sdk": "workspace:*",
+    "@verdocs/js-sdk": "workspace:^",
     "tslib": "^2.8.1"
   },
   "peerDependencies": {

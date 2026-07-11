@@ -1,0 +1,17 @@
+meta {
+  name: Create Initial Block
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/v2/profiles/initials
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "initial": "string"
+  }
+}

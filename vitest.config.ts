@@ -9,5 +9,9 @@ export default defineConfig({
       'apps/*/vitest.config.ts',
       '!packages/conformance/**',
     ],
+    reporters: ['default', 'html'],
+    outputFile: {
+      html: 'reports/vitest/index.html',
+    },
   },
 });

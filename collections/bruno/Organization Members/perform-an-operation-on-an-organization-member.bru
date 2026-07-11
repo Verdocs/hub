@@ -1,0 +1,26 @@
+meta {
+  name: Perform an operation on an organization member.
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{base_url}}/v2/organization-members/:profile_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  profile_id: 00000000-0000-0000-0000-000000000000
+}
+
+body:json {
+  {
+    "action": "unlock"
+  }
+}
+
+docs {
+  Path parameters:
+  - profile_id: The Profile ID to operate on.
+}

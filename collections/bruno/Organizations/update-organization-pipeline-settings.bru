@@ -1,0 +1,24 @@
+meta {
+  name: Update organization pipeline settings
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{base_url}}/v2/organizations/:organization_id/pipeline-settings
+  body: json
+  auth: inherit
+}
+
+params:path {
+  organization_id:
+}
+
+body:json {
+  {
+    "process_acroforms": true,
+    "process_tags": true,
+    "ignore_invalid_roles": true,
+    "ignore_invalid_fields": true
+  }
+}

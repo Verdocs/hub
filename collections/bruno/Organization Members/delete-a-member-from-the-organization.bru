@@ -1,0 +1,20 @@
+meta {
+  name: Delete a member from the organization
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{base_url}}/v2/organization-members/:profile_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  profile_id: 00000000-0000-0000-0000-000000000000
+}
+
+docs {
+  Path parameters:
+  - profile_id: The Profile ID to remove.
+}

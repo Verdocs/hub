@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, FC, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** The label for the button. */
@@ -32,7 +32,7 @@ const VARIANT_CLASSES = {
 /**
  * A simple button, with consistent styling to other controls in the design system.
  */
-export const Button: FC<ButtonProps> = ({
+export default function Button({
   label,
   startIcon,
   endIcon,
@@ -41,23 +41,25 @@ export const Button: FC<ButtonProps> = ({
   type = 'button',
   className = '',
   ...rest
-}) => (
-  <button
-    type={type}
-    className={`vdocs:font-sans vdocs:font-medium vdocs:cursor-pointer vdocs:inline-flex vdocs:items-center vdocs:justify-center vdocs:disabled:cursor-default vdocs:disabled:pointer-events-none ${SIZE_CLASSES[size]} ${VARIANT_CLASSES[variant]} ${className}`}
-    {...rest}>
-    {startIcon && (
-      <span className="vdocs:mx-1 vdocs:[&>svg]:size-5">
-        {startIcon}
+}: ButtonProps) {
+  return (
+    <button
+      type={type}
+      className={`vdocs:font-sans vdocs:font-medium vdocs:cursor-pointer vdocs:inline-flex vdocs:items-center vdocs:justify-center vdocs:disabled:cursor-default vdocs:disabled:pointer-events-none ${SIZE_CLASSES[size]} ${VARIANT_CLASSES[variant]} ${className}`}
+      {...rest}>
+      {startIcon && (
+        <span className="vdocs:mx-1 vdocs:[&>svg]:size-5">
+          {startIcon}
+        </span>
+      )}
+      <span className="vdocs:px-2.5">
+        {label}
       </span>
-    )}
-    <span className="vdocs:px-2.5">
-      {label}
-    </span>
-    {endIcon && (
-      <span className="vdocs:mx-1 vdocs:[&>svg]:size-5">
-        {endIcon}
-      </span>
-    )}
-  </button>
-);
+      {endIcon && (
+        <span className="vdocs:mx-1 vdocs:[&>svg]:size-5">
+          {endIcon}
+        </span>
+      )}
+    </button>
+  );
+}
