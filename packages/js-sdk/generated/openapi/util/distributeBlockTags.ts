@@ -1,6 +1,6 @@
 import {joinTagContent, PATH_REGEX} from '../generate-openapi';
 import {IBlockTag} from '../types'
-import {defineDefaultEntry, DefineDefaultEntryProps, parseParam, parseResponseType} from '../util';
+import {defineDefaultEntry, DefineDefaultEntryProps, parseParam, parseResponseType} from '.';
 
 export const distributeBlockTags = (blockTags: any[] = [], defaultEntryProps: DefineDefaultEntryProps) => {
   const entry: any = defineDefaultEntry(defaultEntryProps);

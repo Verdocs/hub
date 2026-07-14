@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "formulahendry.auto-close-tag",
+    "waderyan.gitblame",
+    "prisma.prisma",
+    "wayou.vscode-todo-highlight",
+    "codeandstuff.package-json-upgrade"
+  ],
+  "unwantedRecommendations": [
+    "esbenp.prettier-vscode"
+  ]
+}

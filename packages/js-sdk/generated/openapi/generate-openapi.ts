@@ -4,9 +4,9 @@
 import {writeFileSync} from 'node:fs';
 import {jsTypeToSchema} from './utils';
 import {Preamble} from './Preamble';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+ 
 // @ts-ignore - docs.json may not exist yet in CI
-import docsJson from '../docs.json';
+import docsJson from '../../docs.json';
 import {generateSnippets} from './snippets';
 
 // 1. Reuse some tags from TSDoc (Name->actionId, Summary/Description from comment, @group->tags
@@ -422,7 +422,7 @@ const reconcilePathParameters = (entry: any, method: string, path: string) => {
     return {in: 'path', name, description: '', required: true, schema: {type: 'string'}};
   });
 
-  const dropped = unmatched.filter((p: any) => !(placeholders.length === 1 && unmatched.length === 1));
+  const dropped = unmatched.filter(() => !(placeholders.length === 1 && unmatched.length === 1));
   if (dropped.length) {
     console.warn(
       `${method.toUpperCase()} ${path}: dropping @apiParam entries with no matching path placeholder: ` +

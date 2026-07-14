@@ -1,4 +1,4 @@
-import pkg from '../package.json';
+import pkg from '../../package.json';
 import { OpenAITag, PREAMBLE_TAGS } from './PreambleTags';
 
 export const Preamble = {
