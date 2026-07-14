@@ -1,4 +1,5 @@
 import pkg from '../package.json';
+import { OpenAITag, PREAMBLE_TAGS } from './PreambleTags';
 
 export const Preamble = {
   openapi: '3.1.0',
@@ -17,7 +18,7 @@ export const Preamble = {
   },
   externalDocs: {description: 'Verdocs Developer Portal', url: 'https://developers.verdocs.com/'},
   servers: [{url: 'https://api.verdocs.com', description: 'Production API endpoint.'}],
-  tags: [],
+  tags: [...(PREAMBLE_TAGS as OpenAITag[])],
   paths: {},
   components: {
     securitySchemes: {

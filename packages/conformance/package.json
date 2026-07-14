@@ -14,7 +14,7 @@
     "@verdocs/js-sdk": "workspace:^"
   },
   "devDependencies": {
-    "@types/node": "^24.10.1",
+    "@types/node": "^24.1.0",
     "@verdocs/eslint-config": "^1.0.0",
     "imapflow": "^1.4.7",
     "@verdocs/typescript-config": "^1.0.0",
