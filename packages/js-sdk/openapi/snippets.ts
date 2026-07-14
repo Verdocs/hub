@@ -3,12 +3,18 @@ import {capitalize} from '../src';
 
 const BASE_URL = Preamble.servers[0].url;
 
+interface Snippet {
+  lang: string;
+  label: string;
+  source: string;
+}
+
 export const generateSnippets = (
   method: string,
   url: string,
   {showQuery, showBody}: {showQuery: boolean; showBody: boolean} = {showQuery: false, showBody: false},
 ) => {
-  const snippets = [];
+  const snippets: Snippet[] = [];
 
   const capitalizedMethod = capitalize(method);
   const upperMethod = method.toUpperCase();

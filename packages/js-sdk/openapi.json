@@ -25,7 +25,103 @@
       "description": "Production API endpoint."
     }
   ],
-  "tags": [],
+  "tags": [
+    {
+      "name": "Organizations",
+      "description": "An Organization represents a logical workspace that groups users, documents, and resources under a shared administrative domain. Organizations enable multi-tenant management by isolating data and permissions between different teams or companies. Each organization typically contains its own users, templates, envelopes, and settings, ensuring that activity and access remain scoped to that organization. Organizations are commonly used to support multiple teams, departments, or clients within a single platform.",
+      "x-displayName": "Organizations"
+    },
+    {
+      "name": "Envelopes",
+      "description": "An envelope is a digital package that groups one or more documents together with their signing instructions, recipients, and metadata for the purpose of routing, signing, and tracking the documents in an electronic signature workflow.",
+      "x-displayName": "Envelopes"
+    },
+    {
+      "name": "Envelope Documents",
+      "description": "The files that need to be signed or reviewed (PDFs, contracts, etc.), within an envelope.",
+      "x-displayName": "Envelope Documents"
+    },
+    {
+      "name": "Signatures and Initials",
+      "description": "Signatures & Initials are the visual marks applied by recipients to indicate approval or acknowledgment of a document. A signature represents a recipient’s full legal signature, while an initial is typically used to confirm review of specific sections or pages. In the Verdocs platform, signatures and initials are placed within designated signing fields in a document. When a recipient completes a signing step, the platform captures the signature or initials along with metadata such as the timestamp, signer identity, and audit trail information.",
+      "x-displayName": "Signatures and Initials"
+    },
+    {
+      "name": "API Keys",
+      "description": "API keys are required when using Verdocs technpologies. Please log in to your account to view/generate your API Key.",
+      "x-displayName": "API Keys"
+    },
+    {
+      "name": "Organization Contacts",
+      "description": "Endpoints for managing organization contacts",
+      "x-displayName": "Organization Contacts"
+    },
+    {
+      "name": "Organization Invitations",
+      "description": "Endpoints for managing organization invitations",
+      "x-displayName": "Organization Invitations"
+    },
+    {
+      "name": "Organization Members",
+      "description": "Endpoints for managing organization members",
+      "x-displayName": "Organization Members"
+    },
+    {
+      "name": "Webhooks",
+      "description": "Webhooks are HTTP callbacks that notify external systems when specific events occur within the platform. Common events include document signing completion, envelope status changes, or recipient actions. Webhooks enable real-time integration with external applications, allowing automated workflows, notifications, and auditing.",
+      "x-displayName": "Webhooks"
+    },
+    {
+      "name": "Fields",
+      "description": "Fields are interactive elements placed within a document that collect or display information during the signing process. Fields define where recipients must provide input or review information. Common field types include signature fields, initials, text inputs, dates, checkboxes, and dropdown selections. Fields can be assigned to specific recipients and may include validation rules, default values, or formatting constraints. Fields ensure that documents capture the required information and guide recipients through the signing workflow.",
+      "x-displayName": "Fields"
+    },
+    {
+      "name": "Roles",
+      "description": "Roles define the permissions and responsibilities assigned to users or recipients within the system. Roles determine what actions a user can perform, such as creating envelopes, approving documents, managing templates, or accessing administrative settings. Assigning roles ensures that users only have access to the resources and actions appropriate for their responsibilities.",
+      "x-displayName": "Roles"
+    },
+    {
+      "name": "Template Documents",
+      "description": "A Template Document is a single file included within a template that defines part of the content and structure for a signing workflow. Template documents can contain predefined fields, placeholders, and formatting that standardize the signing process. When a template is used to create an envelope, each template document is included in the signing transaction according to the template configuration.",
+      "x-displayName": "Template Documents"
+    },
+    {
+      "name": "Templates",
+      "description": "A Template is a reusable document configuration that defines the structure of a signing workflow. Templates typically include one or more documents, predefined fields, recipient roles, and routing rules. By using templates, organizations can standardize frequently used agreements and automate document preparation. When a template is used, the platform generates a new signing transaction based on the template’s configuration, allowing documents to be sent for signature quickly and consistently.",
+      "x-displayName": "Templates"
+    },
+    {
+      "name": "Authentication",
+      "description": "Endpoints for managing authentication",
+      "x-displayName": "Authentication"
+    },
+    {
+      "name": "Profiles",
+      "description": "A Profile represents the personal or account information of a user within the platform. Profiles store data such as the user’s name, email, contact information, and preferences. Profiles are used to identify users in signing workflows, manage access, and personalize communications or notifications.",
+      "x-displayName": "Profiles"
+    },
+    {
+      "name": "Brands",
+      "description": "Brands define the visual identity, email settings, and presentation for documents and notifications sent by an organization. Each brand can specify unique logos, color schemes, and email domains to deliver a customized recipient experience. Organizations can manage multiple brands to represent different business units or product lines, ensuring that all outgoing documents and communications align with their branding standards.",
+      "x-displayName": "Brands"
+    },
+    {
+      "name": "Recipients",
+      "description": "Recipients represent individuals who are designated to complete actions within an envelope, such as signing, initialing, or reviewing documents. Each recipient is assigned a role and may have unique authentication methods, fields to complete, and workflow actions such as agreeing or declining disclosures, submitting signatures, asking questions, or delegating their responsibility. The recipient workflow supports in-person and remote signing, reminder notifications, and advanced verification (e.g., KBA, SMS, passcode). Managing recipients is essential to controlling access and progress through the signing process.",
+      "x-displayName": "Recipients"
+    },
+    {
+      "name": "Notifications",
+      "description": "Notifications provide alerts and updates to users regarding activity and important events within the platform. These may include workflow changes, recipient actions, completion statuses, and reminders. Notifications can be delivered via email, SMS, or in-app messages, ensuring that users are informed of required actions or the status of documents and processes.",
+      "x-displayName": "Notifications"
+    },
+    {
+      "name": "Notification Templates",
+      "description": "Notification Templates allow organizations to customize the email and SMS notifications sent during signing workflows. Each template is tied to a specific event (e.g. recipient invited, envelope completed) and notification type (email, sms, etc). The caller must have admin access to the organization.",
+      "x-displayName": "Notification Templates"
+    }
+  ],
   "paths": {
     "/v2/organization-invitations/accept": {
       "post": {
