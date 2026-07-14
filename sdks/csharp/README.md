@@ -1,10 +1,16 @@
 # Verdocs C# SDK
 
-The .NET client for the Verdocs e-signature platform. This is the seed build: it establishes
-the client shape (`VerdocsEndpoint`), the error model, the serialization conventions, and the
-conformance lane, with hand-written models covering the first few operations. The binding
-rules live in `docs/standards/csharp.md` at the hub root; read that before changing anything
-structural.
+The .NET client for the Verdocs e-signature platform, at full parity with the js-sdk 6.10.0
+public surface (the symbol-by-symbol mapping lives in `sdks/API-PARITY.md` at the hub root).
+`VerdocsEndpoint` groups every operation onto resource properties (the same layout as the
+Python SDK): Templates, TemplateDocuments, TemplateRoles, TemplateFields, Envelopes,
+Recipients, Kba, Signatures, Initials, Organizations, Members, Groups, Invitations, Contacts,
+ApiKeys, Brands, Webhooks, NotificationTemplates, Users, Profiles, and Auth. Pure-logic
+helpers live in `Verdocs.Helpers` (permissions, validators) and `Verdocs.Utils` (colors,
+dates, locales, primitives, strings, token, entitlements). Models are sealed records with
+snake_case serialization that keep undocumented server fields via extension data. The binding
+rules live in `docs/standards/csharp.md` at the hub root; wire-truth notes for the tricky
+endpoints are in `sdks/WIRE-NOTES.md`.
 
 ## Layout
 
@@ -43,9 +49,11 @@ VERDOCS_CONFORMANCE=1 dotnet test --filter "FullyQualifiedName~Conformance"
 ```
 
 Credentials come from `VERDOCS_API_BASE`, `VERDOCS_TEST_EMAIL`, and `VERDOCS_TEST_PASSWORD`,
-read from the environment first and then from the hub root `.env`. All cases are read-only
-apart from the password grants themselves. The star-toggle case is frozen in fixtures.json
-and intentionally not implemented here.
+read from the environment first and then from the hub root `.env`. The fixture cases are
+read-only apart from the password grants; the canonical chain test additionally creates one
+template and one envelope per run (the envelope ends canceled), per beta etiquette. The
+frozen entries in fixtures.json (star toggle, the dead KBA and SharePoint endpoints) are
+intentionally not implemented here.
 
 ## Quickstart
 
@@ -55,14 +63,14 @@ using Verdocs.Models;
 
 using var endpoint = new VerdocsEndpoint();
 
-var auth = await endpoint.AuthenticateAsync(new AuthenticateRequest
+var auth = await endpoint.Auth.AuthenticateAsync(new AuthenticateRequest
 {
     Username = "you@example.com",
     Password = "PASSWORD",
 });
 endpoint.SetToken(auth.AccessToken);
 
-var page = await endpoint.GetTemplatesAsync(new GetTemplatesOptions { Rows = 10 });
+var page = await endpoint.Templates.ListAsync(new GetTemplatesOptions { Rows = 10 });
 foreach (var template in page.Templates)
 {
     Console.WriteLine($"{template.Id} {template.Name}");
@@ -74,17 +82,15 @@ and the constructor takes an optional `HttpClient` for IHttpClientFactory users 
 never mutates or disposes a client it was given). An endpoint carries one session, user or
 signing; create a second endpoint when you need both concurrently.
 
-## What is covered so far
+## Coverage
 
-- `AuthenticateAsync`: POST /v2/oauth2/token, password grant only in this seed.
-- `GetMyUserAsync`: GET /v2/users/me.
-- `GetCurrentProfileAsync`: GET /v2/profiles, returning the entry marked current.
-- `GetTemplatesAsync`: GET /v2/templates with typed filter/sort/paging options.
-- `GetTemplateAsync`: GET /v2/templates/:template_id, including roles, documents, and fields.
-
-Template create, update, and delete are deliberately not in the seed: the js-sdk create path
-mixes multipart uploads with three different document-attachment shapes, and we are not
-locking in a C# surface for that until the wire contract is settled. List and get are enough
-to prove the client shape. Models are hand-written and treated as throwaway until type
-generation lands; unknown wire fields never throw, and each model carries them in
-`AdditionalData` so payloads round-trip losslessly.
+Every js-sdk 6.10.0 public symbol is dispositioned in `sdks/API-PARITY.md`: API stubs port
+onto the resource groups, pure-logic helpers onto `Verdocs.Helpers` and `Verdocs.Utils`, and
+browser-only pieces are adapted to native equivalents or skipped with a reason. Multipart
+uploads (template create, template documents, logos, signatures, field attachments) take
+native Stream/byte inputs; binary downloads return `byte[]`; link endpoints return the URL
+string the API actually sends. A few endpoints exist as stubs because the deployed API has
+no working route behind them (the star toggle, the KBA module, SharePoint create); their doc
+comments say so, and they are excluded from conformance. Models are hand-written and treated
+as throwaway until type generation lands; unknown wire fields never throw, and each model
+carries them in `AdditionalData` so payloads round-trip losslessly.

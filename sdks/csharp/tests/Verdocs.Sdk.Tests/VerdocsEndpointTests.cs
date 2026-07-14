@@ -38,6 +38,17 @@ public sealed class VerdocsEndpointTests
     }
 
     [Fact]
+    public void Constructor_Always_InitializesResourceGroups()
+    {
+        using var endpoint = new VerdocsEndpoint();
+
+        Assert.NotNull(endpoint.Auth);
+        Assert.NotNull(endpoint.Users);
+        Assert.NotNull(endpoint.Profiles);
+        Assert.NotNull(endpoint.Templates);
+    }
+
+    [Fact]
     public void Constructor_InvalidBaseUrl_ThrowsArgumentException()
     {
         Assert.Throws<ArgumentException>(() => new VerdocsEndpoint(new VerdocsEndpointOptions { BaseUrl = "not a url" }));
@@ -157,7 +168,7 @@ public sealed class VerdocsEndpointTests
         endpoint.SetToken(token);
         handler.Enqueue(System.Net.HttpStatusCode.OK, SamplePayloads.User);
 
-        await endpoint.GetMyUserAsync(TestContext.Current.CancellationToken);
+        await endpoint.Users.GetMeAsync(TestContext.Current.CancellationToken);
 
         var request = Assert.Single(handler.Requests);
         Assert.Equal("Bearer " + token, request.Headers["Authorization"]);
@@ -174,7 +185,7 @@ public sealed class VerdocsEndpointTests
         endpoint.SetToken(token);
         handler.Enqueue(System.Net.HttpStatusCode.OK, SamplePayloads.User);
 
-        await endpoint.GetMyUserAsync(TestContext.Current.CancellationToken);
+        await endpoint.Users.GetMeAsync(TestContext.Current.CancellationToken);
 
         var request = Assert.Single(handler.Requests);
         Assert.Equal("Bearer " + token, request.Headers["signer"]);
@@ -191,7 +202,7 @@ public sealed class VerdocsEndpointTests
         endpoint.ClearSession();
         handler.Enqueue(System.Net.HttpStatusCode.OK, SamplePayloads.User);
 
-        await endpoint.GetMyUserAsync(TestContext.Current.CancellationToken);
+        await endpoint.Users.GetMeAsync(TestContext.Current.CancellationToken);
 
         var request = Assert.Single(handler.Requests);
         Assert.False(request.Headers.ContainsKey("Authorization"));
@@ -208,7 +219,7 @@ public sealed class VerdocsEndpointTests
             client);
         handler.Enqueue(System.Net.HttpStatusCode.OK, SamplePayloads.User);
 
-        await endpoint.GetMyUserAsync(TestContext.Current.CancellationToken);
+        await endpoint.Users.GetMeAsync(TestContext.Current.CancellationToken);
 
         var request = Assert.Single(handler.Requests);
         Assert.Equal("client-1234", request.Headers["X-Client-ID"]);
@@ -222,7 +233,7 @@ public sealed class VerdocsEndpointTests
         using var endpoint = new VerdocsEndpoint(new VerdocsEndpointOptions { BaseUrl = TestBaseUrl }, client);
         handler.Enqueue(System.Net.HttpStatusCode.OK, SamplePayloads.User);
 
-        await endpoint.GetMyUserAsync(TestContext.Current.CancellationToken);
+        await endpoint.Users.GetMeAsync(TestContext.Current.CancellationToken);
 
         var request = Assert.Single(handler.Requests);
         Assert.False(request.Headers.ContainsKey("X-Client-ID"));

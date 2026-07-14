@@ -24,7 +24,7 @@ public sealed class ErrorHandlingTests
         handler.Enqueue(HttpStatusCode.BadRequest, """{"error":"invalid_grant"}""");
 
         var exception = await Assert.ThrowsAsync<VerdocsApiException>(
-            () => endpoint.GetMyUserAsync(TestContext.Current.CancellationToken));
+            () => endpoint.Users.GetMeAsync(TestContext.Current.CancellationToken));
 
         Assert.Equal(HttpStatusCode.BadRequest, exception.StatusCode);
         Assert.Equal("""{"error":"invalid_grant"}""", exception.ResponseBody);
@@ -37,7 +37,7 @@ public sealed class ErrorHandlingTests
         handler.Enqueue(HttpStatusCode.InternalServerError, """{"error":"boom"}""");
 
         var exception = await Assert.ThrowsAnyAsync<VerdocsException>(
-            () => endpoint.GetMyUserAsync(TestContext.Current.CancellationToken));
+            () => endpoint.Users.GetMeAsync(TestContext.Current.CancellationToken));
 
         Assert.IsType<VerdocsApiException>(exception);
     }
@@ -49,7 +49,7 @@ public sealed class ErrorHandlingTests
         handler.Enqueue(HttpStatusCode.OK, "this is not json");
 
         var exception = await Assert.ThrowsAsync<VerdocsApiException>(
-            () => endpoint.GetMyUserAsync(TestContext.Current.CancellationToken));
+            () => endpoint.Users.GetMeAsync(TestContext.Current.CancellationToken));
 
         Assert.Equal(HttpStatusCode.OK, exception.StatusCode);
         Assert.Equal("this is not json", exception.ResponseBody);
@@ -63,7 +63,7 @@ public sealed class ErrorHandlingTests
         handler.Enqueue(HttpStatusCode.OK, "null");
 
         var exception = await Assert.ThrowsAsync<VerdocsApiException>(
-            () => endpoint.GetMyUserAsync(TestContext.Current.CancellationToken));
+            () => endpoint.Users.GetMeAsync(TestContext.Current.CancellationToken));
 
         Assert.Equal(HttpStatusCode.OK, exception.StatusCode);
     }
@@ -79,7 +79,7 @@ public sealed class ErrorHandlingTests
         });
 
         await Assert.ThrowsAsync<TimeoutException>(
-            () => endpoint.GetMyUserAsync(TestContext.Current.CancellationToken));
+            () => endpoint.Users.GetMeAsync(TestContext.Current.CancellationToken));
     }
 
     [Fact]
@@ -90,6 +90,6 @@ public sealed class ErrorHandlingTests
         await cancellation.CancelAsync();
 
         await Assert.ThrowsAnyAsync<OperationCanceledException>(
-            () => endpoint.GetMyUserAsync(cancellation.Token));
+            () => endpoint.Users.GetMeAsync(cancellation.Token));
     }
 }

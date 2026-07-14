@@ -36,7 +36,15 @@ public sealed record TemplateDocument
     /// <summary>Last-update date and time.</summary>
     public DateTimeOffset? UpdatedAt { get; init; }
 
-    /// <summary>Wire fields this seed model does not cover yet, preserved so responses round-trip losslessly.</summary>
+    /// <summary>Deprecated page count; see <see cref="Pages"/>.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public int? PageNumbers { get; init; }
+
+    /// <summary>The owning template, when the API includes it.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Template? Template { get; init; }
+
+    /// <summary>Wire fields the model does not declare, preserved so responses round-trip losslessly.</summary>
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? AdditionalData { get; init; }
 }

@@ -1,8 +1,9 @@
-using System.Globalization;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
-using Verdocs.Models;
+using Verdocs.Resources;
 
 namespace Verdocs;
 
@@ -11,19 +12,20 @@ namespace Verdocs;
 /// carries exactly one session, either a user session or a signing session; run two endpoint
 /// instances when both are needed at once (an authenticated user signing an envelope, for
 /// example). Ephemeral signing endpoints can be created, used for the signing calls, and
-/// discarded when signing completes.
+/// discarded when signing completes. Operations live on the resource properties
+/// (<see cref="Auth"/>, <see cref="Users"/>, <see cref="Profiles"/>, <see cref="Templates"/>).
 ///
 /// <example>
 /// <code>
 /// using var endpoint = new VerdocsEndpoint();
-/// var auth = await endpoint.AuthenticateAsync(new AuthenticateRequest
+/// var auth = await endpoint.Auth.AuthenticateAsync(new AuthenticateRequest
 /// {
 ///     Username = "you@example.com",
 ///     Password = "PASSWORD",
 /// });
 /// endpoint.SetToken(auth.AccessToken);
 ///
-/// var templates = await endpoint.GetTemplatesAsync(new GetTemplatesOptions { Rows = 10 });
+/// var templates = await endpoint.Templates.ListAsync(new GetTemplatesOptions { Rows = 10 });
 /// </code>
 /// </example>
 /// </summary>
@@ -87,6 +89,28 @@ public sealed class VerdocsEndpoint : IDisposable
             };
             _ownsHttpClient = true;
         }
+
+        Auth = new Auth(this);
+        Users = new Users(this);
+        Profiles = new Profiles(this);
+        Templates = new Templates(this);
+        TemplateDocuments = new TemplateDocuments(this);
+        TemplateRoles = new TemplateRoles(this);
+        TemplateFields = new TemplateFields(this);
+        Envelopes = new Envelopes(this);
+        Recipients = new Recipients(this);
+        Kba = new Kba(this);
+        Signatures = new Signatures(this);
+        Initials = new Initials(this);
+        Organizations = new Organizations(this);
+        Members = new Members(this);
+        Groups = new Groups(this);
+        Invitations = new Invitations(this);
+        Contacts = new Contacts(this);
+        ApiKeys = new ApiKeys(this);
+        Brands = new Brands(this);
+        Webhooks = new Webhooks(this);
+        NotificationTemplates = new NotificationTemplates(this);
     }
 
     /// <summary>
@@ -117,13 +141,76 @@ public sealed class VerdocsEndpoint : IDisposable
     /// <summary>The decoded session for the current token, or null if not authenticated.</summary>
     public VerdocsSession? Session { get; private set; }
 
+    /// <summary>Authentication calls for this endpoint.</summary>
+    public Auth Auth { get; }
+
+    /// <summary>User account calls for this endpoint.</summary>
+    public Users Users { get; }
+
+    /// <summary>Profile calls for this endpoint.</summary>
+    public Profiles Profiles { get; }
+
+    /// <summary>Template calls for this endpoint.</summary>
+    public Templates Templates { get; }
+
+    /// <summary>Template document calls for this endpoint.</summary>
+    public TemplateDocuments TemplateDocuments { get; }
+
+    /// <summary>Template role calls for this endpoint.</summary>
+    public TemplateRoles TemplateRoles { get; }
+
+    /// <summary>Template field calls for this endpoint.</summary>
+    public TemplateFields TemplateFields { get; }
+
+    /// <summary>Envelope calls for this endpoint.</summary>
+    public Envelopes Envelopes { get; }
+
+    /// <summary>Envelope recipient calls for this endpoint.</summary>
+    public Recipients Recipients { get; }
+
+    /// <summary>Knowledge-based authentication calls for this endpoint. The deployed API has no /v2/kba routes; see the resource docs.</summary>
+    public Kba Kba { get; }
+
+    /// <summary>Signature image calls for this endpoint.</summary>
+    public Signatures Signatures { get; }
+
+    /// <summary>Initials image calls for this endpoint.</summary>
+    public Initials Initials { get; }
+
+    /// <summary>Organization calls for this endpoint.</summary>
+    public Organizations Organizations { get; }
+
+    /// <summary>Organization member calls for this endpoint.</summary>
+    public Members Members { get; }
+
+    /// <summary>Organization group calls for this endpoint.</summary>
+    public Groups Groups { get; }
+
+    /// <summary>Organization invitation calls for this endpoint.</summary>
+    public Invitations Invitations { get; }
+
+    /// <summary>Organization contact calls for this endpoint.</summary>
+    public Contacts Contacts { get; }
+
+    /// <summary>API key calls for this endpoint.</summary>
+    public ApiKeys ApiKeys { get; }
+
+    /// <summary>Brand calls for this endpoint.</summary>
+    public Brands Brands { get; }
+
+    /// <summary>Webhook calls for this endpoint.</summary>
+    public Webhooks Webhooks { get; }
+
+    /// <summary>Notification template calls for this endpoint.</summary>
+    public NotificationTemplates NotificationTemplates { get; }
+
     /// <summary>
     /// Stores the access token applied to subsequent requests, along with its decoded session
     /// metadata. Passing null, an unparseable token, or an expired token clears the session
     /// instead. Token persistence is the caller's responsibility; unlike the JS SDK there is
     /// no localStorage equivalent here.
     /// </summary>
-    /// <param name="token">The access token returned by <see cref="AuthenticateAsync"/>, or null to clear.</param>
+    /// <param name="token">The access token returned by <see cref="Resources.Auth.AuthenticateAsync"/>, or null to clear.</param>
     /// <param name="sessionType">
     /// Explicit session type override. When omitted, the token's own session_type claim decides,
     /// falling back to the endpoint's current type.
@@ -183,93 +270,6 @@ public sealed class VerdocsEndpoint : IDisposable
         return this;
     }
 
-    /// <summary>
-    /// Authenticates to Verdocs with a username and password (the OAuth2 password grant) and
-    /// returns the session tokens. Call <see cref="SetToken"/> with the access token to apply
-    /// it to this endpoint.
-    ///
-    /// <example>
-    /// <code>
-    /// var auth = await endpoint.AuthenticateAsync(new AuthenticateRequest
-    /// {
-    ///     Username = "you@example.com",
-    ///     Password = "PASSWORD",
-    /// });
-    /// endpoint.SetToken(auth.AccessToken);
-    /// </code>
-    /// </example>
-    /// </summary>
-    /// <param name="request">The credentials to authenticate with.</param>
-    /// <param name="cancellationToken">Token to cancel the operation.</param>
-    /// <returns>Authentication tokens and expiration details.</returns>
-    /// <exception cref="VerdocsApiException">The API rejected the credentials or the call failed.</exception>
-    public Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest request, CancellationToken cancellationToken = default)
-    {
-        ArgumentNullException.ThrowIfNull(request);
-        return SendAsync<AuthenticateResponse>(HttpMethod.Post, "/v2/oauth2/token", request, cancellationToken);
-    }
-
-    /// <summary>Gets the caller's user record.</summary>
-    /// <param name="cancellationToken">Token to cancel the operation.</param>
-    /// <returns>The caller's user record.</returns>
-    /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
-    public Task<User> GetMyUserAsync(CancellationToken cancellationToken = default)
-    {
-        return SendAsync<User>(HttpMethod.Get, "/v2/users/me", null, cancellationToken);
-    }
-
-    /// <summary>
-    /// Gets the caller's current profile. A user has one profile per organization membership
-    /// and exactly one is current at a time; operations are performed as that profile.
-    /// </summary>
-    /// <param name="cancellationToken">Token to cancel the operation.</param>
-    /// <returns>The profile marked current, or null if the caller has none.</returns>
-    /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
-    public async Task<Profile?> GetCurrentProfileAsync(CancellationToken cancellationToken = default)
-    {
-        var profiles = await SendAsync<List<Profile>>(HttpMethod.Get, "/v2/profiles", null, cancellationToken)
-            .ConfigureAwait(false);
-        return profiles.Find(profile => profile.Current);
-    }
-
-    /// <summary>
-    /// Gets the templates accessible to the caller, with optional filters.
-    ///
-    /// <example>
-    /// <code>
-    /// var page = await endpoint.GetTemplatesAsync(new GetTemplatesOptions
-    /// {
-    ///     Visibility = TemplateVisibilityFilter.PrivateShared,
-    ///     Rows = 10,
-    ///     Page = 0,
-    /// });
-    /// </code>
-    /// </example>
-    /// </summary>
-    /// <param name="options">Optional filters, sorting, and paging.</param>
-    /// <param name="cancellationToken">Token to cancel the operation.</param>
-    /// <returns>One page of templates plus paging counts.</returns>
-    /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
-    public Task<TemplateList> GetTemplatesAsync(GetTemplatesOptions? options = null, CancellationToken cancellationToken = default)
-    {
-        return SendAsync<TemplateList>(HttpMethod.Get, BuildTemplatesPath(options), null, cancellationToken);
-    }
-
-    /// <summary>
-    /// Gets one template by its ID. The caller must have at least view access to it. The
-    /// detail response includes the template's roles, documents, and fields, which the list
-    /// response omits.
-    /// </summary>
-    /// <param name="templateId">The template's unique ID.</param>
-    /// <param name="cancellationToken">Token to cancel the operation.</param>
-    /// <returns>The requested template.</returns>
-    /// <exception cref="VerdocsApiException">The call failed, for example because the template was not found.</exception>
-    public Task<Template> GetTemplateAsync(string templateId, CancellationToken cancellationToken = default)
-    {
-        ArgumentException.ThrowIfNullOrEmpty(templateId);
-        return SendAsync<Template>(HttpMethod.Get, "/v2/templates/" + Uri.EscapeDataString(templateId), null, cancellationToken);
-    }
-
     /// <summary>Disposes the HTTP client this endpoint created. A caller-supplied client is left alone.</summary>
     public void Dispose()
     {
@@ -280,81 +280,6 @@ public sealed class VerdocsEndpoint : IDisposable
 
         GC.SuppressFinalize(this);
     }
-
-    private static string BuildTemplatesPath(GetTemplatesOptions? options)
-    {
-        const string path = "/v2/templates";
-        if (options is null)
-        {
-            return path;
-        }
-
-        var parameters = new List<string>();
-
-        void Add(string key, string value) => parameters.Add(key + "=" + Uri.EscapeDataString(value));
-
-        if (options.Q is { } q)
-        {
-            Add("q", q);
-        }
-
-        if (options.IsStarred is { } isStarred)
-        {
-            Add("is_starred", isStarred ? "true" : "false");
-        }
-
-        if (options.IsCreator is { } isCreator)
-        {
-            Add("is_creator", isCreator ? "true" : "false");
-        }
-
-        if (options.Visibility is { } visibility)
-        {
-            Add("visibility", ToWireValue(visibility));
-        }
-
-        if (options.SortBy is { } sortBy)
-        {
-            Add("sort_by", ToWireValue(sortBy));
-        }
-
-        if (options.Ascending is { } ascending)
-        {
-            Add("ascending", ascending ? "true" : "false");
-        }
-
-        if (options.Rows is { } rows)
-        {
-            Add("rows", rows.ToString(CultureInfo.InvariantCulture));
-        }
-
-        if (options.Page is { } page)
-        {
-            Add("page", page.ToString(CultureInfo.InvariantCulture));
-        }
-
-        return parameters.Count == 0 ? path : path + "?" + string.Join("&", parameters);
-    }
-
-    private static string ToWireValue(TemplateVisibilityFilter visibility) => visibility switch
-    {
-        TemplateVisibilityFilter.PrivateShared => "private_shared",
-        TemplateVisibilityFilter.Private => "private",
-        TemplateVisibilityFilter.Shared => "shared",
-        TemplateVisibilityFilter.Public => "public",
-        _ => throw new ArgumentOutOfRangeException(nameof(visibility)),
-    };
-
-    private static string ToWireValue(TemplateSortBy sortBy) => sortBy switch
-    {
-        TemplateSortBy.CreatedAt => "created_at",
-        TemplateSortBy.UpdatedAt => "updated_at",
-        TemplateSortBy.Name => "name",
-        TemplateSortBy.LastUsedAt => "last_used_at",
-        TemplateSortBy.Counter => "counter",
-        TemplateSortBy.StarCounter => "star_counter",
-        _ => throw new ArgumentOutOfRangeException(nameof(sortBy)),
-    };
 
     private void ApplyHeaders(HttpRequestMessage request)
     {
@@ -382,14 +307,92 @@ public sealed class VerdocsEndpoint : IDisposable
         }
     }
 
-    private async Task<TResponse> SendAsync<TResponse>(HttpMethod method, string pathAndQuery, object? body, CancellationToken cancellationToken)
+    /// <summary>
+    /// Sends one API request with a JSON body (or none) and returns the parsed response.
+    /// </summary>
+    internal Task<TResponse> SendAsync<TResponse>(HttpMethod method, string pathAndQuery, object? body, CancellationToken cancellationToken)
+    {
+        return SendAsync<TResponse>(method, pathAndQuery, ToJsonContent(body), cancellationToken);
+    }
+
+    /// <summary>
+    /// Sends one API request with prebuilt content (multipart uploads, mainly) and returns
+    /// the parsed response.
+    /// </summary>
+    internal async Task<TResponse> SendAsync<TResponse>(HttpMethod method, string pathAndQuery, HttpContent? content, CancellationToken cancellationToken)
+    {
+        var (statusCode, bytes) = await SendCoreWithStatusAsync(method, pathAndQuery, content, cancellationToken).ConfigureAwait(false);
+        var responseBody = Encoding.UTF8.GetString(bytes);
+
+        try
+        {
+            return JsonSerializer.Deserialize<TResponse>(responseBody, VerdocsJson.Options)
+                ?? throw new VerdocsApiException(
+                    statusCode,
+                    responseBody,
+                    "The Verdocs API returned an empty body where a value was required.");
+        }
+        catch (JsonException exception)
+        {
+            throw new VerdocsApiException(
+                statusCode,
+                responseBody,
+                "The Verdocs API response could not be parsed.",
+                exception);
+        }
+    }
+
+    /// <summary>
+    /// Sends one API request and discards the response body. Several delete endpoints answer
+    /// with a bare success string that is not JSON and that nothing consumes.
+    /// </summary>
+    internal async Task SendVoidAsync(HttpMethod method, string pathAndQuery, object? body, CancellationToken cancellationToken)
+    {
+        await SendCoreAsync(method, pathAndQuery, ToJsonContent(body), cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Sends one API request and returns the response body as text. The download-link and
+    /// page-image endpoints answer with a bare URL string, not JSON.
+    /// </summary>
+    internal async Task<string> SendStringAsync(HttpMethod method, string pathAndQuery, CancellationToken cancellationToken)
+    {
+        var bytes = await SendCoreAsync(method, pathAndQuery, null, cancellationToken).ConfigureAwait(false);
+        return Encoding.UTF8.GetString(bytes);
+    }
+
+    /// <summary>
+    /// Sends one API request and returns the raw response bytes, for file and ZIP downloads.
+    /// </summary>
+    internal Task<byte[]> SendBytesAsync(HttpMethod method, string pathAndQuery, CancellationToken cancellationToken)
+    {
+        return SendCoreAsync(method, pathAndQuery, null, cancellationToken);
+    }
+
+    private static JsonContent? ToJsonContent(object? body)
+    {
+        return body is null ? null : JsonContent.Create(body, body.GetType(), mediaType: null, VerdocsJson.Options);
+    }
+
+    private async Task<byte[]> SendCoreAsync(HttpMethod method, string pathAndQuery, HttpContent? content, CancellationToken cancellationToken)
+    {
+        var (_, bytes) = await SendCoreWithStatusAsync(method, pathAndQuery, content, cancellationToken).ConfigureAwait(false);
+        return bytes;
+    }
+
+    /// <summary>
+    /// The one place a request actually goes out: headers, the timeout policy, and error
+    /// mapping all live here. Reads the body as bytes so binary downloads and text/JSON
+    /// responses share the same path; the API speaks UTF-8 for everything textual.
+    /// </summary>
+    private async Task<(HttpStatusCode StatusCode, byte[] Body)> SendCoreWithStatusAsync(HttpMethod method, string pathAndQuery, HttpContent? content, CancellationToken cancellationToken)
     {
         using var request = new HttpRequestMessage(method, new Uri(BaseUrl, pathAndQuery));
         ApplyHeaders(request);
 
-        if (body is not null)
+        if (content is not null)
         {
-            request.Content = JsonContent.Create(body, body.GetType(), mediaType: null, VerdocsJson.Options);
+            request.Content = content;
         }
 
         // The endpoint owns the timeout so behavior is identical for owned and injected
@@ -400,29 +403,14 @@ public sealed class VerdocsEndpoint : IDisposable
         try
         {
             using var response = await _httpClient.SendAsync(request, timeoutSource.Token).ConfigureAwait(false);
-            var responseBody = await response.Content.ReadAsStringAsync(timeoutSource.Token).ConfigureAwait(false);
+            var bytes = await response.Content.ReadAsByteArrayAsync(timeoutSource.Token).ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new VerdocsApiException(response.StatusCode, responseBody);
+                throw new VerdocsApiException(response.StatusCode, Encoding.UTF8.GetString(bytes));
             }
 
-            try
-            {
-                return JsonSerializer.Deserialize<TResponse>(responseBody, VerdocsJson.Options)
-                    ?? throw new VerdocsApiException(
-                        response.StatusCode,
-                        responseBody,
-                        "The Verdocs API returned an empty body where a value was required.");
-            }
-            catch (JsonException exception)
-            {
-                throw new VerdocsApiException(
-                    response.StatusCode,
-                    responseBody,
-                    "The Verdocs API response could not be parsed.",
-                    exception);
-            }
+            return (response.StatusCode, bytes);
         }
         catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
         {
