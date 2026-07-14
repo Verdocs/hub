@@ -24,7 +24,7 @@ public sealed class OperationsTests
         var (endpoint, handler) = CreateEndpoint();
         handler.Enqueue(HttpStatusCode.OK, SamplePayloads.Auth);
 
-        var response = await endpoint.AuthenticateAsync(
+        var response = await endpoint.Auth.AuthenticateAsync(
             new AuthenticateRequest { Username = "test@example.com", Password = "hunter22" },
             TestContext.Current.CancellationToken);
 
@@ -50,16 +50,16 @@ public sealed class OperationsTests
 
         // Usage errors throw from the method, not the task, so no await is needed to observe them.
         Assert.Throws<ArgumentNullException>(
-            () => { _ = endpoint.AuthenticateAsync(null!, TestContext.Current.CancellationToken); });
+            () => { _ = endpoint.Auth.AuthenticateAsync(null!, TestContext.Current.CancellationToken); });
     }
 
     [Fact]
-    public async Task GetMyUserAsync_RequestsUsersMeAndParsesUser()
+    public async Task GetMeAsync_RequestsUsersMeAndParsesUser()
     {
         var (endpoint, handler) = CreateEndpoint();
         handler.Enqueue(HttpStatusCode.OK, SamplePayloads.User);
 
-        var user = await endpoint.GetMyUserAsync(TestContext.Current.CancellationToken);
+        var user = await endpoint.Users.GetMeAsync(TestContext.Current.CancellationToken);
 
         var request = Assert.Single(handler.Requests);
         Assert.Equal(HttpMethod.Get, request.Method);
@@ -72,7 +72,7 @@ public sealed class OperationsTests
     }
 
     [Fact]
-    public async Task GetCurrentProfileAsync_ReturnsTheCurrentEntry()
+    public async Task GetCurrentAsync_ReturnsTheCurrentEntry()
     {
         var (endpoint, handler) = CreateEndpoint();
         var other = SamplePayloads.Profile
@@ -80,7 +80,7 @@ public sealed class OperationsTests
             .Replace("0a9e8b1c-2d3e-4f50-8a9b-0c1d2e3f4a5b", "99999999-2d3e-4f50-8a9b-0c1d2e3f4a5b");
         handler.Enqueue(HttpStatusCode.OK, "[" + other + "," + SamplePayloads.Profile + "]");
 
-        var profile = await endpoint.GetCurrentProfileAsync(TestContext.Current.CancellationToken);
+        var profile = await endpoint.Profiles.GetCurrentAsync(TestContext.Current.CancellationToken);
 
         var request = Assert.Single(handler.Requests);
         Assert.Equal("/v2/profiles", request.Uri!.PathAndQuery);
@@ -91,36 +91,36 @@ public sealed class OperationsTests
     }
 
     [Fact]
-    public async Task GetCurrentProfileAsync_NoCurrentEntry_ReturnsNull()
+    public async Task GetCurrentAsync_NoCurrentEntry_ReturnsNull()
     {
         var (endpoint, handler) = CreateEndpoint();
         var notCurrent = SamplePayloads.Profile.Replace("\"current\": true", "\"current\": false");
         handler.Enqueue(HttpStatusCode.OK, "[" + notCurrent + "]");
 
-        var profile = await endpoint.GetCurrentProfileAsync(TestContext.Current.CancellationToken);
+        var profile = await endpoint.Profiles.GetCurrentAsync(TestContext.Current.CancellationToken);
 
         Assert.Null(profile);
     }
 
     [Fact]
-    public async Task GetTemplatesAsync_NoOptions_RequestsBarePath()
+    public async Task ListAsync_NoOptions_RequestsBarePath()
     {
         var (endpoint, handler) = CreateEndpoint();
         handler.Enqueue(HttpStatusCode.OK, SamplePayloads.TemplateList);
 
-        await endpoint.GetTemplatesAsync(cancellationToken: TestContext.Current.CancellationToken);
+        await endpoint.Templates.ListAsync(cancellationToken: TestContext.Current.CancellationToken);
 
         var request = Assert.Single(handler.Requests);
         Assert.Equal("/v2/templates", request.Uri!.PathAndQuery);
     }
 
     [Fact]
-    public async Task GetTemplatesAsync_AllOptions_BuildsSnakeCaseQuery()
+    public async Task ListAsync_AllOptions_BuildsSnakeCaseQuery()
     {
         var (endpoint, handler) = CreateEndpoint();
         handler.Enqueue(HttpStatusCode.OK, SamplePayloads.TemplateList);
 
-        await endpoint.GetTemplatesAsync(
+        await endpoint.Templates.ListAsync(
             new GetTemplatesOptions
             {
                 Q = "lease agreement",
@@ -142,12 +142,12 @@ public sealed class OperationsTests
     }
 
     [Fact]
-    public async Task GetTemplatesAsync_ParsesTemplateList()
+    public async Task ListAsync_ParsesTemplateList()
     {
         var (endpoint, handler) = CreateEndpoint();
         handler.Enqueue(HttpStatusCode.OK, SamplePayloads.TemplateList);
 
-        var list = await endpoint.GetTemplatesAsync(cancellationToken: TestContext.Current.CancellationToken);
+        var list = await endpoint.Templates.ListAsync(cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.Equal(2, list.Count);
         Assert.Equal(0, list.Page);
@@ -160,12 +160,12 @@ public sealed class OperationsTests
     }
 
     [Fact]
-    public async Task GetTemplateAsync_RequestsTemplateByIdAndParsesRelations()
+    public async Task GetAsync_RequestsTemplateByIdAndParsesRelations()
     {
         var (endpoint, handler) = CreateEndpoint();
         handler.Enqueue(HttpStatusCode.OK, SamplePayloads.TemplateDetail);
 
-        var template = await endpoint.GetTemplateAsync(
+        var template = await endpoint.Templates.GetAsync(
             "0df79afe-76b9-417f-a1b3-d51c7abffb6f",
             TestContext.Current.CancellationToken);
 
@@ -182,12 +182,12 @@ public sealed class OperationsTests
     }
 
     [Fact]
-    public void GetTemplateAsync_EmptyId_ThrowsSynchronously()
+    public void GetAsync_EmptyId_ThrowsSynchronously()
     {
         var (endpoint, _) = CreateEndpoint();
 
         // Usage errors throw from the method, not the task, so no await is needed to observe them.
         Assert.Throws<ArgumentException>(
-            () => { _ = endpoint.GetTemplateAsync("", TestContext.Current.CancellationToken); });
+            () => { _ = endpoint.Templates.GetAsync("", TestContext.Current.CancellationToken); });
     }
 }

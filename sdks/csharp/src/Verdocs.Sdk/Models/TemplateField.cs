@@ -18,7 +18,7 @@ public sealed record TemplateField
     /// <summary>The document the field is placed on.</summary>
     public string DocumentId { get; init; } = null!;
 
-    /// <summary>The field type, for example "signature", "textbox", or "checkbox".</summary>
+    /// <summary>The field type; see <see cref="FieldType"/> for known values.</summary>
     public string Type { get; init; } = null!;
 
     /// <summary>True when the participant must fill the field before submitting.</summary>
@@ -28,7 +28,7 @@ public sealed record TemplateField
     public bool? Readonly { get; init; }
 
     /// <summary>Legacy per-field settings blob. Deprecated in favor of the top-level properties.</summary>
-    public JsonElement? Settings { get; init; }
+    public TemplateFieldSetting? Settings { get; init; }
 
     /// <summary>Page number the field is placed on.</summary>
     public int Page { get; init; }
@@ -66,7 +66,15 @@ public sealed record TemplateField
     /// <summary>For dropdowns, the selectable options.</summary>
     public IReadOnlyList<DropdownOption>? Options { get; init; }
 
-    /// <summary>Wire fields this seed model does not cover yet, preserved so responses round-trip losslessly.</summary>
+    /// <summary>Prefilled value carried into envelopes created from the template.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Value { get; init; }
+
+    /// <summary>True when the current value passes the field's validator.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public bool? IsValid { get; init; }
+
+    /// <summary>Wire fields the model does not declare, preserved so responses round-trip losslessly.</summary>
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? AdditionalData { get; init; }
 }

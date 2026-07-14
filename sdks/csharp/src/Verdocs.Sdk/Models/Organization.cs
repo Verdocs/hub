@@ -70,7 +70,7 @@ public sealed record Organization
     public JsonElement? Data { get; init; }
 
     /// <summary>Org-level document-pipeline automation flags. All flags are opt-in and default to false.</summary>
-    public JsonElement? PipelineSettings { get; init; }
+    public PipelineSettings? PipelineSettings { get; init; }
 
     /// <summary>The default brand applied to the organization's envelopes, if any.</summary>
     public string? DefaultBrandId { get; init; }
@@ -90,7 +90,71 @@ public sealed record Organization
     /// <summary>Last-update date and time.</summary>
     public DateTimeOffset UpdatedAt { get; init; }
 
-    /// <summary>Wire fields this seed model does not cover yet, preserved so responses round-trip losslessly.</summary>
+    /// <summary>
+    /// The API key created automatically when a child organization is created, present only on
+    /// that response. Deprecated in the js-sdk: API v3 moves it to the top level.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public OrganizationApiKey? ApiKey { get; init; }
+
+    /// <summary>The organization's API keys, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<ApiKey>? ApiKeys { get; init; }
+
+    /// <summary>Branding profiles, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<Brand>? Brands { get; init; }
+
+    /// <summary>Child organizations, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<Organization>? Children { get; init; }
+
+    /// <summary>The parent organization, when the API includes it.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Organization? Parent { get; init; }
+
+    /// <summary>Permission groups, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<Group>? Groups { get; init; }
+
+    /// <summary>Registered OAuth2 applications, when the API includes them.</summary>
+    [JsonPropertyName("oauth2_apps")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<OAuth2App>? OAuth2Apps { get; init; }
+
+    /// <summary>Feature entitlements, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<Entitlement>? Entitlements { get; init; }
+
+    /// <summary>Pending membership invitations, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<OrganizationInvitation>? OrganizationInvitations { get; init; }
+
+    /// <summary>Member profiles, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<Profile>? Profiles { get; init; }
+
+    /// <summary>Webhook subscriptions, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<Webhook>? Webhooks { get; init; }
+
+    /// <summary>Envelopes, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<Envelope>? Envelopes { get; init; }
+
+    /// <summary>Templates, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<Template>? Templates { get; init; }
+
+    /// <summary>Group memberships, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<GroupProfile>? GroupProfiles { get; init; }
+
+    /// <summary>Queued or attempted webhook deliveries, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<PendingWebhook>? PendingWebhooks { get; init; }
+
+    /// <summary>Wire fields the model does not declare, preserved so responses round-trip losslessly.</summary>
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? AdditionalData { get; init; }
 }

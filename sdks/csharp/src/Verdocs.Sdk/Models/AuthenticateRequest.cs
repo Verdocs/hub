@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Verdocs.Models;
 
 /// <summary>
-/// Credentials for <see cref="VerdocsEndpoint.AuthenticateAsync"/>. The seed supports the
+/// Credentials for <see cref="Resources.Auth.AuthenticateAsync"/>. The seed supports the
 /// password grant; other grant types (client_credentials, refresh_token, authorization_code)
 /// arrive with type generation.
 /// </summary>

@@ -54,7 +54,10 @@ function AdoptLauncher(args: AdoptSignatureDialogProps) {
 }
 
 export const Signature: Story = {
-  args: { fullName: 'Paige Turner' },
+  args: {
+    fullName: "Test",
+    variant: "initials"
+  },
   render: args => <AdoptLauncher {...args} />,
   parameters: {
     docs: {
