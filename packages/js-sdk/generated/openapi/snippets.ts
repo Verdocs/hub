@@ -1,5 +1,5 @@
 import {Preamble} from './Preamble';
-import {capitalize} from '../src';
+import {capitalize} from '../../src';
 
 const BASE_URL = Preamble.servers[0].url;
 

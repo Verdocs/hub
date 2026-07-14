@@ -19,7 +19,7 @@ const withoutStylistic = config.map(block =>
 export default [
   ...withoutStylistic,
   {
-    ignores: ['docs/**', 'reports/**', 'rollup.config*', 'openapi/**', '**/*.js', '**/*.cjs'],
+    ignores: ['docs/**', 'reports/**', 'rollup.config*', 'generated/**', '**/*.js', '**/*.cjs'],
   },
   {
     files: ['src/**/*.{ts,tsx}'],
