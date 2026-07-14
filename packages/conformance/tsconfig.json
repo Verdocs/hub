@@ -1,5 +1,5 @@
 {
-  "extends": "@verdocs/typescript-config/vite.json",
+  "extends": "@verdocs/typescript-config/base.json",
   "compilerOptions": {
     "types": ["node", "vitest/globals"]
   },

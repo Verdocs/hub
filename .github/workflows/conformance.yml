@@ -1,0 +1,20 @@
+name: Conformance
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    strayegy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: python
+            # setup-python, pip install -e ., pytest -m conformance
+          - language: csharp
+            # setup-dotnet, VERDOCS_CONFORMANCE=1 dotnet test --filter ...
+        # future:
+        # - language: go
+        # - language: java
