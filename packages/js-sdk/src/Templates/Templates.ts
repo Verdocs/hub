@@ -58,6 +58,10 @@ export interface IGetTemplatesParams {
  * @apiSuccess integer(format: int32) rows The number of rows returned in this response page
  * @apiSuccess integer(format: int32) page The page number of this response
  * @apiSuccess array(items: ITemplate) templates List of templates found
+ *
+ * @sdkOperation template.getTemplates
+ * @sdkGroup Template
+ * @sdkPage Endpoints
  */
 export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesParams) =>
   endpoint.api //
@@ -76,6 +80,10 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
  * @group Templates
  * @api GET /v2/templates/:template_id Get a template. Note that the caller must have at least View access to the template.
  * @apiSuccess ITemplate . The requested template
+ *
+ * @sdkOperation template.getTemplate
+ * @sdkGroup Template
+ * @sdkPage Endpoints
  */
 export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) => {
   return endpoint.api //
@@ -212,6 +220,10 @@ const ALLOWED_CREATE_FIELDS: (keyof ITemplateCreateParams)[] = [
  * @apiBody array(items:IRole) roles? Optional list of roles to create. Note that if roles are not included in the request, fields will be ignored.
  * @apiBody array(fields:ITemplateField) fields? Optional list of fields to create. Note that if fields that do not match a role will be ignored.
  * @apiSuccess ITemplate . The newly-created template
+ *
+ * @sdkOperation template.createTemplate
+ * @sdkGroup Template
+ * @sdkPage Endpoints
  */
 export const createTemplate = (
   endpoint: VerdocsEndpoint,
@@ -260,6 +272,10 @@ export const createTemplate = (
  * @apiBody string(enum:'duplicate') action Action to perform
  * @apiBody string name? If duplicating the template, a name for the new copy
  * @apiSuccess ITemplate . The newly-copied template
+ *
+ * @sdkOperation template.duplicateTemplate
+ * @sdkGroup Template
+ * @sdkPage Endpoints
  */
 export const duplicateTemplate = (endpoint: VerdocsEndpoint, templateId: string, name: string) =>
   endpoint.api //
@@ -297,6 +313,10 @@ export interface ITemplateCreateFromSharepointParams {
  * @apiBody string itemId Name for the new template
  * @apiBody string oboToken On-Behalf-Of token for calls to Sharepoint. Should be generated as a short-expiration token with at least Read privileges to the siteId/itemId. This token will be discarded after being used.
  * @apiSuccess ITemplate . The newly-created template
+ *
+ * @sdkOperation template.createTemplateFromSharepoint
+ * @sdkGroup Template
+ * @sdkPage Endpoints
  */
 export const createTemplateFromSharepoint = (endpoint: VerdocsEndpoint, params: ITemplateCreateFromSharepointParams) => {
   const options = {
@@ -327,6 +347,10 @@ export const createTemplateFromSharepoint = (endpoint: VerdocsEndpoint, params: 
  * @apiBody number followup_reminders? Delay in ms before the subsequent reminders are sent (min: 12hrs). Set to 0 or null to disable.
  * @apiBody number max_reminder_days? Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14.
  * @apiSuccess ITemplate . The updated template
+ *
+ * @sdkOperation template.updateTemplate
+ * @sdkGroup Template
+ * @sdkPage Endpoints
  */
 export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, params: Partial<ITemplateCreateParams>) =>
   endpoint.api //
@@ -345,6 +369,10 @@ export const updateTemplate = (endpoint: VerdocsEndpoint, templateId: string, pa
  * @group Templates
  * @api DELETE /v2/templates/:template_id Delete a template
  * @apiSuccess string . Success
+ *
+ * @sdkOperation template.deleteTemplate
+ * @sdkGroup Template
+ * @sdkPage Endpoints
  */
 export const deleteTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
@@ -363,6 +391,10 @@ export const deleteTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
  * @group Templates
  * @api POST /v2/templates/:template_id/star Star or unstar a template (toggle state)
  * @apiSuccess ITemplate . Success
+ *
+ * @sdkOperation template.toggleTemplateStar
+ * @sdkGroup Template
+ * @sdkPage Endpoints
  */
 export const toggleTemplateStar = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //

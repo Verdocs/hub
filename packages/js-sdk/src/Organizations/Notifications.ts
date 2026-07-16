@@ -23,6 +23,10 @@ import {INotificationTemplate} from '../Models';
  * @group Notifications
  * @api GET /v2/notifications/templates Get notification templates
  * @apiSuccess array(items: INotificationTemplate) . A list of notification templates for the caller's organization.
+ *
+ * @sdkOperation notification.getNotificationTemplates
+ * @sdkGroup Notification
+ * @sdkPage Endpoints
  */
 export const getNotificationTemplates = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -42,6 +46,10 @@ export const getNotificationTemplates = (endpoint: VerdocsEndpoint) =>
  * @api GET /v2/notifications/templates/:id Get notification template
  * @apiParam string(format:uuid) id The notification template ID
  * @apiSuccess INotificationTemplate . The requested notification template.
+ *
+ * @sdkOperation notification.getNotificationTemplate
+ * @sdkGroup Notification
+ * @sdkPage Endpoints
  */
 export const getNotificationTemplate = (endpoint: VerdocsEndpoint, id: string) =>
   endpoint.api //
@@ -70,6 +78,10 @@ export const getNotificationTemplate = (endpoint: VerdocsEndpoint, id: string) =
  * @apiBody string html_template? The HTML content for the notification. At least one of html_template or text_template is required.
  * @apiBody string text_template? The plain-text content for the notification. At least one of html_template or text_template is required.
  * @apiSuccess INotificationTemplate . The newly-created notification template.
+ *
+ * @sdkOperation notification.createNotificationTemplate
+ * @sdkGroup Notification
+ * @sdkPage Endpoints
  */
 export const createNotificationTemplate = (endpoint: VerdocsEndpoint, params: ICreateNotificationTemplateRequest) =>
   endpoint.api //
@@ -93,6 +105,10 @@ export const createNotificationTemplate = (endpoint: VerdocsEndpoint, params: IC
  * @apiBody string html_template? The HTML content for the notification. At least one of html_template or text_template is required.
  * @apiBody string text_template? The plain-text content for the notification. At least one of html_template or text_template is required.
  * @apiSuccess INotificationTemplate . The updated notification template.
+ *
+ * @sdkOperation notification.updateNotificationTemplate
+ * @sdkGroup Notification
+ * @sdkPage Endpoints
  */
 export const updateNotificationTemplate = (endpoint: VerdocsEndpoint, id: string, params: IUpdateNotificationTemplateRequest) =>
   endpoint.api //
@@ -112,6 +128,10 @@ export const updateNotificationTemplate = (endpoint: VerdocsEndpoint, id: string
  * @api DELETE /v2/notifications/templates/:id Delete notification template
  * @apiParam string(format:uuid) id The notification template ID
  * @apiSuccess string . Success.
+ *
+ * @sdkOperation notification.deleteNotificationTemplate
+ * @sdkGroup Notification
+ * @sdkPage Endpoints
  */
 export const deleteNotificationTemplate = (endpoint: VerdocsEndpoint, id: string) =>
   endpoint.api //
