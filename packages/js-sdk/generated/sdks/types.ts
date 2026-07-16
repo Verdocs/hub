@@ -1,6 +1,8 @@
-type SdkSymbolKind = 'class' | 'interface' | 'method' | 'property' | 'enum' | 'function';
+export type SdkSymbolKind = 'class' | 'interface' | 'method' | 'property' | 'enum' | 'function';
 
-interface SdkParam {
+export type SdkPage = 'Getting Started' | 'Endpoints' | 'Helpers';
+
+export interface SdkParam {
   name: string;
   type: string;
   description: string;
@@ -8,9 +10,11 @@ interface SdkParam {
   default: string | null;
 }
 
-interface SdkSymbol {
+export interface SdkSymbol {
+  sdkOperation: string;
   kind: SdkSymbolKind;
   name: string;
+  page: SdkPage;
   signature: string;
   summary: string;
   params: SdkParam[];
@@ -21,14 +25,14 @@ interface SdkSymbol {
   since?: string;
 }
 
-interface SdkGroup {
+export interface SdkGroup {
   id: string;
   name: string;
   summary: string;
   symbols: Record<string, SdkSymbol>;
 }
 
-interface Sdk {
+export interface Sdk {
   language: string;
   package: string;
   version: string;

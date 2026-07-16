@@ -40,6 +40,7 @@
     "typecheck": "tsc --noEmit",
     "docs": "typedoc && npm run generate-openapi && cp openapi.json ../../../platform/apps/dev-docs/app/openapi.json",
     "generate-openapi": "npx tsx generated/openapi/generate-openapi.ts",
+    "generate-sdks": "npx tsx generated/sdks/generate-sdks.ts",
     "edit-openapi": "docker run -p 8081:80 -v $(pwd):/sdk -v $(pwd):/sdk swaggerapi/swagger-editor:next-v5",
     "view-openapi": "docker run -p 8081:80 -v $(pwd):/sdk swaggerapi/swagger-ui",
     "push-beta": "npm run build && npm publish --tag beta && npm run docs",

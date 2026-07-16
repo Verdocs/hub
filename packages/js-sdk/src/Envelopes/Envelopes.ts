@@ -1,8 +1,8 @@
-import {IEnvelope, IEnvelopeDocument, IEnvelopeField, IEnvelopeFieldSettings} from '../Models';
-import {retryOnceOnTimeout} from '../Utils/Retry';
-import {TEnvelopeUpdateResult} from '../BaseTypes';
-import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {TCreateEnvelopeRequest} from './Types';
+import { IEnvelope, IEnvelopeDocument, IEnvelopeField, IEnvelopeFieldSettings } from '../Models';
+import { retryOnceOnTimeout } from '../Utils/Retry';
+import { TEnvelopeUpdateResult } from '../BaseTypes';
+import { VerdocsEndpoint } from '../VerdocsEndpoint';
+import { TCreateEnvelopeRequest } from './Types';
 
 // TODO: We need to re-review all of the models and input types/docs to be sure they match the latest
 //  API work.
@@ -43,6 +43,9 @@ import {TCreateEnvelopeRequest} from './Types';
  * ```
  *
  * @group Envelopes
+ * @sdkOperation envelope.createEnvelope
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  * @api POST /v2/envelopes Create Envelope
  * @apiBody string(format:uuid) template_id If using a template, the ID of the template to copy
  * @apiBody array(items:ICreateEnvelopeRecipientDirectly) recipients A list of recipients to include in the workflow. Must specify one recipient to match each template Role.
@@ -69,6 +72,9 @@ export const createEnvelope = async (endpoint: VerdocsEndpoint, request: TCreate
  * this will return only the **metadata** the caller is allowed to view.
  *
  * @group Envelopes
+ * @sdkOperation envelope.getEnvelope
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  * @api GET /v2/envelopes/:id Get envelope details
  * @apiParam string(format: 'uuid') id The ID of the envelope to retrieve.
  * @apiSuccess IEnvelope . The detailed metadata for the envelope requested
@@ -86,6 +92,10 @@ export const getEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string)
  * @api GET /v2/envelope-documents/:id Get envelope document
  * @apiParam string(format: 'uuid') id The ID of the document to retrieve.
  * @apiSuccess IEnvelopeDocument . The detailed metadata for the document requested
+ * 
+ * @sdkOperation envelope.getEnvelopeDocument
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  */
 export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, documentId: string) =>
   endpoint.api //
@@ -94,11 +104,15 @@ export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, documentId:
 
 /**
  * Download a document directly.
+ * 
+ * @sdkOperation envelope.downloadEnvelopeDocument
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  */
 export const downloadEnvelopeDocument = async (endpoint: VerdocsEndpoint, documentId: string) =>
   retryOnceOnTimeout(() =>
     endpoint.api //
-      .get(`/v2/envelope-documents/${documentId}?type=file`, {responseType: 'blob'})
+      .get(`/v2/envelope-documents/${documentId}?type=file`, { responseType: 'blob' })
       .then((r) => r.data),
   );
 
@@ -114,6 +128,10 @@ export const downloadEnvelopeDocument = async (endpoint: VerdocsEndpoint, docume
  * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
  * @apiQuery string(enum:'file'|'download'|'preview') type? Download the file directly, generate a download link, or generate a preview link.
  * @apiSuccess string . The generated link.
+ * 
+ * @sdkOperation envelope.getEnvelopeDocumentDownloadLink
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  */
 export const getEnvelopeDocumentDownloadLink = async (endpoint: VerdocsEndpoint, documentId: string) =>
   retryOnceOnTimeout(() =>
@@ -132,6 +150,10 @@ export const getEnvelopeDocumentDownloadLink = async (endpoint: VerdocsEndpoint,
  * @apiQuery string(enum:'file'|'download'|'preview') type? Download the file directly, generate a download link, or generate a preview link.
  * @apiQuery boolean(default: false) combined?
  * @apiSuccess string . The generated link.
+ * 
+ * @sdkOperation envelope.getCombinedEnvelopeDocumentDownloadLink
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  */
 export const getCombinedEnvelopeDocumentDownloadLink = async (endpoint: VerdocsEndpoint, documentId: string) =>
   retryOnceOnTimeout(() =>
@@ -143,6 +165,10 @@ export const getCombinedEnvelopeDocumentDownloadLink = async (endpoint: VerdocsE
 /**
  * Get a pre-signed preview link for an Envelope Document. This link expires quickly, so it should
  * be accessed immediately and never shared. Content-Disposition will be set to "inline".
+ * 
+ * @sdkOperation envelope.getEnvelopeDocumentPreviewLink
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  */
 export const getEnvelopeDocumentPreviewLink = async (endpoint: VerdocsEndpoint, documentId: string) =>
   retryOnceOnTimeout(() =>
@@ -159,10 +185,14 @@ export const getEnvelopeDocumentPreviewLink = async (endpoint: VerdocsEndpoint, 
  * @apiParam string(format: 'uuid') id The ID of the envelope to cancel.
  * @apiBody string(enum: 'cancel') action The action to perform (currently only "cancel" is supported).
  * @apiSuccess IEnvelope . The updated envelope.
+ * 
+ * @sdkOperation envelope.cancelEnvelope
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  */
 export const cancelEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string) =>
   endpoint.api //
-    .put<TEnvelopeUpdateResult>(`/v2/envelopes/${envelopeId}`, {action: 'cancel'})
+    .put<TEnvelopeUpdateResult>(`/v2/envelopes/${envelopeId}`, { action: 'cancel' })
     .then((r) => r.data);
 
 /**
@@ -171,10 +201,14 @@ export const cancelEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: stri
  * request.
  *
  * @deprecated Use getDocumentPreviewLink/getDocumentDownloadLink/downloadDocument instead.
+ *
+ * @sdkOperation envelope.getEnvelopeFile
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  */
 export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, documentId: string) =>
   endpoint.api //
-    .get(`/v2/envelope-documents/${documentId}?type=file`, {responseType: 'blob'})
+    .get(`/v2/envelope-documents/${documentId}?type=file`, { responseType: 'blob' })
     .then((r) => r.data);
 
 /**
@@ -194,6 +228,10 @@ export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, documentId: str
  * @apiBody boolean no_contact? If set to true, no email or SMS messages will be sent to any recipients.
  * @apiBody object data? Update the developer-supplied metadata attached to the envelope.
  * @apiSuccess IEnvelope . A copy of the newly-updated envelope.
+ *
+ * @sdkOperation envelope.updateEnvelope
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  */
 export const updateEnvelope = async (
   endpoint: VerdocsEndpoint,
@@ -226,6 +264,10 @@ export const updateEnvelope = async (
  * @apiParam string field_name The name of the field to update. Be sure to URL-encode the value.
  * @apiBody string value The value to set. For signature/initial fields, the UUID of the signature/initial block. For attachment fields, a file uploaded in a FORM-POST field named "document". For checkbox/radio buttons, a boolean. For all other fields, a string.
  * @apiSuccess IEnvelopeField . A copy of the newly-updated field.
+ *
+ * @sdkOperation envelope.updateEnvelopeField
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  */
 export const updateEnvelopeField = async (
   endpoint: VerdocsEndpoint,
@@ -244,6 +286,10 @@ export const updateEnvelopeField = async (
 
 /**
  * Upload an attachment to an attachment field.
+ *
+ * @sdkOperation envelope.uploadEnvelopeFieldAttachment
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  */
 export const uploadEnvelopeFieldAttachment = async (
   endpoint: VerdocsEndpoint,
@@ -273,6 +319,10 @@ export const uploadEnvelopeFieldAttachment = async (
  * Delete an attachment. Note that this is not a DELETE endpoint because the field itself is not
  * being deleted. Instead, it is a similar operation to uploading a new attachment, but the
  * omission of the attachment signals the server to delete the current entry.
+ *
+ * @sdkOperation envelope.deleteEnvelopeFieldAttachment
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  */
 export const deleteEnvelopeFieldAttachment = async (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, fieldName: string) => {
   const formData = new FormData();
@@ -294,13 +344,17 @@ export const deleteEnvelopeFieldAttachment = async (endpoint: VerdocsEndpoint, e
  * @apiParam string(enum: 'original'|'filled') variant The variant of the document to retrieve.
  * @apiParam integer page The page number to retrieve
  * @apiSuccess string . The page display URI. Note that this is a signed URL with a short expiration. It should be used immediately and never databased or cached.
+ *
+ * @sdkOperation envelope.getEnvelopeDocumentPageDisplayUri
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  */
 export const getEnvelopeDocumentPageDisplayUri = async (
   endpoint: VerdocsEndpoint,
   documentId: string,
   page: number,
   variant: 'original' | 'filled' | 'certificate' = 'original',
-) => endpoint.api.get<string>(`/v2/envelope-documents/page-image/${documentId}/${variant}/${page}`, {timeout: 20000}).then((r) => r.data);
+) => endpoint.api.get<string>(`/v2/envelope-documents/page-image/${documentId}/${variant}/${page}`, { timeout: 20000 }).then((r) => r.data);
 
 export interface ITimeRange {
   start: string;
@@ -347,23 +401,35 @@ export interface IListEnvelopesParams {
  * @apiSuccess integer(format: int32) rows The number of rows returned in this response page
  * @apiSuccess integer(format: int32) page The page number of this response
  * @apiSuccess array(items: IEnvelope) envelopes List of envelopes found
+ *
+ * @sdkOperation envelope.getEnvelopes
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  */
 export const getEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesParams) =>
   endpoint.api //
-    .get<{count: number; rows: number; page: number; envelopes: IEnvelope[]}>('/v2/envelopes', {params})
+    .get<{ count: number; rows: number; page: number; envelopes: IEnvelope[] }>('/v2/envelopes', { params })
     .then((r) => r.data);
 
 /**
  * Generate a ZIP file containing all data for the specified envelopes. The caller must be the
  * owner of each envelope. The returned ZIP file contains a folder for each envelope.
+ *
+ * @sdkOperation envelope.getEnvelopesZip
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
  */
 export const getEnvelopesZip = (endpoint: VerdocsEndpoint, envelope_ids: string[]) =>
   endpoint.api //
-    .get(`/v2/envelopes/zip/${envelope_ids.join(',')}`, {responseType: 'blob', timeout: 120000});
+    .get(`/v2/envelopes/zip/${envelope_ids.join(',')}`, { responseType: 'blob', timeout: 120000 });
 
 /**
  * Utility function to sort fields by page, then by Y coordinate, then by X coordinate.
  * NOTE: This function mutates the input array.
+ *
+ * @sdkOperation envelope.sortFields
+ * @sdkGroup Envelope
+ * @sdkPage Helpers
  */
 export function sortFields(
   fields: {
@@ -402,8 +468,12 @@ export function sortFields(
 /**
  * Utility function to sort documents by their order, falling back to created_at.
  * NOTE: This function mutates the input array.
+ *
+ * @sdkOperation envelope.sortDocuments
+ * @sdkGroup Envelope
+ * @sdkPage Helpers
  */
-export function sortDocuments(documents: {order: number; created_at: Date | string}[]) {
+export function sortDocuments(documents: { order: number; created_at: Date | string }[]) {
   // The Date conversion is unnecessary 90% of the time but is safer, and this isn't something
   // we do much of so in reality it has almmost no impact.
   return documents.sort((a, b) => a.order - b.order || new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
@@ -412,7 +482,11 @@ export function sortDocuments(documents: {order: number; created_at: Date | stri
 /**
  * Utility function to sort documents by their order, falling back to created_at.
  * NOTE: This function mutates the input array.
+ *
+ * @sdkOperation envelope.sortRecipients
+ * @sdkGroup Envelope
+ * @sdkPage Helpers
  */
-export function sortRecipients(recipients?: {sequence: number; order: number}[]) {
+export function sortRecipients(recipients?: { sequence: number; order: number }[]) {
   return recipients?.sort((a, b) => a.sequence - b.sequence || a.order - b.order);
 }
