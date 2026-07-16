@@ -71,6 +71,10 @@ export interface IOAuth2AuthorizeParams {
  * @apiBody string(format: 'uri') redirect_uri? If grant_type is authorization_code, must match the redirect_uri used in the authorize request.
  * @apiBody string scope? Optional scope to limit the auth token to. Do not specify this unless you are instructed to by a Verdocs Support rep.
  * @apiSuccess IAuthenticateResponse . Authentication tokens and expiration details
+ *
+ * @sdkOperation auth.authenticate
+ * @sdkGroup Auth
+ * @sdkPage Endpoints
  */
 export const authenticate = (endpoint: VerdocsEndpoint, params: TAuthenticationRequest) =>
   endpoint.api //
@@ -102,6 +106,10 @@ export const authenticate = (endpoint: VerdocsEndpoint, params: TAuthenticationR
  * @apiQuery string(enum: 'code') response_type Must be 'code' for authorization code flow.
  * @apiQuery string state? An opaque value used to prevent CSRF attacks. Returned unchanged in the redirect.
  * @apiQuery string scope? Optional scope to request.
+ *
+ * @sdkOperation auth.getOAuth2AuthorizeUrl
+ * @sdkGroup Auth
+ * @sdkPage Endpoints
  */
 export const getOAuth2AuthorizeUrl = (endpoint: VerdocsEndpoint, params: IOAuth2AuthorizeParams): string => {
   const baseUrl = endpoint.getBaseURL?.() || 'https://api.verdocs.com';
@@ -123,6 +131,10 @@ export const getOAuth2AuthorizeUrl = (endpoint: VerdocsEndpoint, params: IOAuth2
  * const {accessToken} = await Auth.refreshTokens();
  * VerdocsEndpoint.setAuthToken(accessToken);
  * ```
+ *
+ * @sdkOperation auth.refreshToken
+ * @sdkGroup Auth
+ * @sdkPage Endpoints
  */
 export const refreshToken = (endpoint: VerdocsEndpoint, refreshToken: string) =>
   authenticate(endpoint, {grant_type: 'refresh_token', refresh_token: refreshToken});
@@ -144,6 +156,10 @@ export const refreshToken = (endpoint: VerdocsEndpoint, refreshToken: string) =>
  * @apiBody string old_password Current password for the caller
  * @apiBody string new_password New password to set for the caller. Must meet strength requirements.
  * @apiSuccess string . Success
+ *
+ * @sdkOperation auth.changePassword
+ * @sdkGroup Auth
+ * @sdkPage Endpoints
  */
 export const changePassword = (endpoint: VerdocsEndpoint, params: IChangePasswordRequest) =>
   endpoint.api //
@@ -175,6 +191,10 @@ export const changePassword = (endpoint: VerdocsEndpoint, params: IChangePasswor
  * @apiBody string code? To initiate a reset request, omit this field. To complete it, provide the emailed code received by the user.
  * @apiBody string new_password? To initiate a reset request, omit this field. To complete it, provide the new password the user wishes to use.
  * @apiSuccess string . Success
+ *
+ * @sdkOperation auth.resetPassword
+ * @sdkGroup Auth
+ * @sdkPage Endpoints
  */
 export const resetPassword = (endpoint: VerdocsEndpoint, params: {email: string; code?: string; new_password?: string}) =>
   endpoint.api //
@@ -195,6 +215,10 @@ export const resetPassword = (endpoint: VerdocsEndpoint, params: {email: string;
  * @group Authentication
  * @api POST /v2/users/verify Resend an email verification request for a "partially" authenticated user (authenticated, but not yet verified)
  * @apiSuccess string . Success
+ *
+ * @sdkOperation auth.resendVerification
+ * @sdkGroup Auth
+ * @sdkPage Endpoints
  */
 export const resendVerification = (endpoint: VerdocsEndpoint, accessToken?: string) =>
   endpoint.api //
@@ -214,6 +238,10 @@ export const resendVerification = (endpoint: VerdocsEndpoint, accessToken?: stri
  * @group Authentication
  * @api POST /v2/users/verify Resend the email verification request if both the email and token are known. Used if the token is valid but has expired.
  * @apiSuccess IAuthenticateResponse . Updated authentication details
+ *
+ * @sdkOperation auth.verifyEmail
+ * @sdkGroup Auth
+ * @sdkPage Endpoints
  */
 export const verifyEmail = (endpoint: VerdocsEndpoint, params: IVerifyEmailRequest) =>
   endpoint.api //
@@ -226,6 +254,10 @@ export const verifyEmail = (endpoint: VerdocsEndpoint, params: IVerifyEmailReque
  * @group Authentication
  * @api GET /v2/users/me Get the caller's user record.
  * @apiSuccess IUser . User record
+ *
+ * @sdkOperation auth.getMyUser
+ * @sdkGroup Auth
+ * @sdkPage Endpoints
  */
 export const getMyUser = (endpoint: VerdocsEndpoint) =>
   endpoint.api //

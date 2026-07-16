@@ -2,6 +2,10 @@ import type {TRole} from '../Sessions';
 
 /**
  * Given a `rgba(r,g,b,a)` string value, returns the hex equivalent, dropping the alpha channel.
+ *
+ * @sdkOperation color.getRGB
+ * @sdkGroup Color
+ * @sdkPage Helpers
  */
 export function getRGB(rgba: string) {
   const rgbNumbers = rgba.replace('rgba(', '').replace(')', '').split(',');
@@ -31,6 +35,10 @@ function rgbToHex(rgb: number) {
 
 /**
  * Given a signer role index, return the color code for that signer.
+ *
+ * @sdkOperation color.getRGBA
+ * @sdkGroup Color
+ * @sdkPage Helpers
  */
 export function getRGBA(roleIndex: number) {
   switch (roleIndex % 10) {
@@ -62,6 +70,10 @@ export function getRGBA(roleIndex: number) {
 /**
  * Given a role name, return a color code for it. This works by computing a hash code so the specific color returned
  * is not specified explicitly, but will be the same for every call with the same input value.
+ *
+ * @sdkOperation color.nameToRGBA
+ * @sdkGroup Color
+ * @sdkPage Helpers
  */
 export function nameToRGBA(str: string) {
   if (str) {
@@ -90,6 +102,10 @@ export function nameToRGBA(str: string) {
 
 /**
  * Helper function to obtain a color code given a role name given various possible inputs.
+ *
+ * @sdkOperation color.getRoleColor
+ * @sdkGroup Color
+ * @sdkPage Helpers
  */
 export function getRoleColor(name: string, roles: TRole[], index?: number) {
   if (index) {

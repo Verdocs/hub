@@ -1,11 +1,19 @@
 /**
  * Capitalize the first letter of a string.
+ *
+ * @sdkOperation string.capitalize
+ * @sdkGroup String
+ * @sdkPage Helpers
  */
 export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
 /**
  * Convert a phone-number-like string to E164 format.
  * @see https://46elks.com/kb/e164
+ *
+ * @sdkOperation string.convertToE164
+ * @sdkGroup String
+ * @sdkPage Helpers
  */
 export const convertToE164 = (input: string) => {
   // "(212) 555-1212" => +12125551212
@@ -34,6 +42,11 @@ export const convertToE164 = (input: string) => {
 
 // Generate a random string of a given length. This is NOT cryptographically strong. It is meant for light-duty
 // uses such as assigning IDs to DOM elements.
+/**
+ * @sdkOperation string.randomString
+ * @sdkGroup String
+ * @sdkPage Helpers
+ */
 export const randomString = (length: number) =>
   Math.random()
     .toString(36)

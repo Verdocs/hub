@@ -1,6 +1,11 @@
 import {TEntitlement} from '../BaseTypes';
 import {IEntitlement} from '../Models';
 
+/**
+ * @sdkOperation entitlement.collapseEntitlements
+ * @sdkGroup Entitlement
+ * @sdkPage Helpers
+ */
 export const collapseEntitlements = (entitlements: IEntitlement[]) => {
   const now = new Date();
   const activeEntitlements: Partial<Record<TEntitlement, IEntitlement>> = {};
