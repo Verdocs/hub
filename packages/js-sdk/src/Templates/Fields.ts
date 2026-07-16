@@ -28,6 +28,10 @@ import {ITemplateField} from '../Models';
  * @apiBody array(items:IDropdownOption) options? For dropdown fields, the options to display
  * @apiBody string value? Optional default value to set on the field
  * @apiSuccess ITemplateField . Template field
+ *
+ * @sdkOperation field.createField
+ * @sdkGroup Field
+ * @sdkPage Endpoints
  */
 export const createField = (endpoint: VerdocsEndpoint, templateId: string, params: ITemplateField) =>
   endpoint.api //
@@ -61,6 +65,10 @@ export const createField = (endpoint: VerdocsEndpoint, templateId: string, param
  * @apiBody array(items:IDropdownOption) options? For dropdown fields, the options to display
  * @apiBody string value? Optional default value to set on the field
  * @apiSuccess ITemplateField . Updated template field
+ *
+ * @sdkOperation field.updateField
+ * @sdkGroup Field
+ * @sdkPage Endpoints
  */
 export const updateField = (endpoint: VerdocsEndpoint, templateId: string, name: string, params: Partial<ITemplateField>) =>
   endpoint.api //
@@ -79,6 +87,10 @@ export const updateField = (endpoint: VerdocsEndpoint, templateId: string, name:
  * @group Fields
  * @api DELETE /v2/fields/:template_id/:field_name Delete a field
  * @apiSuccess string . Success
+ *
+ * @sdkOperation field.deleteField
+ * @sdkGroup Field
+ * @sdkPage Endpoints
  */
 export const deleteField = (endpoint: VerdocsEndpoint, templateId: string, name: string) =>
   endpoint.api //

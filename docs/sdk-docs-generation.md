@@ -1,99 +1,218 @@
 # SDK docs generation
 
-This is a plan for generating reference documentation for the backend language SDKs (`sdks/csharp`, `sdks/python`, and whatever we add next) and publishing it into the Fumadocs dev-docs site, the same way we already generate the REST reference from `openapi.json`. It is a design doc, not shipped code. Nothing here is built yet.
+This is the plan for generating reference documentation for our backend language SDKs (`packages/js-sdk`, `sdks/python`, `sdks/csharp`, and whatever we add next) and publishing it into the Fumadocs dev-docs site. It supersedes the earlier per-language-tree design. It is a design doc, not shipped code. Nothing here is built yet.
 
-Scope: the API-client SDKs only. That means `sdks/*` and `packages/js-sdk`. The frontend UI SDKs (`react-sdk`, `angular-sdk`, `vue-sdk`, `wc-sdk`, `web-sdk`) are out of scope; their docs are component and Storybook driven and follow a different track. The REST route reference is already covered by the OpenAPI pipeline, so it is out of scope too.
+Scope: the API-client SDKs only. That means `packages/js-sdk` and `sdks/*`. The frontend UI SDKs (`react-sdk`, `angular-sdk`, `vue-sdk`, `wc-sdk`, `web-sdk`) are out of scope; their docs are component and Storybook driven and follow a different track. The REST route reference is already covered by the OpenAPI pipeline, so it is out of scope too.
+
+## What changed, and why
+
+The first version of this plan gave every language its own navigation subtree:
+
+```
+sdk
+└── languages
+    ├── js      (getting-started, endpoints, helpers)
+    ├── python  (getting-started, endpoints, helpers)
+    └── csharp  (getting-started, endpoints, helpers)
+```
+
+That means a reader picks a language up front and stays in a silo, and we maintain three parallel copies of the same conceptual pages. We are dropping it.
+
+The new structure is a single page set, with the language chosen per code snippet rather than per section, the way Stripe's reference works:
+
+```
+sdk
+├── getting-started
+├── endpoints
+└── helpers
+```
+
+There is one "Create an Envelope" entry, and the code block on it toggles between TypeScript, Python, and C#. The reader never leaves the page to change languages, and we author each conceptual page once.
+
+This changes one thing structurally in the pipeline: instead of each language rendering its own tree, we **merge** the per-language models into one unified model keyed by operation, so a single entry can hold a snippet per language. Everything else (per-language extractors, a shared schema, a single generator) carries over from the previous design.
 
 ## The one idea
 
-The REST reference works because there is one machine-readable contract, `openapi.json`, and a generator that turns it into pages. We do the same thing for SDKs: define one normalized doc model, the `sdk-api` model, as the shared contract; have each language emit into it with a thin extractor; and run a single generator that turns any model into MDX. This is the same split we already use for conformance, where `packages/conformance/fixtures.json` is the one shared file and each language writes a small adapter against it. We share data, not code.
+The REST reference works because there is one machine-readable contract, `openapi.json`, and a generator that turns it into pages. We do the same for SDKs: define one normalized doc model, the `sdk-api` model, as the shared contract; have each language emit into it with a thin extractor; merge those per-language models into one; and run a single generator that turns the merged model into MDX. This is the same "share data, not code" split we already use for conformance, where `packages/conformance/fixtures.json` is the one shared file and each language writes a small adapter against it.
 
-Every language reimplements only the small, language-specific step: reading its own doc format (XML doc comments, docstrings, TypeDoc JSON) and normalizing it. Everything downstream, the generator and the rendering, is written once and never learns anything about a specific language.
+Every language reimplements only the small, language-specific step: reading its own doc format (XML doc comments, docstrings, TypeDoc JSON) and normalizing it. The merge, the generator, and the rendering are written once and never learn anything about a specific language.
 
 ## How the REST pipeline works today
 
 Worth stating plainly, because the SDK pipeline mirrors it stage for stage.
 
 1. Source of truth is TSDoc plus custom `@api*` tags on the js-sdk functions.
-2. `packages/js-sdk` runs `typedoc` to emit `docs.json` (a reflection AST), then `openapi/generate-openapi.ts` walks that AST and writes `packages/js-sdk/openapi.json` (OpenAPI 3.1, roughly 56 paths).
+2. `packages/js-sdk` runs `typedoc` to emit `docs.json` (a reflection AST), then `generated/openapi/generate-openapi.ts` walks that AST and writes `packages/js-sdk/openapi.json` (OpenAPI 3.1).
 3. The spec is copied into the dev-docs app at `apps/dev-docs/app/openapi.json` (today a manual `cp` on publish).
 4. At build time, dev-docs runs `app/scripts/generate-docs.ts`, which calls `fumadocs-openapi`'s `generateFiles({ per: 'operation', groupBy: 'tag' })` and writes MDX into `content/docs/reference/Rest-API/api-docs/` (gitignored, regenerated every build).
 5. Those MDX pages render through `createAPIPage(...)` from `fumadocs-openapi/ui`, registered in `app/mdx-components.tsx`.
 
-The catch: `fumadocs-openapi` is special-cased for OpenAPI specs. There is no built-in Fumadocs integration that reads an SDK's class and method surface and produces a reference. So for SDKs we own two of the pieces that Fumadocs hands us for free on the REST side: the generator (`generateFiles` equivalent) and the render component (`createAPIPage` equivalent). The contract and the extractors are ours regardless.
+The REST generator already emits a language switcher via `x-codeSamples`, built in `generated/openapi/snippets.ts`. Those are raw HTTP snippets (curl, fetch, Ruby, Python http.client), not SDK calls. The SDK reference reuses the same switcher idea but the snippets are real SDK code pulled from each SDK's doc comments.
 
-```mermaid
-flowchart TD
-  subgraph hub [hub repo]
-    csSrc["sdks/csharp XML doc comments"] -->|docfx metadata| csEx[C# extractor]
-    pySrc["sdks/python docstrings"] -->|griffe| pyEx[Python extractor]
-    jsSrc["packages/js-sdk TypeDoc docs.json"] -->|reuse existing AST| jsEx[JS extractor]
-    csEx --> model[["normalized sdk-api model per language, validated against sdk-api.schema.json"]]
-    pyEx --> model
-    jsEx --> model
-  end
-  model -->|npm package or committed copy| gen
-  subgraph platform [platform dev-docs]
-    gen["generate-sdk-docs.ts, sibling of generate-docs.ts"] --> mdx["content/docs/reference/SDK/languages/{lang}/"]
-    mdx --> comp["SdkReference component, analog of createAPIPage"]
-  end
+The catch, same as before: `fumadocs-openapi` is special-cased for OpenAPI specs. There is no built-in Fumadocs integration that reads an SDK's surface and produces a reference. So for SDKs we own the generator (the `generateFiles` equivalent) and the render component (the `createAPIPage` equivalent). The contract, the extractors, and now the merge step are ours regardless.
+
+## Navigation and page structure
+
+The generated tree is three pages under `content/docs/reference/SDK/`:
+
+```
+content/docs/reference/SDK/
+├── getting-started/
+├── endpoints/
+└── helpers/
 ```
 
+- **Getting Started**: the most important page. The essentials for standing up the SDK: installing, authentication, creating a template, creating an envelope, and the handful of flows a new caller needs. This page is authored MDX (we own the prose and the ordering) that embeds specific operations by `@sdkOperation`, so the code snippets stay in sync with the source while the narrative stays curated. It is not fully generated.
+- **Endpoints**: reference for every HTTP-related SDK function (the ones that call the API). Fully generated.
+- **Helpers**: reference for every non-HTTP SDK function (local utilities like `sortFields`, `sortRecipients`). Fully generated.
+
+Within Endpoints and Helpers, `@sdkGroup` drives the sections, exactly as it drives tags on the REST side. On the Endpoints page you get Envelopes, Templates, Organizations, and so on; each section lists that group's operations. This mirrors `groupBy: 'tag'` and keeps the SDK reference visually consistent with the REST reference.
+
+Each entry on Endpoints and Helpers renders the same way: a summary, the signature, a params table, the return value, and a code example, with a language switcher over the languages that document that operation.
+
+## The tag model
+
+Tags live in each SDK's own doc comments (TSDoc in js-sdk, docstrings in Python, XML doc comments in C#). The extractor for each language reads them and fills the shared model. Where a tag has no native equivalent, the extractor supplies the value from context (for example, `@sdkLanguage` is implied by which SDK is being read).
+
+### `@sdkOperation` (required)
+
+The merge key. It ties the same logical operation across every SDK into one unified entry, and it doubles as the entry's URL anchor and cross-reference id. It must be an identical, stable string in all three SDK sources.
+
+This is distinct from OpenAPI's `operationId` field in `openapi.json`. That value is derived by `generate-openapi.ts` from the TypeScript function name (or an `@apiName` override) and lives only in the REST pipeline. `@sdkOperation` is an authored tag on the SDK source, used as the cross-language merge key for the SDK reference.
+
+Convention: `<group>.<functionName>`, lowercase-stable, for example `envelopes.createEnvelope`. When the operation maps to a REST route, keep the value related to the REST `operationId` so the SDK entry and the REST entry can link to each other (for example REST `createEnvelope` alongside SDK `envelopes.createEnvelope`).
+
+```typescript
+/**
+ * Create an envelope.
+ *
+ * @sdkOperation envelopes.createEnvelope
+ * @sdkGroup Envelopes
+ * @sdkPage Endpoints
+ */
+```
+
+The same operation in the Python SDK carries the same id:
+
+```python
+def create_envelope(self, request: CreateEnvelopeRequest) -> Envelope:
+    """Create an envelope.
+
+    @sdkOperation envelopes.createEnvelope
+    @sdkGroup Envelopes
+    @sdkPage Endpoints
+    """
+```
+
+Two functions in the same language must not share an `@sdkOperation`; that is a collision (see merge semantics). Two functions in different languages sharing an id is the whole point: they are the same operation.
+
+### `@sdkPage` ("Getting Started" | "Endpoints" | "Helpers")
+
+Which top-level page the operation belongs to.
+
+- If omitted, the extractor infers it: an operation with an `@api` tag (an HTTP call) defaults to **Endpoints**; everything else defaults to **Helpers**.
+- **Getting Started** is always opt-in. An operation tagged `@sdkPage Getting Started` is featured on that page in addition to its natural Endpoints or Helpers home; it is not moved off the reference pages.
+
+```typescript
+/**
+ * Create an envelope.
+ *
+ * @sdkOperation envelopes.createEnvelope
+ * @sdkGroup Envelopes
+ * @sdkPage Getting Started
+ * @api POST /v2/envelopes Create Envelope
+ */
+```
+
+The example above appears both in the Getting Started narrative and under Envelopes on the Endpoints page.
+
+### `@sdkGroup` (already in use)
+
+The section within a page. This is the tag js-sdk already uses (`@sdkGroup Envelopes`, `@sdkGroup Templates`). C# groups by namespace or the same logical area; Python by resource namespace. The extractor maps whatever the language expresses onto a group name, so a group reads identically across languages.
+
+### `@example` and fenced code
+
+The per-language example. Prefer a fenced code block in the summary (the js-sdk house style) over a bare `@example` tag; both are accepted. The language comes from the fence, and the extractor stamps that language onto the snippet automatically:
+
+```typescript
+/**
+ * Create an envelope.
+ *
+ * ```typescript
+ * import {Envelopes} from '@verdocs/js-sdk/Envelopes';
+ *
+ * const {id} = await Envelopes.createEnvelope(VerdocsEndpoint.getDefault(), request);
+ * ```
+ *
+ * @sdkOperation envelopes.createEnvelope
+ * @sdkGroup Envelopes
+ * @sdkPage Endpoints
+ */
+```
+
+The switcher on the rendered entry offers exactly the languages that shipped an example for that `@sdkOperation`. A Python example authored in the Python SDK highlights with the Python grammar; the C# one with C#. We do not hand-write another language's example inside the js-sdk source.
+
+### `@param`
+
+Documents an SDK function argument (`endpoint`, `request`, and so on). This is the SDK function's own parameter list and feeds the params table on the entry. It is distinct from the OpenAPI `@apiParam` / `@apiBody` / `@apiQuery` tags, which describe the HTTP request and still feed `openapi.json`. An HTTP-bound function keeps both: `@param` for the SDK signature, `@api*` for the REST spec.
+
+```typescript
+/**
+ * @param endpoint The VerdocsEndpoint carrying the caller's session.
+ * @param request The envelope to create.
+ */
+```
+
+
+
+### `@sdkLanguage` (optional override)
+
+Normally unnecessary. Each extractor already knows its own language, and fenced code blocks self-identify, so the model is populated without it. Use `@sdkLanguage` only to override that inference, for example when an authored Getting Started snippet needs to be tagged as a language other than the file it lives in. If you find yourself reaching for it on ordinary reference functions, the fence should carry the language instead.
+
+### Tag summary
+
+
+| Tag                | Required | Role                                                                         |
+| ------------------ | -------- | ---------------------------------------------------------------------------- |
+| `@sdkOperation`    | Yes      | Merge key across languages, URL anchor, cross-reference id                   |
+| `@sdkPage`            | Yes      | Getting Started / Endpoints / Helpers; inferred from `@api` when omitted     |
+| `@sdkGroup`           | Yes      | Section within a page; defaults per language convention if omitted           |
+| `@example` / fence | Yes      | Per-language code snippet; language read from the fence                      |
+| `@param`           | Yes      | SDK argument docs; separate from the REST `@apiParam`/`@apiBody`/`@apiQuery` |
+| `@sdkLanguage`        | No       | Override for the inferred snippet language; rarely needed                    |
 
 
 
 
 ## The normalized doc model
 
-One JSON schema, `sdk-api.schema.json`, describes the shape every language emits. It is a symbol tree, not an HTTP-route list, because that is what an SDK actually is: namespaces or modules, holding types, holding members.
-
-The top level carries the language, package name, and version so the generator can label pages and detect staleness. Under that is a flat list of groups. A group maps to an OpenAPI-style tag: the JS SDK already uses `@group` (Templates, Envelopes, Organizations), C# would group by namespace or by the same logical area, Python by resource namespace. Grouping is what drives the sidebar sections and mirrors `groupBy: 'tag'` on the REST side.
-
-Each group holds symbols. A symbol is one documentable thing: a class, interface, method, property, enum, or free function. The fields are the union of what these languages express, and any field an extractor cannot fill is simply omitted.
+One JSON schema, `sdk-api.schema.json`, describes the shape every language emits, before the merge. It is a symbol tree: groups holding symbols, each symbol one documentable thing (a method, a free function, a helper). Any field an extractor cannot fill is omitted.
 
 ```json
 {
   "$schema": "./sdk-api.schema.json",
-  "language": "csharp",
-  "package": "Verdocs.Sdk",
-  "version": "1.0.0",
+  "language": "typescript",
+  "package": "@verdocs/js-sdk",
+  "version": "5.0.0",
   "groups": [
     {
-      "id": "templates",
-      "name": "Templates",
-      "summary": "Read and manage templates.",
+      "id": "envelopes",
+      "name": "Envelopes",
+      "summary": "Create and manage envelopes.",
       "symbols": [
         {
+          "sdkOperation": "envelopes.createEnvelope",
           "kind": "method",
-          "id": "VerdocsEndpoint.GetTemplatesAsync",
-          "name": "GetTemplatesAsync",
-          "signature": "Task<IReadOnlyList<Template>> GetTemplatesAsync(TemplateListOptions options)",
-          "summary": "Get all templates accessible by the caller, with optional filters.",
+          "name": "createEnvelope",
+          "page": "Endpoints",
+          "signature": "createEnvelope(endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest): Promise<IEnvelope>",
+          "summary": "Create an envelope.",
           "params": [
-            {
-              "name": "options",
-              "type": "TemplateListOptions",
-              "description": "Visibility, paging, and sort filters.",
-              "optional": false,
-              "default": null
-            }
+            {"name": "endpoint", "type": "VerdocsEndpoint", "description": "The caller's session.", "optional": false},
+            {"name": "request", "type": "TCreateEnvelopeRequest", "description": "The envelope to create.", "optional": false}
           ],
-          "returns": {
-            "type": "Task<IReadOnlyList<Template>>",
-            "description": "The templates the caller can see."
-          },
-          "throws": [
-            {
-              "type": "VerdocsApiException",
-              "description": "The API returned a non-success status."
-            }
-          ],
-          "examples": [
-            {
-              "language": "csharp",
-              "code": "var templates = await endpoint.GetTemplatesAsync(new TemplateListOptions { IsStarred = true });"
-            }
-          ],
+          "returns": {"type": "Promise<IEnvelope>", "description": "The newly-created envelope."},
+          "example": {"language": "typescript", "code": "const {id} = await Envelopes.createEnvelope(VerdocsEndpoint.getDefault(), request);"},
           "deprecated": false,
           "since": "1.0.0"
         }
@@ -103,84 +222,122 @@ Each group holds symbols. A symbol is one documentable thing: a class, interface
 }
 ```
 
-Field notes:
+Each language emits one of these (`model.js.json`, `model.python.json`, `model.csharp.json`). The `language` at the top, and the `example.language` on each symbol, are what the merge and the switcher key off of.
+
+## The merged model
+
+The merge step reads every `model.<lang>.json` and produces one `sdk-unified.json`. It groups symbols by `@sdkOperation` and collects each language's contribution into a `variants` array. The prose fields (summary, group, page) come from a canonical language (js-sdk first, since it is the flagship and the most complete), and each variant carries the language-specific signature, params, and example.
+
+```json
+{
+  "$schema": "./sdk-unified.schema.json",
+  "operations": [
+    {
+      "sdkOperation": "envelopes.createEnvelope",
+      "group": "Envelopes",
+      "page": "Endpoints",
+      "summary": "Create an envelope.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "createEnvelope(endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest): Promise<IEnvelope>",
+          "params": [ /* ... */ ],
+          "returns": {"type": "Promise<IEnvelope>", "description": "The newly-created envelope."},
+          "example": {"code": "const {id} = await Envelopes.createEnvelope(VerdocsEndpoint.getDefault(), request);"}
+        },
+        {
+          "language": "python",
+          "signature": "create_envelope(request: CreateEnvelopeRequest) -> Envelope",
+          "params": [ /* ... */ ],
+          "returns": {"type": "Envelope", "description": "The newly-created envelope."},
+          "example": {"code": "envelope = client.envelopes.create_envelope(request)"}
+        }
+      ]
+    }
+  ]
+}
+```
+
+The generator consumes only this unified model. It does not know or care how many languages contributed.
+
+## Merge semantics
+
+The rules the merge step follows, and how it handles the messy cases.
+
+- **Join key**: `@sdkOperation`, exact string match. All symbols sharing an id become the `variants` of one operation.
+- **Canonical prose**: `summary`, `group`, and `page` are taken from a priority order of languages (js-sdk, then python, then csharp). If two languages disagree on `group` or `page` for the same id, the canonical one wins and the merge emits a warning so the drift gets fixed at the source. This is the same "one source wins, warn on drift" stance the REST generator already takes when `@apiParam` tags disagree with the `@api` path template.
+- **Missing a language**: an operation documented in js-sdk but not yet in python simply has fewer `variants`. The entry still renders; the switcher offers only the languages present. This is expected while the SDKs are at different maturities, not an error.
+- **Language-only operations**: a helper that exists only in js-sdk (say a browser-oriented utility) renders with a single variant. Fine.
+- **Collision (same language, same id)**: two symbols in the same model claiming one `@sdkOperation` is an authoring bug. The merge fails loudly and names both symbols, because we cannot know which one the entry should be.
+- **Ordering**: within an operation, `variants` are ordered by the canonical language priority so the switcher's default tab is consistent (TypeScript first today).
 
 
-| Field                              | Role                                                                                              |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `language` / `package` / `version` | Label pages, build the handoff, drive the staleness check                                         |
-| `groups[].id` / `name` / `summary` | Sidebar section slug, title, and intro copy                                                       |
-| `symbols[].kind`                   | One of `class`, `interface`, `method`, `property`, `enum`, `function`. Controls the page template |
-| `symbols[].id`                     | Stable, unique within the language. Used for the URL slug and cross-references                    |
-| `signature`                        | Rendered verbatim in the language's own syntax. The extractor formats this, not the generator     |
-| `summary`                          | Plain-language sentence, straight from the doc comment                                            |
-| `params` / `returns` / `throws`    | Tables in the rendered page. `throws` is empty for languages without exceptions                   |
-| `examples`                         | Code blocks. `language` sets the Shiki grammar so a Python example highlights as Python           |
-| `deprecated` / `since`             | Render a badge and a version note                                                                 |
-
-
-The schema is the contract. If a language wants to say something the schema does not model, we extend the schema once and every language and the generator see it. We do not fork a second shape per language, the same rule we hold for `fixtures.json`.
 
 ## Per-language extractors
 
-An extractor is the only language-specific code in the pipeline. Its job is narrow: run the language's native doc tool, then normalize that output into the `sdk-api` model and validate it against the schema. Extractors live next to the SDK they read, the way each conformance lane lives next to its SDK.
+An extractor is the only language-specific code in the pipeline. It runs the language's native doc tool, normalizes the output into the `sdk-api` model, and validates it against the schema. Extractors live next to the SDK they read.
 
-| Language                 | Extraction Tech                              | Description                                                                                                                                                                                                                                                                                                                                                                              |
-| ------------------------ | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| C#                       | `docfx metadata` (over the XML doc file)     | `Verdocs.Sdk.csproj` sets `GenerateDocumentationFile` true, and missing docs fail the build under `-warnaserror`, guaranteeing full coverage. `docfx metadata` reads the compiled assembly plus the XML doc file and emits YAML API metadata (namespaces, types, members, params, returns, exceptions, summaries). A small normalizer maps that YAML to the model. DocFX is free and open source, so it fits our CI tooling constraints. Extractor home: `sdks/csharp/docs/`. |
-| Python                   | `griffe`                                     | Python uses Google-style docstrings on every public callable, with `py.typed` shipped. `griffe`, the library `mkdocstrings` is built on, loads the package and produces a JSON dump of the API surface with parsed docstring sections (Args, Returns, Raises, Example). A normalizer maps `griffe`'s JSON to the model, expanding the sync and async resource namespaces (`endpoint.templates`, `endpoint.auth`) into groups. Extractor home: `sdks/python/docs/` (or a `docs` extra in `pyproject.toml`). |
-| JavaScript / TypeScript  | TypeDoc AST (via `docs.json`)                | The JS SDK already produces `docs.json` from TypeDoc, and `openapi/generate-openapi.ts` already walks that exact AST. The JS extractor reuses that AST and emits the `sdk-api` model instead of (or alongside) the OpenAPI spec. This is the natural reference implementation to build first, because the input already exists and the AST-walking code is already proven. Shipping it also lets us replace the current js-sdk reference page, an iframe embed of the TypeDoc HTML site, with a native Fumadocs reference that matches the rest of the docs. |
-| Go (later)               | `go/doc` or `gomarkdoc`                       | The standard library `go/doc` package parses source and doc comments into a structured model, or `gomarkdoc` for a higher-level dump; normalize either to the schema. Not in the repo yet, so this is a sketch. |
-| Java (later)             | javadoc doclet or `javaparser`               | A small javadoc doclet, or `javaparser`, produces the type and member tree with Javadoc text. Not in the repo yet, so this is a sketch. The point of the shared model is that adding a language is an extractor plus a schema check, nothing downstream changes. |
+
+| Language                | Extraction tech                          | Notes                                                                                                                                                                                                                                              |
+| ----------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| JavaScript / TypeScript | TypeDoc AST (via `docs.json`)            | The js-sdk already emits `docs.json`, and `generated/openapi/generate-openapi.ts` already walks it. The JS extractor reuses that AST and emits the `sdk-api` model. This is the reference implementation to build first: the input already exists. |
+| C#                      | `docfx metadata` (over the XML doc file) | `GenerateDocumentationFile` plus `-warnaserror` on missing docs guarantees coverage. `docfx metadata` emits YAML API metadata; a normalizer maps it to the model. DocFX is free and open source. Extractor home: `sdks/csharp/docs/`.              |
+| Python                  | `griffe`                                 | Google-style docstrings on every public callable, `py.typed` shipped. `griffe` (what `mkdocstrings` is built on) dumps the API surface with parsed docstring sections. A normalizer maps it to the model. Extractor home: `sdks/python/docs/`.     |
+| Go (later)              | `go/doc` or `gomarkdoc`                  | Not in the repo yet. Sketch only.                                                                                                                                                                                                                  |
+| Java (later)            | javadoc doclet or `javaparser`           | Not in the repo yet. Sketch only. Adding a language stays "an extractor plus a schema check"; nothing downstream changes.                                                                                                                          |
+
+
+
 
 ## Where the pieces live
 
-Following the conformance precedent (one shared contract, adapters next to each SDK), introduce a small shared package and keep the language work with the languages.
+Following the conformance precedent (one shared contract, adapters next to each SDK):
 
-- `packages/sdk-docs` (new, `@verdocs/sdk-docs`): owns `sdk-api.schema.json`, the shared TypeScript types generated from it, and a validator (`sdk-docs validate <model.json>`). It also holds the committed model artifacts, `models/csharp.json`, `models/python.json`, `models/js.json`, so the contract and its instances live together and CI can diff them.
-- `sdks/<lang>/docs/` and `packages/js-sdk`: each extractor, run by that SDK's own toolchain, writing its `models/<lang>.json` into the shared package.
+- `packages/sdk-docs` (new, `@verdocs/sdk-docs`): owns `sdk-api.schema.json` and `sdk-unified.schema.json`, the shared TypeScript types generated from them, a validator, and the merge step (`sdk-docs merge`). It holds the committed artifacts (`models/js.json`, `models/python.json`, `models/csharp.json`, and the merged `models/unified.json`) so the contract and its instances live together and CI can diff them.
+- `packages/js-sdk` and `sdks/<lang>/docs/`: each extractor, run by that SDK's own toolchain, writing its `models/<lang>.json` into the shared package.
 
-Handoff to platform dev-docs: today `openapi.json` is copied across with a manual `cp` on publish, which is easy to forget and hard to see in a diff. Prefer publishing `@verdocs/sdk-docs` to npm and having dev-docs depend on it, the same way dev-docs already depends on `@verdocs/js-sdk`. Then refreshing the SDK reference is a version bump in dev-docs, visible in a lockfile diff and tied to a released version. Copying the JSON in is the fallback if we do not want another published package yet.
+Handoff to platform dev-docs: prefer publishing `@verdocs/sdk-docs` to npm and having dev-docs depend on it, the same way dev-docs already depends on `@verdocs/js-sdk`. Then refreshing the SDK reference is a version bump visible in a lockfile diff. Copying the merged JSON in is the fallback.
 
 ## Generating the docs in dev-docs
 
-Mirror the REST generator exactly.
+Mirror the REST generator.
 
-Add `apps/dev-docs/app/scripts/generate-sdk-docs.ts`, a sibling of `generate-docs.ts`, and wire it into the existing `generate` script next to `generate:openapi`. For each language model it:
+Add `apps/dev-docs/app/scripts/generate-sdk-docs.ts`, a sibling of `generate-docs.ts`, wired into the existing `generate` script next to `generate:openapi`. It:
 
-1. Reads `models/<lang>.json` (from the `@verdocs/sdk-docs` dependency or the committed copy) and validates it against the schema, failing the build loudly on drift.
-2. Wipes and regenerates `content/docs/reference/SDK/languages/<lang>/reference/`, the same wipe-and-regenerate contract `generate-docs.ts` uses for `api-docs/`, so the folder is a pure build artifact and stays gitignored.
-3. Emits MDX per group (one page listing that group's symbols) or per symbol, plus a generated `meta.json` per language folder to order the sidebar.
+1. Reads `models/unified.json` (from the `@verdocs/sdk-docs` dependency or the committed copy) and validates it against `sdk-unified.schema.json`, failing the build loudly on drift.
+2. Wipes and regenerates `content/docs/reference/SDK/endpoints/` and `content/docs/reference/SDK/helpers/`, the same wipe-and-regenerate contract `generate-docs.ts` uses for `api-docs/`, so those folders are pure build artifacts and stay gitignored. It leaves `content/docs/reference/SDK/getting-started/` alone, since that page is authored.
+3. Emits MDX per group (one page listing that group's operations) or per operation, plus a generated `meta.json` to order the sidebar sections.
 
-Rendering is the `createAPIPage` analog we own. Add a `SdkReference` (and a smaller `SdkSymbol`) React component, registered in `app/mdx-components.tsx` alongside `APIPage`. It renders a symbol's signature, params table, returns, exceptions, and examples, using the same Shiki setup the REST pages use so a C# signature and a Python example each highlight in their own grammar. The generated MDX carries frontmatter (title, description) and drops in the component fed by the symbol data. Keeping this a real component, rather than pre-rendered HTML, is what makes the SDK reference themeable, searchable, and consistent with the REST reference instead of an iframe island.
+Rendering is the `createAPIPage` analog we own. Add an `SdkReference` (and a smaller `SdkOperation`) React component, registered in `app/mdx-components.tsx` alongside `APIPage`. It renders an operation's summary, signature, params table, return, and example, with a **language switcher** over the operation's `variants`, using the same Shiki setup the REST pages use so a C# signature and a Python example each highlight in their own grammar. The switcher default follows the canonical language order.
 
-Per-symbol versus per-group MDX granularity is an implementation choice: per-group keeps the tree shallow and readable for small SDKs (where we are today), per-symbol scales better and gives every method its own URL. Start per-group and split later if a group gets large.
+Getting Started stays authored MDX and pulls specific operations in by `@sdkOperation` through the same `SdkOperation` component, so its snippets track the source while its prose stays curated.
 
-## Sidebar placement
-
-The dev-docs already have `content/docs/reference/SDK/languages/js-sdk/` with hand-written intro pages (installation, authentication, endpoints, examples) and a `reference.mdx` that currently iframes TypeDoc. Add `csharp/` and `python/` beside it under the same `languages/` parent. Each language keeps a couple of hand-written intro pages (installation, authentication) that we own as prose, plus the generated `reference/` subtree underneath. A generated `meta.json` orders the reference section; the hand-written `meta.json` orders the intro pages before it. This matches how js-sdk already mixes authored pages with a reference, and it means the generator never touches hand-written content.
+Per-operation versus per-group MDX granularity is an implementation choice: per-group keeps the tree shallow for small SDKs (where we are today), per-operation scales better and gives every operation its own URL. Start per-group and split later.
 
 ## CI and the handoff
 
-Two checks keep the models honest, both modeled on gates we already run.
+Three checks keep the models honest, all modeled on gates we already run.
 
-- Schema validation: every committed `models/<lang>.json` must validate against `sdk-api.schema.json`. Fast, offline, runs on every PR that touches the package.
-- Staleness: regenerate each model from source in CI and diff against the committed copy, the same idea as `pnpm --filter @verdocs/collections check` flagging a stale `openapi.json`. If a doc comment changed but the model was not regenerated, the check fails and tells you which command to run. Path-filtered so a docs-only change does not rebuild every SDK.
+- **Schema validation**: every committed `models/<lang>.json` validates against `sdk-api.schema.json`, and `models/unified.json` against `sdk-unified.schema.json`. Fast, offline, runs on every PR touching the package.
+- **Merge integrity**: re-run the merge in CI and diff against the committed `unified.json`. A collision (same language, same `@sdkOperation`) fails the build; a `group`/`page` disagreement across languages surfaces as the warning the merge already prints.
+- **Staleness**: regenerate each model from source in CI and diff against the committed copy, the same idea as `pnpm --filter @verdocs/collections check` flagging a stale `openapi.json`. If a doc comment changed but the model was not regenerated, the check fails and names the command to run. Path-filtered so a docs-only change does not rebuild every SDK.
 
-On the dev-docs side the build already runs `generate` before `next build`; `generate-sdk-docs.ts` slots into that step next to `generate:openapi`, so a deploy always regenerates the SDK reference from whatever model version dev-docs currently depends on. Publishing `@verdocs/sdk-docs` (or copying the models) is the seam between the two repos, and it is the one manual-ish step, exactly as `openapi.json` is today.
+On the dev-docs side the build already runs `generate` before `next build`; `generate-sdk-docs.ts` slots in next to `generate:openapi`, so a deploy always regenerates the SDK reference from whatever model version dev-docs depends on. Publishing `@verdocs/sdk-docs` (or copying `unified.json`) is the seam between the two repos, the one manual-ish step, exactly as `openapi.json` is today.
 
 ## Phased rollout
 
-Phase 1: define `sdk-api.schema.json` and the `@verdocs/sdk-docs` package. Build the JS extractor by reusing the existing TypeDoc AST, since the input is already there. Build `generate-sdk-docs.ts` and the `SdkReference` component in dev-docs. Ship the js-sdk reference natively and retire the iframe. This proves the whole pipeline end to end against the SDK we know best.
+Phase 1: define `sdk-api.schema.json`, `sdk-unified.schema.json`, and the `@verdocs/sdk-docs` package (schemas, types, validator, merge step). Build the JS extractor by reusing the existing TypeDoc AST. Build `generate-sdk-docs.ts` and the `SdkReference` component with the language switcher in dev-docs. Ship the js-sdk reference natively (single variant per operation for now) and retire the current TypeDoc iframe. This proves the whole pipeline end to end against the SDK we know best, including the switcher with one language in it.
 
-Phase 2: add the C# extractor (`docfx metadata`) and the Python extractor (`griffe`), each emitting a validated model. The generator and component do not change; they already handle any model. C# and Python reference sections appear beside js-sdk.
+Phase 2: add the C# extractor (`docfx metadata`) and the Python extractor (`griffe`), each emitting a validated model. The merge starts producing multi-variant operations, and the switcher lights up with real alternates. The generator and component do not change; they already handle any number of variants.
 
-Phase 3: add the CI staleness check, publish `@verdocs/sdk-docs` to npm and switch dev-docs to depend on it, and add Go and Java extractors when those SDKs land.
+Phase 3: add the merge-integrity and staleness CI checks, publish `@verdocs/sdk-docs` to npm and switch dev-docs to depend on it, and add Go and Java extractors when those SDKs land.
 
 ## Open questions
 
-- Per-symbol versus per-group MDX granularity (start per-group).
-- npm package versus committed-copy handoff to platform (recommend the package; copy is the fallback).
-- Whether the JS extractor fully replaces or runs alongside `generate-openapi.ts`, since both walk the same `docs.json`. They can share the AST-walking code either way.
-- How much authored intro prose each language gets versus generated reference, and who owns keeping the intro examples current.
+- **Getting Started authoring**: confirmed as authored MDX that embeds tagged operations. Who owns keeping its narrative and the chosen operations current as the SDK grows?
+- `@sdkOperation` **naming**: proposed `<group>.<functionName>`. Confirm this holds up where the same logical operation has different function names across languages (`createEnvelope` vs `create_envelope` vs `CreateEnvelopeAsync`); the id is the constant, the names differ per variant.
+- **Canonical language for prose**: js-sdk first is the default. Revisit if another SDK ends up with better-maintained summaries.
+- **Per-operation versus per-group MDX granularity**: start per-group.
+- **npm package versus committed-copy handoff**: recommend the package; copy is the fallback.
+- **JS extractor sharing with** `generate-openapi.ts`: both walk the same `docs.json`. They can share the AST-walking code; decide whether the JS extractor replaces or runs alongside the OpenAPI generator.
 

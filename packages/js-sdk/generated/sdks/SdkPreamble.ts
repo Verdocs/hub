@@ -1,32 +1,12 @@
-import pkg from '../../package.json'
+import pkg from '../../package.json';
+import type {Sdk} from './types';
 
-export const SdkPreamble = {
-  info: {
-    title: 'Verdocs Platform SDKs',
-    version: pkg.version,
-    description: 'Verdocs native SDKs',
-    termsOfService: 'https://verdocs.com/en/eula/',
-    license: {name: 'MIT', url: 'https://opensource.org/licenses/MIT'},
-    contact: {
-      name: 'Verdocs Support',
-      url: 'https://verdocs.com/en/contact/',
-      email: 'support@verdocs.com',
-    },
-  },
-  sdks: {
-    'typescript': {
-      id: '',
-      name: '',
-      summary: '',
-      symbol: '',
-      functions: {
-        'getNotifications': {
-          name: 'getNotifications',
-          description: '',
-          sample: `...code...`,
-          params: {}
-        }
-      }
-    }
-  }
-}
+// The JS extractor emits one single-language model (the "sdk-api" model in the spec). The
+// merge step in @verdocs/sdk-docs fuses this with the python and csharp models by
+// @sdkOperation. See docs/sdk-docs-generation.md.
+export const SdkPreamble: Sdk = {
+  language: 'typescript',
+  package: pkg.name,
+  version: pkg.version,
+  groups: {},
+};

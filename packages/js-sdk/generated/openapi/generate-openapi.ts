@@ -1,13 +1,13 @@
 /// <reference types="node" />
 /* tslint:disable:no-console */
 
-import {writeFileSync} from 'node:fs';
-import {jsTypeToSchema} from './utils';
-import {Preamble} from './Preamble';
- 
+import { writeFileSync } from 'node:fs';
+import { jsTypeToSchema } from './utils';
+import { Preamble } from './Preamble';
+
 // @ts-ignore - docs.json may not exist yet in CI
 import docsJson from '../../docs.json';
-import {generateSnippets} from './snippets';
+import { generateSnippets } from './snippets';
 
 // 1. Reuse some tags from TSDoc (Name->actionId, Summary/Description from comment, @group->tags
 // 2. Adds support for root-level apiSuccess results (e.g. body of response is object)
@@ -123,12 +123,12 @@ const parseResponseType = (currentResponseSchema: any, param: string) => {
   } else {
     currentResponseSchema.type = 'object';
     currentResponseSchema.properties = currentResponseSchema.properties || {};
-    currentResponseSchema.properties[parsed.name] = {description: parsed.desc, ...schema};
+    currentResponseSchema.properties[parsed.name] = { description: parsed.desc, ...schema };
   }
 };
 
 const parseParam = (paramIn: 'body' | 'cookie' | 'header' | 'path' | 'query', param: string) => {
-  const {type, options, name, desc} = parseApiOptionTag(param);
+  const { type, options, name, desc } = parseApiOptionTag(param);
 
   const entry = {
     in: paramIn,
@@ -144,7 +144,7 @@ const parseParam = (paramIn: 'body' | 'cookie' | 'header' | 'path' | 'query', pa
 };
 
 const processChild = (child: Record<string, any>) => {
-  const {name, kind, comment} = child as {name: string; kind: number; comment: any; child: any};
+  const { name, kind, comment } = child as { name: string; kind: number; comment: any; child: any };
   const summary = comment?.summary?.[0]?.text || '';
 
   // console.log('Processing child', name, kind, child);
@@ -174,7 +174,7 @@ const processChild = (child: Record<string, any>) => {
     };
 
     child.children.forEach((child: Record<string, any>) => {
-      const {name, kind, comment, type} = child;
+      const { name, kind, comment, type } = child;
       if (kind !== 1024 || !comment) {
         return;
       }
@@ -242,8 +242,8 @@ const processChild = (child: Record<string, any>) => {
               type: 'object',
               required: ['status', 'error'],
               properties: {
-                status: {type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".'},
-                error: {type: 'string', description: 'Description of the error that occurred.'},
+                status: { type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".' },
+                error: { type: 'string', description: 'Description of the error that occurred.' },
               },
             },
           },
@@ -257,8 +257,8 @@ const processChild = (child: Record<string, any>) => {
               type: 'object',
               required: ['status', 'error'],
               properties: {
-                status: {type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".'},
-                error: {type: 'string', description: 'Description of the error that occurred.'},
+                status: { type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".' },
+                error: { type: 'string', description: 'Description of the error that occurred.' },
               },
             },
           },
@@ -272,8 +272,8 @@ const processChild = (child: Record<string, any>) => {
               type: 'object',
               required: ['status', 'error'],
               properties: {
-                status: {type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".'},
-                error: {type: 'string', description: 'Description of the error that occurred.'},
+                status: { type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".' },
+                error: { type: 'string', description: 'Description of the error that occurred.' },
               },
             },
           },
@@ -287,8 +287,8 @@ const processChild = (child: Record<string, any>) => {
               type: 'object',
               required: ['status', 'error'],
               properties: {
-                status: {type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".'},
-                error: {type: 'string', description: 'Description of the error that occurred.'},
+                status: { type: 'string', enum: ['ERROR'], description: 'Always set to "ERROR".' },
+                error: { type: 'string', description: 'Description of the error that occurred.' },
               },
             },
           },
@@ -411,22 +411,22 @@ const reconcilePathParameters = (entry: any, method: string, path: string) => {
   const reconciled = placeholders.map((name) => {
     const match = declared.find((p: any) => p.name === name);
     if (match) {
-      return {...match, required: true};
+      return { ...match, required: true };
     }
 
     // A single placeholder with a single stray declaration is a rename; keep its metadata.
     if (placeholders.length === 1 && unmatched.length === 1) {
-      return {...unmatched[0], name, required: true};
+      return { ...unmatched[0], name, required: true };
     }
 
-    return {in: 'path', name, description: '', required: true, schema: {type: 'string'}};
+    return { in: 'path', name, description: '', required: true, schema: { type: 'string' } };
   });
 
   const dropped = unmatched.filter(() => !(placeholders.length === 1 && unmatched.length === 1));
   if (dropped.length) {
     console.warn(
       `${method.toUpperCase()} ${path}: dropping @apiParam entries with no matching path placeholder: ` +
-        `${dropped.map((p: any) => p.name).join(', ')}. If these are body fields, tag them @apiBody.`,
+      `${dropped.map((p: any) => p.name).join(', ')}. If these are body fields, tag them @apiBody.`,
     );
   }
 

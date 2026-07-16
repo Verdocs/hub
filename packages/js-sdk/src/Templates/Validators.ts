@@ -37,11 +37,41 @@ export const isValidInput = (value: string, validator: string) =>
  * because that is all a user can enter in an HTML input field. Numeric-format validators should
  * perform any necessary conversions internally. Validators never throw - they just return a boolean.
  * indicating whether the value is valid.
+ *
+ * ```typescript
+ * import {getValidators} from '@verdocs/js-sdk';
+ *
+ * const available = getValidators(); // ['email', 'phone', 'url', 'postal_code', 'number', 'date']
+ * ```
+ *
+ * @sdkGroup Validators
  */
 export const getValidators = () => Object.keys(VALIDATORS);
 
+/**
+ * Check whether a string is a validly-formatted email address.
+ *
+ * ```typescript
+ * import {isValidEmail} from '@verdocs/js-sdk';
+ *
+ * isValidEmail('sales@verdocs.com'); // true
+ * ```
+ *
+ * @sdkGroup Validators
+ */
 export const isValidEmail = (email: string | undefined) => !!email && EMAIL_REGEX.test(email);
 
+/**
+ * Check whether a string looks like a valid phone number, in domestic or international format.
+ *
+ * ```typescript
+ * import {isValidPhone} from '@verdocs/js-sdk';
+ *
+ * isValidPhone('+1 202-555-0147'); // true
+ * ```
+ *
+ * @sdkGroup Validators
+ */
 export const isValidPhone = (phone: string | undefined) => !!phone && PHONE_REGEX.test(phone);
 
 export const isValidRoleName = (value: string, roles: IRole[]) => roles.findIndex((role) => role.name === value) !== -1;

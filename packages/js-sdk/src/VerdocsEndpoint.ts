@@ -29,10 +29,15 @@ export type TEnvironment = '' | 'beta';
 export type TSessionChangedListener = (endpoint: VerdocsEndpoint, session: TSession, profile: IProfile | null) => void;
 
 export interface VerdocsEndpointOptions {
+  /** Override the API base URL. Rarely needed outside Verdocs-directed setups. */
   baseURL?: string;
+  /** Request timeout in milliseconds. Defaults to 60000. */
   timeout?: number;
+  /** Target environment. Defaults to production unless running on a known beta origin. */
   environment?: TEnvironment;
+  /** Session type this endpoint manages, either 'user' or 'signing'. Defaults to 'user'. */
   sessionType?: TSessionType;
+  /** Client ID sent as the X-Client-ID header on each request. */
   clientID?: string;
   /** By default, sessions will be persisted to localStorage. Set `persist` to false to bypass this. */
   persist?: boolean;
@@ -55,9 +60,11 @@ export interface VerdocsEndpointOptions {
  * endpoint
  *     .setSessionType('signing')
  *     .logRequests(true)
- *     .setClientID('1234)
+ *     .setClientID('1234')
  *     .setTimeout(30000);
  * ```
+ *
+ * @sdkGroup Endpoint
  */
 export class VerdocsEndpoint {
   private environment: TEnvironment = BETA_ORIGINS.includes(globalThis.window?.location?.origin || '') ? 'beta' : '';

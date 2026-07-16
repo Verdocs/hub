@@ -18,7 +18,11 @@
     "@apiSuccessExample",
     "@apiError",
     "@apiErrorExample",
-    "@apiErrors"
+    "@apiErrors",
+    "@sdkGroup",
+    "@sdkPage",
+    "@sdkOperation",
+    "@sdkLanguage"
   ],
   "navigation": {
     "includeCategories": true,
