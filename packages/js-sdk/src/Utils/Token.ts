@@ -9,6 +9,10 @@ const b64re = /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3
 /**
  * Simplified, Node/Browser-safe alternative to atob() for base64 decoding.
  * Modified from https://github.com/MaxArt2501/base64-js/blob/master/base64.js
+ *
+ * @sdkOperation token.AtoB
+ * @sdkGroup Token
+ * @sdkPage Helpers
  */
 export const AtoB = (str: string) => {
   // atob can work with strings with whitespaces, even inside the encoded part,
@@ -51,7 +55,7 @@ export const AtoB = (str: string) => {
  * const claims = decodeJWTBody(token);
  * ```
  *
- * @sdkOperation token.decodeAccessTokenBody
+ * @sdkOperation token.decodeJWTBody
  * @sdkGroup Token
  * @sdkPage Helpers
  */

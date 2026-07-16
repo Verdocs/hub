@@ -3,6 +3,10 @@ import type {IFileWithData} from './Types';
 /**
  * Given a File, extract the file's content as a base64 encoded data URL. The response will have a prefix that
  * includes the MIME type of the file, e.g. "data:image/jpeg;base64,iVBORw0K......"
+ *
+ * @sdkOperation file.fileToDataUrl
+ * @sdkGroup File
+ * @sdkPage Helpers
  */
 export const fileToDataUrl = (file: File): Promise<IFileWithData> =>
   new Promise((resolve, reject) => {
@@ -28,6 +32,10 @@ export const fileToDataUrl = (file: File): Promise<IFileWithData> =>
 
 /**
  * Trigger a download dialog to save a blob as a file on disk.
+ *
+ * @sdkOperation file.downloadBlob
+ * @sdkGroup File
+ * @sdkPage Helpers
  */
 export const downloadBlob = (blob: Blob, name = 'file.pdf') => {
   const blobUrl = URL.createObjectURL(blob);

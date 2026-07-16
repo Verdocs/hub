@@ -4,6 +4,10 @@ import {capitalize} from './Strings';
 /**
  * Create an array containing a sequence of integers, e.g. [START, START+1, START+2, ...] This is frequently useful
  * in rendering operations when there is no source array to .map() across.
+ *
+ * @sdkOperation primitive.integerSequence
+ * @sdkGroup Primitive
+ * @sdkPage Helpers
  */
 export const integerSequence = (start: number, count: number): number[] =>
   Array(count)
@@ -12,18 +16,30 @@ export const integerSequence = (start: number, count: number): number[] =>
 
 /**
  * Format a profile's full name
+ *
+ * @sdkOperation primitive.formatFullName
+ * @sdkGroup Primitive
+ * @sdkPage Helpers
  */
 export const formatFullName = (source?: {first_name?: string | null; last_name?: string | null; [key: string]: any} | null) =>
   `${capitalize(source?.first_name || '')} ${capitalize(source?.last_name || '')}`.trim();
 
 /**
  * Format a profile's initials
+ *
+ * @sdkOperation primitive.formatInitials
+ * @sdkGroup Primitive
+ * @sdkPage Helpers
  */
 export const formatInitials = (profile?: IProfile) =>
   profile ? `${capitalize(profile.first_name).charAt(0)} ${capitalize(profile.last_name).charAt(0)}` : '--';
 
 /**
  * Generate suggested initials for a full name, e.g. "John Doe" will yield "JD".
+ *
+ * @sdkOperation primitive.fullNameToInitials
+ * @sdkGroup Primitive
+ * @sdkPage Helpers
  */
 export const fullNameToInitials = (name: string) =>
   name

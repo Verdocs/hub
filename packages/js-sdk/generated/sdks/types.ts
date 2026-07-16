@@ -2,6 +2,8 @@ export type SdkSymbolKind = 'class' | 'interface' | 'method' | 'property' | 'enu
 
 export type SdkPage = 'Getting Started' | 'Endpoints' | 'Helpers';
 
+export type SdkResource = 'function' | 'interface' | 'type' | 'class'
+
 export interface SdkParam {
   name: string;
   type: string;
@@ -15,12 +17,13 @@ export interface SdkSymbol {
   kind: SdkSymbolKind;
   name: string;
   page: SdkPage;
+  resource: SdkResource
   signature: string;
   summary: string;
   params: SdkParam[];
-  returns?: {type: string; description: string};
-  throws: {type: string; description: string}[];
-  examples: {language: string; code: string}[];
+  returns?: { type: string; description: string };
+  throws: { type: string; description: string }[];
+  examples: { language: string; code: string }[];
   deprecated: boolean;
   since?: string;
 }

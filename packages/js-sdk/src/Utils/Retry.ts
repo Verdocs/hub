@@ -9,6 +9,11 @@ const TIMEOUT_CODES = ['ECONNABORTED', 'ETIMEDOUT'];
 const isTimeoutError = (error: unknown): boolean =>
   !!error && typeof error === 'object' && TIMEOUT_CODES.includes((error as {code?: string}).code || '');
 
+/**
+ * @sdkOperation retry.retryOnceOnTimeout
+ * @sdkGroup Retry
+ * @sdkPage Helpers
+ */
 export const retryOnceOnTimeout = async <T>(request: () => Promise<T>): Promise<T> => {
   try {
     return await request();
