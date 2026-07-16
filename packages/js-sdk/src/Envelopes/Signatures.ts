@@ -15,6 +15,10 @@ import {ISignature} from '../Models';
  * @api POST /v2/profiles/signatures Create Signature Block
  * @apiBody string signature Blob containing signature image to store.
  * @apiSuccess ISignature . The newly-created signature block.
+ *
+ * @sdkOperation signature.createSignature
+ * @sdkGroup Signature
+ * @sdkPage Endpoints
  */
 export const createSignature = (endpoint: VerdocsEndpoint, name: string, signature: Blob) => {
   const data = new FormData();
