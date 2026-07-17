@@ -1,4 +1,4 @@
-import {IEnvelope} from './Models';
+import { IEnvelope } from './Models';
 
 export type TRequestStatus = 'OK' | 'ERROR';
 
@@ -198,6 +198,7 @@ export type TEventName =
   | 'envelope:signed'
   | 'email:verify'
   | 'email:otp'
+  | 'sms:otp'
   | 'password:reset'
   | 'recipient:question'
   | 'delegate:requested'
