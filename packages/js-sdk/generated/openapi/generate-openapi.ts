@@ -1,10 +1,8 @@
-/// <reference types="node" />
 /* tslint:disable:no-console */
 
 import { writeFileSync } from 'node:fs';
 import { jsTypeToSchema } from './utils';
 import { Preamble } from './Preamble';
-
 // @ts-ignore - docs.json may not exist yet in CI
 import docsJson from '../../docs.json';
 import { generateSnippets } from './snippets';
@@ -70,7 +68,7 @@ interface IBlockTag {
   content: IBlockTagContent[];
 }
 
-export const joinTagContent = (content: IBlockTagContent[]) => content.map((c) => c.text).join('');
+const joinTagContent = (content: IBlockTagContent[]) => content.map((c) => c.text).join('');
 
 // See https://regex101.com/r/dJUzdP/1
 // Test strings:
@@ -111,7 +109,7 @@ const parseApiOptionTag = (option: string) => {
 // /v2/envelopes/:envelope_id/
 // /v2/envelopes/:id/
 // /v2/envelopes/:id/path/:otherParam/path2
-export const PATH_REGEX = /\/:([a-zA-Z0-9-_]+)/g;
+const PATH_REGEX = /\/:([a-zA-Z0-9-_]+)/g;
 
 const parseResponseType = (currentResponseSchema: any, param: string) => {
   const parsed = parseApiOptionTag(param);

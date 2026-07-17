@@ -46,6 +46,7 @@ import { TCreateEnvelopeRequest } from './Types';
  * @sdkOperation envelope.createEnvelope
  * @sdkGroup Envelope
  * @sdkPage Endpoints
+ * @sdkGettingStarted
  * @api POST /v2/envelopes Create Envelope
  * @apiBody string(format:uuid) template_id If using a template, the ID of the template to copy
  * @apiBody array(items:ICreateEnvelopeRecipientDirectly) recipients A list of recipients to include in the workflow. Must specify one recipient to match each template Role.
@@ -232,6 +233,7 @@ export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, documentId: str
  * @sdkOperation envelope.updateEnvelope
  * @sdkGroup Envelope
  * @sdkPage Endpoints
+ * @sdkGettingStarted
  */
 export const updateEnvelope = async (
   endpoint: VerdocsEndpoint,
@@ -268,6 +270,7 @@ export const updateEnvelope = async (
  * @sdkOperation envelope.updateEnvelopeField
  * @sdkGroup Envelope
  * @sdkPage Endpoints
+ * @sdkGettingStarted
  */
 export const updateEnvelopeField = async (
   endpoint: VerdocsEndpoint,

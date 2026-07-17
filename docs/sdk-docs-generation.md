@@ -62,7 +62,7 @@ content/docs/reference/SDK/
 └── helpers/
 ```
 
-- **Getting Started**: the most important page. The essentials for standing up the SDK: installing, authentication, creating a template, creating an envelope, and the handful of flows a new caller needs. This page is authored MDX (we own the prose and the ordering) that embeds specific operations by `@sdkOperation`, so the code snippets stay in sync with the source while the narrative stays curated. It is not fully generated.
+- **Getting Started**: the most important page. The essentials for standing up the SDK: installing, authentication, creating a template, creating an envelope, and the handful of flows a new caller needs. This page is authored MDX (we own the prose and the ordering) that embeds operations tagged `@sdkGettingStarted`, so the code snippets stay in sync with the source while the narrative stays curated. It is not a home for operations; every featured operation still lives on Endpoints or Helpers.
 - **Endpoints**: reference for every HTTP-related SDK function (the ones that call the API). Fully generated.
 - **Helpers**: reference for every non-HTTP SDK function (local utilities like `sortFields`, `sortRecipients`). Fully generated.
 
@@ -106,12 +106,33 @@ def create_envelope(self, request: CreateEnvelopeRequest) -> Envelope:
 
 Two functions in the same language must not share an `@sdkOperation`; that is a collision (see merge semantics). Two functions in different languages sharing an id is the whole point: they are the same operation.
 
-### `@sdkPage` ("Getting Started" | "Endpoints" | "Helpers")
+### `resource` ("function" | "interface" | "type" | "class")
 
-Which top-level page the operation belongs to.
+Generated metadata describing what kind of SDK surface the entry documents. The SDK reference uses it to pick a page template (callable vs type vs class).
+
+- **function**: free functions and methods (the bulk of the reference).
+- **class**: a class entry such as `VerdocsEndpoint`.
+- **interface** / **type**: exported interfaces and type aliases documented as their own entries.
+
+Authors do not add an `@sdkResource` tag to doc comments. Each extractor gets the value from its language's native symbol metadata: TypeDoc reflection kinds for JavaScript, DocFX metadata for C#, and Griffe object kinds for Python. The normalized and unified JSON models retain the generated `resource` field.
+
+```typescript
+/**
+ * @sdkOperation endpoint.VerdocsEndpoint
+ * @sdkGroup Endpoint
+ * @sdkPage Helpers
+ * @sdkGettingStarted
+ */
+export class VerdocsEndpoint {
+  // ...
+}
+```
+
+### `@sdkPage` ("Endpoints" | "Helpers")
+
+Which reference page the operation belongs to. Exactly one of these two; never Getting Started.
 
 - If omitted, the extractor infers it: an operation with an `@api` tag (an HTTP call) defaults to **Endpoints**; everything else defaults to **Helpers**.
-- **Getting Started** is always opt-in. An operation tagged `@sdkPage Getting Started` is featured on that page in addition to its natural Endpoints or Helpers home; it is not moved off the reference pages.
 
 ```typescript
 /**
@@ -119,12 +140,28 @@ Which top-level page the operation belongs to.
  *
  * @sdkOperation envelopes.createEnvelope
  * @sdkGroup Envelopes
- * @sdkPage Getting Started
+ * @sdkPage Endpoints
  * @api POST /v2/envelopes Create Envelope
  */
 ```
 
-The example above appears both in the Getting Started narrative and under Envelopes on the Endpoints page.
+### `@sdkGettingStarted` (optional)
+
+Presence-only flag. When present, the operation is also featured on the Getting Started page. It does not move the operation off Endpoints or Helpers; the reference page from `@sdkPage` remains its home.
+
+```typescript
+/**
+ * Create an envelope.
+ *
+ * @sdkOperation envelopes.createEnvelope
+ * @sdkGroup Envelopes
+ * @sdkPage Endpoints
+ * @sdkGettingStarted
+ * @api POST /v2/envelopes Create Envelope
+ */
+```
+
+The example above appears under Envelopes on the Endpoints page and again in the Getting Started narrative.
 
 ### `@sdkGroup` (already in use)
 
@@ -172,14 +209,17 @@ Normally unnecessary. Each extractor already knows its own language, and fenced 
 ### Tag summary
 
 
-| Tag                | Required | Role                                                                         |
-| ------------------ | -------- | ---------------------------------------------------------------------------- |
-| `@sdkOperation`    | Yes      | Merge key across languages, URL anchor, cross-reference id                   |
-| `@sdkPage`            | Yes      | Getting Started / Endpoints / Helpers; inferred from `@api` when omitted     |
-| `@sdkGroup`           | Yes      | Section within a page; defaults per language convention if omitted           |
-| `@example` / fence | Yes      | Per-language code snippet; language read from the fence                      |
-| `@param`           | Yes      | SDK argument docs; separate from the REST `@apiParam`/`@apiBody`/`@apiQuery` |
-| `@sdkLanguage`        | No       | Override for the inferred snippet language; rarely needed                    |
+| Tag                  | Required | Role                                                                         |
+| -------------------- | -------- | ---------------------------------------------------------------------------- |
+| `@sdkOperation`      | Yes      | Merge key across languages, URL anchor, cross-reference id                   |
+| `@sdkPage`           | Yes      | Endpoints or Helpers; inferred from `@api` when omitted                      |
+| `@sdkGettingStarted` | No       | Presence flag; also feature the operation on Getting Started                 |
+| `@sdkGroup`          | Yes      | Section within a page; defaults per language convention if omitted           |
+| `@example` / fence   | Yes      | Per-language code snippet; language read from the fence                      |
+| `@param`             | Yes      | SDK argument docs; separate from the REST `@apiParam`/`@apiBody`/`@apiQuery` |
+| `@sdkLanguage`       | No       | Override for the inferred snippet language; rarely needed                    |
+
+The generated model also carries `resource` (`function`, `interface`, `type`, or `class`). This is inferred from native symbol metadata and is not an authored tag.
 
 
 
@@ -205,6 +245,8 @@ One JSON schema, `sdk-api.schema.json`, describes the shape every language emits
           "kind": "method",
           "name": "createEnvelope",
           "page": "Endpoints",
+          "gettingStarted": true,
+          "resource": "function",
           "signature": "createEnvelope(endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest): Promise<IEnvelope>",
           "summary": "Create an envelope.",
           "params": [
@@ -226,7 +268,7 @@ Each language emits one of these (`model.js.json`, `model.python.json`, `model.c
 
 ## The merged model
 
-The merge step reads every `model.<lang>.json` and produces one `sdk-unified.json`. It groups symbols by `@sdkOperation` and collects each language's contribution into a `variants` array. The prose fields (summary, group, page) come from a canonical language (js-sdk first, since it is the flagship and the most complete), and each variant carries the language-specific signature, params, and example.
+The merge step reads every `model.<lang>.json` and produces one `sdk-unified.json`. It groups symbols by `@sdkOperation` and collects each language's contribution into a `variants` array. The prose fields (summary, group, page, gettingStarted) come from a canonical language (js-sdk first, since it is the flagship and the most complete), and each variant carries the language-specific signature, params, and example.
 
 ```json
 {
@@ -236,6 +278,7 @@ The merge step reads every `model.<lang>.json` and produces one `sdk-unified.jso
       "sdkOperation": "envelopes.createEnvelope",
       "group": "Envelopes",
       "page": "Endpoints",
+      "gettingStarted": true,
       "summary": "Create an envelope.",
       "variants": [
         {
@@ -265,7 +308,7 @@ The generator consumes only this unified model. It does not know or care how man
 The rules the merge step follows, and how it handles the messy cases.
 
 - **Join key**: `@sdkOperation`, exact string match. All symbols sharing an id become the `variants` of one operation.
-- **Canonical prose**: `summary`, `group`, and `page` are taken from a priority order of languages (js-sdk, then python, then csharp). If two languages disagree on `group` or `page` for the same id, the canonical one wins and the merge emits a warning so the drift gets fixed at the source. This is the same "one source wins, warn on drift" stance the REST generator already takes when `@apiParam` tags disagree with the `@api` path template.
+- **Canonical prose**: `summary`, `group`, `page`, and `gettingStarted` are taken from a priority order of languages (js-sdk, then python, then csharp). If two languages disagree on `group`, `page`, or `gettingStarted` for the same id, the canonical one wins and the merge emits a warning so the drift gets fixed at the source. This is the same "one source wins, warn on drift" stance the REST generator already takes when `@apiParam` tags disagree with the `@api` path template.
 - **Missing a language**: an operation documented in js-sdk but not yet in python simply has fewer `variants`. The entry still renders; the switcher offers only the languages present. This is expected while the SDKs are at different maturities, not an error.
 - **Language-only operations**: a helper that exists only in js-sdk (say a browser-oriented utility) renders with a single variant. Fine.
 - **Collision (same language, same id)**: two symbols in the same model claiming one `@sdkOperation` is an authoring bug. The merge fails loudly and names both symbols, because we cannot know which one the entry should be.
@@ -310,7 +353,7 @@ Add `apps/dev-docs/app/scripts/generate-sdk-docs.ts`, a sibling of `generate-doc
 
 Rendering is the `createAPIPage` analog we own. Add an `SdkReference` (and a smaller `SdkOperation`) React component, registered in `app/mdx-components.tsx` alongside `APIPage`. It renders an operation's summary, signature, params table, return, and example, with a **language switcher** over the operation's `variants`, using the same Shiki setup the REST pages use so a C# signature and a Python example each highlight in their own grammar. The switcher default follows the canonical language order.
 
-Getting Started stays authored MDX and pulls specific operations in by `@sdkOperation` through the same `SdkOperation` component, so its snippets track the source while its prose stays curated.
+Getting Started stays authored MDX and pulls operations tagged `@sdkGettingStarted` through the same `SdkOperation` / `SdkReference` components, so its snippets track the source while its prose stays curated. Those operations still render on their `@sdkPage` home as well.
 
 Per-operation versus per-group MDX granularity is an implementation choice: per-group keeps the tree shallow for small SDKs (where we are today), per-operation scales better and gives every operation its own URL. Start per-group and split later.
 
@@ -334,10 +377,9 @@ Phase 3: add the merge-integrity and staleness CI checks, publish `@verdocs/sdk-
 
 ## Open questions
 
-- **Getting Started authoring**: confirmed as authored MDX that embeds tagged operations. Who owns keeping its narrative and the chosen operations current as the SDK grows?
+- **Getting Started authoring**: confirmed as authored MDX that embeds `@sdkGettingStarted` operations. Who owns keeping its narrative and the chosen operations current as the SDK grows?
 - `@sdkOperation` **naming**: proposed `<group>.<functionName>`. Confirm this holds up where the same logical operation has different function names across languages (`createEnvelope` vs `create_envelope` vs `CreateEnvelopeAsync`); the id is the constant, the names differ per variant.
 - **Canonical language for prose**: js-sdk first is the default. Revisit if another SDK ends up with better-maintained summaries.
 - **Per-operation versus per-group MDX granularity**: start per-group.
 - **npm package versus committed-copy handoff**: recommend the package; copy is the fallback.
 - **JS extractor sharing with** `generate-openapi.ts`: both walk the same `docs.json`. They can share the AST-walking code; decide whether the JS extractor replaces or runs alongside the OpenAPI generator.
-

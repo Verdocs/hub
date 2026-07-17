@@ -6,7 +6,7 @@ import {writeFileSync} from 'node:fs';
 // @ts-ignore - docs.json may not exist yet in CI
 import docsJson from '../../docs.json';
 import {SdkPreamble} from './SdkPreamble';
-import type {SdkPage, SdkParam, SdkSymbol} from './types';
+import type {SdkPage, SdkParam, SdkResource, SdkSymbol, SdkSymbolKind} from './types';
 
 // This is the JS extractor from the SDK docs pipeline (docs/sdk-docs-generation.md). It walks the
 // same TypeDoc reflection (docs.json) that generate-openapi.ts walks, but instead of an OpenAPI
@@ -17,7 +17,8 @@ import type {SdkPage, SdkParam, SdkSymbol} from './types';
 // Tags read here (all optional in source today; sensible fallbacks apply until they are added). Every
 // SDK tag is sdk-prefixed so it can never cross into the OpenAPI pipeline, which reads @group / @api:
 //   @sdkOperation <group>.<fn>   the cross-language merge key; falls back to <groupSlug>.<name>
-//   @sdkPage <Getting Started|Endpoints|Helpers>  which page; falls back to @api -> Endpoints, else Helpers
+//   @sdkPage <Endpoints|Helpers> which reference page; falls back to @api -> Endpoints, else Helpers
+//   @sdkGettingStarted           presence flag; also feature the symbol on Getting Started
 //   @sdkGroup <Section>          the sidebar section
 //   @sdkLanguage <lang>          overrides the inferred snippet language; rarely needed
 //   @deprecated / @since         render a badge and a version note
@@ -34,9 +35,22 @@ interface IBlockTag {
   content: IBlockTagContent[];
 }
 
+// TypeDoc ReflectionKind values we care about. See typedoc ReflectionKind.
 const TYPEDOC_FUNCTION_KIND = 64;
+const TYPEDOC_CLASS_KIND = 128;
+const TYPEDOC_INTERFACE_KIND = 256;
+const TYPEDOC_METHOD_KIND = 2048;
+const TYPEDOC_TYPE_ALIAS_KIND = 2097152;
 
-const SDK_PAGES: SdkPage[] = ['Getting Started', 'Endpoints', 'Helpers'];
+const DOCUMENTABLE_KINDS = new Set([
+  TYPEDOC_FUNCTION_KIND,
+  TYPEDOC_CLASS_KIND,
+  TYPEDOC_INTERFACE_KIND,
+  TYPEDOC_METHOD_KIND,
+  TYPEDOC_TYPE_ALIAS_KIND,
+]);
+
+const SDK_PAGES: SdkPage[] = ['Endpoints', 'Helpers'];
 
 export const joinTagContent = (content: IBlockTagContent[]) => content.map((c) => c.text).join('');
 
@@ -69,6 +83,37 @@ const getSummaryText = (comment: any) =>
 
 const findTag = (comment: any, name: string): IBlockTag | undefined =>
   (comment?.blockTags || []).find((tag: IBlockTag) => tag.tag === name);
+
+const inferResource = (typedocKind: number): SdkResource => {
+  switch (typedocKind) {
+    case TYPEDOC_CLASS_KIND:
+      return 'class';
+    case TYPEDOC_INTERFACE_KIND:
+      return 'interface';
+    case TYPEDOC_TYPE_ALIAS_KIND:
+      return 'type';
+    case TYPEDOC_FUNCTION_KIND:
+    case TYPEDOC_METHOD_KIND:
+    default:
+      return 'function';
+  }
+};
+
+const inferSymbolKind = (typedocKind: number): SdkSymbolKind => {
+  switch (typedocKind) {
+    case TYPEDOC_CLASS_KIND:
+      return 'class';
+    case TYPEDOC_INTERFACE_KIND:
+      return 'interface';
+    case TYPEDOC_METHOD_KIND:
+      return 'method';
+    case TYPEDOC_TYPE_ALIAS_KIND:
+      return 'function';
+    case TYPEDOC_FUNCTION_KIND:
+    default:
+      return 'function';
+  }
+};
 
 // Render a TypeDoc type node back to a TS-ish string. We cover the shapes the SDK surface actually
 // uses (references with generics, arrays, unions, literals); anything exotic falls back to its name.
@@ -161,9 +206,7 @@ const extractExamples = (comment: any) => {
 const processChild = (child: Record<string, any>) => {
   const {name, kind, comment, flags} = child as {name: string; kind: number; comment: any; flags: any};
 
-  // The SDK reference documents callable surface. Everything else (interfaces, enums, type aliases)
-  // is a supporting type that shows up inside signatures, not its own reference entry.
-  if (kind !== TYPEDOC_FUNCTION_KIND || !comment) {
+  if (!DOCUMENTABLE_KINDS.has(kind) || !comment) {
     return;
   }
 
@@ -174,6 +217,14 @@ const processChild = (child: Record<string, any>) => {
   let hasApi = false;
   let deprecated = flags?.isDeprecated === true;
   let since: string | undefined;
+
+  // Modifier tags (e.g. @sdkGettingStarted) land on comment.modifierTags; block tags stay on blockTags.
+  const modifierTags: string[] = comment?.modifierTags
+    ? Array.isArray(comment.modifierTags)
+      ? comment.modifierTags
+      : [...comment.modifierTags]
+    : [];
+  const gettingStarted = modifierTags.includes('@sdkGettingStarted');
 
   (comment.blockTags || []).forEach((tag: IBlockTag) => {
     const text = (tag.content?.[0]?.text || '').trim();
@@ -206,12 +257,14 @@ const processChild = (child: Record<string, any>) => {
   const groupName = group || 'Ungrouped';
   const groupId = slugify(groupName);
 
-  // @sdkOperation is the authored merge key, but it does not exist in source yet. Until it does we
-  // derive the same <group>.<functionName> shape the spec prescribes so the model is still usable.
+  // @sdkOperation is the authored merge key. Until every symbol has one we derive the
+  // <group>.<functionName> shape the spec prescribes so the model is still usable.
   const operationId = sdkOperation || `${groupId}.${name}`;
 
   // @sdkPage is authored, but when absent the presence of an @api tag tells us it is an HTTP call.
   const resolvedPage: SdkPage = SDK_PAGES.includes(page as SdkPage) ? (page as SdkPage) : hasApi ? 'Endpoints' : 'Helpers';
+
+  const resolvedResource = inferResource(kind);
 
   const signature = child.signatures?.[0];
   const params = extractParams(signature);
@@ -219,15 +272,26 @@ const processChild = (child: Record<string, any>) => {
   const returnsTag = findTag(comment, '@returns') || findTag(comment, '@return');
   const examples = extractExamples(comment).map((example) => ({...example, language: language || example.language}));
 
+  // Classes and interfaces do not have a call signature the same way functions do; keep the name.
+  const renderedSignature =
+    resolvedResource === 'function' || kind === TYPEDOC_METHOD_KIND
+      ? buildSignature(name, params, returnType)
+      : name;
+
   const symbol: SdkSymbol = {
     sdkOperation: operationId,
-    kind: 'function',
+    kind: inferSymbolKind(kind),
     name,
     page: resolvedPage,
-    signature: buildSignature(name, params, returnType),
+    gettingStarted,
+    resource: resolvedResource,
+    signature: renderedSignature,
     summary: getSummaryText(comment),
     params,
-    returns: {type: returnType, description: returnsTag ? joinTagContent(returnsTag.content).trim() : ''},
+    returns:
+      resolvedResource === 'function' || kind === TYPEDOC_METHOD_KIND
+        ? {type: returnType, description: returnsTag ? joinTagContent(returnsTag.content).trim() : ''}
+        : undefined,
     throws: [],
     examples,
     deprecated,

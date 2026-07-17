@@ -21,6 +21,7 @@
     "@apiErrors",
     "@sdkGroup",
     "@sdkPage",
+    "@sdkGettingStarted",
     "@sdkOperation",
     "@sdkLanguage"
   ],
