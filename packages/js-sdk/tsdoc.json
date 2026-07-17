@@ -10,6 +10,11 @@
     {"tagName": "@apiGroup", "syntaxKind": "block"},
     {"tagName": "@apiName", "syntaxKind": "block"},
     {"tagName": "@api", "syntaxKind": "block"},
-    {"tagName": "@group", "syntaxKind": "block"}
+    {"tagName": "@group", "syntaxKind": "block"},
+    {"tagName": "@sdkOperation", "syntaxKind": "block"},
+    {"tagName": "@sdkGroup", "syntaxKind": "block"},
+    {"tagName": "@sdkPage", "syntaxKind": "block"},
+    {"tagName": "@sdkGettingStarted", "syntaxKind": "modifier"},
+    {"tagName": "@sdkLanguage", "syntaxKind": "block"}
   ]
 }

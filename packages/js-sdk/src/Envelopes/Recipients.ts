@@ -1,7 +1,7 @@
-import type {IInPersonLinkResponse, ISignerTokenResponse, TAuthenticateRecipientRequest, IUpdateRecipientParams} from './Types';
-import {IRecipientSubmitBody, IRecipientDisclosureAgreeBody} from './Types';
-import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import type {IRecipient} from '../Models';
+import type { IInPersonLinkResponse, ISignerTokenResponse, TAuthenticateRecipientRequest, IUpdateRecipientParams } from './Types';
+import { IRecipientSubmitBody, IRecipientDisclosureAgreeBody } from './Types';
+import { VerdocsEndpoint } from '../VerdocsEndpoint';
+import type { IRecipient } from '../Models';
 
 /**
  * Agree to electronic signing dislosures.
@@ -26,7 +26,7 @@ export const envelopeRecipientAgree = (
   data?: IRecipientDisclosureAgreeBody,
 ) =>
   endpoint.api //
-    .post<IRecipient>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/agree`, {disclosures, ...data})
+    .post<IRecipient>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/agree`, { disclosures, ...data })
     .then((r) => r.data);
 
 /**
@@ -191,7 +191,7 @@ export const delegateRecipient = (
   },
 ) =>
   endpoint.api //
-    .post<{status: 'OK'}>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/delegate`, params)
+    .post<{ status: 'OK' }>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/delegate`, params)
     .then((r) => r.data);
 
 /**
@@ -238,7 +238,7 @@ export const updateRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, r
  */
 export const remindRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
   endpoint.api //
-    .patch<{status: 'OK'}>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'remind'})
+    .patch<{ status: 'OK' }>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, { action: 'remind' })
     .then((r) => r.data);
 
 /**
@@ -252,7 +252,7 @@ export const remindRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, r
  */
 export const resetRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string) =>
   endpoint.api //
-    .patch<{status: 'OK'}>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, {action: 'reset'})
+    .patch<{ status: 'OK' }>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}`, { action: 'reset' })
     .then((r) => r.data);
 
 /**
@@ -271,7 +271,7 @@ export const resetRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, ro
  * @sdkGroup Recipient
  * @sdkPage Endpoints
  */
-export const askQuestion = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, params: {question: string}) =>
+export const askQuestion = (endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, params: { question: string }) =>
   endpoint.api //
     .post<IRecipient>(`/v2/envelopes/${envelopeId}/recipients/${encodeURIComponent(roleName)}/ask-question`, params)
     .then((r) => r.data);

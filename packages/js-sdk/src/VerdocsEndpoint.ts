@@ -28,6 +28,10 @@ export type TEnvironment = '' | 'beta';
 
 export type TSessionChangedListener = (endpoint: VerdocsEndpoint, session: TSession, profile: IProfile | null) => void;
 
+/**
+ * Constructor options for VerdocsEndpoint
+ * 
+ */
 export interface VerdocsEndpointOptions {
   /** Override the API base URL. Rarely needed outside Verdocs-directed setups. */
   baseURL?: string;
@@ -66,7 +70,8 @@ export interface VerdocsEndpointOptions {
  *
  * @sdkOperation endpoint.VerdocsEndpoint
  * @sdkGroup Endpoint
- * @sdkPage Getting Started
+ * @sdkPage Helpers
+ * @sdkGettingStarted
  */
 export class VerdocsEndpoint {
   private environment: TEnvironment = BETA_ORIGINS.includes(globalThis.window?.location?.origin || '') ? 'beta' : '';
