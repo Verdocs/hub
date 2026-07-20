@@ -710,6 +710,208 @@
         ]
       }
     },
+    "/envelopes/{envelope_id}/recipients/{role_name}/ask-question": {
+      "post": {
+        "operationId": "askQuestion",
+        "summary": "Ask Sender a Question",
+        "tags": [
+          "Recipients"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "envelope_id",
+            "description": "The envelope to operate on.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "name": "role_name",
+            "description": "The role name to update.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Body Parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "question"
+                ],
+                "properties": {
+                  "question": {
+                    "type": "string",
+                    "description": "The question to ask."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X POST \"https://api.verdocs.com/envelopes/ENVELOPE_ID/recipients/ROLE_NAME/ask-question\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/envelopes/ENVELOPE_ID/recipients/ROLE_NAME/ask-question', {\n  method: 'post',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/envelopes/ENVELOPE_ID/recipients/ROLE_NAME/ask-question\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"POST\", \"/envelopes/{envelope_id}/recipients/{role_name}/ask-question\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/envelopes/ENVELOPE_ID/recipients/ROLE_NAME/ask-question\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/envelopes/ENVELOPE_ID/recipients/ROLE_NAME/ask-question\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
     "/v2/oauth2/token": {
       "post": {
         "operationId": "authenticate",
