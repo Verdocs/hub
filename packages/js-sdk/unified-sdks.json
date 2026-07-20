@@ -2,496 +2,6 @@
   "$schema": "./sdk-unified.schema.json",
   "operations": [
     {
-      "operationId": "ungrouped.TAccountPermissionAdminAdd",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Grant the \"admin\" role to other organization members.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TAccountPermissionAdminAdd",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TAccountPermissionAdminRemove",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Remove the \"admin\" role from other organization members.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TAccountPermissionAdminRemove",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TAccountPermissionMemberAdd",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Grant the \"member\" role to other organization members.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TAccountPermissionMemberAdd",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TAccountPermissionMemberRemove",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Remove the \"member\" role from other organization members.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TAccountPermissionMemberRemove",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TAccountPermissionMemberView",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "View the members of an organization.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TAccountPermissionMemberView",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TAccountPermissionOwnerAdd",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Grant the \"owner\" role to other organization members.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TAccountPermissionOwnerAdd",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TAccountPermissionOwnerRemove",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Remove the \"owner\" role from other organization members.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TAccountPermissionOwnerRemove",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TActiveSession",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "An active authenticated session within Verdocs, either for signing or regular user-based operations.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TActiveSession",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TDeprecatedHistoryEvent",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "@deprecated. See envelope.created_at, .updated_at, and .canceled_at.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TDeprecatedHistoryEvent",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TEnvelopePermissionCancel",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Cancel envelopes. This is a default permission for most users, but it may be removed for\nhighly regulated environments where envelope activities must be audited, and should not\nbe canceled.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TEnvelopePermissionCancel",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TEnvelopePermissionCreate",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Create envelopes.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TEnvelopePermissionCreate",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TEnvelopePermissionOrg",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "View envelopes created by other members of the same organization. By default, only templates\nhaving sharing settings controlled by their creators. Envelopes are usually private to the\ncallers who created them. In some organizations it may be useful to have users who can see\n\"all activity\" by all organization members. This is particularly useful when applied to API\nkeys to develop applications that can access all data across the organization.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TEnvelopePermissionOrg",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TEnvelopePermissionView",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "View envelopes. This is a default permission for most users, but it may be removed for\nhighly regulated environments where once sent, envelopes may only be viewed by specific\nusers.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TEnvelopePermissionView",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TOrgPermissionCreate",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Create a new organization.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TOrgPermissionCreate",
-          "deprecated": true
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TOrgPermissionDelete",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Delete the organization.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TOrgPermissionDelete",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TOrgPermissionList",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "List organizations.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TOrgPermissionList",
-          "deprecated": true
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TOrgPermissionTransfer",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Transfer ownership of the organization. This primarily allows the holder to remove his/her own\nOwner role or add new Owners even if the holder is not one themselves. This is primarily intended\nto be used for reseller scenarios.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TOrgPermissionTransfer",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TOrgPermissionUpdate",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Update the organization.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TOrgPermissionUpdate",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TOrgPermissionView",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "View the organization.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TOrgPermissionView",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TPermission",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Operation within Verdocs that users may perform.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TPermission",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TRecipientAuthMethod",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "The authentication method(s) required for a recipient to access an envelope. \"Passcode\" will require a\nPIN or passcode to be entered, which is intended to be known to the sender and recipient ahead of time\nand communicated by means of their choosing. \"SMS\" and \"Email\" will send a one-time-code via the respective\nchannel for the recipient to enter. \"KBA\" will require the recipient to confirm personal information such\nas prior addresses, phone numbers, etc. \"ID\" will require the recipient to perform full ID-based verification.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TRecipientAuthMethod",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TSession",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Represents a possibly-authenticated session within Verdocs, either for signing or regular user-based operations.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TSession",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TSessionType",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Verdocs supports two types of authenticated sessions: User and Signing. Both behave similarly and have similar\nproperties, but signing sessions only have access to a small set of signing-related functions.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TSessionType",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TSortTemplateBy",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Plans provide access to Verdocs product features.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TSortTemplateBy",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TTemplateMemberDelete",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Edit templates shared by other members of the same organization. Those templates must also\nhave `is_personal` set to false to be editable.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TTemplateMemberDelete",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TTemplateMemberRead",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "View templates shared by other members of the same organization. Those templates must also\nhave `is_personal` set to false to be visible.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TTemplateMemberRead",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TTemplateMemberVisibility",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Edit templates shared by other members of the same organization. Those templates must also\nhave `is_personal` set to false to be editable.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TTemplateMemberVisibility",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TTemplateMemberWrite",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Edit templates shared by other members of the same organization. Those templates must also\nhave `is_personal` set to false to be editable.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TTemplateMemberWrite",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TTemplatePermissionCreateOrg",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Create templates shared with other users of the same organization.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TTemplatePermissionCreateOrg",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TTemplatePermissionCreatePersonal",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Create templates private to the creator.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TTemplatePermissionCreatePersonal",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TTemplatePermissionCreatePublic",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Create public templates. Public templates are still owned and managed by the creator,\nbut may be searched for and used to create envelopes by other users.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TTemplatePermissionCreatePublic",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TTemplatePermissionDelete",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Create templates private to the creator.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TTemplatePermissionDelete",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TTemplatePermissionVisibility",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Alter the visiiblity settings on a template.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TTemplatePermissionVisibility",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "ungrouped.TWebhookAuthMethod",
-      "group": "Ungrouped",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Methods for authenticating webhook requests.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TWebhookAuthMethod",
-          "deprecated": false
-        }
-      ]
-    },
-    {
-      "operationId": "kba.TRecipientKbaStep",
-      "group": "KBA",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "The recipient's current step in the KBA (Knowledge-Based Authentication) flow. Branch on `kba_step`:\n`pin` prompts for a PIN and calls submitKbaPin(), `identity` collects address details for\nsubmitKbaIdentity(), and `challenge` presents questions for submitKbaChallengeResponse().",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TRecipientKbaStep",
-          "deprecated": false
-        }
-      ]
-    },
-    {
       "operationId": "kba.getKbaStep",
       "group": "KBA",
       "page": "Endpoints",
@@ -673,20 +183,6 @@
           "returns": {
             "type": "Promise<IRecipientKbaStepNone | IRecipientKbaStepComplete | IRecipientKbaStepPin | IRecipientKbaStepIdentity | IRecipientKbaStepChallenge | IRecipientKbaStepFailed>"
           }
-        }
-      ]
-    },
-    {
-      "operationId": "permissions.TRole",
-      "group": "Permissions",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Roles provide access to groups of permissions. Note that for historical reasons there is some overlap in the\nuse of the term \"role\". TRole refers to a user type. A \"Role\" (IRole) is a Template participant placeholder.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "TRole",
-          "deprecated": false
         }
       ]
     },
@@ -2319,6 +1815,57 @@
             "language": "typescript",
             "code": "import {authenticate, VerdocsEndpoint} from '@verdocs/js-sdk';\n\n// Client-side call, suitable for Web and mobile apps:\nconst {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { username: 'test@test.com', password: 'PASSWORD', grant_type:'password' });\nVerdocsEndpoint.getDefault().setAuthToken(access_token);\n\n// Server-side call, suitable for server apps. NEVER EXPOSE client_secret IN FRONT-END CODE:\nconst {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { client_id: '...', client_secret: '...', grant_type:'client_credentials' });\nVerdocsEndpoint.getDefault().setAuthToken(access_token);\n\n// OAuth2 authorization code exchange (used by third-party integrations like PowerAutomate):\nconst {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { grant_type: 'authorization_code', code: '...', client_id: '...', client_secret: '...', redirect_uri: '...' });"
           }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest request, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "request",
+              "type": "AuthenticateRequest",
+              "optional": false,
+              "default": null,
+              "description": "OAuth2 token request (password, client_credentials, refresh_token, or authorization_code)."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<AuthenticateResponse>",
+            "description": "Authentication tokens and expiration details."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var auth = await endpoint.AuthenticateAsync(new PasswordGrantRequest\n{\n    Username = \"you@example.com\",\n    Password = \"PASSWORD\",\n});\nendpoint.SetToken(auth.AccessToken);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "authenticate(params: AuthenticationRequest) -> AuthenticateResponse",
+          "params": [
+            {
+              "name": "params",
+              "type": "AuthenticationRequest",
+              "optional": false,
+              "default": null,
+              "description": "OAuth2 token request (password, client_credentials,\nrefresh_token, or authorization_code)."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "AuthenticateResponse",
+            "description": "The token set for the new session."
+          },
+          "example": {
+            "language": "python",
+            "code": "tokens = endpoint.auth.authenticate(\n    PasswordGrantRequest(username=\"test@example.com\", password=\"secret\")\n)\nendpoint.set_token(tokens.access_token)"
+          }
         }
       ]
     },
@@ -2356,6 +1903,57 @@
             "language": "typescript",
             "code": "import {changePassword} from '@verdocs/js-sdk';\n\nconst {status, message} = await changePassword({ old_password, new_password });\nif (status !== 'OK') {\n  window.alert(`Password reset error: ${message}`);\n}"
           }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ChangePasswordResponse> ChangePasswordAsync(ChangePasswordRequest request, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "request",
+              "type": "ChangePasswordRequest",
+              "optional": false,
+              "default": null,
+              "description": "Current and new passwords."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ChangePasswordResponse>",
+            "description": "Status and message from the server."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var result = await endpoint.ChangePasswordAsync(new ChangePasswordRequest\n{\n    OldPassword = \"old\",\n    NewPassword = \"new\",\n});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "change_password(params: ChangePasswordRequest) -> ChangePasswordResponse",
+          "params": [
+            {
+              "name": "params",
+              "type": "ChangePasswordRequest",
+              "optional": false,
+              "default": null,
+              "description": "Current and new passwords."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ChangePasswordResponse",
+            "description": "Status and message from the server."
+          },
+          "example": {
+            "language": "python",
+            "code": "result = endpoint.auth.change_password(\n    ChangePasswordRequest(old_password=\"old\", new_password=\"new\")\n)"
+          }
         }
       ]
     },
@@ -2381,6 +1979,41 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IUser>"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<User> GetMyUserAsync(CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<User>",
+            "description": "The caller's user record."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var user = await endpoint.GetMyUserAsync();"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_my_user() -> User",
+          "deprecated": false,
+          "returns": {
+            "type": "User",
+            "description": "The authenticated user's account record."
+          },
+          "example": {
+            "language": "python",
+            "code": "user = endpoint.auth.get_my_user()"
           }
         }
       ]
@@ -2419,6 +2052,50 @@
             "language": "typescript",
             "code": "import {getOAuth2AuthorizeUrl} from '@verdocs/js-sdk';\n\nconst url = getOAuth2AuthorizeUrl(VerdocsEndpoint.getDefault(), {\n  client_id: 'your-client-id',\n  redirect_uri: 'https://your-app.com/callback',\n  response_type: 'code',\n  state: 'random-csrf-token',\n});\nwindow.location.href = url;"
           }
+        },
+        {
+          "language": "csharp",
+          "signature": "string GetOAuth2AuthorizeUrl(OAuth2AuthorizeParams parameters)",
+          "params": [
+            {
+              "name": "parameters",
+              "type": "OAuth2AuthorizeParams",
+              "optional": false,
+              "default": null,
+              "description": "client_id, redirect_uri, and optional state/scope."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "string",
+            "description": "The absolute authorize URL."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var url = endpoint.GetOAuth2AuthorizeUrl(new OAuth2AuthorizeParams\n{\n    ClientId = \"your-client-id\",\n    RedirectUri = \"https://your-app.com/callback\",\n    State = \"random-csrf-token\",\n});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_oauth2_authorize_url(params: OAuth2AuthorizeParams) -> str",
+          "params": [
+            {
+              "name": "params",
+              "type": "OAuth2AuthorizeParams",
+              "optional": false,
+              "default": null,
+              "description": "client_id, redirect_uri, and optional state/scope."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "The absolute authorize URL."
+          },
+          "example": {
+            "language": "python",
+            "code": "url = endpoint.auth.get_oauth2_authorize_url(\n    OAuth2AuthorizeParams(\n        client_id=\"your-client-id\",\n        redirect_uri=\"https://your-app.com/callback\",\n        state=\"random-csrf-token\",\n    )\n)"
+          }
         }
       ]
     },
@@ -2455,6 +2132,57 @@
           "example": {
             "language": "typescript",
             "code": "import {Auth, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {accessToken} = await Auth.refreshTokens();\nVerdocsEndpoint.setAuthToken(accessToken);"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<AuthenticateResponse> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "refreshToken",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The refresh token from a prior authenticate call."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<AuthenticateResponse>",
+            "description": "A fresh token set."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var tokens = await endpoint.RefreshTokenAsync(previous.RefreshToken);\nendpoint.SetToken(tokens.AccessToken);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "refresh_token(refresh_token: str) -> AuthenticateResponse",
+          "params": [
+            {
+              "name": "refresh_token",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The refresh token from a prior authenticate call."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "AuthenticateResponse",
+            "description": "A fresh token set."
+          },
+          "example": {
+            "language": "python",
+            "code": "tokens = endpoint.auth.refresh_token(tokens.refresh_token)\nendpoint.set_token(tokens.access_token)"
           }
         }
       ]
@@ -2493,6 +2221,57 @@
             "language": "typescript",
             "code": "import {resendVerification} from '@verdocs/js-sdk';\n\nconst result = await resendVerification();"
           }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ResendVerificationResponse> ResendVerificationAsync(string accessToken = null, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "accessToken",
+              "type": "string",
+              "optional": true,
+              "default": "null",
+              "description": "Optional bearer token used only for this request."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ResendVerificationResponse>",
+            "description": "Confirmation that the resend was queued."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.ResendVerificationAsync();"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "resend_verification(access_token: str | None = None) -> ResendVerificationResponse",
+          "params": [
+            {
+              "name": "access_token",
+              "type": "str | None",
+              "optional": true,
+              "default": "None",
+              "description": "Optional bearer token used only for this request."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ResendVerificationResponse",
+            "description": "Confirmation that the resend was queued."
+          },
+          "example": {
+            "language": "python",
+            "code": "endpoint.auth.resend_verification()"
+          }
         }
       ]
     },
@@ -2530,6 +2309,57 @@
             "language": "typescript",
             "code": "import {resetPassword} from '@verdocs/js-sdk';\n\nconst {success} = await resetPassword({ email });\nif (status !== 'OK') {\n  window.alert(`Please check your email for instructions on how to reset your password.`);\n}\n\n// Collect code and new password from the user, then call:\n\nconst {success} = await resetPassword({ email, code, new_password });\nif (status !== 'OK') {\n  window.alert(`Please check your verification code and try again.`);\n}"
           }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "request",
+              "type": "ResetPasswordRequest",
+              "optional": false,
+              "default": null,
+              "description": "Email, and optionally the emailed code plus new password."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ResetPasswordResponse>",
+            "description": "Whether the call succeeded."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.ResetPasswordAsync(new ResetPasswordRequest { Email = \"you@example.com\" });\nawait endpoint.ResetPasswordAsync(new ResetPasswordRequest\n{\n    Email = \"you@example.com\",\n    Code = \"123456\",\n    NewPassword = \"new\",\n});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "reset_password(params: ResetPasswordRequest) -> ResetPasswordResponse",
+          "params": [
+            {
+              "name": "params",
+              "type": "ResetPasswordRequest",
+              "optional": false,
+              "default": null,
+              "description": "Email, and optionally the emailed code plus new password."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ResetPasswordResponse",
+            "description": "Whether the call succeeded."
+          },
+          "example": {
+            "language": "python",
+            "code": "endpoint.auth.reset_password(ResetPasswordRequest(email=\"you@example.com\"))\nendpoint.auth.reset_password(\n    ResetPasswordRequest(email=\"you@example.com\", code=\"123456\", new_password=\"new\")\n)"
+          }
         }
       ]
     },
@@ -2566,6 +2396,57 @@
           "example": {
             "language": "typescript",
             "code": "import {resendVerification} from '@verdocs/js-sdk';\n\nconst result = await resendVerification();"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<AuthenticateResponse> VerifyEmailAsync(VerifyEmailRequest request, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "request",
+              "type": "VerifyEmailRequest",
+              "optional": false,
+              "default": null,
+              "description": "Email address and verification token."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<AuthenticateResponse>",
+            "description": "Updated authentication tokens."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var tokens = await endpoint.VerifyEmailAsync(new VerifyEmailRequest\n{\n    Email = \"you@example.com\",\n    Token = \"verify-token\",\n});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "verify_email(params: VerifyEmailRequest) -> AuthenticateResponse",
+          "params": [
+            {
+              "name": "params",
+              "type": "VerifyEmailRequest",
+              "optional": false,
+              "default": null,
+              "description": "Email address and verification token."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "AuthenticateResponse",
+            "description": "Updated authentication tokens."
+          },
+          "example": {
+            "language": "python",
+            "code": "tokens = endpoint.auth.verify_email(\n    VerifyEmailRequest(email=\"you@example.com\", token=\"verify-token\")\n)"
           }
         }
       ]

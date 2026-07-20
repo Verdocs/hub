@@ -25,7 +25,7 @@ public sealed class OperationsTests
         handler.Enqueue(HttpStatusCode.OK, SamplePayloads.Auth);
 
         var response = await endpoint.AuthenticateAsync(
-            new AuthenticateRequest { Username = "test@example.com", Password = "hunter22" },
+            new PasswordGrantRequest { Username = "test@example.com", Password = "hunter22" },
             TestContext.Current.CancellationToken);
 
         var request = Assert.Single(handler.Requests);
@@ -51,6 +51,173 @@ public sealed class OperationsTests
         // Usage errors throw from the method, not the task, so no await is needed to observe them.
         Assert.Throws<ArgumentNullException>(
             () => { _ = endpoint.AuthenticateAsync(null!, TestContext.Current.CancellationToken); });
+    }
+
+    [Fact]
+    public async Task AuthenticateAsync_ClientCredentials_PostsGrantBody()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.OK, SamplePayloads.Auth);
+
+        await endpoint.AuthenticateAsync(
+            new ClientCredentialsRequest { ClientId = "cid", ClientSecret = "secret" },
+            TestContext.Current.CancellationToken);
+
+        var body = Assert.IsType<JsonObject>(JsonNode.Parse(handler.Requests[0].Body!));
+        var expected = new Dictionary<string, string?>
+        {
+            ["grant_type"] = "client_credentials",
+            ["client_id"] = "cid",
+            ["client_secret"] = "secret",
+        };
+        Assert.Equal(expected["grant_type"], (string?)body["grant_type"]);
+        Assert.Equal(expected["client_id"], (string?)body["client_id"]);
+        Assert.Equal(expected["client_secret"], (string?)body["client_secret"]);
+    }
+
+    [Fact]
+    public async Task AuthenticateAsync_AuthorizationCode_PostsGrantBody()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.OK, SamplePayloads.Auth);
+
+        await endpoint.AuthenticateAsync(
+            new AuthorizationCodeRequest
+            {
+                Code = "auth-code",
+                ClientId = "cid",
+                ClientSecret = "secret",
+                RedirectUri = "https://app.example/callback",
+            },
+            TestContext.Current.CancellationToken);
+
+        var body = Assert.IsType<JsonObject>(JsonNode.Parse(handler.Requests[0].Body!));
+        Assert.Equal("authorization_code", (string?)body["grant_type"]);
+        Assert.Equal("auth-code", (string?)body["code"]);
+        Assert.Equal("https://app.example/callback", (string?)body["redirect_uri"]);
+    }
+
+    [Fact]
+    public async Task RefreshTokenAsync_PostsRefreshGrant()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.OK, SamplePayloads.Auth);
+
+        await endpoint.RefreshTokenAsync("refresh-token-value", TestContext.Current.CancellationToken);
+
+        var body = Assert.IsType<JsonObject>(JsonNode.Parse(handler.Requests[0].Body!));
+        Assert.Equal("refresh_token", (string?)body["grant_type"]);
+        Assert.Equal("refresh-token-value", (string?)body["refresh_token"]);
+    }
+
+    [Fact]
+    public void GetOAuth2AuthorizeUrl_BuildsAbsoluteUrl()
+    {
+        var (endpoint, _) = CreateEndpoint();
+
+        var url = endpoint.GetOAuth2AuthorizeUrl(new OAuth2AuthorizeParams
+        {
+            ClientId = "cid",
+            RedirectUri = "https://app.example/callback",
+            State = "csrf",
+            Scope = "openid",
+        });
+
+        var expected =
+            "https://api.test/v2/oauth2/authorize"
+            + "?client_id=cid"
+            + "&redirect_uri=https%3A%2F%2Fapp.example%2Fcallback"
+            + "&response_type=code"
+            + "&state=csrf"
+            + "&scope=openid";
+        Assert.Equal(expected, url);
+    }
+
+    [Fact]
+    public async Task ChangePasswordAsync_PostsBody()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.OK, """{"status":"OK","message":"Password updated"}""");
+
+        var result = await endpoint.ChangePasswordAsync(
+            new ChangePasswordRequest { OldPassword = "old", NewPassword = "new" },
+            TestContext.Current.CancellationToken);
+
+        Assert.Equal("OK", result.Status);
+        var body = Assert.IsType<JsonObject>(JsonNode.Parse(handler.Requests[0].Body!));
+        Assert.Equal("old", (string?)body["old_password"]);
+        Assert.Equal("new", (string?)body["new_password"]);
+    }
+
+    [Fact]
+    public async Task ResetPasswordAsync_Initiate_OmitsOptionalFields()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.OK, """{"success":true}""");
+
+        var result = await endpoint.ResetPasswordAsync(
+            new ResetPasswordRequest { Email = "you@example.com" },
+            TestContext.Current.CancellationToken);
+
+        Assert.True(result.Success);
+        var body = Assert.IsType<JsonObject>(JsonNode.Parse(handler.Requests[0].Body!));
+        Assert.Equal("you@example.com", (string?)body["email"]);
+        Assert.False(body.ContainsKey("code"));
+        Assert.False(body.ContainsKey("new_password"));
+    }
+
+    [Fact]
+    public async Task ResetPasswordAsync_Complete_SendsCodeAndPassword()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.OK, """{"success":true}""");
+
+        await endpoint.ResetPasswordAsync(
+            new ResetPasswordRequest { Email = "you@example.com", Code = "123456", NewPassword = "new" },
+            TestContext.Current.CancellationToken);
+
+        var body = Assert.IsType<JsonObject>(JsonNode.Parse(handler.Requests[0].Body!));
+        Assert.Equal("123456", (string?)body["code"]);
+        Assert.Equal("new", (string?)body["new_password"]);
+    }
+
+    [Fact]
+    public async Task ResendVerificationAsync_WithoutOverride_SendsEmptyBody()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.OK, """{"result":"done"}""");
+
+        var result = await endpoint.ResendVerificationAsync(cancellationToken: TestContext.Current.CancellationToken);
+
+        Assert.Equal("done", result.Result);
+        Assert.False(handler.Requests[0].Headers.ContainsKey("Authorization"));
+    }
+
+    [Fact]
+    public async Task ResendVerificationAsync_WithOverrideToken_SetsAuthorization()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.OK, """{"result":"done"}""");
+
+        await endpoint.ResendVerificationAsync("override-token", TestContext.Current.CancellationToken);
+
+        Assert.Equal("Bearer override-token", handler.Requests[0].Headers["Authorization"]);
+    }
+
+    [Fact]
+    public async Task VerifyEmailAsync_PostsBodyAndReturnsTokens()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.OK, SamplePayloads.Auth);
+
+        var tokens = await endpoint.VerifyEmailAsync(
+            new VerifyEmailRequest { Email = "you@example.com", Token = "verify-token" },
+            TestContext.Current.CancellationToken);
+
+        Assert.NotNull(tokens.AccessToken);
+        var body = Assert.IsType<JsonObject>(JsonNode.Parse(handler.Requests[0].Body!));
+        Assert.Equal("you@example.com", (string?)body["email"]);
+        Assert.Equal("verify-token", (string?)body["token"]);
     }
 
     [Fact]

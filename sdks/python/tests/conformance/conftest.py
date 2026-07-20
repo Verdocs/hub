@@ -24,7 +24,7 @@ from typing import Any
 import httpx
 import pytest
 
-from verdocs import VerdocsEndpoint
+from verdocs import PasswordGrantRequest, VerdocsEndpoint
 
 # parents walks up from tests/conformance/: [1] tests, [2] python, [3] sdks, [4] hub
 HUB_ROOT = Path(__file__).resolve().parents[4]
@@ -94,7 +94,9 @@ def volatile_pattern() -> re.Pattern[str]:
 def sdk_endpoint(conformance_env: ConformanceEnv):
     """One authenticated SDK endpoint shared by every case, like the TS lane's beforeAll."""
     with VerdocsEndpoint(base_url=conformance_env.api_base) as endpoint:
-        tokens = endpoint.auth.authenticate(username=conformance_env.email, password=conformance_env.password)
+        tokens = endpoint.auth.authenticate(
+            PasswordGrantRequest(username=conformance_env.email, password=conformance_env.password)
+        )
         endpoint.set_token(tokens.access_token)
         assert endpoint.session is not None, "beta rejected the token the SDK just issued"
         yield endpoint

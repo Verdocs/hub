@@ -22,6 +22,16 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "generate-sdk-docs": {
+      "outputs": ["sdk-docs.json"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "src/**",
+        "docs/**",
+        "generated/sdks/**",
+        "docs.json"
+      ]
     }
   }
 }

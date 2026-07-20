@@ -1,2 +1,5 @@
 bin/
 obj/
+docs/api/
+docs/GenerateSdkDocs/bin/
+docs/GenerateSdkDocs/obj/

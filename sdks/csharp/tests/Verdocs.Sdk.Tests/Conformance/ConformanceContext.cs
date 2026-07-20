@@ -37,7 +37,7 @@ internal sealed class ConformanceContext
                 + "set in the environment or in the hub root .env file.");
 
         var sdk = new VerdocsEndpoint(new VerdocsEndpointOptions { BaseUrl = settings.ApiBase });
-        var auth = await sdk.AuthenticateAsync(new AuthenticateRequest
+        var auth = await sdk.AuthenticateAsync(new PasswordGrantRequest
         {
             Username = settings.Email,
             Password = settings.Password,

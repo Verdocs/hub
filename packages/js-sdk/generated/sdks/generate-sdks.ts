@@ -108,7 +108,7 @@ const inferSymbolKind = (typedocKind: number): SdkSymbolKind => {
     case TYPEDOC_METHOD_KIND:
       return 'method';
     case TYPEDOC_TYPE_ALIAS_KIND:
-      return 'function';
+      return 'type';
     case TYPEDOC_FUNCTION_KIND:
     default:
       return 'function';

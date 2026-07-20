@@ -1,0 +1,339 @@
+{
+  "language": "csharp",
+  "package": "Verdocs.Sdk",
+  "version": "1.0.0",
+  "groups": {
+    "auth": {
+      "id": "auth",
+      "name": "Auth",
+      "summary": "",
+      "symbols": {
+        "auth.authenticate": {
+          "sdkOperation": "auth.authenticate",
+          "kind": "function",
+          "name": "AuthenticateAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CAuthenticateResponse\u003E AuthenticateAsync(AuthenticateRequest request, CancellationToken cancellationToken = default)",
+          "summary": "Authenticates to Verdocs and returns the session tokens. Call SetToken with the access token to apply it to this endpoint.",
+          "params": [
+            {
+              "name": "request",
+              "type": "AuthenticateRequest",
+              "description": "OAuth2 token request (password, client_credentials, refresh_token, or authorization_code).",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CAuthenticateResponse\u003E",
+            "description": "Authentication tokens and expiration details."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The API rejected the credentials or the call failed."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var auth = await endpoint.AuthenticateAsync(new PasswordGrantRequest\n{\n    Username = \u0022you@example.com\u0022,\n    Password = \u0022PASSWORD\u0022,\n});\nendpoint.SetToken(auth.AccessToken);"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.getOAuth2AuthorizeUrl": {
+          "sdkOperation": "auth.getOAuth2AuthorizeUrl",
+          "kind": "function",
+          "name": "GetOAuth2AuthorizeUrl",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "string GetOAuth2AuthorizeUrl(OAuth2AuthorizeParams parameters)",
+          "summary": "Builds the URL that starts an OAuth2 authorization code flow. Redirect the user\u0027s browser to this URL. After they authenticate and authorize, they land on redirect_uri with a code query parameter that AuthenticateAsync can exchange with grant_type authorization_code.",
+          "params": [
+            {
+              "name": "parameters",
+              "type": "OAuth2AuthorizeParams",
+              "description": "client_id, redirect_uri, and optional state/scope.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "string",
+            "description": "The absolute authorize URL."
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var url = endpoint.GetOAuth2AuthorizeUrl(new OAuth2AuthorizeParams\n{\n    ClientId = \u0022your-client-id\u0022,\n    RedirectUri = \u0022https://your-app.com/callback\u0022,\n    State = \u0022random-csrf-token\u0022,\n});"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.refreshToken": {
+          "sdkOperation": "auth.refreshToken",
+          "kind": "function",
+          "name": "RefreshTokenAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CAuthenticateResponse\u003E RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)",
+          "summary": "Refreshes the caller\u0027s session and tokens before they expire.",
+          "params": [
+            {
+              "name": "refreshToken",
+              "type": "string",
+              "description": "The refresh token from a prior authenticate call.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CAuthenticateResponse\u003E",
+            "description": "A fresh token set."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The refresh token was rejected or the call failed."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var tokens = await endpoint.RefreshTokenAsync(previous.RefreshToken);\nendpoint.SetToken(tokens.AccessToken);"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.changePassword": {
+          "sdkOperation": "auth.changePassword",
+          "kind": "function",
+          "name": "ChangePasswordAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CChangePasswordResponse\u003E ChangePasswordAsync(ChangePasswordRequest request, CancellationToken cancellationToken = default)",
+          "summary": "Updates the caller\u0027s password when the old password is known.",
+          "params": [
+            {
+              "name": "request",
+              "type": "ChangePasswordRequest",
+              "description": "Current and new passwords.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CChangePasswordResponse\u003E",
+            "description": "Status and message from the server."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var result = await endpoint.ChangePasswordAsync(new ChangePasswordRequest\n{\n    OldPassword = \u0022old\u0022,\n    NewPassword = \u0022new\u0022,\n});"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.resetPassword": {
+          "sdkOperation": "auth.resetPassword",
+          "kind": "function",
+          "name": "ResetPasswordAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CResetPasswordResponse\u003E ResetPasswordAsync(ResetPasswordRequest request, CancellationToken cancellationToken = default)",
+          "summary": "Requests or completes a password reset when the old password is unknown. Omit code and new_password to start the reset; include both to finish it.",
+          "params": [
+            {
+              "name": "request",
+              "type": "ResetPasswordRequest",
+              "description": "Email, and optionally the emailed code plus new password.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CResetPasswordResponse\u003E",
+            "description": "Whether the call succeeded."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.ResetPasswordAsync(new ResetPasswordRequest { Email = \u0022you@example.com\u0022 });\nawait endpoint.ResetPasswordAsync(new ResetPasswordRequest\n{\n    Email = \u0022you@example.com\u0022,\n    Code = \u0022123456\u0022,\n    NewPassword = \u0022new\u0022,\n});"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.resendVerification": {
+          "sdkOperation": "auth.resendVerification",
+          "kind": "function",
+          "name": "ResendVerificationAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CResendVerificationResponse\u003E ResendVerificationAsync(string accessToken = null, CancellationToken cancellationToken = default)",
+          "summary": "Resends email verification for a partially authenticated user. Pass accessToken to identify the user when this endpoint is not already authenticated with that token.",
+          "params": [
+            {
+              "name": "accessToken",
+              "type": "string",
+              "description": "Optional bearer token used only for this request.",
+              "optional": true,
+              "default": "null"
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CResendVerificationResponse\u003E",
+            "description": "Confirmation that the resend was queued."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.ResendVerificationAsync();"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.verifyEmail": {
+          "sdkOperation": "auth.verifyEmail",
+          "kind": "function",
+          "name": "VerifyEmailAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CAuthenticateResponse\u003E VerifyEmailAsync(VerifyEmailRequest request, CancellationToken cancellationToken = default)",
+          "summary": "Verifies email when the user is unauthenticated but email and token are known.",
+          "params": [
+            {
+              "name": "request",
+              "type": "VerifyEmailRequest",
+              "description": "Email address and verification token.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CAuthenticateResponse\u003E",
+            "description": "Updated authentication tokens."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var tokens = await endpoint.VerifyEmailAsync(new VerifyEmailRequest\n{\n    Email = \u0022you@example.com\u0022,\n    Token = \u0022verify-token\u0022,\n});"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.getMyUser": {
+          "sdkOperation": "auth.getMyUser",
+          "kind": "function",
+          "name": "GetMyUserAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CUser\u003E GetMyUserAsync(CancellationToken cancellationToken = default)",
+          "summary": "Gets the caller\u0027s current user record.",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CUser\u003E",
+            "description": "The caller\u0027s user record."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because the session is invalid."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var user = await endpoint.GetMyUserAsync();"
+            }
+          ],
+          "deprecated": false
+        }
+      }
+    }
+  }
+}
