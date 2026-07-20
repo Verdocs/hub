@@ -334,6 +334,56 @@
           "deprecated": false
         }
       }
+    },
+    "template": {
+      "id": "template",
+      "name": "Template",
+      "summary": "",
+      "symbols": {
+        "template.createTemplate": {
+          "sdkOperation": "template.createTemplate",
+          "kind": "function",
+          "name": "CreateTemplateAsync",
+          "page": "Endpoints",
+          "gettingStarted": true,
+          "resource": "function",
+          "signature": "Task\u003CTemplate\u003E CreateTemplateAsync(TemplateCreateParams parameters, CancellationToken cancellationToken = default)",
+          "summary": "Creates a template via POST /v2/templates. Mirrors js-sdk createTemplate.",
+          "params": [
+            {
+              "name": "parameters",
+              "type": "TemplateCreateParams",
+              "description": "Fields for the new template; only name is required.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CTemplate\u003E",
+            "description": "The newly created template."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The API rejected the request."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var template = await endpoint.CreateTemplateAsync(new TemplateCreateParams\n{\n    Name = \u0022NDA\u0022,\n});"
+            }
+          ],
+          "deprecated": false
+        }
+      }
     }
   }
 }

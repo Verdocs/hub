@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 GENERATOR = ROOT / "docs" / "generate_sdk_docs.py"
 OUTPUT = ROOT / "sdk-docs.json"
 
-EXPECTED_OPERATIONS = {
+EXPECTED_AUTH_OPERATIONS = {
     "auth.authenticate",
     "auth.changePassword",
     "auth.getMyUser",
@@ -20,6 +20,10 @@ EXPECTED_OPERATIONS = {
     "auth.resendVerification",
     "auth.resetPassword",
     "auth.verifyEmail",
+}
+
+EXPECTED_TEMPLATE_OPERATIONS = {
+    "template.createTemplate",
 }
 
 
@@ -33,12 +37,22 @@ def test_generate_sdk_docs_emits_auth_operations():
     assert model["package"] == "verdocs"
     assert "auth" in model["groups"]
 
-    symbols = model["groups"]["auth"]["symbols"]
-    assert set(symbols) == EXPECTED_OPERATIONS
+    auth_symbols = model["groups"]["auth"]["symbols"]
+    assert set(auth_symbols) == EXPECTED_AUTH_OPERATIONS
 
-    authenticate = symbols["auth.authenticate"]
+    authenticate = auth_symbols["auth.authenticate"]
     assert authenticate["kind"] == "function"
     assert authenticate["page"] == "Endpoints"
     assert authenticate["resource"] == "function"
     assert authenticate["examples"][0]["language"] == "python"
     assert "PasswordGrantRequest" in authenticate["examples"][0]["code"]
+
+    template_symbols = model["groups"]["template"]["symbols"]
+    assert set(template_symbols) == EXPECTED_TEMPLATE_OPERATIONS
+
+    create_template = template_symbols["template.createTemplate"]
+    expected_getting_started = True
+    assert create_template["gettingStarted"] is expected_getting_started
+    assert create_template["page"] == "Endpoints"
+    assert create_template["examples"][0]["language"] == "python"
+    assert "TemplateCreateParams" in create_template["examples"][0]["code"]

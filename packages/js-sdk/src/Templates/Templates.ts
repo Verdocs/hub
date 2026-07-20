@@ -224,6 +224,7 @@ const ALLOWED_CREATE_FIELDS: (keyof ITemplateCreateParams)[] = [
  * @sdkOperation template.createTemplate
  * @sdkGroup Template
  * @sdkPage Endpoints
+ * @sdkGettingStarted
  */
 export const createTemplate = (
   endpoint: VerdocsEndpoint,

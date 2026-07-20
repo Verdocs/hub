@@ -470,6 +470,37 @@ public sealed class VerdocsEndpoint : IDisposable
         return SendAsync<Template>(HttpMethod.Get, "/v2/templates/" + Uri.EscapeDataString(templateId), null, cancellationToken);
     }
 
+    /// <summary>
+    /// Creates a template via POST /v2/templates. Mirrors js-sdk createTemplate.
+    ///
+    /// <example>
+    /// <code>
+    /// var template = await endpoint.CreateTemplateAsync(new TemplateCreateParams
+    /// {
+    ///     Name = "NDA",
+    /// });
+    /// </code>
+    /// </example>
+    /// </summary>
+    /// <param name="parameters">Fields for the new template; only name is required.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>The newly created template.</returns>
+    /// <exception cref="VerdocsApiException">The API rejected the request.</exception>
+    /// <sdkOperation>template.createTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
+    /// <sdkGettingStarted />
+    public Task<Template> CreateTemplateAsync(TemplateCreateParams parameters, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(parameters);
+        if (string.IsNullOrWhiteSpace(parameters.Name))
+        {
+            throw new ArgumentException("Name is required.", nameof(parameters));
+        }
+
+        return SendAsync<Template>(HttpMethod.Post, "/v2/templates", parameters, cancellationToken);
+    }
+
     /// <summary>Disposes the HTTP client this endpoint created. A caller-supplied client is left alone.</summary>
     public void Dispose()
     {
