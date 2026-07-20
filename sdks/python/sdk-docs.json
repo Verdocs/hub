@@ -332,6 +332,53 @@
           "deprecated": false
         }
       }
+    },
+    "template": {
+      "id": "template",
+      "name": "Template",
+      "summary": "",
+      "symbols": {
+        "template.createTemplate": {
+          "sdkOperation": "template.createTemplate",
+          "kind": "function",
+          "name": "create",
+          "page": "Endpoints",
+          "gettingStarted": true,
+          "resource": "function",
+          "signature": "create(params: TemplateCreateParams) -> Template",
+          "summary": "Create a template via POST /v2/templates. Mirrors js-sdk createTemplate.",
+          "params": [
+            {
+              "name": "params",
+              "type": "TemplateCreateParams",
+              "description": "Fields for the new template; only name is required.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Template",
+            "description": "The newly created template."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the request."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "template = endpoint.templates.create(TemplateCreateParams(name=\"NDA\"))"
+            }
+          ],
+          "deprecated": false
+        }
+      }
     }
   }
 }

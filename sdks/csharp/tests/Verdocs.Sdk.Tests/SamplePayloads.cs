@@ -109,6 +109,32 @@ public static class SamplePayloads
         }
         """;
 
+    /// <summary>POST /v2/templates response for a minimal create call.</summary>
+    public const string TemplateCreated = """
+        {
+          "id": "83da3d70-7857-4392-b876-c4592a304bc9",
+          "profile_id": "0a9e8b1c-2d3e-4f50-8a9b-0c1d2e3f4a5b",
+          "organization_id": "b1a2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
+          "sender": "envelope_creator",
+          "name": "NDA",
+          "description": null,
+          "visibility": "private",
+          "initial_reminder": null,
+          "followup_reminders": null,
+          "max_reminder_days": 14,
+          "counter": 0,
+          "star_counter": 0,
+          "is_personal": true,
+          "is_public": false,
+          "is_sendable": false,
+          "created_at": "2026-03-01T15:00:00.000Z",
+          "updated_at": "2026-03-01T15:00:00.000Z",
+          "last_used_at": null,
+          "data": null,
+          "tags": []
+        }
+        """;
+
     /// <summary>GET /v2/templates response. List entries carry scalars only, no relations.</summary>
     public const string TemplateList = """
         {

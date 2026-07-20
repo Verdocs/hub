@@ -92,6 +92,11 @@ class Templates:
         Raises:
             VerdocsAPIError: The API rejected the request.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation template.createTemplate
+        @sdkGroup Template
+        @sdkPage Endpoints
+        @sdkGettingStarted
         """
         response = self._endpoint._request("POST", _TEMPLATES_PATH, json=_write_body(params))
         return Template.model_validate(response.json())

@@ -6,7 +6,7 @@ namespace Verdocs.Sdk.Tests;
 /// <summary>Guards the committed sdk-docs.json Auth operation set.</summary>
 public sealed class SdkDocsTests
 {
-    private static readonly HashSet<string> ExpectedOperations =
+    private static readonly HashSet<string> ExpectedAuthOperations =
     [
         "auth.authenticate",
         "auth.changePassword",
@@ -16,6 +16,11 @@ public sealed class SdkDocsTests
         "auth.resendVerification",
         "auth.resetPassword",
         "auth.verifyEmail",
+    ];
+
+    private static readonly HashSet<string> ExpectedTemplateOperations =
+    [
+        "template.createTemplate",
     ];
 
     [Fact]
@@ -30,15 +35,25 @@ public sealed class SdkDocsTests
         Assert.Equal("csharp", root.GetProperty("language").GetString());
         Assert.Equal("Verdocs.Sdk", root.GetProperty("package").GetString());
 
-        var symbols = root.GetProperty("groups").GetProperty("auth").GetProperty("symbols");
-        var actual = symbols.EnumerateObject().Select(property => property.Name).ToHashSet(StringComparer.Ordinal);
-        Assert.Equal(ExpectedOperations, actual);
+        var authSymbols = root.GetProperty("groups").GetProperty("auth").GetProperty("symbols");
+        var actualAuth = authSymbols.EnumerateObject().Select(property => property.Name).ToHashSet(StringComparer.Ordinal);
+        Assert.Equal(ExpectedAuthOperations, actualAuth);
 
-        var authenticate = symbols.GetProperty("auth.authenticate");
+        var authenticate = authSymbols.GetProperty("auth.authenticate");
         Assert.Equal("function", authenticate.GetProperty("kind").GetString());
         Assert.Equal("Endpoints", authenticate.GetProperty("page").GetString());
         Assert.Equal("csharp", authenticate.GetProperty("examples")[0].GetProperty("language").GetString());
         Assert.Contains("PasswordGrantRequest", authenticate.GetProperty("examples")[0].GetProperty("code").GetString(), StringComparison.Ordinal);
+
+        var templateSymbols = root.GetProperty("groups").GetProperty("template").GetProperty("symbols");
+        var actualTemplate = templateSymbols.EnumerateObject().Select(property => property.Name).ToHashSet(StringComparer.Ordinal);
+        Assert.Equal(ExpectedTemplateOperations, actualTemplate);
+
+        var createTemplate = templateSymbols.GetProperty("template.createTemplate");
+        Assert.True(createTemplate.GetProperty("gettingStarted").GetBoolean());
+        Assert.Equal("Endpoints", createTemplate.GetProperty("page").GetString());
+        Assert.Equal("csharp", createTemplate.GetProperty("examples")[0].GetProperty("language").GetString());
+        Assert.Contains("TemplateCreateParams", createTemplate.GetProperty("examples")[0].GetProperty("code").GetString(), StringComparison.Ordinal);
     }
 
     private static string FindSdkDocsPath()

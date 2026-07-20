@@ -1,8 +1,9 @@
 """Extract Python SDK docs into the shared sdk-docs.json model.
 
-Uses griffe (the same AST mkdocstrings builds on) to load Auth and emit a
-single-language model matching packages/js-sdk/sdk-docs.json. Only the sync
-Auth class is walked so @sdkOperation ids are not claimed twice by AsyncAuth.
+Uses griffe (the same AST mkdocstrings builds on) to load tagged resource
+classes and emit a single-language model matching packages/js-sdk/sdk-docs.json.
+Only sync classes are walked so @sdkOperation ids are not claimed twice by
+their async counterparts.
 """
 
 from __future__ import annotations
@@ -19,7 +20,11 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 OUTPUT = ROOT / "sdk-docs.json"
 PACKAGE = "verdocs"
-# v1 of this extractor documents Auth only; expand as more resources get tags.
+# Sync resource classes with @sdkOperation tags. Add modules here as they land.
+_RESOURCE_CLASSES: list[tuple[str, str]] = [
+    ("verdocs.resources.auth", "Auth"),
+    ("verdocs.resources.templates", "Templates"),
+]
 
 _SDK_TAG_RE = re.compile(
     r"^@(sdkOperation|sdkGroup|sdkPage|sdkGettingStarted)(?:\s+(.+))?$",
@@ -195,27 +200,13 @@ def _package_version() -> str:
         return "1.0.0"
 
 
-def generate() -> dict[str, Any]:
-    module = griffe.load(
-        "verdocs.resources.auth",
-        search_paths=[str(SRC)],
-        docstring_parser="google",
-    )
-    auth = module["Auth"]
-
-    preamble: dict[str, Any] = {
-        "language": "python",
-        "package": PACKAGE,
-        "version": _package_version(),
-        "groups": {},
-    }
-
-    for name, member in auth.members.items():
+def _collect_class_symbols(klass: griffe.Class, groups: dict[str, Any]) -> None:
+    for name, member in klass.members.items():
         if name.startswith("_") or not isinstance(member, griffe.Function):
             continue
         mapped = _method_to_symbol(member)
         if mapped is None:
-            print(f"skip {name}: missing @sdkOperation", file=sys.stderr)
+            print(f"skip {klass.name}.{name}: missing @sdkOperation", file=sys.stderr)
             continue
 
         group_name = mapped["group_name"]
@@ -223,13 +214,30 @@ def generate() -> dict[str, Any]:
         symbol = mapped["symbol"]
         operation_id = symbol["sdkOperation"]
 
-        group = preamble["groups"].setdefault(
+        group = groups.setdefault(
             group_id,
             {"id": group_id, "name": group_name, "summary": "", "symbols": {}},
         )
         if operation_id in group["symbols"]:
             print(f'warning: duplicate @sdkOperation "{operation_id}"', file=sys.stderr)
         group["symbols"][operation_id] = symbol
+
+
+def generate() -> dict[str, Any]:
+    preamble: dict[str, Any] = {
+        "language": "python",
+        "package": PACKAGE,
+        "version": _package_version(),
+        "groups": {},
+    }
+
+    for module_path, class_name in _RESOURCE_CLASSES:
+        module = griffe.load(
+            module_path,
+            search_paths=[str(SRC)],
+            docstring_parser="google",
+        )
+        _collect_class_symbols(module[class_name], preamble["groups"])
 
     return preamble
 
