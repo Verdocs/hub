@@ -1,13 +1,14 @@
 // NOTE: This logic will probably be moving to the generator. (aka js-sdk)
 import { readFile, writeFile } from 'node:fs/promises';
+import fs from 'node:fs'
 import path from 'node:path';
-import {SdkSymbolKind, SdkSupportedLanguage, SdkPage, SdkParam, IApiVariant, IUnifiedSdkApi, IApiOperation} from './types'
+import { SdkSymbolKind, SdkSupportedLanguage, SdkPage, SdkParam, IApiVariant, IUnifiedSdkApi, IApiOperation } from './types'
 
 const INPUT_PATH = path.resolve('./sdk-docs.json');
 const OUTPUT_PATH = path.resolve('./unified-sdks.json');
 
 // Expand this list when we start documenting classes, interfaces, etc.
-const INCLUDED_KINDS: SdkSymbolKind[] = [ 'function' ];
+const INCLUDED_KINDS: SdkSymbolKind[] = ['function'];
 
 interface ISourceParam {
   name: string;
@@ -48,6 +49,26 @@ interface ISourceGroup {
 interface ISourceSdkDocs {
   language: SdkSupportedLanguage;
   groups: Record<string, ISourceGroup>;
+}
+
+
+export const fetchSdkSchemas = () => {
+  const sdkPath = path.resolve('../../sdks')
+  const sdks: ISourceSdkDocs[] = []
+  const languages = fs.readdirSync(sdkPath, { recursive: false })
+
+  // Get the paths to each of the sdks' `sdk-docs.json`.
+  languages.forEach((language) => {
+    const formattedPath = `${sdkPath}/${language}/sdk-docs.json`
+
+    try {
+      const file = JSON.parse(fs.readFileSync(formattedPath, 'utf8'))
+      sdks.push(file)
+    } catch (error) {
+      throw new Error(`Couldnt find file for (${language})`)
+    }
+  })
+  return sdks
 }
 
 const mapParams = (params: ISourceParam[] | undefined): SdkParam[] | undefined => {
@@ -110,29 +131,32 @@ const mapSymbol = (symbol: ISourceSymbol, groupName: string, language: SdkSuppor
     page: symbol.page,
     gettingStarted: symbol.gettingStarted,
     summary: symbol.summary,
-    variants: [ mapVariant(symbol, language) ],
+    variants: [mapVariant(symbol, language)],
   };
 };
 
-export const unifySdkSchema = (source: ISourceSdkDocs): IUnifiedSdkApi => {
+export const unifySdkSchemas = (sources: ISourceSdkDocs[]): IUnifiedSdkApi => {
   // Keyed by operationId so additional language dumps can merge variants later.
   const operationsById = new Map<string, IApiOperation>();
 
-  for (const group of Object.values(source.groups)) {
-    for (const symbol of Object.values(group.symbols)) {
-      if (!INCLUDED_KINDS.includes(symbol.kind)) {
-        continue;
-      }
+  for (const source of sources) {
+    for (const group of Object.values(source.groups)) {
+      for (const symbol of Object.values(group.symbols)) {
+        if (!INCLUDED_KINDS.includes(symbol.kind)) {
+          continue;
+        }
 
-      const existing = operationsById.get(symbol.sdkOperation);
-      if (existing) {
-        existing.variants.push(mapVariant(symbol, source.language));
-        continue;
-      }
+        const existing = operationsById.get(symbol.sdkOperation);
+        if (existing) {
+          existing.variants.push(mapVariant(symbol, source.language));
+          continue;
+        }
 
-      operationsById.set(symbol.sdkOperation, mapSymbol(symbol, group.name, source.language));
+        operationsById.set(symbol.sdkOperation, mapSymbol(symbol, group.name, source.language));
+      }
     }
   }
+
 
   return {
     $schema: './sdk-unified.schema.json',
@@ -142,7 +166,8 @@ export const unifySdkSchema = (source: ISourceSdkDocs): IUnifiedSdkApi => {
 
 const main = async () => {
   const source: ISourceSdkDocs = JSON.parse(await readFile(INPUT_PATH, 'utf8'));
-  const unified = unifySdkSchema(source);
+  const sdkSources = fetchSdkSchemas()
+  const unified = unifySdkSchemas([source, ...sdkSources]);
 
   await writeFile(OUTPUT_PATH, `${JSON.stringify(unified, null, 2)}\n`);
 

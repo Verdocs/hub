@@ -74,6 +74,101 @@ class AuthenticateResponse(VerdocsModel):
     refresh_token_exp: int
 
 
+class PasswordGrantRequest(VerdocsModel):
+    """OAuth2 password grant body for POST /v2/oauth2/token."""
+
+    grant_type: Literal["password"] = "password"
+    username: str
+    password: str
+    client_id: str | None = None
+    scope: str | None = None
+
+
+class ClientCredentialsRequest(VerdocsModel):
+    """OAuth2 client_credentials grant body for POST /v2/oauth2/token."""
+
+    grant_type: Literal["client_credentials"] = "client_credentials"
+    client_id: str
+    client_secret: str
+    scope: str | None = None
+
+
+class RefreshTokenRequest(VerdocsModel):
+    """OAuth2 refresh_token grant body for POST /v2/oauth2/token."""
+
+    grant_type: Literal["refresh_token"] = "refresh_token"
+    refresh_token: str
+    client_id: str | None = None
+    scope: str | None = None
+
+
+class AuthorizationCodeRequest(VerdocsModel):
+    """OAuth2 authorization_code grant body for POST /v2/oauth2/token."""
+
+    grant_type: Literal["authorization_code"] = "authorization_code"
+    code: str
+    client_id: str
+    client_secret: str
+    redirect_uri: str
+
+
+AuthenticationRequest = PasswordGrantRequest | ClientCredentialsRequest | RefreshTokenRequest | AuthorizationCodeRequest
+
+
+class OAuth2AuthorizeParams(VerdocsModel):
+    """Query params that build the OAuth2 authorize URL."""
+
+    client_id: str
+    redirect_uri: str
+    response_type: Literal["code"] = "code"
+    state: str | None = None
+    scope: str | None = None
+
+
+class ChangePasswordRequest(VerdocsModel):
+    """Body for POST /v2/users/change-password when the old password is known."""
+
+    old_password: str
+    new_password: str
+
+
+class ChangePasswordResponse(VerdocsModel):
+    """Result of a change-password call."""
+
+    status: str
+    message: str
+
+
+class ResetPasswordRequest(VerdocsModel):
+    """Body for POST /v2/users/reset-password.
+
+    Omit code and new_password to start a reset. Include both to finish it.
+    """
+
+    email: str
+    code: str | None = None
+    new_password: str | None = None
+
+
+class ResetPasswordResponse(VerdocsModel):
+    """Result of a reset-password call."""
+
+    success: bool
+
+
+class VerifyEmailRequest(VerdocsModel):
+    """Body for POST /v2/users/verify when email and token are known."""
+
+    email: str
+    token: str
+
+
+class ResendVerificationResponse(VerdocsModel):
+    """Result of POST /v2/users/resend-verification."""
+
+    result: str
+
+
 class User(VerdocsModel):
     """A Verdocs user account. A user is one person; profiles connect that person to organizations."""
 

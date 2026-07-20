@@ -22,10 +22,12 @@ the flag if you only need the SDK itself.
 ## Quickstart
 
 ```python
-from verdocs import TemplateListParams, VerdocsEndpoint
+from verdocs import PasswordGrantRequest, TemplateListParams, VerdocsEndpoint
 
 with VerdocsEndpoint() as endpoint:
-    tokens = endpoint.auth.authenticate(username="you@example.com", password="secret")
+    tokens = endpoint.auth.authenticate(
+        PasswordGrantRequest(username="you@example.com", password="secret")
+    )
     endpoint.set_token(tokens.access_token)
 
     me = endpoint.users.me()
@@ -39,12 +41,14 @@ with VerdocsEndpoint() as endpoint:
 ```python
 import asyncio
 
-from verdocs import AsyncVerdocsEndpoint
+from verdocs import AsyncVerdocsEndpoint, PasswordGrantRequest
 
 
 async def main() -> None:
     async with AsyncVerdocsEndpoint() as endpoint:
-        tokens = await endpoint.auth.authenticate(username="you@example.com", password="secret")
+        tokens = await endpoint.auth.authenticate(
+            PasswordGrantRequest(username="you@example.com", password="secret")
+        )
         endpoint.set_token(tokens.access_token)
         page = await endpoint.templates.list()
         print(page.count)
@@ -81,9 +85,17 @@ and transport failures are `VerdocsConnectionError`.
 .venv/bin/python -m ruff format --check .
 .venv/bin/python -m ruff check .
 .venv/bin/python -m pytest
+./docs/generate-sdk-docs.sh
+```
+
+From the hub root, regenerate every language then unify:
+
+```
+pnpm generate:sdk-docs
 ```
 
 Unit tests mock every route with respx and never touch the live API.
+`docs/generate_sdk_docs.py` regenerates `sdk-docs.json` from Auth docstrings via griffe.
 
 The conformance lane is the exception: it runs the shared cases from
 `packages/conformance/fixtures.json` against live beta, comparing SDK results to raw

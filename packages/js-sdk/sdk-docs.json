@@ -274,7 +274,7 @@
         },
         "ungrouped.TAccountPermissionAdminAdd": {
           "sdkOperation": "ungrouped.TAccountPermissionAdminAdd",
-          "kind": "function",
+          "kind": "type",
           "name": "TAccountPermissionAdminAdd",
           "page": "Helpers",
           "gettingStarted": false,
@@ -288,7 +288,7 @@
         },
         "ungrouped.TAccountPermissionAdminRemove": {
           "sdkOperation": "ungrouped.TAccountPermissionAdminRemove",
-          "kind": "function",
+          "kind": "type",
           "name": "TAccountPermissionAdminRemove",
           "page": "Helpers",
           "gettingStarted": false,
@@ -302,7 +302,7 @@
         },
         "ungrouped.TAccountPermissionMemberAdd": {
           "sdkOperation": "ungrouped.TAccountPermissionMemberAdd",
-          "kind": "function",
+          "kind": "type",
           "name": "TAccountPermissionMemberAdd",
           "page": "Helpers",
           "gettingStarted": false,
@@ -316,7 +316,7 @@
         },
         "ungrouped.TAccountPermissionMemberRemove": {
           "sdkOperation": "ungrouped.TAccountPermissionMemberRemove",
-          "kind": "function",
+          "kind": "type",
           "name": "TAccountPermissionMemberRemove",
           "page": "Helpers",
           "gettingStarted": false,
@@ -330,7 +330,7 @@
         },
         "ungrouped.TAccountPermissionMemberView": {
           "sdkOperation": "ungrouped.TAccountPermissionMemberView",
-          "kind": "function",
+          "kind": "type",
           "name": "TAccountPermissionMemberView",
           "page": "Helpers",
           "gettingStarted": false,
@@ -344,7 +344,7 @@
         },
         "ungrouped.TAccountPermissionOwnerAdd": {
           "sdkOperation": "ungrouped.TAccountPermissionOwnerAdd",
-          "kind": "function",
+          "kind": "type",
           "name": "TAccountPermissionOwnerAdd",
           "page": "Helpers",
           "gettingStarted": false,
@@ -358,7 +358,7 @@
         },
         "ungrouped.TAccountPermissionOwnerRemove": {
           "sdkOperation": "ungrouped.TAccountPermissionOwnerRemove",
-          "kind": "function",
+          "kind": "type",
           "name": "TAccountPermissionOwnerRemove",
           "page": "Helpers",
           "gettingStarted": false,
@@ -372,7 +372,7 @@
         },
         "ungrouped.TActiveSession": {
           "sdkOperation": "ungrouped.TActiveSession",
-          "kind": "function",
+          "kind": "type",
           "name": "TActiveSession",
           "page": "Helpers",
           "gettingStarted": false,
@@ -386,7 +386,7 @@
         },
         "ungrouped.TDeprecatedHistoryEvent": {
           "sdkOperation": "ungrouped.TDeprecatedHistoryEvent",
-          "kind": "function",
+          "kind": "type",
           "name": "TDeprecatedHistoryEvent",
           "page": "Helpers",
           "gettingStarted": false,
@@ -400,7 +400,7 @@
         },
         "ungrouped.TEnvelopePermissionCancel": {
           "sdkOperation": "ungrouped.TEnvelopePermissionCancel",
-          "kind": "function",
+          "kind": "type",
           "name": "TEnvelopePermissionCancel",
           "page": "Helpers",
           "gettingStarted": false,
@@ -414,7 +414,7 @@
         },
         "ungrouped.TEnvelopePermissionCreate": {
           "sdkOperation": "ungrouped.TEnvelopePermissionCreate",
-          "kind": "function",
+          "kind": "type",
           "name": "TEnvelopePermissionCreate",
           "page": "Helpers",
           "gettingStarted": false,
@@ -428,7 +428,7 @@
         },
         "ungrouped.TEnvelopePermissionOrg": {
           "sdkOperation": "ungrouped.TEnvelopePermissionOrg",
-          "kind": "function",
+          "kind": "type",
           "name": "TEnvelopePermissionOrg",
           "page": "Helpers",
           "gettingStarted": false,
@@ -442,7 +442,7 @@
         },
         "ungrouped.TEnvelopePermissionView": {
           "sdkOperation": "ungrouped.TEnvelopePermissionView",
-          "kind": "function",
+          "kind": "type",
           "name": "TEnvelopePermissionView",
           "page": "Helpers",
           "gettingStarted": false,
@@ -456,7 +456,7 @@
         },
         "ungrouped.TOrgPermissionCreate": {
           "sdkOperation": "ungrouped.TOrgPermissionCreate",
-          "kind": "function",
+          "kind": "type",
           "name": "TOrgPermissionCreate",
           "page": "Helpers",
           "gettingStarted": false,
@@ -470,7 +470,7 @@
         },
         "ungrouped.TOrgPermissionDelete": {
           "sdkOperation": "ungrouped.TOrgPermissionDelete",
-          "kind": "function",
+          "kind": "type",
           "name": "TOrgPermissionDelete",
           "page": "Helpers",
           "gettingStarted": false,
@@ -484,7 +484,7 @@
         },
         "ungrouped.TOrgPermissionList": {
           "sdkOperation": "ungrouped.TOrgPermissionList",
-          "kind": "function",
+          "kind": "type",
           "name": "TOrgPermissionList",
           "page": "Helpers",
           "gettingStarted": false,
@@ -498,7 +498,7 @@
         },
         "ungrouped.TOrgPermissionTransfer": {
           "sdkOperation": "ungrouped.TOrgPermissionTransfer",
-          "kind": "function",
+          "kind": "type",
           "name": "TOrgPermissionTransfer",
           "page": "Helpers",
           "gettingStarted": false,
@@ -512,7 +512,7 @@
         },
         "ungrouped.TOrgPermissionUpdate": {
           "sdkOperation": "ungrouped.TOrgPermissionUpdate",
-          "kind": "function",
+          "kind": "type",
           "name": "TOrgPermissionUpdate",
           "page": "Helpers",
           "gettingStarted": false,
@@ -526,7 +526,7 @@
         },
         "ungrouped.TOrgPermissionView": {
           "sdkOperation": "ungrouped.TOrgPermissionView",
-          "kind": "function",
+          "kind": "type",
           "name": "TOrgPermissionView",
           "page": "Helpers",
           "gettingStarted": false,
@@ -540,7 +540,7 @@
         },
         "ungrouped.TPermission": {
           "sdkOperation": "ungrouped.TPermission",
-          "kind": "function",
+          "kind": "type",
           "name": "TPermission",
           "page": "Helpers",
           "gettingStarted": false,
@@ -554,7 +554,7 @@
         },
         "ungrouped.TRecipientAuthMethod": {
           "sdkOperation": "ungrouped.TRecipientAuthMethod",
-          "kind": "function",
+          "kind": "type",
           "name": "TRecipientAuthMethod",
           "page": "Helpers",
           "gettingStarted": false,
@@ -568,7 +568,7 @@
         },
         "ungrouped.TSession": {
           "sdkOperation": "ungrouped.TSession",
-          "kind": "function",
+          "kind": "type",
           "name": "TSession",
           "page": "Helpers",
           "gettingStarted": false,
@@ -582,7 +582,7 @@
         },
         "ungrouped.TSessionType": {
           "sdkOperation": "ungrouped.TSessionType",
-          "kind": "function",
+          "kind": "type",
           "name": "TSessionType",
           "page": "Helpers",
           "gettingStarted": false,
@@ -596,7 +596,7 @@
         },
         "ungrouped.TSortTemplateBy": {
           "sdkOperation": "ungrouped.TSortTemplateBy",
-          "kind": "function",
+          "kind": "type",
           "name": "TSortTemplateBy",
           "page": "Helpers",
           "gettingStarted": false,
@@ -610,7 +610,7 @@
         },
         "ungrouped.TTemplateMemberDelete": {
           "sdkOperation": "ungrouped.TTemplateMemberDelete",
-          "kind": "function",
+          "kind": "type",
           "name": "TTemplateMemberDelete",
           "page": "Helpers",
           "gettingStarted": false,
@@ -624,7 +624,7 @@
         },
         "ungrouped.TTemplateMemberRead": {
           "sdkOperation": "ungrouped.TTemplateMemberRead",
-          "kind": "function",
+          "kind": "type",
           "name": "TTemplateMemberRead",
           "page": "Helpers",
           "gettingStarted": false,
@@ -638,7 +638,7 @@
         },
         "ungrouped.TTemplateMemberVisibility": {
           "sdkOperation": "ungrouped.TTemplateMemberVisibility",
-          "kind": "function",
+          "kind": "type",
           "name": "TTemplateMemberVisibility",
           "page": "Helpers",
           "gettingStarted": false,
@@ -652,7 +652,7 @@
         },
         "ungrouped.TTemplateMemberWrite": {
           "sdkOperation": "ungrouped.TTemplateMemberWrite",
-          "kind": "function",
+          "kind": "type",
           "name": "TTemplateMemberWrite",
           "page": "Helpers",
           "gettingStarted": false,
@@ -666,7 +666,7 @@
         },
         "ungrouped.TTemplatePermissionCreateOrg": {
           "sdkOperation": "ungrouped.TTemplatePermissionCreateOrg",
-          "kind": "function",
+          "kind": "type",
           "name": "TTemplatePermissionCreateOrg",
           "page": "Helpers",
           "gettingStarted": false,
@@ -680,7 +680,7 @@
         },
         "ungrouped.TTemplatePermissionCreatePersonal": {
           "sdkOperation": "ungrouped.TTemplatePermissionCreatePersonal",
-          "kind": "function",
+          "kind": "type",
           "name": "TTemplatePermissionCreatePersonal",
           "page": "Helpers",
           "gettingStarted": false,
@@ -694,7 +694,7 @@
         },
         "ungrouped.TTemplatePermissionCreatePublic": {
           "sdkOperation": "ungrouped.TTemplatePermissionCreatePublic",
-          "kind": "function",
+          "kind": "type",
           "name": "TTemplatePermissionCreatePublic",
           "page": "Helpers",
           "gettingStarted": false,
@@ -708,7 +708,7 @@
         },
         "ungrouped.TTemplatePermissionDelete": {
           "sdkOperation": "ungrouped.TTemplatePermissionDelete",
-          "kind": "function",
+          "kind": "type",
           "name": "TTemplatePermissionDelete",
           "page": "Helpers",
           "gettingStarted": false,
@@ -722,7 +722,7 @@
         },
         "ungrouped.TTemplatePermissionVisibility": {
           "sdkOperation": "ungrouped.TTemplatePermissionVisibility",
-          "kind": "function",
+          "kind": "type",
           "name": "TTemplatePermissionVisibility",
           "page": "Helpers",
           "gettingStarted": false,
@@ -736,7 +736,7 @@
         },
         "ungrouped.TWebhookAuthMethod": {
           "sdkOperation": "ungrouped.TWebhookAuthMethod",
-          "kind": "function",
+          "kind": "type",
           "name": "TWebhookAuthMethod",
           "page": "Helpers",
           "gettingStarted": false,
@@ -757,7 +757,7 @@
       "symbols": {
         "kba.TRecipientKbaStep": {
           "sdkOperation": "kba.TRecipientKbaStep",
-          "kind": "function",
+          "kind": "type",
           "name": "TRecipientKbaStep",
           "page": "Helpers",
           "gettingStarted": false,
@@ -964,7 +964,7 @@
       "symbols": {
         "permissions.TRole": {
           "sdkOperation": "permissions.TRole",
-          "kind": "function",
+          "kind": "type",
           "name": "TRole",
           "page": "Helpers",
           "gettingStarted": false,

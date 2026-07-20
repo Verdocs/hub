@@ -97,7 +97,7 @@ public sealed class ConformanceTests
                 using (var fresh = new VerdocsEndpoint(new VerdocsEndpointOptions { BaseUrl = context.Settings.ApiBase }))
                 {
                     return await fresh.AuthenticateAsync(
-                        new AuthenticateRequest
+                        new PasswordGrantRequest
                         {
                             Username = context.Settings.Email,
                             Password = context.Settings.Password,

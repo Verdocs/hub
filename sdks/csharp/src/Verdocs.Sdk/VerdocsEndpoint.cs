@@ -16,7 +16,7 @@ namespace Verdocs;
 /// <example>
 /// <code>
 /// using var endpoint = new VerdocsEndpoint();
-/// var auth = await endpoint.AuthenticateAsync(new AuthenticateRequest
+/// var auth = await endpoint.AuthenticateAsync(new PasswordGrantRequest
 /// {
 ///     Username = "you@example.com",
 ///     Password = "PASSWORD",
@@ -184,13 +184,12 @@ public sealed class VerdocsEndpoint : IDisposable
     }
 
     /// <summary>
-    /// Authenticates to Verdocs with a username and password (the OAuth2 password grant) and
-    /// returns the session tokens. Call <see cref="SetToken"/> with the access token to apply
-    /// it to this endpoint.
+    /// Authenticates to Verdocs and returns the session tokens. Call <see cref="SetToken"/>
+    /// with the access token to apply it to this endpoint.
     ///
     /// <example>
     /// <code>
-    /// var auth = await endpoint.AuthenticateAsync(new AuthenticateRequest
+    /// var auth = await endpoint.AuthenticateAsync(new PasswordGrantRequest
     /// {
     ///     Username = "you@example.com",
     ///     Password = "PASSWORD",
@@ -199,20 +198,221 @@ public sealed class VerdocsEndpoint : IDisposable
     /// </code>
     /// </example>
     /// </summary>
-    /// <param name="request">The credentials to authenticate with.</param>
+    /// <param name="request">OAuth2 token request (password, client_credentials, refresh_token, or authorization_code).</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>Authentication tokens and expiration details.</returns>
     /// <exception cref="VerdocsApiException">The API rejected the credentials or the call failed.</exception>
+    /// <sdkOperation>auth.authenticate</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
         return SendAsync<AuthenticateResponse>(HttpMethod.Post, "/v2/oauth2/token", request, cancellationToken);
     }
 
-    /// <summary>Gets the caller's user record.</summary>
+    /// <summary>
+    /// Builds the URL that starts an OAuth2 authorization code flow. Redirect the user's
+    /// browser to this URL. After they authenticate and authorize, they land on redirect_uri
+    /// with a code query parameter that <see cref="AuthenticateAsync"/> can exchange with
+    /// grant_type authorization_code.
+    ///
+    /// <example>
+    /// <code>
+    /// var url = endpoint.GetOAuth2AuthorizeUrl(new OAuth2AuthorizeParams
+    /// {
+    ///     ClientId = "your-client-id",
+    ///     RedirectUri = "https://your-app.com/callback",
+    ///     State = "random-csrf-token",
+    /// });
+    /// </code>
+    /// </example>
+    /// </summary>
+    /// <param name="parameters">client_id, redirect_uri, and optional state/scope.</param>
+    /// <returns>The absolute authorize URL.</returns>
+    /// <sdkOperation>auth.getOAuth2AuthorizeUrl</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
+    public string GetOAuth2AuthorizeUrl(OAuth2AuthorizeParams parameters)
+    {
+        ArgumentNullException.ThrowIfNull(parameters);
+
+        var builder = new UriBuilder(new Uri(BaseUrl, "/v2/oauth2/authorize"));
+        var query = new List<string>
+        {
+            "client_id=" + Uri.EscapeDataString(parameters.ClientId),
+            "redirect_uri=" + Uri.EscapeDataString(parameters.RedirectUri),
+            "response_type=" + Uri.EscapeDataString(parameters.ResponseType),
+        };
+        if (parameters.State is { } state)
+        {
+            query.Add("state=" + Uri.EscapeDataString(state));
+        }
+
+        if (parameters.Scope is { } scope)
+        {
+            query.Add("scope=" + Uri.EscapeDataString(scope));
+        }
+
+        builder.Query = string.Join("&", query);
+        return builder.Uri.ToString();
+    }
+
+    /// <summary>
+    /// Refreshes the caller's session and tokens before they expire.
+    ///
+    /// <example>
+    /// <code>
+    /// var tokens = await endpoint.RefreshTokenAsync(previous.RefreshToken);
+    /// endpoint.SetToken(tokens.AccessToken);
+    /// </code>
+    /// </example>
+    /// </summary>
+    /// <param name="refreshToken">The refresh token from a prior authenticate call.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>A fresh token set.</returns>
+    /// <exception cref="VerdocsApiException">The refresh token was rejected or the call failed.</exception>
+    /// <sdkOperation>auth.refreshToken</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
+    public Task<AuthenticateResponse> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(refreshToken);
+        return AuthenticateAsync(new RefreshTokenGrantRequest { RefreshToken = refreshToken }, cancellationToken);
+    }
+
+    /// <summary>
+    /// Updates the caller's password when the old password is known.
+    ///
+    /// <example>
+    /// <code>
+    /// var result = await endpoint.ChangePasswordAsync(new ChangePasswordRequest
+    /// {
+    ///     OldPassword = "old",
+    ///     NewPassword = "new",
+    /// });
+    /// </code>
+    /// </example>
+    /// </summary>
+    /// <param name="request">Current and new passwords.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>Status and message from the server.</returns>
+    /// <exception cref="VerdocsApiException">The call failed.</exception>
+    /// <sdkOperation>auth.changePassword</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
+    public Task<ChangePasswordResponse> ChangePasswordAsync(ChangePasswordRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return SendAsync<ChangePasswordResponse>(HttpMethod.Post, "/v2/users/change-password", request, cancellationToken);
+    }
+
+    /// <summary>
+    /// Requests or completes a password reset when the old password is unknown. Omit code and
+    /// new_password to start the reset; include both to finish it.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.ResetPasswordAsync(new ResetPasswordRequest { Email = "you@example.com" });
+    /// await endpoint.ResetPasswordAsync(new ResetPasswordRequest
+    /// {
+    ///     Email = "you@example.com",
+    ///     Code = "123456",
+    ///     NewPassword = "new",
+    /// });
+    /// </code>
+    /// </example>
+    /// </summary>
+    /// <param name="request">Email, and optionally the emailed code plus new password.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>Whether the call succeeded.</returns>
+    /// <exception cref="VerdocsApiException">The call failed.</exception>
+    /// <sdkOperation>auth.resetPassword</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
+    public Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return SendAsync<ResetPasswordResponse>(HttpMethod.Post, "/v2/users/reset-password", request, cancellationToken);
+    }
+
+    /// <summary>
+    /// Resends email verification for a partially authenticated user. Pass accessToken to
+    /// identify the user when this endpoint is not already authenticated with that token.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.ResendVerificationAsync();
+    /// </code>
+    /// </example>
+    /// </summary>
+    /// <param name="accessToken">Optional bearer token used only for this request.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>Confirmation that the resend was queued.</returns>
+    /// <exception cref="VerdocsApiException">The call failed.</exception>
+    /// <sdkOperation>auth.resendVerification</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
+    public Task<ResendVerificationResponse> ResendVerificationAsync(string? accessToken = null, CancellationToken cancellationToken = default)
+    {
+        Dictionary<string, string>? headers = null;
+        if (accessToken is not null)
+        {
+            headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["Authorization"] = "Bearer " + accessToken,
+            };
+        }
+
+        return SendAsync<ResendVerificationResponse>(
+            HttpMethod.Post,
+            "/v2/users/resend-verification",
+            body: new { },
+            cancellationToken,
+            headers);
+    }
+
+    /// <summary>
+    /// Verifies email when the user is unauthenticated but email and token are known.
+    ///
+    /// <example>
+    /// <code>
+    /// var tokens = await endpoint.VerifyEmailAsync(new VerifyEmailRequest
+    /// {
+    ///     Email = "you@example.com",
+    ///     Token = "verify-token",
+    /// });
+    /// </code>
+    /// </example>
+    /// </summary>
+    /// <param name="request">Email address and verification token.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>Updated authentication tokens.</returns>
+    /// <exception cref="VerdocsApiException">The call failed.</exception>
+    /// <sdkOperation>auth.verifyEmail</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
+    public Task<AuthenticateResponse> VerifyEmailAsync(VerifyEmailRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return SendAsync<AuthenticateResponse>(HttpMethod.Post, "/v2/users/verify", request, cancellationToken);
+    }
+
+    /// <summary>
+    /// Gets the caller's current user record.
+    ///
+    /// <example>
+    /// <code>
+    /// var user = await endpoint.GetMyUserAsync();
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The caller's user record.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>auth.getMyUser</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<User> GetMyUserAsync(CancellationToken cancellationToken = default)
     {
         return SendAsync<User>(HttpMethod.Get, "/v2/users/me", null, cancellationToken);
@@ -382,14 +582,31 @@ public sealed class VerdocsEndpoint : IDisposable
         }
     }
 
-    private async Task<TResponse> SendAsync<TResponse>(HttpMethod method, string pathAndQuery, object? body, CancellationToken cancellationToken)
+    private async Task<TResponse> SendAsync<TResponse>(
+        HttpMethod method,
+        string pathAndQuery,
+        object? body,
+        CancellationToken cancellationToken,
+        IReadOnlyDictionary<string, string>? extraHeaders = null)
     {
         using var request = new HttpRequestMessage(method, new Uri(BaseUrl, pathAndQuery));
         ApplyHeaders(request);
 
+        if (extraHeaders is not null)
+        {
+            foreach (var header in extraHeaders)
+            {
+                request.Headers.Remove(header.Key);
+                request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+            }
+        }
+
         if (body is not null)
         {
-            request.Content = JsonContent.Create(body, body.GetType(), mediaType: null, VerdocsJson.Options);
+            // AuthenticateRequest must serialize as the polymorphic base so grant_type is written.
+            request.Content = body is AuthenticateRequest authRequest
+                ? JsonContent.Create(authRequest, mediaType: null, options: VerdocsJson.Options)
+                : JsonContent.Create(body, body.GetType(), mediaType: null, VerdocsJson.Options);
         }
 
         // The endpoint owns the timeout so behavior is identical for owned and injected

@@ -18,7 +18,13 @@ from typing import Any
 import httpx
 import pytest
 
-from verdocs import TemplateCreateParams, TemplateListParams, TemplateUpdateParams, VerdocsEndpoint
+from verdocs import (
+    PasswordGrantRequest,
+    TemplateCreateParams,
+    TemplateListParams,
+    TemplateUpdateParams,
+    VerdocsEndpoint,
+)
 from verdocs.errors import NotFoundError
 
 pytestmark = pytest.mark.conformance
@@ -93,7 +99,7 @@ def call_sdk(endpoint: VerdocsEndpoint, case: dict[str, Any], env) -> Any:
     if sdk_name == "authenticate":
         # A fresh endpoint proves authenticate needs no existing session.
         with VerdocsEndpoint(base_url=env.api_base) as fresh:
-            return fresh.auth.authenticate(username=env.email, password=env.password)
+            return fresh.auth.authenticate(PasswordGrantRequest(username=env.email, password=env.password))
     if sdk_name == "getMyUser":
         return endpoint.users.me()
     if sdk_name == "getCurrentProfile":

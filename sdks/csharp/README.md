@@ -25,10 +25,18 @@ surface.
 dotnet build                  # both TFMs
 dotnet build -warnaserror     # what CI runs; must be clean
 dotnet test                   # unit tests; the conformance lane self-skips
+./docs/generate-sdk-docs.sh   # regenerate sdk-docs.json from XML docs via DocFX tooling
+```
+
+From the hub root, regenerate every language then unify:
+
+```bash
+pnpm generate:sdk-docs
 ```
 
 Unit tests never touch the network. HTTP behavior is tested against a fake message handler,
 and serialization tests round-trip each model from payloads shaped like real API responses.
+`sdk-docs.json` at this package root is what `packages/js-sdk` unify loads for the C# variant.
 
 ## Conformance lane
 
@@ -55,7 +63,7 @@ using Verdocs.Models;
 
 using var endpoint = new VerdocsEndpoint();
 
-var auth = await endpoint.AuthenticateAsync(new AuthenticateRequest
+var auth = await endpoint.AuthenticateAsync(new PasswordGrantRequest
 {
     Username = "you@example.com",
     Password = "PASSWORD",
@@ -76,8 +84,9 @@ signing; create a second endpoint when you need both concurrently.
 
 ## What is covered so far
 
-- `AuthenticateAsync`: POST /v2/oauth2/token, password grant only in this seed.
-- `GetMyUserAsync`: GET /v2/users/me.
+- Auth (mirrors js-sdk `Users/Auth.ts`): `AuthenticateAsync` (all OAuth2 grants),
+  `GetOAuth2AuthorizeUrl`, `RefreshTokenAsync`, `ChangePasswordAsync`, `ResetPasswordAsync`,
+  `ResendVerificationAsync`, `VerifyEmailAsync`, `GetMyUserAsync`.
 - `GetCurrentProfileAsync`: GET /v2/profiles, returning the entry marked current.
 - `GetTemplatesAsync`: GET /v2/templates with typed filter/sort/paging options.
 - `GetTemplateAsync`: GET /v2/templates/:template_id, including roles, documents, and fields.
