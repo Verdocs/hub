@@ -1,8 +1,10 @@
-export type SdkSymbolKind = 'class' | 'interface' | 'method' | 'property' | 'enum' | 'function';
+export type SdkSymbolKind = 'method'|'function'|'class'|'interface'|'type'|'enum'|'namespace'|'property'|'event';
 
 export type SdkPage = 'Endpoints' | 'Helpers';
 
 export type SdkResource = 'function' | 'interface' | 'type' | 'class';
+
+export type SdkSupportedLanguage = 'typescript' | 'python' | 'csharp';
 
 export interface SdkParam {
   name: string;
@@ -41,4 +43,41 @@ export interface Sdk {
   package: string;
   version: string;
   groups: Record<string, SdkGroup>;
+}
+
+
+// The schema which will be used for our SDK documentation
+export interface IUnifiedSdkApi {
+  $schema: string;
+  operations: IApiOperation[];
+}
+
+interface IApiReturn {
+  type: string;
+  description?: string;
+}
+
+interface IApiExample {
+  language: SdkSupportedLanguage;
+  code: string;
+}
+
+export interface IApiOperation {
+  operationId: string;
+  group?: string;
+  page: SdkPage;
+  gettingStarted?: boolean;
+  summary?: string;
+  description?: string;
+  variants: IApiVariant[];
+}
+
+export interface IApiVariant {
+  language: SdkSupportedLanguage;
+  signature: string;
+  params?: SdkParam[];
+  returns?: IApiReturn;
+  example?: IApiExample;
+  deprecated?: boolean;
+  since?: string;
 }
