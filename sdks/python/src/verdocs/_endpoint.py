@@ -28,7 +28,18 @@ from pydantic import ValidationError
 from ._token import decode_token_body
 from .errors import VerdocsConnectionError, api_error_from_response
 from .models import SigningSession, UserSession
-from .resources import AsyncAuth, AsyncProfiles, AsyncTemplates, AsyncUsers, Auth, Profiles, Templates, Users
+from .resources import (
+    AsyncAuth,
+    AsyncEnvelopes,
+    AsyncProfiles,
+    AsyncTemplates,
+    AsyncUsers,
+    Auth,
+    Envelopes,
+    Profiles,
+    Templates,
+    Users,
+)
 
 SessionType = Literal["user", "signing"]
 Session = UserSession | SigningSession
@@ -196,6 +207,7 @@ class VerdocsEndpoint(_EndpointState):
         self.users = Users(self)
         self.profiles = Profiles(self)
         self.templates = Templates(self)
+        self.envelopes = Envelopes(self)
 
     def _request(
         self,
@@ -269,6 +281,7 @@ class AsyncVerdocsEndpoint(_EndpointState):
         self.users = AsyncUsers(self)
         self.profiles = AsyncProfiles(self)
         self.templates = AsyncTemplates(self)
+        self.envelopes = AsyncEnvelopes(self)
 
     async def _request(
         self,

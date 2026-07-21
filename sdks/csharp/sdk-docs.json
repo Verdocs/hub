@@ -13,7 +13,7 @@
           "kind": "function",
           "name": "AuthenticateAsync",
           "page": "Endpoints",
-          "gettingStarted": false,
+          "gettingStarted": true,
           "resource": "function",
           "signature": "Task\u003CAuthenticateResponse\u003E AuthenticateAsync(AuthenticateRequest request, CancellationToken cancellationToken = default)",
           "summary": "Authenticates to Verdocs and returns the session tokens. Call SetToken with the access token to apply it to this endpoint.",

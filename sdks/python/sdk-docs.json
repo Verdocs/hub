@@ -13,7 +13,7 @@
           "kind": "function",
           "name": "authenticate",
           "page": "Endpoints",
-          "gettingStarted": false,
+          "gettingStarted": true,
           "resource": "function",
           "signature": "authenticate(params: AuthenticationRequest) -> AuthenticateResponse",
           "summary": "Authenticate to Verdocs.",
@@ -329,6 +329,96 @@
               "code": "user = endpoint.auth.get_my_user()"
             }
           ],
+          "deprecated": false
+        }
+      }
+    },
+    "envelope": {
+      "id": "envelope",
+      "name": "Envelope",
+      "summary": "",
+      "symbols": {
+        "envelope.createEnvelope": {
+          "sdkOperation": "envelope.createEnvelope",
+          "kind": "function",
+          "name": "create",
+          "page": "Endpoints",
+          "gettingStarted": true,
+          "resource": "function",
+          "signature": "create(params: EnvelopeCreateParams) -> Envelope",
+          "summary": "Create an envelope from a template via POST /v2/envelopes. Mirrors js-sdk createEnvelope.",
+          "params": [
+            {
+              "name": "params",
+              "type": "EnvelopeCreateParams",
+              "description": "The template to copy and the recipients to fill its roles.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Envelope",
+            "description": "The newly created envelope."
+          },
+          "throws": [
+            {
+              "type": "NotFoundError",
+              "description": "The template does not exist or is not visible to the caller."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the request."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "envelope = endpoint.envelopes.create(\n    EnvelopeCreateParams(\n        template_id=\"d2338742-f3a1-465b-8592-806587413cc1\",\n        name=\"Bill of Sale\",\n        recipients=[\n            EnvelopeCreateRecipient(\n                role_name=\"Seller\",\n                first_name=\"Paige\",\n                last_name=\"Turner\",\n                email=\"paige.turner@nomail.com\",\n            ),\n        ],\n    )\n)"
+            }
+          ],
+          "deprecated": false
+        },
+        "envelope.getEnvelope": {
+          "sdkOperation": "envelope.getEnvelope",
+          "kind": "function",
+          "name": "get",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "get(envelope_id: str) -> Envelope",
+          "summary": "Get one envelope by ID via GET /v2/envelopes/{envelope_id}. Mirrors js-sdk getEnvelope.",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "description": "ID of the envelope to fetch.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Envelope",
+            "description": "The requested envelope."
+          },
+          "throws": [
+            {
+              "type": "NotFoundError",
+              "description": "No visible envelope has that ID."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [],
           "deprecated": false
         }
       }

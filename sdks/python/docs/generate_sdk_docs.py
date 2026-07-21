@@ -23,6 +23,7 @@ PACKAGE = "verdocs"
 # Sync resource classes with @sdkOperation tags. Add modules here as they land.
 _RESOURCE_CLASSES: list[tuple[str, str]] = [
     ("verdocs.resources.auth", "Auth"),
+    ("verdocs.resources.envelopes", "Envelopes"),
     ("verdocs.resources.templates", "Templates"),
 ]
 

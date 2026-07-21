@@ -205,6 +205,7 @@ public sealed class VerdocsEndpoint : IDisposable
     /// <sdkOperation>auth.authenticate</sdkOperation>
     /// <sdkGroup>Auth</sdkGroup>
     /// <sdkPage>Endpoints</sdkPage>
+    /// <sdkGettingStarted />
     public Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);

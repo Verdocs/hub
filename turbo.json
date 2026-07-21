@@ -24,13 +24,15 @@
       "persistent": true
     },
     "generate-sdk-docs": {
+      "cache": false,
       "outputs": ["sdk-docs.json"],
       "inputs": [
         "$TURBO_DEFAULT$",
         "src/**",
         "docs/**",
         "generated/sdks/**",
-        "docs.json"
+        "typedoc.json",
+        "tsdoc.json"
       ]
     }
   }
