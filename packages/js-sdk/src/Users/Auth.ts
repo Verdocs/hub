@@ -75,6 +75,7 @@ export interface IOAuth2AuthorizeParams {
  * @sdkOperation auth.authenticate
  * @sdkGroup Auth
  * @sdkPage Endpoints
+ * @sdkGettingStarted
  */
 export const authenticate = (endpoint: VerdocsEndpoint, params: TAuthenticationRequest) =>
   endpoint.api //

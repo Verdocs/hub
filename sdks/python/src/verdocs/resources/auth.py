@@ -82,6 +82,7 @@ class Auth:
         @sdkOperation auth.authenticate
         @sdkGroup Auth
         @sdkPage Endpoints
+        @sdkGettingStarted
         """
         response = self._endpoint._request("POST", _TOKEN_PATH, json=_auth_body(params))
         return AuthenticateResponse.model_validate(response.json())

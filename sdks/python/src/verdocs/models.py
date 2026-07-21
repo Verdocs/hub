@@ -19,6 +19,9 @@ TemplateVisibility = Literal["private", "shared", "public"]
 TemplateVisibilityFilter = Literal["private_shared", "private", "shared", "public"]
 TemplateSender = Literal["envelope_creator", "template_owner"]
 TemplateSortBy = Literal["created_at", "updated_at", "name", "last_used_at", "counter", "star_counter"]
+EnvelopeVisibility = Literal["private", "shared"]
+RecipientType = Literal["signer", "cc", "approver"]
+RecipientAuthMethod = Literal["kba", "passcode", "sms", "email", "id"]
 
 
 class VerdocsModel(BaseModel):
@@ -434,3 +437,149 @@ class TemplateUpdateParams(VerdocsModel):
     initial_reminder: int | None = None
     followup_reminders: int | None = None
     max_reminder_days: int | None = None
+
+
+class EnvelopeCreateRecipient(VerdocsModel):
+    """One recipient to fill a role when creating an envelope from a template."""
+
+    # Must match one of the template's role names.
+    role_name: str
+    first_name: str
+    last_name: str
+    # One of email or phone is required; phone additionally sends an SMS invite.
+    email: str | None = None
+    phone: str | None = None
+    delegator: bool | None = None
+    message: str | None = None
+    auth_methods: list[RecipientAuthMethod] | None = None
+
+
+class EnvelopeCreateParams(VerdocsModel):
+    """Fields for creating an envelope from a template.
+
+    Only template_id and recipients are required. This seed covers creating
+    envelopes from an existing template; creating one directly from uploaded
+    documents comes later.
+    """
+
+    template_id: str
+    recipients: list[EnvelopeCreateRecipient]
+    # Overrides the template's name/description when set.
+    name: str | None = None
+    description: str | None = None
+    sender_name: str | None = None
+    sender_email: str | None = None
+    no_contact: bool | None = None
+    expires_at: datetime | None = None
+    visibility: EnvelopeVisibility | None = None
+    initial_reminder: int | None = None
+    followup_reminders: int | None = None
+    max_reminder_days: int | None = None
+    data: dict[str, Any] | None = None
+    locale: str | None = None
+    timezone: str | None = None
+
+
+class Recipient(VerdocsModel):
+    """A participant (signer, cc, or approver) in an envelope's signing workflow."""
+
+    # Used only by the Web SDK during builder processes; not stored in the backend.
+    id: str | None = None
+    envelope_id: str
+    role_name: str
+    profile_id: str | None = None
+    status: str
+    first_name: str
+    last_name: str
+    email: str
+    phone: str | None = None
+    sequence: int
+    order: int
+    type: str
+    delegator: bool
+    delegated_to: str | None = None
+    message: str | None = None
+    claimed: bool
+    agreed: bool
+    name_locked: bool
+    auth_methods: list[str] | None = None
+    locale: str | None = None
+    timezone: str | None = None
+    # Only returned to the creator, for in-person signing hand-off.
+    in_app_key: str | None = None
+    created_at: datetime
+    updated_at: datetime
+
+
+class EnvelopeDocument(VerdocsModel):
+    """A file attached to an envelope."""
+
+    id: str
+    envelope_id: str
+    # Null for documents attached without a template.
+    template_document_id: str | None = None
+    order: int
+    type: str
+    name: str
+    pages: int
+    mime: str
+    size: int
+    signed: bool
+    page_sizes: list[PageSize]
+    created_at: datetime
+    updated_at: datetime
+
+
+class EnvelopeField(VerdocsModel):
+    """A signing field placed on an envelope document."""
+
+    envelope_id: str
+    document_id: str
+    name: str
+    role_name: str
+    type: str
+    required: bool | None = None
+    readonly: bool | None = None
+    label: str | None = None
+    page: int
+    x: Number
+    y: Number
+    width: Number
+    height: Number
+    default: str | None = None
+    placeholder: str | None = None
+    multiline: bool
+    group: str | None = None
+    options: list[DropdownOption] | None = None
+    value: str | None = None
+    is_valid: bool | None = None
+
+
+class Envelope(VerdocsModel):
+    """A workflow wrapper that shepherds one or more documents through recipients in a signing process."""
+
+    id: str
+    # 'complete', 'declined', and 'canceled' are immutable end states. 'complete' means the
+    # workflow steps are done, not that every signature is finished; see the signed field for that.
+    status: str
+    profile_id: str
+    template_id: str | None = None
+    organization_id: str
+    name: str
+    sender_name: str | None = None
+    sender_email: str | None = None
+    no_contact: bool | None = None
+    initial_reminder: int | None = None
+    followup_reminders: int | None = None
+    max_reminder_days: int
+    next_reminder: datetime | None = None
+    canceled_at: datetime | None = None
+    expires_at: datetime | None = None
+    visibility: str
+    signed: bool
+    data: dict[str, Any] | None = None
+    recipients: list[Recipient]
+    documents: list[EnvelopeDocument] | None = None
+    fields: list[EnvelopeField] | None = None
+    created_at: datetime
+    updated_at: datetime

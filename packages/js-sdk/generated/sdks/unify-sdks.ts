@@ -124,12 +124,14 @@ const mapVariant = (symbol: ISourceSymbol, language: SdkSupportedLanguage): IApi
   return variant;
 };
 
+const resolveGettingStarted = (symbol: ISourceSymbol) => symbol.gettingStarted === true;
+
 const mapSymbol = (symbol: ISourceSymbol, groupName: string, language: SdkSupportedLanguage): IApiOperation => {
   return {
     operationId: symbol.sdkOperation,
     group: groupName,
     page: symbol.page,
-    gettingStarted: symbol.gettingStarted,
+    gettingStarted: resolveGettingStarted(symbol),
     summary: symbol.summary,
     variants: [mapVariant(symbol, language)],
   };
@@ -149,6 +151,9 @@ export const unifySdkSchemas = (sources: ISourceSdkDocs[]): IUnifiedSdkApi => {
         const existing = operationsById.get(symbol.sdkOperation);
         if (existing) {
           existing.variants.push(mapVariant(symbol, source.language));
+          if (resolveGettingStarted(symbol)) {
+            existing.gettingStarted = true;
+          }
           continue;
         }
 

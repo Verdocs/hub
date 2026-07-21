@@ -46,3 +46,12 @@ storybook-static
 .angular/
 out-tsc/
 packages/angular-sdk/styles.css
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+db.sqlite3

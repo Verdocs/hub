@@ -129,6 +129,49 @@ def template_list_payload(*templates: dict[str, Any]) -> dict[str, Any]:
     return {"count": len(entries), "rows": len(entries), "page": 0, "templates": entries}
 
 
+def recipient_payload(**overrides: Any) -> dict[str, Any]:
+    payload: dict[str, Any] = {
+        "envelope_id": "envelope-1234",
+        "role_name": "Seller",
+        "status": "invited",
+        "first_name": "Paige",
+        "last_name": "Turner",
+        "email": "paige.turner@nomail.com",
+        "sequence": 1,
+        "order": 1,
+        "type": "signer",
+        "delegator": False,
+        "claimed": False,
+        "agreed": False,
+        "name_locked": False,
+        "created_at": "2026-01-01T00:00:00.000Z",
+        "updated_at": "2026-01-01T00:00:00.000Z",
+    }
+    payload.update(overrides)
+    return payload
+
+
+def envelope_payload(**overrides: Any) -> dict[str, Any]:
+    payload: dict[str, Any] = {
+        "id": "envelope-1234",
+        "status": "pending",
+        "profile_id": "profile-1234",
+        "template_id": "template-1234",
+        "organization_id": "org-1234",
+        "name": "Bill of Sale",
+        "sender_name": "Test User",
+        "sender_email": "test@example.com",
+        "max_reminder_days": 14,
+        "visibility": "private",
+        "signed": False,
+        "recipients": [recipient_payload()],
+        "created_at": "2026-01-01T00:00:00.000Z",
+        "updated_at": "2026-01-01T00:00:00.000Z",
+    }
+    payload.update(overrides)
+    return payload
+
+
 def request_json(route: Any) -> Any:
     """The JSON body of the last request a respx route captured."""
     return json.loads(route.calls.last.request.content)
@@ -153,6 +196,8 @@ def payloads() -> SimpleNamespace:
         profile=profile_payload,
         template=template_payload,
         template_list=template_list_payload,
+        recipient=recipient_payload,
+        envelope=envelope_payload,
         request_json=request_json,
     )
 

@@ -1785,7 +1785,7 @@
       "operationId": "auth.authenticate",
       "group": "Auth",
       "page": "Endpoints",
-      "gettingStarted": false,
+      "gettingStarted": true,
       "summary": "Authenticate to Verdocs.",
       "variants": [
         {
@@ -3780,7 +3780,7 @@
       "operationId": "template.createTemplate",
       "group": "Template",
       "page": "Endpoints",
-      "gettingStarted": false,
+      "gettingStarted": true,
       "summary": "Create a template.",
       "variants": [
         {
@@ -3816,6 +3816,57 @@
           "example": {
             "language": "typescript",
             "code": "import {createTemplate} from '@verdocs/js-sdk/Templates';\n\nconst newTemplate = await createTemplate((VerdocsEndpoint.getDefault(), {...});"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<Template> CreateTemplateAsync(TemplateCreateParams parameters, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "parameters",
+              "type": "TemplateCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "Fields for the new template; only name is required."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<Template>",
+            "description": "The newly created template."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var template = await endpoint.CreateTemplateAsync(new TemplateCreateParams\n{\n    Name = \"NDA\",\n});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create(params: TemplateCreateParams) -> Template",
+          "params": [
+            {
+              "name": "params",
+              "type": "TemplateCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "Fields for the new template; only name is required."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Template",
+            "description": "The newly created template."
+          },
+          "example": {
+            "language": "python",
+            "code": "template = endpoint.templates.create(TemplateCreateParams(name=\"NDA\"))"
           }
         }
       ]

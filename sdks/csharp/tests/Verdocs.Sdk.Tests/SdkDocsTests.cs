@@ -40,6 +40,7 @@ public sealed class SdkDocsTests
         Assert.Equal(ExpectedAuthOperations, actualAuth);
 
         var authenticate = authSymbols.GetProperty("auth.authenticate");
+        Assert.True(authenticate.GetProperty("gettingStarted").GetBoolean());
         Assert.Equal("function", authenticate.GetProperty("kind").GetString());
         Assert.Equal("Endpoints", authenticate.GetProperty("page").GetString());
         Assert.Equal("csharp", authenticate.GetProperty("examples")[0].GetProperty("language").GetString());

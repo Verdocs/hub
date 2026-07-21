@@ -41,6 +41,8 @@ def test_generate_sdk_docs_emits_auth_operations():
     assert set(auth_symbols) == EXPECTED_AUTH_OPERATIONS
 
     authenticate = auth_symbols["auth.authenticate"]
+    expected_getting_started = True
+    assert authenticate["gettingStarted"] is expected_getting_started
     assert authenticate["kind"] == "function"
     assert authenticate["page"] == "Endpoints"
     assert authenticate["resource"] == "function"
