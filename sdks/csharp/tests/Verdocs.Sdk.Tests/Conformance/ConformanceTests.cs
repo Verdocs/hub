@@ -6,16 +6,24 @@ using Xunit;
 namespace Verdocs.Sdk.Tests.Conformance;
 
 /// <summary>
-/// The shared conformance lane defined by packages/conformance/fixtures.json: every case is run
-/// against live beta, once with a raw HttpClient and once with the SDK, then status and
-/// volatile-normalized JSON are compared deeply. Cases come from that file, not a local copy, so
-/// this lane stays in lockstep with the other SDKs. Frozen cases (the star toggle) live only in
-/// the fixture and never reach here. Skipped unless VERDOCS_CONFORMANCE=1 so the default dotnet
-/// test run stays offline; credentials come from the environment or hub/.env.
+/// The shared conformance lane defined by packages/conformance/fixtures.json: every covered
+/// endpoint is called twice against live beta, once with a raw HttpClient and once with the
+/// SDK, then status and normalized JSON are compared deeply (volatile keys masked, timestamps
+/// canonicalized, null members dropped; ConformanceJson documents why). Entries under the
+/// fixtures' frozen section are intentionally absent here. Skipped unless VERDOCS_CONFORMANCE=1
+/// so the default dotnet test run stays offline; credentials come from the environment or
+/// hub/.env. Shares the "conformance" collection with ChainTests so the chain's writes never
+/// land between a case's raw call and its SDK call.
 /// </summary>
+[Collection("conformance")]
 public sealed class ConformanceTests
 {
-    private static readonly Lazy<Task<ConformanceContext>> SharedContext = new(ConformanceContext.CreateAsync);
+    // Test names follow the fixture case ids so the case-to-SDK-call mapping stays obvious:
+    // "authenticate" is endpoint.Auth.AuthenticateAsync, "users-me" is Users.GetMeAsync,
+    // "profiles-current" is Profiles.GetCurrentAsync, "templates-list" is Templates.ListAsync,
+    // "envelopes-list" is Envelopes.ListAsync, "organization-get" is Organizations.GetAsync,
+    // "members-list" is Members.ListAsync, "groups-list" is Groups.ListAsync, and
+    // "entitlements" is Organizations.GetEntitlementsAsync.
 
     public static TheoryData<string> Cases()
     {
@@ -25,12 +33,21 @@ public sealed class ConformanceTests
             data.Add(id);
         }
 
-        return data;
+        // A fresh endpoint, so this case stands alone rather than reusing the shared session.
+        using var endpoint = new VerdocsEndpoint(new VerdocsEndpointOptions { BaseUrl = context.Settings.ApiBase });
+        var viaSdk = await endpoint.Auth.AuthenticateAsync(
+            new AuthenticateRequest
+            {
+                Username = context.Settings.Email,
+                Password = context.Settings.Password,
+            },
+            TestContext.Current.CancellationToken);
+
+        Assert.Equal(ConformanceJson.NormalizeText(rawBody), ConformanceJson.NormalizeValue(viaSdk));
     }
 
-    [Theory]
-    [MemberData(nameof(Cases))]
-    public async Task Case_MatchesRawHttp(string caseId)
+    [Fact]
+    public async Task UsersMe_MatchesRawHttp()
     {
         var context = await GetContextAsync();
         var fixtureCase = ConformanceFixtures.GetCase(caseId);
@@ -40,14 +57,33 @@ public sealed class ConformanceTests
         var (status, rawBody) = await context.RawAsync(method, BuildPath(fixtureCase), auth, BuildBody(fixtureCase, context.Settings));
         Assert.Equal(HttpStatusCode.OK, status);
 
-        var viaSdk = await DispatchAsync(context, fixtureCase);
-        Assert.NotNull(viaSdk);
+        var viaSdk = await context.Sdk.Users.GetMeAsync(TestContext.Current.CancellationToken);
 
-        var expected = VolatileJson.Normalize(SelectReference(caseId, rawBody));
-        Assert.Equal(expected, VolatileJson.NormalizeValue(viaSdk));
+        Assert.Equal(ConformanceJson.NormalizeText(rawBody), ConformanceJson.NormalizeValue(viaSdk));
     }
 
-    private static string BuildPath(JsonObject fixtureCase)
+    [Fact]
+    public async Task ProfilesCurrent_MatchesRawCurrentEntry()
+    {
+        var context = await GetContextAsync();
+
+        var (status, rawBody) = await context.RawGetAsync("/v2/profiles");
+        Assert.Equal(HttpStatusCode.OK, status);
+
+        // The raw response is an array; the SDK returns the entry with current=true, so the
+        // comparison target is that entry (fixtures.json, profiles-current note).
+        var profiles = Assert.IsType<JsonArray>(JsonNode.Parse(rawBody));
+        var rawCurrent = profiles.FirstOrDefault(entry => entry?["current"]?.GetValue<bool>() == true);
+        Assert.NotNull(rawCurrent);
+
+        var viaSdk = await context.Sdk.Profiles.GetCurrentAsync(TestContext.Current.CancellationToken);
+        Assert.NotNull(viaSdk);
+
+        Assert.Equal(ConformanceJson.Normalize(rawCurrent), ConformanceJson.NormalizeValue(viaSdk));
+    }
+
+    [Fact]
+    public async Task TemplatesList_MatchesRawHttp()
     {
         var path = fixtureCase["path"]!.GetValue<string>();
         if (fixtureCase["query"] is not JsonObject query || query.Count == 0)
@@ -60,117 +96,92 @@ public sealed class ConformanceTests
         return $"{path}?{string.Join("&", pairs)}";
     }
 
-    private static JsonNode? BuildBody(JsonObject fixtureCase, ConformanceSettings settings)
-    {
-        if (fixtureCase["body"] is not JsonObject body)
-        {
-            return null;
-        }
+        var viaSdk = await context.Sdk.Templates.ListAsync(
+            new GetTemplatesOptions
+            {
+                Visibility = TemplateVisibilityFilter.PrivateShared,
+                Rows = 10,
+                Page = 0,
+            },
+            TestContext.Current.CancellationToken);
 
-        var result = new JsonObject();
-        foreach (var entry in body)
-        {
-            result[entry.Key] = JsonValue.Create(Substitute(entry.Value?.ToString() ?? string.Empty, settings));
-        }
-
-        return result;
+        Assert.Equal(ConformanceJson.NormalizeText(rawBody), ConformanceJson.NormalizeValue(viaSdk));
     }
 
-    private static string Substitute(string value, ConformanceSettings settings)
+    [Fact]
+    public async Task EnvelopesList_MatchesRawHttp()
     {
-        return value switch
-        {
-            "$VERDOCS_TEST_EMAIL" => settings.Email,
-            "$VERDOCS_TEST_PASSWORD" => settings.Password,
-            _ when value.StartsWith('$') => throw new InvalidOperationException($"No substitution for fixture placeholder {value}."),
-            _ => value,
-        };
+        var context = await GetContextAsync();
+
+        var (status, rawBody) = await context.RawGetAsync("/v2/envelopes?rows=10&page=0");
+        Assert.Equal(HttpStatusCode.OK, status);
+
+        var viaSdk = await context.Sdk.Envelopes.ListAsync(
+            new ListEnvelopesOptions
+            {
+                Rows = 10,
+                Page = 0,
+            },
+            TestContext.Current.CancellationToken);
+
+        Assert.Equal(ConformanceJson.NormalizeText(rawBody), ConformanceJson.NormalizeValue(viaSdk));
     }
 
-    private static async Task<object?> DispatchAsync(ConformanceContext context, JsonObject fixtureCase)
+    [Fact]
+    public async Task OrganizationGet_MatchesRawHttp()
     {
-        var sdk = fixtureCase["sdk"]!.GetValue<string>();
-        switch (sdk)
-        {
-            case "authenticate":
-                // A fresh endpoint proves authenticate needs no existing session.
-                using (var fresh = new VerdocsEndpoint(new VerdocsEndpointOptions { BaseUrl = context.Settings.ApiBase }))
-                {
-                    return await fresh.AuthenticateAsync(
-                        new PasswordGrantRequest
-                        {
-                            Username = context.Settings.Email,
-                            Password = context.Settings.Password,
-                        },
-                        TestContext.Current.CancellationToken);
-                }
+        var context = await GetContextAsync();
+        var organizationId = context.SessionOrganizationId();
 
-            case "getMyUser":
-                return await context.Sdk.GetMyUserAsync(TestContext.Current.CancellationToken);
+        var (status, rawBody) = await context.RawGetAsync("/v2/organizations/" + Uri.EscapeDataString(organizationId));
+        Assert.Equal(HttpStatusCode.OK, status);
 
-            case "getCurrentProfile":
-                return await context.Sdk.GetCurrentProfileAsync(TestContext.Current.CancellationToken);
+        var viaSdk = await context.Sdk.Organizations.GetAsync(organizationId, TestContext.Current.CancellationToken);
 
-            case "getTemplates":
-                return await context.Sdk.GetTemplatesAsync(BuildTemplatesOptions(fixtureCase), TestContext.Current.CancellationToken);
-
-            default:
-                throw new InvalidOperationException(
-                    $"Conformance case '{fixtureCase["id"]!.GetValue<string>()}' has no SDK mapping for '{sdk}'. Add one when the SDK grows the operation.");
-        }
+        Assert.Equal(ConformanceJson.NormalizeText(rawBody), ConformanceJson.NormalizeValue(viaSdk));
     }
 
-    private static GetTemplatesOptions BuildTemplatesOptions(JsonObject fixtureCase)
+    [Fact]
+    public async Task MembersList_MatchesRawHttp()
     {
-        if (fixtureCase["query"] is not JsonObject query)
-        {
-            return new GetTemplatesOptions();
-        }
+        var context = await GetContextAsync();
 
-        return new GetTemplatesOptions
-        {
-            Q = query["q"]?.GetValue<string>(),
-            Visibility = query["visibility"] is { } visibility ? ParseVisibility(visibility.GetValue<string>()) : null,
-            Rows = query["rows"]?.GetValue<int>(),
-            Page = query["page"]?.GetValue<int>(),
-        };
+        var (status, rawBody) = await context.RawGetAsync("/v2/organization-members");
+        Assert.Equal(HttpStatusCode.OK, status);
+
+        var viaSdk = await context.Sdk.Members.ListAsync(TestContext.Current.CancellationToken);
+
+        Assert.Equal(ConformanceJson.NormalizeText(rawBody), ConformanceJson.NormalizeValue(viaSdk));
     }
 
-    private static TemplateVisibilityFilter ParseVisibility(string value)
+    [Fact]
+    public async Task GroupsList_MatchesRawHttp()
     {
-        return value switch
-        {
-            "private_shared" => TemplateVisibilityFilter.PrivateShared,
-            "private" => TemplateVisibilityFilter.Private,
-            "shared" => TemplateVisibilityFilter.Shared,
-            "public" => TemplateVisibilityFilter.Public,
-            _ => throw new InvalidOperationException($"Unknown template visibility '{value}' in fixtures.json."),
-        };
+        var context = await GetContextAsync();
+
+        var (status, rawBody) = await context.RawGetAsync("/v2/organization-groups");
+        Assert.Equal(HttpStatusCode.OK, status);
+
+        var viaSdk = await context.Sdk.Groups.ListAsync(TestContext.Current.CancellationToken);
+
+        Assert.Equal(ConformanceJson.NormalizeText(rawBody), ConformanceJson.NormalizeValue(viaSdk));
     }
 
-    private static JsonNode? SelectReference(string caseId, string rawBody)
+    [Fact]
+    public async Task Entitlements_MatchesRawHttp()
     {
-        var node = JsonNode.Parse(rawBody);
-        if (caseId != "profiles-current")
-        {
-            return node;
-        }
+        var context = await GetContextAsync();
 
-        // The raw response is an array; the SDK returns the entry with current=true, so that
-        // entry is the comparison target (fixtures.json, profiles-current note).
-        var profiles = Assert.IsType<JsonArray>(node);
-        var current = profiles.FirstOrDefault(entry => entry?["current"]?.GetValue<bool>() == true);
-        Assert.NotNull(current);
-        return current;
+        var (status, rawBody) = await context.RawGetAsync("/v2/organizations/entitlements");
+        Assert.Equal(HttpStatusCode.OK, status);
+
+        var viaSdk = await context.Sdk.Organizations.GetEntitlementsAsync(TestContext.Current.CancellationToken);
+
+        Assert.Equal(ConformanceJson.NormalizeText(rawBody), ConformanceJson.NormalizeValue(viaSdk));
     }
 
     private static Task<ConformanceContext> GetContextAsync()
     {
-        if (Environment.GetEnvironmentVariable("VERDOCS_CONFORMANCE") != "1")
-        {
-            Assert.Skip("Live conformance lane. Set VERDOCS_CONFORMANCE=1 (credentials from the environment or hub/.env) to run it.");
-        }
-
-        return SharedContext.Value;
+        return ConformanceContext.GetSharedAsync();
     }
 }

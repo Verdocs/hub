@@ -92,4 +92,168 @@ public sealed class ModelRoundTripTests
 
         Assert.Equal(VolatileJson.NormalizeText(SamplePayloads.TemplateDetail), VolatileJson.NormalizeValue(model));
     }
+
+    [Fact]
+    public void RoundTrip_Envelope_PreservesPayload()
+    {
+        var model = Deserialize<Envelope>(SamplePayloads.Envelope);
+
+        Assert.Equal(EnvelopeStatus.Complete, model.Status);
+        Assert.True(model.Signed);
+        Assert.Equal(new DateTimeOffset(2026, 2, 1, 10, 0, 0, TimeSpan.Zero), model.CreatedAt);
+        Assert.Null(model.CanceledAt);
+
+        Assert.NotNull(model.Recipients);
+        var recipient = Assert.Single(model.Recipients);
+        Assert.Equal("Tenant", recipient.RoleName);
+        Assert.Equal(RecipientStatus.Submitted, recipient.Status);
+        Assert.Equal("8f7e6d5c4b3a29181706f5e4d3c2b1a0", recipient.InAppKey);
+        Assert.NotNull(recipient.AuthMethodStates);
+        Assert.Equal("complete", recipient.AuthMethodStates[RecipientAuthMethod.Passcode]);
+
+        Assert.NotNull(model.Documents);
+        Assert.Equal(2, model.Documents.Count);
+        Assert.Equal(EnvelopeDocumentType.Certificate, model.Documents[1].Type);
+        Assert.Null(model.Documents[1].TemplateDocumentId);
+
+        Assert.NotNull(model.Fields);
+        Assert.Equal(82.63, model.Fields[0].Width);
+        Assert.NotNull(model.Fields[0].Settings);
+        Assert.Equal(72.5, model.Fields[0].Settings!.X);
+
+        Assert.NotNull(model.HistoryEntries);
+        Assert.Equal(HistoryEvent.RecipientInvited, model.HistoryEntries[0].Event);
+
+        Assert.NotNull(model.AccessKeys);
+        var accessKey = Assert.Single(model.AccessKeys);
+        Assert.Equal(AccessKeyType.InApp, accessKey.Type);
+        Assert.Equal("Tenant", accessKey.RecipientName);
+        Assert.Null(accessKey.RoleName);
+
+        // Fields the models do not declare ride along in extension data.
+        Assert.NotNull(model.AdditionalData);
+        Assert.Contains("separate_cert", model.AdditionalData.Keys);
+
+        Assert.Equal(VolatileJson.NormalizeText(SamplePayloads.Envelope), VolatileJson.NormalizeValue(model));
+    }
+
+    [Fact]
+    public void RoundTrip_Webhook_PreservesPayload()
+    {
+        var model = Deserialize<Webhook>(SamplePayloads.Webhook);
+
+        Assert.Equal(WebhookAuthMethod.None, model.AuthMethod);
+        Assert.True(model.Active);
+        Assert.True(model.Events[WebhookEvent.EnvelopeCreated]);
+        Assert.False(model.Events[WebhookEvent.EnvelopeCanceled]);
+        Assert.Null(model.LastSuccess);
+
+        Assert.Equal(VolatileJson.NormalizeText(SamplePayloads.Webhook), VolatileJson.NormalizeValue(model));
+    }
+
+    [Fact]
+    public void RoundTrip_Brand_PreservesPayload()
+    {
+        var model = Deserialize<Brand>(SamplePayloads.Brand);
+
+        Assert.Equal("acme", model.Key);
+        Assert.Equal(DomainStatus.Active, model.AppDomainStatus);
+        Assert.Equal(EmailDomainStatus.Verified, model.EmailDomainStatus);
+        Assert.True(model.EmailSpfVerified);
+        Assert.False(model.EmailDmarcVerified);
+        Assert.Equal(3, model.EmailDkimTokens.Count);
+
+        Assert.Equal(VolatileJson.NormalizeText(SamplePayloads.Brand), VolatileJson.NormalizeValue(model));
+    }
+
+    [Fact]
+    public void RoundTrip_ApiKey_PreservesPayload()
+    {
+        var model = Deserialize<ApiKey>(SamplePayloads.ApiKey);
+
+        Assert.Equal("Default", model.Name);
+        Assert.Equal(ApiKeyPermission.Personal, model.Permission);
+        Assert.False(model.GlobalAdmin);
+        Assert.Null(model.ClientSecret);
+
+        Assert.Equal(VolatileJson.NormalizeText(SamplePayloads.ApiKey), VolatileJson.NormalizeValue(model));
+    }
+
+    [Fact]
+    public void RoundTrip_Group_PreservesPayload()
+    {
+        var model = Deserialize<Group>(SamplePayloads.Group);
+
+        Assert.Equal("Sales", model.Name);
+        Assert.Contains("envelope:create", model.Permissions);
+        Assert.NotNull(model.Profiles);
+        var membership = Assert.Single(model.Profiles);
+        Assert.Equal(model.Id, membership.GroupId);
+
+        Assert.Equal(VolatileJson.NormalizeText(SamplePayloads.Group), VolatileJson.NormalizeValue(model));
+    }
+
+    [Fact]
+    public void RoundTrip_Notification_PreservesPayload()
+    {
+        var model = Deserialize<Notification>(SamplePayloads.Notification);
+
+        Assert.Equal(EventName.EnvelopeCompleted, model.EventName);
+        Assert.False(model.Read);
+        Assert.Equal(new DateTimeOffset(2026, 2, 3, 16, 20, 10, TimeSpan.Zero), model.Time);
+
+        Assert.Equal(VolatileJson.NormalizeText(SamplePayloads.Notification), VolatileJson.NormalizeValue(model));
+    }
+
+    [Fact]
+    public void RoundTrip_NotificationTemplate_PreservesPayload()
+    {
+        var model = Deserialize<NotificationTemplate>(SamplePayloads.NotificationTemplate);
+
+        Assert.Equal(NotificationType.Email, model.Type);
+        Assert.Equal(EventName.EnvelopeCompleted, model.EventName);
+        Assert.Null(model.TemplateId);
+        Assert.NotNull(model.HtmlTemplate);
+
+        Assert.Equal(VolatileJson.NormalizeText(SamplePayloads.NotificationTemplate), VolatileJson.NormalizeValue(model));
+    }
+
+    [Fact]
+    public void RoundTrip_Entitlement_PreservesPayload()
+    {
+        var model = Deserialize<Entitlement>(SamplePayloads.Entitlement);
+
+        Assert.Equal(EntitlementFeature.Envelope, model.Feature);
+        Assert.Equal(100, model.MonthlyMax);
+        Assert.Equal(1200, model.YearlyMax);
+        Assert.Null(model.ContractId);
+
+        Assert.Equal(VolatileJson.NormalizeText(SamplePayloads.Entitlement), VolatileJson.NormalizeValue(model));
+    }
+
+    [Fact]
+    public void RoundTrip_OrganizationInvitation_PreservesPayload()
+    {
+        var model = Deserialize<OrganizationInvitation>(SamplePayloads.OrganizationInvitation);
+
+        Assert.Equal("newhire@example.com", model.Email);
+        Assert.Equal("pending", model.Status);
+        Assert.Equal("member", model.Role);
+        Assert.Null(model.Token);
+
+        Assert.Equal(VolatileJson.NormalizeText(SamplePayloads.OrganizationInvitation), VolatileJson.NormalizeValue(model));
+    }
+
+    [Fact]
+    public void RoundTrip_PendingWebhook_PreservesPayload()
+    {
+        var model = Deserialize<PendingWebhook>(SamplePayloads.PendingWebhook);
+
+        Assert.Equal(503, model.LastStatus);
+        Assert.Equal("Service Unavailable", model.LastResult);
+        Assert.Null(model.DeliveredAt);
+        Assert.NotNull(model.Body);
+
+        Assert.Equal(VolatileJson.NormalizeText(SamplePayloads.PendingWebhook), VolatileJson.NormalizeValue(model));
+    }
 }

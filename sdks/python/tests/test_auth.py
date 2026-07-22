@@ -1,32 +1,22 @@
-"""Auth resource: grant types, password flows, and helpers; sync and async."""
+"""Auth resource: happy paths and error paths, sync and async.
+
+Covers authenticate, the OAuth2 authorize-URL builder, refresh_token,
+change_password, reset_password, resend_verification, and verify_email.
+"""
 
 from __future__ import annotations
 
 import pytest
 
-from verdocs import (
-    AuthenticateResponse,
-    AuthenticationError,
-    AuthorizationCodeRequest,
-    ChangePasswordRequest,
-    ChangePasswordResponse,
-    ClientCredentialsRequest,
-    OAuth2AuthorizeParams,
-    PasswordGrantRequest,
-    ResendVerificationResponse,
-    ResetPasswordRequest,
-    ResetPasswordResponse,
-    User,
-    VerdocsError,
-    VerifyEmailRequest,
-)
+from verdocs import AuthenticateResponse, AuthenticationError, VerdocsError
+from verdocs.models.users import ChangePasswordResponse, ResetPasswordResponse
 
 TOKEN_URL = "/v2/oauth2/token"
+AUTHORIZE_URL = "/v2/oauth2/authorize"
 CHANGE_PASSWORD_URL = "/v2/users/change-password"
 RESET_PASSWORD_URL = "/v2/users/reset-password"
 RESEND_VERIFICATION_URL = "/v2/users/resend-verification"
 VERIFY_URL = "/v2/users/verify"
-ME_URL = "/v2/users/me"
 
 
 def test_authenticate_password_grant(endpoint, payloads, respx_mock, base_url):
@@ -213,28 +203,190 @@ async def test_async_authenticate_rejection(async_endpoint, respx_mock, base_url
     respx_mock.post(f"{base_url}{TOKEN_URL}").respond(401, json={"error": "invalid_grant"})
 
     with pytest.raises(AuthenticationError):
-        await async_endpoint.auth.authenticate(PasswordGrantRequest(username="test@example.com", password="wrong"))
+        await async_endpoint.auth.authenticate(username="test@example.com", password="wrong")
+
+
+def test_get_oauth2_authorize_url_builds_the_url(endpoint, base_url):
+    url = endpoint.auth.get_oauth2_authorize_url(
+        client_id="cid",
+        redirect_uri="https://app.example/cb",
+        state="csrf-123",
+        scope="limited",
+    )
+
+    # A pure URL builder: no route is stubbed because no request is made.
+    assert url == (
+        f"{base_url}{AUTHORIZE_URL}"
+        "?client_id=cid&redirect_uri=https%3A%2F%2Fapp.example%2Fcb&response_type=code&state=csrf-123&scope=limited"
+    )
+
+
+def test_get_oauth2_authorize_url_skips_unset_state_and_scope(endpoint, base_url):
+    url = endpoint.auth.get_oauth2_authorize_url(client_id="cid", redirect_uri="https://app.example/cb")
+
+    assert url == (
+        f"{base_url}{AUTHORIZE_URL}?client_id=cid&redirect_uri=https%3A%2F%2Fapp.example%2Fcb&response_type=code"
+    )
+
+
+async def test_async_get_oauth2_authorize_url_is_a_plain_method(async_endpoint, base_url):
+    # No I/O happens, so the async twin returns the string directly, no await.
+    url = async_endpoint.auth.get_oauth2_authorize_url(client_id="cid", redirect_uri="https://app.example/cb")
+
+    assert isinstance(url, str)
+    assert url.startswith(f"{base_url}{AUTHORIZE_URL}?")
+
+
+def test_refresh_token_sends_the_refresh_grant(endpoint, payloads, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{TOKEN_URL}").respond(200, json=payloads.auth())
+
+    tokens = endpoint.auth.refresh_token("refresh-token-value")
+
+    assert isinstance(tokens, AuthenticateResponse)
+    assert payloads.request_json(route) == {"grant_type": "refresh_token", "refresh_token": "refresh-token-value"}
+
+
+def test_refresh_token_rejection_raises_authentication_error(endpoint, respx_mock, base_url):
+    respx_mock.post(f"{base_url}{TOKEN_URL}").respond(401, json={"error": "invalid_grant"})
+
+    with pytest.raises(AuthenticationError):
+        endpoint.auth.refresh_token("stale-refresh-token")
 
 
 async def test_async_refresh_token(async_endpoint, payloads, respx_mock, base_url):
     route = respx_mock.post(f"{base_url}{TOKEN_URL}").respond(200, json=payloads.auth())
 
-    await async_endpoint.auth.refresh_token("refresh-token-value")
+    tokens = await async_endpoint.auth.refresh_token("refresh-token-value")
 
+    assert isinstance(tokens, AuthenticateResponse)
     assert payloads.request_json(route)["grant_type"] == "refresh_token"
 
 
-async def test_async_change_password(async_endpoint, payloads, respx_mock, base_url):
-    respx_mock.post(f"{base_url}{CHANGE_PASSWORD_URL}").respond(200, json={"status": "OK", "message": "ok"})
+def test_change_password_sends_both_passwords(endpoint, payloads, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{CHANGE_PASSWORD_URL}").respond(200, json={"status": "OK"})
 
-    result = await async_endpoint.auth.change_password(ChangePasswordRequest(old_password="old", new_password="new"))
+    result = endpoint.auth.change_password(old_password="old-secret", new_password="new-secret!A1")
+
+    assert isinstance(result, ChangePasswordResponse)
+    assert result.status == "OK"
+    # The deployed success body carries no message.
+    assert result.message is None
+    assert payloads.request_json(route) == {"old_password": "old-secret", "new_password": "new-secret!A1"}
+
+
+def test_change_password_wrong_old_password_raises(endpoint, respx_mock, base_url):
+    respx_mock.post(f"{base_url}{CHANGE_PASSWORD_URL}").respond(401, json={"error": "access denied"})
+
+    with pytest.raises(AuthenticationError):
+        endpoint.auth.change_password(old_password="wrong", new_password="new-secret!A1")
+
+
+async def test_async_change_password(async_endpoint, payloads, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{CHANGE_PASSWORD_URL}").respond(200, json={"status": "OK"})
+
+    result = await async_endpoint.auth.change_password(old_password="old-secret", new_password="new-secret!A1")
 
     assert result.status == "OK"
+    assert payloads.request_json(route)["new_password"] == "new-secret!A1"
 
 
-async def test_async_get_my_user(async_endpoint, payloads, respx_mock, base_url):
-    respx_mock.get(f"{base_url}{ME_URL}").respond(200, json=payloads.user())
+def test_reset_password_initiate_sends_only_the_email(endpoint, payloads, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{RESET_PASSWORD_URL}").respond(200, json={"status": "OK"})
 
-    user = await async_endpoint.auth.get_my_user()
+    result = endpoint.auth.reset_password(email="test@example.com")
 
-    assert user.email == "test@example.com"
+    assert isinstance(result, ResetPasswordResponse)
+    assert result.status == "OK"
+    assert payloads.request_json(route) == {"email": "test@example.com"}
+
+
+def test_reset_password_complete_sends_code_and_new_password(endpoint, payloads, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{RESET_PASSWORD_URL}").respond(
+        200, json={"status": "OK", "message": "Please check your email for reset instructions."}
+    )
+
+    result = endpoint.auth.reset_password(email="test@example.com", code="12345", new_password="new-secret!A1")
+
+    assert result.message == "Please check your email for reset instructions."
+    assert payloads.request_json(route) == {
+        "email": "test@example.com",
+        "code": "12345",
+        "new_password": "new-secret!A1",
+    }
+
+
+async def test_async_reset_password(async_endpoint, payloads, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{RESET_PASSWORD_URL}").respond(200, json={"status": "OK"})
+
+    result = await async_endpoint.auth.reset_password(email="test@example.com")
+
+    assert result.status == "OK"
+    assert payloads.request_json(route) == {"email": "test@example.com"}
+
+
+def test_resend_verification_returns_none_and_sends_empty_json(endpoint, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{RESEND_VERIFICATION_URL}").respond(200, json={"status": "OK"})
+
+    assert endpoint.auth.resend_verification() is None
+
+    request = route.calls.last.request
+    assert request.content == b"{}"
+    # No session and no override: nothing to send.
+    assert "authorization" not in request.headers
+
+
+def test_resend_verification_access_token_override_wins(endpoint, token_factory, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{RESEND_VERIFICATION_URL}").respond(200, json={"status": "OK"})
+    endpoint.set_token(token_factory())
+
+    endpoint.auth.resend_verification(access_token="SIGNUP-SESSION-TOKEN")
+
+    # The per-call token replaces the endpoint session's header for this
+    # request only, mirroring the js-sdk's accessToken parameter.
+    assert route.calls.last.request.headers["Authorization"] == "Bearer SIGNUP-SESSION-TOKEN"
+
+
+def test_resend_verification_unauthenticated_raises(endpoint, respx_mock, base_url):
+    respx_mock.post(f"{base_url}{RESEND_VERIFICATION_URL}").respond(401, json={"error": "unauthorized"})
+
+    with pytest.raises(AuthenticationError):
+        endpoint.auth.resend_verification()
+
+
+async def test_async_resend_verification(async_endpoint, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{RESEND_VERIFICATION_URL}").respond(200, json={"status": "OK"})
+
+    assert await async_endpoint.auth.resend_verification(access_token="SIGNUP-SESSION-TOKEN") is None
+
+    assert route.calls.last.request.headers["Authorization"] == "Bearer SIGNUP-SESSION-TOKEN"
+
+
+def test_verify_email_carries_the_signup_bearer(endpoint, token_factory, payloads, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{VERIFY_URL}").respond(200, json=payloads.auth())
+    signup_token = token_factory()
+    endpoint.set_token(signup_token)
+
+    tokens = endpoint.auth.verify_email(email="test@example.com", token="EMAILED-CODE")
+
+    assert isinstance(tokens, AuthenticateResponse)
+    request = route.calls.last.request
+    # Weekend finding 1: the deployed endpoint requires the signup session's
+    # bearer token despite the js-sdk doc comment saying otherwise.
+    assert request.headers["Authorization"] == f"Bearer {signup_token}"
+    assert payloads.request_json(route) == {"email": "test@example.com", "token": "EMAILED-CODE"}
+
+
+def test_verify_email_without_session_raises(endpoint, respx_mock, base_url):
+    respx_mock.post(f"{base_url}{VERIFY_URL}").respond(401, json={"error": "unauthorized"})
+
+    with pytest.raises(AuthenticationError):
+        endpoint.auth.verify_email(email="test@example.com", token="EMAILED-CODE")
+
+
+async def test_async_verify_email(async_endpoint, token_factory, payloads, respx_mock, base_url):
+    respx_mock.post(f"{base_url}{VERIFY_URL}").respond(200, json=payloads.auth())
+    async_endpoint.set_token(token_factory())
+
+    tokens = await async_endpoint.auth.verify_email(email="test@example.com", token="EMAILED-CODE")
+
+    assert isinstance(tokens, AuthenticateResponse)

@@ -1,11 +1,14 @@
 namespace Verdocs.Models;
 
-/// <summary>Body for POST /v2/users/change-password when the old password is known.</summary>
+/// <summary>
+/// Credentials for <see cref="Resources.Auth.ChangePasswordAsync"/>, used when the old
+/// password is known (typically for logged-in users).
+/// </summary>
 public sealed record ChangePasswordRequest
 {
-    /// <summary>Current password for the caller.</summary>
+    /// <summary>The caller's current password.</summary>
     public required string OldPassword { get; init; }
 
-    /// <summary>New password to set. Must meet strength requirements.</summary>
+    /// <summary>The new password to set. Must meet strength requirements.</summary>
     public required string NewPassword { get; init; }
 }

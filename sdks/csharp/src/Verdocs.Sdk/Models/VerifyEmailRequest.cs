@@ -1,11 +1,11 @@
 namespace Verdocs.Models;
 
-/// <summary>Body for POST /v2/users/verify when email and token are known.</summary>
+/// <summary>Parameters for <see cref="Resources.Auth.VerifyEmailAsync"/>.</summary>
 public sealed record VerifyEmailRequest
 {
-    /// <summary>Email address for the user account.</summary>
+    /// <summary>Email address being verified.</summary>
     public required string Email { get; init; }
 
-    /// <summary>Verification token from the email link.</summary>
+    /// <summary>The verification code the user received by email.</summary>
     public required string Token { get; init; }
 }

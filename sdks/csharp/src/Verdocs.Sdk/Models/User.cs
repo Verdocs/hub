@@ -18,6 +18,10 @@ public sealed record User
     /// <summary>True once the email has been verified, by OTP or a trusted third party.</summary>
     public bool EmailVerified { get; init; }
 
+    /// <summary>Never returned by the backend; the js-sdk declares it for type consistency only.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? PassHash { get; init; }
+
     /// <summary>First name.</summary>
     public string? FirstName { get; init; }
 
@@ -67,7 +71,7 @@ public sealed record User
     /// <summary>Last-update date and time.</summary>
     public DateTimeOffset UpdatedAt { get; init; }
 
-    /// <summary>Wire fields this seed model does not cover yet, preserved so responses round-trip losslessly.</summary>
+    /// <summary>Wire fields the model does not declare, preserved so responses round-trip losslessly.</summary>
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? AdditionalData { get; init; }
 }

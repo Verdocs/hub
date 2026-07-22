@@ -1,6 +1,6 @@
 namespace Verdocs.Models;
 
-/// <summary>Filters, sorting, and paging for <see cref="VerdocsEndpoint.GetTemplatesAsync"/>.</summary>
+/// <summary>Filters, sorting, and paging for <see cref="Resources.Templates.ListAsync"/>.</summary>
 public sealed record GetTemplatesOptions
 {
     /// <summary>List only templates whose names, descriptions, etc contain this search term.</summary>

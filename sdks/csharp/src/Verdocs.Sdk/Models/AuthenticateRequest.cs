@@ -3,8 +3,9 @@ using System.Text.Json.Serialization;
 namespace Verdocs.Models;
 
 /// <summary>
-/// Base for OAuth2 token requests sent to POST /v2/oauth2/token. Concrete grant types are
-/// serialized with a grant_type discriminator matching the wire contract.
+/// Credentials for <see cref="Resources.Auth.AuthenticateAsync"/>. The seed supports the
+/// password grant; other grant types (client_credentials, refresh_token, authorization_code)
+/// arrive with type generation.
 /// </summary>
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "grant_type")]
 [JsonDerivedType(typeof(PasswordGrantRequest), "password")]

@@ -1,10 +1,16 @@
 # Verdocs Python SDK
 
-Python SDK for the Verdocs e-signing platform. This is the seed package: it covers
-authentication, users, profiles, and templates, and it establishes the patterns the
-rest of the surface will follow (endpoint sessions, sync/async parity, pydantic wire
-models, the shared conformance lane). The binding rules live in
-`docs/standards/python.md` at the hub root.
+Python SDK for the Verdocs e-signing platform, at full parity with the js-sdk 6.10.0
+public surface (the symbol-by-symbol mapping lives in `sdks/API-PARITY.md` at the hub
+root). Endpoint sessions with sync/async parity, pydantic v2 wire models that keep
+undocumented server fields, resource namespaces for every API family (templates,
+template documents/roles/fields, envelopes, recipients, signatures, initials,
+organizations, members, groups, invitations, contacts, api keys, brands, webhooks,
+notification templates, users, profiles, auth), pure-logic helpers
+(`verdocs.permissions`, `verdocs.validators`, `verdocs.utils.*`), and the shared live
+conformance lane including the canonical create-to-cancel chain. The binding rules
+live in `docs/standards/python.md` at the hub root; wire-truth notes for the tricky
+endpoints are in `sdks/WIRE-NOTES.md`.
 
 ## Install
 
