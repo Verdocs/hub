@@ -42,6 +42,31 @@
             "language": "typescript",
             "code": "import {getKbaStep} from '@verdocs/js-sdk';\n\nconst step = await getKbaStep(endpoint, envelopeId, roleName);\nif (step.kba_step === 'pin') {\n  // prompt for the PIN, then call submitKbaPin(...)\n}"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get_step(envelope_id: str, role_name: str) -> RecipientKbaStep",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role to check."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "RecipientKbaStep",
+            "description": "The current KBA step for the recipient."
+          }
         }
       ]
     },
@@ -88,6 +113,38 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IRecipientKbaStepNone | IRecipientKbaStepComplete | IRecipientKbaStepPin | IRecipientKbaStepIdentity | IRecipientKbaStepChallenge | IRecipientKbaStepFailed>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "submit_challenge_response(envelope_id: str, role_name: str, responses: list[KbaChallengeResponse]) -> RecipientKbaStep",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role completing the challenge."
+            },
+            {
+              "name": "responses",
+              "type": "list[KbaChallengeResponse]",
+              "optional": false,
+              "default": null,
+              "description": "One answer per challenge question, in order."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "RecipientKbaStep",
+            "description": "The next KBA step for the recipient."
           }
         }
       ]
@@ -136,6 +193,38 @@
           "returns": {
             "type": "Promise<IRecipientKbaStepNone | IRecipientKbaStepComplete | IRecipientKbaStepPin | IRecipientKbaStepIdentity | IRecipientKbaStepChallenge | IRecipientKbaStepFailed>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "submit_identity(envelope_id: str, role_name: str, identity: KbaIdentity) -> RecipientKbaStep",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role completing the challenge."
+            },
+            {
+              "name": "identity",
+              "type": "KbaIdentity",
+              "optional": false,
+              "default": null,
+              "description": "The recipient's identity details."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "RecipientKbaStep",
+            "description": "The next KBA step for the recipient."
+          }
         }
       ]
     },
@@ -183,6 +272,38 @@
           "returns": {
             "type": "Promise<IRecipientKbaStepNone | IRecipientKbaStepComplete | IRecipientKbaStepPin | IRecipientKbaStepIdentity | IRecipientKbaStepChallenge | IRecipientKbaStepFailed>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "submit_pin(envelope_id: str, role_name: str, pin: str) -> RecipientKbaStep",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role completing the challenge."
+            },
+            {
+              "name": "pin",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The PIN the recipient entered."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "RecipientKbaStep",
+            "description": "The next KBA step for the recipient."
+          }
         }
       ]
     },
@@ -220,6 +341,31 @@
             "language": "typescript",
             "code": "import {userHasPermissions} from '@verdocs/js-sdk';\n\nif (userHasPermissions(endpoint.profile, ['envelope:create'])) {\n  // show the \"New Envelope\" button\n}"
           }
+        },
+        {
+          "language": "python",
+          "signature": "user_has_permissions(profile: Profile | None, permissions: list[Permission]) -> bool",
+          "params": [
+            {
+              "name": "profile",
+              "type": "Profile | None",
+              "optional": false,
+              "default": null,
+              "description": "The profile to check, or None when there is no session."
+            },
+            {
+              "name": "permissions",
+              "type": "list[Permission]",
+              "optional": false,
+              "default": null,
+              "description": "The permissions that must all be held."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bool",
+            "description": "True when every requested permission is held."
+          }
         }
       ]
     },
@@ -253,6 +399,28 @@
           "returns": {
             "type": "Promise<IAuthenticateResponse>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "accept(params: InvitationAcceptParams) -> AuthenticateResponse",
+          "params": [
+            {
+              "name": "params",
+              "type": "InvitationAcceptParams",
+              "optional": false,
+              "default": null,
+              "description": "The invitee's details, invite token, and new password."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "AuthenticateResponse",
+            "description": "Session tokens for the newly-created profile."
+          },
+          "example": {
+            "language": "python",
+            "code": "tokens = endpoint.invitations.accept(\n    InvitationAcceptParams(\n        email=\"a@b.com\", token=\"TOKEN\", first_name=\"A\", last_name=\"B\", password=\"secret12\"\n    )\n)\nendpoint.set_token(tokens.access_token)"
+          }
         }
       ]
     },
@@ -285,6 +453,28 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IOrganizationInvitation>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create(params: InvitationCreateParams) -> OrganizationInvitation",
+          "params": [
+            {
+              "name": "params",
+              "type": "InvitationCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "Details for the invitation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "OrganizationInvitation",
+            "description": "The newly-created invitation."
+          },
+          "example": {
+            "language": "python",
+            "code": "invite = endpoint.invitations.create(\n    InvitationCreateParams(email=\"a@b.com\", first_name=\"A\", last_name=\"B\", role=\"member\")\n)"
           }
         }
       ]
@@ -326,6 +516,30 @@
           "returns": {
             "type": "Promise<object>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "decline(email: str, token: str) -> None",
+          "params": [
+            {
+              "name": "email",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "Email address the invitation was sent to."
+            },
+            {
+              "name": "token",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The invite token from the invitation email."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
+          }
         }
       ]
     },
@@ -359,6 +573,23 @@
           "returns": {
             "type": "Promise<any>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "delete(email: str) -> None",
+          "params": [
+            {
+              "name": "email",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "Email address of the invitation to delete."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
+          }
         }
       ]
     },
@@ -367,7 +598,7 @@
       "group": "Invitation",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Get an invitation's details. This is generally used as the first step of accepting the invite.\nA successful response will indicate that the invite token is still valid, and include some\nmetadata for the organization to style the acceptance screen.",
+      "summary": "(_Authenticated via invite token, not an active session._). \n\nGet an invitation's details. This is generally used as the first step of accepting the invite, and is\nauthenticated via an invite token - not an active session.A successful response will indicate that the\ninvite token is still valid, and include some metadata for the organization to style the acceptance screen.\nIntended to be called by the invitee to get details about the invitation they are about to accept.",
       "variants": [
         {
           "language": "typescript",
@@ -399,6 +630,31 @@
           "returns": {
             "type": "Promise<IOrganizationInvitation>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get(email: str, token: str) -> OrganizationInvitation",
+          "params": [
+            {
+              "name": "email",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "Email address the invitation was sent to."
+            },
+            {
+              "name": "token",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The invite token from the invitation email."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "OrganizationInvitation",
+            "description": "The invitation, including its organization."
+          }
         }
       ]
     },
@@ -424,6 +680,15 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IOrganizationInvitation[]>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "list() -> list[OrganizationInvitation]",
+          "deprecated": false,
+          "returns": {
+            "type": "list[OrganizationInvitation]",
+            "description": "The organization's invitations, sorted by email."
           }
         }
       ]
@@ -457,6 +722,23 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IOrganizationInvitation>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "resend(email: str) -> None",
+          "params": [
+            {
+              "name": "email",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "Email address of the invitee to remind."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
           }
         }
       ]
@@ -497,6 +779,31 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IOrganizationInvitation>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "update(email: str, params: InvitationUpdateParams) -> OrganizationInvitation | None",
+          "params": [
+            {
+              "name": "email",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "Email address of the invitation to update."
+            },
+            {
+              "name": "params",
+              "type": "InvitationUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "The fields to change."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "OrganizationInvitation | None",
+            "description": "The updated invitation, or None when the wire answers with an"
           }
         }
       ]
@@ -545,6 +852,42 @@
           "returns": {
             "type": "Promise<IBrand>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "add_email_domain(organization_id: str, brand_id: str, params: BrandEmailDomainAddParams) -> Brand",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization. Must be the caller's own."
+            },
+            {
+              "name": "brand_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the brand."
+            },
+            {
+              "name": "params",
+              "type": "BrandEmailDomainAddParams",
+              "optional": false,
+              "default": null,
+              "description": "The domain and from-address details."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Brand",
+            "description": "The updated brand with its email domain configuration."
+          },
+          "example": {
+            "language": "python",
+            "code": "brand = endpoint.brands.add_email_domain(\n    \"org-1\", \"brand-1\", BrandEmailDomainAddParams(subdomain=\"notify.acme.com\", local_part=\"docs\")\n)"
+          }
         }
       ]
     },
@@ -584,6 +927,35 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IBrand>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create(organization_id: str, params: BrandCreateParams) -> Brand",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization. Must be the caller's own."
+            },
+            {
+              "name": "params",
+              "type": "BrandCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "Fields for the new brand; only key is required."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Brand",
+            "description": "The newly-created brand."
+          },
+          "example": {
+            "language": "python",
+            "code": "brand = endpoint.brands.create(\"org-1\", BrandCreateParams(key=\"acme\", name=\"Acme\"))"
           }
         }
       ]
@@ -625,6 +997,30 @@
           "returns": {
             "type": "Promise<any>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "delete(organization_id: str, brand_id: str) -> None",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization. Must be the caller's own."
+            },
+            {
+              "name": "brand_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the brand to delete."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
+          }
         }
       ]
     },
@@ -665,6 +1061,31 @@
           "returns": {
             "type": "Promise<IBrand>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get(organization_id: str, brand_id: str) -> Brand",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization. Must be the caller's own."
+            },
+            {
+              "name": "brand_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the brand to fetch."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Brand",
+            "description": "The requested brand."
+          }
         }
       ]
     },
@@ -701,6 +1122,24 @@
           "example": {
             "language": "typescript",
             "code": "import {getBrands} from '@verdocs/js-sdk';\n\nconst brands = await getBrands(endpoint, organizationId);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "list(organization_id: str) -> list[Brand]",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization. Must be the caller's own."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "list[Brand]",
+            "description": "The organization's brands, oldest first."
           }
         }
       ]
@@ -741,6 +1180,31 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IBrand>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "remove_email_domain(organization_id: str, brand_id: str) -> Brand",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization. Must be the caller's own."
+            },
+            {
+              "name": "brand_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the brand."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Brand",
+            "description": "The updated brand with the email domain cleared."
           }
         }
       ]
@@ -788,6 +1252,38 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IBrand>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "update(organization_id: str, brand_id: str, params: BrandUpdateParams) -> Brand",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization. Must be the caller's own."
+            },
+            {
+              "name": "brand_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the brand to update."
+            },
+            {
+              "name": "params",
+              "type": "BrandUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "The fields to change; unset fields are left alone."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Brand",
+            "description": "The updated brand."
           }
         }
       ]
@@ -843,6 +1339,42 @@
           "returns": {
             "type": "Promise<IBrand>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "update_logo(organization_id: str, brand_id: str, logo: FileInput) -> Brand",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization. Must be the caller's own."
+            },
+            {
+              "name": "brand_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the brand to update."
+            },
+            {
+              "name": "logo",
+              "type": "FileInput",
+              "optional": false,
+              "default": null,
+              "description": "The image: a path, raw bytes, an open binary file, or an\nhttpx-style (filename, content[, content_type]) tuple."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Brand",
+            "description": "The updated brand."
+          },
+          "example": {
+            "language": "python",
+            "code": "brand = endpoint.brands.update_logo(\"org-1\", \"brand-1\", \"logo.png\")\nbrand = endpoint.brands.update_logo(\"org-1\", \"brand-1\", (\"logo.png\", png_bytes, \"image/png\"))"
+          }
         }
       ]
     },
@@ -897,6 +1429,38 @@
           "returns": {
             "type": "Promise<IBrand>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "update_thumbnail(organization_id: str, brand_id: str, thumbnail: FileInput) -> Brand",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization. Must be the caller's own."
+            },
+            {
+              "name": "brand_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the brand to update."
+            },
+            {
+              "name": "thumbnail",
+              "type": "FileInput",
+              "optional": false,
+              "default": null,
+              "description": "The image: a path, raw bytes, an open binary file, or\nan httpx-style (filename, content[, content_type]) tuple."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Brand",
+            "description": "The updated brand."
+          }
         }
       ]
     },
@@ -936,6 +1500,31 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IBrand>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "verify_email_domain(organization_id: str, brand_id: str) -> Brand",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization. Must be the caller's own."
+            },
+            {
+              "name": "brand_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the brand."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Brand",
+            "description": "The brand with its current verification status."
           }
         }
       ]
@@ -981,6 +1570,31 @@
             "language": "typescript",
             "code": "import {addGroupMember} from '@verdocs/js-sdk';\n\nawait addGroupMember(VerdocsEndpoint.getDefault(), 'GROUPID', 'PROFILEID');"
           }
+        },
+        {
+          "language": "python",
+          "signature": "add_member(group_id: str, profile_id: str) -> GroupProfile | None",
+          "params": [
+            {
+              "name": "group_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the group."
+            },
+            {
+              "name": "profile_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the profile to add."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "GroupProfile | None",
+            "description": "The membership entry, or None while the deployed handler returns"
+          }
         }
       ]
     },
@@ -1018,6 +1632,28 @@
             "language": "typescript",
             "code": "import {createGroup} from '@verdocs/js-sdk';\n\nconst group = await createGroup(VerdocsEndpoint.getDefault(), {name:'newgroup'});"
           }
+        },
+        {
+          "language": "python",
+          "signature": "create(params: GroupCreateParams) -> Group",
+          "params": [
+            {
+              "name": "params",
+              "type": "GroupCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "Name and permissions for the new group. \"everyone\" is\nreserved, and the server lowercases the name."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Group",
+            "description": "The new group."
+          },
+          "example": {
+            "language": "python",
+            "code": "group = endpoint.groups.create(GroupCreateParams(name=\"sales\", permissions=[\"template:member:read\"]))"
+          }
         }
       ]
     },
@@ -1054,6 +1690,23 @@
           "example": {
             "language": "typescript",
             "code": "import {deleteGroup} from '@verdocs/js-sdk';\n\nawait deleteGroup(VerdocsEndpoint.getDefault(), 'ORGID');"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "delete(group_id: str) -> None",
+          "params": [
+            {
+              "name": "group_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the group to delete. The \"everyone\" group is refused."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
           }
         }
       ]
@@ -1099,6 +1752,30 @@
             "language": "typescript",
             "code": "import {deleteGroupMember} from '@verdocs/js-sdk';\n\nawait deleteGroupMember(VerdocsEndpoint.getDefault(), 'GROUPID', 'PROFILEID');"
           }
+        },
+        {
+          "language": "python",
+          "signature": "delete_member(group_id: str, profile_id: str) -> None",
+          "params": [
+            {
+              "name": "group_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the group."
+            },
+            {
+              "name": "profile_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the profile to remove."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
+          }
         }
       ]
     },
@@ -1136,6 +1813,24 @@
             "language": "typescript",
             "code": "import {getGroup} from '@verdocs/js-sdk/v2/organization-groups';\n\nconst group = await getGroup(GROUPID);"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get(group_id: str) -> Group",
+          "params": [
+            {
+              "name": "group_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the group to fetch."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Group",
+            "description": "The group, including its membership entries."
+          }
         }
       ]
     },
@@ -1165,6 +1860,15 @@
           "example": {
             "language": "typescript",
             "code": "import {getGroups} from '@verdocs/js-sdk';\n\nconst groups = await getGroups();"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "list() -> list[Group]",
+          "deprecated": false,
+          "returns": {
+            "type": "list[Group]",
+            "description": "The organization's groups."
           }
         }
       ]
@@ -1209,6 +1913,31 @@
           "example": {
             "language": "typescript",
             "code": "import {updateGroup} from '@verdocs/js-sdk';\n\nconst updated = await updateGroup(VerdocsEndpoint.getDefault(), {name:'newname'});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "update(group_id: str, params: GroupUpdateParams) -> Group",
+          "params": [
+            {
+              "name": "group_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the group to update."
+            },
+            {
+              "name": "params",
+              "type": "GroupUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "New name and permissions; the server requires both, so\npass the current value for anything you are not changing."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Group",
+            "description": "The updated group."
           }
         }
       ]
@@ -1257,6 +1986,37 @@
           "returns": {
             "type": "Promise<IRecipient>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "ask_question(envelope_id: str, role_name: str, question: str) -> None",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role asking the question."
+            },
+            {
+              "name": "question",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The question to send."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
+          }
         }
       ]
     },
@@ -1303,6 +2063,38 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<object>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "delegate(envelope_id: str, role_name: str, params: RecipientDelegateParams) -> Recipient",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role delegating their tasks."
+            },
+            {
+              "name": "params",
+              "type": "RecipientDelegateParams",
+              "optional": false,
+              "default": null,
+              "description": "Name and contact details of the new recipient."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Recipient",
+            "description": "The newly added recipient. (The js-sdk types this response as a"
           }
         }
       ]
@@ -1358,6 +2150,45 @@
           "returns": {
             "type": "Promise<IRecipient>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "agree(envelope_id: str, role_name: str, disclosures: str | None = None, params: RecipientAgreeParams | None = None) -> Recipient",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role agreeing to the disclosures."
+            },
+            {
+              "name": "disclosures",
+              "type": "str | None",
+              "optional": true,
+              "default": "None",
+              "description": "The disclosure text the recipient accepted.\nDEFAULT_DISCLOSURES in verdocs.models.envelopes carries the\nstock text used when the organization has no override."
+            },
+            {
+              "name": "params",
+              "type": "RecipientAgreeParams | None",
+              "optional": true,
+              "default": "None",
+              "description": "Optional locale and timezone to record for the recipient."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Recipient",
+            "description": "The updated recipient."
+          }
         }
       ]
     },
@@ -1397,6 +2228,31 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IRecipient>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "decline(envelope_id: str, role_name: str) -> Recipient",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role declining."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Recipient",
+            "description": "The updated recipient."
           }
         }
       ]
@@ -1445,6 +2301,38 @@
           "returns": {
             "type": "Promise<IRecipient>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "submit(envelope_id: str, role_name: str, params: RecipientSubmitParams | None = None) -> Recipient",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role submitting."
+            },
+            {
+              "name": "params",
+              "type": "RecipientSubmitParams | None",
+              "optional": true,
+              "default": "None",
+              "description": "Optional locale and timezone to record for the recipient."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Recipient",
+            "description": "The updated recipient."
+          }
         }
       ]
     },
@@ -1484,6 +2372,31 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IInPersonLinkResponse>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_in_person_link(envelope_id: str, role_name: str) -> InPersonLinkResponse",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role to generate the link for."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "InPersonLinkResponse",
+            "description": "The link, access key, signing token, envelope, and recipient."
           }
         }
       ]
@@ -1525,6 +2438,31 @@
           "returns": {
             "type": "Promise<object>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "remind(envelope_id: str, role_name: str) -> Recipient",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role to remind."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Recipient",
+            "description": "The recipient that was reminded."
+          }
         }
       ]
     },
@@ -1564,6 +2502,31 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<object>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "reset(envelope_id: str, role_name: str) -> Recipient",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role to reset."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Recipient",
+            "description": "The reset recipient."
           }
         }
       ]
@@ -1612,6 +2575,42 @@
           "returns": {
             "type": "Promise<ISignerTokenResponse>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "start_signing_session(envelope_id: str, role_name: str, key: str) -> SignerTokenResponse",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The envelope to sign."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role to sign as."
+            },
+            {
+              "name": "key",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "Access key from the email/SMS invite or the envelope creator."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "SignerTokenResponse",
+            "description": "The signing session: token, envelope, recipient, and any stored"
+          },
+          "example": {
+            "language": "python",
+            "code": "signing = VerdocsEndpoint(session_type=\"signing\")\nsession = signing.recipients.start_signing_session(envelope_id, \"Recipient 1\", key)\nsigning.recipients.agree(envelope_id, \"Recipient 1\", DEFAULT_DISCLOSURES)"
+          }
         }
       ]
     },
@@ -1659,6 +2658,38 @@
           "returns": {
             "type": "Promise<IRecipient>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "update(envelope_id: str, role_name: str, params: RecipientUpdateParams) -> Recipient",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role to update."
+            },
+            {
+              "name": "params",
+              "type": "RecipientUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "The fields to change; unset fields are left alone."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Recipient",
+            "description": "The updated recipient, with freshly generated access keys under"
+          }
         }
       ]
     },
@@ -1691,6 +2722,28 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<ISignerTokenResponse>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "verify_signer(params: RecipientVerifyParams) -> SignerTokenResponse",
+          "params": [
+            {
+              "name": "params",
+              "type": "RecipientVerifyParams",
+              "optional": false,
+              "default": null,
+              "description": "The verification step being completed: passcode, email,\nsms, or kba."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "SignerTokenResponse",
+            "description": "The updated signing session."
+          },
+          "example": {
+            "language": "python",
+            "code": "session = endpoint.recipients.verify_signer(\n    RecipientVerifyPasscodeParams(code=\"1234\")\n)"
           }
         }
       ]
@@ -1748,6 +2801,24 @@
             "language": "typescript",
             "code": "import {decodeAccessTokenBody} from '@verdocs/js-sdk';\n\nconst session = decodeAccessTokenBody(accessToken);\nif (session?.session_type === 'signing') {\n  // handle a signing session\n}"
           }
+        },
+        {
+          "language": "python",
+          "signature": "decode_access_token_body(token: str | None) -> dict[str, Any] | None",
+          "params": [
+            {
+              "name": "token",
+              "type": "str | None",
+              "optional": false,
+              "default": null,
+              "description": "The access token; None is treated as empty."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "dict[str, Any] | None",
+            "description": "The claims dict, or None. Slightly stricter than the js-sdk: the"
+          }
         }
       ]
     },
@@ -1777,6 +2848,24 @@
           "example": {
             "language": "typescript",
             "code": "import {decodeJWTBody} from '@verdocs/js-sdk';\n\nconst claims = decodeJWTBody(token);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "decode_jwt_body(token: str | None) -> Any",
+          "params": [
+            {
+              "name": "token",
+              "type": "str | None",
+              "optional": false,
+              "default": null,
+              "description": "The JWT; None is treated as empty."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Any",
+            "description": "The parsed payload, whatever JSON it holds."
           }
         }
       ]
@@ -1814,35 +2903,6 @@
           "example": {
             "language": "typescript",
             "code": "import {authenticate, VerdocsEndpoint} from '@verdocs/js-sdk';\n\n// Client-side call, suitable for Web and mobile apps:\nconst {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { username: 'test@test.com', password: 'PASSWORD', grant_type:'password' });\nVerdocsEndpoint.getDefault().setAuthToken(access_token);\n\n// Server-side call, suitable for server apps. NEVER EXPOSE client_secret IN FRONT-END CODE:\nconst {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { client_id: '...', client_secret: '...', grant_type:'client_credentials' });\nVerdocsEndpoint.getDefault().setAuthToken(access_token);\n\n// OAuth2 authorization code exchange (used by third-party integrations like PowerAutomate):\nconst {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { grant_type: 'authorization_code', code: '...', client_id: '...', client_secret: '...', redirect_uri: '...' });"
-          }
-        },
-        {
-          "language": "csharp",
-          "signature": "Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest request, CancellationToken cancellationToken = default)",
-          "params": [
-            {
-              "name": "request",
-              "type": "AuthenticateRequest",
-              "optional": false,
-              "default": null,
-              "description": "OAuth2 token request (password, client_credentials, refresh_token, or authorization_code)."
-            },
-            {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task<AuthenticateResponse>",
-            "description": "Authentication tokens and expiration details."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var auth = await endpoint.AuthenticateAsync(new PasswordGrantRequest\n{\n    Username = \"you@example.com\",\n    Password = \"PASSWORD\",\n});\nendpoint.SetToken(auth.AccessToken);"
           }
         },
         {
@@ -1905,54 +2965,28 @@
           }
         },
         {
-          "language": "csharp",
-          "signature": "Task<ChangePasswordResponse> ChangePasswordAsync(ChangePasswordRequest request, CancellationToken cancellationToken = default)",
+          "language": "python",
+          "signature": "change_password(old_password: str, new_password: str) -> ChangePasswordResponse",
           "params": [
             {
-              "name": "request",
-              "type": "ChangePasswordRequest",
+              "name": "old_password",
+              "type": "str",
               "optional": false,
               "default": null,
-              "description": "Current and new passwords."
+              "description": "The caller's current password."
             },
             {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task<ChangePasswordResponse>",
-            "description": "Status and message from the server."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var result = await endpoint.ChangePasswordAsync(new ChangePasswordRequest\n{\n    OldPassword = \"old\",\n    NewPassword = \"new\",\n});"
-          }
-        },
-        {
-          "language": "python",
-          "signature": "change_password(params: ChangePasswordRequest) -> ChangePasswordResponse",
-          "params": [
-            {
-              "name": "params",
-              "type": "ChangePasswordRequest",
+              "name": "new_password",
+              "type": "str",
               "optional": false,
               "default": null,
-              "description": "Current and new passwords."
+              "description": "The new password. Must meet strength requirements."
             }
           ],
           "deprecated": false,
           "returns": {
             "type": "ChangePasswordResponse",
-            "description": "Status and message from the server."
-          },
-          "example": {
-            "language": "python",
-            "code": "result = endpoint.auth.change_password(\n    ChangePasswordRequest(old_password=\"old\", new_password=\"new\")\n)"
+            "description": "The status result; a wrong old password raises instead."
           }
         }
       ]
@@ -1982,38 +3016,12 @@
           }
         },
         {
-          "language": "csharp",
-          "signature": "Task<User> GetMyUserAsync(CancellationToken cancellationToken = default)",
-          "params": [
-            {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task<User>",
-            "description": "The caller's user record."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var user = await endpoint.GetMyUserAsync();"
-          }
-        },
-        {
           "language": "python",
-          "signature": "get_my_user() -> User",
+          "signature": "me() -> User",
           "deprecated": false,
           "returns": {
             "type": "User",
             "description": "The authenticated user's account record."
-          },
-          "example": {
-            "language": "python",
-            "code": "user = endpoint.auth.get_my_user()"
           }
         }
       ]
@@ -2054,47 +3062,49 @@
           }
         },
         {
-          "language": "csharp",
-          "signature": "string GetOAuth2AuthorizeUrl(OAuth2AuthorizeParams parameters)",
-          "params": [
-            {
-              "name": "parameters",
-              "type": "OAuth2AuthorizeParams",
-              "optional": false,
-              "default": null,
-              "description": "client_id, redirect_uri, and optional state/scope."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "string",
-            "description": "The absolute authorize URL."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var url = endpoint.GetOAuth2AuthorizeUrl(new OAuth2AuthorizeParams\n{\n    ClientId = \"your-client-id\",\n    RedirectUri = \"https://your-app.com/callback\",\n    State = \"random-csrf-token\",\n});"
-          }
-        },
-        {
           "language": "python",
-          "signature": "get_oauth2_authorize_url(params: OAuth2AuthorizeParams) -> str",
+          "signature": "get_oauth2_authorize_url(client_id: str, redirect_uri: str, response_type: Literal['code'] = 'code', state: str | None = None, scope: str | None = None) -> str",
           "params": [
             {
-              "name": "params",
-              "type": "OAuth2AuthorizeParams",
+              "name": "client_id",
+              "type": "str",
               "optional": false,
               "default": null,
-              "description": "client_id, redirect_uri, and optional state/scope."
+              "description": "Client ID of the registered OAuth2 application."
+            },
+            {
+              "name": "redirect_uri",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "Where to send the user afterwards. Must match a registered redirect URI."
+            },
+            {
+              "name": "response_type",
+              "type": "Literal['code']",
+              "optional": true,
+              "default": "'code'",
+              "description": "Always \"code\" for the authorization code flow."
+            },
+            {
+              "name": "state",
+              "type": "str | None",
+              "optional": true,
+              "default": "None",
+              "description": "Opaque CSRF-protection value, returned unchanged in the redirect."
+            },
+            {
+              "name": "scope",
+              "type": "str | None",
+              "optional": true,
+              "default": "None",
+              "description": "Optional scope to request."
             }
           ],
           "deprecated": false,
           "returns": {
             "type": "str",
-            "description": "The absolute authorize URL."
-          },
-          "example": {
-            "language": "python",
-            "code": "url = endpoint.auth.get_oauth2_authorize_url(\n    OAuth2AuthorizeParams(\n        client_id=\"your-client-id\",\n        redirect_uri=\"https://your-app.com/callback\",\n        state=\"random-csrf-token\",\n    )\n)"
+            "description": "The authorization URL to redirect the user to."
           }
         }
       ]
@@ -2135,35 +3145,6 @@
           }
         },
         {
-          "language": "csharp",
-          "signature": "Task<AuthenticateResponse> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)",
-          "params": [
-            {
-              "name": "refreshToken",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The refresh token from a prior authenticate call."
-            },
-            {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task<AuthenticateResponse>",
-            "description": "A fresh token set."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var tokens = await endpoint.RefreshTokenAsync(previous.RefreshToken);\nendpoint.SetToken(tokens.AccessToken);"
-          }
-        },
-        {
           "language": "python",
           "signature": "refresh_token(refresh_token: str) -> AuthenticateResponse",
           "params": [
@@ -2172,13 +3153,13 @@
               "type": "str",
               "optional": false,
               "default": null,
-              "description": "The refresh token from a prior authenticate call."
+              "description": "The refresh token from a previous AuthenticateResponse."
             }
           ],
           "deprecated": false,
           "returns": {
             "type": "AuthenticateResponse",
-            "description": "A fresh token set."
+            "description": "A fresh token set for the session."
           },
           "example": {
             "language": "python",
@@ -2223,54 +3204,20 @@
           }
         },
         {
-          "language": "csharp",
-          "signature": "Task<ResendVerificationResponse> ResendVerificationAsync(string accessToken = null, CancellationToken cancellationToken = default)",
-          "params": [
-            {
-              "name": "accessToken",
-              "type": "string",
-              "optional": true,
-              "default": "null",
-              "description": "Optional bearer token used only for this request."
-            },
-            {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task<ResendVerificationResponse>",
-            "description": "Confirmation that the resend was queued."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "await endpoint.ResendVerificationAsync();"
-          }
-        },
-        {
           "language": "python",
-          "signature": "resend_verification(access_token: str | None = None) -> ResendVerificationResponse",
+          "signature": "resend_verification(access_token: str | None = None) -> None",
           "params": [
             {
               "name": "access_token",
               "type": "str | None",
               "optional": true,
               "default": "None",
-              "description": "Optional bearer token used only for this request."
+              "description": "Optional bearer token to use for just this call,\ninstead of the endpoint's current session."
             }
           ],
           "deprecated": false,
           "returns": {
-            "type": "ResendVerificationResponse",
-            "description": "Confirmation that the resend was queued."
-          },
-          "example": {
-            "language": "python",
-            "code": "endpoint.auth.resend_verification()"
+            "type": "None"
           }
         }
       ]
@@ -2311,54 +3258,39 @@
           }
         },
         {
-          "language": "csharp",
-          "signature": "Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request, CancellationToken cancellationToken = default)",
+          "language": "python",
+          "signature": "reset_password(email: str, code: str | None = None, new_password: str | None = None) -> ResetPasswordResponse",
           "params": [
             {
-              "name": "request",
-              "type": "ResetPasswordRequest",
+              "name": "email",
+              "type": "str",
               "optional": false,
               "default": null,
-              "description": "Email, and optionally the emailed code plus new password."
+              "description": "Email address of the account."
             },
             {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
+              "name": "code",
+              "type": "str | None",
               "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task<ResetPasswordResponse>",
-            "description": "Whether the call succeeded."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "await endpoint.ResetPasswordAsync(new ResetPasswordRequest { Email = \"you@example.com\" });\nawait endpoint.ResetPasswordAsync(new ResetPasswordRequest\n{\n    Email = \"you@example.com\",\n    Code = \"123456\",\n    NewPassword = \"new\",\n});"
-          }
-        },
-        {
-          "language": "python",
-          "signature": "reset_password(params: ResetPasswordRequest) -> ResetPasswordResponse",
-          "params": [
+              "default": "None",
+              "description": "The emailed reset code; omit when initiating the flow."
+            },
             {
-              "name": "params",
-              "type": "ResetPasswordRequest",
-              "optional": false,
-              "default": null,
-              "description": "Email, and optionally the emailed code plus new password."
+              "name": "new_password",
+              "type": "str | None",
+              "optional": true,
+              "default": "None",
+              "description": "The new password; omit when initiating the flow."
             }
           ],
           "deprecated": false,
           "returns": {
             "type": "ResetPasswordResponse",
-            "description": "Whether the call succeeded."
+            "description": "The status result, with an advisory message on some paths."
           },
           "example": {
             "language": "python",
-            "code": "endpoint.auth.reset_password(ResetPasswordRequest(email=\"you@example.com\"))\nendpoint.auth.reset_password(\n    ResetPasswordRequest(email=\"you@example.com\", code=\"123456\", new_password=\"new\")\n)"
+            "code": "endpoint.auth.reset_password(email=\"test@example.com\")\n# ... user reads the code from their email ...\nendpoint.auth.reset_password(email=\"test@example.com\", code=\"12345\", new_password=\"hunter2!\")"
           }
         }
       ]
@@ -2399,54 +3331,32 @@
           }
         },
         {
-          "language": "csharp",
-          "signature": "Task<AuthenticateResponse> VerifyEmailAsync(VerifyEmailRequest request, CancellationToken cancellationToken = default)",
+          "language": "python",
+          "signature": "verify_email(email: str, token: str) -> AuthenticateResponse",
           "params": [
             {
-              "name": "request",
-              "type": "VerifyEmailRequest",
+              "name": "email",
+              "type": "str",
               "optional": false,
               "default": null,
-              "description": "Email address and verification token."
+              "description": "Email address of the account being verified."
             },
             {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task<AuthenticateResponse>",
-            "description": "Updated authentication tokens."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var tokens = await endpoint.VerifyEmailAsync(new VerifyEmailRequest\n{\n    Email = \"you@example.com\",\n    Token = \"verify-token\",\n});"
-          }
-        },
-        {
-          "language": "python",
-          "signature": "verify_email(params: VerifyEmailRequest) -> AuthenticateResponse",
-          "params": [
-            {
-              "name": "params",
-              "type": "VerifyEmailRequest",
+              "name": "token",
+              "type": "str",
               "optional": false,
               "default": null,
-              "description": "Email address and verification token."
+              "description": "The verification code from the email."
             }
           ],
           "deprecated": false,
           "returns": {
             "type": "AuthenticateResponse",
-            "description": "Updated authentication tokens."
+            "description": "A fresh token set for the now-verified session; apply it with set_token()."
           },
           "example": {
             "language": "python",
-            "code": "tokens = endpoint.auth.verify_email(\n    VerifyEmailRequest(email=\"you@example.com\", token=\"verify-token\")\n)"
+            "code": "tokens = endpoint.profiles.create(CreateProfileRequest(...))\nendpoint.set_token(tokens.access_token)\n# ... user reads the verification code from their email ...\nverified = endpoint.auth.verify_email(email=\"test@example.com\", token=\"CODE\")\nendpoint.set_token(verified.access_token)"
           }
         }
       ]
@@ -2514,6 +3424,24 @@
           "returns": {
             "type": "Promise<TEnvelopeUpdateResult>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "cancel(envelope_id: str) -> Envelope",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the envelope to cancel."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Envelope",
+            "description": "The canceled envelope. The payload omits joined relations, which"
+          }
         }
       ]
     },
@@ -2550,6 +3478,28 @@
           "example": {
             "language": "typescript",
             "code": "import {Envelopes, ICreateEnvelopeRole, ICreateEnvelopeRequest} from '@verdocs/js-sdk/Envelopes';\n\nconst role1: ICreateEnvelopeRole = {\n  type: 'signer',\n  name: 'Seller',\n  first_name: 'Paige',\n  last_name: 'Turner',\n  email: 'paige.turner@nomail.com',\n  phone: '',\n  sequence: 1,\n  delegator: false,\n  message: '',\n};\n\nconst role2: ICreateEnvelopeRole = {\n  type: 'signer',\n  name: 'Buyer',\n  first_name: 'Power',\n  last_name: 'Power',\n  email: 'will.power@nomail.com',\n  phone: '',\n  sequence: 2,\n  delegator: false,\n  message: '',\n};\n\nconst request: ICreateEnvelopeRequest = {template_id: 'd2338742-f3a1-465b-8592-806587413cc1', name: 'Bill of Sale', roles: [role1, role2]};\nconst {id, recipients} = await Envelopes.createEnvelope(VerdocsEndpoint.getDefault(), request);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create(params: EnvelopeCreateParams) -> Envelope",
+          "params": [
+            {
+              "name": "params",
+              "type": "EnvelopeCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "The envelope definition, built from a template or directly."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Envelope",
+            "description": "The newly created envelope with documents, fields, and recipients."
+          },
+          "example": {
+            "language": "python",
+            "code": "envelope = endpoint.envelopes.create(\n    EnvelopeCreateFromTemplateParams(\n        template_id=\"d2338742-f3a1-465b-8592-806587413cc1\",\n        recipients=[\n            EnvelopeCreateRecipientFromTemplate(\n                role_name=\"Recipient 1\",\n                first_name=\"Paige\",\n                last_name=\"Turner\",\n                email=\"paige.turner@example.com\",\n            )\n        ],\n    )\n)"
           }
         }
       ]
@@ -2598,6 +3548,38 @@
           "returns": {
             "type": "Promise<IEnvelopeFieldSettings>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "delete_field_attachment(envelope_id: str, role_name: str, field_name: str) -> EnvelopeField",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role the field belongs to."
+            },
+            {
+              "name": "field_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The machine name of the attachment field."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "EnvelopeField",
+            "description": "The updated envelope field."
+          }
         }
       ]
     },
@@ -2630,6 +3612,24 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<any>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "download_document(document_id: str) -> bytes",
+          "params": [
+            {
+              "name": "document_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the document to download."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bytes",
+            "description": "The raw file bytes; the response Content-Type is the document's"
           }
         }
       ]
@@ -2716,6 +3716,24 @@
           "returns": {
             "type": "Promise<string>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get_combined_document_download_link(document_id: str) -> str",
+          "params": [
+            {
+              "name": "document_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the envelope's certificate document."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "A signed URL sent as a bare string body. Use it immediately and"
+          }
         }
       ]
     },
@@ -2748,6 +3766,24 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IEnvelope>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get(envelope_id: str) -> Envelope",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the envelope to fetch."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Envelope",
+            "description": "The envelope with its documents, fields, and recipients."
           }
         }
       ]
@@ -2782,6 +3818,24 @@
           "returns": {
             "type": "Promise<IEnvelopeDocument>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get_document(document_id: str) -> EnvelopeDocument",
+          "params": [
+            {
+              "name": "document_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the document to fetch."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "EnvelopeDocument",
+            "description": "The document metadata."
+          }
         }
       ]
     },
@@ -2814,6 +3868,24 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<string>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_document_download_link(document_id: str) -> str",
+          "params": [
+            {
+              "name": "document_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the document to link to."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "A signed URL (attachment disposition, 1 hour expiry) sent as a"
           }
         }
       ]
@@ -2862,6 +3934,38 @@
           "returns": {
             "type": "Promise<string>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get_document_page_display_uri(document_id: str, page: int, variant: Literal['original', 'filled', 'certificate'] = 'original') -> str",
+          "params": [
+            {
+              "name": "document_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the document to render."
+            },
+            {
+              "name": "page",
+              "type": "int",
+              "optional": false,
+              "default": null,
+              "description": "The page number to retrieve."
+            },
+            {
+              "name": "variant",
+              "type": "Literal['original', 'filled', 'certificate']",
+              "optional": true,
+              "default": "'original'",
+              "description": "Which rendering of the document to use."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "A signed URL with a short expiry. Use it immediately and never"
+          }
         }
       ]
     },
@@ -2895,6 +3999,24 @@
           "returns": {
             "type": "Promise<string>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get_document_preview_link(document_id: str) -> str",
+          "params": [
+            {
+              "name": "document_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the document to link to."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "A signed URL sent as a bare string body. Use it immediately and"
+          }
         }
       ]
     },
@@ -2927,6 +4049,24 @@
           "deprecated": true,
           "returns": {
             "type": "Promise<any>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_file(document_id: str) -> bytes",
+          "params": [
+            {
+              "name": "document_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the document to download."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bytes",
+            "description": "The raw file bytes."
           }
         }
       ]
@@ -2965,6 +4105,28 @@
             "language": "typescript",
             "code": "import {getEnvelopes} from '@verdocs/js-sdk/Envelopes';\n\nconst {count, envelopes} = await getEnvelopes((VerdocsEndpoint.getDefault(), { q: 'test' });"
           }
+        },
+        {
+          "language": "python",
+          "signature": "list(params: EnvelopeListParams | None = None) -> EnvelopeList",
+          "params": [
+            {
+              "name": "params",
+              "type": "EnvelopeListParams | None",
+              "optional": true,
+              "default": "None",
+              "description": "Optional filters, sorting, and pagination."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "EnvelopeList",
+            "description": "One page of envelopes plus pagination counts."
+          },
+          "example": {
+            "language": "python",
+            "code": "page = endpoint.envelopes.list(EnvelopeListParams(view=\"inbox\", rows=10, page=0))"
+          }
         }
       ]
     },
@@ -2997,6 +4159,24 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<AxiosResponse<any, any, object>>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_zip(envelope_ids: list[str]) -> bytes",
+          "params": [
+            {
+              "name": "envelope_ids",
+              "type": "list[str]",
+              "optional": false,
+              "default": null,
+              "description": "IDs of the envelopes to include."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bytes",
+            "description": "The ZIP archive bytes. The server labels the response"
           }
         }
       ]
@@ -3380,6 +4560,31 @@
           "returns": {
             "type": "Promise<IEnvelope>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "update(envelope_id: str, params: EnvelopeUpdateParams) -> Envelope",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the envelope to update."
+            },
+            {
+              "name": "params",
+              "type": "EnvelopeUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "The fields to change; unset fields are left alone."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Envelope",
+            "description": "The updated envelope."
+          }
         }
       ]
     },
@@ -3441,6 +4646,52 @@
           "returns": {
             "type": "Promise<IEnvelopeField>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "update_field(envelope_id: str, role_name: str, field_name: str, value: str, prepared: bool = False) -> EnvelopeField",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role the field belongs to, e.g. \"Recipient 1\"."
+            },
+            {
+              "name": "field_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The machine name of the field, e.g. \"Buyer-textbox-1\"."
+            },
+            {
+              "name": "value",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The value to set."
+            },
+            {
+              "name": "prepared",
+              "type": "bool",
+              "optional": true,
+              "default": "False",
+              "description": "Mark the field as prepared by the envelope creator. The\njs-sdk makes callers pass this explicitly; it defaults to\nFalse here."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "EnvelopeField",
+            "description": "The updated envelope field."
+          }
         }
       ]
     },
@@ -3501,6 +4752,49 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IEnvelopeFieldSettings>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "upload_field_attachment(envelope_id: str, role_name: str, field_name: str, file: FileInput) -> EnvelopeField",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the envelope to operate on."
+            },
+            {
+              "name": "role_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role the field belongs to."
+            },
+            {
+              "name": "field_name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The machine name of the attachment field."
+            },
+            {
+              "name": "file",
+              "type": "FileInput",
+              "optional": false,
+              "default": null,
+              "description": "A file path, raw bytes, a binary file-like object, or an\nhttpx-style (filename, content, content_type) tuple."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "EnvelopeField",
+            "description": "The updated envelope field. (The js-sdk types this response as"
+          },
+          "example": {
+            "language": "python",
+            "code": "field = endpoint.envelopes.upload_field_attachment(\n    envelope_id, \"Recipient 1\", \"Buyer-attachment-1\", \"/tmp/receipt.pdf\"\n)"
           }
         }
       ]
@@ -3819,37 +5113,8 @@
           }
         },
         {
-          "language": "csharp",
-          "signature": "Task<Template> CreateTemplateAsync(TemplateCreateParams parameters, CancellationToken cancellationToken = default)",
-          "params": [
-            {
-              "name": "parameters",
-              "type": "TemplateCreateParams",
-              "optional": false,
-              "default": null,
-              "description": "Fields for the new template; only name is required."
-            },
-            {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task<Template>",
-            "description": "The newly created template."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var template = await endpoint.CreateTemplateAsync(new TemplateCreateParams\n{\n    Name = \"NDA\",\n});"
-          }
-        },
-        {
           "language": "python",
-          "signature": "create(params: TemplateCreateParams) -> Template",
+          "signature": "create(params: TemplateCreateParams, files: Sequence[TemplateFile] | None = None) -> Template",
           "params": [
             {
               "name": "params",
@@ -3857,16 +5122,23 @@
               "optional": false,
               "default": null,
               "description": "Fields for the new template; only name is required."
+            },
+            {
+              "name": "files",
+              "type": "Sequence[TemplateFile] | None",
+              "optional": true,
+              "default": "None",
+              "description": "Optional documents to attach. Each entry may be a path, raw\nPDF bytes, an open binary file, or an httpx-style\n(filename, content[, content_type]) tuple. Bare bytes are sent\nas \"document.pdf\" with an application/pdf content type; use a\ntuple to control the name or to send DOCX bytes."
             }
           ],
           "deprecated": false,
           "returns": {
             "type": "Template",
-            "description": "The newly created template."
+            "description": "The newly created template, with documents, fields, and roles."
           },
           "example": {
             "language": "python",
-            "code": "template = endpoint.templates.create(TemplateCreateParams(name=\"NDA\"))"
+            "code": "template = endpoint.templates.create(\n    TemplateCreateParams(name=\"NDA\", visibility=\"shared\"),\n    files=[\"/contracts/nda.pdf\"],\n)"
           }
         }
       ]
@@ -3905,6 +5177,24 @@
             "language": "typescript",
             "code": "import {createTemplateFromSharepoint} from '@verdocs/js-sdk/Templates';\n\nconst newTemplate = await createTemplateFromSharepoint((VerdocsEndpoint.getDefault(), {...});"
           }
+        },
+        {
+          "language": "python",
+          "signature": "create_from_sharepoint(params: TemplateCreateFromSharepointParams) -> Template",
+          "params": [
+            {
+              "name": "params",
+              "type": "TemplateCreateFromSharepointParams",
+              "optional": false,
+              "default": null,
+              "description": "Sharepoint site/item coordinates and the On-Behalf-Of token."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Template",
+            "description": "The newly created template, if the API ever ships the route."
+          }
         }
       ]
     },
@@ -3941,6 +5231,23 @@
           "example": {
             "language": "typescript",
             "code": "import {deleteTemplate} from '@verdocs/js-sdk/Templates';\n\nawait deleteTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "delete(template_id: str) -> None",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template to delete."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
           }
         }
       ]
@@ -3986,6 +5293,31 @@
             "language": "typescript",
             "code": "import {duplicateTemplate} from '@verdocs/js-sdk/Templates';\n\nconst newTemplate = await duplicateTemplate((VerdocsEndpoint.getDefault(), originalTemplateId, 'My Template Copy');"
           }
+        },
+        {
+          "language": "python",
+          "signature": "duplicate(template_id: str, name: str) -> Template",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template to copy."
+            },
+            {
+              "name": "name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "Name for the new copy."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Template",
+            "description": "The newly copied template."
+          }
         }
       ]
     },
@@ -4027,7 +5359,7 @@
       "group": "Template",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Get one template by its ID.",
+      "summary": "Get one template by its ID. Note that the caller must have at least View access to the template.",
       "variants": [
         {
           "language": "typescript",
@@ -4055,6 +5387,24 @@
           "example": {
             "language": "typescript",
             "code": "import {getTemplate} from '@verdocs/js-sdk/Templates';\n\nconst template = await getTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get(template_id: str) -> Template",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template to fetch."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Template",
+            "description": "The requested template."
           }
         }
       ]
@@ -4092,6 +5442,28 @@
           "example": {
             "language": "typescript",
             "code": "import {getTemplates} from '@verdocs/js-sdk/Templates';\n\nawait getTemplates((VerdocsEndpoint.getDefault());\nawait getTemplates((VerdocsEndpoint.getDefault(), { is_starred: true });\nawait getTemplates((VerdocsEndpoint.getDefault(), { is_creator: true });\nawait getTemplates((VerdocsEndpoint.getDefault(), { is_organization: true });"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "list(params: TemplateListParams | None = None) -> TemplateList",
+          "params": [
+            {
+              "name": "params",
+              "type": "TemplateListParams | None",
+              "optional": true,
+              "default": "None",
+              "description": "Optional filters, sorting, and pagination."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "TemplateList",
+            "description": "One page of templates plus pagination counts."
+          },
+          "example": {
+            "language": "python",
+            "code": "page = endpoint.templates.list(TemplateListParams(visibility=\"private_shared\", rows=10, page=0))"
           }
         }
       ]
@@ -4163,6 +5535,24 @@
             "language": "typescript",
             "code": "import {toggleTemplateStar} from '@verdocs/js-sdk/Templates';\n\nawait toggleTemplateStar((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');"
           }
+        },
+        {
+          "language": "python",
+          "signature": "toggle_star(template_id: str) -> Template",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template to star or unstar."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Template",
+            "description": "The updated template, if the API ever repairs the route."
+          }
         }
       ]
     },
@@ -4206,6 +5596,31 @@
           "example": {
             "language": "typescript",
             "code": "import {updateTemplate} from '@verdocs/js-sdk/Templates';\n\nconst updatedTemplate = await updateTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9', { name: 'New Name' });"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "update(template_id: str, params: TemplateUpdateParams) -> Template",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template to update."
+            },
+            {
+              "name": "params",
+              "type": "TemplateUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "The fields to change; unset fields are left alone."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Template",
+            "description": "The updated template."
           }
         }
       ]
@@ -4733,6 +6148,24 @@
           "returns": {
             "type": "string"
           }
+        },
+        {
+          "language": "python",
+          "signature": "capitalize(value: str) -> str",
+          "params": [
+            {
+              "name": "value",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The string to capitalize. May be empty."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "The input with the first character uppercased, other characters untouched."
+          }
         }
       ]
     },
@@ -4758,6 +6191,28 @@
           "deprecated": false,
           "returns": {
             "type": "string"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "convert_to_e164(value: str | None) -> str",
+          "params": [
+            {
+              "name": "value",
+              "type": "str | None",
+              "optional": false,
+              "default": null,
+              "description": "The phone-number-like input; None is treated as empty."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "The E.164 string, or the trimmed input when it was blank or \"+\"-prefixed."
+          },
+          "example": {
+            "language": "python",
+            "code": "convert_to_e164(\"(212) 555-1212\")  # \"+12125551212\"\nconvert_to_e164(\"+46766861004\")    # \"+46766861004\""
           }
         }
       ]
@@ -4785,6 +6240,24 @@
           "returns": {
             "type": "string"
           }
+        },
+        {
+          "language": "python",
+          "signature": "random_string(length: int) -> str",
+          "params": [
+            {
+              "name": "length",
+              "type": "int",
+              "optional": false,
+              "default": null,
+              "description": "Number of characters to generate."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "A random string of exactly `length` characters from [0-9a-z]."
+          }
         }
       ]
     },
@@ -4810,6 +6283,24 @@
           "deprecated": false,
           "returns": {
             "type": "Partial<Record<TEntitlement, IEntitlement>>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "collapse_entitlements(entitlements: list[Entitlement]) -> ActiveEntitlements",
+          "params": [
+            {
+              "name": "entitlements",
+              "type": "list[Entitlement]",
+              "optional": false,
+              "default": null,
+              "description": "The raw records, e.g. from organizations.get_entitlements()."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ActiveEntitlements",
+            "description": "Feature name to the entitlement record currently granting it."
           }
         }
       ]
@@ -4848,6 +6339,28 @@
             "language": "typescript",
             "code": "import {createApiKey} from '@verdocs/js-sdk';\n\nawait createApiKey(ORGID, {name: NEWNAME});"
           }
+        },
+        {
+          "language": "python",
+          "signature": "create(params: ApiKeyCreateParams) -> ApiKey",
+          "params": [
+            {
+              "name": "params",
+              "type": "ApiKeyCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "Name and acting profile for the new key."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ApiKey",
+            "description": "The new API key, including its client_secret. Store the secret;"
+          },
+          "example": {
+            "language": "python",
+            "code": "key = endpoint.api_keys.create(ApiKeyCreateParams(name=\"CI\", profile_id=\"profile-1\"))\nclient_secret = key.client_secret  # only shown here and on rotate"
+          }
         }
       ]
     },
@@ -4885,6 +6398,23 @@
             "language": "typescript",
             "code": "import {deleteApiKey} from '@verdocs/js-sdk';\n\nawait deleteApiKey(ORGID, CLIENTID);"
           }
+        },
+        {
+          "language": "python",
+          "signature": "delete(client_id: str) -> None",
+          "params": [
+            {
+              "name": "client_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The client ID of the key to delete."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
+          }
         }
       ]
     },
@@ -4914,6 +6444,15 @@
           "example": {
             "language": "typescript",
             "code": "import {getApiKeys} from '@verdocs/js-sdk';\n\nconst keys = await getApiKeys(ORGID);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "list() -> list[ApiKey]",
+          "deprecated": false,
+          "returns": {
+            "type": "list[ApiKey]",
+            "description": "The organization's API keys, each with its profile joined."
           }
         }
       ]
@@ -4951,6 +6490,24 @@
           "example": {
             "language": "typescript",
             "code": "import {rotateApiKey} from '@verdocs/js-sdk';\n\nconst {client_secret: newSecret} = await rotateApiKey(ORGID, CLIENTID);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "rotate(client_id: str) -> ApiKey",
+          "params": [
+            {
+              "name": "client_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The client ID of the key to rotate."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ApiKey",
+            "description": "The key with its new client_secret."
           }
         }
       ]
@@ -4996,6 +6553,31 @@
             "language": "typescript",
             "code": "import {updateApiKey} from '@verdocs/js-sdk';\n\nawait updateApiKey(ORGID, CLIENTID, {name: NEWNAME});"
           }
+        },
+        {
+          "language": "python",
+          "signature": "update(client_id: str, params: ApiKeyUpdateParams) -> ApiKey",
+          "params": [
+            {
+              "name": "client_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The client ID of the key to update."
+            },
+            {
+              "name": "params",
+              "type": "ApiKeyUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "The fields to change."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ApiKey",
+            "description": "The updated key. The secret is not included."
+          }
         }
       ]
     },
@@ -5040,6 +6622,35 @@
             "language": "typescript",
             "code": "import {createField} from '@verdocs/js-sdk/Templates';\n\nawait createField((VerdocsEndpoint.getDefault(), template_id, { ... });"
           }
+        },
+        {
+          "language": "python",
+          "signature": "create(template_id: str, params: FieldCreateParams) -> TemplateField",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template to add the field to."
+            },
+            {
+              "name": "params",
+              "type": "FieldCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "The field definition."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "TemplateField",
+            "description": "The newly created field."
+          },
+          "example": {
+            "language": "python",
+            "code": "field = template_fields.create(\n    template.id,\n    FieldCreateParams(\n        document_id=document.id,\n        name=\"tenant-signature-1\",\n        role_name=\"Tenant 1\",\n        type=\"signature\",\n        page=0,\n        x=100,\n        y=200,\n    ),\n)"
+          }
         }
       ]
     },
@@ -5083,6 +6694,30 @@
           "example": {
             "language": "typescript",
             "code": "import {deleteField} from '@verdocs/js-sdk/Templates';\n\nawait deleteField((VerdocsEndpoint.getDefault(), template_id, field_name);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "delete(template_id: str, name: str) -> None",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template the field belongs to."
+            },
+            {
+              "name": "name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "Name of the field to delete."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
           }
         }
       ]
@@ -5135,6 +6770,38 @@
             "language": "typescript",
             "code": "import {updateField} from '@verdocs/js-sdk/Templates';\n\nawait updateField((VerdocsEndpoint.getDefault(), template_id, field_name, { ... });"
           }
+        },
+        {
+          "language": "python",
+          "signature": "update(template_id: str, name: str, params: FieldUpdateParams) -> TemplateField",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template the field belongs to."
+            },
+            {
+              "name": "name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The field's current name."
+            },
+            {
+              "name": "params",
+              "type": "FieldUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "The fields to change; unset fields are left alone."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "TemplateField",
+            "description": "The updated field."
+          }
         }
       ]
     },
@@ -5175,6 +6842,28 @@
           "returns": {
             "type": "Promise<IInitial>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "create(image: FileInput) -> Initial",
+          "params": [
+            {
+              "name": "image",
+              "type": "FileInput",
+              "optional": false,
+              "default": null,
+              "description": "The initials image: a file path, raw bytes, a binary\nfile-like object, or an httpx-style (filename, content,\ncontent_type) tuple."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Initial",
+            "description": "The stored initials block. Its url field is the storage object"
+          },
+          "example": {
+            "language": "python",
+            "code": "block = endpoint.initials.create(\"/tmp/initials.png\")\nendpoint.envelopes.update_field(envelope_id, \"Recipient 1\", \"initial-1\", block.id)"
+          }
         }
       ]
     },
@@ -5211,6 +6900,28 @@
           "example": {
             "language": "typescript",
             "code": "import {createNotificationTemplate} from '@verdocs/js-sdk';\n\nconst template = await createNotificationTemplate({\n  type: 'email',\n  event_name: 'recipient:invited',\n  html_template: '<p>You have been invited to sign a document.</p>',\n});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create(params: NotificationTemplateCreateParams) -> NotificationTemplate",
+          "params": [
+            {
+              "name": "params",
+              "type": "NotificationTemplateCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "The channel type, trigger event, and content. At least\none of html_template or text_template is required."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "NotificationTemplate",
+            "description": "The newly-created notification template."
+          },
+          "example": {
+            "language": "python",
+            "code": "template = endpoint.notification_templates.create(\n    NotificationTemplateCreateParams(\n        type=\"email\",\n        event_name=\"recipient:invited\",\n        html_template=\"<p>{{recipient_first_name}}, you have a document to sign.</p>\",\n    )\n)"
           }
         }
       ]
@@ -5249,6 +6960,23 @@
             "language": "typescript",
             "code": "import {deleteNotificationTemplate} from '@verdocs/js-sdk';\n\nawait deleteNotificationTemplate(TEMPLATEID);"
           }
+        },
+        {
+          "language": "python",
+          "signature": "delete(template_id: str) -> None",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the notification template to delete."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
+          }
         }
       ]
     },
@@ -5257,7 +6985,7 @@
       "group": "Notification",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "",
+      "summary": "Get notifications for the caller's current profile.",
       "variants": [
         {
           "language": "typescript",
@@ -5274,6 +7002,15 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<any>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "notifications() -> list[dict[str, Any]]",
+          "deprecated": false,
+          "returns": {
+            "type": "list[dict[str, Any]]",
+            "description": "The notification rows exactly as the API sent them."
           }
         }
       ]
@@ -5312,6 +7049,24 @@
             "language": "typescript",
             "code": "import {getNotificationTemplate} from '@verdocs/js-sdk';\n\nconst template = await getNotificationTemplate(TEMPLATEID);"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get(template_id: str) -> NotificationTemplate",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the notification template to fetch."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "NotificationTemplate",
+            "description": "The requested notification template, including its content."
+          }
         }
       ]
     },
@@ -5341,6 +7096,15 @@
           "example": {
             "language": "typescript",
             "code": "import {getNotificationTemplates} from '@verdocs/js-sdk';\n\nconst templates = await getNotificationTemplates();"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "list() -> list[NotificationTemplate]",
+          "deprecated": false,
+          "returns": {
+            "type": "list[NotificationTemplate]",
+            "description": "The organization's notification templates, bodies omitted."
           }
         }
       ]
@@ -5386,6 +7150,31 @@
             "language": "typescript",
             "code": "import {updateNotificationTemplate} from '@verdocs/js-sdk';\n\nconst updated = await updateNotificationTemplate(TEMPLATEID, {\n  html_template: '<p>Updated content.</p>',\n});"
           }
+        },
+        {
+          "language": "python",
+          "signature": "update(template_id: str, params: NotificationTemplateUpdateParams) -> NotificationTemplate",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the notification template to update."
+            },
+            {
+              "name": "params",
+              "type": "NotificationTemplateUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "The new content; at least one body is required."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "NotificationTemplate",
+            "description": "The updated notification template."
+          }
         }
       ]
     },
@@ -5422,6 +7211,28 @@
           "example": {
             "language": "typescript",
             "code": "import {createOrganization} from '@verdocs/js-sdk';\n\nconst organization = await createOrganization(VerdocsEndpoint.getDefault(), {name: 'NewOrg'});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create(params: OrganizationCreateParams) -> OrganizationCreateResponse | Organization",
+          "params": [
+            {
+              "name": "params",
+              "type": "OrganizationCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "Fields for the new organization; only name is required.\nNote that the deployed handler consumes only name, parent_id,\ntimezone, and locale; see OrganizationCreateParams."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "OrganizationCreateResponse | Organization",
+            "description": "OrganizationCreateResponse (tokens plus profile and organization)"
+          },
+          "example": {
+            "language": "python",
+            "code": "result = endpoint.organizations.create(OrganizationCreateParams(name=\"NewOrg\"))\nendpoint.set_token(result.access_token)"
           }
         }
       ]
@@ -5460,6 +7271,24 @@
             "language": "typescript",
             "code": "import {deleteOrganization} from '@verdocs/js-sdk';\n\nconst newSession = await deleteOrganization(VerdocsEndpoint.getDefault(), organizationId);"
           }
+        },
+        {
+          "language": "python",
+          "signature": "delete(organization_id: str) -> AuthenticateResponse | None",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization to delete."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "AuthenticateResponse | None",
+            "description": "Session tokens for the caller's next remaining profile, or None"
+          }
         }
       ]
     },
@@ -5490,6 +7319,19 @@
             "language": "typescript",
             "code": "import {getActiveEntitlements} from '@verdocs/js-sdk';\n\nconst activeEntitlements = await getActiveEntitlements((VerdocsEndpoint.getDefault());\nconst isSMSEnabled = !!activeEntitlements.sms_auth;\nconst monthlyKBALimit = activeEntitlements.kba_auth?.monthly_max;"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get_active_entitlements() -> ActiveEntitlements",
+          "deprecated": false,
+          "returns": {
+            "type": "ActiveEntitlements",
+            "description": "Feature name to the entitlement record currently granting it."
+          },
+          "example": {
+            "language": "python",
+            "code": "active = endpoint.organizations.get_active_entitlements()\nsms_enabled = \"sms_auth\" in active\nmonthly_kba_limit = active[\"kba_auth\"].monthly_max if \"kba_auth\" in active else 0"
+          }
         }
       ]
     },
@@ -5498,7 +7340,7 @@
       "group": "Organization",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "",
+      "summary": "Get the caller's organization entitlements.",
       "variants": [
         {
           "language": "typescript",
@@ -5515,6 +7357,15 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IEntitlement[]>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_entitlements() -> list[Entitlement]",
+          "deprecated": false,
+          "returns": {
+            "type": "list[Entitlement]",
+            "description": "Every entitlement record for the caller's organization."
           }
         }
       ]
@@ -5553,6 +7404,24 @@
             "language": "typescript",
             "code": "import {getOrganization} from '@verdocs/js-sdk';\n\nconst organizations = await getOrganization(VerdocsEndpoint.getDefault(), 'ORGID');"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get(organization_id: str) -> Organization",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization to fetch. Must be the caller's own."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Organization",
+            "description": "The requested organization."
+          }
         }
       ]
     },
@@ -5590,6 +7459,24 @@
             "language": "typescript",
             "code": "import {getOrganizationChildren} from '@verdocs/js-sdk';\n\nconst children = await getOrganizationChildren(VerdocsEndpoint.getDefault(), 'ORGID');"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get_children(organization_id: str) -> list[Organization]",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the parent organization. Must be the caller's own."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "list[Organization]",
+            "description": "The child organizations, each with its entitlements."
+          }
         }
       ]
     },
@@ -5626,6 +7513,24 @@
           "example": {
             "language": "typescript",
             "code": "import {getOrganizationPipelineSettings} from '@verdocs/js-sdk';\n\nconst settings = await getOrganizationPipelineSettings(VerdocsEndpoint.getDefault(), 'ORGID');"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_pipeline_settings(organization_id: str) -> PipelineSettings",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization. Must be the caller's own."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "PipelineSettings",
+            "description": "The organization's pipeline settings."
           }
         }
       ]
@@ -5671,6 +7576,49 @@
             "language": "typescript",
             "code": "import {getOrganizationUsage} from '@verdocs/js-sdk';\n\nconst usage = await getOrganizationUsage(VerdocsEndpoint.getDefault(), 'ORGID');"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get_usage(organization_id: str, start_date: str | None = None, end_date: str | None = None, usage_type: str | None = None) -> OrganizationUsage",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization. Must be the caller's own."
+            },
+            {
+              "name": "start_date",
+              "type": "str | None",
+              "optional": true,
+              "default": "None",
+              "description": "ISO 8601 UTC datetime string (e.g. \"2026-01-01T00:00:00Z\").\nThe server defaults to 90 days ago."
+            },
+            {
+              "name": "end_date",
+              "type": "str | None",
+              "optional": true,
+              "default": "None",
+              "description": "ISO 8601 UTC datetime string. The server defaults to now."
+            },
+            {
+              "name": "usage_type",
+              "type": "str | None",
+              "optional": true,
+              "default": "None",
+              "description": "Restrict to one usage type. Known values: UsageType in models.base."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "OrganizationUsage",
+            "description": "Counters nested by organization ID, then usage type."
+          },
+          "example": {
+            "language": "python",
+            "code": "usage = endpoint.organizations.get_usage(\"org-1\", usage_type=\"envelope\")\nenvelopes_created = usage[\"org-1\"].get(\"envelope\", 0)"
+          }
         }
       ]
     },
@@ -5714,6 +7662,31 @@
           "example": {
             "language": "typescript",
             "code": "import {updateOrganization} from '@verdocs/js-sdk';\n\nconst organizations = await updateOrganization(VerdocsEndpoint.getDefault(), organizationId, {name:'ORGNAME'});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "update(organization_id: str, params: OrganizationUpdateParams) -> Organization",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization to update. Must be the caller's own."
+            },
+            {
+              "name": "params",
+              "type": "OrganizationUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "The fields to change; unset fields are left alone."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Organization",
+            "description": "The updated organization, including its groups and entitlements."
           }
         }
       ]
@@ -5766,6 +7739,35 @@
             "language": "typescript",
             "code": "import {updateOrganizationLogo} from '@verdocs/js-sdk';\n\nawait updateOrganizationLogo((VerdocsEndpoint.getDefault(), organizationId, file);"
           }
+        },
+        {
+          "language": "python",
+          "signature": "update_logo(organization_id: str, logo: FileInput) -> Organization",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization to update. Must be the caller's own."
+            },
+            {
+              "name": "logo",
+              "type": "FileInput",
+              "optional": false,
+              "default": null,
+              "description": "The image: a path, raw bytes, an open binary file, or an\nhttpx-style (filename, content[, content_type]) tuple."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Organization",
+            "description": "The updated organization."
+          },
+          "example": {
+            "language": "python",
+            "code": "org = endpoint.organizations.update_logo(\"org-1\", \"logo.png\")\norg = endpoint.organizations.update_logo(\"org-1\", (\"logo.png\", png_bytes, \"image/png\"))"
+          }
         }
       ]
     },
@@ -5809,6 +7811,31 @@
           "example": {
             "language": "typescript",
             "code": "import {updateOrganizationPipelineSettings} from '@verdocs/js-sdk';\n\nconst settings = await updateOrganizationPipelineSettings(VerdocsEndpoint.getDefault(), 'ORGID', {process_acroforms: true});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "update_pipeline_settings(organization_id: str, params: PipelineSettingsUpdateParams) -> PipelineSettings",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization. Must be the caller's own."
+            },
+            {
+              "name": "params",
+              "type": "PipelineSettingsUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "The flags to change."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "PipelineSettings",
+            "description": "The updated pipeline settings, every flag normalized to a boolean."
           }
         }
       ]
@@ -5861,6 +7888,31 @@
             "language": "typescript",
             "code": "import {updateOrganizationThumbnail} from '@verdocs/js-sdk';\n\nawait updateOrganizationThumbnail((VerdocsEndpoint.getDefault(), organizationId, file);"
           }
+        },
+        {
+          "language": "python",
+          "signature": "update_thumbnail(organization_id: str, thumbnail: FileInput) -> Organization",
+          "params": [
+            {
+              "name": "organization_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the organization to update. Must be the caller's own."
+            },
+            {
+              "name": "thumbnail",
+              "type": "FileInput",
+              "optional": false,
+              "default": null,
+              "description": "The image: a path, raw bytes, an open binary file, or\nan httpx-style (filename, content[, content_type]) tuple."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Organization",
+            "description": "The updated organization."
+          }
         }
       ]
     },
@@ -5869,7 +7921,7 @@
       "group": "Contact",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Update a member.",
+      "summary": "Create a contact in the caller's organization.",
       "variants": [
         {
           "language": "typescript",
@@ -5897,6 +7949,28 @@
           "example": {
             "language": "typescript",
             "code": "import {createOrganizationContact} from '@verdocs/js-sdk';\n\nconst result = await createOrganizationContact(VerdocsEndpoint.getDefault(), 'PROFILEID', {first_name:'First', last_name:'Last', email:'a@b.com'});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create(params: ContactCreateParams) -> Profile",
+          "params": [
+            {
+              "name": "params",
+              "type": "ContactCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "Details for the new contact."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Profile",
+            "description": "The new contact's profile (roles will be [\"contact\"])."
+          },
+          "example": {
+            "language": "python",
+            "code": "contact = endpoint.contacts.create(\n    ContactCreateParams(first_name=\"First\", last_name=\"Last\", email=\"a@b.com\")\n)"
           }
         }
       ]
@@ -5935,6 +8009,23 @@
             "language": "typescript",
             "code": "import {deleteOrganizationContact} from '@verdocs/js-sdk';\n\nawait deleteOrganizationContact(VerdocsEndpoint.getDefault(), 'PROFILEID'});"
           }
+        },
+        {
+          "language": "python",
+          "signature": "delete(profile_id: str) -> None",
+          "params": [
+            {
+              "name": "profile_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The contact profile to remove."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
+          }
         }
       ]
     },
@@ -5965,6 +8056,15 @@
             "language": "typescript",
             "code": "import {getOrganizationContacts} from '@verdocs/js-sdk';\n\nconst members = await getOrganizationContacts(VerdocsEndpoint.getDefault()});"
           }
+        },
+        {
+          "language": "python",
+          "signature": "list() -> list[Profile]",
+          "deprecated": false,
+          "returns": {
+            "type": "list[Profile]",
+            "description": "The organization's contacts, sorted by last then first name."
+          }
         }
       ]
     },
@@ -5973,7 +8073,7 @@
       "group": "Contact",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Update a member.",
+      "summary": "Update a contact in the caller's organization.",
       "variants": [
         {
           "language": "typescript",
@@ -6008,6 +8108,31 @@
           "example": {
             "language": "typescript",
             "code": "import {updateOrganizationContact} from '@verdocs/js-sdk';\n\nconst result = await updateOrganizationContact(VerdocsEndpoint.getDefault(), 'PROFILEID', {first_name:'NewFirst'});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "update(profile_id: str, params: ContactUpdateParams) -> Profile",
+          "params": [
+            {
+              "name": "profile_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The contact profile to update."
+            },
+            {
+              "name": "params",
+              "type": "ContactUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "The contact's details."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Profile",
+            "description": "The updated profile."
           }
         }
       ]
@@ -6046,6 +8171,28 @@
             "language": "typescript",
             "code": "import {createOrganizationMember} from '@verdocs/js-sdk';\n\nconst result = await createOrganizationMember(VerdocsEndpoint.getDefault(), {email:'a@b.com', first_name: 'A', last_name: 'B', roles:['member']});"
           }
+        },
+        {
+          "language": "python",
+          "signature": "create(params: MemberCreateParams) -> MemberCreateResponse",
+          "params": [
+            {
+              "name": "params",
+              "type": "MemberCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "Details for the new member."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "MemberCreateResponse",
+            "description": "The new profile, a user summary, and the generated password when"
+          },
+          "example": {
+            "language": "python",
+            "code": "result = endpoint.members.create(\n    MemberCreateParams(email=\"a@b.com\", first_name=\"A\", last_name=\"B\", roles=[\"member\"])\n)\ninitial_password = result.password"
+          }
         }
       ]
     },
@@ -6083,6 +8230,23 @@
             "language": "typescript",
             "code": "import {deleteOrganizationMember} from '@verdocs/js-sdk';\n\nawait deleteOrganizationMember(VerdocsEndpoint.getDefault(), 'PROFILEID'});"
           }
+        },
+        {
+          "language": "python",
+          "signature": "delete(profile_id: str) -> None",
+          "params": [
+            {
+              "name": "profile_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The profile to remove."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
+          }
         }
       ]
     },
@@ -6112,6 +8276,15 @@
           "example": {
             "language": "typescript",
             "code": "import {getOrganizationMembers} from '@verdocs/js-sdk';\n\nconst members = await getOrganizationMembers(VerdocsEndpoint.getDefault()});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "list() -> list[Profile]",
+          "deprecated": false,
+          "returns": {
+            "type": "list[Profile]",
+            "description": "The organization's members, sorted by last then first name."
           }
         }
       ]
@@ -6157,6 +8330,31 @@
             "language": "typescript",
             "code": "import {lockOrganizationMember} from '@verdocs/js-sdk';\n\nconst result = await lockOrganizationMember(VerdocsEndpoint.getDefault(), 'PROFILEID', 'Departed employee');"
           }
+        },
+        {
+          "language": "python",
+          "signature": "lock(profile_id: str, reason: str) -> Profile",
+          "params": [
+            {
+              "name": "profile_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The profile to lock."
+            },
+            {
+              "name": "reason",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "Why the account is being locked (1-255 chars); stored on\nthe user record and shown to admins."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Profile",
+            "description": "The member's profile with the joined user record."
+          }
         }
       ]
     },
@@ -6193,6 +8391,24 @@
           "example": {
             "language": "typescript",
             "code": "import {unlockOrganizationMember} from '@verdocs/js-sdk';\n\nconst result = await unlockOrganizationMember(VerdocsEndpoint.getDefault(), 'PROFILEID');"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "unlock(profile_id: str) -> Profile",
+          "params": [
+            {
+              "name": "profile_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The profile to unlock."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Profile",
+            "description": "The member's profile with the joined user record."
           }
         }
       ]
@@ -6238,6 +8454,31 @@
             "language": "typescript",
             "code": "import {updateOrganizationMember} from '@verdocs/js-sdk';\n\nconst result = await updateOrganizationMember(VerdocsEndpoint.getDefault(), 'PROFILEID', {roles:['member']});"
           }
+        },
+        {
+          "language": "python",
+          "signature": "update(profile_id: str, params: MemberUpdateParams) -> Profile",
+          "params": [
+            {
+              "name": "profile_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The profile to update."
+            },
+            {
+              "name": "params",
+              "type": "MemberUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "The fields to change."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Profile",
+            "description": "The updated profile."
+          }
         }
       ]
     },
@@ -6274,6 +8515,28 @@
           "example": {
             "language": "typescript",
             "code": "import {createProfile} from '@verdocs/js-sdk';\n\nconst newSession = await createProfile(VerdocsEndpoint.getDefault(), {\n  orgName: 'NEW ORG', email: 'a@b.com', password: '12345678', firstName: 'FIRST', lastName: 'LAST', locale: 'en-US', timezone: 'America/New_York'\n});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create(params: CreateProfileRequest) -> AuthenticateResponse",
+          "params": [
+            {
+              "name": "params",
+              "type": "CreateProfileRequest",
+              "optional": false,
+              "default": null,
+              "description": "The signup fields; org_name does not need to be unique."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "AuthenticateResponse",
+            "description": "Tokens for the new (partial, unverified) session; apply with set_token()."
+          },
+          "example": {
+            "language": "python",
+            "code": "tokens = endpoint.profiles.create(CreateProfileRequest(\n    email=\"a@b.com\", password=\"secret!A1\", first_name=\"First\",\n    last_name=\"Last\", org_name=\"NEW ORG\",\n))\nendpoint.set_token(tokens.access_token)\nverified = endpoint.auth.verify_email(email=\"a@b.com\", token=\"EMAILED-CODE\")"
           }
         }
       ]
@@ -6312,6 +8575,24 @@
             "language": "typescript",
             "code": "import {deleteProfile} from '@verdocs/js-sdk';\n\nawait deleteProfile(VerdocsEndpoint.getDefault(), 'PROFILEID');"
           }
+        },
+        {
+          "language": "python",
+          "signature": "delete(profile_id: str) -> AuthenticateResponse | None",
+          "params": [
+            {
+              "name": "profile_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the caller's profile to delete."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "AuthenticateResponse | None",
+            "description": "Tokens for the next available profile, or None when the last"
+          }
         }
       ]
     },
@@ -6342,6 +8623,15 @@
             "language": "typescript",
             "code": "import {getCurrentProfile} from '@verdocs/js-sdk';\n\nconst profiles = await getCurrentProfile(VerdocsEndpoint.getDefault());"
           }
+        },
+        {
+          "language": "python",
+          "signature": "current() -> Profile | None",
+          "deprecated": false,
+          "returns": {
+            "type": "Profile | None",
+            "description": "The current profile, or None if no profile is marked current."
+          }
         }
       ]
     },
@@ -6371,6 +8661,15 @@
           "example": {
             "language": "typescript",
             "code": "import {getProfiles} from '@verdocs/js-sdk';\n\nconst profiles = await getProfiles();"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "list() -> list[Profile]",
+          "deprecated": false,
+          "returns": {
+            "type": "list[Profile]",
+            "description": "All of the caller's profiles."
           }
         }
       ]
@@ -6408,6 +8707,28 @@
           "example": {
             "language": "typescript",
             "code": "import {switchProfile} from '@verdocs/js-sdk';\n\nconst newProfile = await switchProfile(VerdocsEndpoint.getDefault(), 'PROFILEID');"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "switch(profile_id: str) -> AuthenticateResponse",
+          "params": [
+            {
+              "name": "profile_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the caller's profile to make current."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "AuthenticateResponse",
+            "description": "Tokens carrying the switched profile; apply with set_token()."
+          },
+          "example": {
+            "language": "python",
+            "code": "tokens = endpoint.profiles.switch(\"PROFILE-ID\")\nendpoint.set_token(tokens.access_token)"
           }
         }
       ]
@@ -6452,6 +8773,31 @@
           "example": {
             "language": "typescript",
             "code": "import {updateProfile} from '@verdocs/js-sdk/Users';\n\nconst newProfile = await updateProfile(VerdocsEndpoint.getDefault(), 'PROFILEID');"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "update(profile_id: str, params: UpdateProfileRequest) -> Profile",
+          "params": [
+            {
+              "name": "profile_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the profile to update."
+            },
+            {
+              "name": "params",
+              "type": "UpdateProfileRequest",
+              "optional": false,
+              "default": null,
+              "description": "The fields to change; unset fields are left alone."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Profile",
+            "description": "The updated profile."
           }
         }
       ]
@@ -6504,6 +8850,31 @@
             "language": "typescript",
             "code": "import {uploadProfilePhoto} from '@verdocs/js-sdk';\n\nawait uploadProfilePhoto((VerdocsEndpoint.getDefault(), profileId, file);"
           }
+        },
+        {
+          "language": "python",
+          "signature": "update_photo(profile_id: str, picture: FileInput) -> Profile",
+          "params": [
+            {
+              "name": "profile_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the caller's own profile."
+            },
+            {
+              "name": "picture",
+              "type": "FileInput",
+              "optional": false,
+              "default": null,
+              "description": "The photo: a filesystem path (str or PathLike), raw\nbytes, a binary file-like object, or an httpx-style\n(filename, content[, content_type]) tuple."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Profile",
+            "description": "The updated profile; its picture field is a public CDN URL."
+          }
         }
       ]
     },
@@ -6543,6 +8914,28 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<ISignature>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create(image: FileInput) -> Signature",
+          "params": [
+            {
+              "name": "image",
+              "type": "FileInput",
+              "optional": false,
+              "default": null,
+              "description": "The signature image: a file path, raw bytes, a binary\nfile-like object, or an httpx-style (filename, content,\ncontent_type) tuple."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Signature",
+            "description": "The stored signature block. Its url field is the storage object"
+          },
+          "example": {
+            "language": "python",
+            "code": "block = endpoint.signatures.create(\"/tmp/signature.png\")\nendpoint.envelopes.update_field(envelope_id, \"Recipient 1\", \"sig-1\", block.id)"
           }
         }
       ]
@@ -6595,6 +8988,35 @@
             "language": "typescript",
             "code": "import {TemplateDocument} from '@verdocs/js-sdk/Templates';\n\nawait TemplateDocument.createDocument(VerdocsEndpoint.getDefault(), templateID, params);"
           }
+        },
+        {
+          "language": "python",
+          "signature": "create(template_id: str, file: TemplateFile) -> TemplateDocument",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template to attach the document to."
+            },
+            {
+              "name": "file",
+              "type": "TemplateFile",
+              "optional": false,
+              "default": null,
+              "description": "The document: a path, raw PDF bytes, an open binary file,\nor an httpx-style (filename, content[, content_type]) tuple."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "TemplateDocument",
+            "description": "The created template document row (not the containing template)."
+          },
+          "example": {
+            "language": "python",
+            "code": "document = template_documents.create(template.id, \"/contracts/nda.pdf\")"
+          }
         }
       ]
     },
@@ -6632,6 +9054,24 @@
             "language": "typescript",
             "code": "import {deleteTemplateDocument} from '@verdocs/js-sdk/Templates';\n\nawait deleteTemplateDocument(VerdocsEndpoint.getDefault(), documentID);"
           }
+        },
+        {
+          "language": "python",
+          "signature": "delete(document_id: str) -> Template",
+          "params": [
+            {
+              "name": "document_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the document to delete."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Template",
+            "description": "The template as it stands after the deletion."
+          }
         }
       ]
     },
@@ -6664,6 +9104,24 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<any>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "download(document_id: str) -> bytes",
+          "params": [
+            {
+              "name": "document_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the document to download."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bytes",
+            "description": "The document content."
           }
         }
       ]
@@ -6698,6 +9156,24 @@
           "returns": {
             "type": "Promise<ITemplateDocument>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get(document_id: str) -> TemplateDocument",
+          "params": [
+            {
+              "name": "document_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the document to fetch."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "TemplateDocument",
+            "description": "The document metadata."
+          }
         }
       ]
     },
@@ -6710,7 +9186,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "getTemplateDocumentDownloadLink(endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string): Promise<string>",
+          "signature": "getTemplateDocumentDownloadLink(endpoint: VerdocsEndpoint, _templateId: string, documentId: string): Promise<string>",
           "params": [
             {
               "name": "endpoint",
@@ -6720,7 +9196,7 @@
               "description": ""
             },
             {
-              "name": "_envelopeId",
+              "name": "_templateId",
               "type": "string",
               "optional": false,
               "default": null,
@@ -6737,6 +9213,24 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<string>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_download_link(document_id: str) -> str",
+          "params": [
+            {
+              "name": "document_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the document to link to."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "The signed download URL."
           }
         }
       ]
@@ -6777,6 +9271,31 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<any>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_file(template_id: str, document_id: str) -> bytes",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template the document belongs to."
+            },
+            {
+              "name": "document_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the document to download."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bytes",
+            "description": "The document content, if the API ever ships the route."
           }
         }
       ]
@@ -6825,6 +9344,42 @@
           "returns": {
             "type": "Promise<string>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get_page_display_uri(document_id: str, page: int | Literal['thumb'], variant: Literal['original', 'tagged'] = 'original') -> str",
+          "params": [
+            {
+              "name": "document_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the document to render."
+            },
+            {
+              "name": "page",
+              "type": "int | Literal['thumb']",
+              "optional": false,
+              "default": null,
+              "description": "0-based page number, or \"thumb\" for the thumbnail."
+            },
+            {
+              "name": "variant",
+              "type": "Literal['original', 'tagged']",
+              "optional": true,
+              "default": "'original'",
+              "description": "\"original\" (default) or \"tagged\"."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "The signed page image URL."
+          },
+          "example": {
+            "language": "python",
+            "code": "url = template_documents.get_page_display_uri(document.id, 0)\nthumb = template_documents.get_page_display_uri(document.id, \"thumb\")"
+          }
         }
       ]
     },
@@ -6833,11 +9388,11 @@
       "group": "TemplateDocument",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Get a pre-signed preview link for an Envelope Document. This link expires quickly, so it should\nbe accessed immediately and never shared. Content-Disposition will be set to \"inline\".",
+      "summary": "Get a pre-signed preview link for a Template Document. This link expires quickly, so it should\nbe accessed immediately and never shared. Content-Disposition will be set to \"inline\".",
       "variants": [
         {
           "language": "typescript",
-          "signature": "getTemplateDocumentPreviewLink(endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string): Promise<string>",
+          "signature": "getTemplateDocumentPreviewLink(endpoint: VerdocsEndpoint, _templateId: string, documentId: string): Promise<string>",
           "params": [
             {
               "name": "endpoint",
@@ -6847,7 +9402,7 @@
               "description": ""
             },
             {
-              "name": "_envelopeId",
+              "name": "_templateId",
               "type": "string",
               "optional": false,
               "default": null,
@@ -6864,6 +9419,24 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<string>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_preview_link(document_id: str) -> str",
+          "params": [
+            {
+              "name": "document_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the document to link to."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "The signed preview URL."
           }
         }
       ]
@@ -6904,6 +9477,31 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<any>"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_thumbnail(template_id: str, document_id: str) -> bytes",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template the document belongs to."
+            },
+            {
+              "name": "document_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the document to thumbnail."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bytes",
+            "description": "The thumbnail content, if the API ever ships the route."
           }
         }
       ]
@@ -6949,6 +9547,35 @@
             "language": "typescript",
             "code": "import {createTemplateRole} from '@verdocs/js-sdk';\n\nconst role = await createTemplateRole(VerdocsEndpoint.getDefault(), template_id, params...);"
           }
+        },
+        {
+          "language": "python",
+          "signature": "create(template_id: str, params: RoleCreateParams) -> Role",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template to add the role to."
+            },
+            {
+              "name": "params",
+              "type": "RoleCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "The role definition; only name is required."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Role",
+            "description": "The newly created role."
+          },
+          "example": {
+            "language": "python",
+            "code": "role = template_roles.create(template.id, RoleCreateParams(name=\"Tenant 1\", type=\"signer\"))"
+          }
         }
       ]
     },
@@ -6992,6 +9619,30 @@
           "example": {
             "language": "typescript",
             "code": "import {deleteTemplateRole} from '@verdocs/js-sdk';\n\nconst profiles = await deleteTemplateRole(VerdocsEndpoint.getDefault(), template_id, name);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "delete(template_id: str, name: str) -> None",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template the role belongs to."
+            },
+            {
+              "name": "name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "Name of the role to delete."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
           }
         }
       ]
@@ -7043,6 +9694,38 @@
           "example": {
             "language": "typescript",
             "code": "import {updateTemplateRole} from '@verdocs/js-sdk';\n\nconst role = await updateTemplateRole(VerdocsEndpoint.getDefault(), template_id, name, params...);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "update(template_id: str, name: str, params: RoleUpdateParams) -> Role",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template the role belongs to."
+            },
+            {
+              "name": "name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role's current name."
+            },
+            {
+              "name": "params",
+              "type": "RoleUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "The fields to change; unset fields are left alone."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Role",
+            "description": "The updated role."
           }
         }
       ]
@@ -7103,6 +9786,35 @@
           "returns": {
             "type": "Promise<IFileWithData>"
           }
+        },
+        {
+          "language": "python",
+          "signature": "bytes_to_data_url(data: bytes, content_type: str) -> str",
+          "params": [
+            {
+              "name": "data",
+              "type": "bytes",
+              "optional": false,
+              "default": null,
+              "description": "The file content."
+            },
+            {
+              "name": "content_type",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The MIME type to embed, e.g. \"application/pdf\"."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "The \"data:<type>;base64,<payload>\" string."
+          },
+          "example": {
+            "language": "python",
+            "code": "bytes_to_data_url(png_bytes, \"image/png\")  # \"data:image/png;base64,iVBORw0K...\""
+          }
         }
       ]
     },
@@ -7128,6 +9840,24 @@
           "deprecated": false,
           "returns": {
             "type": "string"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "format_full_name(source: Any = None) -> str",
+          "params": [
+            {
+              "name": "source",
+              "type": "Any",
+              "optional": true,
+              "default": "None",
+              "description": "Anything carrying first_name and last_name, as keys or\nattributes (a dict, a Profile, a Recipient). None and missing\nnames are treated as empty."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "\"First Last\", trimmed, so a single known name comes back alone and"
           }
         }
       ]
@@ -7155,6 +9885,24 @@
           "returns": {
             "type": "string"
           }
+        },
+        {
+          "language": "python",
+          "signature": "format_initials(profile: Any = None) -> str",
+          "params": [
+            {
+              "name": "profile",
+              "type": "Any",
+              "optional": true,
+              "default": "None",
+              "description": "Anything carrying first_name and last_name, as keys or\nattributes. The js-sdk assumes both names are present; we treat\na missing one as empty rather than raising."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "The space-separated uppercase initials, or \"--\" when there is no"
+          }
         }
       ]
     },
@@ -7180,6 +9928,24 @@
           "deprecated": false,
           "returns": {
             "type": "string"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "full_name_to_initials(name: str) -> str",
+          "params": [
+            {
+              "name": "name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The full name."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "The concatenated first characters."
           }
         }
       ]
@@ -7214,6 +9980,31 @@
           "returns": {
             "type": "number[]"
           }
+        },
+        {
+          "language": "python",
+          "signature": "integer_sequence(start: int, count: int) -> list[int]",
+          "params": [
+            {
+              "name": "start",
+              "type": "int",
+              "optional": false,
+              "default": null,
+              "description": "The first value."
+            },
+            {
+              "name": "count",
+              "type": "int",
+              "optional": false,
+              "default": null,
+              "description": "How many values to produce."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "list[int]",
+            "description": "A list of `count` integers beginning at `start`."
+          }
         }
       ]
     },
@@ -7240,6 +10031,24 @@
           "returns": {
             "type": "string"
           }
+        },
+        {
+          "language": "python",
+          "signature": "format_short_time_ago(val: datetime | str | int | float | None) -> str",
+          "params": [
+            {
+              "name": "val",
+              "type": "datetime | str | int | float | None",
+              "optional": false,
+              "default": null,
+              "description": "The moment to describe. None, unsupported types, and unparseable\nstrings yield \"\"."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "The elapsed time as \"<n><unit>\", or \"\" when there is nothing to format."
+          }
         }
       ]
     },
@@ -7260,6 +10069,15 @@
           "example": {
             "language": "typescript",
             "code": "import {getValidators} from '@verdocs/js-sdk';\n\nconst available = getValidators(); // ['email', 'phone', 'url', 'postal_code', 'number', 'date']"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_validators() -> list[str]",
+          "deprecated": false,
+          "returns": {
+            "type": "list[str]",
+            "description": "The validator names accepted by is_valid_input."
           }
         }
       ]
@@ -7290,6 +10108,24 @@
           "example": {
             "language": "typescript",
             "code": "import {isValidEmail} from '@verdocs/js-sdk';\n\nisValidEmail('sales@verdocs.com'); // true"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "is_valid_email(email: str | None) -> bool",
+          "params": [
+            {
+              "name": "email",
+              "type": "str | None",
+              "optional": false,
+              "default": null,
+              "description": "The value to check; None and the empty string fail."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bool",
+            "description": "True when the value passes the email pattern."
           }
         }
       ]
@@ -7324,6 +10160,31 @@
           "returns": {
             "type": "boolean"
           }
+        },
+        {
+          "language": "python",
+          "signature": "is_valid_input(value: str, validator: str) -> bool",
+          "params": [
+            {
+              "name": "value",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The value to check."
+            },
+            {
+              "name": "validator",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The validator name; see get_validators for the options."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bool",
+            "description": "True when the validator exists and the value passes it."
+          }
         }
       ]
     },
@@ -7353,6 +10214,24 @@
           "example": {
             "language": "typescript",
             "code": "import {isValidPhone} from '@verdocs/js-sdk';\n\nisValidPhone('+1 202-555-0147'); // true"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "is_valid_phone(phone: str | None) -> bool",
+          "params": [
+            {
+              "name": "phone",
+              "type": "str | None",
+              "optional": false,
+              "default": null,
+              "description": "The value to check; None and the empty string fail."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bool",
+            "description": "True when the value passes the phone pattern."
           }
         }
       ]
@@ -7387,6 +10266,31 @@
           "returns": {
             "type": "boolean"
           }
+        },
+        {
+          "language": "python",
+          "signature": "is_valid_role_name(value: str, roles: list[Role]) -> bool",
+          "params": [
+            {
+              "name": "value",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role name to look for."
+            },
+            {
+              "name": "roles",
+              "type": "list[Role]",
+              "optional": false,
+              "default": null,
+              "description": "The template's roles."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bool",
+            "description": "True when a role with that exact name exists."
+          }
         }
       ]
     },
@@ -7420,6 +10324,31 @@
           "returns": {
             "type": "boolean"
           }
+        },
+        {
+          "language": "python",
+          "signature": "is_valid_tag(value: str, tags: list[str]) -> bool",
+          "params": [
+            {
+              "name": "value",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The tag to check."
+            },
+            {
+              "name": "tags",
+              "type": "list[str]",
+              "optional": false,
+              "default": null,
+              "description": "Already-known tags, which pass regardless of format."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bool",
+            "description": "True when the tag is well formed or already known."
+          }
         }
       ]
     },
@@ -7450,6 +10379,15 @@
             "language": "typescript",
             "code": "import {getWebhooks} from '@verdocs/js-sdk';\n\nawait getWebhooks(ORGID, params);"
           }
+        },
+        {
+          "language": "python",
+          "signature": "get() -> Webhook",
+          "deprecated": false,
+          "returns": {
+            "type": "Webhook",
+            "description": "The organization's webhook configuration."
+          }
         }
       ]
     },
@@ -7458,7 +10396,7 @@
       "group": "Webhook",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Rotate the secret key used to authenticate Webhooks. If a secret key has not yet been set,\nit will be created. Until this is done, Webhook calls will not have a signature applied to\ntheir headers. Please note that pending Webhook deliveries will not be affected until the\nnext Webhook is triggered.\n\nTo authenticate a Webhook call, compute an HMAC-256 hash of the JSON payload `body` field\nas follows:",
+      "summary": "Rotate the secret key used to authenticate Webhooks. If a secret key has not yet been set,\nit will be created. Until this is done, Webhook calls will not have a signature applied to\ntheir headers. Pending Webhook deliveries are not affected until the next event is triggered.\n\n\n\nTo authenticate a Webhook call, compute an HMAC-SHA256 hex digest of the JSON payload `body`\nfield and compare it to the `x-webhook-signature` header:",
       "variants": [
         {
           "language": "typescript",
@@ -7478,7 +10416,20 @@
           },
           "example": {
             "language": "typescript",
-            "code": "    // NOTE: Hash the `body` field INSIDE the payload. In many frameworks the payload is also called\n    // `body`, which can be confusing.\n    const jsonBody = JSON.stringify(req.body.body);\n    const hash = createHmac('sha256', SECRET_KEY).update(jsonBody).digest('hex');\n    if (hash !== req.headers['x-webhook-signature']) {\n      // Handle error here\n    }\n\n    // It is important to return a 200 status code anyway, to avoid the sender trying to resend\n    // the same data.\n    res.status(200).send();"
+            "code": "import {rotateWebhookSecret} from '@verdocs/js-sdk';\n\nawait rotateWebhookSecret(VerdocsEndpoint.getDefault());"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "rotate_secret() -> Webhook",
+          "deprecated": false,
+          "returns": {
+            "type": "Webhook",
+            "description": "The webhook configuration including the new secret_key."
+          },
+          "example": {
+            "language": "python",
+            "code": "webhook = endpoint.webhooks.rotate_secret()\nsigning_secret = webhook.secret_key  # unmasked only in this response"
           }
         }
       ]
@@ -7516,6 +10467,28 @@
           "example": {
             "language": "typescript",
             "code": "import {setWebhooks} from '@verdocs/js-sdk';\n\nawait setWebhooks(ORGID, params);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "set(params: WebhookSetParams) -> Webhook",
+          "params": [
+            {
+              "name": "params",
+              "type": "WebhookSetParams",
+              "optional": false,
+              "default": null,
+              "description": "The full configuration to apply. The URL must be HTTPS,\nor \"\" to disable deliveries."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Webhook",
+            "description": "The updated webhook configuration."
+          },
+          "example": {
+            "language": "python",
+            "code": "webhook = endpoint.webhooks.set(\n    WebhookSetParams(\n        url=\"https://example.com/hooks/verdocs\",\n        active=True,\n        events={\"envelope_created\": True, \"envelope_completed\": True},\n    )\n)"
           }
         }
       ]

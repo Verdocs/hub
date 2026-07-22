@@ -180,6 +180,10 @@ class Templates:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation template.getTemplates
+        @sdkGroup Template
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", _TEMPLATES_PATH, params=_list_query(params))
         return TemplateList.model_validate(response.json())
@@ -199,6 +203,10 @@ class Templates:
             NotFoundError: No visible template has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation template.getTemplate
+        @sdkGroup Template
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_TEMPLATES_PATH}/{template_id}")
         return Template.model_validate(response.json())
@@ -275,6 +283,10 @@ class Templates:
             NotFoundError: No visible template has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation template.duplicateTemplate
+        @sdkGroup Template
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "PUT", f"{_TEMPLATES_PATH}/{template_id}", json={"action": "duplicate", "name": name}
@@ -298,6 +310,10 @@ class Templates:
         Raises:
             VerdocsAPIError: Always today; the deployed API has no such route.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation template.createTemplateFromSharepoint
+        @sdkGroup Template
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", f"{_TEMPLATES_PATH}/from-sharepoint", json=_write_body(params))
         return Template.model_validate(response.json())
@@ -316,6 +332,10 @@ class Templates:
             NotFoundError: No visible template has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation template.updateTemplate
+        @sdkGroup Template
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("PATCH", f"{_TEMPLATES_PATH}/{template_id}", json=_write_body(params))
         return Template.model_validate(response.json())
@@ -333,6 +353,10 @@ class Templates:
             NotFoundError: No visible template has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation template.deleteTemplate
+        @sdkGroup Template
+        @sdkPage Endpoints
         """
         self._endpoint._request("DELETE", f"{_TEMPLATES_PATH}/{template_id}")
 
@@ -355,6 +379,10 @@ class Templates:
         Raises:
             VerdocsAPIError: Always today; the deployed API has no such route.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation template.toggleTemplateStar
+        @sdkGroup Template
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", f"{_TEMPLATES_PATH}/{template_id}/stars/toggle")
         return Template.model_validate(response.json())

@@ -136,6 +136,10 @@ class Organizations:
             NotFoundError: No organization has that ID.
             VerdocsAPIError: The API returned another non-2xx status (403 for non-members).
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation organization.getOrganization
+        @sdkGroup Organization
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_ORGANIZATIONS_PATH}/{organization_id}")
         return Organization.model_validate(response.json())
@@ -158,6 +162,10 @@ class Organizations:
                 rather than returning an empty list).
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation organization.getOrganizationChildren
+        @sdkGroup Organization
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_ORGANIZATIONS_PATH}/{organization_id}/children")
         return [Organization.model_validate(entry) for entry in response.json()]
@@ -192,6 +200,10 @@ class Organizations:
         Raises:
             VerdocsAPIError: The API returned a non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation organization.getOrganizationUsage
+        @sdkGroup Organization
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "GET",
@@ -225,6 +237,10 @@ class Organizations:
         Raises:
             VerdocsAPIError: The API rejected the request.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation organization.createOrganization
+        @sdkGroup Organization
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", _ORGANIZATIONS_PATH, json=_write_body(params))
         return _parse_create_response(response.json())
@@ -245,6 +261,10 @@ class Organizations:
             NotFoundError: No organization has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation organization.updateOrganization
+        @sdkGroup Organization
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "PATCH", f"{_ORGANIZATIONS_PATH}/{organization_id}", json=_write_body(params)
@@ -266,6 +286,10 @@ class Organizations:
         Raises:
             VerdocsAPIError: The API returned a non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation organization.getOrganizationPipelineSettings
+        @sdkGroup Organization
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_ORGANIZATIONS_PATH}/{organization_id}/pipeline-settings")
         return PipelineSettings.model_validate(response.json())
@@ -286,6 +310,10 @@ class Organizations:
         Raises:
             VerdocsAPIError: The API returned a non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation organization.updateOrganizationPipelineSettings
+        @sdkGroup Organization
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "PATCH", f"{_ORGANIZATIONS_PATH}/{organization_id}/pipeline-settings", json=_write_body(params)
@@ -311,6 +339,10 @@ class Organizations:
             VerdocsAPIError: The API returned another non-2xx status (400 when
                 deletion protection is on).
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation organization.deleteOrganization
+        @sdkGroup Organization
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("DELETE", f"{_ORGANIZATIONS_PATH}/{organization_id}")
         return _parse_delete_response(response)
@@ -337,6 +369,10 @@ class Organizations:
         Raises:
             VerdocsAPIError: The API returned a non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation organization.updateOrganizationLogo
+        @sdkGroup Organization
+        @sdkPage Endpoints
         """
         response = _multipart_request(
             self._endpoint._client,
@@ -366,6 +402,10 @@ class Organizations:
         Raises:
             VerdocsAPIError: The API returned a non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation organization.updateOrganizationThumbnail
+        @sdkGroup Organization
+        @sdkPage Endpoints
         """
         response = _multipart_request(
             self._endpoint._client,
@@ -390,6 +430,10 @@ class Organizations:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation organization.getEntitlements
+        @sdkGroup Organization
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_ORGANIZATIONS_PATH}/entitlements")
         return [Entitlement.model_validate(entry) for entry in response.json()]
@@ -413,6 +457,10 @@ class Organizations:
             VerdocsError: The endpoint has no active session.
             VerdocsAPIError: The API returned a non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation organization.getActiveEntitlements
+        @sdkGroup Organization
+        @sdkPage Endpoints
         """
         if self._endpoint.session is None:
             raise VerdocsError("No active session")

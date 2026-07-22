@@ -144,6 +144,10 @@ class Envelopes:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.getEnvelopes
+        @sdkGroup Envelope
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", _ENVELOPES_PATH, params=_list_query(params))
         return EnvelopeList.model_validate(response.json())
@@ -207,6 +211,11 @@ class Envelopes:
         Raises:
             VerdocsAPIError: The API rejected the request.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.createEnvelope
+        @sdkGroup Envelope
+        @sdkPage Endpoints
+        @sdkGettingStarted
         """
         response = self._endpoint._request("POST", _ENVELOPES_PATH, json=_write_body(params))
         return Envelope.model_validate(response.json())
@@ -227,6 +236,11 @@ class Envelopes:
             NotFoundError: No visible envelope has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.updateEnvelope
+        @sdkGroup Envelope
+        @sdkPage Endpoints
+        @sdkGettingStarted
         """
         response = self._endpoint._request("PATCH", f"{_ENVELOPES_PATH}/{envelope_id}", json=_write_body(params))
         return Envelope.model_validate(response.json())
@@ -248,6 +262,10 @@ class Envelopes:
             NotFoundError: No visible envelope has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.cancelEnvelope
+        @sdkGroup Envelope
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("PUT", f"{_ENVELOPES_PATH}/{envelope_id}", json={"action": "cancel"})
         return Envelope.model_validate(response.json())
@@ -271,6 +289,10 @@ class Envelopes:
             NotFoundError: No visible document has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.getEnvelopeDocument
+        @sdkGroup Envelope
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_DOCUMENTS_PATH}/{document_id}")
         # The server sends JSON.stringify output with a text/html Content-Type
@@ -299,6 +321,10 @@ class Envelopes:
             NotFoundError: No visible document has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.downloadEnvelopeDocument
+        @sdkGroup Envelope
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_DOCUMENTS_PATH}/{document_id}", params={"type": "file"})
         return response.content
@@ -320,6 +346,10 @@ class Envelopes:
             NotFoundError: No visible document has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.getEnvelopeDocumentDownloadLink
+        @sdkGroup Envelope
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_DOCUMENTS_PATH}/{document_id}", params={"type": "download"})
         return response.text
@@ -344,6 +374,10 @@ class Envelopes:
             NotFoundError: No visible document has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.getCombinedEnvelopeDocumentDownloadLink
+        @sdkGroup Envelope
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "GET", f"{_DOCUMENTS_PATH}/{document_id}", params={"type": "download", "combined": True}
@@ -368,6 +402,10 @@ class Envelopes:
             NotFoundError: No visible document has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.getEnvelopeDocumentPreviewLink
+        @sdkGroup Envelope
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_DOCUMENTS_PATH}/{document_id}", params={"type": "preview"})
         return response.text
@@ -389,6 +427,10 @@ class Envelopes:
             NotFoundError: No visible document has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.getEnvelopeFile
+        @sdkGroup Envelope
+        @sdkPage Endpoints
         """
         return self.download_document(document_id)
 
@@ -424,6 +466,11 @@ class Envelopes:
             VerdocsAPIError: The field is unknown, belongs to another role,
                 or the value was rejected.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.updateEnvelopeField
+        @sdkGroup Envelope
+        @sdkPage Endpoints
+        @sdkGettingStarted
         """
         response = self._endpoint._request(
             "PUT", _field_path(envelope_id, role_name, field_name), json={"value": value, "prepared": prepared}
@@ -464,6 +511,10 @@ class Envelopes:
             VerdocsAPIError: The field is unknown, is not an attachment
                 field, or the file failed the antivirus scan.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.uploadEnvelopeFieldAttachment
+        @sdkGroup Envelope
+        @sdkPage Endpoints
         """
         response = _multipart_request(
             self._endpoint,
@@ -495,6 +546,10 @@ class Envelopes:
         Raises:
             VerdocsAPIError: The field is unknown or is not an attachment field.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.deleteEnvelopeFieldAttachment
+        @sdkGroup Envelope
+        @sdkPage Endpoints
         """
         response = _multipart_request(
             self._endpoint,
@@ -529,6 +584,10 @@ class Envelopes:
             NotFoundError: No visible document has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.getEnvelopeDocumentPageDisplayUri
+        @sdkGroup Envelope
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_DOCUMENTS_PATH}/page-image/{document_id}/{variant}/{page}")
         return response.text
@@ -553,6 +612,10 @@ class Envelopes:
         Raises:
             VerdocsAPIError: An envelope is unknown or not accessible.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.getEnvelopesZip
+        @sdkGroup Envelope
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_ENVELOPES_PATH}/zip/{','.join(envelope_ids)}")
         return response.content

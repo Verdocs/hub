@@ -12,7 +12,6 @@ const Tag = {
   FIELDS: 'Fields',
   KBA: 'KBA',
   NOTIFICATIONS: 'Notifications',
-  NOTIFICATION_TEMPLATES: 'Notification Templates',
   ORGANIZATIONS: 'Organizations',
   ORGANIZATION_CONTACTS: 'Organization Contacts',
   ORGANIZATION_GROUPS: "Organization Groups",
@@ -140,12 +139,6 @@ export const PREAMBLE_TAGS: OpenAITag[] = [
     description:
       'Notifications provide alerts and updates to users regarding activity and important events within the platform. These may include workflow changes, recipient actions, completion statuses, and reminders. Notifications can be delivered via email, SMS, or in-app messages, ensuring that users are informed of required actions or the status of documents and processes.',
     'x-displayName': Tag.NOTIFICATIONS,
-  },
-  {
-    name: Tag.NOTIFICATION_TEMPLATES,
-    description:
-      'Notification Templates allow organizations to customize the email and SMS notifications sent during signing workflows. Each template is tied to a specific event (e.g. recipient invited, envelope completed) and notification type (email, sms, etc). The caller must have admin access to the organization.',
-    'x-displayName': Tag.NOTIFICATION_TEMPLATES,
   },
   {
     name: Tag.ORGANIZATION_GROUPS,

@@ -42,6 +42,10 @@ class NotificationTemplates:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation notification.getNotificationTemplates
+        @sdkGroup Notification
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", _NOTIFICATION_TEMPLATES_PATH)
         return [NotificationTemplate.model_validate(entry) for entry in response.json()]
@@ -61,6 +65,10 @@ class NotificationTemplates:
             NotFoundError: No such template in the caller's organization.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation notification.getNotificationTemplate
+        @sdkGroup Notification
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_NOTIFICATION_TEMPLATES_PATH}/{template_id}")
         return NotificationTemplate.model_validate(response.json())
@@ -94,6 +102,10 @@ class NotificationTemplates:
             VerdocsAPIError: The API rejected the request (400 for missing
                 variables or a duplicate type/event/template combination).
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation notification.createNotificationTemplate
+        @sdkGroup Notification
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", _NOTIFICATION_TEMPLATES_PATH, json=_write_body(params))
         return NotificationTemplate.model_validate(response.json())
@@ -116,6 +128,10 @@ class NotificationTemplates:
             NotFoundError: No such template in the caller's organization.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation notification.updateNotificationTemplate
+        @sdkGroup Notification
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "PATCH", f"{_NOTIFICATION_TEMPLATES_PATH}/{template_id}", json=_write_body(params)
@@ -137,6 +153,10 @@ class NotificationTemplates:
         Raises:
             VerdocsAPIError: The API returned a non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation notification.deleteNotificationTemplate
+        @sdkGroup Notification
+        @sdkPage Endpoints
         """
         self._endpoint._request("DELETE", f"{_NOTIFICATION_TEMPLATES_PATH}/{template_id}")
 

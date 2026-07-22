@@ -53,6 +53,10 @@ class Signatures:
         Raises:
             VerdocsAPIError: The API rejected the upload.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation signature.createSignature
+        @sdkGroup Signature
+        @sdkPage Endpoints
         """
         response = _multipart_request(
             self._endpoint, "POST", _SIGNATURES_PATH, files=[("signature", _file_part(image))]

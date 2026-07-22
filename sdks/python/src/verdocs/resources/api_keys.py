@@ -43,6 +43,10 @@ class ApiKeys:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation apiKey.getApiKeys
+        @sdkGroup ApiKey
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", _API_KEYS_PATH)
         return [ApiKey.model_validate(entry) for entry in response.json()]
@@ -65,6 +69,10 @@ class ApiKeys:
             NotFoundError: The profile does not exist in the caller's organization.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation apiKey.createApiKey
+        @sdkGroup ApiKey
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", _API_KEYS_PATH, json=_write_body(params))
         return ApiKey.model_validate(response.json())
@@ -85,6 +93,10 @@ class ApiKeys:
             NotFoundError: No such key in the caller's organization.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation apiKey.rotateApiKey
+        @sdkGroup ApiKey
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", f"{_API_KEYS_PATH}/{client_id}/rotate")
         return ApiKey.model_validate(response.json())
@@ -105,6 +117,10 @@ class ApiKeys:
             NotFoundError: No such key in the caller's organization.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation apiKey.updateApiKey
+        @sdkGroup ApiKey
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("PATCH", f"{_API_KEYS_PATH}/{client_id}", json=_write_body(params))
         return ApiKey.model_validate(response.json())
@@ -122,6 +138,10 @@ class ApiKeys:
         Raises:
             VerdocsAPIError: The API returned a non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation apiKey.deleteApiKey
+        @sdkGroup ApiKey
+        @sdkPage Endpoints
         """
         self._endpoint._request("DELETE", f"{_API_KEYS_PATH}/{client_id}")
 

@@ -65,6 +65,10 @@ class TemplateFields:
             NotFoundError: No visible template has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation field.createField
+        @sdkGroup Field
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", f"{_FIELDS_PATH}/{template_id}", json=_write_body(params))
         return TemplateField.model_validate(response.json())
@@ -89,6 +93,10 @@ class TemplateFields:
             NotFoundError: The template or field does not exist.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation field.updateField
+        @sdkGroup Field
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "PATCH", f"{_FIELDS_PATH}/{template_id}/{quote(name, safe='')}", json=_write_body(params)
@@ -109,6 +117,10 @@ class TemplateFields:
             NotFoundError: The template does not exist.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation field.deleteField
+        @sdkGroup Field
+        @sdkPage Endpoints
         """
         self._endpoint._request("DELETE", f"{_FIELDS_PATH}/{template_id}/{quote(name, safe='')}")
 

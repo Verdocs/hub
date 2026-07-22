@@ -21,6 +21,10 @@ def collapse_entitlements(entitlements: list[Entitlement]) -> ActiveEntitlements
 
     Returns:
         Feature name to the entitlement record currently granting it.
+
+    @sdkOperation entitlement.collapseEntitlements
+    @sdkGroup Entitlement
+    @sdkPage Helpers
     """
     now = datetime.now(timezone.utc)
     active: ActiveEntitlements = {}

@@ -53,6 +53,10 @@ class KBA:
             NotFoundError: Always, until the API serves this route again.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation kba.getKbaStep
+        @sdkGroup KBA
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_KBA_PATH}/{envelope_id}/{quote(role_name, safe='')}")
         return _KBA_STEP_ADAPTER.validate_python(response.json())
@@ -76,6 +80,10 @@ class KBA:
             NotFoundError: Always, until the API serves this route again.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation kba.submitKbaPin
+        @sdkGroup KBA
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "POST", f"{_KBA_PATH}/pin", json={"envelope_id": envelope_id, "role_name": role_name, "pin": pin}
@@ -102,6 +110,10 @@ class KBA:
             NotFoundError: Always, until the API serves this route again.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation kba.submitKbaIdentity
+        @sdkGroup KBA
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "POST",
@@ -136,6 +148,10 @@ class KBA:
             NotFoundError: Always, until the API serves this route again.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation kba.submitKbaChallengeResponse
+        @sdkGroup KBA
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "POST",

@@ -1168,7 +1168,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "getOrganizationInvitation(endpoint: VerdocsEndpoint, email: string, token: string): Promise<IOrganizationInvitation>",
-          "summary": "Get an invitation's details. This is generally used as the first step of accepting the invite.\nA successful response will indicate that the invite token is still valid, and include some\nmetadata for the organization to style the acceptance screen.",
+          "summary": "(_Authenticated via invite token, not an active session._). \n\nGet an invitation's details. This is generally used as the first step of accepting the invite, and is\nauthenticated via an invite token - not an active session.A successful response will indicate that the\ninvite token is still valid, and include some metadata for the organization to style the acceptance screen.\nIntended to be called by the invitee to get details about the invitation they are about to accept.",
           "params": [
             {
               "name": "endpoint",
@@ -4464,7 +4464,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "getTemplate(endpoint: VerdocsEndpoint, templateId: string): Promise<ITemplate>",
-          "summary": "Get one template by its ID.",
+          "summary": "Get one template by its ID. Note that the caller must have at least View access to the template.",
           "params": [
             {
               "name": "endpoint",
@@ -5750,7 +5750,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "getNotifications(endpoint: VerdocsEndpoint): Promise<any>",
-          "summary": "",
+          "summary": "Get notifications for the caller's current profile.",
           "params": [
             {
               "name": "endpoint",
@@ -6004,7 +6004,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "getEntitlements(endpoint: VerdocsEndpoint): Promise<IEntitlement[]>",
-          "summary": "",
+          "summary": "Get the caller's organization entitlements.",
           "params": [
             {
               "name": "endpoint",
@@ -6390,7 +6390,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "createOrganizationContact(endpoint: VerdocsEndpoint, params: Pick<IProfile, 'email' | 'first_name' | 'last_name' | 'phone'>): Promise<any>",
-          "summary": "Update a member.",
+          "summary": "Create a contact in the caller's organization.",
           "params": [
             {
               "name": "endpoint",
@@ -6497,7 +6497,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "updateOrganizationContact(endpoint: VerdocsEndpoint, profileId: string, params: Pick<IProfile, 'email' | 'first_name' | 'last_name' | 'phone'>): Promise<any>",
-          "summary": "Update a member.",
+          "summary": "Update a contact in the caller's organization.",
           "params": [
             {
               "name": "endpoint",
@@ -7273,7 +7273,7 @@
           "page": "Endpoints",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "getTemplateDocumentDownloadLink(endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string): Promise<string>",
+          "signature": "getTemplateDocumentDownloadLink(endpoint: VerdocsEndpoint, _templateId: string, documentId: string): Promise<string>",
           "summary": "Get an envelope document's metadata, or the document itself. If no \"type\" parameter is specified,\nthe document metadata is returned. If \"type\" is set to \"file\", the document binary content is\nreturned with Content-Type set to the MIME type of the file. If \"type\" is set to \"download\", a\nstring download link will be returned. If \"type\" is set to \"preview\" a string preview link will\nbe returned. This link expires quickly, so it should be accessed immediately and never shared.",
           "params": [
             {
@@ -7284,7 +7284,7 @@
               "default": null
             },
             {
-              "name": "_envelopeId",
+              "name": "_templateId",
               "type": "string",
               "description": "",
               "optional": false,
@@ -7400,8 +7400,8 @@
           "page": "Endpoints",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "getTemplateDocumentPreviewLink(endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string): Promise<string>",
-          "summary": "Get a pre-signed preview link for an Envelope Document. This link expires quickly, so it should\nbe accessed immediately and never shared. Content-Disposition will be set to \"inline\".",
+          "signature": "getTemplateDocumentPreviewLink(endpoint: VerdocsEndpoint, _templateId: string, documentId: string): Promise<string>",
+          "summary": "Get a pre-signed preview link for a Template Document. This link expires quickly, so it should\nbe accessed immediately and never shared. Content-Disposition will be set to \"inline\".",
           "params": [
             {
               "name": "endpoint",
@@ -7411,7 +7411,7 @@
               "default": null
             },
             {
-              "name": "_envelopeId",
+              "name": "_templateId",
               "type": "string",
               "description": "",
               "optional": false,
