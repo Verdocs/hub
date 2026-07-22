@@ -10,10 +10,11 @@ const Tag = {
   ENVELOPES: 'Envelopes',
   ENVELOPE_DOCUMENTS: 'Envelope Documents',
   FIELDS: 'Fields',
+  KBA: 'KBA',
   NOTIFICATIONS: 'Notifications',
-  NOTIFICATION_TEMPLATES: 'Notification Templates',
   ORGANIZATIONS: 'Organizations',
   ORGANIZATION_CONTACTS: 'Organization Contacts',
+  ORGANIZATION_GROUPS: "Organization Groups",
   ORGANIZATION_INVITATIONS: 'Organization Invitations',
   ORGANIZATION_MEMBERS: 'Organization Members',
   PROFILES: 'Profiles',
@@ -140,9 +141,13 @@ export const PREAMBLE_TAGS: OpenAITag[] = [
     'x-displayName': Tag.NOTIFICATIONS,
   },
   {
-    name: Tag.NOTIFICATION_TEMPLATES,
-    description:
-      'Notification Templates allow organizations to customize the email and SMS notifications sent during signing workflows. Each template is tied to a specific event (e.g. recipient invited, envelope completed) and notification type (email, sms, etc). The caller must have admin access to the organization.',
-    'x-displayName': Tag.NOTIFICATION_TEMPLATES,
+    name: Tag.ORGANIZATION_GROUPS,
+    description: "Endpoints for managing organization groups and group membership.",
+    'x-displayName': "Organization Groups"
   },
+  {
+    name: Tag.KBA,
+    description: "Knowledge-Based Authentication endpoints for recipient identity verification during signing.",
+    'x-displayName': "KBA"
+  }
 ];

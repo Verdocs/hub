@@ -94,6 +94,12 @@ export type TRecipientKbaStep =
  * }
  * ```
  *
+ * @group KBA
+ * @api GET /v2/kba/:envelope_id/:role_name Get current KBA step
+ * @apiParam string(format:uuid) envelope_id The envelope to operate on.
+ * @apiParam string role_name The recipient role name.
+ * @apiSuccess TRecipientKbaStep . The recipient's current KBA step
+ *
  * @sdkOperation kba.getKbaStep
  * @sdkGroup KBA
  * @sdkPage Endpoints
@@ -105,6 +111,13 @@ export const getKbaStep = (endpoint: VerdocsEndpoint, envelope_id: string, role_
 
 /**
  * Submit a response to a KBA PIN challenge.
+ *
+ * @group KBA
+ * @api POST /v2/kba/pin Submit KBA PIN
+ * @apiBody string(format:uuid) envelope_id The envelope to operate on.
+ * @apiBody string role_name The recipient role name.
+ * @apiBody string pin PIN entered by the recipient
+ * @apiSuccess TRecipientKbaStep . The next KBA step
  *
  * @sdkOperation kba.submitKbaPin
  * @sdkGroup KBA
@@ -129,6 +142,13 @@ export interface IKbaIdentity {
 /**
  * Submit an identity response to a KBA challenge.
  *
+ * @group KBA
+ * @api POST /v2/kba/identity Submit KBA identity
+ * @apiBody string(format:uuid) envelope_id The envelope to operate on.
+ * @apiBody string role_name The recipient role name.
+ * @apiBody object identity Recipient identity details used for verification
+ * @apiSuccess TRecipientKbaStep . The next KBA step
+ *
  * @sdkOperation kba.submitKbaIdentity
  * @sdkGroup KBA
  * @sdkPage Endpoints
@@ -146,6 +166,13 @@ export interface IKbaChallengeResponse {
 /**
  * Submit an identity response to a KBA challenge. Answers should be submitted in the same order as
  * the challenges were listed in `IRecipientKbaStepChallenge.questions`.
+ *
+ * @group KBA
+ * @api POST /v2/kba/response Submit KBA challenge responses
+ * @apiBody string(format:uuid) envelope_id The envelope to operate on.
+ * @apiBody string role_name The recipient role name.
+ * @apiBody array(items:IKbaChallengeResponse) responses Answers in the same order as the challenge questions
+ * @apiSuccess TRecipientKbaStep . The next KBA step
  *
  * @sdkOperation kba.submitKbaChallengeResponse
  * @sdkGroup KBA

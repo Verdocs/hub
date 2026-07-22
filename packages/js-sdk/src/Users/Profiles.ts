@@ -35,6 +35,10 @@ export const getProfiles = (endpoint: VerdocsEndpoint) =>
  * const profiles = await getCurrentProfile(VerdocsEndpoint.getDefault());
  * ```
  *
+ * @group Profiles
+ * @api GET /v2/profiles Get the caller's current profile
+ * @apiSuccess IProfile . The caller's current profile
+ *
  * @sdkOperation profile.getCurrentProfile
  * @sdkGroup Profile
  * @sdkPage Endpoints
@@ -146,6 +150,18 @@ export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  * });
  * ```
  *
+ * @group Profiles
+ * @api POST /v2/profiles Create profile and organization
+ * @apiBody string email Email address for the new user
+ * @apiBody string password Password for the new user
+ * @apiBody string first_name First name
+ * @apiBody string last_name Last name
+ * @apiBody string org_name Name for the new organization
+ * @apiBody string phone Phone number
+ * @apiBody string timezone? Long-form timezone
+ * @apiBody string locale? Locale code
+ * @apiSuccess IAuthenticateResponse . Session credentials for the new profile
+ *
  * @sdkOperation profile.createProfile
  * @sdkGroup Profile
  * @sdkPage Endpoints
@@ -165,8 +181,9 @@ export const createProfile = (endpoint: VerdocsEndpoint, params: ICreateProfileR
  * ```
  *
  * @group Profiles
- * @api PATCH /v2/templates/:template_id Change a profile's photo
- * @apiBody string(format:binary) file File to upload
+ * @api PATCH /v2/profiles/:profile_id Change profile photo
+ * @apiParam string(format:uuid) profile_id Profile ID to update.
+ * @apiBody string(format:binary) picture Profile photo to upload
  * @apiSuccess IProfile . The updated profile
  *
  * @sdkOperation profile.updateProfilePhoto

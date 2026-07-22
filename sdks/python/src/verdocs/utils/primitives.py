@@ -27,6 +27,10 @@ def integer_sequence(start: int, count: int) -> list[int]:
 
     Returns:
         A list of `count` integers beginning at `start`.
+
+    @sdkOperation primitive.integerSequence
+    @sdkGroup Primitive
+    @sdkPage Helpers
     """
     return list(range(start, start + count))
 
@@ -42,6 +46,10 @@ def format_full_name(source: Any = None) -> str:
     Returns:
         "First Last", trimmed, so a single known name comes back alone and
         no names at all come back as "".
+
+    @sdkOperation primitive.formatFullName
+    @sdkGroup Primitive
+    @sdkPage Helpers
     """
     first = capitalize(_read(source, "first_name") or "")
     last = capitalize(_read(source, "last_name") or "")
@@ -59,6 +67,10 @@ def format_initials(profile: Any = None) -> str:
     Returns:
         The space-separated uppercase initials, or "--" when there is no
         profile to read.
+
+    @sdkOperation primitive.formatInitials
+    @sdkGroup Primitive
+    @sdkPage Helpers
     """
     if not profile:
         return "--"
@@ -78,5 +90,9 @@ def full_name_to_initials(name: str) -> str:
 
     Returns:
         The concatenated first characters.
+
+    @sdkOperation primitive.fullNameToInitials
+    @sdkGroup Primitive
+    @sdkPage Helpers
     """
     return "".join(word[:1] for word in name.split(" "))

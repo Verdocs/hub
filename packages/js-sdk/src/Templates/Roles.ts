@@ -28,6 +28,7 @@ import {IRole} from '../Models';
  *
  * @group Roles
  * @api POST /v2/roles/:template_id Add a role to a template
+ * @apiParam string(format:uuid) template_id The template ID.
  * @apiBody string name Name for the new role. Must be unique within the template. May include spaces, but later calls must URL-encode any references to this role, so it is recomended that special characters be avoided.
  * @apiBody string(enum:'signer' | 'cc' | 'approver') type Type of role to create. Signers act on documents by filling and signing fields. CC recipients receive a copy but do not act on the document. Approvers control the final submission of a document, but do not have fields of their own to fill out.
  * @apiBody string full_name? Default full name for the role. May be completed/overridden later, when envelopes are made from the template.
@@ -58,7 +59,9 @@ export const createTemplateRole = (endpoint: VerdocsEndpoint, template_id: strin
  * ```
  *
  * @group Roles
- * @api PATCH /v2/roles/:template_id/:role_id Update a role. See createRole for additional details on the parameters available.
+ * @api PATCH /v2/roles/:template_id/:role_name Update a role
+ * @apiParam string(format:uuid) template_id The template ID.
+ * @apiParam string role_name The role name to update.
  * @apiBody string name? Rename the role. Note that role names must be unique within a template, so this may fail if the new name is already in use.
  * @apiBody string(enum:'signer' | 'cc' | 'approver') type? Type of role.
  * @apiBody string full_name? Default full name for the role.
@@ -90,7 +93,9 @@ export const updateTemplateRole = (endpoint: VerdocsEndpoint, template_id: strin
  * ```
  *
  * @group Roles
- * @api DELETE /v2/roles/:template_id/:role_id Delete a role.
+ * @api DELETE /v2/roles/:template_id/:role_name Delete a role.
+ * @apiParam string(format:uuid) template_id The template ID.
+ * @apiParam string role_name The role name to delete.
  * @apiSuccess string . Success
  *
  * @sdkOperation role.deleteTemplateRole

@@ -43,6 +43,10 @@ class Members:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation member.getOrganizationMembers
+        @sdkGroup Member
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", _MEMBERS_PATH)
         return [Profile.model_validate(entry) for entry in response.json()]
@@ -72,6 +76,10 @@ class Members:
             VerdocsAPIError: The API rejected the request (400 when the user
                 is already a member).
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation member.createOrganizationMember
+        @sdkGroup Member
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", _MEMBERS_PATH, json=_write_body(params))
         return MemberCreateResponse.model_validate(response.json())
@@ -94,6 +102,10 @@ class Members:
             NotFoundError: No such member in the caller's organization.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation member.updateOrganizationMember
+        @sdkGroup Member
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("PATCH", f"{_MEMBERS_PATH}/{profile_id}", json=_write_body(params))
         return Profile.model_validate(response.json())
@@ -116,6 +128,10 @@ class Members:
             NotFoundError: No such member in the caller's organization.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation member.deleteOrganizationMember
+        @sdkGroup Member
+        @sdkPage Endpoints
         """
         self._endpoint._request("DELETE", f"{_MEMBERS_PATH}/{profile_id}")
 
@@ -139,6 +155,10 @@ class Members:
             NotFoundError: No such member in the caller's organization.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation member.lockOrganizationMember
+        @sdkGroup Member
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "PUT", f"{_MEMBERS_PATH}/{profile_id}", json={"action": "lock", "reason": reason}
@@ -162,6 +182,10 @@ class Members:
             NotFoundError: No such member in the caller's organization.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation member.unlockOrganizationMember
+        @sdkGroup Member
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("PUT", f"{_MEMBERS_PATH}/{profile_id}", json={"action": "unlock"})
         return Profile.model_validate(response.json())

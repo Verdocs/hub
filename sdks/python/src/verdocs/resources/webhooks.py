@@ -42,6 +42,10 @@ class Webhooks:
             NotFoundError: The organization has never configured a webhook.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation webhook.getWebhooks
+        @sdkGroup Webhook
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", _WEBHOOKS_PATH)
         return Webhook.model_validate(response.json())
@@ -70,6 +74,10 @@ class Webhooks:
         Raises:
             VerdocsAPIError: The API rejected the request.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation webhook.setWebhooks
+        @sdkGroup Webhook
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("PATCH", _WEBHOOKS_PATH, json=_write_body(params))
         return Webhook.model_validate(response.json())
@@ -94,6 +102,10 @@ class Webhooks:
             NotFoundError: The organization has never configured a webhook.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation webhook.rotateWebhookSecret
+        @sdkGroup Webhook
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("PUT", f"{_WEBHOOKS_PATH}/rotate-secret")
         return Webhook.model_validate(response.json())

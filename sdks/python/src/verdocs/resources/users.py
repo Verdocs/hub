@@ -29,6 +29,10 @@ class Users:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation auth.getMyUser
+        @sdkGroup Auth
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", _ME_PATH)
         return User.model_validate(response.json())
@@ -49,6 +53,10 @@ class Users:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation notification.getNotifications
+        @sdkGroup Notification
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", _NOTIFICATIONS_PATH)
         return response.json()

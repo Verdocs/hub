@@ -55,17 +55,26 @@ interface ISourceSdkDocs {
 export const fetchSdkSchemas = () => {
   const sdkPath = path.resolve('../../sdks')
   const sdks: ISourceSdkDocs[] = []
-  const languages = fs.readdirSync(sdkPath, { recursive: false })
+  const languageDirs = fs
+    .readdirSync(sdkPath, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
 
-  // Get the paths to each of the sdks' `sdk-docs.json`.
-  languages.forEach((language) => {
+  // Get the paths to each of the sdks' `sdk-docs.json`. Not every directory under
+  // `sdks/` is a language SDK (e.g. `parity`), so a missing file is skipped, not fatal.
+  languageDirs.forEach((language) => {
     const formattedPath = `${sdkPath}/${language}/sdk-docs.json`
+
+    if (!fs.existsSync(formattedPath)) {
+      console.warn(`Skipping (${language}): no sdk-docs.json found`)
+      return
+    }
 
     try {
       const file = JSON.parse(fs.readFileSync(formattedPath, 'utf8'))
       sdks.push(file)
     } catch (error) {
-      throw new Error(`Couldnt find file for (${language})`)
+      throw new Error(`Couldnt parse sdk-docs.json for (${language})`)
     }
   })
   return sdks

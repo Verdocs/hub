@@ -104,6 +104,10 @@ def user_has_permissions(profile: Profile | None, permissions: list[Permission])
 
     Returns:
         True when every requested permission is held.
+
+    @sdkOperation permission.userHasPermissions
+    @sdkGroup Permissions
+    @sdkPage Helpers
     """
     # No need to de-dupe here, we're just checking present-at-least-once set membership.
     net_permissions: list[str] = list(profile.permissions) if profile is not None else []

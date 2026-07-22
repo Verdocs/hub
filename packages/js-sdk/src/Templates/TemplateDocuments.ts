@@ -17,7 +17,7 @@ import {ITemplate, ITemplateDocument} from '../Models';
  * ```
  *
  * @group Template Documents
- * @api POST /v2/templates/:template_id/documents Attach a document to a template
+ * @api POST /v2/template-documents Attach a document to a template
  * @apiBody string(format:binary) file Document file to attach. The file name will automatically be used as the document name.
  * @apiBody string(format:uuid) template_id Template ID to attach the document to
  * @apiSuccess ITemplateDocument . Template document
@@ -91,6 +91,12 @@ export const getTemplateDocument = async (endpoint: VerdocsEndpoint, documentId:
 /**
  * Download a document directly.
  *
+ * @group Template Documents
+ * @api GET /v2/template-documents/:document_id Download template document file
+ * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
+ * @apiQuery string(enum:'file') type Return the document binary content.
+ * @apiSuccess string(format:binary) . The document file bytes
+ *
  * @sdkOperation templateDocument.downloadTemplateDocument
  * @sdkGroup TemplateDocument
  * @sdkPage Endpoints
@@ -108,7 +114,7 @@ export const downloadTemplateDocument = async (endpoint: VerdocsEndpoint, docume
  * be returned. This link expires quickly, so it should be accessed immediately and never shared.
  *
  * @group Template Documents
- * @api GET /v2/envelope-documents/:document_id Preview, Download, or Link to a Document
+ * @api GET /v2/template-documents/:document_id Preview, Download, or Link to a Document
  * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
  * @apiQuery string(enum:'file'|'download'|'preview') type? Download the file directly, generate a download link, or generate a preview link.
  * @apiSuccess string . The generated link.
@@ -117,28 +123,41 @@ export const downloadTemplateDocument = async (endpoint: VerdocsEndpoint, docume
  * @sdkGroup TemplateDocument
  * @sdkPage Endpoints
  */
-export const getTemplateDocumentDownloadLink = async (endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string) =>
+export const getTemplateDocumentDownloadLink = async (endpoint: VerdocsEndpoint, _templateId: string, documentId: string) =>
   endpoint.api //
     .get<string>(`/v2/template-documents/${documentId}?type=download`)
     .then((r) => r.data);
 
 /**
- * Get a pre-signed preview link for an Envelope Document. This link expires quickly, so it should
+ * Get a pre-signed preview link for a Template Document. This link expires quickly, so it should
  * be accessed immediately and never shared. Content-Disposition will be set to "inline".
+ *
+ * @group Template Documents
+ * @api GET /v2/template-documents/:document_id Get template document preview link
+ * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
+ * @apiQuery string(enum:'preview') type Generate a preview link.
+ * @apiSuccess string . The generated preview link
  *
  * @sdkOperation templateDocument.getTemplateDocumentPreviewLink
  * @sdkGroup TemplateDocument
  * @sdkPage Endpoints
  */
-export const getTemplateDocumentPreviewLink = async (endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string) =>
+export const getTemplateDocumentPreviewLink = async (endpoint: VerdocsEndpoint, _templateId: string, documentId: string) =>
   endpoint.api //
-    .get<string>(`/v2/envelope-documents/${documentId}?type=preview`)
+    .get<string>(`/v2/template-documents/${documentId}?type=preview`)
     .then((r) => r.data);
 
 /**
  * Get (binary download) a file attached to a Template. It is important to use this method
  * rather than a direct A HREF or similar link to set the authorization headers for the
  * request.
+ *
+ * @group Template Documents
+ * @api GET /v2/templates/:template_id/documents/:document_id Download template document file
+ * @apiParam string(format: 'uuid') template_id The template ID.
+ * @apiParam string(format: 'uuid') document_id The document ID to retrieve.
+ * @apiQuery boolean(default:true) file Return the document binary content.
+ * @apiSuccess string(format:binary) . The document file bytes
  *
  * @sdkOperation templateDocument.getTemplateDocumentFile
  * @sdkGroup TemplateDocument
@@ -154,6 +173,13 @@ export const getTemplateDocumentFile = async (endpoint: VerdocsEndpoint, templat
  * rather than a direct A HREF or similar link to set the authorization headers for the
  * request.
  *
+ * @group Template Documents
+ * @api GET /v2/templates/:template_id/documents/:document_id Download template document thumbnail
+ * @apiParam string(format: 'uuid') template_id The template ID.
+ * @apiParam string(format: 'uuid') document_id The document ID to retrieve.
+ * @apiQuery boolean(default:true) thumbnail Return the thumbnail image bytes.
+ * @apiSuccess string(format:binary) . The thumbnail image bytes
+ *
  * @sdkOperation templateDocument.getTemplateDocumentThumbnail
  * @sdkGroup TemplateDocument
  * @sdkPage Endpoints
@@ -168,6 +194,13 @@ export const getTemplateDocumentThumbnail = async (endpoint: VerdocsEndpoint, te
  * into PNG resources suitable for display in IMG tags although they may be used elsewhere. Note that these are intended
  * for DISPLAY ONLY, are not legally binding documents, and do not contain any encoded metadata from participants. The
  * original asset may be obtained by calling `getTemplateDocumentFile()` or similar.
+ *
+ * @group Template Documents
+ * @api GET /v2/template-documents/page-image/:document_id/:variant/:page Get template document page display URI
+ * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
+ * @apiParam string(enum: 'original'|'tagged') variant The variant of the document to retrieve.
+ * @apiParam integer page The page number to retrieve
+ * @apiSuccess string . The page display URI. Note that this is a signed URL with a short expiration. It should be used immediately and never databased or cached.
  *
  * @sdkOperation templateDocument.getTemplateDocumentPageDisplayUri
  * @sdkGroup TemplateDocument

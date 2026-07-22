@@ -40,6 +40,10 @@ def format_short_time_ago(val: datetime | str | int | float | None) -> str:
     Returns:
         The elapsed time as "<n><unit>", or "" when there is nothing to format.
         A future moment comes out with a negative count, as in the js-sdk.
+
+    @sdkOperation dateTime.formatShortTimeAgo
+    @sdkGroup DateTime
+    @sdkPage Helpers
     """
     if val is None:
         return ""
