@@ -9,36 +9,60 @@ import {IProfile, ITemplate} from '../Models';
 
 /**
  * Check to see if the user created the template.
+ *
+ * @sdkOperation template.userIsTemplateCreator
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userIsTemplateCreator = (profile: IProfile | null | undefined, template: ITemplate) =>
   profile && template && profile.id === template.profile_id;
 
 /**
  * Check to see if a template is "shared" with the user.
+ *
+ * @sdkOperation template.userHasSharedTemplate
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userHasSharedTemplate = (profile: IProfile | null | undefined, template: ITemplate) =>
   profile && template && !template.is_personal && profile.organization_id === template.organization_id;
 
 /**
  * Check to see if the user can create a personal/private template.
+ *
+ * @sdkOperation template.userCanCreatePersonalTemplate
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userCanCreatePersonalTemplate = (profile: IProfile | null | undefined) =>
   userHasPermissions(profile, ['template:creator:create:personal']);
 
 /**
  * Check to see if the user can create an org-shared template.
+ *
+ * @sdkOperation template.userCanCreateOrgTemplate
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userCanCreateOrgTemplate = (profile: IProfile | null | undefined) =>
   userHasPermissions(profile, ['template:creator:create:org']);
 
 /**
  * Check to see if the user can create a public template.
+ *
+ * @sdkOperation template.userCanCreatePublicTemplate
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userCanCreatePublicTemplate = (profile: IProfile | null | undefined) =>
   userHasPermissions(profile, ['template:creator:create:public']);
 
 /**
  * Check to see if the user can read/view a template.
+ *
+ * @sdkOperation template.userCanReadTemplate
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userCanReadTemplate = (profile: IProfile | null | undefined, template: ITemplate) =>
   template.is_public ||
@@ -47,6 +71,10 @@ export const userCanReadTemplate = (profile: IProfile | null | undefined, templa
 
 /**
  * Check to see if the user can update a tempate.
+ *
+ * @sdkOperation template.userCanUpdateTemplate
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userCanUpdateTemplate = (profile: IProfile | null | undefined, template: ITemplate) =>
   userIsTemplateCreator(profile, template) ||
@@ -54,6 +82,10 @@ export const userCanUpdateTemplate = (profile: IProfile | null | undefined, temp
 
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
+ *
+ * @sdkOperation template.userCanMakeTemplatePrivate
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userCanMakeTemplatePrivate = (profile: IProfile | null | undefined, template: ITemplate) =>
   userIsTemplateCreator(profile, template)
@@ -62,6 +94,10 @@ export const userCanMakeTemplatePrivate = (profile: IProfile | null | undefined,
 
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
+ *
+ * @sdkOperation template.userCanMakeTemplateShared
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userCanMakeTemplateShared = (profile: IProfile | null | undefined, template: ITemplate) =>
   userIsTemplateCreator(profile, template)
@@ -70,6 +106,10 @@ export const userCanMakeTemplateShared = (profile: IProfile | null | undefined, 
 
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
+ *
+ * @sdkOperation template.userCanMakeTemplatePublic
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userCanMakeTemplatePublic = (profile: IProfile | null | undefined, template: ITemplate) =>
   userIsTemplateCreator(profile, template)
@@ -78,12 +118,20 @@ export const userCanMakeTemplatePublic = (profile: IProfile | null | undefined, 
 
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
+ *
+ * @sdkOperation template.userCanChangeOrgVisibility
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userCanChangeOrgVisibility = (profile: IProfile | null | undefined, template: ITemplate) =>
   userIsTemplateCreator(profile, template) && userHasPermissions(profile, ['template:creator:create:personal']);
 
 /**
  * Check to see if the user can change whether a template is personal vs org-shared.
+ *
+ * @sdkOperation template.userCanDeleteTemplate
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userCanDeleteTemplate = (profile: IProfile | null | undefined, template: ITemplate) =>
   userIsTemplateCreator(profile, template)
@@ -92,6 +140,10 @@ export const userCanDeleteTemplate = (profile: IProfile | null | undefined, temp
 
 /**
  * Confirm whether the user can create an envelope using the specified template.
+ *
+ * @sdkOperation template.userCanSendTemplate
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userCanSendTemplate = (profile: IProfile | null | undefined, template: ITemplate) => {
   switch (template.visibility) {
@@ -116,6 +168,10 @@ export const userCanSendTemplate = (profile: IProfile | null | undefined, templa
 
 /**
  * Confirm whether the user can create a new template.
+ *
+ * @sdkOperation template.userCanCreateTemplate
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userCanCreateTemplate = (profile: IProfile | null | undefined) =>
   userCanCreatePersonalTemplate(profile) || userCanCreateOrgTemplate(profile) || userCanCreatePublicTemplate(profile);
@@ -123,16 +179,29 @@ export const userCanCreateTemplate = (profile: IProfile | null | undefined) =>
 /**
  * Check to see if the user can "build" the template (use the field builder). The user must have write access to the
  * template, and the template must have at least one signer role.
+ *
+ * @sdkOperation template.userCanBuildTemplate
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userCanBuildTemplate = (profile: IProfile | null | undefined, template: ITemplate) =>
   userCanUpdateTemplate(profile, template) && (template.roles || []).filter((role) => role.type === 'signer').length > 0;
 
+/**
+ * @sdkOperation template.getFieldsForRole
+ * @sdkGroup Template
+ * @sdkPage Helpers
+ */
 export const getFieldsForRole = (template: ITemplate, role_name: string) =>
   (template.fields || []).filter((field) => field.role_name === role_name);
 
 /**
  * Check to see if the user can preview the template. The user must have read access to the template, the template must
  * have at least one signer, and every signer must have at least one field.
+ *
+ * @sdkOperation template.userCanPreviewTemplate
+ * @sdkGroup Template
+ * @sdkPage Helpers
  */
 export const userCanPreviewTemplate = (profile: IProfile | null | undefined, template: ITemplate) => {
   const hasPermission = userCanReadTemplate(profile, template);

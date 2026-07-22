@@ -1,6 +1,11 @@
 import {isValidInput} from '../Templates';
 import {IEnvelopeField} from '../Models';
 
+/**
+ * @sdkOperation envelope.isFieldFilled
+ * @sdkGroup Envelope
+ * @sdkPage Helpers
+ */
 export const isFieldFilled = (field: IEnvelopeField, allRecipientFields: IEnvelopeField[]) => {
   const {value = ''} = field;
   switch (field.type as any) {
@@ -50,6 +55,11 @@ export const isFieldFilled = (field: IEnvelopeField, allRecipientFields: IEnvelo
 };
 
 // TODO: Only allow !required to bypass validation if the field is empty.
+/**
+ * @sdkOperation envelope.isFieldValid
+ * @sdkGroup Envelope
+ * @sdkPage Helpers
+ */
 export const isFieldValid = (field: IEnvelopeField, allRecipientFields: IEnvelopeField[]) => {
   return !field.required || isFieldFilled(field, allRecipientFields);
 };

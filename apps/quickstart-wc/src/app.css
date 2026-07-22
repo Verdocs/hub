@@ -1,0 +1,46 @@
+body {
+  margin: 0;
+  background: #f5f5fa;
+  font-family: var(--vdocs-font-sans, 'Inter', sans-serif);
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 24px;
+  background: #ffffff;
+  border-bottom: 1px solid #dad8dd;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #092c4c;
+}
+
+.app-header .user {
+  margin-left: auto;
+  font-size: 14px;
+  color: #5c6575;
+}
+
+.app-main {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.login-wrap {
+  display: flex;
+  justify-content: center;
+  padding-top: 60px;
+}
+
+.loading-wrap {
+  display: flex;
+  justify-content: center;
+  padding-top: 120px;
+}

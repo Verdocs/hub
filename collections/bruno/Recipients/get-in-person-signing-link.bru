@@ -1,0 +1,22 @@
+meta {
+  name: Get In-Person Signing Link
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/v2/sign/in-person/:envelope_id/:role_name
+  body: none
+  auth: inherit
+}
+
+params:path {
+  envelope_id: 00000000-0000-0000-0000-000000000000
+  role_name:
+}
+
+docs {
+  Path parameters:
+  - envelope_id: The envelope to operate on.
+  - role_name: The role to request.
+}

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <RootNamespace>Verdocs</RootNamespace>
+    <AssemblyName>Verdocs.Sdk</AssemblyName>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- Pack-ready metadata per docs/standards/csharp.md rule 3. Nothing packs or
+       pushes to NuGet.org until instructed; there are no publish workflows. -->
+  <PropertyGroup>
+    <PackageId>Verdocs.Sdk</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Verdocs</Authors>
+    <Company>Verdocs</Company>
+    <Description>Client SDK for the Verdocs e-signature platform APIs.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://verdocs.com</PackageProjectUrl>
+    <PackageTags>verdocs;esignature;esign;documents</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Verdocs.Sdk.Tests" />
+  </ItemGroup>
+
+</Project>

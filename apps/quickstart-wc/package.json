@@ -1,0 +1,25 @@
+{
+  "name": "verdocs-quickstart-wc",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "eslint . --fix"
+  },
+  "dependencies": {
+    "@verdocs/js-sdk": "workspace:^",
+    "@verdocs/wc-sdk": "workspace:^"
+  },
+  "devDependencies": {
+    "@verdocs/eslint-config": "^1.0.0",
+    "@verdocs/typescript-config": "^1.0.0",
+    "eslint": "^9.39.1",
+    "typescript": "5.9.3",
+    "vite": "^8.1.4"
+  }
+}

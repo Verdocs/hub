@@ -1,0 +1,28 @@
+meta {
+  name: Initiate an OAuth2 authorization code flow
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/v2/oauth2/authorize?client_id=00000000-0000-0000-0000-000000000000&redirect_uri=https://example.com&response_type=code
+  body: none
+  auth: inherit
+}
+
+params:query {
+  client_id: 00000000-0000-0000-0000-000000000000
+  redirect_uri: https://example.com
+  response_type: code
+  ~state:
+  ~scope:
+}
+
+docs {
+  Query parameters:
+  - client_id: The client ID of the registered OAuth2 application.
+  - redirect_uri: The URI to redirect to after authorization. Must match a registered redirect URI for the application.
+  - response_type: Must be 'code' for authorization code flow.
+  - state (optional): An opaque value used to prevent CSRF attacks. Returned unchanged in the redirect.
+  - scope (optional): Optional scope to request.
+}

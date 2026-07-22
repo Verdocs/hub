@@ -1,0 +1,11 @@
+meta {
+  name: Get organization Webhooks config
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/v2/webhooks
+  body: none
+  auth: inherit
+}

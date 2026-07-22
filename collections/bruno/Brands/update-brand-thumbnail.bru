@@ -1,0 +1,22 @@
+meta {
+  name: Update brand thumbnail
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{base_url}}/v2/organizations/:organizationid/brands/:brandid
+  body: json
+  auth: inherit
+}
+
+params:path {
+  organizationid:
+  brandid:
+}
+
+body:json {
+  {
+    "thumbnail": "string"
+  }
+}

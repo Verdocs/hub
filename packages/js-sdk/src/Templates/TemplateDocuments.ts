@@ -21,6 +21,10 @@ import {ITemplate, ITemplateDocument} from '../Models';
  * @apiBody string(format:binary) file Document file to attach. The file name will automatically be used as the document name.
  * @apiBody string(format:uuid) template_id Template ID to attach the document to
  * @apiSuccess ITemplateDocument . Template document
+ *
+ * @sdkOperation templateDocument.createTemplateDocument
+ * @sdkGroup TemplateDocument
+ * @sdkPage Endpoints
  */
 export const createTemplateDocument = (
   endpoint: VerdocsEndpoint,
@@ -56,6 +60,10 @@ export const createTemplateDocument = (
  * @group Template Documents
  * @api DELETE /v2/template-documents/:document_id Delete a template document
  * @apiSuccess string . Success
+ *
+ * @sdkOperation templateDocument.deleteTemplateDocument
+ * @sdkGroup TemplateDocument
+ * @sdkPage Endpoints
  */
 export const deleteTemplateDocument = (endpoint: VerdocsEndpoint, documentId: string) =>
   endpoint.api //
@@ -67,9 +75,13 @@ export const deleteTemplateDocument = (endpoint: VerdocsEndpoint, documentId: st
  * this will return only the **metadata** the caller is allowed to view.
  *
  * @group Template Documents
- * @api GET /v2/template-documents/:id Get envelope document
- * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
+ * @api GET /v2/template-documents/:id Get template document
+ * @apiParam string(format: 'uuid') id The ID of the document to retrieve.
  * @apiSuccess ITemplateDocument . The detailed metadata for the document requested
+ *
+ * @sdkOperation templateDocument.getTemplateDocument
+ * @sdkGroup TemplateDocument
+ * @sdkPage Endpoints
  */
 export const getTemplateDocument = async (endpoint: VerdocsEndpoint, documentId: string) =>
   endpoint.api //
@@ -78,6 +90,10 @@ export const getTemplateDocument = async (endpoint: VerdocsEndpoint, documentId:
 
 /**
  * Download a document directly.
+ *
+ * @sdkOperation templateDocument.downloadTemplateDocument
+ * @sdkGroup TemplateDocument
+ * @sdkPage Endpoints
  */
 export const downloadTemplateDocument = async (endpoint: VerdocsEndpoint, documentId: string) =>
   endpoint.api //
@@ -96,6 +112,10 @@ export const downloadTemplateDocument = async (endpoint: VerdocsEndpoint, docume
  * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
  * @apiQuery string(enum:'file'|'download'|'preview') type? Download the file directly, generate a download link, or generate a preview link.
  * @apiSuccess string . The generated link.
+ *
+ * @sdkOperation templateDocument.getTemplateDocumentDownloadLink
+ * @sdkGroup TemplateDocument
+ * @sdkPage Endpoints
  */
 export const getTemplateDocumentDownloadLink = async (endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string) =>
   endpoint.api //
@@ -105,6 +125,10 @@ export const getTemplateDocumentDownloadLink = async (endpoint: VerdocsEndpoint,
 /**
  * Get a pre-signed preview link for an Envelope Document. This link expires quickly, so it should
  * be accessed immediately and never shared. Content-Disposition will be set to "inline".
+ *
+ * @sdkOperation templateDocument.getTemplateDocumentPreviewLink
+ * @sdkGroup TemplateDocument
+ * @sdkPage Endpoints
  */
 export const getTemplateDocumentPreviewLink = async (endpoint: VerdocsEndpoint, _envelopeId: string, documentId: string) =>
   endpoint.api //
@@ -115,6 +139,10 @@ export const getTemplateDocumentPreviewLink = async (endpoint: VerdocsEndpoint, 
  * Get (binary download) a file attached to a Template. It is important to use this method
  * rather than a direct A HREF or similar link to set the authorization headers for the
  * request.
+ *
+ * @sdkOperation templateDocument.getTemplateDocumentFile
+ * @sdkGroup TemplateDocument
+ * @sdkPage Endpoints
  */
 export const getTemplateDocumentFile = async (endpoint: VerdocsEndpoint, templateId: string, documentId: string) =>
   endpoint.api //
@@ -125,6 +153,10 @@ export const getTemplateDocumentFile = async (endpoint: VerdocsEndpoint, templat
  * Get (binary download) a file attached to a Template. It is important to use this method
  * rather than a direct A HREF or similar link to set the authorization headers for the
  * request.
+ *
+ * @sdkOperation templateDocument.getTemplateDocumentThumbnail
+ * @sdkGroup TemplateDocument
+ * @sdkPage Endpoints
  */
 export const getTemplateDocumentThumbnail = async (endpoint: VerdocsEndpoint, templateId: string, documentId: string) =>
   endpoint.api //
@@ -136,6 +168,10 @@ export const getTemplateDocumentThumbnail = async (endpoint: VerdocsEndpoint, te
  * into PNG resources suitable for display in IMG tags although they may be used elsewhere. Note that these are intended
  * for DISPLAY ONLY, are not legally binding documents, and do not contain any encoded metadata from participants. The
  * original asset may be obtained by calling `getTemplateDocumentFile()` or similar.
+ *
+ * @sdkOperation templateDocument.getTemplateDocumentPageDisplayUri
+ * @sdkGroup TemplateDocument
+ * @sdkPage Endpoints
  */
 export const getTemplateDocumentPageDisplayUri = async (
   endpoint: VerdocsEndpoint,

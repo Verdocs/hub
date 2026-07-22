@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "verdocs"
+version = "1.0.0"
+description = "Verdocs e-signing SDK for Python"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+classifiers = ["Private :: Do Not Upload"]
+dependencies = ["httpx>=0.28,<1", "pydantic>=2,<3"]
+
+[dependency-groups]
+dev = ["pytest", "pytest-asyncio", "respx", "ruff", "griffe"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/verdocs"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# The -m filter keeps the live conformance lane out of the default run; pass
+# -m conformance explicitly to run it (the later -m on the command line wins).
+addopts = "--import-mode=importlib -m 'not conformance'"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+markers = [
+    "conformance: live checks against beta; excluded by default, run with pytest -m conformance",
+]

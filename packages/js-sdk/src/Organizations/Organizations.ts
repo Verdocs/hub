@@ -31,6 +31,10 @@ import {TUsageType} from '../BaseTypes';
  * @group Organizations
  * @api GET /v2/organizations/:organization_id Get organization
  * @apiSuccess IOrganization . The requested organization. The caller must be a member.
+ *
+ * @sdkOperation organization.getOrganization
+ * @sdkGroup Organization
+ * @sdkPage Endpoints
  */
 export const getOrganization = (endpoint: VerdocsEndpoint, organizationId: string) =>
   endpoint.api //
@@ -49,6 +53,10 @@ export const getOrganization = (endpoint: VerdocsEndpoint, organizationId: strin
  * @group Organizations
  * @api GET /v2/organizations/:organization_id/children Get an organization's children
  * @apiSuccess IOrganization[] . Any child organizations found.
+ *
+ * @sdkOperation organization.getOrganizationChildren
+ * @sdkGroup Organization
+ * @sdkPage Endpoints
  */
 export const getOrganizationChildren = (endpoint: VerdocsEndpoint, organizationId: string) =>
   endpoint.api //
@@ -69,6 +77,10 @@ export const getOrganizationChildren = (endpoint: VerdocsEndpoint, organizationI
  * @group Organizations
  * @api GET /v2/organizations/:organization_id/usage Get an organization's usage metrics
  * @apiSuccess TOrganizationUsage . Usage data grouped by organization ID
+ *
+ * @sdkOperation organization.getOrganizationUsage
+ * @sdkGroup Organization
+ * @sdkPage Endpoints
  */
 export const getOrganizationUsage = (
   endpoint: VerdocsEndpoint,
@@ -111,6 +123,10 @@ export const getOrganizationUsage = (
  * @apiBody object data? Developer-supplied metadata attached to the organization.
  * @apiBody boolean deletion_protected? Prevents the organization from being deleted until turned off. Defaults to true.
  * @apiSuccess IAuthenticateResponse . Authentication credentials for user in the new organization. The user will be made an Owner automatically.
+ *
+ * @sdkOperation organization.createOrganization
+ * @sdkGroup Organization
+ * @sdkPage Endpoints
  */
 export const createOrganization = (
   endpoint: VerdocsEndpoint,
@@ -168,6 +184,10 @@ export const createOrganization = (
  * @apiBody string timezone? Define the long-form timezone.
  * @apiBody string locale? Define the locale code.
  * @apiSuccess IOrganization . The details for the updated organization
+ *
+ * @sdkOperation organization.updateOrganization
+ * @sdkGroup Organization
+ * @sdkPage Endpoints
  */
 export const updateOrganization = (endpoint: VerdocsEndpoint, organizationId: string, params: Partial<IOrganization>) =>
   endpoint.api //
@@ -186,6 +206,10 @@ export const updateOrganization = (endpoint: VerdocsEndpoint, organizationId: st
  * @group Organizations
  * @api GET /v2/organizations/:organization_id/pipeline-settings Get organization pipeline settings
  * @apiSuccess IPipelineSettings . The organization's pipeline settings, with every flag normalized to a boolean.
+ *
+ * @sdkOperation organization.getOrganizationPipelineSettings
+ * @sdkGroup Organization
+ * @sdkPage Endpoints
  */
 export const getOrganizationPipelineSettings = (endpoint: VerdocsEndpoint, organizationId: string) =>
   endpoint.api //
@@ -209,6 +233,10 @@ export const getOrganizationPipelineSettings = (endpoint: VerdocsEndpoint, organ
  * @apiBody boolean ignore_invalid_roles? Skip (rather than reject) document tags with an empty/invalid role name.
  * @apiBody boolean ignore_invalid_fields? Skip (rather than reject) document tags that don't form a valid field.
  * @apiSuccess IPipelineSettings . The updated pipeline settings, with every flag normalized to a boolean.
+ *
+ * @sdkOperation organization.updateOrganizationPipelineSettings
+ * @sdkGroup Organization
+ * @sdkPage Endpoints
  */
 export const updateOrganizationPipelineSettings = (endpoint: VerdocsEndpoint, organizationId: string, params: Partial<IPipelineSettings>) =>
   endpoint.api //
@@ -228,6 +256,10 @@ export const updateOrganizationPipelineSettings = (endpoint: VerdocsEndpoint, or
  * @group Organizations
  * @api DELETE /v2/organizations/:organization_id Delete organization
  * @apiSuccess IAuthenticateResponse . If the caller is a member of another organization, authentication credentials for the next organization available. If not, this will be null and the caller will be logged out.
+ *
+ * @sdkOperation organization.deleteOrganization
+ * @sdkGroup Organization
+ * @sdkPage Endpoints
  */
 export const deleteOrganization = (endpoint: VerdocsEndpoint, organizationId: string) =>
   endpoint.api //
@@ -248,6 +280,10 @@ export const deleteOrganization = (endpoint: VerdocsEndpoint, organizationId: st
  * @apiBody image/png logo? Form-url-encoded file to upload
  * @apiBody image/png thumbnail? Form-url-encoded file to upload
  * @apiSuccess IOrganization . The updated organization.
+ *
+ * @sdkOperation organization.updateOrganizationLogo
+ * @sdkGroup Organization
+ * @sdkPage Endpoints
  */
 export const updateOrganizationLogo = (
   endpoint: VerdocsEndpoint,
@@ -278,6 +314,10 @@ export const updateOrganizationLogo = (
  *
  * await updateOrganizationThumbnail((VerdocsEndpoint.getDefault(), organizationId, file);
  * ```
+ *
+ * @sdkOperation organization.updateOrganizationThumbnail
+ * @sdkGroup Organization
+ * @sdkPage Endpoints
  */
 export const updateOrganizationThumbnail = (
   endpoint: VerdocsEndpoint,
@@ -300,6 +340,11 @@ export const updateOrganizationThumbnail = (
     .then((r) => r.data);
 };
 
+/**
+ * @sdkOperation organization.getEntitlements
+ * @sdkGroup Organization
+ * @sdkPage Endpoints
+ */
 export const getEntitlements = async (endpoint: VerdocsEndpoint) =>
   endpoint.api.get<IEntitlement[]>(`/v2/organizations/entitlements`).then((r) => r.data);
 
@@ -324,6 +369,10 @@ export const getEntitlements = async (endpoint: VerdocsEndpoint) =>
  * const isSMSEnabled = !!activeEntitlements.sms_auth;
  * const monthlyKBALimit = activeEntitlements.kba_auth?.monthly_max;
  * ```
+ *
+ * @sdkOperation organization.getActiveEntitlements
+ * @sdkGroup Organization
+ * @sdkPage Endpoints
  */
 export const getActiveEntitlements = async (endpoint: VerdocsEndpoint) => {
   if (!endpoint.session) {

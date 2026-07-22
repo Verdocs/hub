@@ -1,0 +1,27 @@
+meta {
+  name: Update notification template
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{base_url}}/v2/notifications/templates/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 00000000-0000-0000-0000-000000000000
+}
+
+body:json {
+  {
+    "html_template": "string",
+    "text_template": "string"
+  }
+}
+
+docs {
+  Path parameters:
+  - id: The notification template ID
+}

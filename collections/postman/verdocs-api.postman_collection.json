@@ -1,0 +1,3143 @@
+{
+  "info": {
+    "name": "Verdocs Platform API",
+    "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.\n\nGenerated from packages/js-sdk/openapi.json by @verdocs/collections. Do not edit by hand.",
+    "version": "6.10.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "API Keys",
+      "item": [
+        {
+          "name": "Create API key",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/api-keys",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "api-keys"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"profile_id\": \"00000000-0000-0000-0000-000000000000\",\n  \"permission\": [\n    \"string\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete API key",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/api-keys/:client_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "api-keys",
+                ":client_id"
+              ],
+              "variable": [
+                {
+                  "key": "client_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get API keys",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/api-keys",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "api-keys"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Rotate API key",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/api-keys/:client_id/rotate",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "api-keys",
+                ":client_id",
+                "rotate"
+              ],
+              "variable": [
+                {
+                  "key": "client_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The client ID of the key to rotate"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update API key",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/api-keys/:client_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "api-keys",
+                ":client_id"
+              ],
+              "variable": [
+                {
+                  "key": "client_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"permission\": [\n    \"string\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Authenticate",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/oauth2/token",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "oauth2",
+                "token"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"grant_type\": \"client_credentials\",\n  \"client_id\": \"00000000-0000-0000-0000-000000000000\",\n  \"client_secret\": \"00000000-0000-0000-0000-000000000000\",\n  \"username\": \"string\",\n  \"password\": \"string\",\n  \"code\": \"string\",\n  \"redirect_uri\": \"https://example.com\",\n  \"scope\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Change the caller's password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/users/change-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "users",
+                "change-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"old_password\": \"string\",\n  \"new_password\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get the caller's user record.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/users/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Initiate an OAuth2 authorization code flow",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/oauth2/authorize?client_id=00000000-0000-0000-0000-000000000000&redirect_uri=https://example.com&response_type=code",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "oauth2",
+                "authorize"
+              ],
+              "query": [
+                {
+                  "key": "client_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The client ID of the registered OAuth2 application."
+                },
+                {
+                  "key": "redirect_uri",
+                  "value": "https://example.com",
+                  "description": "The URI to redirect to after authorization. Must match a registered redirect URI for the application."
+                },
+                {
+                  "key": "response_type",
+                  "value": "code",
+                  "description": "Must be 'code' for authorization code flow."
+                },
+                {
+                  "key": "state",
+                  "value": "",
+                  "description": "An opaque value used to prevent CSRF attacks. Returned unchanged in the redirect.",
+                  "disabled": true
+                },
+                {
+                  "key": "scope",
+                  "value": "",
+                  "description": "Optional scope to request.",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Resend the email verification request if both the email and token are known. Used if the token is valid but has expired.",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/users/verify",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "users",
+                "verify"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reset a password for a user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/users/reset-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "users",
+                "reset-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"string\",\n  \"code\": \"string\",\n  \"new_password\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Brands",
+      "item": [
+        {
+          "name": "Add email domain",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations/:organizationid/brands/:brandid/email-domain",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationid",
+                "brands",
+                ":brandid",
+                "email-domain"
+              ],
+              "variable": [
+                {
+                  "key": "organizationid",
+                  "value": ""
+                },
+                {
+                  "key": "brandid",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subdomain\": \"string\",\n  \"local_part\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create brand",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations/:organizationid/brands",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationid",
+                "brands"
+              ],
+              "variable": [
+                {
+                  "key": "organizationid",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key\": \"string\",\n  \"timezone\": \"string\",\n  \"locale\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete brand",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations/:organizationid/brands/:brandid",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationid",
+                "brands",
+                ":brandid"
+              ],
+              "variable": [
+                {
+                  "key": "organizationid",
+                  "value": ""
+                },
+                {
+                  "key": "brandid",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get brand",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations/:organizationid/brands/:brandid",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationid",
+                "brands",
+                ":brandid"
+              ],
+              "variable": [
+                {
+                  "key": "organizationid",
+                  "value": ""
+                },
+                {
+                  "key": "brandid",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List brands",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations/:organizationid/brands",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationid",
+                "brands"
+              ],
+              "variable": [
+                {
+                  "key": "organizationid",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove email domain",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations/:organizationid/brands/:brandid/email-domain",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationid",
+                "brands",
+                ":brandid",
+                "email-domain"
+              ],
+              "variable": [
+                {
+                  "key": "organizationid",
+                  "value": ""
+                },
+                {
+                  "key": "brandid",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update brand thumbnail",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations/:organizationid/brands/:brandid",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationid",
+                "brands",
+                ":brandid"
+              ],
+              "variable": [
+                {
+                  "key": "organizationid",
+                  "value": ""
+                },
+                {
+                  "key": "brandid",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"thumbnail\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify email domain",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations/:organizationid/brands/:brandid/email-domain/verify",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organizationid",
+                "brands",
+                ":brandid",
+                "email-domain",
+                "verify"
+              ],
+              "variable": [
+                {
+                  "key": "organizationid",
+                  "value": ""
+                },
+                {
+                  "key": "brandid",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Envelope Documents",
+      "item": [
+        {
+          "name": "Get envelope document",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/envelope-documents/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "envelope-documents",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The ID of the document to retrieve."
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Envelopes",
+      "item": [
+        {
+          "name": "Cancel envelope",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/envelopes/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "envelopes",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The ID of the envelope to cancel."
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"cancel\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Envelope",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/envelopes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "envelopes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"template_id\": \"00000000-0000-0000-0000-000000000000\",\n  \"recipients\": [\n    {\n      \"address\": \"string\",\n      \"auth_methods\": \"string\",\n      \"city\": \"string\",\n      \"delegator\": true,\n      \"dob\": \"string\",\n      \"email\": \"string\",\n      \"first_name\": \"string\",\n      \"message\": \"string\",\n      \"order\": 0,\n      \"passcode\": \"string\",\n      \"phone\": \"string\",\n      \"phone_auth\": \"string\",\n      \"role_name\": \"string\",\n      \"sequence\": 0,\n      \"ssn_last_4\": \"string\",\n      \"state\": \"string\",\n      \"type\": \"string\",\n      \"zip\": \"string\"\n    }\n  ],\n  \"documents\": [\n    {\n      \"created_at\": \"string\",\n      \"envelope_id\": \"string\",\n      \"id\": \"string\",\n      \"mime\": \"string\",\n      \"name\": \"string\",\n      \"order\": 0,\n      \"page_sizes\": \"string\",\n      \"pages\": 0,\n      \"signed\": true,\n      \"size\": 0,\n      \"template_document_id\": \"string\",\n      \"type\": \"string\",\n      \"updated_at\": \"string\"\n    }\n  ],\n  \"fields\": [\n    {\n      \"default\": \"string\",\n      \"document_id\": \"string\",\n      \"envelope_id\": \"string\",\n      \"group\": \"string\",\n      \"height\": 0,\n      \"label\": \"string\",\n      \"multiline\": true,\n      \"name\": \"string\",\n      \"options\": \"string\",\n      \"page\": 0,\n      \"placeholder\": \"string\",\n      \"prepared\": \"string\",\n      \"readonly\": \"string\",\n      \"required\": \"string\",\n      \"role_name\": \"string\",\n      \"settings\": \"string\",\n      \"type\": \"string\",\n      \"width\": 0,\n      \"x\": 0,\n      \"y\": 0\n    }\n  ],\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"no_contact\": true,\n  \"initial_reminder\": 0,\n  \"followup_reminders\": 0,\n  \"max_reminder_days\": 0,\n  \"expires_at\": \"string\",\n  \"timezone\": \"string\",\n  \"locale\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get envelope details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/envelopes/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "envelopes",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The ID of the envelope to retrieve."
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get envelope document page display URI",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/envelope-documnets/page-image/:document_id/:variant/:page",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "envelope-documnets",
+                "page-image",
+                ":document_id",
+                ":variant",
+                ":page"
+              ],
+              "variable": [
+                {
+                  "key": "document_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The ID of the document to retrieve."
+                },
+                {
+                  "key": "variant",
+                  "value": "original",
+                  "description": "The variant of the document to retrieve."
+                },
+                {
+                  "key": "page",
+                  "value": "0",
+                  "description": "The page number to retrieve"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List envelopes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/envelopes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "envelopes"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "",
+                  "description": "Match envelopes whose name contains this string",
+                  "disabled": true
+                },
+                {
+                  "key": "view",
+                  "value": "inbox",
+                  "description": "Request pre-defined view. `inbox` returns envelopes where action is required by the caller. `sent` returns envelopes created by the caller. `action` returns envelopes where action is required by the caller. `waiting` returns envelopes where action is required by anyone. `completed` returns envelopes where all actions are complete.",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "complete",
+                  "description": "Match envelopes in one of the specified states.",
+                  "disabled": true
+                },
+                {
+                  "key": "include_org",
+                  "value": "false",
+                  "description": "If true, include organizations-shared envelopes",
+                  "disabled": true
+                },
+                {
+                  "key": "template_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "Match envelopes created from the specified template ID",
+                  "disabled": true
+                },
+                {
+                  "key": "created_before",
+                  "value": "2024-01-01",
+                  "description": "Match envelopes created before this date",
+                  "disabled": true
+                },
+                {
+                  "key": "created_after",
+                  "value": "2024-01-01",
+                  "description": "Match envelopes created after this date",
+                  "disabled": true
+                },
+                {
+                  "key": "sort_by",
+                  "value": "name",
+                  "description": "Return results sorted by this criteria",
+                  "disabled": true
+                },
+                {
+                  "key": "ascending",
+                  "value": "true",
+                  "description": "Set true/false to override the sort direction. Note that the default depends on `sort_by`. Date-based sorts default to descending, while name and status default to ascending.",
+                  "disabled": true
+                },
+                {
+                  "key": "rows",
+                  "value": "20",
+                  "description": "Limit the number of rows returned",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "0",
+                  "description": "Specify which page of results to return",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Envelope",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/envelopes/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "envelopes",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The ID of the envelope to update."
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"sender_name\": \"string\",\n  \"sender_email\": \"string\",\n  \"initial_reminder\": 0,\n  \"followup_reminders\": 0,\n  \"max_reminder_days\": 0,\n  \"expires_at\": \"string\",\n  \"visibility\": \"private\",\n  \"no_contact\": true,\n  \"data\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Envelope Field",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/envelopes/:envelope_id/fields/:field_name",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "envelopes",
+                ":envelope_id",
+                "fields",
+                ":field_name"
+              ],
+              "variable": [
+                {
+                  "key": "envelope_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The ID of the envelope to retrieve."
+                },
+                {
+                  "key": "field_name",
+                  "value": "",
+                  "description": "The name of the field to update. Be sure to URL-encode the value."
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Fields",
+      "item": [
+        {
+          "name": "Add a field to a template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/fields/:template_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "fields",
+                ":template_id"
+              ],
+              "variable": [
+                {
+                  "key": "template_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"role_name\": \"string\",\n  \"document_id\": \"string\",\n  \"type\": \"signature\",\n  \"required\": \"false\",\n  \"page\": 0,\n  \"x\": 0,\n  \"y\": 0,\n  \"label\": \"string\",\n  \"width\": 0,\n  \"height\": 0,\n  \"placeholder\": \"string\",\n  \"group\": \"string\",\n  \"options\": [\n    {}\n  ],\n  \"value\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a field",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/fields/:template_id/:field_name",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "fields",
+                ":template_id",
+                ":field_name"
+              ],
+              "variable": [
+                {
+                  "key": "template_id",
+                  "value": ""
+                },
+                {
+                  "key": "field_name",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a field. See createField for additional details on the supported parameters.",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/fields/:template_id/:field_name",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "fields",
+                ":template_id",
+                ":field_name"
+              ],
+              "variable": [
+                {
+                  "key": "template_id",
+                  "value": ""
+                },
+                {
+                  "key": "field_name",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"role_name\": \"string\",\n  \"document_id\": \"string\",\n  \"type\": \"signature\",\n  \"required\": \"false\",\n  \"page\": 0,\n  \"x\": 0,\n  \"y\": 0,\n  \"label\": \"string\",\n  \"width\": 0,\n  \"height\": 0,\n  \"placeholder\": \"string\",\n  \"group\": \"string\",\n  \"options\": [\n    {}\n  ],\n  \"value\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notification Templates",
+      "item": [
+        {
+          "name": "Delete notification template",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/notifications/templates/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "notifications",
+                "templates",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The notification template ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Create notification template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/notifications/templates",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "notifications",
+                "templates"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"sms\",\n  \"event_name\": \"string\",\n  \"template_id\": \"string\",\n  \"html_template\": \"string\",\n  \"text_template\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get notification template",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/notifications/templates/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "notifications",
+                "templates",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The notification template ID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get notification templates",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/notifications/templates",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "notifications",
+                "templates"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update notification template",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/notifications/templates/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "notifications",
+                "templates",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The notification template ID"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"html_template\": \"string\",\n  \"text_template\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Organization Contacts",
+      "item": [
+        {
+          "name": "GET a list of pending invitations",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organization-invitations/decline",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organization-invitations",
+                "decline"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"string\",\n  \"token\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a list of organization contacts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organization-contacts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organization-contacts"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"string\",\n  \"token\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Organization Invitations",
+      "item": [
+        {
+          "name": "Accept an invitation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organization-invitations/accept",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organization-invitations",
+                "accept"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"string\",\n  \"token\": \"string\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"password\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a pending invitation",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/organization-invitations/:email",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organization-invitations",
+                ":email"
+              ],
+              "variable": [
+                {
+                  "key": "email",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a list of pending invitations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organization-invitations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organization-invitations"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roles\": [\n    \"contact\"\n  ],\n  \"first_name\": \"string\",\n  \"last_name\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a pending invitation (_Authenticated via invite token, not an active session._). Intended to be called by the invitee to get details about the invitation they are about to accept.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/organization-invitations/:email/:token",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organization-invitations",
+                ":email",
+                ":token"
+              ],
+              "variable": [
+                {
+                  "key": "email",
+                  "value": ""
+                },
+                {
+                  "key": "token",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invite a new user to join the organization",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organization-invitations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organization-invitations"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"string\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"role\": \"contact\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send a reminder to a pending invitee",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organization-invitations/resend",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organization-invitations",
+                "resend"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a pending invitation",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organization-invitations/:email",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organization-invitations",
+                ":email"
+              ],
+              "variable": [
+                {
+                  "key": "email",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"role\": \"contact\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Organization Members",
+      "item": [
+        {
+          "name": "Create an organization member directly, bypassing the invite process.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organization-members",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organization-members"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"string\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"password\": \"string\",\n  \"roles\": [\n    \"contact\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a member from the organization",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/organization-members/:profile_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organization-members",
+                ":profile_id"
+              ],
+              "variable": [
+                {
+                  "key": "profile_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The Profile ID to remove."
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List current organization's members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/organization-members",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organization-members"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Perform an operation on an organization member.",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organization-members/:profile_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organization-members",
+                ":profile_id"
+              ],
+              "variable": [
+                {
+                  "key": "profile_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The Profile ID to operate on."
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"unlock\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update an organization member.",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organization-members/:profile_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organization-members",
+                ":profile_id"
+              ],
+              "variable": [
+                {
+                  "key": "profile_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The Profile ID to update."
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"roles\": [\n    \"contact\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Organizations",
+      "item": [
+        {
+          "name": "Create organization",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations"
+              ]
+            },
+            "description": "The caller will be assigned an \"Owner\" profile in the new organization, and it will be set to \"current\" automatically. A new set of session tokens will be issued to  the caller, and the caller should update their endpoint to use the new tokens.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"parent_id\": \"string\",\n  \"contact_email\": \"string\",\n  \"url\": \"string\",\n  \"full_logo_url\": \"string\",\n  \"thumbnail_url\": \"string\",\n  \"primary_color\": \"string\",\n  \"secondary_color\": \"string\",\n  \"terms_use_url\": \"string\",\n  \"privacy_policy_url\": \"string\",\n  \"powered_by_label\": \"string\",\n  \"powered_by_url\": \"string\",\n  \"timezone\": \"string\",\n  \"locale\": \"string\",\n  \"disclaimer\": \"string\",\n  \"data\": {},\n  \"deletion_protected\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete organization",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations/:organization_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get an organization's children",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations/:organization_id/children",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id",
+                "children"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get an organization's usage metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations/:organization_id/usage",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id",
+                "usage"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get organization",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations/:organization_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get organization pipeline settings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations/:organization_id/pipeline-settings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id",
+                "pipeline-settings"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update organization full or thumbnail logo.",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations/:organization_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"logo\": \"string\",\n  \"thumbnail\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update organization pipeline settings",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/organizations/:organization_id/pipeline-settings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id",
+                "pipeline-settings"
+              ],
+              "variable": [
+                {
+                  "key": "organization_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"process_acroforms\": true,\n  \"process_tags\": true,\n  \"ignore_invalid_roles\": true,\n  \"ignore_invalid_fields\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Profiles",
+      "item": [
+        {
+          "name": "Change the \"current\" profile for the caller",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/profiles/:profile_id/switch",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "profiles",
+                ":profile_id",
+                "switch"
+              ],
+              "variable": [
+                {
+                  "key": "profile_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a profile",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/profiles/:profile_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "profiles",
+                ":profile_id"
+              ],
+              "variable": [
+                {
+                  "key": "profile_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get the caller's profiles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/profiles",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "profiles"
+              ]
+            },
+            "description": "A user may have multiple profiles, one for each organization of which they are a member. Only one profile may be \"current\" at a time."
+          },
+          "response": []
+        },
+        {
+          "name": "Update a profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/profiles/:profile_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "profiles",
+                ":profile_id"
+              ],
+              "variable": [
+                {
+                  "key": "profile_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"phone\": \"string\",\n  \"permissions\": [\n    \"string\"\n  ],\n  \"roles\": [\n    \"contact\"\n  ],\n  \"timezone\": \"string\",\n  \"locale\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Recipients",
+      "item": [
+        {
+          "name": "Agree to e-Signing Disclosures",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/envelopes/:envelope_id/recipients/:role_name/agree",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "envelopes",
+                ":envelope_id",
+                "recipients",
+                ":role_name",
+                "agree"
+              ],
+              "variable": [
+                {
+                  "key": "envelope_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The envelope to operate on."
+                },
+                {
+                  "key": "role_name",
+                  "value": "",
+                  "description": "The role to operate on."
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timezone\": \"string\",\n  \"locale\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ask Sender a Question",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/envelopes/:envelope_id/recipients/:role_name/ask-question",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "envelopes",
+                ":envelope_id",
+                "recipients",
+                ":role_name",
+                "ask-question"
+              ],
+              "variable": [
+                {
+                  "key": "envelope_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The envelope to operate on."
+                },
+                {
+                  "key": "role_name",
+                  "value": "",
+                  "description": "The role name to update."
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Decline e-Signing Disclosures",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/envelopes/:envelope_id/recipients/:role_name/decline",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "envelopes",
+                ":envelope_id",
+                "recipients",
+                ":role_name",
+                "decline"
+              ],
+              "variable": [
+                {
+                  "key": "envelope_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The envelope to operate on."
+                },
+                {
+                  "key": "role_name",
+                  "value": "",
+                  "description": "The role to adjust."
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delegate Recipient",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/envelopes/:envelope_id/recipients/:role_name",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "envelopes",
+                ":envelope_id",
+                "recipients",
+                ":role_name"
+              ],
+              "variable": [
+                {
+                  "key": "envelope_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The envelope to operate on."
+                },
+                {
+                  "key": "role_name",
+                  "value": "",
+                  "description": "The role to operate on."
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"delegate\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"email\": \"string\",\n  \"phone\": \"string\",\n  \"message\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get In-Person Signing Link",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/sign/in-person/:envelope_id/:role_name",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "sign",
+                "in-person",
+                ":envelope_id",
+                ":role_name"
+              ],
+              "variable": [
+                {
+                  "key": "envelope_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The envelope to operate on."
+                },
+                {
+                  "key": "role_name",
+                  "value": "",
+                  "description": "The role to request."
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Start Signing Session",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/sign/unauth/:envelope_id/:role_name/:key",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "sign",
+                "unauth",
+                ":envelope_id",
+                ":role_name",
+                ":key"
+              ],
+              "variable": [
+                {
+                  "key": "envelope_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The envelope to operate on."
+                },
+                {
+                  "key": "role_name",
+                  "value": "",
+                  "description": "The role to request."
+                },
+                {
+                  "key": "key",
+                  "value": "",
+                  "description": "Access key generated by the envelope creator or email/SMS invite."
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Submit envelope",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/envelopes/:envelope_id/recipients/:role_name/submit",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "envelopes",
+                ":envelope_id",
+                "recipients",
+                ":role_name",
+                "submit"
+              ],
+              "variable": [
+                {
+                  "key": "envelope_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The envelope to operate on."
+                },
+                {
+                  "key": "role_name",
+                  "value": "",
+                  "description": "The role to submit."
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timezone\": \"string\",\n  \"locale\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Recipient",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/envelopes/:envelope_id/recipients/:role_name",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "envelopes",
+                ":envelope_id",
+                "recipients",
+                ":role_name"
+              ],
+              "variable": [
+                {
+                  "key": "envelope_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The envelope to operate on."
+                },
+                {
+                  "key": "role_name",
+                  "value": "",
+                  "description": "The role name to update."
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"remind\",\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"email\": \"string\",\n  \"message\": \"string\",\n  \"phone\": \"string\",\n  \"passcode\": \"string\",\n  \"address\": \"string\",\n  \"city\": \"string\",\n  \"state\": \"string\",\n  \"zip\": \"string\",\n  \"dob\": \"string\",\n  \"ssn_last_4\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify recipient/signer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/sign/verify",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "sign",
+                "verify"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"auth_method\": \"passcode\",\n  \"code\": \"string\",\n  \"resend\": true,\n  \"first_name\": \"string\",\n  \"last_name\": \"string\",\n  \"address\": \"string\",\n  \"city\": \"string\",\n  \"state\": \"string\",\n  \"zip\": \"string\",\n  \"ssn_last_4\": \"string\",\n  \"dob\": \"string\",\n  \"responses\": [\n    {}\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Roles",
+      "item": [
+        {
+          "name": "Add a role to a template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/roles/:template_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "roles",
+                ":template_id"
+              ],
+              "variable": [
+                {
+                  "key": "template_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"type\": \"signer\",\n  \"full_name\": \"string\",\n  \"email\": \"string\",\n  \"phone\": \"string\",\n  \"message\": \"string\",\n  \"sequence\": 1,\n  \"order\": 1,\n  \"delegator\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a role.",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/roles/:template_id/:role_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "roles",
+                ":template_id",
+                ":role_id"
+              ],
+              "variable": [
+                {
+                  "key": "template_id",
+                  "value": ""
+                },
+                {
+                  "key": "role_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a role. See createRole for additional details on the parameters available.",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/roles/:template_id/:role_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "roles",
+                ":template_id",
+                ":role_id"
+              ],
+              "variable": [
+                {
+                  "key": "template_id",
+                  "value": ""
+                },
+                {
+                  "key": "role_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"type\": \"signer\",\n  \"full_name\": \"string\",\n  \"email\": \"string\",\n  \"phone\": \"string\",\n  \"message\": \"string\",\n  \"sequence\": 1,\n  \"order\": 1,\n  \"delegator\": true,\n  \"kba_method\": \"pin\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Signatures and Initials",
+      "item": [
+        {
+          "name": "Create Initial Block",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/profiles/initials",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "profiles",
+                "initials"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"initial\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Signature Block",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/profiles/signatures",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "profiles",
+                "signatures"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"signature\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Template Documents",
+      "item": [
+        {
+          "name": "Attach a document to a template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/templates/:template_id/documents",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "templates",
+                ":template_id",
+                "documents"
+              ],
+              "variable": [
+                {
+                  "key": "template_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"file\": \"string\",\n  \"template_id\": \"00000000-0000-0000-0000-000000000000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a template document",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/template-documents/:document_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "template-documents",
+                ":document_id"
+              ],
+              "variable": [
+                {
+                  "key": "document_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get template document",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/template-documents/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "template-documents",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The ID of the document to retrieve."
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Preview, Download, or Link to a Document",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/envelope-documents/:document_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "envelope-documents",
+                ":document_id"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "file",
+                  "description": "Download the file directly, generate a download link, or generate a preview link.",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "document_id",
+                  "value": "00000000-0000-0000-0000-000000000000",
+                  "description": "The ID of the document to retrieve."
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Templates",
+      "item": [
+        {
+          "name": "Create a template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/templates",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "templates"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"visibility\": \"private\",\n  \"is_personal\": true,\n  \"is_public\": true,\n  \"sender\": \"envelope_creator\",\n  \"initial_reminder\": 0,\n  \"followup_reminders\": 0,\n  \"max_reminder_days\": 0,\n  \"documents\": [\n    {}\n  ],\n  \"roles\": [\n    {\n      \"id\": \"string\",\n      \"name_locked\": true,\n      \"order\": 0,\n      \"sequence\": 0\n    }\n  ],\n  \"fields\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create a template from an asset in Sharepoint",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/templates/from-sharepoint",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "templates",
+                "from-sharepoint"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"siteId\": \"string\",\n  \"itemId\": \"string\",\n  \"oboToken\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a template",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/templates/:template_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "templates",
+                ":template_id"
+              ],
+              "variable": [
+                {
+                  "key": "template_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Templates",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/templates",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "templates"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "",
+                  "description": "Find templates whose names/descriptions contain the specified query string",
+                  "disabled": true
+                },
+                {
+                  "key": "is_starred",
+                  "value": "true",
+                  "description": "If true, returns only templates with at least one \"star\".",
+                  "disabled": true
+                },
+                {
+                  "key": "is_creator",
+                  "value": "true",
+                  "description": "If true, returns only templates that the caller created.",
+                  "disabled": true
+                },
+                {
+                  "key": "visibility",
+                  "value": "private_shared",
+                  "description": "Return only templates with the specified visibility.",
+                  "disabled": true
+                },
+                {
+                  "key": "sort_by",
+                  "value": "created_at",
+                  "description": "Return results sorted by this criteria",
+                  "disabled": true
+                },
+                {
+                  "key": "ascending",
+                  "value": "true",
+                  "description": "Set true/false to override the sort direction. Note that the default depends on `sort_by`. Date-based sorts default to descending, while name defaults to ascending.",
+                  "disabled": true
+                },
+                {
+                  "key": "rows",
+                  "value": "20",
+                  "description": "Limit the number of rows returned",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "0",
+                  "description": "Specify which page of results to return",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a template. Note that the caller must have at least View access to the template.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/templates/:template_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "templates",
+                ":template_id"
+              ],
+              "variable": [
+                {
+                  "key": "template_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Perform an operation on a template",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/templates/:template_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "templates",
+                ":template_id"
+              ],
+              "variable": [
+                {
+                  "key": "template_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"duplicate\",\n  \"name\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Star or unstar a template (toggle state)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/templates/:template_id/star",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "templates",
+                ":template_id",
+                "star"
+              ],
+              "variable": [
+                {
+                  "key": "template_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a template",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/templates/:template_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "templates",
+                ":template_id"
+              ],
+              "variable": [
+                {
+                  "key": "template_id",
+                  "value": ""
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"visibility\": \"private\",\n  \"is_personal\": true,\n  \"is_public\": true,\n  \"sender\": \"envelope_creator\",\n  \"initial_reminder\": 0,\n  \"followup_reminders\": 0,\n  \"max_reminder_days\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "Get organization Webhooks config",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v2/webhooks",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "webhooks"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update organization Webhooks config",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v2/webhooks",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v2",
+                "webhooks"
+              ]
+            },
+            "description": "Note that Webhooks cannot currently be deleted, but may be easily disabled by setting",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"string\",\n  \"active\": true,\n  \"auth_method\": \"none\",\n  \"token_endpoint\": \"string\",\n  \"client_id\": \"string\",\n  \"client_secret\": \"string\",\n  \"scope\": \"string\",\n  \"events\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://stage-api.verdocs.com",
+      "description": "API base URL. Defaults to beta; use https://api.verdocs.com for production.",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "description": "Bearer token sent with every request. Obtain one via the Authentication endpoints.",
+      "type": "string"
+    }
+  ]
+}

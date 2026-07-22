@@ -1,0 +1,16 @@
+meta {
+  name: Get brand
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/v2/organizations/:organizationid/brands/:brandid
+  body: none
+  auth: inherit
+}
+
+params:path {
+  organizationid:
+  brandid:
+}

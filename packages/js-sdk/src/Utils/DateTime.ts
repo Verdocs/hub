@@ -5,6 +5,11 @@ const DAY = 24 * 60 * 60;
 const HOUR = 60 * 60;
 const MINUTE = 60;
 
+/**
+ * @sdkOperation dateTime.formatShortTimeAgo
+ * @sdkGroup DateTime
+ * @sdkPage Helpers
+ */
 export const formatShortTimeAgo = (val: any) => {
   if (val === undefined || val === null) {
     return '';

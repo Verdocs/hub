@@ -1,0 +1,23 @@
+meta {
+  name: Update a pending invitation
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{base_url}}/v2/organization-invitations/:email
+  body: json
+  auth: inherit
+}
+
+params:path {
+  email:
+}
+
+body:json {
+  {
+    "first_name": "string",
+    "last_name": "string",
+    "role": "contact"
+  }
+}

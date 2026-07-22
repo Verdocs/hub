@@ -5,17 +5,35 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"]
+      "outputs": ["dist/**", "storybook-static/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
     },
-    "check-types": {
-      "dependsOn": ["^check-types"]
+    "format": {
+      "cache": false
+    },
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "dependsOn": ["^build"]
     },
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "generate-sdk-docs": {
+      "cache": false,
+      "outputs": ["sdk-docs.json"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "src/**",
+        "docs/**",
+        "generated/sdks/**",
+        "typedoc.json",
+        "tsdoc.json"
+      ]
     }
   }
 }

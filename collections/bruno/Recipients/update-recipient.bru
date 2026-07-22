@@ -1,0 +1,40 @@
+meta {
+  name: Update Recipient
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{base_url}}/envelopes/:envelope_id/recipients/:role_name
+  body: json
+  auth: inherit
+}
+
+params:path {
+  envelope_id: 00000000-0000-0000-0000-000000000000
+  role_name:
+}
+
+body:json {
+  {
+    "action": "remind",
+    "first_name": "string",
+    "last_name": "string",
+    "email": "string",
+    "message": "string",
+    "phone": "string",
+    "passcode": "string",
+    "address": "string",
+    "city": "string",
+    "state": "string",
+    "zip": "string",
+    "dob": "string",
+    "ssn_last_4": "string"
+  }
+}
+
+docs {
+  Path parameters:
+  - envelope_id: The envelope to operate on.
+  - role_name: The role name to update.
+}

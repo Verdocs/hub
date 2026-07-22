@@ -1,0 +1,15 @@
+meta {
+  name: Get an organization's usage metrics
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/v2/organizations/:organization_id/usage
+  body: none
+  auth: inherit
+}
+
+params:path {
+  organization_id:
+}

@@ -1,0 +1,100 @@
+{
+  "comment": "Shared conformance fixture definitions. Every SDK conformance lane (TS here, xunit in Verdocs.Sdk, pytest in verdocs-python) runs these same cases against live beta: call the endpoint with raw HTTP and with the SDK, normalize volatile fields, compare status, shape, and data. Env vars: VERDOCS_API_BASE, VERDOCS_TEST_EMAIL, VERDOCS_TEST_PASSWORD from hub/.env. Path/body placeholders: $VERDOCS_* resolve from env; $SESSION.organization_id resolves from the authenticated session's claims. The chain section defines the canonical create-to-cancel lifecycle; lanes implement it natively as ordered steps sharing state (fixtures stay declarative, no cross-language DSL). The sdk field names the js-sdk function the case mirrors; each lane maps it to its own surface.",
+  "volatileKeyPattern": "(_at|_exp)$|^(access_token|id_token|refresh_token|expires_in|last_polled)",
+  "volatileKeyPatternFlags": "i",
+  "cases": [
+    {
+      "id": "authenticate",
+      "sdk": "authenticate",
+      "method": "POST",
+      "path": "/v2/oauth2/token",
+      "auth": false,
+      "body": { "username": "$VERDOCS_TEST_EMAIL", "password": "$VERDOCS_TEST_PASSWORD", "grant_type": "password" }
+    },
+    {
+      "id": "users-me",
+      "sdk": "getMyUser",
+      "method": "GET",
+      "path": "/v2/users/me",
+      "auth": true
+    },
+    {
+      "id": "profiles-current",
+      "sdk": "getCurrentProfile",
+      "method": "GET",
+      "path": "/v2/profiles",
+      "auth": true,
+      "note": "The raw response is an array; the SDK returns the entry with current=true. Lanes compare the SDK result to that entry."
+    },
+    {
+      "id": "templates-list",
+      "sdk": "getTemplates",
+      "method": "GET",
+      "path": "/v2/templates",
+      "auth": true,
+      "query": { "visibility": "private_shared", "rows": 10, "page": 0 }
+    },
+    {
+      "id": "envelopes-list",
+      "sdk": "getEnvelopes",
+      "method": "GET",
+      "path": "/v2/envelopes",
+      "auth": true,
+      "query": { "rows": 10, "page": 0 }
+    },
+    {
+      "id": "organization-get",
+      "sdk": "getOrganization",
+      "method": "GET",
+      "path": "/v2/organizations/$SESSION.organization_id",
+      "auth": true
+    },
+    {
+      "id": "members-list",
+      "sdk": "getOrganizationMembers",
+      "method": "GET",
+      "path": "/v2/organization-members",
+      "auth": true
+    },
+    {
+      "id": "groups-list",
+      "sdk": "getGroups",
+      "method": "GET",
+      "path": "/v2/organization-groups",
+      "auth": true
+    },
+    {
+      "id": "entitlements",
+      "sdk": "getEntitlements",
+      "method": "GET",
+      "path": "/v2/organizations/entitlements",
+      "auth": true
+    }
+  ],
+  "chain": {
+    "comment": "The canonical lifecycle, run live against beta in each new-language lane. A handful of records per run, per beta etiquette; the envelope ends canceled so nothing stays actionable. Steps share state (ids flow forward). Recipient email uses the test account itself so no mail leaves the tenant toward strangers. sdk names are js-sdk functions; WIRE-NOTES.md at hub/sdks documents the real wire shapes (template create multipart parts named documents, fields via the fields endpoint because the create-time fields array is dead server-side, envelope create JSON only).",
+    "steps": [
+      { "id": "chain-create-template", "sdk": "createTemplate", "note": "Multipart with one small PDF under the documents part; name carries a conformance marker and timestamp." },
+      { "id": "chain-add-role", "sdk": "createTemplateRole", "note": "One signer role on the created template (skip if the lane created it inline on the JSON path; multipart cannot carry roles)." },
+      { "id": "chain-add-field", "sdk": "createField", "note": "One signature field for the role on page 0 of the uploaded document." },
+      { "id": "chain-create-envelope", "sdk": "createEnvelope", "note": "JSON create from the template; recipient is the test account (email key required even for phone-only recipients)." },
+      { "id": "chain-get-envelope", "sdk": "getEnvelope", "note": "Read back by id; SDK result equals raw result after volatile-key normalization." },
+      { "id": "chain-list-envelopes", "sdk": "getEnvelopes", "note": "List contains the created envelope id." },
+      { "id": "chain-cancel-envelope", "sdk": "cancelEnvelope", "note": "Cancel; status reads canceled afterward." }
+    ]
+  },
+  "frozen": [
+    {
+      "id": "template-star-toggle",
+      "note": "Star toggle is server-broken (400 for every client) and frozen pending retirement discussion. The TS lane asserts curl/SDK equivalence only. New lanes skip it entirely. WIRE-NOTES.md documents the deeper breakage: the js-sdk posts a path that does not exist and the server route is a GET whose handler cannot be satisfied."
+    },
+    {
+      "id": "kba-module",
+      "note": "The js-sdk KBA.ts module targets /v2/kba/* routes that do not exist on the deployed API (real KBA runs through POST /v2/sign/verify). Stubs port for surface parity with doc comments; excluded from conformance."
+    },
+    {
+      "id": "dead-template-endpoints",
+      "note": "createTemplateFromSharepoint (no handler) and getTemplateDocumentFile/getTemplateDocumentThumbnail (no route) port as stubs with doc comments; excluded from conformance."
+    }
+  ]
+}

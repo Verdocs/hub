@@ -1,0 +1,35 @@
+meta {
+  name: Update Envelope
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{base_url}}/v2/envelopes/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 00000000-0000-0000-0000-000000000000
+}
+
+body:json {
+  {
+    "name": "string",
+    "sender_name": "string",
+    "sender_email": "string",
+    "initial_reminder": 0,
+    "followup_reminders": 0,
+    "max_reminder_days": 0,
+    "expires_at": "string",
+    "visibility": "private",
+    "no_contact": true,
+    "data": {}
+  }
+}
+
+docs {
+  Path parameters:
+  - id: The ID of the envelope to update.
+}

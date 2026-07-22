@@ -1,0 +1,10 @@
+name: Nightly Testing
+
+on:
+  schedule:
+    cron: "0 7 * * *" # 7am UTC, 3am EST, 12am PST
+
+jobs:
+  conformance:
+    - uses: actions/checkout@v4
+    - run: echo "Running nightly tests"

@@ -1,0 +1,474 @@
+{
+  "language": "python",
+  "package": "verdocs",
+  "version": "1.0.0",
+  "groups": {
+    "auth": {
+      "id": "auth",
+      "name": "Auth",
+      "summary": "",
+      "symbols": {
+        "auth.authenticate": {
+          "sdkOperation": "auth.authenticate",
+          "kind": "function",
+          "name": "authenticate",
+          "page": "Endpoints",
+          "gettingStarted": true,
+          "resource": "function",
+          "signature": "authenticate(params: AuthenticationRequest) -> AuthenticateResponse",
+          "summary": "Authenticate to Verdocs.",
+          "params": [
+            {
+              "name": "params",
+              "type": "AuthenticationRequest",
+              "description": "OAuth2 token request (password, client_credentials,\nrefresh_token, or authorization_code).",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "AuthenticateResponse",
+            "description": "The token set for the new session."
+          },
+          "throws": [
+            {
+              "type": "AuthenticationError",
+              "description": "The credentials were rejected."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "tokens = endpoint.auth.authenticate(\n    PasswordGrantRequest(username=\"test@example.com\", password=\"secret\")\n)\nendpoint.set_token(tokens.access_token)"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.getOAuth2AuthorizeUrl": {
+          "sdkOperation": "auth.getOAuth2AuthorizeUrl",
+          "kind": "function",
+          "name": "get_oauth2_authorize_url",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "get_oauth2_authorize_url(params: OAuth2AuthorizeParams) -> str",
+          "summary": "Build the URL that starts an OAuth2 authorization code flow.",
+          "params": [
+            {
+              "name": "params",
+              "type": "OAuth2AuthorizeParams",
+              "description": "client_id, redirect_uri, and optional state/scope.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "str",
+            "description": "The absolute authorize URL."
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "python",
+              "code": "url = endpoint.auth.get_oauth2_authorize_url(\n    OAuth2AuthorizeParams(\n        client_id=\"your-client-id\",\n        redirect_uri=\"https://your-app.com/callback\",\n        state=\"random-csrf-token\",\n    )\n)"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.refreshToken": {
+          "sdkOperation": "auth.refreshToken",
+          "kind": "function",
+          "name": "refresh_token",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "refresh_token(refresh_token: str) -> AuthenticateResponse",
+          "summary": "Refresh the caller's session and tokens before they expire.",
+          "params": [
+            {
+              "name": "refresh_token",
+              "type": "str",
+              "description": "The refresh token from a prior authenticate call.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "AuthenticateResponse",
+            "description": "A fresh token set."
+          },
+          "throws": [
+            {
+              "type": "AuthenticationError",
+              "description": "The refresh token was rejected."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "tokens = endpoint.auth.refresh_token(tokens.refresh_token)\nendpoint.set_token(tokens.access_token)"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.changePassword": {
+          "sdkOperation": "auth.changePassword",
+          "kind": "function",
+          "name": "change_password",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "change_password(params: ChangePasswordRequest) -> ChangePasswordResponse",
+          "summary": "Update the caller's password when the old password is known.",
+          "params": [
+            {
+              "name": "params",
+              "type": "ChangePasswordRequest",
+              "description": "Current and new passwords.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ChangePasswordResponse",
+            "description": "Status and message from the server."
+          },
+          "throws": [
+            {
+              "type": "AuthenticationError",
+              "description": "The endpoint has no valid user session."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "result = endpoint.auth.change_password(\n    ChangePasswordRequest(old_password=\"old\", new_password=\"new\")\n)"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.resetPassword": {
+          "sdkOperation": "auth.resetPassword",
+          "kind": "function",
+          "name": "reset_password",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "reset_password(params: ResetPasswordRequest) -> ResetPasswordResponse",
+          "summary": "Request or complete a password reset when the old password is unknown.",
+          "params": [
+            {
+              "name": "params",
+              "type": "ResetPasswordRequest",
+              "description": "Email, and optionally the emailed code plus new password.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ResetPasswordResponse",
+            "description": "Whether the call succeeded."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned a non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "endpoint.auth.reset_password(ResetPasswordRequest(email=\"you@example.com\"))\nendpoint.auth.reset_password(\n    ResetPasswordRequest(email=\"you@example.com\", code=\"123456\", new_password=\"new\")\n)"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.resendVerification": {
+          "sdkOperation": "auth.resendVerification",
+          "kind": "function",
+          "name": "resend_verification",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "resend_verification(access_token: str | None = None) -> ResendVerificationResponse",
+          "summary": "Resend email verification for a partially authenticated user.",
+          "params": [
+            {
+              "name": "access_token",
+              "type": "str | None",
+              "description": "Optional bearer token used only for this request.",
+              "optional": true,
+              "default": "None"
+            }
+          ],
+          "returns": {
+            "type": "ResendVerificationResponse",
+            "description": "Confirmation that the resend was queued."
+          },
+          "throws": [
+            {
+              "type": "AuthenticationError",
+              "description": "No usable session or token."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "endpoint.auth.resend_verification()"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.verifyEmail": {
+          "sdkOperation": "auth.verifyEmail",
+          "kind": "function",
+          "name": "verify_email",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "verify_email(params: VerifyEmailRequest) -> AuthenticateResponse",
+          "summary": "Verify email when the user is unauthenticated but email and token are known.",
+          "params": [
+            {
+              "name": "params",
+              "type": "VerifyEmailRequest",
+              "description": "Email address and verification token.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "AuthenticateResponse",
+            "description": "Updated authentication tokens."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned a non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "tokens = endpoint.auth.verify_email(\n    VerifyEmailRequest(email=\"you@example.com\", token=\"verify-token\")\n)"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.getMyUser": {
+          "sdkOperation": "auth.getMyUser",
+          "kind": "function",
+          "name": "get_my_user",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "get_my_user() -> User",
+          "summary": "Get the caller's current user record.",
+          "params": [],
+          "returns": {
+            "type": "User",
+            "description": "The authenticated user's account record."
+          },
+          "throws": [
+            {
+              "type": "AuthenticationError",
+              "description": "The endpoint has no valid user session."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "user = endpoint.auth.get_my_user()"
+            }
+          ],
+          "deprecated": false
+        }
+      }
+    },
+    "envelope": {
+      "id": "envelope",
+      "name": "Envelope",
+      "summary": "",
+      "symbols": {
+        "envelope.createEnvelope": {
+          "sdkOperation": "envelope.createEnvelope",
+          "kind": "function",
+          "name": "create",
+          "page": "Endpoints",
+          "gettingStarted": true,
+          "resource": "function",
+          "signature": "create(params: EnvelopeCreateParams) -> Envelope",
+          "summary": "Create an envelope from a template via POST /v2/envelopes. Mirrors js-sdk createEnvelope.",
+          "params": [
+            {
+              "name": "params",
+              "type": "EnvelopeCreateParams",
+              "description": "The template to copy and the recipients to fill its roles.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Envelope",
+            "description": "The newly created envelope."
+          },
+          "throws": [
+            {
+              "type": "NotFoundError",
+              "description": "The template does not exist or is not visible to the caller."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the request."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "envelope = endpoint.envelopes.create(\n    EnvelopeCreateParams(\n        template_id=\"d2338742-f3a1-465b-8592-806587413cc1\",\n        name=\"Bill of Sale\",\n        recipients=[\n            EnvelopeCreateRecipient(\n                role_name=\"Seller\",\n                first_name=\"Paige\",\n                last_name=\"Turner\",\n                email=\"paige.turner@nomail.com\",\n            ),\n        ],\n    )\n)"
+            }
+          ],
+          "deprecated": false
+        },
+        "envelope.getEnvelope": {
+          "sdkOperation": "envelope.getEnvelope",
+          "kind": "function",
+          "name": "get",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "get(envelope_id: str) -> Envelope",
+          "summary": "Get one envelope by ID via GET /v2/envelopes/{envelope_id}. Mirrors js-sdk getEnvelope.",
+          "params": [
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "description": "ID of the envelope to fetch.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Envelope",
+            "description": "The requested envelope."
+          },
+          "throws": [
+            {
+              "type": "NotFoundError",
+              "description": "No visible envelope has that ID."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        }
+      }
+    },
+    "template": {
+      "id": "template",
+      "name": "Template",
+      "summary": "",
+      "symbols": {
+        "template.createTemplate": {
+          "sdkOperation": "template.createTemplate",
+          "kind": "function",
+          "name": "create",
+          "page": "Endpoints",
+          "gettingStarted": true,
+          "resource": "function",
+          "signature": "create(params: TemplateCreateParams) -> Template",
+          "summary": "Create a template via POST /v2/templates. Mirrors js-sdk createTemplate.",
+          "params": [
+            {
+              "name": "params",
+              "type": "TemplateCreateParams",
+              "description": "Fields for the new template; only name is required.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Template",
+            "description": "The newly created template."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the request."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "template = endpoint.templates.create(TemplateCreateParams(name=\"NDA\"))"
+            }
+          ],
+          "deprecated": false
+        }
+      }
+    }
+  }
+}

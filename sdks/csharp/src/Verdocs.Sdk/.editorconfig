@@ -1,0 +1,4 @@
+# Library-only analyzer settings. CA2007 (ConfigureAwait) applies to the SDK but
+# not to the tests, where xunit needs the ambient context.
+[*.cs]
+dotnet_diagnostic.CA2007.severity = warning

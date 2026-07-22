@@ -1,0 +1,29 @@
+meta {
+  name: Update a template
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{base_url}}/v2/templates/:template_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  template_id:
+}
+
+body:json {
+  {
+    "name": "string",
+    "description": "string",
+    "visibility": "private",
+    "is_personal": true,
+    "is_public": true,
+    "sender": "envelope_creator",
+    "initial_reminder": 0,
+    "followup_reminders": 0,
+    "max_reminder_days": 0
+  }
+}

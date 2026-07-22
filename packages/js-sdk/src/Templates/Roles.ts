@@ -38,6 +38,10 @@ import {IRole} from '../Models';
  * @apiBody integer(min: 1, default: 1) order? Optional 1-based order number for the role. Controls the left-to-right display order of roles at the same sequence number in the UI components e.g. `<verdocs-template-roles />`.
  * @apiBody boolean delegator? If true, the role may delegate their signing responsibility to another party.
  * @apiSuccess IRole . The newly-created role
+ *
+ * @sdkOperation role.createTemplateRole
+ * @sdkGroup Role
+ * @sdkPage Endpoints
  */
 export const createTemplateRole = (endpoint: VerdocsEndpoint, template_id: string, params: IRole) =>
   endpoint.api //
@@ -66,6 +70,10 @@ export const createTemplateRole = (endpoint: VerdocsEndpoint, template_id: strin
  * @apiBody boolean delegator? If true, the role may delegate their signing responsibility to another party.
  * @apiBody string(enum:'pin'|'identity'|'') kba_method? Active PIN- or Identity-based KBA for the role.
  * @apiSuccess IRole . The newly-created role
+ *
+ * @sdkOperation role.updateTemplateRole
+ * @sdkGroup Role
+ * @sdkPage Endpoints
  */
 export const updateTemplateRole = (endpoint: VerdocsEndpoint, template_id: string, name: string, params: Partial<IRole>) =>
   endpoint.api //
@@ -84,6 +92,10 @@ export const updateTemplateRole = (endpoint: VerdocsEndpoint, template_id: strin
  * @group Roles
  * @api DELETE /v2/roles/:template_id/:role_id Delete a role.
  * @apiSuccess string . Success
+ *
+ * @sdkOperation role.deleteTemplateRole
+ * @sdkGroup Role
+ * @sdkPage Endpoints
  */
 export const deleteTemplateRole = (endpoint: VerdocsEndpoint, template_id: string, name: string) =>
   endpoint.api //

@@ -1,0 +1,13 @@
+<Project>
+
+  <!-- Settings the library and test projects share live here so they cannot drift
+       (docs/standards/csharp.md rule 4). CI builds with -warnaserror; local builds
+       may warn so iteration stays fast (rule 24). -->
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
+
+</Project>

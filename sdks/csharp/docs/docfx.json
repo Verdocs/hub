@@ -1,0 +1,16 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": ["src/Verdocs.Sdk/Verdocs.Sdk.csproj"],
+          "src": ".."
+        }
+      ],
+      "dest": "api",
+      "includePrivateMembers": false,
+      "disableGitFeatures": true,
+      "disableDefaultFilter": false
+    }
+  ]
+}

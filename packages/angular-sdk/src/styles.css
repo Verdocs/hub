@@ -1,0 +1,77 @@
+/*
+ * Compiled to styles.css (shipped in dist) at build time. Consumers import it
+ * once, e.g. in angular.json styles or a root stylesheet:
+ *
+ *   @import '@verdocs/angular-sdk/styles.css';
+ *
+ * Preflight is intentionally not imported so this stylesheet never resets host
+ * page styles. All utilities are prefixed (vdocs:) and every design token below
+ * is emitted as a --vdocs-* custom property on :root, so white-labeling is a
+ * matter of overriding those variables. The token names are shared with
+ * @verdocs/react-sdk; both SDKs theme identically.
+ */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme) prefix(vdocs);
+@import 'tailwindcss/utilities.css' layer(utilities) prefix(vdocs);
+
+@source './';
+
+@theme {
+  /* Drop the stock palette and font stacks; the tokens below are the entire
+     theming surface for Verdocs components. */
+  --color-*: initial;
+  --font-*: initial;
+
+  --font-sans: 'Inter', -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+
+  --color-white: #ffffff;
+  --color-primary: #55bc81;
+  --color-primary-dark: #2b995b;
+  --color-primary-light: #54d68c;
+  --color-accent: #654dcb;
+  --color-accent-dark: #4c56cb;
+  --color-accent-light: #707ae5;
+  --color-ink: #092c4c;
+  --color-muted: #5c6575;
+  --color-surface: #ffffff;
+  --color-canvas: #f5f5fa;
+  --color-edge: #aeb4bf;
+  --color-edge-light: #dad8dd;
+  --color-danger: #cc0000;
+  --color-success: #3dc763;
+  --color-info: #2379c7;
+  --color-disabled: #6c727f;
+
+  --radius-ctl: 4px;
+  --radius-row: 5px;
+}
+
+/* Per-signer field coloring. Plain :root + classes rather than @theme so the
+   tokens always survive to the compiled sheet (unused theme tokens get
+   tree-shaken) and the signer classes stay a documented white-label hook the
+   way the legacy signer-N classes were. Values match the legacy palette. */
+@layer components {
+  :root {
+    --vdocs-color-signer-1: #ffe69c;
+    --vdocs-color-signer-2: #e3c3e9;
+    --vdocs-color-signer-3: #c1e1fb;
+    --vdocs-color-signer-4: #dce775;
+    --vdocs-color-signer-5: #7986cb;
+    --vdocs-color-signer-6: #4db6ac;
+    --vdocs-color-signer-7: #ffcaa5;
+    --vdocs-color-signer-8: #02f7be;
+    --vdocs-color-signer-9: #ff8a65;
+    --vdocs-color-signer-10: #52ff4f;
+  }
+
+  .vdocs-signer-1 { background-color: var(--vdocs-color-signer-1); }
+  .vdocs-signer-2 { background-color: var(--vdocs-color-signer-2); }
+  .vdocs-signer-3 { background-color: var(--vdocs-color-signer-3); }
+  .vdocs-signer-4 { background-color: var(--vdocs-color-signer-4); }
+  .vdocs-signer-5 { background-color: var(--vdocs-color-signer-5); }
+  .vdocs-signer-6 { background-color: var(--vdocs-color-signer-6); }
+  .vdocs-signer-7 { background-color: var(--vdocs-color-signer-7); }
+  .vdocs-signer-8 { background-color: var(--vdocs-color-signer-8); }
+  .vdocs-signer-9 { background-color: var(--vdocs-color-signer-9); }
+  .vdocs-signer-10 { background-color: var(--vdocs-color-signer-10); }
+}

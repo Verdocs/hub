@@ -1,0 +1,28 @@
+meta {
+  name: Update Envelope Field
+  type: http
+  seq: 7
+}
+
+put {
+  url: {{base_url}}/v2/envelopes/:envelope_id/fields/:field_name
+  body: json
+  auth: inherit
+}
+
+params:path {
+  envelope_id: 00000000-0000-0000-0000-000000000000
+  field_name:
+}
+
+body:json {
+  {
+    "value": "string"
+  }
+}
+
+docs {
+  Path parameters:
+  - envelope_id: The ID of the envelope to retrieve.
+  - field_name: The name of the field to update. Be sure to URL-encode the value.
+}

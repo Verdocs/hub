@@ -1,0 +1,15 @@
+meta {
+  name: Star or unstar a template (toggle state)
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{base_url}}/v2/templates/:template_id/star
+  body: none
+  auth: inherit
+}
+
+params:path {
+  template_id:
+}

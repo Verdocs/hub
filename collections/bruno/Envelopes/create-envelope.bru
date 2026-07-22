@@ -1,0 +1,89 @@
+meta {
+  name: Create Envelope
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/v2/envelopes
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "template_id": "00000000-0000-0000-0000-000000000000",
+    "recipients": [
+      {
+        "address": "string",
+        "auth_methods": "string",
+        "city": "string",
+        "delegator": true,
+        "dob": "string",
+        "email": "string",
+        "first_name": "string",
+        "message": "string",
+        "order": 0,
+        "passcode": "string",
+        "phone": "string",
+        "phone_auth": "string",
+        "role_name": "string",
+        "sequence": 0,
+        "ssn_last_4": "string",
+        "state": "string",
+        "type": "string",
+        "zip": "string"
+      }
+    ],
+    "documents": [
+      {
+        "created_at": "string",
+        "envelope_id": "string",
+        "id": "string",
+        "mime": "string",
+        "name": "string",
+        "order": 0,
+        "page_sizes": "string",
+        "pages": 0,
+        "signed": true,
+        "size": 0,
+        "template_document_id": "string",
+        "type": "string",
+        "updated_at": "string"
+      }
+    ],
+    "fields": [
+      {
+        "default": "string",
+        "document_id": "string",
+        "envelope_id": "string",
+        "group": "string",
+        "height": 0,
+        "label": "string",
+        "multiline": true,
+        "name": "string",
+        "options": "string",
+        "page": 0,
+        "placeholder": "string",
+        "prepared": "string",
+        "readonly": "string",
+        "required": "string",
+        "role_name": "string",
+        "settings": "string",
+        "type": "string",
+        "width": 0,
+        "x": 0,
+        "y": 0
+      }
+    ],
+    "name": "string",
+    "description": "string",
+    "no_contact": true,
+    "initial_reminder": 0,
+    "followup_reminders": 0,
+    "max_reminder_days": 0,
+    "expires_at": "string",
+    "timezone": "string",
+    "locale": "string"
+  }
+}

@@ -1,0 +1,26 @@
+meta {
+  name: Cancel envelope
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{base_url}}/v2/envelopes/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 00000000-0000-0000-0000-000000000000
+}
+
+body:json {
+  {
+    "action": "cancel"
+  }
+}
+
+docs {
+  Path parameters:
+  - id: The ID of the envelope to cancel.
+}

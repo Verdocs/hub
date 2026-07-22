@@ -140,7 +140,7 @@ export const Countries: ICountry[] = [
   {code: '+596', name: 'Martinique', value: '+596'},
   {code: '+222', name: 'Mauritania', value: '+222'},
   {code: '+230', name: 'Mauritius', value: '+230'},
-  {code: '+262', name: 'Mayotte or Réunion', value: '+262'},
+  {code: '+262', name: 'Mayotte or R\u00e9union', value: '+262'},
   {code: '+52', name: 'Mexico', value: '+52'},
   {code: '+691', name: 'Micronesia', value: '+691'},
   {code: '+1', name: 'Midway Island', value: '+1'},
@@ -239,6 +239,11 @@ export const Countries: ICountry[] = [
   {code: '+263', name: 'Zimbabwe', value: '+263'},
 ];
 
+/**
+ * @sdkOperation locale.getCountryByCode
+ * @sdkGroup Locale
+ * @sdkPage Helpers
+ */
 export function getCountryByCode(code: string): ICountry | null {
   const found = Countries.find((country) => country.code === code);
   if (found) return found;
@@ -250,28 +255,53 @@ export function getCountryByCode(code: string): ICountry | null {
   } else if (isMartinique(code)) {
     return {code: '+596', name: 'Martinique', value: '+596'};
   } else if (isMayotte(code)) {
-    return {code: '+262', name: 'Mayotte or Réunion', value: '+262'};
+    return {code: '+262', name: 'Mayotte or R\u00e9union', value: '+262'};
   }
 
   return null;
 }
 
+/**
+ * @sdkOperation locale.isFrenchGuiana
+ * @sdkGroup Locale
+ * @sdkPage Helpers
+ */
 export function isFrenchGuiana(code: string) {
   return '+594' === code.substring(0, 4);
 }
 
+/**
+ * @sdkOperation locale.isGuadeloupe
+ * @sdkGroup Locale
+ * @sdkPage Helpers
+ */
 export function isGuadeloupe(code: string) {
   return '+590' === code.substring(0, 4);
 }
 
+/**
+ * @sdkOperation locale.isMartinique
+ * @sdkGroup Locale
+ * @sdkPage Helpers
+ */
 export function isMartinique(code: string) {
   return '+596' === code.substring(0, 4);
 }
 
+/**
+ * @sdkOperation locale.isMayotte
+ * @sdkGroup Locale
+ * @sdkPage Helpers
+ */
 export function isMayotte(code: string) {
   return '+262' === code.substring(0, 4);
 }
 
+/**
+ * @sdkOperation locale.getPlusOneCountry
+ * @sdkGroup Locale
+ * @sdkPage Helpers
+ */
 export function getPlusOneCountry(code: string) {
   let info: ICountry | null = null;
   switch (code.substring(0, 5)) {
@@ -305,6 +335,11 @@ export function getPlusOneCountry(code: string) {
   return info;
 }
 
+/**
+ * @sdkOperation locale.isCanada
+ * @sdkGroup Locale
+ * @sdkPage Helpers
+ */
 export function isCanada(code: string) {
   const canadianAreaCodes = [
     '403',
@@ -356,19 +391,39 @@ export function isCanada(code: string) {
   return canadianAreaCodes.findIndex((x) => '+1' + x === areaCode) > -1;
 }
 
+/**
+ * @sdkOperation locale.isAmericanSamoa
+ * @sdkGroup Locale
+ * @sdkPage Helpers
+ */
 export function isAmericanSamoa(code: string) {
   return code.substring(0, 5) === '+1684';
 }
 
+/**
+ * @sdkOperation locale.isDominicanRepublic
+ * @sdkGroup Locale
+ * @sdkPage Helpers
+ */
 export function isDominicanRepublic(code: string) {
   return '+1809' === code.substring(0, 5) || '+1829' === code.substring(0, 5) || '+1849' === code.substring(0, 5);
 }
 
+/**
+ * @sdkOperation locale.isPuertoRico
+ * @sdkGroup Locale
+ * @sdkPage Helpers
+ */
 export function isPuertoRico(code: string) {
   return code.substring(0, 5) === '+' || code.substring(0, 5) === '+';
 }
 
 // need to finish
+/**
+ * @sdkOperation locale.getMatchingCountry
+ * @sdkGroup Locale
+ * @sdkPage Helpers
+ */
 export function getMatchingCountry(code: string, substrings: number) {
   const toMatch = code.substring(0, substrings);
   return Countries.filter((c) => c.code === toMatch).length;

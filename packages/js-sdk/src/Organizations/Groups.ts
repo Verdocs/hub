@@ -21,6 +21,10 @@ import {IGroup} from '../Models';
  *
  * const groups = await getGroups();
  * ```
+ *
+ * @sdkOperation group.getGroups
+ * @sdkGroup Group
+ * @sdkPage Endpoints
  */
 export const getGroups = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -35,6 +39,10 @@ export const getGroups = (endpoint: VerdocsEndpoint) =>
  *
  * const group = await getGroup(GROUPID);
  * ```
+ *
+ * @sdkOperation group.getGroup
+ * @sdkGroup Group
+ * @sdkPage Endpoints
  */
 export const getGroup = (endpoint: VerdocsEndpoint, groupId: string) =>
   endpoint.api //
@@ -49,6 +57,10 @@ export const getGroup = (endpoint: VerdocsEndpoint, groupId: string) =>
  *
  * const group = await createGroup(VerdocsEndpoint.getDefault(), {name:'newgroup'});
  * ```
+ *
+ * @sdkOperation group.createGroup
+ * @sdkGroup Group
+ * @sdkPage Endpoints
  */
 export const createGroup = (endpoint: VerdocsEndpoint, params: {name: string; permissions: TPermission[]}) =>
   endpoint.api //
@@ -63,6 +75,10 @@ export const createGroup = (endpoint: VerdocsEndpoint, params: {name: string; pe
  *
  * const updated = await updateGroup(VerdocsEndpoint.getDefault(), {name:'newname'});
  * ```
+ *
+ * @sdkOperation group.updateGroup
+ * @sdkGroup Group
+ * @sdkPage Endpoints
  */
 export const updateGroup = (endpoint: VerdocsEndpoint, groupId: string, params: {name: string; permissions: TPermission[]}) =>
   endpoint.api //
@@ -77,6 +93,10 @@ export const updateGroup = (endpoint: VerdocsEndpoint, groupId: string, params: 
  *
  * await deleteGroup(VerdocsEndpoint.getDefault(), 'ORGID');
  * ```
+ *
+ * @sdkOperation group.deleteGroup
+ * @sdkGroup Group
+ * @sdkPage Endpoints
  */
 export const deleteGroup = (endpoint: VerdocsEndpoint, groupId: string) =>
   endpoint.api //
@@ -91,6 +111,10 @@ export const deleteGroup = (endpoint: VerdocsEndpoint, groupId: string) =>
  *
  * await addGroupMember(VerdocsEndpoint.getDefault(), 'GROUPID', 'PROFILEID');
  * ```
+ *
+ * @sdkOperation group.addGroupMember
+ * @sdkGroup Group
+ * @sdkPage Endpoints
  */
 export const addGroupMember = (endpoint: VerdocsEndpoint, groupId: string, profile_id: string) =>
   endpoint.api //
@@ -105,6 +129,10 @@ export const addGroupMember = (endpoint: VerdocsEndpoint, groupId: string, profi
  *
  * await deleteGroupMember(VerdocsEndpoint.getDefault(), 'GROUPID', 'PROFILEID');
  * ```
+ *
+ * @sdkOperation group.deleteGroupMember
+ * @sdkGroup Group
+ * @sdkPage Endpoints
  */
 export const deleteGroupMember = (endpoint: VerdocsEndpoint, groupId: string, profile_id: string) =>
   endpoint.api //

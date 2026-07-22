@@ -29,6 +29,11 @@ const VALIDATORS = {
   date: {regex: DATE_REGEX, label: 'Date'},
 };
 
+/**
+ * @sdkOperation validator.isValidInput
+ * @sdkGroup Validators
+ * @sdkPage Helpers
+ */
 export const isValidInput = (value: string, validator: string) =>
   Object.keys(VALIDATORS).includes(validator) && VALIDATORS[validator as keyof typeof VALIDATORS].regex.test(value);
 
@@ -37,15 +42,61 @@ export const isValidInput = (value: string, validator: string) =>
  * because that is all a user can enter in an HTML input field. Numeric-format validators should
  * perform any necessary conversions internally. Validators never throw - they just return a boolean.
  * indicating whether the value is valid.
+ *
+ * ```typescript
+ * import {getValidators} from '@verdocs/js-sdk';
+ *
+ * const available = getValidators(); // ['email', 'phone', 'url', 'postal_code', 'number', 'date']
+ * ```
+ *
+ * @sdkOperation validator.getValidators
+ * @sdkGroup Validators
+ * @sdkPage Helpers
  */
 export const getValidators = () => Object.keys(VALIDATORS);
 
+/**
+ * Check whether a string is a validly-formatted email address.
+ *
+ * ```typescript
+ * import {isValidEmail} from '@verdocs/js-sdk';
+ *
+ * isValidEmail('sales@verdocs.com'); // true
+ * ```
+ *
+ * @sdkOperation validator.isValidEmail
+ * @sdkGroup Validators
+ * @sdkPage Helpers
+ */
 export const isValidEmail = (email: string | undefined) => !!email && EMAIL_REGEX.test(email);
 
+/**
+ * Check whether a string looks like a valid phone number, in domestic or international format.
+ *
+ * ```typescript
+ * import {isValidPhone} from '@verdocs/js-sdk';
+ *
+ * isValidPhone('+1 202-555-0147'); // true
+ * ```
+ *
+ * @sdkOperation validator.isValidPhone
+ * @sdkGroup Validators
+ * @sdkPage Helpers
+ */
 export const isValidPhone = (phone: string | undefined) => !!phone && PHONE_REGEX.test(phone);
 
+/**
+ * @sdkOperation validator.isValidRoleName
+ * @sdkGroup Validators
+ * @sdkPage Helpers
+ */
 export const isValidRoleName = (value: string, roles: IRole[]) => roles.findIndex((role) => role.name === value) !== -1;
 
 const TagRegEx = /^[a-zA-Z0-9-]{0,32}$/;
 
+/**
+ * @sdkOperation validator.isValidTag
+ * @sdkGroup Validators
+ * @sdkPage Helpers
+ */
 export const isValidTag = (value: string, tags: string[]) => TagRegEx.test(value) || tags.findIndex((tag) => tag === value) !== -1;

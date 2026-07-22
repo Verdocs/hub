@@ -187,11 +187,15 @@ export type TPermission = TTemplatePermission | TOrgPermission | TAccountPermiss
 /**
  * Roles provide access to groups of permissions. Note that for historical reasons there is some overlap in the
  * use of the term "role". TRole refers to a user type. A "Role" (IRole) is a Template participant placeholder.
+ *
+ * @sdkGroup Permissions
  */
 export type TRole = 'contact' | 'basic_user' | 'member' | 'admin' | 'owner';
 
 /**
  * A map of the permissions each role confers.
+ *
+ * @sdkGroup Permissions
  */
 export const RolePermissions: Record<TRole, TPermission[]> = {
   owner: [
@@ -266,7 +270,20 @@ export const RolePermissions: Record<TRole, TPermission[]> = {
 };
 
 /**
- * Confirm whether the user has all of the specified permissions.
+ * Confirm whether the user has all of the specified permissions, resolving the profile's direct
+ * permissions, the permissions granted by its roles, and any group profiles.
+ *
+ * ```typescript
+ * import {userHasPermissions} from '@verdocs/js-sdk';
+ *
+ * if (userHasPermissions(endpoint.profile, ['envelope:create'])) {
+ *   // show the "New Envelope" button
+ * }
+ * ```
+ *
+ * @sdkOperation permission.userHasPermissions
+ * @sdkGroup Permissions
+ * @sdkPage Helpers
  */
 export const userHasPermissions = (profile: IProfile | null | undefined, permissions: TPermission[]) => {
   // No need to de-dupe here, we're just checking present-at-least-once set membership.

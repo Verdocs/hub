@@ -1,0 +1,15 @@
+{
+  "extends": "@verdocs/typescript-config/vite.json",
+  "compilerOptions": {
+    "module": "preserve",
+    "target": "ES2022",
+    "experimentalDecorators": false,
+    "jsx": "preserve",
+    "types": ["vitest/globals"]
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true,
+    "typeCheckHostBindings": true
+  },
+  "include": ["src/**/*.ts"]
+}

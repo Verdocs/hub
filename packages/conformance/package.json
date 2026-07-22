@@ -1,0 +1,25 @@
+{
+  "name": "@verdocs/conformance",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Curl-vs-SDK conformance harness: every covered endpoint is called with raw curl and with the SDK, and the responses are diffed",
+  "type": "module",
+  "scripts": {
+    "conformance": "vitest run",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "eslint . --fix"
+  },
+  "dependencies": {
+    "@verdocs/js-sdk": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/node": "^24.1.0",
+    "@verdocs/eslint-config": "^1.0.0",
+    "imapflow": "^1.4.7",
+    "@verdocs/typescript-config": "^1.0.0",
+    "eslint": "^9.39.1",
+    "typescript": "5.9.3",
+    "vitest": "^4.1.10"
+  }
+}

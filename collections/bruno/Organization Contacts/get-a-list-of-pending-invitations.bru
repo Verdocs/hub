@@ -1,0 +1,18 @@
+meta {
+  name: GET a list of pending invitations
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/v2/organization-invitations/decline
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "string",
+    "token": "string"
+  }
+}
