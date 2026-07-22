@@ -27,7 +27,9 @@ public static partial class VolatileJson
     /// <summary>Serializes a value with the SDK's own serializer options, then normalizes it.</summary>
     public static string NormalizeValue<T>(T value)
     {
-        return NormalizeText(JsonSerializer.Serialize(value, VerdocsJson.Options));
+        // Serialize by the runtime type, not T, so a caller can hand us a value typed as object
+        // (the conformance dispatch returns different SDK models) and still get every property.
+        return NormalizeText(JsonSerializer.Serialize(value, value?.GetType() ?? typeof(T), VerdocsJson.Options));
     }
 
     // The same pattern and flags as support.ts, so every SDK lane masks the same keys.

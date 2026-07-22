@@ -27,13 +27,22 @@ _RESEND_VERIFICATION_PATH = "/v2/users/resend-verification"
 _VERIFY_PATH = "/v2/users/verify"
 
 
-def _password_grant_body(username: str, password: str, client_id: str | None, scope: str | None) -> dict[str, str]:
-    body = {"grant_type": "password", "username": username, "password": password}
-    if client_id is not None:
-        body["client_id"] = client_id
-    if scope is not None:
-        body["scope"] = scope
-    return body
+def _auth_body(params: AuthenticationRequest) -> dict[str, Any]:
+    # exclude_none so optional client_id/scope stay off the wire when unset.
+    return params.model_dump(mode="json", exclude_none=True)
+
+
+def _write_body(params: ChangePasswordRequest | ResetPasswordRequest | VerifyEmailRequest) -> dict[str, Any]:
+    return params.model_dump(mode="json", exclude_none=True)
+
+
+def _authorize_url(base_url: str, params: OAuth2AuthorizeParams) -> str:
+    query = {"client_id": params.client_id, "redirect_uri": params.redirect_uri, "response_type": params.response_type}
+    if params.state is not None:
+        query["state"] = params.state
+    if params.scope is not None:
+        query["scope"] = params.scope
+    return f"{base_url.rstrip('/')}{_AUTHORIZE_PATH}?{urlencode(query)}"
 
 
 def _reset_password_body(email: str, code: str | None, new_password: str | None) -> dict[str, str]:
@@ -70,28 +79,21 @@ class Auth:
     def __init__(self, endpoint: VerdocsEndpoint) -> None:
         self._endpoint = endpoint
 
-    def authenticate(
-        self,
-        *,
-        username: str,
-        password: str,
-        client_id: str | None = None,
-        scope: str | None = None,
-    ) -> AuthenticateResponse:
-        """Authenticate to Verdocs with a username and password (OAuth2 password grant).
+    def authenticate(self, params: AuthenticationRequest) -> AuthenticateResponse:
+        """Authenticate to Verdocs.
 
-        The tokens are returned, not applied: call set_token() with the access
+        Tokens are returned, not applied: call set_token() with the access
         token to start using the session, the same flow as the js-sdk.
 
         Example:
-            tokens = endpoint.auth.authenticate(username="test@example.com", password="secret")
+            tokens = endpoint.auth.authenticate(
+                PasswordGrantRequest(username="test@example.com", password="secret")
+            )
             endpoint.set_token(tokens.access_token)
 
         Args:
-            username: Email address of the user.
-            password: Password for the user.
-            client_id: Optional OAuth2 client ID.
-            scope: Optional scope to limit the token to. Leave unset unless Verdocs support says otherwise.
+            params: OAuth2 token request (password, client_credentials,
+                refresh_token, or authorization_code).
 
         Returns:
             The token set for the new session.
@@ -100,9 +102,13 @@ class Auth:
             AuthenticationError: The credentials were rejected.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation auth.authenticate
+        @sdkGroup Auth
+        @sdkPage Endpoints
+        @sdkGettingStarted
         """
-        body = _password_grant_body(username, password, client_id, scope)
-        response = self._endpoint._request("POST", _TOKEN_PATH, json=body)
+        response = self._endpoint._request("POST", _TOKEN_PATH, json=_auth_body(params))
         return AuthenticateResponse.model_validate(response.json())
 
     def get_oauth2_authorize_url(
@@ -293,28 +299,21 @@ class AsyncAuth:
     def __init__(self, endpoint: AsyncVerdocsEndpoint) -> None:
         self._endpoint = endpoint
 
-    async def authenticate(
-        self,
-        *,
-        username: str,
-        password: str,
-        client_id: str | None = None,
-        scope: str | None = None,
-    ) -> AuthenticateResponse:
-        """Authenticate to Verdocs with a username and password (OAuth2 password grant).
+    async def authenticate(self, params: AuthenticationRequest) -> AuthenticateResponse:
+        """Authenticate to Verdocs.
 
-        The tokens are returned, not applied: call set_token() with the access
+        Tokens are returned, not applied: call set_token() with the access
         token to start using the session, the same flow as the js-sdk.
 
         Example:
-            tokens = await endpoint.auth.authenticate(username="test@example.com", password="secret")
+            tokens = await endpoint.auth.authenticate(
+                PasswordGrantRequest(username="test@example.com", password="secret")
+            )
             endpoint.set_token(tokens.access_token)
 
         Args:
-            username: Email address of the user.
-            password: Password for the user.
-            client_id: Optional OAuth2 client ID.
-            scope: Optional scope to limit the token to. Leave unset unless Verdocs support says otherwise.
+            params: OAuth2 token request (password, client_credentials,
+                refresh_token, or authorization_code).
 
         Returns:
             The token set for the new session.
@@ -324,8 +323,7 @@ class AsyncAuth:
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
         """
-        body = _password_grant_body(username, password, client_id, scope)
-        response = await self._endpoint._request("POST", _TOKEN_PATH, json=body)
+        response = await self._endpoint._request("POST", _TOKEN_PATH, json=_auth_body(params))
         return AuthenticateResponse.model_validate(response.json())
 
     def get_oauth2_authorize_url(

@@ -15,7 +15,7 @@ import {
   updateTemplateRole,
   VerdocsEndpoint,
 } from '@verdocs/js-sdk';
-import { curl, loadEnv, normalizeVolatile } from './support';
+import { curl, loadEnv, normalizeVolatile } from './support.js';
 
 /**
  * Conformance baseline: each covered endpoint is called twice, once with raw

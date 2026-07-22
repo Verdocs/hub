@@ -9,7 +9,8 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "test:report": "vitest run",
-    "test:conformance": "pnpm --filter @verdocs/conformance conformance"
+    "test:conformance": "pnpm --filter @verdocs/conformance conformance",
+    "generate:sdk-docs": "node scripts/clean-sdk-docs.mjs && turbo run generate-sdk-docs && pnpm --filter @verdocs/js-sdk unify-sdks"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",

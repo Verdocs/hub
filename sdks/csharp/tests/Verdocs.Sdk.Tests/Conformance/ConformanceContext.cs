@@ -76,20 +76,21 @@ internal sealed class ConformanceContext
         return new ConformanceContext(settings, new HttpClient(), sdk, auth.AccessToken);
     }
 
-    /// <summary>Raw authenticated GET with no SDK code in the path.</summary>
-    internal async Task<(HttpStatusCode Status, string Body)> RawGetAsync(string pathAndQuery)
+    /// <summary>The raw side of a case: a plain HTTP call with no SDK code in the path.</summary>
+    internal async Task<(HttpStatusCode Status, string Body)> RawAsync(HttpMethod method, string pathAndQuery, bool auth, JsonNode? body)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Get, new Uri(Sdk.BaseUrl, pathAndQuery));
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Token);
-        using var response = await Raw.SendAsync(request);
-        return (response.StatusCode, await response.Content.ReadAsStringAsync());
-    }
+        using var request = new HttpRequestMessage(method, new Uri(Sdk.BaseUrl, pathAndQuery));
 
-    /// <summary>Raw unauthenticated POST with no SDK code in the path.</summary>
-    internal async Task<(HttpStatusCode Status, string Body)> RawPostAsync(string pathAndQuery, JsonObject body)
-    {
-        using var request = new HttpRequestMessage(HttpMethod.Post, new Uri(Sdk.BaseUrl, pathAndQuery));
-        request.Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json");
+        if (auth)
+        {
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+        }
+
+        if (body is not null)
+        {
+            request.Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json");
+        }
+
         using var response = await Raw.SendAsync(request);
         return (response.StatusCode, await response.Content.ReadAsStringAsync());
     }

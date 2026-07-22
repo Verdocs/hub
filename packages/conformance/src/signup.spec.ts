@@ -1,7 +1,7 @@
 import { randomBytes } from 'node:crypto';
 import { authenticate, createProfile, getMyUser, verifyEmail, VerdocsEndpoint } from '@verdocs/js-sdk';
-import { loadImapEnv, waitForMessage } from './imap';
-import { loadEnv } from './support';
+import { loadImapEnv, waitForMessage } from './imap.js';
+import { loadEnv } from './support.js';
 
 /**
  * Gated signup lane: exercises the full self-serve signup flow against beta

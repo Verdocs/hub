@@ -190,4 +190,47 @@ public sealed class OperationsTests
         Assert.Throws<ArgumentException>(
             () => { _ = endpoint.Templates.GetAsync("", TestContext.Current.CancellationToken); });
     }
+
+    [Fact]
+    public async Task CreateTemplateAsync_SendsOnlySetFields_RequestsPostAndParsesResponse()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.OK, SamplePayloads.TemplateCreated);
+
+        var template = await endpoint.CreateTemplateAsync(
+            new TemplateCreateParams { Name = "NDA" },
+            TestContext.Current.CancellationToken);
+
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Post, request.Method);
+        Assert.Equal("/v2/templates", request.Uri!.AbsolutePath);
+
+        var body = Assert.IsType<JsonObject>(JsonNode.Parse(request.Body!));
+        Assert.Equal("NDA", (string?)body["name"]);
+        Assert.False(body.ContainsKey("description"));
+        Assert.False(body.ContainsKey("visibility"));
+        Assert.False(body.ContainsKey("sender"));
+        Assert.False(body.ContainsKey("initial_reminder"));
+
+        Assert.Equal("NDA", template.Name);
+        Assert.Equal("83da3d70-7857-4392-b876-c4592a304bc9", template.Id);
+    }
+
+    [Fact]
+    public void CreateTemplateAsync_NullParameters_ThrowsSynchronously()
+    {
+        var (endpoint, _) = CreateEndpoint();
+
+        Assert.Throws<ArgumentNullException>(
+            () => { _ = endpoint.CreateTemplateAsync(null!, TestContext.Current.CancellationToken); });
+    }
+
+    [Fact]
+    public void CreateTemplateAsync_EmptyName_ThrowsSynchronously()
+    {
+        var (endpoint, _) = CreateEndpoint();
+
+        Assert.Throws<ArgumentException>(
+            () => { _ = endpoint.CreateTemplateAsync(new TemplateCreateParams { Name = "   " }, TestContext.Current.CancellationToken); });
+    }
 }

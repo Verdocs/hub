@@ -22,6 +22,10 @@ import {IWebhook} from '../Models';
  * @group Webhooks
  * @api GET /v2/webhooks Get organization Webhooks config
  * @apiSuccess IWebhook . The current Webhooks config for the caller's organization.
+ *
+ * @sdkOperation webhook.getWebhooks
+ * @sdkGroup Webhook
+ * @sdkPage Endpoints
  */
 export const getWebhooks = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -51,6 +55,10 @@ export const getWebhooks = (endpoint: VerdocsEndpoint) =>
  * @apiBody string scope? Optional scope to include in authentication calls if `auth_method` is set to `client_credentials`.
  * @apiBody object events Record<TWebhookEvent, boolean> map of events to enable/disable.
  * @apiSuccess IWebhook . The updated Webhooks config for the caller's organization.
+ *
+ * @sdkOperation webhook.setWebhooks
+ * @sdkGroup Webhook
+ * @sdkPage Endpoints
  */
 export const setWebhooks = (endpoint: VerdocsEndpoint, params: ISetWebhookRequest) =>
   endpoint.api //
@@ -84,6 +92,10 @@ export const setWebhooks = (endpoint: VerdocsEndpoint, params: ISetWebhookReques
  * @api PATCH /v2/webhooks Rotate Webhook secret key
  * @apiDescription Note that Webhooks cannot currently be deleted, but may be easily disabled by setting `active` to `false` and/or setting the `url` to an empty string.
  * @apiSuccess IWebhook . The updated Webhooks config for the caller's organization, including the secret_key.
+ *
+ * @sdkOperation webhook.rotateWebhookSecret
+ * @sdkGroup Webhook
+ * @sdkPage Endpoints
  */
 export const rotateWebhookSecret = (endpoint: VerdocsEndpoint) =>
   endpoint.api //

@@ -15,6 +15,10 @@ import {IInitial} from '../Models';
  * @api POST /v2/profiles/initials Create Initial Block
  * @apiBody string initial Blob containing initials image to store.
  * @apiSuccess IInitial . The newly-created initial block.
+ *
+ * @sdkOperation initial.createInitials
+ * @sdkGroup Initial
+ * @sdkPage Endpoints
  */
 export const createInitials = (endpoint: VerdocsEndpoint, name: string, initials: Blob) => {
   const data = new FormData();

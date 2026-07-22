@@ -22,6 +22,10 @@ import {IProfile} from '../Models';
  * @apiBody string email Email address for the invitee
  * @apiBody string token Invite token for the invitee
  * @apiSuccess string . Success. The invitation will be marked declined and the token will be invalidated.
+ *
+ * @sdkOperation contact.getOrganizationContacts
+ * @sdkGroup Contact
+ * @sdkPage Endpoints
  */
 export const getOrganizationContacts = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -42,6 +46,10 @@ export const getOrganizationContacts = (endpoint: VerdocsEndpoint) =>
  * @apiBody string email Email address for the invitee
  * @apiBody string token Invite token for the invitee
  * @apiSuccess string . Success. The invitation will be marked declined and the token will be invalidated.
+ *
+ * @sdkOperation contact.deleteOrganizationContact
+ * @sdkGroup Contact
+ * @sdkPage Endpoints
  */
 export const deleteOrganizationContact = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
@@ -56,6 +64,10 @@ export const deleteOrganizationContact = (endpoint: VerdocsEndpoint, profileId: 
  *
  * const result = await createOrganizationContact(VerdocsEndpoint.getDefault(), 'PROFILEID', {first_name:'First', last_name:'Last', email:'a@b.com'});
  * ```
+ *
+ * @sdkOperation contact.createOrganizationContact
+ * @sdkGroup Contact
+ * @sdkPage Endpoints
  */
 export const createOrganizationContact = (
   endpoint: VerdocsEndpoint,
@@ -73,6 +85,10 @@ export const createOrganizationContact = (
  *
  * const result = await updateOrganizationContact(VerdocsEndpoint.getDefault(), 'PROFILEID', {first_name:'NewFirst'});
  * ```
+ *
+ * @sdkOperation contact.updateOrganizationContact
+ * @sdkGroup Contact
+ * @sdkPage Endpoints
  */
 export const updateOrganizationContact = (
   endpoint: VerdocsEndpoint,

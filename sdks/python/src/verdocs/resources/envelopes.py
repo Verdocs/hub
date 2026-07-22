@@ -165,6 +165,10 @@ class Envelopes:
             NotFoundError: No visible envelope has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation envelope.getEnvelope
+        @sdkGroup Envelope
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_ENVELOPES_PATH}/{envelope_id}")
         return Envelope.model_validate(response.json())

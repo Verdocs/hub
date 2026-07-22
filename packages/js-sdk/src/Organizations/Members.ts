@@ -20,6 +20,10 @@ import {TRole} from '../Sessions';
  * @group Organization Members
  * @api GET /v2/organization-members List current organization's members
  * @apiSuccess array(items:IProfile) . List of caller's current organization's members
+ *
+ * @sdkOperation member.getOrganizationMembers
+ * @sdkGroup Member
+ * @sdkPage Endpoints
  */
 export const getOrganizationMembers = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -40,6 +44,10 @@ export const getOrganizationMembers = (endpoint: VerdocsEndpoint) =>
  * @apiParam string(format:uuid) profile_id The Profile ID to remove.
  * @api DELETE /v2/organization-members/:profile_id Delete a member from the organization
  * @apiSuccess string . Success
+ *
+ * @sdkOperation member.deleteOrganizationMember
+ * @sdkGroup Member
+ * @sdkPage Endpoints
  */
 export const deleteOrganizationMember = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
@@ -63,6 +71,10 @@ export const deleteOrganizationMember = (endpoint: VerdocsEndpoint, profileId: s
  * @apiBody string password? If set, will be used as the initial password. If omitted, a password will be generated and returned.
  * @apiBody array(items:TRole) roles? Roles (e.g. "member" or "admin") to assign to the user.
  * @apiSuccess IProfile . The new profile for the member. If a password was generated, it will be included in the response.
+ *
+ * @sdkOperation member.createOrganizationMember
+ * @sdkGroup Member
+ * @sdkPage Endpoints
  */
 export const createOrganizationMember = (
   endpoint: VerdocsEndpoint,
@@ -88,6 +100,10 @@ export const createOrganizationMember = (
  * @apiBody string last_name? Last name for the member
  * @apiBody array(items:TRole) roles? Roles (e.g. "member" or "admin") to assign to the user.
  * @apiSuccess IProfile . The updated profile for the member.
+ *
+ * @sdkOperation member.updateOrganizationMember
+ * @sdkGroup Member
+ * @sdkPage Endpoints
  */
 export const updateOrganizationMember = (
   endpoint: VerdocsEndpoint,
@@ -115,6 +131,10 @@ export const updateOrganizationMember = (
  * @apiBody string(enum:'lock') action Action to perform
  * @apiBody string reason Reason the account is being locked. Stored on the user record and shown to admins.
  * @apiSuccess IProfile . The updated profile for the member, with the joined user record.
+ *
+ * @sdkOperation member.lockOrganizationMember
+ * @sdkGroup Member
+ * @sdkPage Endpoints
  */
 export const lockOrganizationMember = (endpoint: VerdocsEndpoint, profileId: string, reason: string) =>
   endpoint.api //
@@ -137,6 +157,10 @@ export const lockOrganizationMember = (endpoint: VerdocsEndpoint, profileId: str
  * @apiParam string(format:uuid) profile_id The Profile ID to operate on.
  * @apiBody string(enum:'unlock') action Action to perform
  * @apiSuccess IProfile . The updated profile for the member, with the joined user record.
+ *
+ * @sdkOperation member.unlockOrganizationMember
+ * @sdkGroup Member
+ * @sdkPage Endpoints
  */
 export const unlockOrganizationMember = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //

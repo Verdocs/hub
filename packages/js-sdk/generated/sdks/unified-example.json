@@ -1,0 +1,239 @@
+{
+  "$schema": "./sdk-unified.schema.json",
+  "operations": [
+    {
+      "operationId": "envelopes.createEnvelope",
+      "group": "Envelopes",
+      "page": "Endpoints",
+      "gettingStarted": true,
+      "summary": "Create an envelope.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "createEnvelope(endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest): Promise<IEnvelope>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "The caller's session.",
+              "optional": false
+            },
+            {
+              "name": "request",
+              "type": "TCreateEnvelopeRequest",
+              "description": "The envelope to create.",
+              "optional": false
+            }
+          ],
+          "returns": {
+            "type": "Promise<IEnvelope>",
+            "description": "The newly-created envelope."
+          },
+          "example": {
+            "code": "const {id} = await Envelopes.createEnvelope(VerdocsEndpoint.getDefault(), request);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create_envelope(request: CreateEnvelopeRequest) -> Envelope",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "The caller's session.",
+              "optional": false
+            },
+            {
+              "name": "request",
+              "type": "TCreateEnvelopeRequest",
+              "description": "The envelope to create.",
+              "optional": false
+            }
+          ],
+          "returns": {
+            "type": "Envelope",
+            "description": "The newly-created envelope."
+          },
+          "example": {
+            "code": "envelope = client.envelopes.create_envelope(request)"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "CreateEnvelopeAsync(CreateEnvelopeRequest request) -> Task<Envelope>",
+          "params": [
+            {
+              "name": "request",
+              "type": "CreateEnvelopeRequest",
+              "description": "The envelope to create.",
+              "optional": false
+            }
+          ],
+          "returns": {
+            "type": "Task<Envelope>",
+            "description": "The newly-created envelope."
+          },
+          "example": {
+            "code": "var envelope = await endpoint.CreateEnvelopeAsync(request);"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "envelopes.getEnvelope",
+      "group": "Envelopes",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get an envelope by ID.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getEnvelope(endpoint: VerdocsEndpoint, envelopeId: string): Promise<IEnvelope>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "The caller's session.",
+              "optional": false
+            },
+            {
+              "name": "envelopeId",
+              "type": "string",
+              "description": "The ID of the envelope to retrieve.",
+              "optional": false
+            }
+          ],
+          "returns": {
+            "type": "Promise<IEnvelope>",
+            "description": "The requested envelope."
+          },
+          "example": {
+            "code": "const envelope = await Envelopes.getEnvelope(VerdocsEndpoint.getDefault(), envelopeId);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_envelope(envelope_id: str) -> Envelope",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "The caller's session.",
+              "optional": false
+            },
+            {
+              "name": "envelope_id",
+              "type": "str",
+              "description": "The ID of the envelope to retrieve.",
+              "optional": false
+            }
+          ],
+          "returns": {
+            "type": "Envelope",
+            "description": "The requested envelope."
+          },
+          "example": {
+            "code": "envelope = client.envelopes.get_envelope(envelope_id)"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "GetEnvelopeAsync(string envelopeId) -> Task<Envelope>",
+          "params": [
+            {
+              "name": "envelopeId",
+              "type": "string",
+              "description": "The ID of the envelope to retrieve.",
+              "optional": false
+            }
+          ],
+          "returns": {
+            "type": "Task<Envelope>",
+            "description": "The requested envelope."
+          },
+          "example": {
+            "code": "var envelope = await endpoint.GetEnvelopeAsync(envelopeId);"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "templates.getTemplate",
+      "group": "Templates",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get a template by ID.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getTemplate(endpoint: VerdocsEndpoint, templateId: string): Promise<ITemplate>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "The caller's session.",
+              "optional": false
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "description": "The ID of the template to retrieve.",
+              "optional": false
+            }
+          ],
+          "returns": {
+            "type": "Promise<ITemplate>",
+            "description": "The requested template."
+          },
+          "example": {
+            "code": "const template = await Templates.getTemplate(VerdocsEndpoint.getDefault(), templateId);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_template(template_id: str) -> Template",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "The caller's session.",
+              "optional": false
+            },
+            {
+              "name": "template_id",
+              "type": "str",
+              "description": "The ID of the template to retrieve.",
+              "optional": false
+            }
+          ],
+          "returns": {
+            "type": "Template",
+            "description": "The requested template."
+          },
+          "example": {
+            "code": "template = client.templates.get_template(template_id)"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "GetTemplateAsync(string templateId) -> Task<Template>",
+          "params": [
+            {
+              "name": "templateId",
+              "type": "string",
+              "description": "The ID of the template to retrieve.",
+              "optional": false
+            }
+          ],
+          "returns": {
+            "type": "Task<Template>",
+            "description": "The requested template."
+          },
+          "example": {
+            "code": "var template = await endpoint.GetTemplateAsync(templateId);"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -204,10 +204,12 @@ class VerdocsEndpoint(_EndpointState):
     user endpoint carries on independently.
 
     Example:
-        from verdocs import VerdocsEndpoint
+        from verdocs import PasswordGrantRequest, VerdocsEndpoint
 
         with VerdocsEndpoint() as endpoint:
-            tokens = endpoint.auth.authenticate(username="test@example.com", password="secret")
+            tokens = endpoint.auth.authenticate(
+                PasswordGrantRequest(username="test@example.com", password="secret")
+            )
             endpoint.set_token(tokens.access_token)
             page = endpoint.templates.list()
     """
@@ -256,10 +258,16 @@ class VerdocsEndpoint(_EndpointState):
         self.notification_templates = NotificationTemplates(self)
 
     def _request(
-        self, method: str, path: str, *, params: dict[str, Any] | None = None, json: Any = None
+        self,
+        method: str,
+        path: str,
+        *,
+        params: dict[str, Any] | None = None,
+        json: Any = None,
+        headers: dict[str, str] | None = None,
     ) -> httpx.Response:
         try:
-            response = self._client.request(method, path, params=params, json=json)
+            response = self._client.request(method, path, params=params, json=json, headers=headers)
         except httpx.TransportError as exc:
             raise VerdocsConnectionError(f"{method} {path} failed: {exc}") from exc
 
@@ -340,10 +348,16 @@ class AsyncVerdocsEndpoint(_EndpointState):
         self.notification_templates = AsyncNotificationTemplates(self)
 
     async def _request(
-        self, method: str, path: str, *, params: dict[str, Any] | None = None, json: Any = None
+        self,
+        method: str,
+        path: str,
+        *,
+        params: dict[str, Any] | None = None,
+        json: Any = None,
+        headers: dict[str, str] | None = None,
     ) -> httpx.Response:
         try:
-            response = await self._client.request(method, path, params=params, json=json)
+            response = await self._client.request(method, path, params=params, json=json, headers=headers)
         except httpx.TransportError as exc:
             raise VerdocsConnectionError(f"{method} {path} failed: {exc}") from exc
 

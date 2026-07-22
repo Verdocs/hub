@@ -1,9 +1,9 @@
-import axios, {AxiosInstance} from 'axios';
-import {decodeAccessTokenBody, randomString} from './Utils';
-import {TSession, TSessionType} from './Sessions';
+import axios, { AxiosInstance } from 'axios';
+import { decodeAccessTokenBody, randomString } from './Utils';
+import { TSession, TSessionType } from './Sessions';
 import globalThis from './Utils/globalThis';
-import {getCurrentProfile} from './Users';
-import {IProfile} from './Models';
+import { getCurrentProfile } from './Users';
+import { IProfile } from './Models';
 
 // @credit https://derickbailey.com/2016/03/09/creating-a-true-singleton-in-node-js-with-es6-symbols/
 // Also see globalThis for comments about why we're doing this in the first place.
@@ -28,11 +28,20 @@ export type TEnvironment = '' | 'beta';
 
 export type TSessionChangedListener = (endpoint: VerdocsEndpoint, session: TSession, profile: IProfile | null) => void;
 
+/**
+ * Constructor options for VerdocsEndpoint
+ * 
+ */
 export interface VerdocsEndpointOptions {
+  /** Override the API base URL. Rarely needed outside Verdocs-directed setups. */
   baseURL?: string;
+  /** Request timeout in milliseconds. Defaults to 60000. */
   timeout?: number;
+  /** Target environment. Defaults to production unless running on a known beta origin. */
   environment?: TEnvironment;
+  /** Session type this endpoint manages, either 'user' or 'signing'. Defaults to 'user'. */
   sessionType?: TSessionType;
+  /** Client ID sent as the X-Client-ID header on each request. */
   clientID?: string;
   /** By default, sessions will be persisted to localStorage. Set `persist` to false to bypass this. */
   persist?: boolean;
@@ -55,9 +64,14 @@ export interface VerdocsEndpointOptions {
  * endpoint
  *     .setSessionType('signing')
  *     .logRequests(true)
- *     .setClientID('1234)
+ *     .setClientID('1234')
  *     .setTimeout(30000);
  * ```
+ *
+ * @sdkOperation endpoint.VerdocsEndpoint
+ * @sdkGroup Endpoint
+ * @sdkPage Helpers
+ * @sdkGettingStarted
  */
 export class VerdocsEndpoint {
   private environment: TEnvironment = BETA_ORIGINS.includes(globalThis.window?.location?.origin || '') ? 'beta' : '';
@@ -104,6 +118,10 @@ export class VerdocsEndpoint {
    * import {VerdocsEndpoint} from '@verdocs/js-sdk/HTTP';
    * const endpoint = new VerdocsEndpoint();
    * ```
+   *
+   * @sdkOperation endpoint.constructor
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   constructor(options?: VerdocsEndpointOptions) {
     this.baseURL = options?.baseURL ?? this.baseURL;
@@ -112,13 +130,23 @@ export class VerdocsEndpoint {
     this.sessionType = options?.sessionType ?? this.sessionType;
     this.clientID = options?.clientID ?? this.clientID;
     this.persist = options?.persist ?? this.persist;
-    this.api = axios.create({baseURL: this.baseURL, timeout: this.timeout});
+    this.api = axios.create({ baseURL: this.baseURL, timeout: this.timeout });
   }
 
+  /**
+   * @sdkOperation endpoint.setDefault
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
+   */
   public setDefault() {
     globalThis[ENDPOINT_KEY] = this;
   }
 
+  /**
+   * @sdkOperation endpoint.getDefault
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
+   */
   public static getDefault(): VerdocsEndpoint {
     if (!globalThis[ENDPOINT_KEY]) {
       globalThis[ENDPOINT_KEY] = new VerdocsEndpoint();
@@ -129,6 +157,10 @@ export class VerdocsEndpoint {
 
   /**
    * Get the current environment.
+   *
+   * @sdkOperation endpoint.getEnvironment
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public getEnvironment() {
     return this.environment;
@@ -136,6 +168,10 @@ export class VerdocsEndpoint {
 
   /**
    * Get the current session type.
+   *
+   * @sdkOperation endpoint.getSessionType
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public getSessionType() {
     return this.sessionType;
@@ -143,6 +179,10 @@ export class VerdocsEndpoint {
 
   /**
    * Get the current base URL. This should rarely be anything other than 'https://api.verdocs.com'.
+   *
+   * @sdkOperation endpoint.getBaseURL
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public getBaseURL() {
     return this.baseURL;
@@ -150,6 +190,10 @@ export class VerdocsEndpoint {
 
   /**
    * Get the current client ID, if set.
+   *
+   * @sdkOperation endpoint.getClientID
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public getClientID() {
     return this.clientID;
@@ -157,6 +201,10 @@ export class VerdocsEndpoint {
 
   /**
    * Get the current timeout.
+   *
+   * @sdkOperation endpoint.getTimeout
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public getTimeout() {
     return this.timeout;
@@ -164,6 +212,10 @@ export class VerdocsEndpoint {
 
   /**
    * Get the current session, if any.
+   *
+   * @sdkOperation endpoint.getSession
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public getSession() {
     return this.session;
@@ -178,6 +230,10 @@ export class VerdocsEndpoint {
    * const endpoint = new VerdocsEndpoint();
    * endpoint.setEnvironment('verdocs-stage');
    * ```
+   *
+   * @sdkOperation endpoint.setEnvironment
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public setEnvironment(environment: TEnvironment): VerdocsEndpoint {
     this.environment = environment;
@@ -199,6 +255,10 @@ export class VerdocsEndpoint {
    * const endpoint = new VerdocsEndpoint();
    * endpoint.setEnvironment('verdocs-stage');
    * ```
+   *
+   * @sdkOperation endpoint.setSessionType
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public setSessionType(sessionType: TSessionType): VerdocsEndpoint {
     this.sessionType = sessionType;
@@ -214,6 +274,10 @@ export class VerdocsEndpoint {
    * const endpoint = new VerdocsEndpoint();
    * endpoint.setBaseURL('https://api.verdocs.com');
    * ```
+   *
+   * @sdkOperation endpoint.setBaseURL
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public setBaseURL(url: string): VerdocsEndpoint {
     this.baseURL = url;
@@ -230,6 +294,10 @@ export class VerdocsEndpoint {
    * const endpoint = new VerdocsEndpoint();
    * endpoint.setClientID('1234);
    * ```
+   *
+   * @sdkOperation endpoint.setClientID
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   setClientID(clientID: string): VerdocsEndpoint {
     this.clientID = clientID;
@@ -248,6 +316,10 @@ export class VerdocsEndpoint {
    * const endpoint = new VerdocsEndpoint();
    * endpoint.setTimeout(3000);
    * ```
+   *
+   * @sdkOperation endpoint.setTimeout
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public setTimeout(timeout: number): VerdocsEndpoint {
     this.timeout = timeout;
@@ -264,6 +336,10 @@ export class VerdocsEndpoint {
    * const endpoint = new VerdocsEndpoint();
    * endpoint.logRequests(true);
    * ```
+   *
+   * @sdkOperation endpoint.logRequests
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public logRequests(enable: boolean): VerdocsEndpoint {
     if (enable && this.requestLoggerId === null) {
@@ -289,6 +365,10 @@ export class VerdocsEndpoint {
    * const endpoint = new VerdocsEndpoint();
    * endpoint.setToken(accessToken);
    * ```
+   *
+   * @sdkOperation endpoint.setToken
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public setToken(token: string | null, sessionType: TSessionType = 'user'): VerdocsEndpoint {
     if (!token) {
@@ -341,6 +421,10 @@ export class VerdocsEndpoint {
   /**
    * Retrieves the current session token, if any. Tokens should rarely be used for direct actions, but this is
    * required by the `<VerdocsView>` and other components to authorize requests to raw PDF files.
+   *
+   * @sdkOperation endpoint.getToken
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public getToken() {
     return this.token;
@@ -352,6 +436,10 @@ export class VerdocsEndpoint {
 
   /**
    * Clear the active session.
+   *
+   * @sdkOperation endpoint.clearSession
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public clearSession() {
     if (this.persist) {
@@ -373,6 +461,10 @@ export class VerdocsEndpoint {
 
   /**
    * Clear the active signing session.
+   *
+   * @sdkOperation endpoint.clearSignerSession
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public clearSignerSession() {
     if (this.persist) {
@@ -403,6 +495,10 @@ export class VerdocsEndpoint {
 
   /**
    * Subscribe to session state change events.
+   *
+   * @sdkOperation endpoint.onSessionChanged
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public onSessionChanged(listener: TSessionChangedListener) {
     // There's no value in randomizing this, a simple counter is fine
@@ -423,6 +519,10 @@ export class VerdocsEndpoint {
   /**
    * Load a persisted session from localStorage. Typically called once after the endpoint is configured
    * when the app or component starts. Ignored if the endpoint is configured to not persist sessions.
+   *
+   * @sdkOperation endpoint.loadSession
+   * @sdkGroup Endpoint
+   * @sdkPage Helpers
    */
   public loadSession() {
     if (!this.persist) {

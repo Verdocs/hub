@@ -31,10 +31,18 @@ surface.
 dotnet build                  # both TFMs
 dotnet build -warnaserror     # what CI runs; must be clean
 dotnet test                   # unit tests; the conformance lane self-skips
+./docs/generate-sdk-docs.sh   # regenerate sdk-docs.json from XML docs via DocFX tooling
+```
+
+From the hub root, regenerate every language then unify:
+
+```bash
+pnpm generate:sdk-docs
 ```
 
 Unit tests never touch the network. HTTP behavior is tested against a fake message handler,
 and serialization tests round-trip each model from payloads shaped like real API responses.
+`sdk-docs.json` at this package root is what `packages/js-sdk` unify loads for the C# variant.
 
 ## Conformance lane
 

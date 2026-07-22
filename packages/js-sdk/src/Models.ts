@@ -901,7 +901,7 @@ export interface ITemplate {
   documents?: ITemplateDocument[];
   fields?: ITemplateField[];
 
-  // @deprecated. Use documents instead.
+  /** @deprecated. Use documents instead. */
   template_documents?: ITemplateDocument[];
 }
 
@@ -920,7 +920,7 @@ export interface ITemplateDocument {
   created_at: string | null;
   updated_at: string | null;
 
-  // @deprecated. Use pages instead.
+  /** @deprecated. Use pages instead. */
   page_numbers?: number;
 
   template?: ITemplate;
