@@ -18,6 +18,7 @@ import json
 import os
 import re
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -88,6 +89,81 @@ def volatile_pattern() -> re.Pattern[str]:
     fixtures = load_fixtures()
     flags = re.IGNORECASE if "i" in fixtures.get("volatileKeyPatternFlags", "") else 0
     return re.compile(fixtures["volatileKeyPattern"], flags)
+
+
+# A few timestamp columns dodge the volatile-key pattern because their names
+# do not end in _at (next_reminder, expiration_date, first_used, ...). The SDK
+# parses those into datetime objects and pydantic renders them back with a
+# different precision than the server (".913Z" comes back as ".913000Z"), so
+# ISO-shaped strings on both sides get canonicalized and the comparison is on
+# the instant, not the rendering.
+_ISO_DATETIME = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$")
+
+
+def js_typeof(value: Any) -> str:
+    """Mirror the type markers support.ts produces with JS typeof (plus its null special case)."""
+    if value is None:
+        return "null"
+    if isinstance(value, bool):
+        return "boolean"
+    if isinstance(value, (int, float)):
+        return "number"
+    if isinstance(value, str):
+        return "string"
+    return "object"
+
+
+def normalize_payload(value: Any, pattern: re.Pattern[str]) -> Any:
+    """Replace volatile values with type markers; canonicalize the timestamps that dodge the pattern.
+
+    Applied to both sides before diffing so two calls made seconds apart still
+    compare equal while the shape stays fully checked. Mirrors support.ts.
+    """
+    if isinstance(value, list):
+        return [normalize_payload(item, pattern) for item in value]
+    if isinstance(value, dict):
+        return {
+            key: f"<<{js_typeof(entry)}>>" if pattern.search(key) else normalize_payload(entry, pattern)
+            for key, entry in value.items()
+        }
+    if isinstance(value, str) and _ISO_DATETIME.match(value):
+        try:
+            return datetime.fromisoformat(value.replace("Z", "+00:00")).isoformat()
+        except ValueError:
+            return value
+    return value
+
+
+# The compare helpers are handed to tests as fixtures because importlib import
+# mode does not let test modules import from conftest (same pattern as the
+# unit-test conftest).
+
+
+@pytest.fixture(scope="session")
+def normalize(volatile_pattern: re.Pattern[str]):
+    """normalize_payload bound to the fixture file's volatile-key pattern."""
+
+    def apply(value: Any) -> Any:
+        return normalize_payload(value, volatile_pattern)
+
+    return apply
+
+
+@pytest.fixture(scope="session")
+def sdk_dump():
+    """Dump an SDK result (one model or a list of models) for comparison against a raw body.
+
+    exclude_unset keeps fields the wire never sent out of the dump, and the
+    wire models keep unknown fields (extra="allow"), so the dump carries
+    exactly the keys the wire sent: no more, no less.
+    """
+
+    def dump(result: Any) -> Any:
+        if isinstance(result, list):
+            return [entry.model_dump(mode="json", exclude_unset=True) for entry in result]
+        return result.model_dump(mode="json", exclude_unset=True)
+
+    return dump
 
 
 @pytest.fixture(scope="session")

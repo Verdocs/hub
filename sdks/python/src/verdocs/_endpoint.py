@@ -29,16 +29,48 @@ from ._token import decode_token_body
 from .errors import VerdocsConnectionError, api_error_from_response
 from .models import SigningSession, UserSession
 from .resources import (
+    KBA,
+    ApiKeys,
+    AsyncApiKeys,
     AsyncAuth,
+    AsyncBrands,
+    AsyncContacts,
     AsyncEnvelopes,
+    AsyncGroups,
+    AsyncInitials,
+    AsyncInvitations,
+    AsyncKBA,
+    AsyncMembers,
+    AsyncNotificationTemplates,
+    AsyncOrganizations,
     AsyncProfiles,
+    AsyncRecipients,
+    AsyncSignatures,
+    AsyncTemplateDocuments,
+    AsyncTemplateFields,
+    AsyncTemplateRoles,
     AsyncTemplates,
     AsyncUsers,
+    AsyncWebhooks,
     Auth,
+    Brands,
+    Contacts,
     Envelopes,
+    Groups,
+    Initials,
+    Invitations,
+    Members,
+    NotificationTemplates,
+    Organizations,
     Profiles,
+    Recipients,
+    Signatures,
+    TemplateDocuments,
+    TemplateFields,
+    TemplateRoles,
     Templates,
     Users,
+    Webhooks,
 )
 
 SessionType = Literal["user", "signing"]
@@ -207,7 +239,23 @@ class VerdocsEndpoint(_EndpointState):
         self.users = Users(self)
         self.profiles = Profiles(self)
         self.templates = Templates(self)
+        self.template_documents = TemplateDocuments(self)
+        self.template_roles = TemplateRoles(self)
+        self.template_fields = TemplateFields(self)
         self.envelopes = Envelopes(self)
+        self.recipients = Recipients(self)
+        self.kba = KBA(self)
+        self.signatures = Signatures(self)
+        self.initials = Initials(self)
+        self.organizations = Organizations(self)
+        self.members = Members(self)
+        self.groups = Groups(self)
+        self.invitations = Invitations(self)
+        self.contacts = Contacts(self)
+        self.api_keys = ApiKeys(self)
+        self.brands = Brands(self)
+        self.webhooks = Webhooks(self)
+        self.notification_templates = NotificationTemplates(self)
 
     def _request(
         self,
@@ -281,7 +329,23 @@ class AsyncVerdocsEndpoint(_EndpointState):
         self.users = AsyncUsers(self)
         self.profiles = AsyncProfiles(self)
         self.templates = AsyncTemplates(self)
+        self.template_documents = AsyncTemplateDocuments(self)
+        self.template_roles = AsyncTemplateRoles(self)
+        self.template_fields = AsyncTemplateFields(self)
         self.envelopes = AsyncEnvelopes(self)
+        self.recipients = AsyncRecipients(self)
+        self.kba = AsyncKBA(self)
+        self.signatures = AsyncSignatures(self)
+        self.initials = AsyncInitials(self)
+        self.organizations = AsyncOrganizations(self)
+        self.members = AsyncMembers(self)
+        self.groups = AsyncGroups(self)
+        self.invitations = AsyncInvitations(self)
+        self.contacts = AsyncContacts(self)
+        self.api_keys = AsyncApiKeys(self)
+        self.brands = AsyncBrands(self)
+        self.webhooks = AsyncWebhooks(self)
+        self.notification_templates = AsyncNotificationTemplates(self)
 
     async def _request(
         self,

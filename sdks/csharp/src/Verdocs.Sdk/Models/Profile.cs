@@ -55,10 +55,44 @@ public sealed record Profile
     /// <summary>Last-update date and time.</summary>
     public DateTimeOffset UpdatedAt { get; init; }
 
+    /// <summary>The owning user, when the API includes it.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public User? User { get; init; }
+
     /// <summary>The organization the profile belongs to, when the API includes it.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Organization? Organization { get; init; }
 
-    /// <summary>Wire fields this seed model does not cover yet, preserved so responses round-trip losslessly.</summary>
+    /// <summary>API keys acting as the profile, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<ApiKey>? ApiKeys { get; init; }
+
+    /// <summary>Group memberships, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<GroupProfile>? GroupProfiles { get; init; }
+
+    /// <summary>Groups the profile belongs to, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<Group>? Groups { get; init; }
+
+    /// <summary>In-app notifications, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<Notification>? Notifications { get; init; }
+
+    /// <summary>OAuth2 applications registered by the profile, when the API includes them.</summary>
+    [JsonPropertyName("oauth2_apps")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<OAuth2App>? OAuth2Apps { get; init; }
+
+    /// <summary>Saved signature images, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<Signature>? Signatures { get; init; }
+
+    /// <summary>Saved initials images, when the API includes them.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<Initial>? Initials { get; init; }
+
+    /// <summary>Wire fields the model does not declare, preserved so responses round-trip losslessly.</summary>
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? AdditionalData { get; init; }
 }

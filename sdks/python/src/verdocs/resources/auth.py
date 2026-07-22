@@ -2,20 +2,17 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
-from urllib.parse import urlencode
+from typing import TYPE_CHECKING, Literal
+from urllib.parse import urlencode, urljoin
 
-from ..models import (
+import httpx
+
+from ..errors import VerdocsConnectionError, api_error_from_response
+from ..models.users import (
     AuthenticateResponse,
-    AuthenticationRequest,
     ChangePasswordRequest,
     ChangePasswordResponse,
-    OAuth2AuthorizeParams,
-    RefreshTokenRequest,
-    ResendVerificationResponse,
-    ResetPasswordRequest,
     ResetPasswordResponse,
-    User,
     VerifyEmailRequest,
 )
 
@@ -28,7 +25,6 @@ _CHANGE_PASSWORD_PATH = "/v2/users/change-password"
 _RESET_PASSWORD_PATH = "/v2/users/reset-password"
 _RESEND_VERIFICATION_PATH = "/v2/users/resend-verification"
 _VERIFY_PATH = "/v2/users/verify"
-_ME_PATH = "/v2/users/me"
 
 
 def _auth_body(params: AuthenticationRequest) -> dict[str, Any]:
@@ -47,6 +43,34 @@ def _authorize_url(base_url: str, params: OAuth2AuthorizeParams) -> str:
     if params.scope is not None:
         query["scope"] = params.scope
     return f"{base_url.rstrip('/')}{_AUTHORIZE_PATH}?{urlencode(query)}"
+
+
+def _reset_password_body(email: str, code: str | None, new_password: str | None) -> dict[str, str]:
+    body = {"email": email}
+    if code is not None:
+        body["code"] = code
+    if new_password is not None:
+        body["new_password"] = new_password
+    return body
+
+
+def _authorize_url(
+    base_url: str,
+    *,
+    client_id: str,
+    redirect_uri: str,
+    response_type: str,
+    state: str | None,
+    scope: str | None,
+) -> str:
+    query = {"client_id": client_id, "redirect_uri": redirect_uri, "response_type": response_type}
+    # The js-sdk skips falsy state/scope; an empty string is as meaningless
+    # as None here, so we mirror that.
+    if state:
+        query["state"] = state
+    if scope:
+        query["scope"] = scope
+    return urljoin(base_url, _AUTHORIZE_PATH) + "?" + urlencode(query)
 
 
 class Auth:
@@ -87,190 +111,186 @@ class Auth:
         response = self._endpoint._request("POST", _TOKEN_PATH, json=_auth_body(params))
         return AuthenticateResponse.model_validate(response.json())
 
-    def get_oauth2_authorize_url(self, params: OAuth2AuthorizeParams) -> str:
+    def get_oauth2_authorize_url(
+        self,
+        *,
+        client_id: str,
+        redirect_uri: str,
+        response_type: Literal["code"] = "code",
+        state: str | None = None,
+        scope: str | None = None,
+    ) -> str:
         """Build the URL that starts an OAuth2 authorization code flow.
 
-        Redirect the user's browser to this URL. After they authenticate and
-        authorize, they land on redirect_uri with a code query parameter that
-        authenticate() can exchange with grant_type authorization_code.
-
-        Example:
-            url = endpoint.auth.get_oauth2_authorize_url(
-                OAuth2AuthorizeParams(
-                    client_id="your-client-id",
-                    redirect_uri="https://your-app.com/callback",
-                    state="random-csrf-token",
-                )
-            )
+        A pure URL builder, no request is made (the js-sdk function is the
+        same). Send the user's browser to the URL; after they authenticate
+        and authorize, they are redirected to redirect_uri with a `code`
+        query parameter to exchange for tokens via the authorization_code
+        grant on POST /v2/oauth2/token. Mirrors js-sdk getOAuth2AuthorizeUrl.
 
         Args:
-            params: client_id, redirect_uri, and optional state/scope.
+            client_id: Client ID of the registered OAuth2 application.
+            redirect_uri: Where to send the user afterwards. Must match a registered redirect URI.
+            response_type: Always "code" for the authorization code flow.
+            state: Opaque CSRF-protection value, returned unchanged in the redirect.
+            scope: Optional scope to request.
 
         Returns:
-            The absolute authorize URL.
-
-        @sdkOperation auth.getOAuth2AuthorizeUrl
-        @sdkGroup Auth
-        @sdkPage Endpoints
+            The authorization URL to redirect the user to.
         """
-        return _authorize_url(self._endpoint.base_url, params)
+        return _authorize_url(
+            self._endpoint.base_url,
+            client_id=client_id,
+            redirect_uri=redirect_uri,
+            response_type=response_type,
+            state=state,
+            scope=scope,
+        )
 
     def refresh_token(self, refresh_token: str) -> AuthenticateResponse:
-        """Refresh the caller's session and tokens before they expire.
+        """Refresh the session before it expires, via the OAuth2 refresh_token grant.
+
+        Like authenticate(), and like the js-sdk, the new tokens are
+        returned, not applied: call set_token() with the new access token
+        and keep the new refresh_token for the next renewal.
 
         Example:
             tokens = endpoint.auth.refresh_token(tokens.refresh_token)
             endpoint.set_token(tokens.access_token)
 
         Args:
-            refresh_token: The refresh token from a prior authenticate call.
+            refresh_token: The refresh token from a previous AuthenticateResponse.
 
         Returns:
-            A fresh token set.
+            A fresh token set for the session.
 
         Raises:
-            AuthenticationError: The refresh token was rejected.
+            AuthenticationError: The refresh token is invalid or expired.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
-
-        @sdkOperation auth.refreshToken
-        @sdkGroup Auth
-        @sdkPage Endpoints
         """
-        return self.authenticate(RefreshTokenRequest(refresh_token=refresh_token))
-
-    def change_password(self, params: ChangePasswordRequest) -> ChangePasswordResponse:
-        """Update the caller's password when the old password is known.
-
-        Example:
-            result = endpoint.auth.change_password(
-                ChangePasswordRequest(old_password="old", new_password="new")
-            )
-
-        Args:
-            params: Current and new passwords.
-
-        Returns:
-            Status and message from the server.
-
-        Raises:
-            AuthenticationError: The endpoint has no valid user session.
-            VerdocsAPIError: The API returned another non-2xx status.
-            VerdocsConnectionError: The request never reached the API.
-
-        @sdkOperation auth.changePassword
-        @sdkGroup Auth
-        @sdkPage Endpoints
-        """
-        response = self._endpoint._request("POST", _CHANGE_PASSWORD_PATH, json=_write_body(params))
-        return ChangePasswordResponse.model_validate(response.json())
-
-    def reset_password(self, params: ResetPasswordRequest) -> ResetPasswordResponse:
-        """Request or complete a password reset when the old password is unknown.
-
-        Omit code and new_password to start the reset (email with a code).
-        Include both to finish it.
-
-        Example:
-            endpoint.auth.reset_password(ResetPasswordRequest(email="you@example.com"))
-            endpoint.auth.reset_password(
-                ResetPasswordRequest(email="you@example.com", code="123456", new_password="new")
-            )
-
-        Args:
-            params: Email, and optionally the emailed code plus new password.
-
-        Returns:
-            Whether the call succeeded.
-
-        Raises:
-            VerdocsAPIError: The API returned a non-2xx status.
-            VerdocsConnectionError: The request never reached the API.
-
-        @sdkOperation auth.resetPassword
-        @sdkGroup Auth
-        @sdkPage Endpoints
-        """
-        response = self._endpoint._request("POST", _RESET_PASSWORD_PATH, json=_write_body(params))
-        return ResetPasswordResponse.model_validate(response.json())
-
-    def resend_verification(self, access_token: str | None = None) -> ResendVerificationResponse:
-        """Resend email verification for a partially authenticated user.
-
-        Use when the caller has a session but is not yet verified. Pass
-        access_token to identify the user when the endpoint is not already
-        authenticated with that token.
-
-        Example:
-            endpoint.auth.resend_verification()
-
-        Args:
-            access_token: Optional bearer token used only for this request.
-
-        Returns:
-            Confirmation that the resend was queued.
-
-        Raises:
-            AuthenticationError: No usable session or token.
-            VerdocsAPIError: The API returned another non-2xx status.
-            VerdocsConnectionError: The request never reached the API.
-
-        @sdkOperation auth.resendVerification
-        @sdkGroup Auth
-        @sdkPage Endpoints
-        """
-        headers = {"Authorization": f"Bearer {access_token}"} if access_token else None
-        response = self._endpoint._request("POST", _RESEND_VERIFICATION_PATH, json={}, headers=headers)
-        return ResendVerificationResponse.model_validate(response.json())
-
-    def verify_email(self, params: VerifyEmailRequest) -> AuthenticateResponse:
-        """Verify email when the user is unauthenticated but email and token are known.
-
-        Used when a verification token is valid but has expired, or the user
-        is completing verification outside an active session.
-
-        Example:
-            tokens = endpoint.auth.verify_email(
-                VerifyEmailRequest(email="you@example.com", token="verify-token")
-            )
-
-        Args:
-            params: Email address and verification token.
-
-        Returns:
-            Updated authentication tokens.
-
-        Raises:
-            VerdocsAPIError: The API returned a non-2xx status.
-            VerdocsConnectionError: The request never reached the API.
-
-        @sdkOperation auth.verifyEmail
-        @sdkGroup Auth
-        @sdkPage Endpoints
-        """
-        response = self._endpoint._request("POST", _VERIFY_PATH, json=_write_body(params))
+        body = {"grant_type": "refresh_token", "refresh_token": refresh_token}
+        response = self._endpoint._request("POST", _TOKEN_PATH, json=body)
         return AuthenticateResponse.model_validate(response.json())
 
-    def get_my_user(self) -> User:
-        """Get the caller's current user record.
+    def change_password(self, *, old_password: str, new_password: str) -> ChangePasswordResponse:
+        """Change the caller's password when the old one is known, via POST /v2/users/change-password.
 
-        Example:
-            user = endpoint.auth.get_my_user()
+        Requires a user session. Mirrors js-sdk changePassword.
+
+        Args:
+            old_password: The caller's current password.
+            new_password: The new password. Must meet strength requirements.
 
         Returns:
-            The authenticated user's account record.
+            The status result; a wrong old password raises instead.
 
         Raises:
-            AuthenticationError: The endpoint has no valid user session.
+            AuthenticationError: The endpoint has no valid user session, or the old password is wrong.
+            VerdocsAPIError: The API returned another non-2xx status (e.g. a too-weak new password).
+            VerdocsConnectionError: The request never reached the API.
+        """
+        body = ChangePasswordRequest(old_password=old_password, new_password=new_password)
+        response = self._endpoint._request("POST", _CHANGE_PASSWORD_PATH, json=body.model_dump(mode="json"))
+        return ChangePasswordResponse.model_validate(response.json())
+
+    def reset_password(
+        self,
+        *,
+        email: str,
+        code: str | None = None,
+        new_password: str | None = None,
+    ) -> ResetPasswordResponse:
+        """Reset a password when the old one is not known, via POST /v2/users/reset-password.
+
+        A two-step flow that needs no session. Call with just the email to
+        have a reset code sent, then again with the emailed code and the new
+        password to complete it. The response is deliberately identical
+        whether or not the email matched an account, so it cannot be used to
+        probe for addresses. Mirrors js-sdk resetPassword.
+
+        Example:
+            endpoint.auth.reset_password(email="test@example.com")
+            # ... user reads the code from their email ...
+            endpoint.auth.reset_password(email="test@example.com", code="12345", new_password="hunter2!")
+
+        Args:
+            email: Email address of the account.
+            code: The emailed reset code; omit when initiating the flow.
+            new_password: The new password; omit when initiating the flow.
+
+        Returns:
+            The status result, with an advisory message on some paths.
+
+        Raises:
+            VerdocsAPIError: The code was wrong or expired, or the request was rejected.
+            VerdocsConnectionError: The request never reached the API.
+        """
+        body = _reset_password_body(email, code, new_password)
+        response = self._endpoint._request("POST", _RESET_PASSWORD_PATH, json=body)
+        return ResetPasswordResponse.model_validate(response.json())
+
+    def resend_verification(self, access_token: str | None = None) -> None:
+        """Resend the email verification message, via POST /v2/users/resend-verification.
+
+        Intended for the post-signup state where the caller holds a partial
+        session (signed up, email not yet verified). Pass the access token
+        returned by profiles.create(), or attach it with set_token() first
+        and pass nothing. Mirrors js-sdk resendVerification.
+
+        The API answers with a constant status body that nothing consumes,
+        so this returns None and relies on exceptions for failure.
+
+        Args:
+            access_token: Optional bearer token to use for just this call,
+                instead of the endpoint's current session.
+
+        Raises:
+            AuthenticationError: Neither the endpoint nor access_token carries a valid session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
-
-        @sdkOperation auth.getMyUser
-        @sdkGroup Auth
-        @sdkPage Endpoints
         """
-        response = self._endpoint._request("GET", _ME_PATH)
-        return User.model_validate(response.json())
+        headers = {"Authorization": f"Bearer {access_token}"} if access_token else None
+        # _request has no per-request header hook, so the Authorization
+        # override goes through the raw client with the same error mapping.
+        try:
+            response = self._endpoint._client.request("POST", _RESEND_VERIFICATION_PATH, json={}, headers=headers)
+        except httpx.TransportError as exc:
+            raise VerdocsConnectionError(f"POST {_RESEND_VERIFICATION_PATH} failed: {exc}") from exc
+        if response.status_code >= 400:
+            raise api_error_from_response(response)
+
+    def verify_email(self, *, email: str, token: str) -> AuthenticateResponse:
+        """Verify the caller's email address, via POST /v2/users/verify.
+
+        The deployed endpoint requires the signup session's bearer token:
+        call set_token() with the access token returned by profiles.create()
+        before calling this (the js-sdk doc comment describing
+        unauthenticated verification is stale). Mirrors js-sdk verifyEmail.
+
+        Example:
+            tokens = endpoint.profiles.create(CreateProfileRequest(...))
+            endpoint.set_token(tokens.access_token)
+            # ... user reads the verification code from their email ...
+            verified = endpoint.auth.verify_email(email="test@example.com", token="CODE")
+            endpoint.set_token(verified.access_token)
+
+        Args:
+            email: Email address of the account being verified.
+            token: The verification code from the email.
+
+        Returns:
+            A fresh token set for the now-verified session; apply it with set_token().
+
+        Raises:
+            AuthenticationError: The endpoint does not carry the signup session token.
+            NotFoundError: The verification code is wrong or expired.
+            VerdocsAPIError: The API returned another non-2xx status.
+            VerdocsConnectionError: The request never reached the API.
+        """
+        body = VerifyEmailRequest(email=email, token=token)
+        response = self._endpoint._request("POST", _VERIFY_PATH, json=body.model_dump(mode="json"))
+        return AuthenticateResponse.model_validate(response.json())
 
 
 class AsyncAuth:
@@ -306,159 +326,184 @@ class AsyncAuth:
         response = await self._endpoint._request("POST", _TOKEN_PATH, json=_auth_body(params))
         return AuthenticateResponse.model_validate(response.json())
 
-    def get_oauth2_authorize_url(self, params: OAuth2AuthorizeParams) -> str:
+    def get_oauth2_authorize_url(
+        self,
+        *,
+        client_id: str,
+        redirect_uri: str,
+        response_type: Literal["code"] = "code",
+        state: str | None = None,
+        scope: str | None = None,
+    ) -> str:
         """Build the URL that starts an OAuth2 authorization code flow.
 
-        Redirect the user's browser to this URL. After they authenticate and
-        authorize, they land on redirect_uri with a code query parameter that
-        authenticate() can exchange with grant_type authorization_code.
-
-        Example:
-            url = endpoint.auth.get_oauth2_authorize_url(
-                OAuth2AuthorizeParams(
-                    client_id="your-client-id",
-                    redirect_uri="https://your-app.com/callback",
-                    state="random-csrf-token",
-                )
-            )
+        A pure URL builder, no request is made, so this is a plain method on
+        the async endpoint too (nothing to await). Send the user's browser
+        to the URL; after they authenticate and authorize, they are
+        redirected to redirect_uri with a `code` query parameter to exchange
+        for tokens via the authorization_code grant on POST /v2/oauth2/token.
+        Mirrors js-sdk getOAuth2AuthorizeUrl.
 
         Args:
-            params: client_id, redirect_uri, and optional state/scope.
+            client_id: Client ID of the registered OAuth2 application.
+            redirect_uri: Where to send the user afterwards. Must match a registered redirect URI.
+            response_type: Always "code" for the authorization code flow.
+            state: Opaque CSRF-protection value, returned unchanged in the redirect.
+            scope: Optional scope to request.
 
         Returns:
-            The absolute authorize URL.
+            The authorization URL to redirect the user to.
         """
-        return _authorize_url(self._endpoint.base_url, params)
+        return _authorize_url(
+            self._endpoint.base_url,
+            client_id=client_id,
+            redirect_uri=redirect_uri,
+            response_type=response_type,
+            state=state,
+            scope=scope,
+        )
 
     async def refresh_token(self, refresh_token: str) -> AuthenticateResponse:
-        """Refresh the caller's session and tokens before they expire.
+        """Refresh the session before it expires, via the OAuth2 refresh_token grant.
+
+        Like authenticate(), and like the js-sdk, the new tokens are
+        returned, not applied: call set_token() with the new access token
+        and keep the new refresh_token for the next renewal.
 
         Example:
             tokens = await endpoint.auth.refresh_token(tokens.refresh_token)
             endpoint.set_token(tokens.access_token)
 
         Args:
-            refresh_token: The refresh token from a prior authenticate call.
+            refresh_token: The refresh token from a previous AuthenticateResponse.
 
         Returns:
-            A fresh token set.
+            A fresh token set for the session.
 
         Raises:
-            AuthenticationError: The refresh token was rejected.
+            AuthenticationError: The refresh token is invalid or expired.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
         """
-        return await self.authenticate(RefreshTokenRequest(refresh_token=refresh_token))
+        body = {"grant_type": "refresh_token", "refresh_token": refresh_token}
+        response = await self._endpoint._request("POST", _TOKEN_PATH, json=body)
+        return AuthenticateResponse.model_validate(response.json())
 
-    async def change_password(self, params: ChangePasswordRequest) -> ChangePasswordResponse:
-        """Update the caller's password when the old password is known.
+    async def change_password(self, *, old_password: str, new_password: str) -> ChangePasswordResponse:
+        """Change the caller's password when the old one is known, via POST /v2/users/change-password.
 
-        Example:
-            result = await endpoint.auth.change_password(
-                ChangePasswordRequest(old_password="old", new_password="new")
-            )
+        Requires a user session. Mirrors js-sdk changePassword.
 
         Args:
-            params: Current and new passwords.
+            old_password: The caller's current password.
+            new_password: The new password. Must meet strength requirements.
 
         Returns:
-            Status and message from the server.
+            The status result; a wrong old password raises instead.
 
         Raises:
-            AuthenticationError: The endpoint has no valid user session.
-            VerdocsAPIError: The API returned another non-2xx status.
+            AuthenticationError: The endpoint has no valid user session, or the old password is wrong.
+            VerdocsAPIError: The API returned another non-2xx status (e.g. a too-weak new password).
             VerdocsConnectionError: The request never reached the API.
         """
-        response = await self._endpoint._request("POST", _CHANGE_PASSWORD_PATH, json=_write_body(params))
+        body = ChangePasswordRequest(old_password=old_password, new_password=new_password)
+        response = await self._endpoint._request("POST", _CHANGE_PASSWORD_PATH, json=body.model_dump(mode="json"))
         return ChangePasswordResponse.model_validate(response.json())
 
-    async def reset_password(self, params: ResetPasswordRequest) -> ResetPasswordResponse:
-        """Request or complete a password reset when the old password is unknown.
+    async def reset_password(
+        self,
+        *,
+        email: str,
+        code: str | None = None,
+        new_password: str | None = None,
+    ) -> ResetPasswordResponse:
+        """Reset a password when the old one is not known, via POST /v2/users/reset-password.
 
-        Omit code and new_password to start the reset (email with a code).
-        Include both to finish it.
+        A two-step flow that needs no session. Call with just the email to
+        have a reset code sent, then again with the emailed code and the new
+        password to complete it. The response is deliberately identical
+        whether or not the email matched an account, so it cannot be used to
+        probe for addresses. Mirrors js-sdk resetPassword.
 
         Example:
-            await endpoint.auth.reset_password(ResetPasswordRequest(email="you@example.com"))
-            await endpoint.auth.reset_password(
-                ResetPasswordRequest(email="you@example.com", code="123456", new_password="new")
-            )
+            await endpoint.auth.reset_password(email="test@example.com")
+            # ... user reads the code from their email ...
+            await endpoint.auth.reset_password(email="test@example.com", code="12345", new_password="hunter2!")
 
         Args:
-            params: Email, and optionally the emailed code plus new password.
+            email: Email address of the account.
+            code: The emailed reset code; omit when initiating the flow.
+            new_password: The new password; omit when initiating the flow.
 
         Returns:
-            Whether the call succeeded.
+            The status result, with an advisory message on some paths.
 
         Raises:
-            VerdocsAPIError: The API returned a non-2xx status.
+            VerdocsAPIError: The code was wrong or expired, or the request was rejected.
             VerdocsConnectionError: The request never reached the API.
         """
-        response = await self._endpoint._request("POST", _RESET_PASSWORD_PATH, json=_write_body(params))
+        body = _reset_password_body(email, code, new_password)
+        response = await self._endpoint._request("POST", _RESET_PASSWORD_PATH, json=body)
         return ResetPasswordResponse.model_validate(response.json())
 
-    async def resend_verification(self, access_token: str | None = None) -> ResendVerificationResponse:
-        """Resend email verification for a partially authenticated user.
+    async def resend_verification(self, access_token: str | None = None) -> None:
+        """Resend the email verification message, via POST /v2/users/resend-verification.
 
-        Use when the caller has a session but is not yet verified. Pass
-        access_token to identify the user when the endpoint is not already
-        authenticated with that token.
+        Intended for the post-signup state where the caller holds a partial
+        session (signed up, email not yet verified). Pass the access token
+        returned by profiles.create(), or attach it with set_token() first
+        and pass nothing. Mirrors js-sdk resendVerification.
 
-        Example:
-            await endpoint.auth.resend_verification()
+        The API answers with a constant status body that nothing consumes,
+        so this returns None and relies on exceptions for failure.
 
         Args:
-            access_token: Optional bearer token used only for this request.
-
-        Returns:
-            Confirmation that the resend was queued.
+            access_token: Optional bearer token to use for just this call,
+                instead of the endpoint's current session.
 
         Raises:
-            AuthenticationError: No usable session or token.
+            AuthenticationError: Neither the endpoint nor access_token carries a valid session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
         """
         headers = {"Authorization": f"Bearer {access_token}"} if access_token else None
-        response = await self._endpoint._request("POST", _RESEND_VERIFICATION_PATH, json={}, headers=headers)
-        return ResendVerificationResponse.model_validate(response.json())
+        # _request has no per-request header hook, so the Authorization
+        # override goes through the raw client with the same error mapping.
+        try:
+            response = await self._endpoint._client.request("POST", _RESEND_VERIFICATION_PATH, json={}, headers=headers)
+        except httpx.TransportError as exc:
+            raise VerdocsConnectionError(f"POST {_RESEND_VERIFICATION_PATH} failed: {exc}") from exc
+        if response.status_code >= 400:
+            raise api_error_from_response(response)
 
-    async def verify_email(self, params: VerifyEmailRequest) -> AuthenticateResponse:
-        """Verify email when the user is unauthenticated but email and token are known.
+    async def verify_email(self, *, email: str, token: str) -> AuthenticateResponse:
+        """Verify the caller's email address, via POST /v2/users/verify.
 
-        Used when a verification token is valid but has expired, or the user
-        is completing verification outside an active session.
+        The deployed endpoint requires the signup session's bearer token:
+        call set_token() with the access token returned by profiles.create()
+        before calling this (the js-sdk doc comment describing
+        unauthenticated verification is stale). Mirrors js-sdk verifyEmail.
 
         Example:
-            tokens = await endpoint.auth.verify_email(
-                VerifyEmailRequest(email="you@example.com", token="verify-token")
-            )
+            tokens = await endpoint.profiles.create(CreateProfileRequest(...))
+            endpoint.set_token(tokens.access_token)
+            # ... user reads the verification code from their email ...
+            verified = await endpoint.auth.verify_email(email="test@example.com", token="CODE")
+            endpoint.set_token(verified.access_token)
 
         Args:
-            params: Email address and verification token.
+            email: Email address of the account being verified.
+            token: The verification code from the email.
 
         Returns:
-            Updated authentication tokens.
+            A fresh token set for the now-verified session; apply it with set_token().
 
         Raises:
-            VerdocsAPIError: The API returned a non-2xx status.
-            VerdocsConnectionError: The request never reached the API.
-        """
-        response = await self._endpoint._request("POST", _VERIFY_PATH, json=_write_body(params))
-        return AuthenticateResponse.model_validate(response.json())
-
-    async def get_my_user(self) -> User:
-        """Get the caller's current user record.
-
-        Example:
-            user = await endpoint.auth.get_my_user()
-
-        Returns:
-            The authenticated user's account record.
-
-        Raises:
-            AuthenticationError: The endpoint has no valid user session.
+            AuthenticationError: The endpoint does not carry the signup session token.
+            NotFoundError: The verification code is wrong or expired.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
         """
-        response = await self._endpoint._request("GET", _ME_PATH)
-        return User.model_validate(response.json())
+        body = VerifyEmailRequest(email=email, token=token)
+        response = await self._endpoint._request("POST", _VERIFY_PATH, json=body.model_dump(mode="json"))
+        return AuthenticateResponse.model_validate(response.json())

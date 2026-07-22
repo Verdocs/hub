@@ -3,16 +3,16 @@ using System.Text.Json.Serialization;
 
 namespace Verdocs.Models;
 
-/// <summary>Result of a change-password call.</summary>
+/// <summary>Result of a password change.</summary>
 public sealed record ChangePasswordResponse
 {
-    /// <summary>Status string from the server, typically "OK".</summary>
+    /// <summary>"OK" on success; see <see cref="RequestStatus"/> for known values.</summary>
     public string Status { get; init; } = null!;
 
-    /// <summary>Human-readable message from the server.</summary>
-    public string Message { get; init; } = null!;
+    /// <summary>Failure detail. The deployed API omits it on success and reports failures as HTTP errors instead.</summary>
+    public string? Message { get; init; }
 
-    /// <summary>Wire fields this model does not cover yet.</summary>
+    /// <summary>Wire fields the model does not declare, preserved so responses round-trip losslessly.</summary>
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? AdditionalData { get; init; }
 }

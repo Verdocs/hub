@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Verdocs.Models;
 
-/// <summary>One page of results from <see cref="VerdocsEndpoint.GetTemplatesAsync"/>.</summary>
+/// <summary>One page of results from <see cref="Resources.Templates.ListAsync"/>.</summary>
 public sealed record TemplateList
 {
     /// <summary>Total number of records matching the query, for pagination.</summary>

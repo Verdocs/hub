@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from verdocs import Profile, Template, TemplateListParams
 
 
-def test_unknown_nested_fields_are_ignored(payloads):
+def test_unknown_nested_fields_survive(payloads):
     payload = payloads.template(
         brand_new_field="whatever",
         roles=[
@@ -32,9 +32,17 @@ def test_unknown_nested_fields_are_ignored(payloads):
 
     template = Template.model_validate(payload)
 
+    # Wire models keep undocumented server fields (extra="allow") so nothing
+    # is lost between parse and dump; live beta is known to send extras.
     assert template.roles is not None
     assert template.roles[0].name == "Recipient 1"
-    assert not hasattr(template.roles[0], "unknown_role_field")
+    assert template.brand_new_field == "whatever"
+    assert template.roles[0].unknown_role_field == 123
+
+    dumped = template.model_dump(mode="json")
+
+    assert dumped["brand_new_field"] == "whatever"
+    assert dumped["roles"][0]["unknown_role_field"] == 123
 
 
 def test_datetimes_parse_from_iso_strings(payloads):

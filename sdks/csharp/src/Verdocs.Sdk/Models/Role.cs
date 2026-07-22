@@ -10,13 +10,17 @@ namespace Verdocs.Models;
 /// </summary>
 public sealed record Role
 {
+    /// <summary>Not stored in the backend; UI code uses it during builder processes.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Id { get; init; }
+
     /// <summary>The template the role belongs to.</summary>
     public string TemplateId { get; init; } = null!;
 
     /// <summary>The name of the role, for example "Recipient 1".</summary>
     public string Name { get; init; } = null!;
 
-    /// <summary>The role's participation type: "signer", "cc", or "approver".</summary>
+    /// <summary>Participation type; see <see cref="RecipientType"/> for known values.</summary>
     public string Type { get; init; } = null!;
 
     /// <summary>Full legal name, for known roles.</summary>
@@ -49,7 +53,7 @@ public sealed record Role
     /// <summary>True when the recipient may not change their legal name while signing.</summary>
     public bool NameLocked { get; init; }
 
-    /// <summary>Wire fields this seed model does not cover yet, preserved so responses round-trip losslessly.</summary>
+    /// <summary>Wire fields the model does not declare, preserved so responses round-trip losslessly.</summary>
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? AdditionalData { get; init; }
 }

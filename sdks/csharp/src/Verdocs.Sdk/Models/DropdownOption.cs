@@ -12,7 +12,7 @@ public sealed record DropdownOption
     /// <summary>The label shown to the participant.</summary>
     public string Label { get; init; } = null!;
 
-    /// <summary>Wire fields this seed model does not cover yet, preserved so responses round-trip losslessly.</summary>
+    /// <summary>Wire fields the model does not declare, preserved so responses round-trip losslessly.</summary>
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? AdditionalData { get; init; }
 }

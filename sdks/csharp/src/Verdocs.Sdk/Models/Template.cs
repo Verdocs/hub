@@ -6,7 +6,7 @@ namespace Verdocs.Models;
 /// <summary>
 /// A reusable definition for a signing flow, including attachments, fields, and recipients.
 /// Templates are used to create envelopes. The list endpoint returns template summaries;
-/// <see cref="VerdocsEndpoint.GetTemplateAsync"/> also includes <see cref="Roles"/>,
+/// <see cref="Resources.Templates.GetAsync"/> also includes <see cref="Roles"/>,
 /// <see cref="Documents"/>, and <see cref="Fields"/>.
 /// </summary>
 public sealed record Template
@@ -20,7 +20,7 @@ public sealed record Template
     /// <summary>Organization the template lives in.</summary>
     public string OrganizationId { get; init; } = null!;
 
-    /// <summary>Who owns envelopes created from the template: "envelope_creator" or "template_owner".</summary>
+    /// <summary>Who owns envelopes created from the template; see <see cref="TemplateSender"/>. "template_owner" only matters for shared or public templates.</summary>
     public string Sender { get; init; } = null!;
 
     /// <summary>The user-supplied name of the template.</summary>
@@ -29,13 +29,13 @@ public sealed record Template
     /// <summary>Optional description to help identify the template.</summary>
     public string? Description { get; init; }
 
-    /// <summary>Visibility level: "private", "shared", or "public".</summary>
+    /// <summary>Visibility level; see <see cref="TemplateVisibility"/> for known values.</summary>
     public string? Visibility { get; init; }
 
-    /// <summary>Delay in seconds before the first reminder is sent. Null or zero disables reminders.</summary>
+    /// <summary>Delay in milliseconds before the first reminder is sent (the js-sdk doc comments say seconds but the handler stores and compares ms). Null or zero disables reminders.</summary>
     public long? InitialReminder { get; init; }
 
-    /// <summary>Delay in seconds before subsequent reminders are sent. Null or zero disables follow-ups.</summary>
+    /// <summary>Delay in milliseconds before subsequent reminders are sent (ms for the same reason as InitialReminder). Null or zero disables follow-ups.</summary>
     public long? FollowupReminders { get; init; }
 
     /// <summary>Maximum number of days after envelope creation for which reminders are sent.</summary>
@@ -65,11 +65,23 @@ public sealed record Template
     /// <summary>When the template was last used to create an envelope, if ever.</summary>
     public DateTimeOffset? LastUsedAt { get; init; }
 
+    /// <summary>Server-side search string. The js-sdk declares it required, but the API omits it from template responses.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? SearchKey { get; init; }
+
     /// <summary>Arbitrary storage for integrators, for example source record IDs.</summary>
     public JsonElement? Data { get; init; }
 
     /// <summary>Tags attached to the template.</summary>
     public IReadOnlyList<string>? Tags { get; init; }
+
+    /// <summary>The owner's profile, when the API includes it.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Profile? Profile { get; init; }
+
+    /// <summary>The owning organization, when the API includes it.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Organization? Organization { get; init; }
 
     /// <summary>Recipient placeholders, included by the template detail endpoint.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -83,7 +95,11 @@ public sealed record Template
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IReadOnlyList<TemplateField>? Fields { get; init; }
 
-    /// <summary>Wire fields this seed model does not cover yet, preserved so responses round-trip losslessly.</summary>
+    /// <summary>Deprecated alias for <see cref="Documents"/>.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<TemplateDocument>? TemplateDocuments { get; init; }
+
+    /// <summary>Wire fields the model does not declare, preserved so responses round-trip losslessly.</summary>
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? AdditionalData { get; init; }
 }
