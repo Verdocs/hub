@@ -19,9 +19,7 @@ import {IProfile} from '../Models';
  *
  * @group Organization Contacts
  * @api GET /v2/organization-contacts Get a list of organization contacts
- * @apiBody string email Email address for the invitee
- * @apiBody string token Invite token for the invitee
- * @apiSuccess string . Success. The invitation will be marked declined and the token will be invalidated.
+ * @apiSuccess array(items: IProfile) . The caller's organization contacts
  *
  * @sdkOperation contact.getOrganizationContacts
  * @sdkGroup Contact
@@ -42,10 +40,9 @@ export const getOrganizationContacts = (endpoint: VerdocsEndpoint) =>
  * ```
  *
  * @group Organization Contacts
- * @api POST /v2/organization-invitations/decline GET a list of pending invitations
- * @apiBody string email Email address for the invitee
- * @apiBody string token Invite token for the invitee
- * @apiSuccess string . Success. The invitation will be marked declined and the token will be invalidated.
+ * @api DELETE /v2/organization-contacts/:profile_id Delete organization contact
+ * @apiParam string(format:uuid) profile_id The contact profile ID to delete.
+ * @apiSuccess string . Success
  *
  * @sdkOperation contact.deleteOrganizationContact
  * @sdkGroup Contact
@@ -57,13 +54,21 @@ export const deleteOrganizationContact = (endpoint: VerdocsEndpoint, profileId: 
     .then((r) => r.data);
 
 /**
- * Update a member.
+ * Create a contact in the caller's organization.
  *
  * ```typescript
  * import {createOrganizationContact} from '@verdocs/js-sdk';
  *
  * const result = await createOrganizationContact(VerdocsEndpoint.getDefault(), 'PROFILEID', {first_name:'First', last_name:'Last', email:'a@b.com'});
  * ```
+ *
+ * @group Organization Contacts
+ * @api POST /v2/organization-contacts Create organization contact
+ * @apiBody string first_name Contact first name
+ * @apiBody string last_name Contact last name
+ * @apiBody string email Contact email address
+ * @apiBody string phone? Contact phone number
+ * @apiSuccess IProfile . The newly-created contact
  *
  * @sdkOperation contact.createOrganizationContact
  * @sdkGroup Contact
@@ -78,13 +83,22 @@ export const createOrganizationContact = (
     .then((r) => r.data);
 
 /**
- * Update a member.
+ * Update a contact in the caller's organization.
  *
  * ```typescript
  * import {updateOrganizationContact} from '@verdocs/js-sdk';
  *
  * const result = await updateOrganizationContact(VerdocsEndpoint.getDefault(), 'PROFILEID', {first_name:'NewFirst'});
  * ```
+ *
+ * @group Organization Contacts
+ * @api PATCH /v2/organization-contacts/:profile_id Update organization contact
+ * @apiParam string(format:uuid) profile_id The contact profile ID to update.
+ * @apiBody string first_name? Contact first name
+ * @apiBody string last_name? Contact last name
+ * @apiBody string email? Contact email address
+ * @apiBody string phone? Contact phone number
+ * @apiSuccess IProfile . The updated contact
  *
  * @sdkOperation contact.updateOrganizationContact
  * @sdkGroup Contact

@@ -108,12 +108,15 @@ export const resendOrganizationInvitation = (endpoint: VerdocsEndpoint, email: s
     .then((r) => r.data);
 
 /**
- * Get an invitation's details. This is generally used as the first step of accepting the invite.
- * A successful response will indicate that the invite token is still valid, and include some
- * metadata for the organization to style the acceptance screen.
+ * (_Authenticated via invite token, not an active session._). 
+ * 
+ * Get an invitation's details. This is generally used as the first step of accepting the invite, and is
+ * authenticated via an invite token - not an active session.A successful response will indicate that the
+ * invite token is still valid, and include some metadata for the organization to style the acceptance screen.
+ * Intended to be called by the invitee to get details about the invitation they are about to accept.
  *
  * @group Organization Invitations
- * @api GET /v2/organization-invitations/:email/:token Get a pending invitation (_Authenticated via invite token, not an active session._). Intended to be called by the invitee to get details about the invitation they are about to accept.
+ * @api GET /v2/organization-invitations/:email/:token Get a pending invitation
  * @apiSuccess IOrganizationInvitation . Requested invitation's details. Will always include summary details for the organization, to be used for branding the accept-invite view.
  *
  * @sdkOperation invitation.getOrganizationInvitation

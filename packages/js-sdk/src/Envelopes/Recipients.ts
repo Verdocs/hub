@@ -7,7 +7,7 @@ import type { IRecipient } from '../Models';
  * Agree to electronic signing dislosures.
  *
  * @group Recipients
- * @api POST /envelopes/:envelope_id/recipients/:role_name/agree Agree to e-Signing Disclosures
+ * @api POST /v2/envelopes/:envelope_id/recipients/:role_name/agree Agree to e-Signing Disclosures
  * @apiParam string(format:uuid) envelope_id The envelope to operate on.
  * @apiParam string role_name The role to operate on.
  * @apiBody string timezone? Define the long-form timezone.
@@ -35,7 +35,7 @@ export const envelopeRecipientAgree = (
  * when this occurs.
  *
  * @group Recipients
- * @api POST /envelopes/:envelope_id/recipients/:role_name/decline Decline e-Signing Disclosures
+ * @api POST /v2/envelopes/:envelope_id/recipients/:role_name/decline Decline e-Signing Disclosures
  * @apiParam string(format:uuid) envelope_id The envelope to operate on.
  * @apiParam string role_name The role to adjust.
  * @apiSuccess IRecipient . The updated Recipient.
@@ -53,7 +53,7 @@ export const envelopeRecipientDecline = (endpoint: VerdocsEndpoint, envelopeId: 
  * Submit an envelope (signing is finished). Note that all fields must be valid/completed for this to succeed.
  *
  * @group Recipients
- * @api POST /envelopes/:envelope_id/recipients/:role_name/submit Submit envelope
+ * @api POST /v2/envelopes/:envelope_id/recipients/:role_name/submit Submit envelope
  * @apiParam string(format:uuid) envelope_id The envelope to operate on.
  * @apiParam string role_name The role to submit.
  * @apiBody string timezone? Define the long-form timezone.
@@ -163,15 +163,14 @@ export const verifySigner = (endpoint: VerdocsEndpoint, params: TAuthenticateRec
  * notified.
  *
  * @group Recipients
- * @api PUT /v2/envelopes/:envelope_id/recipients/:role_name Delegate Recipient
+ * @api POST /v2/envelopes/:envelope_id/recipients/:role_name/delegate Delegate Recipient
  * @apiParam string(format:uuid) envelope_id The envelope to operate on.
  * @apiParam string role_name The role to operate on.
- * @apiBody string(enum:'delegate') action The operation to perform (delegate).
  * @apiBody string first_name The first name of the new recipient.
  * @apiBody string last_name The last name of the new recipient.
  * @apiBody string email The email address of the new recipient.
  * @apiBody string phone? Optional phone number for the new recipient.
- * @apiBody string message? Optional phone number for the new recipient's invitation.
+ * @apiBody string message? Optional message for the new recipient's invitation.
  * @apiSuccess string . Success message.
  *
  * @sdkOperation recipient.delegateRecipient
@@ -201,7 +200,7 @@ export const delegateRecipient = (
  * case the call will be silently ignored).
  *
  * @group Recipients
- * @api PATCH /envelopes/:envelope_id/recipients/:role_name Update Recipient
+ * @api PATCH /v2/envelopes/:envelope_id/recipients/:role_name Update Recipient
  * @apiParam string(format:uuid) envelope_id The envelope to operate on.
  * @apiParam string role_name The role name to update.
  * @apiBody string(enum:'remind'|'reset') action? Trigger a reminder, or fully reset the recipient
@@ -232,6 +231,13 @@ export const updateRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, r
  * Send a reminder to a recipient. The recipient must still be an active member of the signing flow
  * (e.g. not declined, already submitted, etc.)
  *
+ * @group Recipients
+ * @api PATCH /v2/envelopes/:envelope_id/recipients/:role_name Remind recipient
+ * @apiParam string(format:uuid) envelope_id The envelope to operate on.
+ * @apiParam string role_name The role to remind.
+ * @apiBody string(enum:'remind') action Send a reminder to the recipient.
+ * @apiSuccess string . Success
+ *
  * @sdkOperation recipient.remindRecipient
  * @sdkGroup Recipient
  * @sdkPage Endpoints
@@ -245,6 +251,13 @@ export const remindRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, r
  * Fully reset a recipient. This allows the recipient to restart failed KBA flows, change
  * fields they may have filled in incorrectly while signing, etc. This cannot be used on a
  * canceled or completed envelope, but may be used to restart an envelope marked declined.
+ *
+ * @group Recipients
+ * @api PATCH /v2/envelopes/:envelope_id/recipients/:role_name Reset recipient
+ * @apiParam string(format:uuid) envelope_id The envelope to operate on.
+ * @apiParam string role_name The role to reset.
+ * @apiBody string(enum:'reset') action Fully reset the recipient.
+ * @apiSuccess string . Success
  *
  * @sdkOperation recipient.resetRecipient
  * @sdkGroup Recipient
@@ -261,7 +274,7 @@ export const resetRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, ro
  * sender to determine how to reply.
  *
  * @group Recipients
- * @api POST /envelopes/:envelope_id/recipients/:role_name/ask-question Ask Sender a Question
+ * @api POST /v2/envelopes/:envelope_id/recipients/:role_name/ask-question Ask Sender a Question
  * @apiParam string(format:uuid) envelope_id The envelope to operate on.
  * @apiParam string role_name The role name to update.
  * @apiBody string question The question to ask.

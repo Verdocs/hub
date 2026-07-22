@@ -69,7 +69,7 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
     .then((r) => r.data);
 
 /**
- * Get one template by its ID.
+ * Get one template by its ID. Note that the caller must have at least View access to the template.
  *
  * ```typescript
  * import {getTemplate} from '@verdocs/js-sdk/Templates';
@@ -78,7 +78,7 @@ export const getTemplates = (endpoint: VerdocsEndpoint, params?: IGetTemplatesPa
  * ```
  *
  * @group Templates
- * @api GET /v2/templates/:template_id Get a template. Note that the caller must have at least View access to the template.
+ * @api GET /v2/templates/:template_id Get a template.
  * @apiSuccess ITemplate . The requested template
  *
  * @sdkOperation template.getTemplate
@@ -390,7 +390,7 @@ export const deleteTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
  * ```
  *
  * @group Templates
- * @api POST /v2/templates/:template_id/star Star or unstar a template (toggle state)
+ * @api POST /v2/templates/:template_id/stars/toggle Toggle template star
  * @apiSuccess ITemplate . Success
  *
  * @sdkOperation template.toggleTemplateStar

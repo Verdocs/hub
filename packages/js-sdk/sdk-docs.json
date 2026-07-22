@@ -8076,7 +8076,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "rotateWebhookSecret(endpoint: VerdocsEndpoint): Promise<IWebhook>",
-          "summary": "Rotate the secret key used to authenticate Webhooks. If a secret key has not yet been set,\nit will be created. Until this is done, Webhook calls will not have a signature applied to\ntheir headers. Please note that pending Webhook deliveries will not be affected until the\nnext Webhook is triggered.\n\nTo authenticate a Webhook call, compute an HMAC-256 hash of the JSON payload `body` field\nas follows:",
+          "summary": "Rotate the secret key used to authenticate Webhooks. If a secret key has not yet been set,\nit will be created. Until this is done, Webhook calls will not have a signature applied to\ntheir headers. Pending Webhook deliveries are not affected until the next event is triggered.\n\n\n\nTo authenticate a Webhook call, compute an HMAC-SHA256 hex digest of the JSON payload `body`\nfield and compare it to the `x-webhook-signature` header:",
           "params": [
             {
               "name": "endpoint",
@@ -8094,7 +8094,11 @@
           "examples": [
             {
               "language": "typescript",
-              "code": "    // NOTE: Hash the `body` field INSIDE the payload. In many frameworks the payload is also called\n    // `body`, which can be confusing.\n    const jsonBody = JSON.stringify(req.body.body);\n    const hash = createHmac('sha256', SECRET_KEY).update(jsonBody).digest('hex');\n    if (hash !== req.headers['x-webhook-signature']) {\n      // Handle error here\n    }\n\n    // It is important to return a 200 status code anyway, to avoid the sender trying to resend\n    // the same data.\n    res.status(200).send();"
+              "code": "import {rotateWebhookSecret} from '@verdocs/js-sdk';\n\nawait rotateWebhookSecret(VerdocsEndpoint.getDefault());"
+            },
+            {
+              "language": "typescript",
+              "code": "// Hash the `body` field inside the payload. In many frameworks the payload is also called\n// `body`, which can be confusing.\nconst jsonBody = JSON.stringify(req.body.body);\nconst hash = createHmac('sha256', SECRET_KEY).update(jsonBody).digest('hex');\nif (hash !== req.headers['x-webhook-signature']) {\n  // Handle error here\n}\n\n// Return 200 even on verification failure so the sender does not retry the same delivery.\nres.status(200).send();"
             }
           ],
           "deprecated": false

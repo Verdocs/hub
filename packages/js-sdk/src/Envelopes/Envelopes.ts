@@ -105,7 +105,13 @@ export const getEnvelopeDocument = async (endpoint: VerdocsEndpoint, documentId:
 
 /**
  * Download a document directly.
- * 
+ *
+ * @group Envelope Documents
+ * @api GET /v2/envelope-documents/:document_id Download envelope document file
+ * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
+ * @apiQuery string(enum:'file') type Return the document binary content.
+ * @apiSuccess string(format:binary) . The document file bytes
+ *
  * @sdkOperation envelope.downloadEnvelopeDocument
  * @sdkGroup Envelope
  * @sdkPage Endpoints
@@ -166,7 +172,13 @@ export const getCombinedEnvelopeDocumentDownloadLink = async (endpoint: VerdocsE
 /**
  * Get a pre-signed preview link for an Envelope Document. This link expires quickly, so it should
  * be accessed immediately and never shared. Content-Disposition will be set to "inline".
- * 
+ *
+ * @group Envelope Documents
+ * @api GET /v2/envelope-documents/:document_id Get envelope document preview link
+ * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
+ * @apiQuery string(enum:'preview') type Generate a preview link.
+ * @apiSuccess string . The generated preview link
+ *
  * @sdkOperation envelope.getEnvelopeDocumentPreviewLink
  * @sdkGroup Envelope
  * @sdkPage Endpoints
@@ -202,6 +214,12 @@ export const cancelEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: stri
  * request.
  *
  * @deprecated Use getDocumentPreviewLink/getDocumentDownloadLink/downloadDocument instead.
+ *
+ * @group Envelope Documents
+ * @api GET /v2/envelope-documents/:document_id Download envelope document file
+ * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
+ * @apiQuery string(enum:'file') type Return the document binary content.
+ * @apiSuccess string(format:binary) . The document file bytes
  *
  * @sdkOperation envelope.getEnvelopeFile
  * @sdkGroup Envelope
@@ -261,8 +279,9 @@ export const updateEnvelope = async (
  * Update an Envelope field. Typically called during the signing process as a Recipient fills in fields.
  *
  * @group Envelopes
- * @api PUT /v2/envelopes/:envelope_id/fields/:field_name Update Envelope Field
+ * @api PUT /v2/envelopes/:envelope_id/recipients/:role_name/fields/:field_name Update Envelope Field
  * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to retrieve.
+ * @apiParam string role_name The recipient role name.
  * @apiParam string field_name The name of the field to update. Be sure to URL-encode the value.
  * @apiBody string value The value to set. For signature/initial fields, the UUID of the signature/initial block. For attachment fields, a file uploaded in a FORM-POST field named "document". For checkbox/radio buttons, a boolean. For all other fields, a string.
  * @apiSuccess IEnvelopeField . A copy of the newly-updated field.
@@ -289,6 +308,14 @@ export const updateEnvelopeField = async (
 
 /**
  * Upload an attachment to an attachment field.
+ *
+ * @group Envelopes
+ * @api PUT /v2/envelopes/:envelope_id/recipients/:role_name/fields/:field_name Upload envelope field attachment
+ * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to update.
+ * @apiParam string role_name The recipient role name.
+ * @apiParam string field_name The attachment field name to update.
+ * @apiBody string(format:binary) document File to upload
+ * @apiSuccess IEnvelopeFieldSettings . The updated field settings
  *
  * @sdkOperation envelope.uploadEnvelopeFieldAttachment
  * @sdkGroup Envelope
@@ -323,6 +350,13 @@ export const uploadEnvelopeFieldAttachment = async (
  * being deleted. Instead, it is a similar operation to uploading a new attachment, but the
  * omission of the attachment signals the server to delete the current entry.
  *
+ * @group Envelopes
+ * @api PUT /v2/envelopes/:envelope_id/recipients/:role_name/fields/:field_name Delete envelope field attachment
+ * @apiParam string(format: 'uuid') envelope_id The ID of the envelope to update.
+ * @apiParam string role_name The recipient role name.
+ * @apiParam string field_name The attachment field name to clear.
+ * @apiSuccess IEnvelopeFieldSettings . The updated field settings
+ *
  * @sdkOperation envelope.deleteEnvelopeFieldAttachment
  * @sdkGroup Envelope
  * @sdkPage Endpoints
@@ -342,7 +376,7 @@ export const deleteEnvelopeFieldAttachment = async (endpoint: VerdocsEndpoint, e
  * for DISPLAY ONLY, are not legally binding documents, and do not contain any encoded metadata from participants.
  *
  * @group Envelopes
- * @api GET /v2/envelope-documnets/page-image/:document_id/:variant/:page Get envelope document page display URI
+ * @api GET /v2/envelope-documents/page-image/:document_id/:variant/:page Get envelope document page display URI
  * @apiParam string(format: 'uuid') document_id The ID of the document to retrieve.
  * @apiParam string(enum: 'original'|'filled') variant The variant of the document to retrieve.
  * @apiParam integer page The page number to retrieve
@@ -417,6 +451,11 @@ export const getEnvelopes = (endpoint: VerdocsEndpoint, params?: IListEnvelopesP
 /**
  * Generate a ZIP file containing all data for the specified envelopes. The caller must be the
  * owner of each envelope. The returned ZIP file contains a folder for each envelope.
+ *
+ * @group Envelopes
+ * @api GET /v2/envelopes/zip/:envelope_ids Generate envelope ZIP archive
+ * @apiParam string envelope_ids Comma-separated envelope IDs to include in the archive
+ * @apiSuccess string(format:binary) . ZIP file bytes
  *
  * @sdkOperation envelope.getEnvelopesZip
  * @sdkGroup Envelope
