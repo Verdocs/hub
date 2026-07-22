@@ -315,6 +315,12 @@ export const updateOrganizationLogo = (
  * await updateOrganizationThumbnail((VerdocsEndpoint.getDefault(), organizationId, file);
  * ```
  *
+ * @group Organizations
+ * @api PATCH /v2/organizations/:organization_id Update organization thumbnail
+ * @apiParam string(format:uuid) organization_id The organization ID to update.
+ * @apiBody string(format:binary) thumbnail Thumbnail image to upload
+ * @apiSuccess IOrganization . The updated organization
+ *
  * @sdkOperation organization.updateOrganizationThumbnail
  * @sdkGroup Organization
  * @sdkPage Endpoints
@@ -341,6 +347,12 @@ export const updateOrganizationThumbnail = (
 };
 
 /**
+ * Get the caller's organization entitlements.
+ *
+ * @group Organizations
+ * @api GET /v2/organizations/entitlements Get organization entitlements
+ * @apiSuccess array(items: IEntitlement) . Entitlements for the caller's organization
+ *
  * @sdkOperation organization.getEntitlements
  * @sdkGroup Organization
  * @sdkPage Endpoints

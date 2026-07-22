@@ -48,7 +48,7 @@ export const createField = (endpoint: VerdocsEndpoint, templateId: string, param
  * ```
  *
  * @group Fields
- * @api PATCH /v2/fields/:template_id/:field_name Update a field. See createField for additional details on the supported parameters.
+ * @api PATCH /v2/fields/:template_id/:field_name Update a field
  * @apiBody string name? Rename the field. Note that template field names must be unique within a template.
  * @apiBody string role_name Role to assign to the field.
  * @apiBody string document_id ID of the document upon which to place the field.

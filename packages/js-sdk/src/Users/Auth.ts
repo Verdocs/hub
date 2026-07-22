@@ -214,7 +214,7 @@ export const resetPassword = (endpoint: VerdocsEndpoint, params: {email: string;
  * ```
  *
  * @group Authentication
- * @api POST /v2/users/verify Resend an email verification request for a "partially" authenticated user (authenticated, but not yet verified)
+ * @api POST /v2/users/resend-verification Resend an email verification request for a "partially" authenticated user
  * @apiSuccess string . Success
  *
  * @sdkOperation auth.resendVerification
@@ -237,7 +237,7 @@ export const resendVerification = (endpoint: VerdocsEndpoint, accessToken?: stri
  * ```
  *
  * @group Authentication
- * @api POST /v2/users/verify Resend the email verification request if both the email and token are known. Used if the token is valid but has expired.
+ * @api POST /v2/users/verify Resend the email verification request by email and token are known
  * @apiSuccess IAuthenticateResponse . Updated authentication details
  *
  * @sdkOperation auth.verifyEmail
