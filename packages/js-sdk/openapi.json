@@ -117,11 +117,6 @@
       "x-displayName": "Notifications"
     },
     {
-      "name": "Notification Templates",
-      "description": "Notification Templates allow organizations to customize the email and SMS notifications sent during signing workflows. Each template is tied to a specific event (e.g. recipient invited, envelope completed) and notification type (email, sms, etc). The caller must have admin access to the organization.",
-      "x-displayName": "Notification Templates"
-    },
-    {
       "name": "Organization Groups",
       "description": "Endpoints for managing organization groups and group membership.",
       "x-displayName": "Organization Groups"
@@ -10341,7 +10336,7 @@
         "operationId": "deleteNotificationTemplate",
         "summary": "Delete notification template",
         "tags": [
-          "Notification Templates"
+          "Notifications"
         ],
         "parameters": [
           {

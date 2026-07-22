@@ -40,6 +40,10 @@ class Contacts:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation contact.getOrganizationContacts
+        @sdkGroup Contact
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", _CONTACTS_PATH)
         return [Profile.model_validate(entry) for entry in response.json()]
@@ -61,6 +65,10 @@ class Contacts:
         Raises:
             VerdocsAPIError: The API rejected the request.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation contact.createOrganizationContact
+        @sdkGroup Contact
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", _CONTACTS_PATH, json=_write_body(params))
         return Profile.model_validate(response.json())
@@ -83,6 +91,10 @@ class Contacts:
             NotFoundError: No such contact in the caller's organization.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation contact.updateOrganizationContact
+        @sdkGroup Contact
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("PATCH", f"{_CONTACTS_PATH}/{profile_id}", json=_write_body(params))
         return Profile.model_validate(response.json())
@@ -103,6 +115,10 @@ class Contacts:
             NotFoundError: No such contact in the caller's organization.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation contact.deleteOrganizationContact
+        @sdkGroup Contact
+        @sdkPage Endpoints
         """
         self._endpoint._request("DELETE", f"{_CONTACTS_PATH}/{profile_id}")
 

@@ -128,6 +128,8 @@ export class VerdocsEndpoint {
 }
 ```
 
+
+
 ### `@sdkPage` ("Endpoints" | "Helpers")
 
 Which reference page the operation belongs to. Exactly one of these two; never Getting Started.
@@ -144,6 +146,8 @@ Which reference page the operation belongs to. Exactly one of these two; never G
  * @api POST /v2/envelopes Create Envelope
  */
 ```
+
+
 
 ### `@sdkGettingStarted` (optional)
 
@@ -219,10 +223,8 @@ Normally unnecessary. Each extractor already knows its own language, and fenced 
 | `@param`             | Yes      | SDK argument docs; separate from the REST `@apiParam`/`@apiBody`/`@apiQuery` |
 | `@sdkLanguage`       | No       | Override for the inferred snippet language; rarely needed                    |
 
+
 The generated model also carries `resource` (`function`, `interface`, `type`, or `class`). This is inferred from native symbol metadata and is not an authored tag.
-
-
-
 
 ## The normalized doc model
 
@@ -325,7 +327,7 @@ An extractor is the only language-specific code in the pipeline. It runs the lan
 | ----------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | JavaScript / TypeScript | TypeDoc AST (via `docs.json`)            | The js-sdk already emits `docs.json`, and `generated/openapi/generate-openapi.ts` already walks it. The JS extractor reuses that AST and emits the `sdk-api` model. This is the reference implementation to build first: the input already exists. |
 | C#                      | `docfx metadata` (over the XML doc file) | `GenerateDocumentationFile` plus `-warnaserror` on missing docs guarantees coverage. `docfx metadata` emits YAML API metadata; a normalizer maps it to the model. DocFX is free and open source. Extractor home: `sdks/csharp/docs/`.              |
-| Python                  | `griffe`                                 | Google-style docstrings on every public callable, `py.typed` shipped. `griffe` (what `mkdocstrings` is built on) dumps the API surface with parsed docstring sections. A normalizer maps it to the model. Extractor home: `sdks/python/docs/`.     |
+| Python                  | `griffe + mkdocstrings`                  | Google-style docstrings on every public callable, `py.typed` shipped. `griffe` (what `mkdocstrings` is built on) dumps the API surface with parsed docstring sections. A normalizer maps it to the model. Extractor home: `sdks/python/docs/`.     |
 | Go (later)              | `go/doc` or `gomarkdoc`                  | Not in the repo yet. Sketch only.                                                                                                                                                                                                                  |
 | Java (later)            | javadoc doclet or `javaparser`           | Not in the repo yet. Sketch only. Adding a language stays "an extractor plus a schema check"; nothing downstream changes.                                                                                                                          |
 
@@ -383,3 +385,4 @@ Phase 3: add the merge-integrity and staleness CI checks, publish `@verdocs/sdk-
 - **Per-operation versus per-group MDX granularity**: start per-group.
 - **npm package versus committed-copy handoff**: recommend the package; copy is the fallback.
 - **JS extractor sharing with** `generate-openapi.ts`: both walk the same `docs.json`. They can share the AST-walking code; decide whether the JS extractor replaces or runs alongside the OpenAPI generator.
+

@@ -49,6 +49,10 @@ class Groups:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation group.getGroups
+        @sdkGroup Group
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", _GROUPS_PATH)
         return [Group.model_validate(entry) for entry in response.json()]
@@ -68,6 +72,10 @@ class Groups:
             NotFoundError: No such group in the caller's organization.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation group.getGroup
+        @sdkGroup Group
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_GROUPS_PATH}/{group_id}")
         return Group.model_validate(response.json())
@@ -88,6 +96,10 @@ class Groups:
         Raises:
             VerdocsAPIError: The API rejected the request.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation group.createGroup
+        @sdkGroup Group
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", _GROUPS_PATH, json=_write_body(params))
         return Group.model_validate(response.json())
@@ -108,6 +120,10 @@ class Groups:
             VerdocsAPIError: The API returned another non-2xx status (400 when
                 renaming "everyone").
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation group.updateGroup
+        @sdkGroup Group
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("PATCH", f"{_GROUPS_PATH}/{group_id}", json=_write_body(params))
         return Group.model_validate(response.json())
@@ -126,6 +142,10 @@ class Groups:
             NotFoundError: No such group in the caller's organization.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation group.deleteGroup
+        @sdkGroup Group
+        @sdkPage Endpoints
         """
         self._endpoint._request("DELETE", f"{_GROUPS_PATH}/{group_id}")
 
@@ -153,6 +173,10 @@ class Groups:
             VerdocsAPIError: The API returned another non-2xx status (400 when
                 the profile is already a member).
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation group.addGroupMember
+        @sdkGroup Group
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "POST", f"{_GROUPS_PATH}/{group_id}/members", json={"profile_id": profile_id}
@@ -176,6 +200,10 @@ class Groups:
             NotFoundError: The profile is not a member of the group.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation group.deleteGroupMember
+        @sdkGroup Group
+        @sdkPage Endpoints
         """
         self._endpoint._request("DELETE", f"{_GROUPS_PATH}/{group_id}/members/{profile_id}")
 

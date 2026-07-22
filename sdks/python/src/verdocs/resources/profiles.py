@@ -77,6 +77,10 @@ class Profiles:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation profile.getProfiles
+        @sdkGroup Profile
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", _PROFILES_PATH)
         return [Profile.model_validate(entry) for entry in response.json()]
@@ -95,6 +99,10 @@ class Profiles:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation profile.getCurrentProfile
+        @sdkGroup Profile
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", _PROFILES_PATH)
         return _find_current(response.json())
@@ -128,6 +136,10 @@ class Profiles:
             VerdocsAPIError: The email already exists, the password is too
                 weak, or the caller was already authenticated.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation profile.createProfile
+        @sdkGroup Profile
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", _PROFILES_PATH, json=_write_body(params))
         return AuthenticateResponse.model_validate(response.json())
@@ -157,6 +169,10 @@ class Profiles:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation profile.switchProfile
+        @sdkGroup Profile
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", f"{_PROFILES_PATH}/{profile_id}/switch")
         return AuthenticateResponse.model_validate(response.json())
@@ -181,6 +197,10 @@ class Profiles:
             NotFoundError: No profile has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation profile.updateProfile
+        @sdkGroup Profile
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("PATCH", f"{_PROFILES_PATH}/{profile_id}", json=_write_body(params))
         return Profile.model_validate(response.json())
@@ -206,6 +226,10 @@ class Profiles:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation profile.updateProfilePhoto
+        @sdkGroup Profile
+        @sdkPage Endpoints
         """
         path = f"{_PROFILES_PATH}/{profile_id}"
         # _request only speaks JSON, so the multipart upload goes through the
@@ -244,6 +268,10 @@ class Profiles:
             VerdocsAPIError: The profile does not belong to the caller.
             VerdocsConnectionError: The request never reached the API, or
                 (deployed quirk above) the API never answered.
+
+        @sdkOperation profile.deleteProfile
+        @sdkGroup Profile
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("DELETE", f"{_PROFILES_PATH}/{profile_id}")
         return _delete_result(response.json())

@@ -50,6 +50,10 @@ class TemplateDocuments:
         Raises:
             VerdocsAPIError: The API rejected the upload.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation templateDocument.createTemplateDocument
+        @sdkGroup TemplateDocument
+        @sdkPage Endpoints
         """
         parts = [("file", _file_part(file))]
         response = _multipart_request(
@@ -74,6 +78,10 @@ class TemplateDocuments:
             NotFoundError: No visible document has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation templateDocument.deleteTemplateDocument
+        @sdkGroup TemplateDocument
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("DELETE", f"{_DOCUMENTS_PATH}/{document_id}")
         return Template.model_validate(response.json())
@@ -96,6 +104,10 @@ class TemplateDocuments:
             NotFoundError: No visible document has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation templateDocument.getTemplateDocument
+        @sdkGroup TemplateDocument
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_DOCUMENTS_PATH}/{document_id}")
         return TemplateDocument.model_validate(response.json())
@@ -116,6 +128,10 @@ class TemplateDocuments:
             NotFoundError: No visible document has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation templateDocument.downloadTemplateDocument
+        @sdkGroup TemplateDocument
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_DOCUMENTS_PATH}/{document_id}", params={"type": "file"})
         return response.content
@@ -140,6 +156,10 @@ class TemplateDocuments:
             NotFoundError: No visible document has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation templateDocument.getTemplateDocumentDownloadLink
+        @sdkGroup TemplateDocument
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_DOCUMENTS_PATH}/{document_id}", params={"type": "download"})
         return response.text
@@ -166,6 +186,10 @@ class TemplateDocuments:
             NotFoundError: No visible document has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation templateDocument.getTemplateDocumentPreviewLink
+        @sdkGroup TemplateDocument
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"/v2/envelope-documents/{document_id}", params={"type": "preview"})
         return response.text
@@ -189,6 +213,10 @@ class TemplateDocuments:
             NotFoundError: Always today; the deployed API has no such route.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation templateDocument.getTemplateDocumentFile
+        @sdkGroup TemplateDocument
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "GET", f"/v2/templates/{template_id}/documents/{document_id}", params={"file": "true"}
@@ -215,6 +243,10 @@ class TemplateDocuments:
             NotFoundError: Always today; the deployed API has no such route.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation templateDocument.getTemplateDocumentThumbnail
+        @sdkGroup TemplateDocument
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "GET", f"/v2/templates/{template_id}/documents/{document_id}", params={"thumbnail": "true"}
@@ -249,6 +281,10 @@ class TemplateDocuments:
         Raises:
             VerdocsAPIError: The API rejected the request.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation templateDocument.getTemplateDocumentPageDisplayUri
+        @sdkGroup TemplateDocument
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_DOCUMENTS_PATH}/page-image/{document_id}/{variant}/{page}")
         return response.text

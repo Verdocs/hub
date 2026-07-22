@@ -42,6 +42,10 @@ class Invitations:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation invitation.getOrganizationInvitations
+        @sdkGroup Invitation
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", _INVITATIONS_PATH)
         return [OrganizationInvitation.model_validate(entry) for entry in response.json()]
@@ -68,6 +72,10 @@ class Invitations:
             VerdocsAPIError: The API rejected the request (400 for duplicate
                 invitations or existing profiles).
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation invitation.createOrganizationInvitation
+        @sdkGroup Invitation
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", _INVITATIONS_PATH, json=_write_body(params))
         return OrganizationInvitation.model_validate(response.json())
@@ -92,6 +100,10 @@ class Invitations:
             NotFoundError: No invitation matches that email and token.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation invitation.getOrganizationInvitation
+        @sdkGroup Invitation
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_INVITATIONS_PATH}/{email}/{token}")
         return OrganizationInvitation.model_validate(response.json())
@@ -120,6 +132,10 @@ class Invitations:
         Raises:
             VerdocsAPIError: The API rejected the request.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation invitation.updateOrganizationInvitation
+        @sdkGroup Invitation
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("PATCH", f"{_INVITATIONS_PATH}/{email}", json=_write_body(params))
         payload = response.json() if response.content else None
@@ -144,6 +160,10 @@ class Invitations:
         Raises:
             VerdocsAPIError: The API returned a non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation invitation.deleteOrganizationInvitation
+        @sdkGroup Invitation
+        @sdkPage Endpoints
         """
         self._endpoint._request("DELETE", f"{_INVITATIONS_PATH}/{email}")
 
@@ -163,6 +183,10 @@ class Invitations:
             VerdocsAPIError: The API returned another non-2xx status (400 when
                 the invitation was declined).
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation invitation.resendOrganizationInvitation
+        @sdkGroup Invitation
+        @sdkPage Endpoints
         """
         self._endpoint._request("POST", f"{_INVITATIONS_PATH}/resend", json={"email": email})
 
@@ -194,6 +218,10 @@ class Invitations:
             VerdocsAPIError: The API returned another non-2xx status (400 when
                 the invitation was declined).
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation invitation.acceptOrganizationInvitation
+        @sdkGroup Invitation
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", f"{_INVITATIONS_PATH}/accept", json=_write_body(params))
         return AuthenticateResponse.model_validate(response.json())
@@ -217,6 +245,10 @@ class Invitations:
             NotFoundError: No invitation matches that email and token.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation invitation.declineOrganizationInvitation
+        @sdkGroup Invitation
+        @sdkPage Endpoints
         """
         self._endpoint._request("POST", f"{_INVITATIONS_PATH}/decline", json={"email": email, "token": token})
 

@@ -70,6 +70,10 @@ def is_valid_input(value: str, validator: str) -> bool:
 
     Returns:
         True when the validator exists and the value passes it.
+
+    @sdkOperation validator.isValidInput
+    @sdkGroup Validators
+    @sdkPage Helpers
     """
     entry = _VALIDATORS.get(validator)
     return entry is not None and entry["regex"].search(value) is not None
@@ -82,6 +86,10 @@ def get_validators() -> list[str]:
 
     Returns:
         The validator names accepted by is_valid_input.
+
+    @sdkOperation validator.getValidators
+    @sdkGroup Validators
+    @sdkPage Helpers
     """
     return list(_VALIDATORS)
 
@@ -96,6 +104,10 @@ def is_valid_email(email: str | None) -> bool:
 
     Returns:
         True when the value passes the email pattern.
+
+    @sdkOperation validator.isValidEmail
+    @sdkGroup Validators
+    @sdkPage Helpers
     """
     return bool(email) and _EMAIL_REGEX.search(email) is not None
 
@@ -110,6 +122,10 @@ def is_valid_phone(phone: str | None) -> bool:
 
     Returns:
         True when the value passes the phone pattern.
+
+    @sdkOperation validator.isValidPhone
+    @sdkGroup Validators
+    @sdkPage Helpers
     """
     return bool(phone) and _PHONE_REGEX.search(phone) is not None
 
@@ -125,6 +141,10 @@ def is_valid_role_name(value: str, roles: list[Role]) -> bool:
 
     Returns:
         True when a role with that exact name exists.
+
+    @sdkOperation validator.isValidRoleName
+    @sdkGroup Validators
+    @sdkPage Helpers
     """
     return any(role.name == value for role in roles)
 
@@ -142,6 +162,10 @@ def is_valid_tag(value: str, tags: list[str]) -> bool:
 
     Returns:
         True when the tag is well formed or already known.
+
+    @sdkOperation validator.isValidTag
+    @sdkGroup Validators
+    @sdkPage Helpers
     """
     return _TAG_REGEX.search(value) is not None or value in tags
 

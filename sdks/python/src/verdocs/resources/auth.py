@@ -137,6 +137,10 @@ class Auth:
 
         Returns:
             The authorization URL to redirect the user to.
+
+        @sdkOperation auth.getOAuth2AuthorizeUrl
+        @sdkGroup Auth
+        @sdkPage Endpoints
         """
         return _authorize_url(
             self._endpoint.base_url,
@@ -168,6 +172,10 @@ class Auth:
             AuthenticationError: The refresh token is invalid or expired.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation auth.refreshToken
+        @sdkGroup Auth
+        @sdkPage Endpoints
         """
         body = {"grant_type": "refresh_token", "refresh_token": refresh_token}
         response = self._endpoint._request("POST", _TOKEN_PATH, json=body)
@@ -189,6 +197,10 @@ class Auth:
             AuthenticationError: The endpoint has no valid user session, or the old password is wrong.
             VerdocsAPIError: The API returned another non-2xx status (e.g. a too-weak new password).
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation auth.changePassword
+        @sdkGroup Auth
+        @sdkPage Endpoints
         """
         body = ChangePasswordRequest(old_password=old_password, new_password=new_password)
         response = self._endpoint._request("POST", _CHANGE_PASSWORD_PATH, json=body.model_dump(mode="json"))
@@ -225,6 +237,10 @@ class Auth:
         Raises:
             VerdocsAPIError: The code was wrong or expired, or the request was rejected.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation auth.resetPassword
+        @sdkGroup Auth
+        @sdkPage Endpoints
         """
         body = _reset_password_body(email, code, new_password)
         response = self._endpoint._request("POST", _RESET_PASSWORD_PATH, json=body)
@@ -249,6 +265,10 @@ class Auth:
             AuthenticationError: Neither the endpoint nor access_token carries a valid session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation auth.resendVerification
+        @sdkGroup Auth
+        @sdkPage Endpoints
         """
         headers = {"Authorization": f"Bearer {access_token}"} if access_token else None
         # _request has no per-request header hook, so the Authorization
@@ -287,6 +307,10 @@ class Auth:
             NotFoundError: The verification code is wrong or expired.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation auth.verifyEmail
+        @sdkGroup Auth
+        @sdkPage Endpoints
         """
         body = VerifyEmailRequest(email=email, token=token)
         response = self._endpoint._request("POST", _VERIFY_PATH, json=body.model_dump(mode="json"))

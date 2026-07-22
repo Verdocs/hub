@@ -22,9 +22,39 @@ OUTPUT = ROOT / "sdk-docs.json"
 PACKAGE = "verdocs"
 # Sync resource classes with @sdkOperation tags. Add modules here as they land.
 _RESOURCE_CLASSES: list[tuple[str, str]] = [
+    ("verdocs.resources.api_keys", "ApiKeys"),
     ("verdocs.resources.auth", "Auth"),
+    ("verdocs.resources.brands", "Brands"),
+    ("verdocs.resources.contacts", "Contacts"),
     ("verdocs.resources.envelopes", "Envelopes"),
+    ("verdocs.resources.groups", "Groups"),
+    ("verdocs.resources.initials", "Initials"),
+    ("verdocs.resources.invitations", "Invitations"),
+    ("verdocs.resources.kba", "KBA"),
+    ("verdocs.resources.members", "Members"),
+    ("verdocs.resources.notification_templates", "NotificationTemplates"),
+    ("verdocs.resources.organizations", "Organizations"),
+    ("verdocs.resources.profiles", "Profiles"),
+    ("verdocs.resources.recipients", "Recipients"),
+    ("verdocs.resources.signatures", "Signatures"),
+    ("verdocs.resources.template_documents", "TemplateDocuments"),
+    ("verdocs.resources.template_fields", "TemplateFields"),
+    ("verdocs.resources.template_roles", "TemplateRoles"),
     ("verdocs.resources.templates", "Templates"),
+    ("verdocs.resources.users", "Users"),
+    ("verdocs.resources.webhooks", "Webhooks"),
+]
+
+# Modules whose top-level functions may carry @sdkOperation tags (Helpers page).
+_HELPER_MODULES: list[str] = [
+    "verdocs.permissions",
+    "verdocs.validators",
+    "verdocs.utils.token",
+    "verdocs.utils.strings",
+    "verdocs.utils.primitives",
+    "verdocs.utils.entitlements",
+    "verdocs.utils.dates",
+    "verdocs.utils.files",
 ]
 
 _SDK_TAG_RE = re.compile(
@@ -224,6 +254,29 @@ def _collect_class_symbols(klass: griffe.Class, groups: dict[str, Any]) -> None:
         group["symbols"][operation_id] = symbol
 
 
+def _collect_module_symbols(module: griffe.Module, groups: dict[str, Any]) -> None:
+    for name, member in module.members.items():
+        if name.startswith("_") or not isinstance(member, griffe.Function):
+            continue
+        mapped = _method_to_symbol(member)
+        if mapped is None:
+            print(f"skip {module.name}.{name}: missing @sdkOperation", file=sys.stderr)
+            continue
+
+        group_name = mapped["group_name"]
+        group_id = _slugify(group_name)
+        symbol = mapped["symbol"]
+        operation_id = symbol["sdkOperation"]
+
+        group = groups.setdefault(
+            group_id,
+            {"id": group_id, "name": group_name, "summary": "", "symbols": {}},
+        )
+        if operation_id in group["symbols"]:
+            print(f'warning: duplicate @sdkOperation "{operation_id}"', file=sys.stderr)
+        group["symbols"][operation_id] = symbol
+
+
 def generate() -> dict[str, Any]:
     preamble: dict[str, Any] = {
         "language": "python",
@@ -239,6 +292,14 @@ def generate() -> dict[str, Any]:
             docstring_parser="google",
         )
         _collect_class_symbols(module[class_name], preamble["groups"])
+
+    for module_path in _HELPER_MODULES:
+        module = griffe.load(
+            module_path,
+            search_paths=[str(SRC)],
+            docstring_parser="google",
+        )
+        _collect_module_symbols(module, preamble["groups"])
 
     return preamble
 

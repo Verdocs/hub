@@ -1,5 +1,5 @@
 /**
- * Notification Templates allow organizations to customize the email and SMS notifications
+ * Notification templates allow organizations to customize the email and SMS notifications
  * sent during signing workflows. Each template is tied to a specific event (e.g. recipient invited,
  * envelope completed) and notification type (email, sms, etc). The caller must have admin access
  * to the organization.
@@ -124,7 +124,7 @@ export const updateNotificationTemplate = (endpoint: VerdocsEndpoint, id: string
  * await deleteNotificationTemplate(TEMPLATEID);
  * ```
  *
- * @group Notification Templates
+ * @group Notifications
  * @api DELETE /v2/notifications/templates/:id Delete notification template
  * @apiParam string(format:uuid) id The notification template ID
  * @apiSuccess string . Success.

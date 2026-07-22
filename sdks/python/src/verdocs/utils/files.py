@@ -27,5 +27,9 @@ def bytes_to_data_url(data: bytes, content_type: str) -> str:
 
     Returns:
         The "data:<type>;base64,<payload>" string.
+
+    @sdkOperation file.fileToDataUrl
+    @sdkGroup File
+    @sdkPage Helpers
     """
     return f"data:{content_type};base64,{base64.b64encode(data).decode('ascii')}"

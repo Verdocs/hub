@@ -31,6 +31,10 @@ def decode_jwt_body(token: str | None) -> Any:
 
     Raises:
         ValueError: The token has no decodable JSON payload segment.
+
+    @sdkOperation token.decodeJWTBody
+    @sdkGroup Token
+    @sdkPage Helpers
     """
     parts = (token or "").split(".")
     payload = parts[1] if len(parts) > 1 else ""
@@ -54,5 +58,9 @@ def decode_access_token_body(token: str | None) -> dict[str, Any] | None:
         The claims dict, or None. Slightly stricter than the js-sdk: the
         token must have three segments and an object payload, where js
         accepts any segment count and any JSON type.
+
+    @sdkOperation token.decodeAccessTokenBody
+    @sdkGroup Token
+    @sdkPage Helpers
     """
     return decode_token_body(token or "")

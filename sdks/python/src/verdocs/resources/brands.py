@@ -92,6 +92,10 @@ class Brands:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation brand.getBrands
+        @sdkGroup Brand
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", _brands_path(organization_id))
         return [Brand.model_validate(entry) for entry in response.json()]
@@ -112,6 +116,10 @@ class Brands:
         Raises:
             VerdocsAPIError: The API rejected the request.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation brand.createBrand
+        @sdkGroup Brand
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", _brands_path(organization_id), json=_write_body(params))
         return Brand.model_validate(response.json())
@@ -132,6 +140,10 @@ class Brands:
             NotFoundError: No such brand in the organization.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation brand.getBrand
+        @sdkGroup Brand
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("GET", f"{_brands_path(organization_id)}/{brand_id}")
         return Brand.model_validate(response.json())
@@ -153,6 +165,10 @@ class Brands:
             NotFoundError: No such brand in the organization.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation brand.updateBrand
+        @sdkGroup Brand
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "PATCH", f"{_brands_path(organization_id)}/{brand_id}", json=_write_body(params)
@@ -182,6 +198,10 @@ class Brands:
         Raises:
             VerdocsAPIError: The API returned a non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation brand.updateBrandLogo
+        @sdkGroup Brand
+        @sdkPage Endpoints
         """
         response = _multipart_patch(
             self._endpoint._client,
@@ -209,6 +229,10 @@ class Brands:
         Raises:
             VerdocsAPIError: The API returned a non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation brand.updateBrandThumbnail
+        @sdkGroup Brand
+        @sdkPage Endpoints
         """
         response = _multipart_patch(
             self._endpoint._client,
@@ -231,6 +255,10 @@ class Brands:
         Raises:
             VerdocsAPIError: The API returned a non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation brand.deleteBrand
+        @sdkGroup Brand
+        @sdkPage Endpoints
         """
         self._endpoint._request("DELETE", f"{_brands_path(organization_id)}/{brand_id}")
 
@@ -256,6 +284,10 @@ class Brands:
         Raises:
             VerdocsAPIError: The API rejected the request.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation brand.addBrandEmailDomain
+        @sdkGroup Brand
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "POST", f"{_brands_path(organization_id)}/{brand_id}/email-domain", json=_write_body(params)
@@ -277,6 +309,10 @@ class Brands:
         Raises:
             VerdocsAPIError: The API returned a non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation brand.removeBrandEmailDomain
+        @sdkGroup Brand
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("DELETE", f"{_brands_path(organization_id)}/{brand_id}/email-domain")
         return Brand.model_validate(response.json())
@@ -297,6 +333,10 @@ class Brands:
         Raises:
             VerdocsAPIError: The API returned a non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation brand.verifyBrandEmailDomain
+        @sdkGroup Brand
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", f"{_brands_path(organization_id)}/{brand_id}/email-domain/verify")
         return Brand.model_validate(response.json())

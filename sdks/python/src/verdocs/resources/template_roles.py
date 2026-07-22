@@ -49,6 +49,10 @@ class TemplateRoles:
             NotFoundError: No visible template has that ID.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation role.createTemplateRole
+        @sdkGroup Role
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", f"{_ROLES_PATH}/{template_id}", json=_write_body(params))
         return Role.model_validate(response.json())
@@ -72,6 +76,10 @@ class TemplateRoles:
             NotFoundError: The template or role does not exist.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation role.updateTemplateRole
+        @sdkGroup Role
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "PATCH", f"{_ROLES_PATH}/{template_id}/{quote(name, safe='')}", json=_write_body(params)
@@ -93,6 +101,10 @@ class TemplateRoles:
             NotFoundError: The template or role does not exist.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation role.deleteTemplateRole
+        @sdkGroup Role
+        @sdkPage Endpoints
         """
         self._endpoint._request("DELETE", f"{_ROLES_PATH}/{template_id}/{quote(name, safe='')}")
 

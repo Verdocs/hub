@@ -53,6 +53,10 @@ class Initials:
         Raises:
             VerdocsAPIError: The API rejected the upload.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation initial.createInitials
+        @sdkGroup Initial
+        @sdkPage Endpoints
         """
         response = _multipart_request(self._endpoint, "POST", _INITIALS_PATH, files=[("initial", _file_part(image))])
         return Initial.model_validate(response.json())

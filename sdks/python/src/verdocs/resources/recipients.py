@@ -81,6 +81,10 @@ class Recipients:
         Raises:
             VerdocsAPIError: The session cannot act for this role.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation recipient.envelopeRecipientAgree
+        @sdkGroup Recipient
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "POST", f"{_recipient_path(envelope_id, role_name)}/agree", json=_agree_body(disclosures, params)
@@ -106,6 +110,10 @@ class Recipients:
         Raises:
             VerdocsAPIError: The session cannot act for this role.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation recipient.envelopeRecipientDecline
+        @sdkGroup Recipient
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", f"{_recipient_path(envelope_id, role_name)}/decline")
         return Recipient.model_validate(response.json())
@@ -130,6 +138,10 @@ class Recipients:
             VerdocsAPIError: Fields are incomplete, or the recipient already
                 declined or was canceled.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation recipient.envelopeRecipientSubmit
+        @sdkGroup Recipient
+        @sdkPage Endpoints
         """
         body = params.model_dump(mode="json", exclude_unset=True) if params is not None else None
         response = self._endpoint._request("POST", f"{_recipient_path(envelope_id, role_name)}/submit", json=body)
@@ -163,6 +175,10 @@ class Recipients:
         Raises:
             VerdocsAPIError: The key is invalid, expired, or already used up.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation recipient.startSigningSession
+        @sdkGroup Recipient
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "POST", f"{_SIGN_PATH}/unauth/{envelope_id}/{quote(role_name, safe='')}/{key}"
@@ -193,6 +209,10 @@ class Recipients:
             AuthenticationError: The endpoint has no valid user session.
             VerdocsAPIError: The caller does not own the envelope.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation recipient.getInPersonLink
+        @sdkGroup Recipient
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", f"{_SIGN_PATH}/in-person/{envelope_id}/{quote(role_name, safe='')}")
         return InPersonLinkResponse.model_validate(response.json())
@@ -222,6 +242,10 @@ class Recipients:
         Raises:
             VerdocsAPIError: The verification failed.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation recipient.verifySigner
+        @sdkGroup Recipient
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("POST", f"{_SIGN_PATH}/verify", json=_verify_body(params))
         return SignerTokenResponse.model_validate(response.json())
@@ -250,6 +274,10 @@ class Recipients:
             VerdocsAPIError: Delegation is not enabled or the caller is not
                 the recipient.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation recipient.delegateRecipient
+        @sdkGroup Recipient
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "POST",
@@ -283,6 +311,10 @@ class Recipients:
             VerdocsAPIError: The envelope is inactive, or a changed auth
                 field was already completed by the recipient.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation recipient.updateRecipient
+        @sdkGroup Recipient
+        @sdkPage Endpoints
         """
         response = self._endpoint._request(
             "PATCH",
@@ -311,6 +343,10 @@ class Recipients:
             NotFoundError: No such envelope or recipient.
             VerdocsAPIError: The recipient can no longer act.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation recipient.remindRecipient
+        @sdkGroup Recipient
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("PATCH", _recipient_path(envelope_id, role_name), json={"action": "remind"})
         return Recipient.model_validate(response.json())
@@ -335,6 +371,10 @@ class Recipients:
             NotFoundError: No such envelope or recipient.
             VerdocsAPIError: The envelope is canceled or complete.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation recipient.resetRecipient
+        @sdkGroup Recipient
+        @sdkPage Endpoints
         """
         response = self._endpoint._request("PATCH", _recipient_path(envelope_id, role_name), json={"action": "reset"})
         return Recipient.model_validate(response.json())
@@ -358,6 +398,10 @@ class Recipients:
         Raises:
             VerdocsAPIError: The session cannot act for this role.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation recipient.askQuestion
+        @sdkGroup Recipient
+        @sdkPage Endpoints
         """
         self._endpoint._request(
             "POST", f"{_recipient_path(envelope_id, role_name)}/ask-question", json={"question": question}

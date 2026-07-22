@@ -18,6 +18,10 @@ def capitalize(value: str) -> str:
 
     Returns:
         The input with the first character uppercased, other characters untouched.
+
+    @sdkOperation string.capitalize
+    @sdkGroup String
+    @sdkPage Helpers
     """
     return value[:1].upper() + value[1:]
 
@@ -39,6 +43,10 @@ def convert_to_e164(value: str | None) -> str:
 
     Returns:
         The E.164 string, or the trimmed input when it was blank or "+"-prefixed.
+
+    @sdkOperation string.convertToE164
+    @sdkGroup String
+    @sdkPage Helpers
     """
     number = (value or "").strip()
     if not number or number.startswith("+"):
@@ -65,5 +73,9 @@ def random_string(length: int) -> str:
 
     Returns:
         A random string of exactly `length` characters from [0-9a-z].
+
+    @sdkOperation string.randomString
+    @sdkGroup String
+    @sdkPage Helpers
     """
     return "".join(secrets.choice(_BASE36_ALPHABET) for _ in range(length))
