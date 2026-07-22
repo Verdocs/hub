@@ -1,14 +1,20 @@
 import {Preamble} from './Preamble';
-import {capitalize} from '../src';
+import {capitalize} from '../../src';
 
 const BASE_URL = Preamble.servers[0].url;
+
+interface Snippet {
+  lang: string;
+  label: string;
+  source: string;
+}
 
 export const generateSnippets = (
   method: string,
   url: string,
   {showQuery, showBody}: {showQuery: boolean; showBody: boolean} = {showQuery: false, showBody: false},
 ) => {
-  const snippets = [];
+  const snippets: Snippet[] = [];
 
   const capitalizedMethod = capitalize(method);
   const upperMethod = method.toUpperCase();
@@ -19,7 +25,7 @@ export const generateSnippets = (
   // Lang must be from https://github.com/github-linguist/linguist/blob/main/lib/linguist/popular.yml
 
   snippets.push({
-    lang: 'Shell',
+    lang: 'bash',
     label: 'CURL',
     source: `curl -X ${upperMethod} "${urlWithQuery}" \\
     -H "Authorization: Bearer ACCESS_TOKEN" \\
@@ -28,7 +34,7 @@ export const generateSnippets = (
 
   if (upperMethod === 'GET') {
     snippets.push({
-      lang: 'TypeScript',
+      lang: 'typescript',
       label: 'NodeJS',
       source: `import fetch from 'node-fetch';
 
@@ -43,7 +49,7 @@ console.log(data);`,
     });
   } else {
     snippets.push({
-      lang: 'TypeScript',
+      lang: 'typescript',
       label: 'NodeJS',
       source: `import fetch from 'node-fetch';
 
@@ -62,7 +68,7 @@ console.log(data);`,
   }
 
   snippets.push({
-    lang: 'Ruby',
+    lang: 'ruby',
     label: 'Ruby',
     source: `require 'uri'
 require 'net/http'
@@ -82,7 +88,7 @@ puts response.read_body`,
   });
 
   snippets.push({
-    lang: 'Python',
+    lang: 'python',
     label: 'Python',
     source: `import http.client
 
@@ -101,7 +107,7 @@ print(data.decode("utf-8"))
   });
 
   snippets.push({
-    lang: 'C#',
+    lang: 'csharp',
     label: 'C-Sharp',
     source: `var client = new RestClient("${urlWithQuery}");
 var request = new RestRequest(Method.${upperMethod});
@@ -112,7 +118,7 @@ IRestResponse response = client.Execute(request);`,
   });
 
   snippets.push({
-    lang: 'Java',
+    lang: 'java',
     label: 'Java',
     source: `HttpResponse<String> response = Unirest.${lowerMethod}("${urlWithQuery}")
   .header("content-type", "application/json")

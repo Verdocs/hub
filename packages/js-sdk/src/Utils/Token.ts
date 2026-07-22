@@ -1,6 +1,6 @@
 /* tslint:disable:no-bitwise */
 
-import type {TSession} from '../Sessions';
+import type { TSession } from '../Sessions';
 
 const b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 // Regular expression to check formal correctness of base64 encoded strings
@@ -9,6 +9,10 @@ const b64re = /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3
 /**
  * Simplified, Node/Browser-safe alternative to atob() for base64 decoding.
  * Modified from https://github.com/MaxArt2501/base64-js/blob/master/base64.js
+ *
+ * @sdkOperation token.AtoB
+ * @sdkGroup Token
+ * @sdkPage Helpers
  */
 export const AtoB = (str: string) => {
   // atob can work with strings with whitespaces, even inside the encoded part,
@@ -24,7 +28,7 @@ export const AtoB = (str: string) => {
   let r2;
   let i = 0;
 
-  for (; i < str.length; ) {
+  for (; i < str.length;) {
     bitmap =
       (b64.indexOf(str.charAt(i++)) << 18) |
       (b64.indexOf(str.charAt(i++)) << 12) |
@@ -44,6 +48,16 @@ export const AtoB = (str: string) => {
 /**
  * Decode the body of a JWT. This helper may allow front-end applications to avoid a dependency on `jsonwebtoken` in
  * many cases. Note that this should only be used for true JWTs. Opaque tokens will cause this to throw.
+ *
+ * ```typescript
+ * import {decodeJWTBody} from '@verdocs/js-sdk';
+ *
+ * const claims = decodeJWTBody(token);
+ * ```
+ *
+ * @sdkOperation token.decodeJWTBody
+ * @sdkGroup Token
+ * @sdkPage Helpers
  */
 export const decodeJWTBody = (token: string) => JSON.parse(AtoB((token || '').split('.')[1] || ''));
 
@@ -53,6 +67,20 @@ export const decodeJWTBody = (token: string) => JSON.parse(AtoB((token || '').sp
  * will be removed. Note that user and signing sessions have different access token formats. The calling
  * application should distinguish between the two based on the context of the authenticated session, or by
  * the presence of the `document_id` field, which will only be present for signing sessions.
+ *
+ * ```typescript
+ * import {decodeAccessTokenBody} from '@verdocs/js-sdk';
+ *
+ * const session = decodeAccessTokenBody(accessToken);
+ * if (session?.session_type === 'signing') {
+ *   // handle a signing session
+ * }
+ * ```
+ *
+ * @sdkOperation token.decodeAccessTokenBody
+ * @sdkGroup Token
+ * @sdkPage Helpers
+ * @param token {String}
  */
 export const decodeAccessTokenBody = (token: string): TSession => {
   let decoded: any;

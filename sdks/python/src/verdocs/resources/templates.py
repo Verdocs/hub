@@ -240,6 +240,11 @@ class Templates:
             ValueError: files was given together with fields that cannot ride multipart.
             VerdocsAPIError: The API rejected the request.
             VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation template.createTemplate
+        @sdkGroup Template
+        @sdkPage Endpoints
+        @sdkGettingStarted
         """
         if files:
             response = _multipart_request(

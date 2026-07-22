@@ -16,6 +16,10 @@ or:
 
     yarn add @verdocs/web-sdk-react @verdocs/js-sdk
 
+or:
+
+    pnpm i @verdocs/web-sdk-react @verdocs/js-sdk
+
 Then authenticate to the Verdocs API somewhere in your app. The best way to do this is by logging in with a username/password
 created at [Verdocs.com](https://verdocs.com). Most Web applications have some type of login process, and if your app uses the
 same username/password for access, you can reuse that for this step:

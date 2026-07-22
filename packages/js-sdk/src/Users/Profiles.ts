@@ -15,6 +15,10 @@ import type {IProfile} from '../Models';
  * @api GET /v2/profiles Get the caller's profiles
  * @apiDescription A user may have multiple profiles, one for each organization of which they are a member. Only one profile may be "current" at a time.
  * @apiSuccess array(items: IProfile) . The caller's profiles
+ *
+ * @sdkOperation profile.getProfiles
+ * @sdkGroup Profile
+ * @sdkPage Endpoints
  */
 export const getProfiles = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -30,6 +34,10 @@ export const getProfiles = (endpoint: VerdocsEndpoint) =>
  *
  * const profiles = await getCurrentProfile(VerdocsEndpoint.getDefault());
  * ```
+ *
+ * @sdkOperation profile.getCurrentProfile
+ * @sdkGroup Profile
+ * @sdkPage Endpoints
  */
 export const getCurrentProfile = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -50,6 +58,10 @@ export const getCurrentProfile = (endpoint: VerdocsEndpoint) =>
  * @group Profiles
  * @api POST /v2/profiles/:profile_id/switch Change the "current" profile for the caller
  * @apiSuccess IAuthenticateResponse . New authentication credentials
+ *
+ * @sdkOperation profile.switchProfile
+ * @sdkGroup Profile
+ * @sdkPage Endpoints
  */
 export const switchProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
@@ -76,6 +88,10 @@ export const switchProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  * @apiBody string timezone? Define the long-form timezone.
  * @apiBody string locale? Define the locale code.
  * @apiSuccess IProfile . The updated profile
+ *
+ * @sdkOperation profile.updateProfile
+ * @sdkGroup Profile
+ * @sdkPage Endpoints
  */
 export const updateProfile = (endpoint: VerdocsEndpoint, profileId: string, params: IUpdateProfileRequest) =>
   endpoint.api //
@@ -95,6 +111,10 @@ export const updateProfile = (endpoint: VerdocsEndpoint, profileId: string, para
  * @group Profiles
  * @api DELETE /v2/profiles/:profile_id Delete a profile
  * @apiSuccess IAuthenticateResponse . New session tokens for the next available profile for the caller, or null if none.
+ *
+ * @sdkOperation profile.deleteProfile
+ * @sdkGroup Profile
+ * @sdkPage Endpoints
  */
 export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
   endpoint.api //
@@ -125,6 +145,10 @@ export const deleteProfile = (endpoint: VerdocsEndpoint, profileId: string) =>
  *   orgName: 'NEW ORG', email: 'a@b.com', password: '12345678', firstName: 'FIRST', lastName: 'LAST', locale: 'en-US', timezone: 'America/New_York'
  * });
  * ```
+ *
+ * @sdkOperation profile.createProfile
+ * @sdkGroup Profile
+ * @sdkPage Endpoints
  */
 export const createProfile = (endpoint: VerdocsEndpoint, params: ICreateProfileRequest) =>
   endpoint.api //
@@ -144,6 +168,10 @@ export const createProfile = (endpoint: VerdocsEndpoint, params: ICreateProfileR
  * @api PATCH /v2/templates/:template_id Change a profile's photo
  * @apiBody string(format:binary) file File to upload
  * @apiSuccess IProfile . The updated profile
+ *
+ * @sdkOperation profile.updateProfilePhoto
+ * @sdkGroup Profile
+ * @sdkPage Endpoints
  */
 export const updateProfilePhoto = (
   endpoint: VerdocsEndpoint,

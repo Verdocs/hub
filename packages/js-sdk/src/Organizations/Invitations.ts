@@ -18,6 +18,10 @@ import {IOrganizationInvitation} from '../Models';
  * @apiBody string first_name First name. The user may override this after accepting the invitation.
  * @apiBody string last_name Last name. The user may override this after accepting the invitation.
  * @apiSuccess array(items:IProfile) . List of caller's current organization's members
+ *
+ * @sdkOperation invitation.getOrganizationInvitations
+ * @sdkGroup Invitation
+ * @sdkPage Endpoints
  */
 export const getOrganizationInvitations = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -34,6 +38,10 @@ export const getOrganizationInvitations = (endpoint: VerdocsEndpoint) =>
  * @apiBody string last_name Last name. The user may override this after accepting the invitation.
  * @apiBody TRole role Initial role to assign to the user once they accept.
  * @apiSuccess IOrganizationInvitation . The newly-created invitation.
+ *
+ * @sdkOperation invitation.createOrganizationInvitation
+ * @sdkGroup Invitation
+ * @sdkPage Endpoints
  */
 export const createOrganizationInvitation = (endpoint: VerdocsEndpoint, params: ICreateInvitationRequest) =>
   endpoint.api //
@@ -48,6 +56,10 @@ export const createOrganizationInvitation = (endpoint: VerdocsEndpoint, params: 
  * @group Organization Invitations
  * @api DELETE /v2/organization-invitations/:email Delete a pending invitation
  * @apiSuccess string . Success
+ *
+ * @sdkOperation invitation.deleteOrganizationInvitation
+ * @sdkGroup Invitation
+ * @sdkPage Endpoints
  */
 export const deleteOrganizationInvitation = (endpoint: VerdocsEndpoint, email: string) =>
   endpoint.api //
@@ -64,6 +76,10 @@ export const deleteOrganizationInvitation = (endpoint: VerdocsEndpoint, email: s
  * @apiBody string last_name Last name. The user may override this after accepting the invitation.
  * @apiBody TRole role Initial role to assign to the user once they accept.
  * @apiSuccess IOrganizationInvitation . The updated invitation.
+ *
+ * @sdkOperation invitation.updateOrganizationInvitation
+ * @sdkGroup Invitation
+ * @sdkPage Endpoints
  */
 export const updateOrganizationInvitation = (
   endpoint: VerdocsEndpoint,
@@ -81,6 +97,10 @@ export const updateOrganizationInvitation = (
  * @api POST /v2/organization-invitations/resend Send a reminder to a pending invitee
  * @apiBody string email The recipient to send the reminder to
  * @apiSuccess IOrganizationInvitation . The updated invitation
+ *
+ * @sdkOperation invitation.resendOrganizationInvitation
+ * @sdkGroup Invitation
+ * @sdkPage Endpoints
  */
 export const resendOrganizationInvitation = (endpoint: VerdocsEndpoint, email: string) =>
   endpoint.api //
@@ -95,6 +115,10 @@ export const resendOrganizationInvitation = (endpoint: VerdocsEndpoint, email: s
  * @group Organization Invitations
  * @api GET /v2/organization-invitations/:email/:token Get a pending invitation (_Authenticated via invite token, not an active session._). Intended to be called by the invitee to get details about the invitation they are about to accept.
  * @apiSuccess IOrganizationInvitation . Requested invitation's details. Will always include summary details for the organization, to be used for branding the accept-invite view.
+ *
+ * @sdkOperation invitation.getOrganizationInvitation
+ * @sdkGroup Invitation
+ * @sdkPage Endpoints
  */
 export const getOrganizationInvitation = (endpoint: VerdocsEndpoint, email: string, token: string) =>
   endpoint.api //
@@ -115,6 +139,10 @@ export const getOrganizationInvitation = (endpoint: VerdocsEndpoint, email: stri
  * @apiBody string last_name Last name
  * @apiBody string password Password
  * @apiSuccess IAuthenticateResponse . Session credentials for the newly-created user's profile. If the user already had a profile for another organization, the new profile will be made "current" automatically.
+ *
+ * @sdkOperation invitation.acceptOrganizationInvitation
+ * @sdkGroup Invitation
+ * @sdkPage Endpoints
  */
 export const acceptOrganizationInvitation = (endpoint: VerdocsEndpoint, params: IAcceptOrganizationInvitationRequest) =>
   endpoint.api //
@@ -132,6 +160,10 @@ export const acceptOrganizationInvitation = (endpoint: VerdocsEndpoint, params: 
  * @apiBody string email Email address for the invitee
  * @apiBody string token Invite token for the invitee
  * @apiSuccess string . Success. The invitation will be marked declined and the token will be invalidated.
+ *
+ * @sdkOperation invitation.declineOrganizationInvitation
+ * @sdkGroup Invitation
+ * @sdkPage Endpoints
  */
 export const declineOrganizationInvitation = (endpoint: VerdocsEndpoint, email: string, token: string) =>
   endpoint.api //

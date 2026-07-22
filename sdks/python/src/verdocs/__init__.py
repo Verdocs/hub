@@ -251,6 +251,7 @@ __all__ = [
     "ApiKeyPermission",
     "ApiKeyUpdateParams",
     "AsyncVerdocsEndpoint",
+    "AuthenticationRequest",
     "AuthenticateResponse",
     "AuthenticationError",
     "Brand",

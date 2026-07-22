@@ -27,6 +27,10 @@ import {IApiKey} from '../Models';
  * @group API Keys
  * @api GET /v2/api-keys Get API keys
  * @apiSuccess array(items: IApiKey) . A list of the API keys for the caller's organization. Secrets will not be included.
+ *
+ * @sdkOperation apiKey.getApiKeys
+ * @sdkGroup ApiKey
+ * @sdkPage Endpoints
  */
 export const getApiKeys = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
@@ -48,6 +52,10 @@ export const getApiKeys = (endpoint: VerdocsEndpoint) =>
  * @apiBody string(format:uuid) profile_id The profile ID that calls made using the key will act as
  * @apiBody array(items:string) permission An array of permissions to assign to the new key. Extends (but does not override) the API key's profile permissions.
  * @apiSuccess IApiKey . The newly-created API key, including its secret.
+ *
+ * @sdkOperation apiKey.createApiKey
+ * @sdkGroup ApiKey
+ * @sdkPage Endpoints
  */
 export const createApiKey = (endpoint: VerdocsEndpoint, params: ICreateApiKeyRequest) =>
   endpoint.api //
@@ -67,6 +75,10 @@ export const createApiKey = (endpoint: VerdocsEndpoint, params: ICreateApiKeyReq
  * @api POST /v2/api-keys/:client_id/rotate Rotate API key
  * @apiParam string(format:uuid) client_id The client ID of the key to rotate
  * @apiSuccess IApiKey . The updated API key with its new secret.
+ *
+ * @sdkOperation apiKey.rotateApiKey
+ * @sdkGroup ApiKey
+ * @sdkPage Endpoints
  */
 export const rotateApiKey = (endpoint: VerdocsEndpoint, clientId: string) =>
   endpoint.api //
@@ -87,6 +99,10 @@ export const rotateApiKey = (endpoint: VerdocsEndpoint, clientId: string) =>
  * @apiBody string name? New name for the API key
  * @apiBody array(items:string) permission New array of permissions to assign to the new key. Extends (but does not override) the API key's profile permissions.
  * @apiSuccess IApiKey . The updated API key. The secret will not be included.
+ *
+ * @sdkOperation apiKey.updateApiKey
+ * @sdkGroup ApiKey
+ * @sdkPage Endpoints
  */
 export const updateApiKey = (endpoint: VerdocsEndpoint, clientId: string, params: IUpdateApiKeyRequest) =>
   endpoint.api //
@@ -105,6 +121,10 @@ export const updateApiKey = (endpoint: VerdocsEndpoint, clientId: string, params
  * @group API Keys
  * @api DELETE /v2/api-keys/:client_id Delete API key
  * @apiSuccess string . Success.
+ *
+ * @sdkOperation apiKey.deleteApiKey
+ * @sdkGroup ApiKey
+ * @sdkPage Endpoints
  */
 export const deleteApiKey = (endpoint: VerdocsEndpoint, clientId: string) =>
   endpoint.api //

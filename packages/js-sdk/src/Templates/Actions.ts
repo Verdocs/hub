@@ -2,6 +2,11 @@ import {TPermission, TTemplatePermission} from '../Sessions';
 import {TTemplateAction} from '../BaseTypes';
 import {IProfile, ITemplate} from '../Models';
 
+/**
+ * @sdkOperation template.canPerformTemplateAction
+ * @sdkGroup Template
+ * @sdkPage Helpers
+ */
 export const canPerformTemplateAction = (
   profile: IProfile | null | undefined,
   action: TTemplateAction,
@@ -89,5 +94,10 @@ export const canPerformTemplateAction = (
   return {canPerform: false, message: `Insufficient access to perform '${action}'. Needed permissions: ${permissionsRequired.toString()}`};
 };
 
+/**
+ * @sdkOperation template.hasRequiredPermissions
+ * @sdkGroup Template
+ * @sdkPage Helpers
+ */
 export const hasRequiredPermissions = (profile: IProfile | null | undefined, permissions: TPermission[]) =>
   permissions.every((perm) => (profile?.permissions || []).includes(perm));

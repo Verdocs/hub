@@ -63,6 +63,13 @@ export interface IRecipientKbaStepFailed {
   message: string;
 }
 
+/**
+ * The recipient's current step in the KBA (Knowledge-Based Authentication) flow. Branch on `kba_step`:
+ * `pin` prompts for a PIN and calls submitKbaPin(), `identity` collects address details for
+ * submitKbaIdentity(), and `challenge` presents questions for submitKbaChallengeResponse().
+ *
+ * @sdkGroup KBA
+ */
 export type TRecipientKbaStep =
   | IRecipientKbaStepNone
   | IRecipientKbaStepComplete
@@ -77,6 +84,19 @@ export type TRecipientKbaStep =
  * whether KBA is required, it will not contain the current status of the process. If
  * `recipient.auth_methods` is set (not empty), and `recipient.kba_completed` is false, this endpoint
  * should be called to determine the next KBA step required.
+ *
+ * ```typescript
+ * import {getKbaStep} from '@verdocs/js-sdk';
+ *
+ * const step = await getKbaStep(endpoint, envelopeId, roleName);
+ * if (step.kba_step === 'pin') {
+ *   // prompt for the PIN, then call submitKbaPin(...)
+ * }
+ * ```
+ *
+ * @sdkOperation kba.getKbaStep
+ * @sdkGroup KBA
+ * @sdkPage Endpoints
  */
 export const getKbaStep = (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string) =>
   endpoint.api //
@@ -85,6 +105,10 @@ export const getKbaStep = (endpoint: VerdocsEndpoint, envelope_id: string, role_
 
 /**
  * Submit a response to a KBA PIN challenge.
+ *
+ * @sdkOperation kba.submitKbaPin
+ * @sdkGroup KBA
+ * @sdkPage Endpoints
  */
 export const submitKbaPin = (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string, pin: string) =>
   endpoint.api //
@@ -104,6 +128,10 @@ export interface IKbaIdentity {
 
 /**
  * Submit an identity response to a KBA challenge.
+ *
+ * @sdkOperation kba.submitKbaIdentity
+ * @sdkGroup KBA
+ * @sdkPage Endpoints
  */
 export const submitKbaIdentity = (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string, identity: IKbaIdentity) =>
   endpoint.api //
@@ -118,6 +146,10 @@ export interface IKbaChallengeResponse {
 /**
  * Submit an identity response to a KBA challenge. Answers should be submitted in the same order as
  * the challenges were listed in `IRecipientKbaStepChallenge.questions`.
+ *
+ * @sdkOperation kba.submitKbaChallengeResponse
+ * @sdkGroup KBA
+ * @sdkPage Endpoints
  */
 export const submitKbaChallengeResponse = (
   endpoint: VerdocsEndpoint,
