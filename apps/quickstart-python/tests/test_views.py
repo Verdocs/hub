@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 import json
 
 import pytest
@@ -10,7 +11,8 @@ from django.test import Client, override_settings
 from httpx import Response
 
 BASE_URL = "https://api.verdocs.test"
-TEMPLATE_ID = "template-1234"
+CLIENT_ID = "client-1234"
+CLIENT_SECRET = "client-secret-value"
 
 
 def _auth_payload() -> dict:
@@ -29,7 +31,7 @@ def _envelope_payload(**overrides) -> dict:
         "id": "envelope-1234",
         "status": "pending",
         "profile_id": "profile-1234",
-        "template_id": TEMPLATE_ID,
+        "template_id": None,
         "organization_id": "org-1234",
         "name": "Auto Policy",
         "max_reminder_days": 14,
@@ -66,45 +68,43 @@ def client() -> Client:
     return Client()
 
 
-@override_settings(VERDOCS_BASE_URL=BASE_URL, VERDOCS_TEMPLATE_ID=TEMPLATE_ID)
+@override_settings(VERDOCS_BASE_URL=BASE_URL, VERDOCS_CLIENT_ID=CLIENT_ID, VERDOCS_CLIENT_SECRET=CLIENT_SECRET)
 def test_login_authenticates_and_returns_tokens(client):
     with respx.mock(assert_all_called=True) as router:
-        router.post(f"{BASE_URL}/v2/oauth2/token").mock(return_value=Response(200, json=_auth_payload()))
+        route = router.post(f"{BASE_URL}/v2/oauth2/token").mock(return_value=Response(200, json=_auth_payload()))
 
-        response = client.post(
-            "/api/auth/login/",
-            data=json.dumps({"email": "agent@example.com", "password": "secret"}),
-            content_type="application/json",
-        )
+        response = client.post("/api/auth/login/")
 
     assert response.status_code == 200
     assert response.json()["access_token"] == "access-token-value"
+    sent_body = json.loads(route.calls.last.request.content)
+    assert sent_body == {
+        "grant_type": "client_credentials",
+        "client_id": CLIENT_ID,
+        "client_secret": CLIENT_SECRET,
+    }
 
 
-@override_settings(VERDOCS_BASE_URL=BASE_URL, VERDOCS_TEMPLATE_ID=TEMPLATE_ID)
-def test_login_missing_credentials_returns_400(client):
-    response = client.post("/api/auth/login/", data=json.dumps({}), content_type="application/json")
+@override_settings(VERDOCS_BASE_URL=BASE_URL, VERDOCS_CLIENT_ID="", VERDOCS_CLIENT_SECRET="")
+def test_login_without_configured_credentials_returns_500(client):
+    response = client.post("/api/auth/login/")
 
-    assert response.status_code == 400
+    assert response.status_code == 500
 
 
-@override_settings(VERDOCS_BASE_URL=BASE_URL, VERDOCS_TEMPLATE_ID=TEMPLATE_ID)
+@override_settings(VERDOCS_BASE_URL=BASE_URL, VERDOCS_CLIENT_ID=CLIENT_ID, VERDOCS_CLIENT_SECRET=CLIENT_SECRET)
 def test_login_rejected_credentials_propagates_status(client):
     with respx.mock(assert_all_called=True) as router:
         router.post(f"{BASE_URL}/v2/oauth2/token").mock(
             return_value=Response(401, json={"error": "invalid credentials"})
         )
 
-        response = client.post(
-            "/api/auth/login/",
-            data=json.dumps({"email": "agent@example.com", "password": "wrong"}),
-            content_type="application/json",
-        )
+        response = client.post("/api/auth/login/")
 
     assert response.status_code == 401
 
 
-@override_settings(VERDOCS_BASE_URL=BASE_URL, VERDOCS_TEMPLATE_ID=TEMPLATE_ID)
+@override_settings(VERDOCS_BASE_URL=BASE_URL)
 def test_create_policy_requires_bearer_token(client):
     response = client.post(
         "/api/policies/",
@@ -115,8 +115,8 @@ def test_create_policy_requires_bearer_token(client):
     assert response.status_code == 401
 
 
-@override_settings(VERDOCS_BASE_URL=BASE_URL, VERDOCS_TEMPLATE_ID=TEMPLATE_ID)
-def test_create_policy_creates_envelope_from_template(client):
+@override_settings(VERDOCS_BASE_URL=BASE_URL)
+def test_create_policy_creates_envelope_from_i9_document(client):
     with respx.mock(assert_all_called=True) as router:
         route = router.post(f"{BASE_URL}/v2/envelopes").mock(return_value=Response(200, json=_envelope_payload()))
 
@@ -138,11 +138,16 @@ def test_create_policy_creates_envelope_from_template(client):
     assert body["recipients"][0]["email"] == "paige.turner@nomail.com"
 
     sent_body = json.loads(route.calls.last.request.content)
-    assert sent_body["template_id"] == TEMPLATE_ID
+    assert "template_id" not in sent_body
     assert sent_body["recipients"][0]["role_name"] == "Policyholder"
+    assert sent_body["recipients"][0]["type"] == "signer"
+    assert len(sent_body["documents"]) == 1
+    assert sent_body["documents"][0]["name"] == "i-9.pdf"
+    assert sent_body["documents"][0]["mime"] == "application/pdf"
+    assert base64.b64decode(sent_body["documents"][0]["data"])[:5] == b"%PDF-"
 
 
-@override_settings(VERDOCS_BASE_URL=BASE_URL, VERDOCS_TEMPLATE_ID=TEMPLATE_ID)
+@override_settings(VERDOCS_BASE_URL=BASE_URL)
 def test_create_policy_missing_policyholder_fields_returns_400(client):
     response = client.post(
         "/api/policies/",
@@ -152,17 +157,3 @@ def test_create_policy_missing_policyholder_fields_returns_400(client):
     )
 
     assert response.status_code == 400
-
-
-@override_settings(VERDOCS_BASE_URL=BASE_URL, VERDOCS_TEMPLATE_ID="")
-def test_create_policy_without_template_id_returns_500(client):
-    response = client.post(
-        "/api/policies/",
-        data=json.dumps(
-            {"policyholder": {"first_name": "Paige", "last_name": "Turner", "email": "paige.turner@nomail.com"}}
-        ),
-        content_type="application/json",
-        HTTP_AUTHORIZATION="Bearer access-token-value",
-    )
-
-    assert response.status_code == 500

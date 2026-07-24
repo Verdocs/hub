@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Any, Literal
 from urllib.parse import urlencode, urljoin
 
 import httpx
@@ -10,6 +10,7 @@ import httpx
 from ..errors import VerdocsConnectionError, api_error_from_response
 from ..models.users import (
     AuthenticateResponse,
+    AuthenticationRequest,
     ChangePasswordRequest,
     ChangePasswordResponse,
     ResetPasswordResponse,
@@ -30,19 +31,6 @@ _VERIFY_PATH = "/v2/users/verify"
 def _auth_body(params: AuthenticationRequest) -> dict[str, Any]:
     # exclude_none so optional client_id/scope stay off the wire when unset.
     return params.model_dump(mode="json", exclude_none=True)
-
-
-def _write_body(params: ChangePasswordRequest | ResetPasswordRequest | VerifyEmailRequest) -> dict[str, Any]:
-    return params.model_dump(mode="json", exclude_none=True)
-
-
-def _authorize_url(base_url: str, params: OAuth2AuthorizeParams) -> str:
-    query = {"client_id": params.client_id, "redirect_uri": params.redirect_uri, "response_type": params.response_type}
-    if params.state is not None:
-        query["state"] = params.state
-    if params.scope is not None:
-        query["scope"] = params.scope
-    return f"{base_url.rstrip('/')}{_AUTHORIZE_PATH}?{urlencode(query)}"
 
 
 def _reset_password_body(email: str, code: str | None, new_password: str | None) -> dict[str, str]:

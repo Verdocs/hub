@@ -7,6 +7,8 @@ response shapes.
 
 from __future__ import annotations
 
+from typing import Literal
+
 from .core import VerdocsModel
 from .sessions import Permission, ProfileRole
 
@@ -24,6 +26,63 @@ class AuthenticateResponse(VerdocsModel):
     expires_in: int
     access_token_exp: int
     refresh_token_exp: int
+
+
+class PasswordGrantRequest(VerdocsModel):
+    """OAuth2 password grant body for POST /v2/oauth2/token."""
+
+    grant_type: Literal["password"] = "password"
+    username: str
+    password: str
+    client_id: str | None = None
+    scope: str | None = None
+
+
+class ClientCredentialsRequest(VerdocsModel):
+    """OAuth2 client_credentials grant body for POST /v2/oauth2/token.
+
+    The intended grant for server-side integrations: create an API key
+    (Settings > API Keys at https://app.verdocs.com) and trade its
+    client_id/client_secret for a session token here. No end-user
+    credentials are involved.
+    """
+
+    grant_type: Literal["client_credentials"] = "client_credentials"
+    client_id: str
+    client_secret: str
+    scope: str | None = None
+
+
+class RefreshTokenRequest(VerdocsModel):
+    """OAuth2 refresh_token grant body for POST /v2/oauth2/token."""
+
+    grant_type: Literal["refresh_token"] = "refresh_token"
+    refresh_token: str
+    client_id: str | None = None
+    scope: str | None = None
+
+
+class AuthorizationCodeRequest(VerdocsModel):
+    """OAuth2 authorization_code grant body for POST /v2/oauth2/token."""
+
+    grant_type: Literal["authorization_code"] = "authorization_code"
+    code: str
+    client_id: str
+    client_secret: str
+    redirect_uri: str
+
+
+AuthenticationRequest = PasswordGrantRequest | ClientCredentialsRequest | RefreshTokenRequest | AuthorizationCodeRequest
+
+
+class OAuth2AuthorizeParams(VerdocsModel):
+    """Query params that build the OAuth2 authorize URL."""
+
+    client_id: str
+    redirect_uri: str
+    response_type: Literal["code"] = "code"
+    state: str | None = None
+    scope: str | None = None
 
 
 class CreateProfileRequest(VerdocsModel):

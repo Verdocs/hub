@@ -46,7 +46,11 @@ STATIC_URL = "static/"
 
 # Verdocs SDK configuration, read once here so the views stay simple.
 VERDOCS_BASE_URL = os.environ.get("VERDOCS_BASE_URL", "https://api.verdocs.com")
-# ID of the template create_policy() copies to issue a policy. Its recipient
-# role must be named VERDOCS_POLICY_ROLE_NAME below.
-VERDOCS_TEMPLATE_ID = os.environ.get("VERDOCS_TEMPLATE_ID", "")
+# Client ID and secret from an API key (Settings > API Keys at
+# https://app.verdocs.com, with global admin access enabled). login() trades
+# these for an access token via the client_credentials grant.
+VERDOCS_CLIENT_ID = os.environ.get("VERDOCS_CLIENT_ID", "")
+VERDOCS_CLIENT_SECRET = os.environ.get("VERDOCS_CLIENT_SECRET", "")
+# Display label for the policyholder recipient on the envelope create_policy() issues. No
+# template is involved, so this is free text, not a role tied to any template definition.
 VERDOCS_POLICY_ROLE_NAME = os.environ.get("VERDOCS_POLICY_ROLE_NAME", "Policyholder")
