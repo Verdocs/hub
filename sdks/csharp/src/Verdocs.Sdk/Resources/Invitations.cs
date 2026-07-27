@@ -22,6 +22,9 @@ public sealed class Invitations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The organization's pending invitations.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>invitation.getOrganizationInvitations</sdkOperation>
+    /// <sdkGroup>Invitation</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public async Task<IReadOnlyList<OrganizationInvitation>> ListAsync(CancellationToken cancellationToken = default)
     {
         return await _endpoint.SendAsync<List<OrganizationInvitation>>(
@@ -37,6 +40,9 @@ public sealed class Invitations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The new invitation.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because an invitation already exists for the email.</exception>
+    /// <sdkOperation>invitation.createOrganizationInvitation</sdkOperation>
+    /// <sdkGroup>Invitation</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<OrganizationInvitation> CreateAsync(CreateInvitationRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -53,6 +59,9 @@ public sealed class Invitations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the invitation is deleted.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not an admin.</exception>
+    /// <sdkOperation>invitation.deleteOrganizationInvitation</sdkOperation>
+    /// <sdkGroup>Invitation</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task DeleteAsync(string email, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(email);
@@ -72,6 +81,9 @@ public sealed class Invitations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the server accepts the request.</returns>
     /// <exception cref="VerdocsApiException">The call failed; see the note above about the deployed handler.</exception>
+    /// <sdkOperation>invitation.updateOrganizationInvitation</sdkOperation>
+    /// <sdkGroup>Invitation</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task UpdateAsync(string email, string role, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(email);
@@ -89,6 +101,9 @@ public sealed class Invitations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the reminder is sent.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the invitation was declined.</exception>
+    /// <sdkOperation>invitation.resendOrganizationInvitation</sdkOperation>
+    /// <sdkGroup>Invitation</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task ResendAsync(string email, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(email);
@@ -107,6 +122,9 @@ public sealed class Invitations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The invitation, with its organization.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the token is invalid.</exception>
+    /// <sdkOperation>invitation.getOrganizationInvitation</sdkOperation>
+    /// <sdkGroup>Invitation</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<OrganizationInvitation> GetAsync(string email, string token, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(email);
@@ -127,6 +145,9 @@ public sealed class Invitations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>Session tokens for the new profile.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the invitation was declined.</exception>
+    /// <sdkOperation>invitation.acceptOrganizationInvitation</sdkOperation>
+    /// <sdkGroup>Invitation</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<AuthenticateResponse> AcceptAsync(AcceptOrganizationInvitationRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -144,6 +165,9 @@ public sealed class Invitations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the invitation is declined.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the token is invalid.</exception>
+    /// <sdkOperation>invitation.declineOrganizationInvitation</sdkOperation>
+    /// <sdkGroup>Invitation</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task DeclineAsync(string email, string token, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(email);

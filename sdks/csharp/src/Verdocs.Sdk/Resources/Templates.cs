@@ -34,6 +34,9 @@ public sealed class Templates
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>One page of templates plus paging counts.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>template.getTemplates</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<TemplateList> ListAsync(GetTemplatesOptions? options = null, CancellationToken cancellationToken = default)
     {
         return _endpoint.SendAsync<TemplateList>(HttpMethod.Get, BuildTemplatesPath(options), null, cancellationToken);
@@ -48,6 +51,9 @@ public sealed class Templates
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The requested template.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the template was not found.</exception>
+    /// <sdkOperation>template.getTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Template> GetAsync(string templateId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);
@@ -66,6 +72,10 @@ public sealed class Templates
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The new template, including its documents, roles, and fields.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because a document was an unsupported type.</exception>
+    /// <sdkOperation>template.createTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
+    /// <sdkGettingStarted />
     public Task<Template> CreateAsync(CreateTemplateRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -132,6 +142,9 @@ public sealed class Templates
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated template.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller may not edit the template.</exception>
+    /// <sdkOperation>template.updateTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Template> UpdateAsync(string templateId, UpdateTemplateRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);
@@ -145,6 +158,9 @@ public sealed class Templates
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the template has been deleted.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller may not edit the template.</exception>
+    /// <sdkOperation>template.deleteTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task DeleteAsync(string templateId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);
@@ -161,6 +177,9 @@ public sealed class Templates
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The new copy.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the template was not found.</exception>
+    /// <sdkOperation>template.duplicateTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Template> DuplicateAsync(string templateId, string name, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);
@@ -178,6 +197,9 @@ public sealed class Templates
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The new template, if the API ever serves this route.</returns>
     /// <exception cref="VerdocsApiException">Always thrown today; the deployed API has no handler for this call.</exception>
+    /// <sdkOperation>template.createTemplateFromSharepoint</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Template> CreateFromSharepointAsync(CreateTemplateFromSharepointRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -194,6 +216,9 @@ public sealed class Templates
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The template, if the API ever serves this route.</returns>
     /// <exception cref="VerdocsApiException">Always thrown today; the deployed API rejects this call.</exception>
+    /// <sdkOperation>template.toggleTemplateStar</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Template> ToggleStarAsync(string templateId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);

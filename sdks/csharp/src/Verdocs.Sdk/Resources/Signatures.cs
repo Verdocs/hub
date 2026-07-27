@@ -29,6 +29,9 @@ public sealed class Signatures
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The newly created signature block.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>signature.createSignature</sdkOperation>
+    /// <sdkGroup>Signature</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Signature> CreateAsync(
         Stream content,
         string fileName,

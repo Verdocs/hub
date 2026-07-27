@@ -16,6 +16,9 @@ public static class FieldUtils
     /// <param name="iTextHeight">The rendered page height in pixels.</param>
     /// <param name="yRatio">Pixels per document unit on the y axis.</param>
     /// <returns>The top offset in pixels.</returns>
+    /// <sdkOperation>fieldUtil.getRTop</sdkOperation>
+    /// <sdkGroup>FieldUtils</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static double GetRTop(double y, double fieldHeight, double iTextHeight, double yRatio)
     {
         return iTextHeight - (y + fieldHeight) * yRatio;
@@ -25,6 +28,9 @@ public static class FieldUtils
     /// <param name="x">The field's PDF x position.</param>
     /// <param name="ratio">Pixels per document unit on the x axis.</param>
     /// <returns>The left offset in pixels.</returns>
+    /// <sdkOperation>fieldUtil.getRLeft</sdkOperation>
+    /// <sdkGroup>FieldUtils</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static double GetRLeft(double x, double ratio)
     {
         return x * ratio;
@@ -34,6 +40,9 @@ public static class FieldUtils
     /// <param name="y">The value in document units.</param>
     /// <param name="ratio">Pixels per document unit.</param>
     /// <returns>The value in pixels.</returns>
+    /// <sdkOperation>fieldUtil.getRValue</sdkOperation>
+    /// <sdkGroup>FieldUtils</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static double GetRValue(double y, double ratio)
     {
         return y * ratio;
@@ -43,6 +52,9 @@ public static class FieldUtils
     /// <param name="r">The value to scale.</param>
     /// <param name="n">The ratio to scale by.</param>
     /// <returns>The scaled value.</returns>
+    /// <sdkOperation>fieldUtil.rescale</sdkOperation>
+    /// <sdkGroup>FieldUtils</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static double Rescale(double r, double n)
     {
         return r * n;
@@ -56,6 +68,9 @@ public static class FieldUtils
     /// </summary>
     /// <param name="data">The bytes to encode.</param>
     /// <returns>The base64-encoded string.</returns>
+    /// <sdkOperation>fieldUtil.blobToBase64</sdkOperation>
+    /// <sdkGroup>FieldUtils</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static string BytesToBase64(byte[] data)
     {
         ArgumentNullException.ThrowIfNull(data);

@@ -109,6 +109,9 @@ public static class SessionPermissions
     /// <param name="profile">The profile to check, or null for no session (always fails a non-empty check).</param>
     /// <param name="permissions">The permissions that must all be present.</param>
     /// <returns>True when every requested permission is held.</returns>
+    /// <sdkOperation>permission.userHasPermissions</sdkOperation>
+    /// <sdkGroup>Permissions</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserHasPermissions(Profile? profile, IEnumerable<string> permissions)
     {
         // No need to de-dupe here, we're just checking present-at-least-once set membership.

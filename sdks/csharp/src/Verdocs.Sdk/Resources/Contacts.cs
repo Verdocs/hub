@@ -22,6 +22,9 @@ public sealed class Contacts
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The organization's contact profiles.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>contact.getOrganizationContacts</sdkOperation>
+    /// <sdkGroup>Contact</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public async Task<IReadOnlyList<Profile>> ListAsync(CancellationToken cancellationToken = default)
     {
         return await _endpoint.SendAsync<List<Profile>>(HttpMethod.Get, "/v2/organization-contacts", null, cancellationToken)
@@ -35,6 +38,9 @@ public sealed class Contacts
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The new contact profile.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not an admin.</exception>
+    /// <sdkOperation>contact.createOrganizationContact</sdkOperation>
+    /// <sdkGroup>Contact</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Profile> CreateAsync(CreateContactRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -50,6 +56,9 @@ public sealed class Contacts
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated contact profile.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the profile is not a contact.</exception>
+    /// <sdkOperation>contact.updateOrganizationContact</sdkOperation>
+    /// <sdkGroup>Contact</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Profile> UpdateAsync(string profileId, UpdateContactRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(profileId);
@@ -67,6 +76,9 @@ public sealed class Contacts
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the contact is deleted.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the profile is not a contact.</exception>
+    /// <sdkOperation>contact.deleteOrganizationContact</sdkOperation>
+    /// <sdkGroup>Contact</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task DeleteAsync(string profileId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(profileId);

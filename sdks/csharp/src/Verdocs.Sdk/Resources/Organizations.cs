@@ -26,6 +26,9 @@ public sealed class Organizations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The requested organization.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not a member.</exception>
+    /// <sdkOperation>organization.getOrganization</sdkOperation>
+    /// <sdkGroup>Organization</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Organization> GetAsync(string organizationId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(organizationId);
@@ -42,6 +45,9 @@ public sealed class Organizations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The child organizations.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because there are no children.</exception>
+    /// <sdkOperation>organization.getOrganizationChildren</sdkOperation>
+    /// <sdkGroup>Organization</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<IReadOnlyList<Organization>> GetChildrenAsync(string organizationId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(organizationId);
@@ -65,6 +71,9 @@ public sealed class Organizations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>Usage counts grouped by organization ID, then usage type.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not an admin.</exception>
+    /// <sdkOperation>organization.getOrganizationUsage</sdkOperation>
+    /// <sdkGroup>Organization</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<IReadOnlyDictionary<string, IReadOnlyDictionary<string, long>>> GetUsageAsync(
         string organizationId,
         GetOrganizationUsageOptions? options = null,
@@ -102,6 +111,9 @@ public sealed class Organizations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The new organization, plus session tokens for top-level creations.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the parent ID is not the caller's organization.</exception>
+    /// <sdkOperation>organization.createOrganization</sdkOperation>
+    /// <sdkGroup>Organization</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<CreateOrganizationResponse> CreateAsync(CreateOrganizationRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -145,6 +157,9 @@ public sealed class Organizations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated organization, including its groups and entitlements.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not an admin.</exception>
+    /// <sdkOperation>organization.updateOrganization</sdkOperation>
+    /// <sdkGroup>Organization</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Organization> UpdateAsync(string organizationId, UpdateOrganizationRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(organizationId);
@@ -160,6 +175,9 @@ public sealed class Organizations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The pipeline settings, with every flag normalized to a boolean.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not an admin.</exception>
+    /// <sdkOperation>organization.getOrganizationPipelineSettings</sdkOperation>
+    /// <sdkGroup>Organization</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<PipelineSettings> GetPipelineSettingsAsync(string organizationId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(organizationId);
@@ -176,6 +194,9 @@ public sealed class Organizations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated pipeline settings, with every flag normalized to a boolean.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not an admin.</exception>
+    /// <sdkOperation>organization.updateOrganizationPipelineSettings</sdkOperation>
+    /// <sdkGroup>Organization</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<PipelineSettings> UpdatePipelineSettingsAsync(
         string organizationId,
         UpdatePipelineSettingsRequest request,
@@ -199,6 +220,9 @@ public sealed class Organizations
     /// remains and the caller is signed out.
     /// </returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because deletion protection is on.</exception>
+    /// <sdkOperation>organization.deleteOrganization</sdkOperation>
+    /// <sdkGroup>Organization</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<AuthenticateResponse?> DeleteAsync(string organizationId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(organizationId);
@@ -240,6 +264,9 @@ public sealed class Organizations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated organization, including its groups and entitlements.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not an admin.</exception>
+    /// <sdkOperation>organization.updateOrganizationLogo</sdkOperation>
+    /// <sdkGroup>Organization</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Organization> UpdateLogoAsync(
         string organizationId,
         Stream file,
@@ -261,6 +288,9 @@ public sealed class Organizations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated organization, including its groups and entitlements.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not an admin.</exception>
+    /// <sdkOperation>organization.updateOrganizationThumbnail</sdkOperation>
+    /// <sdkGroup>Organization</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Organization> UpdateThumbnailAsync(
         string organizationId,
         Stream file,
@@ -279,6 +309,9 @@ public sealed class Organizations
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>All entitlement grants for the caller's organization.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>organization.getEntitlements</sdkOperation>
+    /// <sdkGroup>Organization</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public async Task<IReadOnlyList<Entitlement>> GetEntitlementsAsync(CancellationToken cancellationToken = default)
     {
         return await _endpoint.SendAsync<List<Entitlement>>(
@@ -302,6 +335,9 @@ public sealed class Organizations
     /// <returns>The active entitlement per feature.</returns>
     /// <exception cref="InvalidOperationException">The endpoint has no active session.</exception>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>organization.getActiveEntitlements</sdkOperation>
+    /// <sdkGroup>Organization</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<IReadOnlyDictionary<string, Entitlement>> GetActiveEntitlementsAsync(CancellationToken cancellationToken = default)
     {
         if (_endpoint.Session is null)

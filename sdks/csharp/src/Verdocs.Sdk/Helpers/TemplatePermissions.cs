@@ -16,6 +16,9 @@ public static class TemplatePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against, or null.</param>
     /// <returns>True when the profile matches the template's creator.</returns>
+    /// <sdkOperation>template.userIsTemplateCreator</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserIsTemplateCreator(Profile? profile, Template? template) =>
         profile != null && template != null && profile.Id == template.ProfileId;
 
@@ -26,6 +29,9 @@ public static class TemplatePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against, or null.</param>
     /// <returns>True when the template is shared with the profile's organization.</returns>
+    /// <sdkOperation>template.userHasSharedTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserHasSharedTemplate(Profile? profile, Template? template) =>
         profile != null && template != null && !template.IsPersonal &&
         profile.OrganizationId == template.OrganizationId;
@@ -36,6 +42,9 @@ public static class TemplatePermissions
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <returns>True when the user holds the personal-create permission.</returns>
+    /// <sdkOperation>template.userCanCreatePersonalTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanCreatePersonalTemplate(Profile? profile) =>
         SessionPermissions.UserHasPermissions(profile, [TemplatePermission.CreatePersonal]);
 
@@ -45,6 +54,9 @@ public static class TemplatePermissions
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <returns>True when the user holds the org-create permission.</returns>
+    /// <sdkOperation>template.userCanCreateOrgTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanCreateOrgTemplate(Profile? profile) =>
         SessionPermissions.UserHasPermissions(profile, [TemplatePermission.CreateOrg]);
 
@@ -54,6 +66,9 @@ public static class TemplatePermissions
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <returns>True when the user holds the public-create permission.</returns>
+    /// <sdkOperation>template.userCanCreatePublicTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanCreatePublicTemplate(Profile? profile) =>
         SessionPermissions.UserHasPermissions(profile, [TemplatePermission.CreatePublic]);
 
@@ -63,6 +78,9 @@ public static class TemplatePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
     /// <returns>True when the user may view the template.</returns>
+    /// <sdkOperation>template.userCanReadTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanReadTemplate(Profile? profile, Template template) =>
         template.IsPublic ||
         UserIsTemplateCreator(profile, template) ||
@@ -75,6 +93,9 @@ public static class TemplatePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
     /// <returns>True when the user may modify the template.</returns>
+    /// <sdkOperation>template.userCanUpdateTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanUpdateTemplate(Profile? profile, Template template) =>
         UserIsTemplateCreator(profile, template) ||
         (UserHasSharedTemplate(profile, template) &&
@@ -88,6 +109,9 @@ public static class TemplatePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
     /// <returns>True when the user may change the template's visibility to private.</returns>
+    /// <sdkOperation>template.userCanMakeTemplatePrivate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanMakeTemplatePrivate(Profile? profile, Template template) =>
         UserIsTemplateCreator(profile, template)
             ? SessionPermissions.UserHasPermissions(profile, [TemplatePermission.CreatePersonal])
@@ -100,6 +124,9 @@ public static class TemplatePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
     /// <returns>True when the user may change the template's visibility to shared.</returns>
+    /// <sdkOperation>template.userCanMakeTemplateShared</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanMakeTemplateShared(Profile? profile, Template template) =>
         UserIsTemplateCreator(profile, template)
             ? SessionPermissions.UserHasPermissions(profile, [TemplatePermission.CreateOrg])
@@ -112,6 +139,9 @@ public static class TemplatePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
     /// <returns>True when the user may change the template's visibility to public.</returns>
+    /// <sdkOperation>template.userCanMakeTemplatePublic</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanMakeTemplatePublic(Profile? profile, Template template) =>
         UserIsTemplateCreator(profile, template)
             ? SessionPermissions.UserHasPermissions(profile, [TemplatePermission.CreatePublic])
@@ -124,6 +154,9 @@ public static class TemplatePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
     /// <returns>True when the user may change the template's organization visibility.</returns>
+    /// <sdkOperation>template.userCanChangeOrgVisibility</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanChangeOrgVisibility(Profile? profile, Template template) =>
         UserIsTemplateCreator(profile, template) &&
         SessionPermissions.UserHasPermissions(profile, [TemplatePermission.CreatePersonal]);
@@ -134,6 +167,9 @@ public static class TemplatePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
     /// <returns>True when the user may delete the template.</returns>
+    /// <sdkOperation>template.userCanDeleteTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanDeleteTemplate(Profile? profile, Template template) =>
         UserIsTemplateCreator(profile, template)
             ? SessionPermissions.UserHasPermissions(profile, [TemplatePermission.Delete])
@@ -149,6 +185,9 @@ public static class TemplatePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
     /// <returns>True when the user may send the template.</returns>
+    /// <sdkOperation>template.userCanSendTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanSendTemplate(Profile? profile, Template template)
     {
         switch (template.Visibility)
@@ -186,6 +225,9 @@ public static class TemplatePermissions
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <returns>True when the user holds any of the template-create permissions.</returns>
+    /// <sdkOperation>template.userCanCreateTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanCreateTemplate(Profile? profile) =>
         UserCanCreatePersonalTemplate(profile) ||
         UserCanCreateOrgTemplate(profile) ||
@@ -199,6 +241,9 @@ public static class TemplatePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
     /// <returns>True when the user may open the template in the builder.</returns>
+    /// <sdkOperation>template.userCanBuildTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanBuildTemplate(Profile? profile, Template template) =>
         UserCanUpdateTemplate(profile, template) &&
         (template.Roles ?? []).Any(role => role.Type == RecipientType.Signer);
@@ -209,6 +254,9 @@ public static class TemplatePermissions
     /// <param name="template">The template to scan.</param>
     /// <param name="roleName">The role name to filter by.</param>
     /// <returns>The fields assigned to the role.</returns>
+    /// <sdkOperation>template.getFieldsForRole</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static IReadOnlyList<TemplateField> GetFieldsForRole(Template template, string roleName) =>
         (template.Fields ?? []).Where(field => field.RoleName == roleName).ToList();
 
@@ -220,6 +268,9 @@ public static class TemplatePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
     /// <returns>True when the user may preview the template.</returns>
+    /// <sdkOperation>template.userCanPreviewTemplate</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanPreviewTemplate(Profile? profile, Template template)
     {
         var hasPermission = UserCanReadTemplate(profile, template);
@@ -239,6 +290,9 @@ public static class TemplatePermissions
     /// <param name="action">The action to test; see <see cref="TemplateAction"/> for known values.</param>
     /// <param name="template">The template to act on, required for everything except the create actions.</param>
     /// <returns>CanPerform, plus a Message explaining the denial (empty when allowed).</returns>
+    /// <sdkOperation>template.canPerformTemplateAction</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static (bool CanPerform, string Message) CanPerformTemplateAction(
         Profile? profile, string action, Template? template = null)
     {
@@ -337,6 +391,9 @@ public static class TemplatePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="permissions">The permissions that must all be present.</param>
     /// <returns>True when every requested permission is directly held.</returns>
+    /// <sdkOperation>template.hasRequiredPermissions</sdkOperation>
+    /// <sdkGroup>Template</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool HasRequiredPermissions(Profile? profile, IEnumerable<string> permissions) =>
         permissions.All(perm => (profile?.Permissions ?? []).Contains(perm));
 }

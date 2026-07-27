@@ -35,6 +35,10 @@ public sealed class Auth
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>Authentication tokens and expiration details.</returns>
     /// <exception cref="VerdocsApiException">The API rejected the credentials or the call failed.</exception>
+    /// <sdkOperation>auth.authenticate</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
+    /// <sdkGettingStarted />
     public Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -59,6 +63,9 @@ public sealed class Auth
     /// <param name="state">Opaque value returned unchanged in the redirect, used to prevent CSRF attacks.</param>
     /// <param name="scope">Optional scope to request.</param>
     /// <returns>The authorization URL to redirect the user to.</returns>
+    /// <sdkOperation>auth.getOAuth2AuthorizeUrl</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public string GetOAuth2AuthorizeUrl(string clientId, string redirectUri, string? state = null, string? scope = null)
     {
         ArgumentException.ThrowIfNullOrEmpty(clientId);
@@ -92,6 +99,9 @@ public sealed class Auth
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>Fresh authentication tokens and expiration details.</returns>
     /// <exception cref="VerdocsApiException">The API rejected the refresh token or the call failed.</exception>
+    /// <sdkOperation>auth.refreshToken</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<AuthenticateResponse> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(refreshToken);
@@ -110,6 +120,9 @@ public sealed class Auth
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The change status; "OK" on success.</returns>
     /// <exception cref="VerdocsApiException">The API rejected the change or the call failed.</exception>
+    /// <sdkOperation>auth.changePassword</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<ChangePasswordResponse> ChangePasswordAsync(ChangePasswordRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -139,6 +152,9 @@ public sealed class Auth
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The reset status; "OK" on success.</returns>
     /// <exception cref="VerdocsApiException">The API rejected the reset (for example, a bad code) or the call failed.</exception>
+    /// <sdkOperation>auth.resetPassword</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -155,6 +171,9 @@ public sealed class Auth
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the message has been queued.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>auth.resendVerification</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task ResendVerificationAsync(CancellationToken cancellationToken = default)
     {
         // The body is an empty JSON object, mirroring the js-sdk; the server reads nothing
@@ -174,6 +193,9 @@ public sealed class Auth
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>Fresh authentication tokens for the now-verified session.</returns>
     /// <exception cref="VerdocsApiException">The code was wrong or expired, the session was missing, or the call failed.</exception>
+    /// <sdkOperation>auth.verifyEmail</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<AuthenticateResponse> VerifyEmailAsync(VerifyEmailRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);

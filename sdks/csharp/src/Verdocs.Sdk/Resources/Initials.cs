@@ -29,6 +29,9 @@ public sealed class Initials
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The newly created initials block.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>initial.createInitials</sdkOperation>
+    /// <sdkGroup>Initial</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Initial> CreateAsync(
         Stream content,
         string fileName,

@@ -21,6 +21,9 @@ public static class Token
     /// <returns>The parsed payload, whatever JSON it holds.</returns>
     /// <exception cref="FormatException">The payload segment is not valid base64 or base64url.</exception>
     /// <exception cref="JsonException">The payload segment does not decode to JSON.</exception>
+    /// <sdkOperation>token.decodeJWTBody</sdkOperation>
+    /// <sdkGroup>Token</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static JsonElement DecodeJwtBody(string? token)
     {
         var parts = (token ?? string.Empty).Split('.');
@@ -49,6 +52,9 @@ public static class Token
     /// segments, an object payload, and a user or signing session_type claim, where js
     /// accepts any segment count and any JSON type.
     /// </returns>
+    /// <sdkOperation>token.decodeAccessTokenBody</sdkOperation>
+    /// <sdkGroup>Token</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static VerdocsSession? DecodeAccessTokenBody(string? token)
     {
         if (string.IsNullOrEmpty(token))

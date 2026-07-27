@@ -24,6 +24,9 @@ public sealed class TemplateRoles
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The new role.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the role name is already in use.</exception>
+    /// <sdkOperation>role.createTemplateRole</sdkOperation>
+    /// <sdkGroup>Role</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Role> CreateAsync(string templateId, CreateRoleRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);
@@ -39,6 +42,9 @@ public sealed class TemplateRoles
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated role.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because a new name is already in use.</exception>
+    /// <sdkOperation>role.updateTemplateRole</sdkOperation>
+    /// <sdkGroup>Role</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Role> UpdateAsync(string templateId, string roleName, UpdateRoleRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);
@@ -57,6 +63,9 @@ public sealed class TemplateRoles
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the role has been deleted.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the role was not found.</exception>
+    /// <sdkOperation>role.deleteTemplateRole</sdkOperation>
+    /// <sdkGroup>Role</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task DeleteAsync(string templateId, string roleName, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);

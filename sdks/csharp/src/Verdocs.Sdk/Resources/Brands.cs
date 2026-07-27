@@ -25,6 +25,9 @@ public sealed class Brands
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The organization's brands.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not an admin.</exception>
+    /// <sdkOperation>brand.getBrands</sdkOperation>
+    /// <sdkGroup>Brand</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<IReadOnlyList<Brand>> ListAsync(string organizationId, CancellationToken cancellationToken = default)
     {
         return ListCoreAsync(BuildPath(organizationId), cancellationToken);
@@ -44,6 +47,9 @@ public sealed class Brands
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The new brand.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the key is already in use.</exception>
+    /// <sdkOperation>brand.createBrand</sdkOperation>
+    /// <sdkGroup>Brand</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Brand> CreateAsync(string organizationId, CreateBrandRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(organizationId);
@@ -59,6 +65,9 @@ public sealed class Brands
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The requested brand.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the brand was not found.</exception>
+    /// <sdkOperation>brand.getBrand</sdkOperation>
+    /// <sdkGroup>Brand</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Brand> GetAsync(string organizationId, string brandId, CancellationToken cancellationToken = default)
     {
         return _endpoint.SendAsync<Brand>(HttpMethod.Get, BuildPath(organizationId, brandId), null, cancellationToken);
@@ -74,6 +83,9 @@ public sealed class Brands
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated brand.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the brand was not found.</exception>
+    /// <sdkOperation>brand.updateBrand</sdkOperation>
+    /// <sdkGroup>Brand</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Brand> UpdateAsync(string organizationId, string brandId, UpdateBrandRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -92,6 +104,9 @@ public sealed class Brands
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated brand.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the brand was not found.</exception>
+    /// <sdkOperation>brand.updateBrandLogo</sdkOperation>
+    /// <sdkGroup>Brand</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Brand> UpdateLogoAsync(
         string organizationId,
         string brandId,
@@ -115,6 +130,9 @@ public sealed class Brands
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated brand.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the brand was not found.</exception>
+    /// <sdkOperation>brand.updateBrandThumbnail</sdkOperation>
+    /// <sdkGroup>Brand</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Brand> UpdateThumbnailAsync(
         string organizationId,
         string brandId,
@@ -134,6 +152,9 @@ public sealed class Brands
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the brand is deleted.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the brand is the default.</exception>
+    /// <sdkOperation>brand.deleteBrand</sdkOperation>
+    /// <sdkGroup>Brand</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task DeleteAsync(string organizationId, string brandId, CancellationToken cancellationToken = default)
     {
         return _endpoint.SendVoidAsync(HttpMethod.Delete, BuildPath(organizationId, brandId), null, cancellationToken);
@@ -150,6 +171,9 @@ public sealed class Brands
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated brand with its email domain configuration.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the domain is invalid.</exception>
+    /// <sdkOperation>brand.addBrandEmailDomain</sdkOperation>
+    /// <sdkGroup>Brand</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Brand> AddEmailDomainAsync(
         string organizationId,
         string brandId,
@@ -169,6 +193,9 @@ public sealed class Brands
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated brand with the email domain removed.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the brand was not found.</exception>
+    /// <sdkOperation>brand.removeBrandEmailDomain</sdkOperation>
+    /// <sdkGroup>Brand</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Brand> RemoveEmailDomainAsync(string organizationId, string brandId, CancellationToken cancellationToken = default)
     {
         return _endpoint.SendAsync<Brand>(
@@ -183,6 +210,9 @@ public sealed class Brands
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated brand with its current verification status.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because no email domain is configured.</exception>
+    /// <sdkOperation>brand.verifyBrandEmailDomain</sdkOperation>
+    /// <sdkGroup>Brand</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Brand> VerifyEmailDomainAsync(string organizationId, string brandId, CancellationToken cancellationToken = default)
     {
         return _endpoint.SendAsync<Brand>(

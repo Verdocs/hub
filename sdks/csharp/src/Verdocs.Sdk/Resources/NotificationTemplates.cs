@@ -24,6 +24,9 @@ public sealed class NotificationTemplates
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The organization's notification templates, without message bodies.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not an admin.</exception>
+    /// <sdkOperation>notification.getNotificationTemplates</sdkOperation>
+    /// <sdkGroup>Notification</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public async Task<IReadOnlyList<NotificationTemplate>> ListAsync(CancellationToken cancellationToken = default)
     {
         return await _endpoint.SendAsync<List<NotificationTemplate>>(
@@ -38,6 +41,9 @@ public sealed class NotificationTemplates
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The requested notification template.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the template was not found.</exception>
+    /// <sdkOperation>notification.getNotificationTemplate</sdkOperation>
+    /// <sdkGroup>Notification</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<NotificationTemplate> GetAsync(string templateId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);
@@ -55,6 +61,9 @@ public sealed class NotificationTemplates
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The new notification template.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because a template already exists for the event.</exception>
+    /// <sdkOperation>notification.createNotificationTemplate</sdkOperation>
+    /// <sdkGroup>Notification</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<NotificationTemplate> CreateAsync(CreateNotificationTemplateRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -72,6 +81,9 @@ public sealed class NotificationTemplates
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated notification template.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because a required variable is missing.</exception>
+    /// <sdkOperation>notification.updateNotificationTemplate</sdkOperation>
+    /// <sdkGroup>Notification</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<NotificationTemplate> UpdateAsync(
         string templateId,
         UpdateNotificationTemplateRequest request,
@@ -90,6 +102,9 @@ public sealed class NotificationTemplates
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the template is deleted.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not an admin.</exception>
+    /// <sdkOperation>notification.deleteNotificationTemplate</sdkOperation>
+    /// <sdkGroup>Notification</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task DeleteAsync(string templateId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);

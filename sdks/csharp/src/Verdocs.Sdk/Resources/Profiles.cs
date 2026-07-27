@@ -23,6 +23,9 @@ public sealed class Profiles
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The caller's profiles.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>profile.getProfiles</sdkOperation>
+    /// <sdkGroup>Profile</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<IReadOnlyList<Profile>> ListAsync(CancellationToken cancellationToken = default)
     {
         return _endpoint.SendAsync<IReadOnlyList<Profile>>(HttpMethod.Get, "/v2/profiles", null, cancellationToken);
@@ -35,6 +38,9 @@ public sealed class Profiles
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The profile marked current, or null if the caller has none.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>profile.getCurrentProfile</sdkOperation>
+    /// <sdkGroup>Profile</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public async Task<Profile?> GetCurrentAsync(CancellationToken cancellationToken = default)
     {
         var profiles = await _endpoint.SendAsync<List<Profile>>(HttpMethod.Get, "/v2/profiles", null, cancellationToken)
@@ -70,6 +76,9 @@ public sealed class Profiles
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>Session tokens for the new (not yet verified) profile.</returns>
     /// <exception cref="VerdocsApiException">The email is already registered, the caller was authenticated, or the call failed.</exception>
+    /// <sdkOperation>profile.createProfile</sdkOperation>
+    /// <sdkGroup>Profile</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<AuthenticateResponse> CreateAsync(CreateProfileRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -87,6 +96,9 @@ public sealed class Profiles
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>Fresh session tokens for the newly current profile.</returns>
     /// <exception cref="VerdocsApiException">The profile was not found or the call failed.</exception>
+    /// <sdkOperation>profile.switchProfile</sdkOperation>
+    /// <sdkGroup>Profile</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<AuthenticateResponse> SwitchAsync(string profileId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(profileId);
@@ -107,6 +119,9 @@ public sealed class Profiles
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated profile.</returns>
     /// <exception cref="VerdocsApiException">The profile was not found, a field was not accepted, or the call failed.</exception>
+    /// <sdkOperation>profile.updateProfile</sdkOperation>
+    /// <sdkGroup>Profile</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Profile> UpdateAsync(string profileId, UpdateProfileRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(profileId);
@@ -131,6 +146,9 @@ public sealed class Profiles
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>Tokens for the next profile, or a logout notice when it was the last one.</returns>
     /// <exception cref="VerdocsApiException">The profile was not found or the call failed.</exception>
+    /// <sdkOperation>profile.deleteProfile</sdkOperation>
+    /// <sdkGroup>Profile</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<DeleteProfileResponse> DeleteAsync(string profileId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(profileId);
@@ -152,6 +170,9 @@ public sealed class Profiles
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated profile; <see cref="Profile.Picture"/> carries the new photo URL.</returns>
     /// <exception cref="VerdocsApiException">The upload was rejected or the call failed.</exception>
+    /// <sdkOperation>profile.updateProfilePhoto</sdkOperation>
+    /// <sdkGroup>Profile</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Profile> UpdatePhotoAsync(string profileId, Stream photo, string fileName, string contentType, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(profileId);

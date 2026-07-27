@@ -19,6 +19,9 @@ public static class Colors
     /// </summary>
     /// <param name="rgba">A CSS rgba() string, e.g. "rgba(255, 193, 7, 0.4)".</param>
     /// <returns>The lowercase hex color, e.g. "#ffe69c".</returns>
+    /// <sdkOperation>color.getRGB</sdkOperation>
+    /// <sdkGroup>Colors</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static string GetRgb(string rgba)
     {
         ArgumentNullException.ThrowIfNull(rgba);
@@ -46,6 +49,9 @@ public static class Colors
     /// </summary>
     /// <param name="roleIndex">Zero-based index of the role in the template's role list.</param>
     /// <returns>A CSS rgba() string.</returns>
+    /// <sdkOperation>color.getRGBA</sdkOperation>
+    /// <sdkGroup>Colors</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static string GetRgba(int roleIndex)
     {
         // C# % truncates toward zero like JS, so a negative index matches no case and falls
@@ -78,6 +84,9 @@ public static class Colors
     /// "Signer 2" land on visibly different colors.
     /// </param>
     /// <returns>A CSS rgba() string, or null for an empty name (the js-sdk returns undefined there).</returns>
+    /// <sdkOperation>color.nameToRGBA</sdkOperation>
+    /// <sdkGroup>Colors</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static string? NameToRgba(string? name)
     {
         if (string.IsNullOrEmpty(name))
@@ -129,6 +138,9 @@ public static class Colors
     /// lookup; we keep that quirk.
     /// </param>
     /// <returns>A CSS rgba() string, or null when only an empty name is available.</returns>
+    /// <sdkOperation>color.getRoleColor</sdkOperation>
+    /// <sdkGroup>Colors</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static string? GetRoleColor(string? name, IReadOnlyList<string>? roles, int? index = null)
     {
         if (index is { } explicitIndex && explicitIndex != 0)

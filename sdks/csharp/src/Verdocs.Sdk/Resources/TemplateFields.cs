@@ -23,6 +23,9 @@ public sealed class TemplateFields
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The new field.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the role name does not exist.</exception>
+    /// <sdkOperation>field.createField</sdkOperation>
+    /// <sdkGroup>Field</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<TemplateField> CreateAsync(string templateId, CreateFieldRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);
@@ -38,6 +41,9 @@ public sealed class TemplateFields
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated field.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because a new name is already in use.</exception>
+    /// <sdkOperation>field.updateField</sdkOperation>
+    /// <sdkGroup>Field</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<TemplateField> UpdateAsync(string templateId, string fieldName, UpdateFieldRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);
@@ -56,6 +62,9 @@ public sealed class TemplateFields
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the field has been deleted.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the field was not found.</exception>
+    /// <sdkOperation>field.deleteField</sdkOperation>
+    /// <sdkGroup>Field</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task DeleteAsync(string templateId, string fieldName, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);

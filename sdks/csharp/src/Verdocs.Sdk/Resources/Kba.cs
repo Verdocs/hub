@@ -28,6 +28,9 @@ public sealed class Kba
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The next KBA step required.</returns>
     /// <exception cref="VerdocsApiException">Always, against the deployed API (404).</exception>
+    /// <sdkOperation>kba.getKbaStep</sdkOperation>
+    /// <sdkGroup>KBA</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<RecipientKbaStep> GetStepAsync(string envelopeId, string roleName, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(envelopeId);
@@ -49,6 +52,9 @@ public sealed class Kba
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The next KBA step required.</returns>
     /// <exception cref="VerdocsApiException">Always, against the deployed API (404).</exception>
+    /// <sdkOperation>kba.submitKbaPin</sdkOperation>
+    /// <sdkGroup>KBA</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<RecipientKbaStep> SubmitPinAsync(string envelopeId, string roleName, string pin, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(envelopeId);
@@ -71,6 +77,9 @@ public sealed class Kba
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The next KBA step required.</returns>
     /// <exception cref="VerdocsApiException">Always, against the deployed API (404).</exception>
+    /// <sdkOperation>kba.submitKbaIdentity</sdkOperation>
+    /// <sdkGroup>KBA</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<RecipientKbaStep> SubmitIdentityAsync(
         string envelopeId,
         string roleName,
@@ -98,6 +107,9 @@ public sealed class Kba
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The next KBA step required.</returns>
     /// <exception cref="VerdocsApiException">Always, against the deployed API (404).</exception>
+    /// <sdkOperation>kba.submitKbaChallengeResponse</sdkOperation>
+    /// <sdkGroup>KBA</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<RecipientKbaStep> SubmitChallengeResponseAsync(
         string envelopeId,
         string roleName,

@@ -14,6 +14,10 @@ internal static class Program
 {
     private static readonly HashSet<string> SdkPages = ["Endpoints", "Helpers"];
 
+    // The operations we document live on the resource/helper/util classes, not on
+    // VerdocsEndpoint itself (that type only exposes get-only properties to reach them).
+    private static readonly string[] DocumentedNamespaces = ["Verdocs.Resources", "Verdocs.Helpers", "Verdocs.Utils"];
+
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         WriteIndented = true,
@@ -27,58 +31,67 @@ internal static class Program
         var outputPath = Path.Combine(csharpRoot, "sdk-docs.json");
 
         var docsByMember = LoadXmlDocs(xmlPath);
-        var endpointType = typeof(VerdocsEndpoint);
         var groups = new Dictionary<string, SdkGroup>(StringComparer.Ordinal);
+        var assembly = typeof(VerdocsEndpoint).Assembly;
 
-        foreach (var method in endpointType.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly))
+        var types = assembly.GetTypes()
+            .Where(t => t.IsPublic && DocumentedNamespaces.Contains(t.Namespace))
+            .OrderBy(t => t.FullName, StringComparer.Ordinal);
+
+        const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static;
+
+        foreach (var type in types)
         {
-            if (method.IsSpecialName)
+            foreach (var method in type.GetMethods(bindingFlags))
             {
-                continue;
-            }
-
-            var memberName = ToXmlMemberName(method);
-            if (!docsByMember.TryGetValue(memberName, out var docs) || string.IsNullOrEmpty(docs.SdkOperation))
-            {
-                continue;
-            }
-
-            var groupName = string.IsNullOrEmpty(docs.SdkGroup) ? "Ungrouped" : docs.SdkGroup;
-            var groupId = Slugify(groupName);
-            var page = SdkPages.Contains(docs.SdkPage) ? docs.SdkPage : "Endpoints";
-
-            var parameters = BuildParams(method, docs);
-            var returnType = TypeDisplayName(method.ReturnType);
-            var symbol = new SdkSymbol
-            {
-                SdkOperation = docs.SdkOperation,
-                Kind = "function",
-                Name = method.Name,
-                Page = page,
-                GettingStarted = docs.GettingStarted,
-                Resource = "function",
-                Signature = BuildSignature(method.Name, parameters, returnType),
-                Summary = docs.Summary,
-                Params = parameters,
-                Returns = new SdkReturns { Type = returnType, Description = docs.ReturnsDescription },
-                Throws = docs.Throws,
-                Examples = docs.Examples,
-                Deprecated = false,
-            };
-
-            if (!groups.TryGetValue(groupId, out var group))
-            {
-                group = new SdkGroup
+                if (method.IsSpecialName)
                 {
-                    Id = groupId,
-                    Name = groupName,
-                    Summary = "",
-                    Symbols = new Dictionary<string, SdkSymbol>(StringComparer.Ordinal),
-                };
-                groups[groupId] = group;
-            }
+                    continue;
+                }
 
-            group.Symbols[docs.SdkOperation] = symbol;
+                var memberName = ToXmlMemberName(method);
+                if (!docsByMember.TryGetValue(memberName, out var docs) || string.IsNullOrEmpty(docs.SdkOperation))
+                {
+                    continue;
+                }
+
+                var groupName = string.IsNullOrEmpty(docs.SdkGroup) ? "Ungrouped" : docs.SdkGroup;
+                var groupId = Slugify(groupName);
+                var page = SdkPages.Contains(docs.SdkPage) ? docs.SdkPage : "Endpoints";
+
+                var parameters = BuildParams(method, docs);
+                var returnType = TypeDisplayName(method.ReturnType) + (IsNullableReference(method.ReturnParameter) ? "?" : "");
+                var symbol = new SdkSymbol
+                {
+                    SdkOperation = docs.SdkOperation,
+                    Kind = "function",
+                    Name = method.Name,
+                    Page = page,
+                    GettingStarted = docs.GettingStarted,
+                    Resource = "function",
+                    Signature = BuildSignature(method.Name, parameters, returnType),
+                    Summary = docs.Summary,
+                    Params = parameters,
+                    Returns = new SdkReturns { Type = returnType, Description = docs.ReturnsDescription },
+                    Throws = docs.Throws,
+                    Examples = docs.Examples,
+                    Deprecated = method.GetCustomAttribute<ObsoleteAttribute>() is not null,
+                };
+
+                if (!groups.TryGetValue(groupId, out var group))
+                {
+                    group = new SdkGroup
+                    {
+                        Id = groupId,
+                        Name = groupName,
+                        Summary = "",
+                        Symbols = new Dictionary<string, SdkSymbol>(StringComparer.Ordinal),
+                    };
+                    groups[groupId] = group;
+                }
+
+                group.Symbols[docs.SdkOperation] = symbol;
+            }
         }
 
         var model = new SdkDocs
@@ -262,7 +275,7 @@ internal static class Program
             result.Add(new SdkParam
             {
                 Name = parameter.Name ?? "",
-                Type = TypeDisplayName(parameter.ParameterType),
+                Type = TypeDisplayName(parameter.ParameterType) + (IsNullableReference(parameter) ? "?" : ""),
                 Description = docs.ParamDocs.GetValueOrDefault(parameter.Name ?? "", ""),
                 Optional = optional,
                 Default = defaultValue,
@@ -281,6 +294,21 @@ internal static class Program
             return $"{param.Type} {param.Name}{optionalMarker}{defaultSuffix}";
         });
         return $"{returnType} {name}({string.Join(", ", rendered)})";
+    }
+
+    private static readonly NullabilityInfoContext NullabilityContext = new();
+
+    // Reference-type nullability (`string?`) is erased from Type at runtime; NullabilityInfoContext
+    // reads the compiler-emitted attributes to recover it. Value types already carry their own
+    // nullability via Nullable<T>, so this only matters for reference types.
+    private static bool IsNullableReference(ParameterInfo parameter)
+    {
+        if (parameter.ParameterType.IsValueType)
+        {
+            return false;
+        }
+
+        return NullabilityContext.Create(parameter).ReadState == NullabilityState.Nullable;
     }
 
     private static string TypeDisplayName(Type type)
@@ -310,6 +338,19 @@ internal static class Program
             return TypeDisplayName(type.GetElementType()!) + "[]";
         }
 
+        if (type.IsGenericType)
+        {
+            var name = type.Name;
+            var tick = name.IndexOf('`');
+            if (tick >= 0)
+            {
+                name = name[..tick];
+            }
+
+            var args = string.Join(", ", type.GetGenericArguments().Select(TypeDisplayName));
+            return $"{name}<{args}>";
+        }
+
         return type.Name switch
         {
             "String" => "string",
@@ -317,6 +358,10 @@ internal static class Program
             "Int64" => "long",
             "Boolean" => "bool",
             "Object" => "object",
+            "Byte" => "byte",
+            "Double" => "double",
+            "Single" => "float",
+            "Decimal" => "decimal",
             _ => type.Name,
         };
     }

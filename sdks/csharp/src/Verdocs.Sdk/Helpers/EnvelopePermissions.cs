@@ -24,6 +24,9 @@ public static class EnvelopePermissions
     /// <param name="profileId">The profile ID to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
     /// <returns>True when the profile ID matches the envelope's creator.</returns>
+    /// <sdkOperation>envelope.isEnvelopeOwner</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsEnvelopeOwner(string? profileId, Envelope envelope) =>
         envelope.ProfileId == profileId;
 
@@ -34,6 +37,9 @@ public static class EnvelopePermissions
     /// <param name="profileId">The profile ID to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
     /// <returns>True when a recipient carries the profile ID.</returns>
+    /// <sdkOperation>envelope.isEnvelopeRecipient</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsEnvelopeRecipient(string? profileId, Envelope envelope) =>
         (envelope.Recipients ?? []).Any(recipient => recipient.ProfileId == profileId);
 
@@ -44,6 +50,9 @@ public static class EnvelopePermissions
     /// <param name="profileId">The profile ID to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
     /// <returns>True when the profile ID may access the envelope.</returns>
+    /// <sdkOperation>envelope.canAccessEnvelope</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool CanAccessEnvelope(string? profileId, Envelope envelope) =>
         IsEnvelopeOwner(profileId, envelope) || IsEnvelopeRecipient(profileId, envelope);
 
@@ -53,6 +62,9 @@ public static class EnvelopePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
     /// <returns>True when the profile matches the envelope's creator.</returns>
+    /// <sdkOperation>envelope.userIsEnvelopeOwner</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserIsEnvelopeOwner(Profile? profile, Envelope envelope) =>
         envelope.ProfileId == profile?.Id;
 
@@ -64,6 +76,9 @@ public static class EnvelopePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
     /// <returns>True when a recipient carries the profile's ID.</returns>
+    /// <sdkOperation>envelope.userIsEnvelopeRecipient</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserIsEnvelopeRecipient(Profile? profile, Envelope envelope) =>
         (envelope.Recipients ?? []).Any(recipient => recipient.ProfileId == profile?.Id);
 
@@ -73,6 +88,9 @@ public static class EnvelopePermissions
     /// </summary>
     /// <param name="envelope">The envelope to check.</param>
     /// <returns>True when the envelope is still active.</returns>
+    /// <sdkOperation>envelope.envelopeIsActive</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool EnvelopeIsActive(Envelope envelope) =>
         envelope.Status != EnvelopeStatus.Complete &&
         envelope.Status != EnvelopeStatus.Declined &&
@@ -85,6 +103,9 @@ public static class EnvelopePermissions
     /// </summary>
     /// <param name="envelope">The envelope to check.</param>
     /// <returns>True when the envelope is not complete.</returns>
+    /// <sdkOperation>envelope.envelopeIsComplete</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool EnvelopeIsComplete(Envelope envelope) =>
         envelope.Status != EnvelopeStatus.Complete;
 
@@ -95,6 +116,9 @@ public static class EnvelopePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
     /// <returns>True when the user may cancel the envelope.</returns>
+    /// <sdkOperation>envelope.userCanCancelEnvelope</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanCancelEnvelope(Profile? profile, Envelope envelope) =>
         UserIsEnvelopeOwner(profile, envelope) &&
         envelope.Status != EnvelopeStatus.Complete &&
@@ -108,6 +132,9 @@ public static class EnvelopePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
     /// <returns>True when the user may finish the envelope.</returns>
+    /// <sdkOperation>envelope.userCanFinishEnvelope</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanFinishEnvelope(Profile? profile, Envelope envelope) =>
         UserIsEnvelopeOwner(profile, envelope) &&
         envelope.Status != EnvelopeStatus.Complete &&
@@ -121,6 +148,9 @@ public static class EnvelopePermissions
     /// </summary>
     /// <param name="recipient">The recipient to check.</param>
     /// <returns>True when the recipient has not yet submitted, declined, or been canceled.</returns>
+    /// <sdkOperation>envelope.recipientHasAction</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool RecipientHasAction(Recipient recipient) =>
         !SettledRecipientStatuses.Contains(recipient.Status);
 
@@ -131,6 +161,9 @@ public static class EnvelopePermissions
     /// </summary>
     /// <param name="envelope">The envelope to scan.</param>
     /// <returns>The recipients with actions remaining.</returns>
+    /// <sdkOperation>envelope.getRecipientsWithActions</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static IReadOnlyList<Recipient> GetRecipientsWithActions(Envelope envelope) =>
         EnvelopeEndStatuses.Contains(envelope.Status)
             ? []
@@ -144,6 +177,9 @@ public static class EnvelopePermissions
     /// <param name="recipient">The recipient to check.</param>
     /// <param name="recipientsWithActions">The pending recipients, from <see cref="GetRecipientsWithActions"/>.</param>
     /// <returns>True when the recipient can act now.</returns>
+    /// <sdkOperation>envelope.recipientCanAct</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool RecipientCanAct(Recipient recipient, IReadOnlyList<Recipient> recipientsWithActions) =>
         recipientsWithActions.Count > 0 && recipient.Sequence == recipientsWithActions[0].Sequence;
 
@@ -155,6 +191,9 @@ public static class EnvelopePermissions
     /// <param name="session">The current session, or null for no session.</param>
     /// <param name="envelope">The envelope to scan.</param>
     /// <returns>The matching recipient, or null when there is none.</returns>
+    /// <sdkOperation>envelope.getMyRecipient</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static Recipient? GetMyRecipient(VerdocsSession? session, Envelope envelope) =>
         (envelope.Recipients ?? []).FirstOrDefault(recipient => recipient.Email == session?.Email);
 
@@ -165,6 +204,9 @@ public static class EnvelopePermissions
     /// <param name="email">The email address to look for.</param>
     /// <param name="recipientsWithActions">The pending recipients, from <see cref="GetRecipientsWithActions"/>.</param>
     /// <returns>True when the matching recipient can act now.</returns>
+    /// <sdkOperation>envelope.userCanAct</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanAct(string email, IReadOnlyList<Recipient> recipientsWithActions)
     {
         var recipient = recipientsWithActions.FirstOrDefault(
@@ -179,6 +221,9 @@ public static class EnvelopePermissions
     /// <param name="email">The email address to look for.</param>
     /// <param name="envelope">The envelope to scan.</param>
     /// <returns>The matching recipient, or null when there is none.</returns>
+    /// <sdkOperation>envelope.getRecipient</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static Recipient? GetRecipient(string email, Envelope envelope) =>
         (envelope.Recipients ?? []).FirstOrDefault(
             r => string.Equals(r.Email, email, StringComparison.OrdinalIgnoreCase));
@@ -191,6 +236,9 @@ public static class EnvelopePermissions
     /// <param name="email">The email address to look for.</param>
     /// <param name="envelope">The envelope to scan.</param>
     /// <returns>True when the matching recipient can act now.</returns>
+    /// <sdkOperation>envelope.getRecipientWithActions</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool GetRecipientWithActions(string email, Envelope envelope)
     {
         var recipientsWithActions = GetRecipientsWithActions(envelope);
@@ -209,6 +257,9 @@ public static class EnvelopePermissions
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
     /// <returns>True when the user can sign now.</returns>
+    /// <sdkOperation>envelope.userCanSignNow</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool UserCanSignNow(Profile? profile, Envelope envelope)
     {
         if (profile == null)
@@ -231,6 +282,9 @@ public static class EnvelopePermissions
     /// </summary>
     /// <param name="envelope">The envelope to scan.</param>
     /// <returns>The next pending recipient, or null when none remain.</returns>
+    /// <sdkOperation>envelope.getNextRecipient</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static Recipient? GetNextRecipient(Envelope envelope)
     {
         var recipientsWithActions = GetRecipientsWithActions(envelope);

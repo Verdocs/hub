@@ -23,6 +23,9 @@ public static class Dates
     /// The elapsed time as "&lt;n&gt;&lt;unit&gt;", or "" when there is nothing to format. A
     /// future moment comes out with a negative count, as in the js-sdk.
     /// </returns>
+    /// <sdkOperation>dateTime.formatShortTimeAgo</sdkOperation>
+    /// <sdkGroup>DateTime</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static string FormatShortTimeAgo(DateTimeOffset? value)
     {
         if (value is not { } moment)

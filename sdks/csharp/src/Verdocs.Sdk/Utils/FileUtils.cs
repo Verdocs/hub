@@ -17,6 +17,9 @@ public static class FileUtils
     /// <param name="data">The file content.</param>
     /// <param name="contentType">The MIME type to embed, e.g. "application/pdf".</param>
     /// <returns>The "data:&lt;type&gt;;base64,&lt;payload&gt;" string.</returns>
+    /// <sdkOperation>file.fileToDataUrl</sdkOperation>
+    /// <sdkGroup>File</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static string BytesToDataUrl(byte[] data, string contentType)
     {
         ArgumentNullException.ThrowIfNull(data);

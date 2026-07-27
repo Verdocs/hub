@@ -25,6 +25,9 @@ public sealed class Groups
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The organization's groups.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>group.getGroups</sdkOperation>
+    /// <sdkGroup>Group</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public async Task<IReadOnlyList<Group>> ListAsync(CancellationToken cancellationToken = default)
     {
         return await _endpoint.SendAsync<List<Group>>(HttpMethod.Get, "/v2/organization-groups", null, cancellationToken)
@@ -38,6 +41,9 @@ public sealed class Groups
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The requested group.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the group was not found.</exception>
+    /// <sdkOperation>group.getGroup</sdkOperation>
+    /// <sdkGroup>Group</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Group> GetAsync(string groupId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(groupId);
@@ -52,6 +58,9 @@ public sealed class Groups
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The new group.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the name is reserved.</exception>
+    /// <sdkOperation>group.createGroup</sdkOperation>
+    /// <sdkGroup>Group</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Group> CreateAsync(CreateGroupRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -67,6 +76,9 @@ public sealed class Groups
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated group.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the group is "everyone".</exception>
+    /// <sdkOperation>group.updateGroup</sdkOperation>
+    /// <sdkGroup>Group</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Group> UpdateAsync(string groupId, UpdateGroupRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(groupId);
@@ -83,6 +95,9 @@ public sealed class Groups
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the group is deleted.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the group is "everyone".</exception>
+    /// <sdkOperation>group.deleteGroup</sdkOperation>
+    /// <sdkGroup>Group</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task DeleteAsync(string groupId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(groupId);
@@ -101,6 +116,9 @@ public sealed class Groups
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the server accepts the request.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the profile is already a member.</exception>
+    /// <sdkOperation>group.addGroupMember</sdkOperation>
+    /// <sdkGroup>Group</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task AddMemberAsync(string groupId, string profileId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(groupId);
@@ -120,6 +138,9 @@ public sealed class Groups
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the membership is removed.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the membership was not found.</exception>
+    /// <sdkOperation>group.deleteGroupMember</sdkOperation>
+    /// <sdkGroup>Group</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task DeleteMemberAsync(string groupId, string profileId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(groupId);

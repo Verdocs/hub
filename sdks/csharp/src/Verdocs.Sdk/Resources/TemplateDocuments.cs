@@ -29,6 +29,9 @@ public sealed class TemplateDocuments
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The new template document.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the file was an unsupported type.</exception>
+    /// <sdkOperation>templateDocument.createTemplateDocument</sdkOperation>
+    /// <sdkGroup>TemplateDocument</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<TemplateDocument> CreateAsync(string templateId, TemplateFileUpload file, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);
@@ -55,6 +58,9 @@ public sealed class TemplateDocuments
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The document's metadata.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the document was not found.</exception>
+    /// <sdkOperation>templateDocument.getTemplateDocument</sdkOperation>
+    /// <sdkGroup>TemplateDocument</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<TemplateDocument> GetAsync(string documentId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(documentId);
@@ -70,6 +76,9 @@ public sealed class TemplateDocuments
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The file's raw bytes.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the document was not found.</exception>
+    /// <sdkOperation>templateDocument.downloadTemplateDocument</sdkOperation>
+    /// <sdkGroup>TemplateDocument</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<byte[]> DownloadAsync(string documentId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(documentId);
@@ -86,6 +95,9 @@ public sealed class TemplateDocuments
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The signed URL, as a bare string.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the document was not found.</exception>
+    /// <sdkOperation>templateDocument.getTemplateDocumentDownloadLink</sdkOperation>
+    /// <sdkGroup>TemplateDocument</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<string> GetDownloadLinkAsync(string documentId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(documentId);
@@ -103,6 +115,9 @@ public sealed class TemplateDocuments
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The signed URL, as a bare string.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the document was not found.</exception>
+    /// <sdkOperation>templateDocument.getTemplateDocumentPreviewLink</sdkOperation>
+    /// <sdkGroup>TemplateDocument</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<string> GetPreviewLinkAsync(string documentId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(documentId);
@@ -120,6 +135,9 @@ public sealed class TemplateDocuments
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The file's raw bytes, if the API ever serves this route.</returns>
     /// <exception cref="VerdocsApiException">Always thrown today; the deployed API has no handler for this call.</exception>
+    /// <sdkOperation>templateDocument.getTemplateDocumentFile</sdkOperation>
+    /// <sdkGroup>TemplateDocument</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<byte[]> GetFileAsync(string templateId, string documentId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);
@@ -143,6 +161,9 @@ public sealed class TemplateDocuments
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The thumbnail's raw bytes, if the API ever serves this route.</returns>
     /// <exception cref="VerdocsApiException">Always thrown today; the deployed API has no handler for this call.</exception>
+    /// <sdkOperation>templateDocument.getTemplateDocumentThumbnail</sdkOperation>
+    /// <sdkGroup>TemplateDocument</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<byte[]> GetThumbnailAsync(string templateId, string documentId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(templateId);
@@ -164,6 +185,9 @@ public sealed class TemplateDocuments
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The signed URL, as a bare string.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the document was not found.</exception>
+    /// <sdkOperation>templateDocument.getTemplateDocumentPageDisplayUri</sdkOperation>
+    /// <sdkGroup>TemplateDocument</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<string> GetPageDisplayUriAsync(string documentId, int page, string variant = "original", CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(documentId);
@@ -184,6 +208,9 @@ public sealed class TemplateDocuments
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The template the document was removed from, with its remaining documents, roles, and fields.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller may not edit the template.</exception>
+    /// <sdkOperation>templateDocument.deleteTemplateDocument</sdkOperation>
+    /// <sdkGroup>TemplateDocument</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Template> DeleteAsync(string documentId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(documentId);

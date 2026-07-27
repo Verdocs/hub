@@ -15,6 +15,9 @@ public static class Entitlements
     /// The raw records, e.g. from <see cref="Resources.Organizations.GetEntitlementsAsync"/>.
     /// </param>
     /// <returns>Feature name (see <see cref="EntitlementFeature"/>) to the entitlement record currently granting it.</returns>
+    /// <sdkOperation>entitlement.collapseEntitlements</sdkOperation>
+    /// <sdkGroup>Entitlement</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static IReadOnlyDictionary<string, Entitlement> CollapseEntitlements(IEnumerable<Entitlement> entitlements)
     {
         ArgumentNullException.ThrowIfNull(entitlements);

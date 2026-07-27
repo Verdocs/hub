@@ -25,6 +25,9 @@ public sealed class ApiKeys
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The organization's API keys, without secrets.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not an admin.</exception>
+    /// <sdkOperation>apiKey.getApiKeys</sdkOperation>
+    /// <sdkGroup>ApiKey</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public async Task<IReadOnlyList<ApiKey>> ListAsync(CancellationToken cancellationToken = default)
     {
         return await _endpoint.SendAsync<List<ApiKey>>(HttpMethod.Get, "/v2/api-keys", null, cancellationToken)
@@ -39,6 +42,9 @@ public sealed class ApiKeys
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The new key, including its secret.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the profile is not in the caller's organization.</exception>
+    /// <sdkOperation>apiKey.createApiKey</sdkOperation>
+    /// <sdkGroup>ApiKey</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<ApiKey> CreateAsync(CreateApiKeyRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -53,6 +59,9 @@ public sealed class ApiKeys
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The key with its new secret.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the key was not found.</exception>
+    /// <sdkOperation>apiKey.rotateApiKey</sdkOperation>
+    /// <sdkGroup>ApiKey</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<ApiKey> RotateAsync(string clientId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(clientId);
@@ -69,6 +78,9 @@ public sealed class ApiKeys
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated key, without its secret.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the key was not found.</exception>
+    /// <sdkOperation>apiKey.updateApiKey</sdkOperation>
+    /// <sdkGroup>ApiKey</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<ApiKey> UpdateAsync(string clientId, UpdateApiKeyRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(clientId);
@@ -85,6 +97,9 @@ public sealed class ApiKeys
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the key is deleted.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not an admin.</exception>
+    /// <sdkOperation>apiKey.deleteApiKey</sdkOperation>
+    /// <sdkGroup>ApiKey</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task DeleteAsync(string clientId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(clientId);

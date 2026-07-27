@@ -26,6 +26,9 @@ public sealed class Recipients
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated recipient.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is not a signing session.</exception>
+    /// <sdkOperation>recipient.envelopeRecipientAgree</sdkOperation>
+    /// <sdkGroup>Recipient</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Recipient> AgreeAsync(
         string envelopeId,
         string roleName,
@@ -54,6 +57,9 @@ public sealed class Recipients
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated recipient.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is not a signing session.</exception>
+    /// <sdkOperation>recipient.envelopeRecipientDecline</sdkOperation>
+    /// <sdkGroup>Recipient</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Recipient> DeclineAsync(string envelopeId, string roleName, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(envelopeId);
@@ -71,6 +77,9 @@ public sealed class Recipients
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated recipient.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because a required field is incomplete.</exception>
+    /// <sdkOperation>recipient.envelopeRecipientSubmit</sdkOperation>
+    /// <sdkGroup>Recipient</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Recipient> SubmitAsync(
         string envelopeId,
         string roleName,
@@ -95,6 +104,9 @@ public sealed class Recipients
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The signing session token plus envelope and recipient metadata.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the key is invalid or already used.</exception>
+    /// <sdkOperation>recipient.startSigningSession</sdkOperation>
+    /// <sdkGroup>Recipient</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<SignerTokenResponse> StartSigningSessionAsync(
         string envelopeId,
         string roleName,
@@ -140,6 +152,9 @@ public sealed class Recipients
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The signing link, key, token, and envelope/recipient metadata.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not the creator.</exception>
+    /// <sdkOperation>recipient.getInPersonLink</sdkOperation>
+    /// <sdkGroup>Recipient</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<InPersonLinkResponse> GetInPersonLinkAsync(string envelopeId, string roleName, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(envelopeId);
@@ -162,6 +177,9 @@ public sealed class Recipients
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated signing session.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the code was wrong.</exception>
+    /// <sdkOperation>recipient.verifySigner</sdkOperation>
+    /// <sdkGroup>Recipient</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<SignerTokenResponse> VerifySignerAsync(AuthenticateRecipientRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -181,6 +199,9 @@ public sealed class Recipients
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the delegation is recorded. The server responds with a status body that carries nothing.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because delegation is not enabled.</exception>
+    /// <sdkOperation>recipient.delegateRecipient</sdkOperation>
+    /// <sdkGroup>Recipient</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task DelegateAsync(
         string envelopeId,
         string roleName,
@@ -205,6 +226,9 @@ public sealed class Recipients
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated recipient.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not the creator.</exception>
+    /// <sdkOperation>recipient.updateRecipient</sdkOperation>
+    /// <sdkGroup>Recipient</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Recipient> UpdateAsync(
         string envelopeId,
         string roleName,
@@ -226,6 +250,9 @@ public sealed class Recipients
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the reminder is queued. The server responds with a status body that carries nothing.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the recipient already submitted.</exception>
+    /// <sdkOperation>recipient.remindRecipient</sdkOperation>
+    /// <sdkGroup>Recipient</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task RemindAsync(string envelopeId, string roleName, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(envelopeId);
@@ -243,6 +270,9 @@ public sealed class Recipients
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the reset is recorded. The server responds with a status body that carries nothing.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the envelope is complete.</exception>
+    /// <sdkOperation>recipient.resetRecipient</sdkOperation>
+    /// <sdkGroup>Recipient</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task ResetAsync(string envelopeId, string roleName, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(envelopeId);
@@ -261,6 +291,9 @@ public sealed class Recipients
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The recipient, as the server echoes it back.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>recipient.askQuestion</sdkOperation>
+    /// <sdkGroup>Recipient</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Recipient> AskQuestionAsync(string envelopeId, string roleName, string question, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(envelopeId);

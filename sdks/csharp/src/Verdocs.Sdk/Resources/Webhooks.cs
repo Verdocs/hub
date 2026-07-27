@@ -24,6 +24,9 @@ public sealed class Webhooks
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The organization's webhook configuration.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because nothing is configured yet.</exception>
+    /// <sdkOperation>webhook.getWebhooks</sdkOperation>
+    /// <sdkGroup>Webhook</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Webhook> GetAsync(CancellationToken cancellationToken = default)
     {
         return _endpoint.SendAsync<Webhook>(HttpMethod.Get, "/v2/webhooks", null, cancellationToken);
@@ -49,6 +52,9 @@ public sealed class Webhooks
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated webhook configuration.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the URL is not HTTPS.</exception>
+    /// <sdkOperation>webhook.setWebhooks</sdkOperation>
+    /// <sdkGroup>Webhook</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Webhook> SetAsync(SetWebhookRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -65,6 +71,9 @@ public sealed class Webhooks
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The webhook configuration including the new, unmasked secret key.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because nothing is configured yet.</exception>
+    /// <sdkOperation>webhook.rotateWebhookSecret</sdkOperation>
+    /// <sdkGroup>Webhook</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Webhook> RotateSecretAsync(CancellationToken cancellationToken = default)
     {
         return _endpoint.SendAsync<Webhook>(HttpMethod.Put, "/v2/webhooks/rotate-secret", null, cancellationToken);

@@ -24,6 +24,9 @@ public sealed class Members
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The organization's member profiles.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>member.getOrganizationMembers</sdkOperation>
+    /// <sdkGroup>Member</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public async Task<IReadOnlyList<Profile>> ListAsync(CancellationToken cancellationToken = default)
     {
         return await _endpoint.SendAsync<List<Profile>>(HttpMethod.Get, "/v2/organization-members", null, cancellationToken)
@@ -52,6 +55,9 @@ public sealed class Members
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The new profile, the backing user account, and a generated password when one was created.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the user is already a member.</exception>
+    /// <sdkOperation>member.createOrganizationMember</sdkOperation>
+    /// <sdkGroup>Member</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<CreateMemberResponse> CreateAsync(CreateMemberRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -67,6 +73,9 @@ public sealed class Members
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated profile.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller targeted their own profile.</exception>
+    /// <sdkOperation>member.updateOrganizationMember</sdkOperation>
+    /// <sdkGroup>Member</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Profile> UpdateAsync(string profileId, UpdateMemberRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(profileId);
@@ -84,6 +93,9 @@ public sealed class Members
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the member is removed.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the profile was not found.</exception>
+    /// <sdkOperation>member.deleteOrganizationMember</sdkOperation>
+    /// <sdkGroup>Member</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task DeleteAsync(string profileId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(profileId);
@@ -101,6 +113,9 @@ public sealed class Members
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The member's profile with the joined user record.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the member has no user account.</exception>
+    /// <sdkOperation>member.lockOrganizationMember</sdkOperation>
+    /// <sdkGroup>Member</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Profile> LockAsync(string profileId, string reason, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(profileId);
@@ -121,6 +136,9 @@ public sealed class Members
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The member's profile with the joined user record.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the member has no user account.</exception>
+    /// <sdkOperation>member.unlockOrganizationMember</sdkOperation>
+    /// <sdkGroup>Member</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Profile> UnlockAsync(string profileId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(profileId);

@@ -13,6 +13,9 @@ public static class Strings
     /// <summary>Returns the string with its first letter uppercased.</summary>
     /// <param name="value">The string to capitalize. May be empty.</param>
     /// <returns>The input with the first character uppercased, other characters untouched.</returns>
+    /// <sdkOperation>string.capitalize</sdkOperation>
+    /// <sdkGroup>String</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static string Capitalize(string value)
     {
         ArgumentNullException.ThrowIfNull(value);
@@ -35,6 +38,9 @@ public static class Strings
     /// </summary>
     /// <param name="input">The phone-number-like input; null is treated as empty.</param>
     /// <returns>The E.164 string, or the trimmed input when it was blank or "+"-prefixed.</returns>
+    /// <sdkOperation>string.convertToE164</sdkOperation>
+    /// <sdkGroup>String</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static string ConvertToE164(string? input)
     {
         var trimmed = (input ?? string.Empty).Trim();
@@ -73,6 +79,9 @@ public static class Strings
     /// </summary>
     /// <param name="length">Number of characters to generate.</param>
     /// <returns>A random string of exactly <paramref name="length"/> characters from [0-9a-z].</returns>
+    /// <sdkOperation>string.randomString</sdkOperation>
+    /// <sdkGroup>String</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static string RandomString(int length)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(length);

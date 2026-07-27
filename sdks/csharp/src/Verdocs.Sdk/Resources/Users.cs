@@ -19,6 +19,9 @@ public sealed class Users
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The caller's user record.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>auth.getMyUser</sdkOperation>
+    /// <sdkGroup>Auth</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<User> GetMeAsync(CancellationToken cancellationToken = default)
     {
         return _endpoint.SendAsync<User>(HttpMethod.Get, "/v2/users/me", null, cancellationToken);
@@ -38,6 +41,9 @@ public sealed class Users
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The raw JSON array of notification rows.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>notification.getNotifications</sdkOperation>
+    /// <sdkGroup>Notification</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<JsonElement> GetNotificationsAsync(CancellationToken cancellationToken = default)
     {
         return _endpoint.SendAsync<JsonElement>(HttpMethod.Get, "/v2/notifications", null, cancellationToken);

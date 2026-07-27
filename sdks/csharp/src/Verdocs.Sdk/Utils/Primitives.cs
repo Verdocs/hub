@@ -13,6 +13,9 @@ public static class Primitives
     /// <param name="start">The first value.</param>
     /// <param name="count">How many values to produce.</param>
     /// <returns>A list of <paramref name="count"/> integers beginning at <paramref name="start"/>.</returns>
+    /// <sdkOperation>primitive.integerSequence</sdkOperation>
+    /// <sdkGroup>Primitive</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static IReadOnlyList<int> IntegerSequence(int start, int count)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(count);
@@ -37,6 +40,9 @@ public static class Primitives
     /// "First Last", trimmed, so a single known name comes back alone and no names at all
     /// come back as "".
     /// </returns>
+    /// <sdkOperation>primitive.formatFullName</sdkOperation>
+    /// <sdkGroup>Primitive</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static string FormatFullName(string? firstName, string? lastName)
     {
         return (Strings.Capitalize(firstName ?? string.Empty) + " " + Strings.Capitalize(lastName ?? string.Empty)).Trim();
@@ -50,6 +56,9 @@ public static class Primitives
     /// treated as empty here rather than throwing.
     /// </param>
     /// <returns>The space-separated uppercase initials, or "--" when there is no profile to read.</returns>
+    /// <sdkOperation>primitive.formatInitials</sdkOperation>
+    /// <sdkGroup>Primitive</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static string FormatInitials(Profile? profile)
     {
         if (profile is null)
@@ -69,6 +78,9 @@ public static class Primitives
     /// </summary>
     /// <param name="name">The full name.</param>
     /// <returns>The concatenated first characters.</returns>
+    /// <sdkOperation>primitive.fullNameToInitials</sdkOperation>
+    /// <sdkGroup>Primitive</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static string FullNameToInitials(string name)
     {
         ArgumentNullException.ThrowIfNull(name);

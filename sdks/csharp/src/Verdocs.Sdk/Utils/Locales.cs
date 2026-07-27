@@ -271,6 +271,9 @@ public static class Locales
     /// </summary>
     /// <param name="code">The display code to look up.</param>
     /// <returns>The matching country, or null.</returns>
+    /// <sdkOperation>locale.getCountryByCode</sdkOperation>
+    /// <sdkGroup>Locales</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static Country? GetCountryByCode(string code)
     {
         ArgumentNullException.ThrowIfNull(code);
@@ -309,6 +312,9 @@ public static class Locales
     /// <summary>Whether the code starts with French Guiana's +594 prefix.</summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True when the prefix matches.</returns>
+    /// <sdkOperation>locale.isFrenchGuiana</sdkOperation>
+    /// <sdkGroup>Locales</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsFrenchGuiana(string code)
     {
         ArgumentNullException.ThrowIfNull(code);
@@ -318,6 +324,9 @@ public static class Locales
     /// <summary>Whether the code starts with Guadeloupe's +590 prefix.</summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True when the prefix matches.</returns>
+    /// <sdkOperation>locale.isGuadeloupe</sdkOperation>
+    /// <sdkGroup>Locales</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsGuadeloupe(string code)
     {
         ArgumentNullException.ThrowIfNull(code);
@@ -327,6 +336,9 @@ public static class Locales
     /// <summary>Whether the code starts with Martinique's +596 prefix.</summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True when the prefix matches.</returns>
+    /// <sdkOperation>locale.isMartinique</sdkOperation>
+    /// <sdkGroup>Locales</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsMartinique(string code)
     {
         ArgumentNullException.ThrowIfNull(code);
@@ -336,6 +348,9 @@ public static class Locales
     /// <summary>Whether the code starts with the Mayotte/Reunion +262 prefix.</summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True when the prefix matches.</returns>
+    /// <sdkOperation>locale.isMayotte</sdkOperation>
+    /// <sdkGroup>Locales</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsMayotte(string code)
     {
         ArgumentNullException.ThrowIfNull(code);
@@ -349,6 +364,9 @@ public static class Locales
     /// </summary>
     /// <param name="code">The phone code to resolve.</param>
     /// <returns>The matching country, or null for unrecognized prefixes.</returns>
+    /// <sdkOperation>locale.getPlusOneCountry</sdkOperation>
+    /// <sdkGroup>Locales</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static Country? GetPlusOneCountry(string code)
     {
         ArgumentNullException.ThrowIfNull(code);
@@ -370,6 +388,9 @@ public static class Locales
     /// <summary>Whether a "+1" code carries a Canadian area code.</summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True when the area code is Canadian.</returns>
+    /// <sdkOperation>locale.isCanada</sdkOperation>
+    /// <sdkGroup>Locales</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsCanada(string code)
     {
         ArgumentNullException.ThrowIfNull(code);
@@ -389,6 +410,9 @@ public static class Locales
     /// <summary>Whether the code starts with American Samoa's +1684 prefix.</summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True when the prefix matches.</returns>
+    /// <sdkOperation>locale.isAmericanSamoa</sdkOperation>
+    /// <sdkGroup>Locales</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsAmericanSamoa(string code)
     {
         ArgumentNullException.ThrowIfNull(code);
@@ -398,6 +422,9 @@ public static class Locales
     /// <summary>Whether the code starts with a Dominican Republic prefix (+1809/+1829/+1849).</summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True when the prefix matches.</returns>
+    /// <sdkOperation>locale.isDominicanRepublic</sdkOperation>
+    /// <sdkGroup>Locales</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsDominicanRepublic(string code)
     {
         ArgumentNullException.ThrowIfNull(code);
@@ -414,6 +441,9 @@ public static class Locales
     /// </summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True only for the literal string "+".</returns>
+    /// <sdkOperation>locale.isPuertoRico</sdkOperation>
+    /// <sdkGroup>Locales</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsPuertoRico(string code)
     {
         ArgumentNullException.ThrowIfNull(code);
@@ -428,6 +458,9 @@ public static class Locales
     /// <param name="code">The phone code to match.</param>
     /// <param name="substrings">How many leading characters to compare (negative counts as zero, like the JS substring bound).</param>
     /// <returns>How many <see cref="Countries"/> rows carry exactly that code prefix.</returns>
+    /// <sdkOperation>locale.getMatchingCountry</sdkOperation>
+    /// <sdkGroup>Locales</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static int GetMatchingCountry(string code, int substrings)
     {
         ArgumentNullException.ThrowIfNull(code);

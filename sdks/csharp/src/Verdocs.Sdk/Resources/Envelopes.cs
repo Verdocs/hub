@@ -51,6 +51,10 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The newly created envelope, with its documents, fields, and recipients.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because a recipient failed validation.</exception>
+    /// <sdkOperation>envelope.createEnvelope</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
+    /// <sdkGettingStarted />
     public Task<Envelope> CreateAsync(CreateEnvelopeRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -65,6 +69,9 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The detailed metadata for the envelope requested.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the envelope was not found.</exception>
+    /// <sdkOperation>envelope.getEnvelope</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Envelope> GetAsync(string envelopeId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(envelopeId);
@@ -88,6 +95,9 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>One page of envelopes plus paging counts.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
+    /// <sdkOperation>envelope.getEnvelopes</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<EnvelopeList> ListAsync(ListEnvelopesOptions? options = null, CancellationToken cancellationToken = default)
     {
         return _endpoint.SendAsync<EnvelopeList>(HttpMethod.Get, BuildListPath(options), null, cancellationToken);
@@ -102,6 +112,10 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A copy of the updated envelope.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not the creator.</exception>
+    /// <sdkOperation>envelope.updateEnvelope</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
+    /// <sdkGettingStarted />
     public Task<Envelope> UpdateAsync(string envelopeId, UpdateEnvelopeRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(envelopeId);
@@ -116,6 +130,9 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated envelope. The response omits relations such as recipients, so those properties are null here.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not the creator.</exception>
+    /// <sdkOperation>envelope.cancelEnvelope</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<Envelope> CancelAsync(string envelopeId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(envelopeId);
@@ -134,6 +151,9 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The detailed metadata for the document requested.</returns>
     /// <exception cref="VerdocsApiException">The call failed or the response could not be parsed.</exception>
+    /// <sdkOperation>envelope.getEnvelopeDocument</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<EnvelopeDocument> GetDocumentAsync(string documentId, CancellationToken cancellationToken = default)
     {
         // Usage errors throw synchronously (rule 16); the async work lives in the core method.
@@ -174,6 +194,9 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The raw file bytes.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not a participant.</exception>
+    /// <sdkOperation>envelope.downloadEnvelopeDocument</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<byte[]> DownloadDocumentAsync(string documentId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(documentId);
@@ -192,6 +215,9 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The download URL, fetchable without auth headers.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not a participant.</exception>
+    /// <sdkOperation>envelope.getEnvelopeDocumentDownloadLink</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<string> GetDocumentDownloadLinkAsync(string documentId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(documentId);
@@ -211,6 +237,9 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The download URL, fetchable without auth headers.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the envelope has no combined PDF.</exception>
+    /// <sdkOperation>envelope.getCombinedEnvelopeDocumentDownloadLink</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<string> GetCombinedDocumentDownloadLinkAsync(string documentId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(documentId);
@@ -229,6 +258,9 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The preview URL, fetchable without auth headers.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not a participant.</exception>
+    /// <sdkOperation>envelope.getEnvelopeDocumentPreviewLink</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<string> GetDocumentPreviewLinkAsync(string documentId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrEmpty(documentId);
@@ -246,6 +278,9 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The raw file bytes.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not a participant.</exception>
+    /// <sdkOperation>envelope.getEnvelopeFile</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     [Obsolete("Use GetDocumentPreviewLinkAsync, GetDocumentDownloadLinkAsync, or DownloadDocumentAsync instead.")]
     public Task<byte[]> GetFileAsync(string documentId, CancellationToken cancellationToken = default)
     {
@@ -272,6 +307,10 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A copy of the updated field.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the value failed validation.</exception>
+    /// <sdkOperation>envelope.updateEnvelopeField</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
+    /// <sdkGettingStarted />
     public Task<EnvelopeField> UpdateFieldAsync(
         string envelopeId,
         string roleName,
@@ -306,6 +345,9 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A copy of the updated field.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the file failed the virus scan.</exception>
+    /// <sdkOperation>envelope.uploadEnvelopeFieldAttachment</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<EnvelopeField> UploadFieldAttachmentAsync(
         string envelopeId,
         string roleName,
@@ -348,6 +390,9 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A copy of the updated field.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the field is not an attachment field.</exception>
+    /// <sdkOperation>envelope.deleteEnvelopeFieldAttachment</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<EnvelopeField> DeleteFieldAttachmentAsync(
         string envelopeId,
         string roleName,
@@ -381,6 +426,9 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The page display URI.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because auth steps are incomplete.</exception>
+    /// <sdkOperation>envelope.getEnvelopeDocumentPageDisplayUri</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<string> GetDocumentPageDisplayUriAsync(
         string documentId,
         int page,
@@ -409,6 +457,9 @@ public sealed class Envelopes
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The raw ZIP bytes.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the caller is not a participant of every envelope.</exception>
+    /// <sdkOperation>envelope.getEnvelopesZip</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Endpoints</sdkPage>
     public Task<byte[]> GetZipAsync(IEnumerable<string> envelopeIds, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(envelopeIds);
@@ -428,6 +479,9 @@ public sealed class Envelopes
     /// </summary>
     /// <param name="fields">The fields to sort. Modified in place.</param>
     /// <returns>The same list, sorted.</returns>
+    /// <sdkOperation>envelope.sortFields</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static List<EnvelopeField> SortFields(List<EnvelopeField> fields)
     {
         ArgumentNullException.ThrowIfNull(fields);
@@ -453,6 +507,9 @@ public sealed class Envelopes
     /// </summary>
     /// <param name="documents">The documents to sort. Modified in place.</param>
     /// <returns>The same list, sorted.</returns>
+    /// <sdkOperation>envelope.sortDocuments</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static List<EnvelopeDocument> SortDocuments(List<EnvelopeDocument> documents)
     {
         ArgumentNullException.ThrowIfNull(documents);
@@ -476,6 +533,9 @@ public sealed class Envelopes
     /// </summary>
     /// <param name="recipients">The recipients to sort. Modified in place.</param>
     /// <returns>The same list, sorted, or null if null was passed.</returns>
+    /// <sdkOperation>envelope.sortRecipients</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static List<Recipient>? SortRecipients(List<Recipient>? recipients)
     {
         if (recipients is null)

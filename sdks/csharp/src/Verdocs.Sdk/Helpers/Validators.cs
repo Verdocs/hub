@@ -67,6 +67,9 @@ public static class Validators
     /// <param name="value">The value to check.</param>
     /// <param name="validator">The validator name; see <see cref="GetValidators"/> for the known names.</param>
     /// <returns>True when the value is valid for the named validator.</returns>
+    /// <sdkOperation>validator.isValidInput</sdkOperation>
+    /// <sdkGroup>Validators</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsValidInput(string value, string validator) =>
         ValidatorsByName.TryGetValue(validator, out var regex) && regex.IsMatch(value);
 
@@ -75,6 +78,9 @@ public static class Validators
     /// (Templates/Validators.ts).
     /// </summary>
     /// <returns>The validator names, in the js-sdk's order.</returns>
+    /// <sdkOperation>validator.getValidators</sdkOperation>
+    /// <sdkGroup>Validators</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static IReadOnlyList<string> GetValidators() => ValidatorNames;
 
     /// <summary>
@@ -83,6 +89,9 @@ public static class Validators
     /// </summary>
     /// <param name="email">The value to check, or null.</param>
     /// <returns>True when the value is a valid email address.</returns>
+    /// <sdkOperation>validator.isValidEmail</sdkOperation>
+    /// <sdkGroup>Validators</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsValidEmail(string? email) =>
         !string.IsNullOrEmpty(email) && EmailRegex.IsMatch(email);
 
@@ -92,6 +101,9 @@ public static class Validators
     /// </summary>
     /// <param name="phone">The value to check, or null.</param>
     /// <returns>True when the value contains a valid phone number.</returns>
+    /// <sdkOperation>validator.isValidPhone</sdkOperation>
+    /// <sdkGroup>Validators</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsValidPhone(string? phone) =>
         !string.IsNullOrEmpty(phone) && PhoneRegex.IsMatch(phone);
 
@@ -102,6 +114,9 @@ public static class Validators
     /// <param name="value">The role name to look for.</param>
     /// <param name="roles">The template's roles.</param>
     /// <returns>True when a role with that exact name exists.</returns>
+    /// <sdkOperation>validator.isValidRoleName</sdkOperation>
+    /// <sdkGroup>Validators</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsValidRoleName(string value, IEnumerable<Role> roles) =>
         roles.Any(role => role.Name == value);
 
@@ -113,6 +128,9 @@ public static class Validators
     /// <param name="value">The tag to check.</param>
     /// <param name="tags">The existing tags.</param>
     /// <returns>True when the tag is acceptable.</returns>
+    /// <sdkOperation>validator.isValidTag</sdkOperation>
+    /// <sdkGroup>Validators</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsValidTag(string value, IEnumerable<string> tags) =>
         TagRegex.IsMatch(value) || tags.Contains(value);
 
@@ -126,6 +144,9 @@ public static class Validators
     /// <param name="field">The field to check.</param>
     /// <param name="allRecipientFields">Every field assigned to the same recipient, used to resolve grouped fields.</param>
     /// <returns>True when the field counts as filled.</returns>
+    /// <sdkOperation>envelope.isFieldFilled</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsFieldFilled(EnvelopeField field, IReadOnlyList<EnvelopeField> allRecipientFields)
     {
         // The js-sdk's destructuring default only fires for undefined, so a JSON-null value
@@ -189,6 +210,9 @@ public static class Validators
     /// <param name="field">The field to check.</param>
     /// <param name="allRecipientFields">Every field assigned to the same recipient, used to resolve grouped fields.</param>
     /// <returns>True when the field is valid.</returns>
+    /// <sdkOperation>envelope.isFieldValid</sdkOperation>
+    /// <sdkGroup>Envelope</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
     public static bool IsFieldValid(EnvelopeField field, IReadOnlyList<EnvelopeField> allRecipientFields) =>
         field.Required != true || IsFieldFilled(field, allRecipientFields);
 }
