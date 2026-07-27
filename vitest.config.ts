@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitest/config';
 
 // Root runner for the workspace. The conformance suite is excluded here on
-// purpose: it hits the live beta API and runs via `pnpm test:conformance`.
+// purpose: it hits the live beta API and runs via `pnpm conformance`.
 export default defineConfig({
   test: {
     projects: [

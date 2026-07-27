@@ -164,7 +164,7 @@
   "frozen": [
     {
       "id": "template-star-toggle",
-      "note": "Star toggle is server-broken (400 for every client) and frozen pending retirement discussion. The TS lane asserts curl/SDK equivalence only. New lanes skip it entirely. WIRE-NOTES.md documents the deeper breakage: the js-sdk posts a path that does not exist and the server route is a GET whose handler cannot be satisfied."
+      "note": "Star toggle is server-broken (400 for every client) and frozen pending retirement discussion. C# and Python skip it in conformance; the TS lane skips by default and opts in with VERDOCS_STAR_TOGGLE=1 for a curl/SDK equivalence check when debugging an API fix. WIRE-NOTES.md documents the deeper breakage: the js-sdk posts a path that does not exist and the server route is a GET whose handler cannot be satisfied."
     },
     {
       "id": "kba-module",

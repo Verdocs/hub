@@ -48,6 +48,73 @@ public sealed class ConformanceTests
         Assert.Equal(ConformanceJson.Normalize(reference), ConformanceJson.NormalizeValue(viaSdk));
     }
 
+    // The three facts below share the fixture theory's shape (call raw and SDK, compare) but
+    // aren't cases: each needs an id only a prior list call can produce. A test account with
+    // none of a given resource skips rather than fails, the same convention conformance.spec.ts's
+    // group and brand detail checks use.
+
+    [Fact]
+    public async Task GroupDetail_MatchesRawHttp()
+    {
+        var context = await ConformanceContext.GetSharedAsync();
+        var cancellationToken = TestContext.Current.CancellationToken;
+
+        var groups = await context.Sdk.Groups.ListAsync(cancellationToken);
+        if (groups.Count == 0)
+        {
+            Assert.Skip("No groups on the test account; group detail check skipped.");
+        }
+
+        var group = groups[0];
+        var (status, rawBody) = await context.RawGetAsync("/v2/organization-groups/" + Uri.EscapeDataString(group.Id));
+        Assert.Equal(HttpStatusCode.OK, status);
+
+        var viaSdk = await context.Sdk.Groups.GetAsync(group.Id, cancellationToken);
+        Assert.Equal(ConformanceJson.NormalizeText(rawBody), ConformanceJson.NormalizeValue(viaSdk));
+    }
+
+    [Fact]
+    public async Task BrandDetail_MatchesRawHttp()
+    {
+        var context = await ConformanceContext.GetSharedAsync();
+        var cancellationToken = TestContext.Current.CancellationToken;
+        var organizationId = context.SessionOrganizationId();
+
+        var brands = await context.Sdk.Brands.ListAsync(organizationId, cancellationToken);
+        if (brands.Count == 0)
+        {
+            Assert.Skip("No brands on the test account; brand detail check skipped.");
+        }
+
+        var brand = brands[0];
+        var (status, rawBody) = await context.RawGetAsync(
+            "/v2/organizations/" + Uri.EscapeDataString(organizationId) + "/brands/" + Uri.EscapeDataString(brand.Id));
+        Assert.Equal(HttpStatusCode.OK, status);
+
+        var viaSdk = await context.Sdk.Brands.GetAsync(organizationId, brand.Id, cancellationToken);
+        Assert.Equal(ConformanceJson.NormalizeText(rawBody), ConformanceJson.NormalizeValue(viaSdk));
+    }
+
+    [Fact]
+    public async Task NotificationTemplateDetail_MatchesRawHttp()
+    {
+        var context = await ConformanceContext.GetSharedAsync();
+        var cancellationToken = TestContext.Current.CancellationToken;
+
+        var templates = await context.Sdk.NotificationTemplates.ListAsync(cancellationToken);
+        if (templates.Count == 0)
+        {
+            Assert.Skip("No notification templates on the test account; detail check skipped.");
+        }
+
+        var template = templates[0];
+        var (status, rawBody) = await context.RawGetAsync("/v2/notifications/templates/" + Uri.EscapeDataString(template.Id));
+        Assert.Equal(HttpStatusCode.OK, status);
+
+        var viaSdk = await context.Sdk.NotificationTemplates.GetAsync(template.Id, cancellationToken);
+        Assert.Equal(ConformanceJson.NormalizeText(rawBody), ConformanceJson.NormalizeValue(viaSdk));
+    }
+
     /// <summary>The raw side of a case: resolves path placeholders and query, no SDK in the path.</summary>
     private static async Task<(HttpStatusCode Status, string Body)> CallRawForCaseAsync(ConformanceContext context, ConformanceCase kase)
     {
@@ -87,14 +154,10 @@ public sealed class ConformanceTests
                 return await context.Sdk.Profiles.ListAsync(cancellationToken);
             case "notification.getNotifications":
                 return await context.Sdk.Users.GetNotificationsAsync(cancellationToken);
-            // The fixture's query is fixed (visibility=private_shared, rows=10, page=0), so it is
-            // reproduced directly rather than mapped generically from JSON into the typed options.
             case "template.getTemplates":
-                return await context.Sdk.Templates.ListAsync(
-                    new GetTemplatesOptions { Visibility = TemplateVisibilityFilter.PrivateShared, Rows = 10, Page = 0 },
-                    cancellationToken);
+                return await context.Sdk.Templates.ListAsync(TemplatesOptionsFromQuery(kase.Query), cancellationToken);
             case "envelope.getEnvelopes":
-                return await context.Sdk.Envelopes.ListAsync(new ListEnvelopesOptions { Rows = 10, Page = 0 }, cancellationToken);
+                return await context.Sdk.Envelopes.ListAsync(EnvelopesOptionsFromQuery(kase.Query), cancellationToken);
             case "organization.getOrganization":
                 return await context.Sdk.Organizations.GetAsync(context.SessionOrganizationId(), cancellationToken);
             case "member.getOrganizationMembers":
@@ -145,6 +208,43 @@ public sealed class ConformanceTests
         }
 
         return value?.ToJsonString() ?? "null";
+    }
+
+    private static GetTemplatesOptions TemplatesOptionsFromQuery(JsonObject? query)
+    {
+        if (query is null || query.Count == 0)
+        {
+            return new GetTemplatesOptions();
+        }
+
+        return new GetTemplatesOptions
+        {
+            Visibility = query["visibility"]?.GetValue<string>() switch
+            {
+                "private_shared" => TemplateVisibilityFilter.PrivateShared,
+                "private" => TemplateVisibilityFilter.Private,
+                "shared" => TemplateVisibilityFilter.Shared,
+                "public" => TemplateVisibilityFilter.Public,
+                _ => null,
+            },
+            Rows = query["rows"]?.GetValue<int?>(),
+            Page = query["page"]?.GetValue<int?>(),
+        };
+    }
+
+    private static ListEnvelopesOptions EnvelopesOptionsFromQuery(JsonObject? query)
+    {
+        if (query is null || query.Count == 0)
+        {
+            return new ListEnvelopesOptions();
+        }
+
+        return new ListEnvelopesOptions
+        {
+            TemplateId = query["template_id"]?.GetValue<string>(),
+            Rows = query["rows"]?.GetValue<int?>(),
+            Page = query["page"]?.GetValue<int?>(),
+        };
     }
 
     /// <summary>Fills in $VERDOCS_* placeholders from a fixture request body, per the fixtures.json contract.</summary>

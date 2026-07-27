@@ -8,13 +8,16 @@ import {
   deleteTemplate,
   deleteTemplateRole,
   getApiKeys,
+  getBrand,
   getBrands,
   getCurrentProfile,
   getEntitlements,
   getEnvelope,
   getEnvelopes,
+  getGroup,
   getGroups,
   getMyUser,
+  getNotificationTemplate,
   getNotificationTemplates,
   getNotifications,
   getOrganization,
@@ -280,17 +283,67 @@ describe('envelope detail', () => {
   });
 });
 
-describe('star toggle', () => {
-  // Two findings from this harness's first run, both logged in hub/STATUS.md:
-  // 1. js-sdk 6.10.0's toggleTemplateStar posts to /v2/templates/:id/stars/toggle,
-  //    which the API does not serve (404). The deployed route is
-  //    GET /v2/templates/:id/star, which the component SDKs call directly.
-  // 2. The deployed handler validates req.body against a schema that only
-  //    accepts a template-duplicate payload, so every star toggle currently
-  //    returns 400 for every client. Until that server bug is fixed, this
-  //    check asserts SDK/curl EQUIVALENCE (same status, same body), which is
-  //    the conformance contract; the net-zero state check activates once the
-  //    endpoint starts returning 200.
+// The three checks below share envelope detail's shape: list, pick the first entry, fetch its
+// detail both ways. None are fixtures.json cases because each depends on an id only a prior list
+// call can produce; a test account with none of a given resource skips rather than fails.
+
+describe('group detail', () => {
+  it('matches curl for a group detail when one exists', async () => {
+    const groups = await getGroups(endpoint);
+    const group = groups?.[0];
+
+    if (!group) {
+      console.warn('No groups on the test account; group detail check skipped.');
+      return;
+    }
+
+    const viaCurl = await curl('GET', `${env.apiBase}/v2/organization-groups/${group.id}`, { token });
+    const viaSdk = await getGroup(endpoint, group.id);
+
+    expect(viaCurl.status).toBe(200);
+    expect(normalizeVolatile(viaSdk)).toEqual(normalizeVolatile(viaCurl.body));
+  });
+});
+
+describe('brand detail', () => {
+  it('matches curl for a brand detail when one exists', async () => {
+    const brands = await getBrands(endpoint, organizationId);
+    const brand = brands?.[0];
+
+    if (!brand) {
+      console.warn('No brands on the test account; brand detail check skipped.');
+      return;
+    }
+
+    const viaCurl = await curl('GET', `${env.apiBase}/v2/organizations/${organizationId}/brands/${brand.id}`, { token });
+    const viaSdk = await getBrand(endpoint, organizationId, brand.id);
+
+    expect(viaCurl.status).toBe(200);
+    expect(normalizeVolatile(viaSdk)).toEqual(normalizeVolatile(viaCurl.body));
+  });
+});
+
+describe('notification template detail', () => {
+  it('matches curl for a notification template detail when one exists', async () => {
+    const templates = await getNotificationTemplates(endpoint);
+    const template = templates?.[0];
+
+    if (!template) {
+      console.warn('No notification templates on the test account; detail check skipped.');
+      return;
+    }
+
+    const viaCurl = await curl('GET', `${env.apiBase}/v2/notifications/templates/${template.id}`, { token });
+    const viaSdk = await getNotificationTemplate(endpoint, template.id);
+
+    expect(viaCurl.status).toBe(200);
+    expect(normalizeVolatile(viaSdk)).toEqual(normalizeVolatile(viaCurl.body));
+  });
+});
+
+// Frozen in fixtures.json (template-star-toggle): server-broken for every client.
+// Opt in with VERDOCS_STAR_TOGGLE=1 when debugging curl/SDK equivalence after an API fix.
+describe.skipIf(process.env.VERDOCS_STAR_TOGGLE !== '1')('star toggle (frozen; set VERDOCS_STAR_TOGGLE=1)', () => {
   const toggleTemplateStarCompat = (templateId: string) =>
     endpoint.api
       .get<ITemplate>(`/v2/templates/${templateId}/star`)
@@ -312,18 +365,12 @@ describe('star toggle', () => {
     }
 
     const initialStars = template.star_counter;
-
-    // Both sides mutate, so each call flips the state: curl toggles it on or
-    // off, the SDK toggles it back. Star counts therefore differ by design
-    // and are normalized; everything else must match.
     const viaCurl = await curl('GET', `${env.apiBase}/v2/templates/${template.id}/star`, { token });
     const viaSdk = await toggleTemplateStarCompat(template.id);
 
     expect(viaSdk.status).toBe(viaCurl.status);
     expect(normalizeVolatile(viaSdk.body, [ 'star_counter', 'is_starred' ])).toEqual(normalizeVolatile(viaCurl.body, [ 'star_counter', 'is_starred' ]));
 
-    // A working toggle pair nets out to the starting state; while the endpoint
-    // 400s, nothing changes either. Both cases must leave the count untouched.
     const { templates: after } = await getTemplates(endpoint, { rows: 1, page: 0 });
     expect(after[0]?.star_counter).toBe(initialStars);
   });

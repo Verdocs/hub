@@ -10,7 +10,7 @@ Written at the end of the POC build session on 2026-07-09. Everything below is s
 - `apps/quickstart-react`: Vite + React Router 7, `/login` and `/dashboard` with a session guard, dashboard hosts VerdocsTemplatesList with toast callbacks. Defaults to beta, `VITE_VERDOCS_API_BASE` overrides.
 - `packages/angular-sdk` (`@verdocs/angular-sdk` 1.0.0): independent native Angular 22 implementation. Standalone components, signal inputs/outputs, zoneless-compatible, `provideVerdocs()` mirroring the provider, `VerdocsSessionService` signals, and a signal-based `VerdocsTemplatesService` built on `resource()` + `linkedSignal` whose query keys and invalidation semantics match the React hooks. Built with ng-packagr, tested through the official `@angular/build:unit-test` vitest builder (13 tests). Ships its own compiled stylesheet with the same `--vdocs-*` tokens.
 - `apps/quickstart-angular`: Angular Router equivalent of the React quickstart, zoneless, `authGuard` built on the session service. API base lives in `src/environments/environment.ts` (the Angular equivalent of the env override; use fileReplacements for per-env builds).
-- `packages/conformance`: the curl-vs-SDK harness seed. Four endpoints covered: authenticate (password grant), current user/profile, getTemplates, star toggle. Each is called with real curl in a child process and with the SDK, then status/shape/data are diffed with volatile fields normalized. Runs via `pnpm test:conformance` (needs the gitignored `.env`; `.env.example` is committed), excluded from CI and from the root vitest run.
+- `packages/conformance`: the curl-vs-SDK conformance harness. Twenty read-only cases from `fixtures.json`, the canonical create-to-cancel chain, and extra lifecycle/detail checks. Each covered endpoint is called with raw curl and with the SDK, then status/shape/data are diffed with volatile fields normalized. Runs via `pnpm conformance` (needs the gitignored `.env`; `.env.example` is committed), excluded from CI and from the root vitest run.
 - Hub root modernization: node >= 24 engines, `packageManager: pnpm@10.34.4`, `.nvmrc`, turbo `test` task with `^build` deps, root vitest projects config, `.github/workflows/ci.yml` (pnpm setup, then turbo lint/check-types/test/build), dead `generate-docs.yml` deleted.
 
 ## How to run things
@@ -21,7 +21,7 @@ pnpm exec turbo run lint check-types test build    # the full gate
 pnpm --filter verdocs-quickstart-react dev         # React quickstart (Vite, port 5173)
 pnpm --filter verdocs-storybook dev                # Storybook on 6006
 pnpm --filter verdocs-quickstart-angular dev       # Angular quickstart on 4200
-pnpm test:conformance                              # live against beta, needs .env
+pnpm conformance                                   # live against beta, needs .env
 ```
 
 Angular tooling (angular-sdk build/test, quickstart-angular) needs Node >= 24.15; see deviations.

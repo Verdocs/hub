@@ -1,6 +1,6 @@
 # True-Up Porting Map
 
-The coordination contract for the C#/Python true-up port agents. SDK-TRUEUP-HANDOFF.md (at active/ root) settles scope and policy; this file settles names and file ownership so twelve agents produce one coherent SDK per language. The language standards (docs/standards/csharp.md, python.md) and comments.md remain binding.
+The coordination contract for the C#/Python true-up port agents. Scope and policy live in `sdks/API-PARITY.md`, `sdks/WIRE-NOTES.md`, and `packages/conformance/fixtures.json`; this file settles names and file ownership so twelve agents produce one coherent SDK per language. The language standards (`docs/standards/csharp.md`, `python.md`) and `comments.md` remain binding.
 
 ## Resource namespace map
 

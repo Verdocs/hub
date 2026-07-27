@@ -5,16 +5,32 @@ on:
     branches: [main]
 
 jobs:
-  conformance:
+  js-sdk:
+    name: JS SDK Conformance
     runs-on: ubuntu-latest
-    strayegy:
-      fail-fast: false
-      matrix:
-        include:
-          - language: python
-            # setup-python, pip install -e ., pytest -m conformance
-          - language: csharp
-            # setup-dotnet, VERDOCS_CONFORMANCE=1 dotnet test --filter ...
-        # future:
-        # - language: go
-        # - language: java
+    defaults:
+      run:
+        working-directory: packages/conformance
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Conformance Test (JS SDK)
+        env:
+          VERDOCS_CONFORMANCE_EMAIL: ${{ secrets.VERDOCS_CONFORMANCE_EMAIL }}
+          VERDOCS_CONFORMANCE_PASSWORD: ${{ secrets.VERDOCS_CONFORMANCE_PASSWORD }}
+          VERDOCS_CONFORMANCE_API_BASE: ${{ secrets.VERDOCS_CONFORMANCE_API_BASE }}
+        run: pnpm --filter conformance run test

@@ -34,19 +34,19 @@ internal static partial class ConformanceJson
     /// <summary>Normalizes raw JSON text into the lane's canonical comparison string.</summary>
     internal static string NormalizeText(string json)
     {
-        return Refine(VolatileJson.NormalizeText(json));
+        return Refine(VolatileJson.NormalizeText(json, ConformanceFixtures.VolatileKeyPattern));
     }
 
     /// <summary>Normalizes a parsed node into the lane's canonical comparison string.</summary>
     internal static string Normalize(JsonNode? node)
     {
-        return Refine(VolatileJson.Normalize(node));
+        return Refine(VolatileJson.Normalize(node, ConformanceFixtures.VolatileKeyPattern));
     }
 
     /// <summary>Serializes a value with the SDK's own serializer options, then normalizes it.</summary>
     internal static string NormalizeValue<T>(T value)
     {
-        return Refine(VolatileJson.NormalizeValue(value));
+        return Refine(VolatileJson.NormalizeValue(value, ConformanceFixtures.VolatileKeyPattern));
     }
 
     // Anchored to the full string so ordinary text never parses as a date; the same pattern

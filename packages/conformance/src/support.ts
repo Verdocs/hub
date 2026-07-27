@@ -1,8 +1,23 @@
 import { execFile } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { promisify } from 'node:util';
 
 const execFileAsync = promisify(execFile);
+
+const FIXTURES_PATH = path.resolve(import.meta.dirname, '../fixtures.json');
+
+interface IFixtureVolatilePolicy {
+  volatileKeyPattern: string;
+  volatileKeyPatternFlags: string;
+}
+
+const fixtureVolatile = JSON.parse(readFileSync(FIXTURES_PATH, 'utf8')) as IFixtureVolatilePolicy;
+
+const volatileFlags = fixtureVolatile.volatileKeyPatternFlags.includes('i') ? 'i' : '';
+
+/** Compiled from packages/conformance/fixtures.json on every load. */
+export const volatileKeyPattern = new RegExp(fixtureVolatile.volatileKeyPattern, volatileFlags);
 
 export interface IConformanceEnv {
   apiBase: string;
@@ -70,8 +85,6 @@ export const curl = async (method: string, url: string, options: { token?: strin
   return { status, body };
 };
 
-const VOLATILE_KEY_PATTERN = /(_at|_exp)$|^(access_token|id_token|refresh_token|expires_in|last_polled)/i;
-
 /**
  * Replace volatile values (timestamps, tokens, expiries) with type markers so
  * two calls made seconds apart still compare equal. Applied to both the curl
@@ -84,7 +97,7 @@ export const normalizeVolatile = (value: unknown, extraVolatileKeys: string[] = 
 
   if (value !== null && typeof value === 'object') {
     return Object.fromEntries(Object.entries(value as Record<string, unknown>).map(([ key, entry ]) => {
-      if (VOLATILE_KEY_PATTERN.test(key) || extraVolatileKeys.includes(key)) {
+      if (volatileKeyPattern.test(key) || extraVolatileKeys.includes(key)) {
         return [ key, `<<${entry === null ? 'null' : typeof entry}>>` ];
       }
 

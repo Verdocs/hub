@@ -1,4 +1,5 @@
 using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
 using Xunit;
 
 namespace Verdocs.Sdk.Tests.Conformance;
@@ -13,8 +14,13 @@ public static class ConformanceFixtures
 {
     private static readonly Lazy<IReadOnlyList<ConformanceCase>> Loaded = new(Load);
 
+    private static readonly Lazy<Regex> VolatileKeyPatternLoaded = new(LoadVolatileKeyPattern);
+
     /// <summary>Every case in fixtures.json's "cases" array, in file order.</summary>
     public static IReadOnlyList<ConformanceCase> Cases => Loaded.Value;
+
+    /// <summary>The volatile-key regex from fixtures.json, compiled with its flags.</summary>
+    public static Regex VolatileKeyPattern => VolatileKeyPatternLoaded.Value;
 
     /// <summary>MemberData source for ConformanceTests's theory: one row per fixture case.</summary>
     public static TheoryData<ConformanceCase> CaseData()
@@ -52,6 +58,24 @@ public static class ConformanceFixtures
                     Note: obj["note"]?.GetValue<string>());
             })
             .ToList();
+    }
+
+    private static Regex LoadVolatileKeyPattern()
+    {
+        var path = FindFixturesPath()
+            ?? throw new InvalidOperationException(
+                "Could not find packages/conformance/fixtures.json above the test binary.");
+
+        var root = JsonNode.Parse(File.ReadAllText(path))!.AsObject();
+        var pattern = root["volatileKeyPattern"]!.GetValue<string>();
+        var flags = root["volatileKeyPatternFlags"]?.GetValue<string>() ?? string.Empty;
+        var options = RegexOptions.CultureInvariant;
+        if (flags.Contains('i'))
+        {
+            options |= RegexOptions.IgnoreCase;
+        }
+
+        return new Regex(pattern, options);
     }
 
     // The test binary's output directory nests under bin/<config>/<tfm>, so a fixed parent

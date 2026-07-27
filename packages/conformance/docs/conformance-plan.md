@@ -128,7 +128,7 @@ Each lane is opt-in. The mechanism is language-native; the semantics are identic
 
 | Lane   | Command                                                                       |
 | ------ | ----------------------------------------------------------------------------- |
-| JS     | `pnpm test:conformance`                                                       |
+| JS     | `pnpm conformance`                                                       |
 | Python | `python -m pytest -m conformance`                                             |
 | C#     | `VERDOCS_CONFORMANCE=1 dotnet test --filter "FullyQualifiedName~Conformance"` |
 
@@ -154,6 +154,254 @@ All three read the same `fixtures.json` and the same credentials.
 5. Add its command to the table above and to the nightly CI matrix.
 
 
+
+## SDK operations
+
+Every public SDK method is tagged with `@sdkOperation` in js-sdk (see `docs/sdk-docs-generation.md`). The `sdk` field in `fixtures.json` uses that same id. The table below lists all 239 operations from js-sdk today; check a row when it has a conformance case in `fixtures.json` (`cases` or `chain.steps`).
+
+| Covered | Operation | Group |
+| ------- | --------- | ----- |
+| [ ] | `apiKey.createApiKey` | apiKey |
+| [ ] | `apiKey.deleteApiKey` | apiKey |
+| [x] | `apiKey.getApiKeys` | apiKey |
+| [ ] | `apiKey.rotateApiKey` | apiKey |
+| [ ] | `apiKey.updateApiKey` | apiKey |
+| [x] | `auth.authenticate` | auth |
+| [ ] | `auth.changePassword` | auth |
+| [x] | `auth.getMyUser` | auth |
+| [ ] | `auth.getOAuth2AuthorizeUrl` | auth |
+| [ ] | `auth.refreshToken` | auth |
+| [ ] | `auth.resendVerification` | auth |
+| [ ] | `auth.resetPassword` | auth |
+| [ ] | `auth.verifyEmail` | auth |
+| [ ] | `brand.addBrandEmailDomain` | brand |
+| [ ] | `brand.createBrand` | brand |
+| [ ] | `brand.deleteBrand` | brand |
+| [ ] | `brand.getBrand` | brand |
+| [x] | `brand.getBrands` | brand |
+| [ ] | `brand.removeBrandEmailDomain` | brand |
+| [ ] | `brand.updateBrand` | brand |
+| [ ] | `brand.updateBrandLogo` | brand |
+| [ ] | `brand.updateBrandThumbnail` | brand |
+| [ ] | `brand.verifyBrandEmailDomain` | brand |
+| [ ] | `color.getRGB` | color |
+| [ ] | `color.getRGBA` | color |
+| [ ] | `color.getRoleColor` | color |
+| [ ] | `color.nameToRGBA` | color |
+| [ ] | `contact.createOrganizationContact` | contact |
+| [ ] | `contact.deleteOrganizationContact` | contact |
+| [x] | `contact.getOrganizationContacts` | contact |
+| [ ] | `contact.updateOrganizationContact` | contact |
+| [ ] | `dateTime.formatShortTimeAgo` | dateTime |
+| [ ] | `endpoint.VerdocsEndpoint` | endpoint |
+| [ ] | `endpoint.clearSession` | endpoint |
+| [ ] | `endpoint.clearSignerSession` | endpoint |
+| [ ] | `endpoint.constructor` | endpoint |
+| [ ] | `endpoint.getBaseURL` | endpoint |
+| [ ] | `endpoint.getClientID` | endpoint |
+| [ ] | `endpoint.getDefault` | endpoint |
+| [ ] | `endpoint.getEnvironment` | endpoint |
+| [ ] | `endpoint.getSession` | endpoint |
+| [ ] | `endpoint.getSessionType` | endpoint |
+| [ ] | `endpoint.getTimeout` | endpoint |
+| [ ] | `endpoint.getToken` | endpoint |
+| [ ] | `endpoint.loadSession` | endpoint |
+| [ ] | `endpoint.logRequests` | endpoint |
+| [ ] | `endpoint.onSessionChanged` | endpoint |
+| [ ] | `endpoint.setBaseURL` | endpoint |
+| [ ] | `endpoint.setClientID` | endpoint |
+| [ ] | `endpoint.setDefault` | endpoint |
+| [ ] | `endpoint.setEnvironment` | endpoint |
+| [ ] | `endpoint.setSessionType` | endpoint |
+| [ ] | `endpoint.setTimeout` | endpoint |
+| [ ] | `endpoint.setToken` | endpoint |
+| [ ] | `entitlement.collapseEntitlements` | entitlement |
+| [ ] | `envelope.canAccessEnvelope` | envelope |
+| [x] | `envelope.cancelEnvelope` | envelope |
+| [x] | `envelope.createEnvelope` | envelope |
+| [ ] | `envelope.deleteEnvelopeFieldAttachment` | envelope |
+| [ ] | `envelope.downloadEnvelopeDocument` | envelope |
+| [ ] | `envelope.envelopeIsActive` | envelope |
+| [ ] | `envelope.envelopeIsComplete` | envelope |
+| [ ] | `envelope.getCombinedEnvelopeDocumentDownloadLink` | envelope |
+| [x] | `envelope.getEnvelope` | envelope |
+| [ ] | `envelope.getEnvelopeDocument` | envelope |
+| [ ] | `envelope.getEnvelopeDocumentDownloadLink` | envelope |
+| [ ] | `envelope.getEnvelopeDocumentPageDisplayUri` | envelope |
+| [ ] | `envelope.getEnvelopeDocumentPreviewLink` | envelope |
+| [ ] | `envelope.getEnvelopeFile` | envelope |
+| [x] | `envelope.getEnvelopes` | envelope |
+| [ ] | `envelope.getEnvelopesZip` | envelope |
+| [ ] | `envelope.getMyRecipient` | envelope |
+| [ ] | `envelope.getNextRecipient` | envelope |
+| [ ] | `envelope.getRecipient` | envelope |
+| [ ] | `envelope.getRecipientWithActions` | envelope |
+| [ ] | `envelope.getRecipientsWithActions` | envelope |
+| [ ] | `envelope.isEnvelopeOwner` | envelope |
+| [ ] | `envelope.isEnvelopeRecipient` | envelope |
+| [ ] | `envelope.isFieldFilled` | envelope |
+| [ ] | `envelope.isFieldValid` | envelope |
+| [ ] | `envelope.recipientCanAct` | envelope |
+| [ ] | `envelope.recipientHasAction` | envelope |
+| [ ] | `envelope.sortDocuments` | envelope |
+| [ ] | `envelope.sortFields` | envelope |
+| [ ] | `envelope.sortRecipients` | envelope |
+| [ ] | `envelope.updateEnvelope` | envelope |
+| [ ] | `envelope.updateEnvelopeField` | envelope |
+| [ ] | `envelope.uploadEnvelopeFieldAttachment` | envelope |
+| [ ] | `envelope.useCanAccessEnvelope` | envelope |
+| [ ] | `envelope.userCanAct` | envelope |
+| [ ] | `envelope.userCanCancelEnvelope` | envelope |
+| [ ] | `envelope.userCanFinishEnvelope` | envelope |
+| [ ] | `envelope.userCanSignNow` | envelope |
+| [ ] | `envelope.userIsEnvelopeOwner` | envelope |
+| [ ] | `envelope.userIsEnvelopeRecipient` | envelope |
+| [ ] | `field.blobToBase64` | field |
+| [x] | `field.createField` | field |
+| [ ] | `field.deleteField` | field |
+| [ ] | `field.getRLeft` | field |
+| [ ] | `field.getRTop` | field |
+| [ ] | `field.getRValue` | field |
+| [ ] | `field.rescale` | field |
+| [ ] | `field.updateField` | field |
+| [ ] | `file.downloadBlob` | file |
+| [ ] | `file.fileToDataUrl` | file |
+| [ ] | `group.addGroupMember` | group |
+| [ ] | `group.createGroup` | group |
+| [ ] | `group.deleteGroup` | group |
+| [ ] | `group.deleteGroupMember` | group |
+| [ ] | `group.getGroup` | group |
+| [x] | `group.getGroups` | group |
+| [ ] | `group.updateGroup` | group |
+| [ ] | `initial.createInitials` | initial |
+| [ ] | `invitation.acceptOrganizationInvitation` | invitation |
+| [ ] | `invitation.createOrganizationInvitation` | invitation |
+| [ ] | `invitation.declineOrganizationInvitation` | invitation |
+| [ ] | `invitation.deleteOrganizationInvitation` | invitation |
+| [ ] | `invitation.getOrganizationInvitation` | invitation |
+| [x] | `invitation.getOrganizationInvitations` | invitation |
+| [ ] | `invitation.resendOrganizationInvitation` | invitation |
+| [ ] | `invitation.updateOrganizationInvitation` | invitation |
+| [ ] | `kba.getKbaStep` | kba |
+| [ ] | `kba.submitKbaChallengeResponse` | kba |
+| [ ] | `kba.submitKbaIdentity` | kba |
+| [ ] | `kba.submitKbaPin` | kba |
+| [ ] | `locale.getCountryByCode` | locale |
+| [ ] | `locale.getMatchingCountry` | locale |
+| [ ] | `locale.getPlusOneCountry` | locale |
+| [ ] | `locale.isAmericanSamoa` | locale |
+| [ ] | `locale.isCanada` | locale |
+| [ ] | `locale.isDominicanRepublic` | locale |
+| [ ] | `locale.isFrenchGuiana` | locale |
+| [ ] | `locale.isGuadeloupe` | locale |
+| [ ] | `locale.isMartinique` | locale |
+| [ ] | `locale.isMayotte` | locale |
+| [ ] | `locale.isPuertoRico` | locale |
+| [ ] | `member.createOrganizationMember` | member |
+| [ ] | `member.deleteOrganizationMember` | member |
+| [x] | `member.getOrganizationMembers` | member |
+| [ ] | `member.lockOrganizationMember` | member |
+| [ ] | `member.unlockOrganizationMember` | member |
+| [ ] | `member.updateOrganizationMember` | member |
+| [ ] | `notification.createNotificationTemplate` | notification |
+| [ ] | `notification.deleteNotificationTemplate` | notification |
+| [ ] | `notification.getNotificationTemplate` | notification |
+| [x] | `notification.getNotificationTemplates` | notification |
+| [x] | `notification.getNotifications` | notification |
+| [ ] | `notification.updateNotificationTemplate` | notification |
+| [ ] | `organization.createOrganization` | organization |
+| [ ] | `organization.deleteOrganization` | organization |
+| [ ] | `organization.getActiveEntitlements` | organization |
+| [x] | `organization.getEntitlements` | organization |
+| [x] | `organization.getOrganization` | organization |
+| [x] | `organization.getOrganizationChildren` | organization |
+| [x] | `organization.getOrganizationPipelineSettings` | organization |
+| [x] | `organization.getOrganizationUsage` | organization |
+| [ ] | `organization.updateOrganization` | organization |
+| [ ] | `organization.updateOrganizationLogo` | organization |
+| [ ] | `organization.updateOrganizationPipelineSettings` | organization |
+| [ ] | `organization.updateOrganizationThumbnail` | organization |
+| [ ] | `permission.userHasPermissions` | permission |
+| [ ] | `primitive.formatFullName` | primitive |
+| [ ] | `primitive.formatInitials` | primitive |
+| [ ] | `primitive.fullNameToInitials` | primitive |
+| [ ] | `primitive.integerSequence` | primitive |
+| [ ] | `profile.createProfile` | profile |
+| [ ] | `profile.deleteProfile` | profile |
+| [x] | `profile.getCurrentProfile` | profile |
+| [x] | `profile.getProfiles` | profile |
+| [ ] | `profile.switchProfile` | profile |
+| [ ] | `profile.updateProfile` | profile |
+| [ ] | `profile.updateProfilePhoto` | profile |
+| [ ] | `recipient.askQuestion` | recipient |
+| [ ] | `recipient.delegateRecipient` | recipient |
+| [ ] | `recipient.envelopeRecipientAgree` | recipient |
+| [ ] | `recipient.envelopeRecipientDecline` | recipient |
+| [ ] | `recipient.envelopeRecipientSubmit` | recipient |
+| [ ] | `recipient.getInPersonLink` | recipient |
+| [ ] | `recipient.remindRecipient` | recipient |
+| [ ] | `recipient.resetRecipient` | recipient |
+| [ ] | `recipient.startSigningSession` | recipient |
+| [ ] | `recipient.updateRecipient` | recipient |
+| [ ] | `recipient.verifySigner` | recipient |
+| [ ] | `retry.retryOnceOnTimeout` | retry |
+| [x] | `role.createTemplateRole` | role |
+| [ ] | `role.deleteTemplateRole` | role |
+| [ ] | `role.updateTemplateRole` | role |
+| [ ] | `signature.createSignature` | signature |
+| [ ] | `string.capitalize` | string |
+| [ ] | `string.convertToE164` | string |
+| [ ] | `string.randomString` | string |
+| [ ] | `template.canPerformTemplateAction` | template |
+| [x] | `template.createTemplate` | template |
+| [ ] | `template.createTemplateFromSharepoint` | template |
+| [ ] | `template.deleteTemplate` | template |
+| [ ] | `template.duplicateTemplate` | template |
+| [ ] | `template.getFieldsForRole` | template |
+| [ ] | `template.getTemplate` | template |
+| [x] | `template.getTemplates` | template |
+| [ ] | `template.hasRequiredPermissions` | template |
+| [ ] | `template.toggleTemplateStar` | template |
+| [ ] | `template.updateTemplate` | template |
+| [ ] | `template.userCanBuildTemplate` | template |
+| [ ] | `template.userCanChangeOrgVisibility` | template |
+| [ ] | `template.userCanCreateOrgTemplate` | template |
+| [ ] | `template.userCanCreatePersonalTemplate` | template |
+| [ ] | `template.userCanCreatePublicTemplate` | template |
+| [ ] | `template.userCanCreateTemplate` | template |
+| [ ] | `template.userCanDeleteTemplate` | template |
+| [ ] | `template.userCanMakeTemplatePrivate` | template |
+| [ ] | `template.userCanMakeTemplatePublic` | template |
+| [ ] | `template.userCanMakeTemplateShared` | template |
+| [ ] | `template.userCanPreviewTemplate` | template |
+| [ ] | `template.userCanReadTemplate` | template |
+| [ ] | `template.userCanSendTemplate` | template |
+| [ ] | `template.userCanUpdateTemplate` | template |
+| [ ] | `template.userHasSharedTemplate` | template |
+| [ ] | `template.userIsTemplateCreator` | template |
+| [ ] | `templateDocument.createTemplateDocument` | templateDocument |
+| [ ] | `templateDocument.deleteTemplateDocument` | templateDocument |
+| [ ] | `templateDocument.downloadTemplateDocument` | templateDocument |
+| [ ] | `templateDocument.getTemplateDocument` | templateDocument |
+| [ ] | `templateDocument.getTemplateDocumentDownloadLink` | templateDocument |
+| [ ] | `templateDocument.getTemplateDocumentFile` | templateDocument |
+| [ ] | `templateDocument.getTemplateDocumentPageDisplayUri` | templateDocument |
+| [ ] | `templateDocument.getTemplateDocumentPreviewLink` | templateDocument |
+| [ ] | `templateDocument.getTemplateDocumentThumbnail` | templateDocument |
+| [ ] | `token.AtoB` | token |
+| [ ] | `token.decodeAccessTokenBody` | token |
+| [ ] | `token.decodeJWTBody` | token |
+| [ ] | `validator.getValidators` | validator |
+| [ ] | `validator.isValidEmail` | validator |
+| [ ] | `validator.isValidInput` | validator |
+| [ ] | `validator.isValidPhone` | validator |
+| [ ] | `validator.isValidRoleName` | validator |
+| [ ] | `validator.isValidTag` | validator |
+| [x] | `webhook.getWebhooks` | webhook |
+| [ ] | `webhook.rotateWebhookSecret` | webhook |
+| [ ] | `webhook.setWebhooks` | webhook |
+
+**26 of 239** operations have fixture coverage today.
 
 ## Current state
 

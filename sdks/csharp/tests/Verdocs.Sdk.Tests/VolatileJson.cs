@@ -15,33 +15,52 @@ public static partial class VolatileJson
     /// <summary>Normalizes raw JSON text into a canonical, volatile-masked string.</summary>
     public static string NormalizeText(string json)
     {
-        return Canonical(NormalizeNode(JsonNode.Parse(json)));
+        return NormalizeText(json, DefaultVolatileKeyPattern());
+    }
+
+    /// <summary>Normalizes raw JSON text using the supplied volatile-key pattern.</summary>
+    public static string NormalizeText(string json, Regex volatileKeyPattern)
+    {
+        return Canonical(NormalizeNode(JsonNode.Parse(json), volatileKeyPattern));
     }
 
     /// <summary>Normalizes a parsed node into a canonical, volatile-masked string.</summary>
     public static string Normalize(JsonNode? node)
     {
-        return Canonical(NormalizeNode(node));
+        return Normalize(node, DefaultVolatileKeyPattern());
+    }
+
+    /// <summary>Normalizes a parsed node using the supplied volatile-key pattern.</summary>
+    public static string Normalize(JsonNode? node, Regex volatileKeyPattern)
+    {
+        return Canonical(NormalizeNode(node, volatileKeyPattern));
     }
 
     /// <summary>Serializes a value with the SDK's own serializer options, then normalizes it.</summary>
     public static string NormalizeValue<T>(T value)
     {
-        // Serialize by the runtime type, not T, so a caller can hand us a value typed as object
-        // (the conformance dispatch returns different SDK models) and still get every property.
-        return NormalizeText(JsonSerializer.Serialize(value, value?.GetType() ?? typeof(T), VerdocsJson.Options));
+        return NormalizeValue(value, DefaultVolatileKeyPattern());
     }
 
-    // The same pattern and flags as support.ts, so every SDK lane masks the same keys.
+    /// <summary>Serializes a value, then normalizes it with the supplied volatile-key pattern.</summary>
+    public static string NormalizeValue<T>(T value, Regex volatileKeyPattern)
+    {
+        // Serialize by the runtime type, not T, so a caller can hand us a value typed as object
+        // (the conformance dispatch returns different SDK models) and still get every property.
+        return NormalizeText(JsonSerializer.Serialize(value, value?.GetType() ?? typeof(T), VerdocsJson.Options), volatileKeyPattern);
+    }
+
+    // Unit tests use this built-in default. The live conformance lane compiles the pattern from
+    // packages/conformance/fixtures.json instead (see ConformanceFixtures.VolatileKeyPattern).
     [GeneratedRegex("(_at|_exp)$|^(access_token|id_token|refresh_token|expires_in|last_polled)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex VolatileKeyPattern();
+    private static partial Regex DefaultVolatileKeyPattern();
 
     private static string Canonical(JsonNode? node)
     {
         return node?.ToJsonString() ?? "null";
     }
 
-    private static JsonNode? NormalizeNode(JsonNode? node)
+    private static JsonNode? NormalizeNode(JsonNode? node, Regex volatileKeyPattern)
     {
         switch (node)
         {
@@ -50,9 +69,9 @@ public static partial class VolatileJson
                 var normalized = new JsonObject();
                 foreach (var property in jsonObject.OrderBy(entry => entry.Key, StringComparer.Ordinal))
                 {
-                    normalized[property.Key] = VolatileKeyPattern().IsMatch(property.Key)
+                    normalized[property.Key] = volatileKeyPattern.IsMatch(property.Key)
                         ? JsonValue.Create(TypeMarker(property.Value))
-                        : NormalizeNode(property.Value);
+                        : NormalizeNode(property.Value, volatileKeyPattern);
                 }
 
                 return normalized;
@@ -63,7 +82,7 @@ public static partial class VolatileJson
                 var normalized = new JsonArray();
                 foreach (var item in jsonArray)
                 {
-                    normalized.Add(NormalizeNode(item));
+                    normalized.Add(NormalizeNode(item, volatileKeyPattern));
                 }
 
                 return normalized;

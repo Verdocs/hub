@@ -136,6 +136,59 @@ def test_case_matches_raw_http(case, conformance_env, sdk_endpoint, raw_client, 
     assert normalize(sdk_dump(result)) == normalize(reference)
 
 
+# The three checks below share test_case_matches_raw_http's shape (list, pick the first entry,
+# fetch its detail both ways) but none is a fixtures.json case: each depends on an id only a
+# prior list call can produce. A test account with none of a given resource skips rather than
+# fails, the same convention the TS lane's group/brand/notification template detail checks use.
+
+
+def test_group_detail_matches_raw_http(sdk_endpoint, raw_client, normalize, sdk_dump):
+    groups = sdk_endpoint.groups.list()
+    if not groups:
+        pytest.skip("No groups on the test account; group detail check skipped.")
+
+    group = groups[0]
+    response = raw_client.get(
+        f"/v2/organization-groups/{group.id}", headers={"Authorization": f"Bearer {sdk_endpoint.token}"}
+    )
+    assert response.status_code == 200
+
+    fetched = sdk_endpoint.groups.get(group.id)
+    assert normalize(sdk_dump(fetched)) == normalize(response.json())
+
+
+def test_brand_detail_matches_raw_http(sdk_endpoint, raw_client, normalize, sdk_dump):
+    organization_id = session_organization_id(sdk_endpoint)
+    brands = sdk_endpoint.brands.list(organization_id)
+    if not brands:
+        pytest.skip("No brands on the test account; brand detail check skipped.")
+
+    brand = brands[0]
+    response = raw_client.get(
+        f"/v2/organizations/{organization_id}/brands/{brand.id}",
+        headers={"Authorization": f"Bearer {sdk_endpoint.token}"},
+    )
+    assert response.status_code == 200
+
+    fetched = sdk_endpoint.brands.get(organization_id, brand.id)
+    assert normalize(sdk_dump(fetched)) == normalize(response.json())
+
+
+def test_notification_template_detail_matches_raw_http(sdk_endpoint, raw_client, normalize, sdk_dump):
+    templates = sdk_endpoint.notification_templates.list()
+    if not templates:
+        pytest.skip("No notification templates on the test account; detail check skipped.")
+
+    template = templates[0]
+    response = raw_client.get(
+        f"/v2/notifications/templates/{template.id}", headers={"Authorization": f"Bearer {sdk_endpoint.token}"}
+    )
+    assert response.status_code == 200
+
+    fetched = sdk_endpoint.notification_templates.get(template.id)
+    assert normalize(sdk_dump(fetched)) == normalize(response.json())
+
+
 def test_template_lifecycle_round_trip(sdk_endpoint):
     """Create, read, update, and delete one template on beta.
 

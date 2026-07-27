@@ -327,25 +327,32 @@ parsed by UpdateBrandSchema first. Response: the updated brand row. js-sdk calle
 
 ## Doc-vs-code drift found (beyond the known template-documents path)
 
-js-sdk functions that target routes that do not exist in the API:
+js-sdk functions that target routes that do not exist in the API. Port policy for these symbols
+matches `sdks/API-PARITY.md` and `packages/conformance/fixtures.json`: C# and Python carry
+code-faithful stubs with doc comments explaining the breakage, and conformance excludes them.
+Use the working equivalents below in new code; do not treat the js-sdk wire paths as live.
 
 - getTemplateDocumentFile (js-sdk/Templates/TemplateDocuments.ts:119-122) GETs
   /v2/templates/:templateId/documents/:documentId?file=true. No such route; 404. The working call
   is GET /v2/template-documents/:documentId?type=file, which downloadTemplateDocument in the same
-  file already does.
+  file already does. Ports stub the js-sdk function for surface parity; use download instead.
 - getTemplateDocumentThumbnail (js-sdk/Templates/TemplateDocuments.ts:129-132) GETs the same dead
   route with ?thumbnail=true. The working equivalent is the page-image route with page='thumb'.
+  Ports stub the js-sdk function; use getTemplateDocumentPageDisplayUri with page='thumb' instead.
 - createTemplateFromSharepoint (js-sdk/Templates/Templates.ts:301-307) POSTs
-  /v2/templates/from-sharepoint. No handler anywhere in the API. Skip in ports.
+  /v2/templates/from-sharepoint. No handler anywhere in the API. Ports stub it with a doc comment;
+  excluded from conformance.
 - The whole js-sdk KBA module (js-sdk/Envelopes/KBA.ts:81-129: /v2/kba/:envelope_id/:role_name,
   /v2/kba/pin, /v2/kba/identity, /v2/kba/response) has no server routes. KBA actually runs through
-  POST /v2/sign/verify with auth_method 'kba' (endpoints/Sign.ts:54-297, JSON only). Skip the KBA
-  module in ports.
+  POST /v2/sign/verify with auth_method 'kba' (endpoints/Sign.ts:54-297, JSON only). Ports stub the
+  module for js-sdk surface parity; real KBA flows through recipient verify_signer. Excluded from
+  conformance.
 - toggleTemplateStar (js-sdk/Templates/Templates.ts:367-370) POSTs /v2/templates/:id/stars/toggle.
   The server route is GET /templates/:template_id/star (endpoints/Templates.ts:305), and that
   handler parses TemplateOperationSchema out of the GET body, which requires action='duplicate',
-  so even the server route rejects a bare GET. Broken on both sides; leave out of ports until the
-  API is fixed.
+  so even the server route rejects a bare GET. Broken on both sides; ports stub it with a doc
+  comment and exclude it from conformance. The TS lane can opt in to a curl/SDK equivalence check
+  with VERDOCS_STAR_TOGGLE=1 when debugging an API fix.
 
 Wrong-target and wrong-type drift:
 

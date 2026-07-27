@@ -1,8 +1,12 @@
 # @verdocs/conformance
 
-The curl-vs-SDK conformance baseline described in `platform/specs/sdk-restructure/SDKS.md`. Every covered endpoint is called twice, once with raw curl in a child process and once with `@verdocs/js-sdk`, and the two responses are diffed on status, shape, and data (volatile fields like timestamps and tokens are normalized to type markers).
+The curl-vs-SDK conformance baseline described in `docs/conformance-plan.md`. Every covered endpoint is called twice, once with raw curl in a child process and once with `@verdocs/js-sdk`, and the two responses are diffed on status, shape, and data (volatile fields like timestamps and tokens are normalized to type markers).
 
-POC coverage: authenticate (password grant), current user and profile, getTemplates, and the star toggle.
+Coverage today:
+
+- 20 read-only cases driven from `fixtures.json`
+- The canonical create-to-cancel chain (`src/chain.spec.ts`)
+- Extra lifecycle and detail checks beside the fixture loop (template CRUD, group/brand detail, and similar)
 
 ## Running it
 
@@ -10,10 +14,10 @@ The suite hits the live beta API, so it runs only via an explicit script and is 
 
 ```bash
 cp .env.example .env   # at the hub root; fill in a beta test account
-pnpm test:conformance
+pnpm conformance
 ```
 
-The star toggle check needs the test account to have at least one template.
+The frozen star-toggle check is skipped by default. Set `VERDOCS_STAR_TOGGLE=1` to opt in when debugging curl/SDK equivalence after an API fix.
 
 ## Running every language's lane
 
@@ -27,7 +31,7 @@ runs even if an earlier one fails, so one broken language never hides the others
 
 ## The signup lane
 
-`src/signup.spec.ts` exercises the full self-serve signup flow against beta with the SDK alone (no browser), mirroring VerdocsAuth's call sequence: `createProfile`, pull the verification code from the test mailbox over IMAP, `verifyEmail`, then a fresh password-grant login as the new identity. Each run creates one real account (and its own new org) on beta, so the lane is gated: it runs only when `VERDOCS_TEST_IMAP_HOST`, `VERDOCS_TEST_IMAP_USER`, and `VERDOCS_TEST_IMAP_PASSWORD` are set (hub root `.env` or the environment). Without them the spec skips with a note and the rest of the suite is unaffected.
+`src/signup.spec.ts` exercises the full self-serve signup flow against beta with the SDK alone (no browser), mirroring VerdocsAuth's call sequence: `createProfile`, pull the verification code from the test mailbox over IMAP, `verifyEmail`, then a fresh password-grant login as the new identity. Each run creates one real account (and its own new org) on beta, so the lane is gated: it runs only when `VERDOCS_SIGNUP_E2E=1` is set on top of the IMAP mailbox variables (`VERDOCS_TEST_IMAP_HOST`, `VERDOCS_TEST_IMAP_USER`, `VERDOCS_TEST_IMAP_PASSWORD`). Without them the spec skips with a note and the rest of the suite is unaffected.
 
 Two rules for the shared test mailbox:
 

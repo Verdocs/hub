@@ -219,7 +219,7 @@ Optional future improvement: a tiny machine-readable `packages/conformance/langs
 
 ## Conformance runner: how to use `fixtures.json`
 
-This section is the implementation guide. Python already follows it closely (`sdks/python/tests/conformance/`). C# covers the same cases but still hardcodes them. Treat the Python lane as the reference shape for any new language (and for folding C# onto true fixture loading later).
+This section is the implementation guide. Python already follows it closely (`sdks/python/tests/conformance/`). C# loads the same `fixtures.json` cases via `ConformanceFixtures.cs` and parametrizes `ConformanceTests` from them. Treat the Python lane as the reference shape for any new language.
 
 ### What `fixtures.json` is
 
@@ -241,7 +241,7 @@ Each case looks like:
 ```json
 {
   "id": "users-me",
-  "sdk": "getMyUser",
+  "sdk": "auth.getMyUser",
   "method": "GET",
   "path": "/v2/users/me",
   "auth": true
@@ -504,7 +504,7 @@ That keeps the fixture file stable while CI secrets get simpler.
 2. Add a `cases[]` entry with `id`, `sdk`, `method`, `path`, `auth`, optional `query`/`body`.
 3. AI (or human) ports the method to Python and C#.
 4. Add one dispatch branch per language.
-5. Run `pytest -m conformance` / `VERDOCS_CONFORMANCE=1 dotnet test` / `pnpm test:conformance`.
+5. Run `pytest -m conformance` / `VERDOCS_CONFORMANCE=1 dotnet test` / `pnpm conformance`.
 6. If the API is broken for everyone, put the id under `frozen` with a note instead of deleting it.
 
 **Keeping languages honest**
@@ -522,8 +522,8 @@ That keeps the fixture file stable while CI secrets get simpler.
 
 ### Gaps to close (relative to this design)
 
-1. **C#**: load `fixtures.json` and theory-parametrize instead of duplicating paths in Facts.
-2. **TS package**: drive `conformance.spec.ts` from `fixtures.json` the way Python does, so the richer hand-written lifecycle tests sit beside the shared cases rather than replacing them.
+1. **C#**: load `fixtures.json` and theory-parametrize instead of duplicating paths in Facts. Done.
+2. **TS package**: drive `conformance.spec.ts` from `fixtures.json` the way Python does, so the richer hand-written lifecycle tests sit beside the shared cases rather than replacing them. Done for fixture cases; chain lives in `chain.spec.ts`.
 3. **Token-first env**: teach all three loaders to accept `VERDOCS_CONFORMANCE_TOKEN`.
 4. **Dispatch completeness**: a case in JSON with no dispatch branch should fail closed (Python already does).
 
@@ -531,7 +531,7 @@ Once those are true, "utilize fixtures.json" means one sentence operationally: *
 
 ---
 
-<!-- NEW (2026-07-14): Cross-language conformance tree consistency. Everything above this line was already in the doc. -->
+
 
 ## Cross-language conformance tree consistency
 
@@ -547,11 +547,15 @@ The shared TS harness stays in `packages/conformance/` (it is the monorepo home 
 - One parametrized / theory entry that loads fixtures. Hand-synced Facts or `it` blocks are a bridge only.
 - Default unit CI stays offline (marker, filter, or env gate).
 
+
+
 ### May differ
 
 - Folder casing (`conformance/` vs `Conformance/`) and exact filenames.
 - Language-native method names inside the dispatch map. Fixture `sdk` keys stay stable (JS-ish today); each runner maps them to local calls.
 - Typed-model adaptation (prune-to-SDK-keys like Python) when full raw JSON would false-fail.
+
+
 
 ### Required tree (roles, not identical filenames)
 
@@ -570,14 +574,16 @@ Optional write/lifecycle smokes can sit in the same folder. They stay outside `f
 Concrete map today:
 
 
-| Role      | Python                         | C#                                      | TS (`packages/conformance`)      |
-| --------- | ------------------------------ | --------------------------------------- | -------------------------------- |
-| Env/gate  | `conftest.py`                  | `ConformanceEnv` + `VERDOCS_CONFORMANCE=1` | `support.ts` `loadEnv`         |
-| Fixtures  | `conftest.py` loads JSON       | `ConformanceFixtures` loads JSON        | file exists; suite partly hand-written |
-| Normalize | `normalize_volatile`           | `VolatileJson`                          | `normalizeVolatile`              |
-| Raw       | httpx `call_raw`               | `ConformanceContext` HttpClient         | `curl` helper                    |
-| Dispatch  | `call_sdk`                     | `CallSdkForCaseAsync`, one arm per case | one `it` per case                |
-| Entry     | `test_case_matches_raw_http`   | `ConformanceTests`                      | `conformance.spec.ts`            |
+| Role      | Python                       | C#                                         | TS (`packages/conformance`)            |
+| --------- | ---------------------------- | ------------------------------------------ | -------------------------------------- |
+| Env/gate  | `conftest.py`                | `ConformanceEnv` + `VERDOCS_CONFORMANCE=1` | `support.ts` `loadEnv`                 |
+| Fixtures  | `conftest.py` loads JSON     | `ConformanceFixtures` loads JSON           | file exists; suite partly hand-written |
+| Normalize | `normalize_volatile`         | `VolatileJson`                             | `normalizeVolatile`                    |
+| Raw       | httpx `call_raw`             | `ConformanceContext` HttpClient            | `curl` helper                          |
+| Dispatch  | `call_sdk`                   | `CallSdkForCaseAsync`, one arm per case    | one `it` per case                      |
+| Entry     | `test_case_matches_raw_http` | `ConformanceTests`                         | `conformance.spec.ts`                  |
+
+
 
 
 ### Checklist
@@ -594,6 +600,8 @@ Use this when adding a language or closing a gap:
 8. If the SDK drops unknown wire fields, prune the raw body to SDK keys before compare (Python pattern).
 9. New coverage: edit `fixtures.json` -> add one dispatch arm per language -> run each language's conformance command -> all green.
 10. CI: PR runs units only; nightly runs each language's conformance command against the same JSON.
+
+
 
 ### Gaps (conformance trees)
 
