@@ -57,6 +57,12 @@ public sealed class Auth
     /// <paramref name="redirectUri"/> with a code query parameter that a server-side
     /// integration exchanges for tokens. This builds the URL locally and makes no network
     /// call, which is why it is synchronous.
+    ///
+    /// <example>
+    /// <code>
+    /// var authorizeUrl = endpoint.Auth.GetOAuth2AuthorizeUrl("YOUR_CLIENT_ID", "https://myapp.example.com/callback");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="clientId">The client ID of the registered OAuth2 application.</param>
     /// <param name="redirectUri">Where to send the user after authorization. Must match a redirect URI registered for the application.</param>
@@ -94,6 +100,13 @@ public sealed class Auth
     /// Exchanges a refresh token for fresh session tokens. Call before the current session
     /// expires. The endpoint does not apply the result automatically; pass the new access
     /// token to <see cref="VerdocsEndpoint.SetToken"/>, matching <see cref="AuthenticateAsync"/>.
+    ///
+    /// <example>
+    /// <code>
+    /// var auth = await endpoint.Auth.RefreshTokenAsync(refreshToken);
+    /// endpoint.SetToken(auth.AccessToken);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="refreshToken">The refresh token from an earlier authentication response.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -115,6 +128,16 @@ public sealed class Auth
     /// <summary>
     /// Changes the caller's password when the old password is known (typically for logged-in
     /// users). Wrong old passwords surface as a <see cref="VerdocsApiException"/>.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Auth.ChangePasswordAsync(new ChangePasswordRequest
+    /// {
+    ///     OldPassword = "OLD_PASSWORD",
+    ///     NewPassword = "NEW_PASSWORD",
+    /// });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="request">The old and new passwords.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -167,6 +190,12 @@ public sealed class Auth
     /// the access token returned by <see cref="Profiles.CreateAsync"/> with
     /// <see cref="VerdocsEndpoint.SetToken"/>, then call this if the original message was
     /// lost or its code expired.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Auth.ResendVerificationAsync();
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the message has been queued.</returns>
@@ -188,6 +217,13 @@ public sealed class Auth
     /// calling. (The js-sdk documents this endpoint as usable while unauthenticated; the
     /// deployed API rejects that.) Success returns fresh, fully verified session tokens;
     /// apply the new access token with SetToken.
+    ///
+    /// <example>
+    /// <code>
+    /// var verified = await endpoint.Auth.VerifyEmailAsync(new VerifyEmailRequest { Email = "you@example.com", Token = code });
+    /// endpoint.SetToken(verified.AccessToken);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="request">The email address and the emailed verification code.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>

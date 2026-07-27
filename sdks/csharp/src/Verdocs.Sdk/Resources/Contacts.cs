@@ -18,6 +18,12 @@ public sealed class Contacts
 
     /// <summary>
     /// Gets the contacts in the caller's organization, sorted by name.
+    ///
+    /// <example>
+    /// <code>
+    /// var contacts = await endpoint.Contacts.ListAsync();
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The organization's contact profiles.</returns>
@@ -33,6 +39,17 @@ public sealed class Contacts
 
     /// <summary>
     /// Creates a contact in the caller's organization. The caller must be an admin.
+    ///
+    /// <example>
+    /// <code>
+    /// var contact = await endpoint.Contacts.CreateAsync(new CreateContactRequest
+    /// {
+    ///     FirstName = "Paige",
+    ///     LastName = "Turner",
+    ///     Email = "paige.turner@example.com",
+    /// });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="request">Details for the new contact.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -50,6 +67,14 @@ public sealed class Contacts
     /// <summary>
     /// Updates a contact. The caller must be an admin, and the profile must be a contact
     /// rather than a member.
+    ///
+    /// <example>
+    /// <code>
+    /// var updated = await endpoint.Contacts.UpdateAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     new UpdateContactRequest { FirstName = "Paige", LastName = "Turner", Email = "paige.turner@example.com" });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profileId">The contact's profile ID.</param>
     /// <param name="request">The replacement values.</param>
@@ -71,6 +96,12 @@ public sealed class Contacts
     /// Deletes a contact from the caller's organization. The caller must be an admin. Any
     /// envelopes, recipient records, and templates tied to the contact are reassigned to the
     /// caller.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Contacts.DeleteAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profileId">The contact's profile ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>

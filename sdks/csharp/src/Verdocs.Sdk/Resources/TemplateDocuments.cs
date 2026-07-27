@@ -23,6 +23,15 @@ public sealed class TemplateDocuments
     /// plus the template ID as a text part. The document takes its name from the uploaded
     /// file name; there is no name override. PDF and DOCX are accepted (DOCX is converted to
     /// PDF server-side, with the original retained), up to 25 MB.
+    ///
+    /// <example>
+    /// <code>
+    /// await using var stream = File.OpenRead("bill-of-sale.pdf");
+    /// var document = await endpoint.TemplateDocuments.CreateAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     new TemplateFileUpload { Content = stream, FileName = "bill-of-sale.pdf", ContentType = "application/pdf" });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="templateId">The template to attach the document to.</param>
     /// <param name="file">The file to upload.</param>
@@ -53,6 +62,12 @@ public sealed class TemplateDocuments
     /// Gets a template document's metadata. Non-creators (organization collaborators, for
     /// example) receive only the metadata they are allowed to view. The server sends this
     /// JSON with a text/html content type; the SDK parses the body as JSON regardless.
+    ///
+    /// <example>
+    /// <code>
+    /// var document = await endpoint.TemplateDocuments.GetAsync(documentId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="documentId">The document's unique ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -71,6 +86,12 @@ public sealed class TemplateDocuments
     /// <summary>
     /// Downloads a template document's file directly. Returns the raw bytes with no redirect;
     /// use this rather than a plain link so the authorization headers are set.
+    ///
+    /// <example>
+    /// <code>
+    /// var bytes = await endpoint.TemplateDocuments.DownloadAsync(documentId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="documentId">The document's unique ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -90,6 +111,12 @@ public sealed class TemplateDocuments
     /// Gets a pre-signed download link for a template document (attachment disposition, about
     /// a one hour expiry). The link needs no auth header, so use it immediately and never
     /// share it.
+    ///
+    /// <example>
+    /// <code>
+    /// var link = await endpoint.TemplateDocuments.GetDownloadLinkAsync(documentId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="documentId">The document's unique ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -110,6 +137,12 @@ public sealed class TemplateDocuments
     /// js-sdk: this fetches the envelope-documents route, not template-documents, so it only
     /// resolves for envelope document IDs. The template-documents equivalent is
     /// GET /v2/template-documents/:id?type=preview, which this SDK does not wrap yet.
+    ///
+    /// <example>
+    /// <code>
+    /// var link = await endpoint.TemplateDocuments.GetPreviewLinkAsync(documentId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="documentId">The document ID to link to.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -129,6 +162,12 @@ public sealed class TemplateDocuments
     /// Gets a template document file through the legacy templates route. Dead on the deployed
     /// API: the route does not exist, so every call fails. Ported to match the js-sdk
     /// surface; <see cref="DownloadAsync"/> is the working equivalent. Retirement is pending.
+    ///
+    /// <example>
+    /// <code>
+    /// var bytes = await endpoint.TemplateDocuments.GetFileAsync(templateId, documentId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="templateId">The template the document belongs to.</param>
     /// <param name="documentId">The document's unique ID.</param>
@@ -155,6 +194,12 @@ public sealed class TemplateDocuments
     /// literal page value "thumb", which this SDK does not wrap yet
     /// (<see cref="GetPageDisplayUriAsync"/> takes numeric pages, matching the js-sdk).
     /// Retirement is pending.
+    ///
+    /// <example>
+    /// <code>
+    /// var bytes = await endpoint.TemplateDocuments.GetThumbnailAsync(templateId, documentId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="templateId">The template the document belongs to.</param>
     /// <param name="documentId">The document's unique ID.</param>
@@ -178,6 +223,12 @@ public sealed class TemplateDocuments
     /// Gets a display URI for one page of a template document. Pages are rendered server-side
     /// to PNG for display only; they are not legally binding and carry no participant
     /// metadata. Get the original file via <see cref="DownloadAsync"/>.
+    ///
+    /// <example>
+    /// <code>
+    /// var uri = await endpoint.TemplateDocuments.GetPageDisplayUriAsync(documentId, 0);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="documentId">The document to render.</param>
     /// <param name="page">0-based page number (0-1000).</param>
@@ -203,6 +254,12 @@ public sealed class TemplateDocuments
     /// <summary>
     /// Deletes a template document. Returns the remaining deep template: the js-sdk doc tag
     /// claims a bare status string, but its code and the server both return the template.
+    ///
+    /// <example>
+    /// <code>
+    /// var template = await endpoint.TemplateDocuments.DeleteAsync(documentId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="documentId">The document's unique ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>

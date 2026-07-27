@@ -20,6 +20,12 @@ public sealed class Brands
 
     /// <summary>
     /// Gets the brands for an organization, oldest first.
+    ///
+    /// <example>
+    /// <code>
+    /// var brands = await endpoint.Brands.ListAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -41,6 +47,14 @@ public sealed class Brands
 
     /// <summary>
     /// Creates a brand.
+    ///
+    /// <example>
+    /// <code>
+    /// var brand = await endpoint.Brands.CreateAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     new CreateBrandRequest { Key = "acme", Name = "Acme" });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="request">Details for the new brand.</param>
@@ -59,6 +73,14 @@ public sealed class Brands
 
     /// <summary>
     /// Gets one brand by its ID.
+    ///
+    /// <example>
+    /// <code>
+    /// var brand = await endpoint.Brands.GetAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     "b1f2e3d4-c5a6-478b-9012-345678901234");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="brandId">The brand's unique ID.</param>
@@ -76,6 +98,15 @@ public sealed class Brands
     /// <summary>
     /// Updates a brand. Only the fields set on the request are sent; fields omitted are left
     /// unchanged.
+    ///
+    /// <example>
+    /// <code>
+    /// var updated = await endpoint.Brands.UpdateAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     "b1f2e3d4-c5a6-478b-9012-345678901234",
+    ///     new UpdateBrandRequest { Name = "Acme Corp" });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="brandId">The brand's unique ID.</param>
@@ -95,6 +126,16 @@ public sealed class Brands
     /// <summary>
     /// Uploads a new full-size logo for the brand, setting its full logo URL. The stream is
     /// read once and disposed with the request.
+    ///
+    /// <example>
+    /// <code>
+    /// await using var file = File.OpenRead("logo.png");
+    /// var brand = await endpoint.Brands.UpdateLogoAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     "b1f2e3d4-c5a6-478b-9012-345678901234",
+    ///     file, "logo.png", "image/png");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="brandId">The brand's unique ID.</param>
@@ -121,6 +162,16 @@ public sealed class Brands
     /// <summary>
     /// Uploads a new thumbnail for the brand, setting its thumbnail URL. The stream is read
     /// once and disposed with the request.
+    ///
+    /// <example>
+    /// <code>
+    /// await using var file = File.OpenRead("thumbnail.png");
+    /// var brand = await endpoint.Brands.UpdateThumbnailAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     "b1f2e3d4-c5a6-478b-9012-345678901234",
+    ///     file, "thumbnail.png", "image/png");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="brandId">The brand's unique ID.</param>
@@ -146,6 +197,14 @@ public sealed class Brands
 
     /// <summary>
     /// Deletes a brand. The organization's default brand cannot be deleted.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Brands.DeleteAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     "b1f2e3d4-c5a6-478b-9012-345678901234");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="brandId">The brand's unique ID.</param>
@@ -164,6 +223,15 @@ public sealed class Brands
     /// Adds a custom email domain to a brand. The response carries the DNS records to
     /// publish (DKIM tokens and status flags); verify them with
     /// <see cref="VerifyEmailDomainAsync"/> once published.
+    ///
+    /// <example>
+    /// <code>
+    /// var brand = await endpoint.Brands.AddEmailDomainAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     "b1f2e3d4-c5a6-478b-9012-345678901234",
+    ///     new AddBrandEmailDomainRequest { Subdomain = "notify.acme.com", LocalPart = "notifications" });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="brandId">The brand's unique ID.</param>
@@ -187,6 +255,14 @@ public sealed class Brands
 
     /// <summary>
     /// Removes a brand's custom email domain. Branded email reverts to the Verdocs sender.
+    ///
+    /// <example>
+    /// <code>
+    /// var brand = await endpoint.Brands.RemoveEmailDomainAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     "b1f2e3d4-c5a6-478b-9012-345678901234");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="brandId">The brand's unique ID.</param>
@@ -204,6 +280,14 @@ public sealed class Brands
 
     /// <summary>
     /// Triggers verification of a brand's email domain DNS records (SPF, DKIM, DMARC).
+    ///
+    /// <example>
+    /// <code>
+    /// var brand = await endpoint.Brands.VerifyEmailDomainAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     "b1f2e3d4-c5a6-478b-9012-345678901234");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="brandId">The brand's unique ID.</param>

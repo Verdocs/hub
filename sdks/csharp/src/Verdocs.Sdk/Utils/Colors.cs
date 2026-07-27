@@ -16,6 +16,12 @@ public static class Colors
     /// Converts an "rgba(r,g,b,a)" string to its hex equivalent, dropping alpha. The alpha
     /// channel is composited against white first, so the hex color is what the translucent
     /// tint actually looks like on a page.
+    ///
+    /// <example>
+    /// <code>
+    /// var hex = Colors.GetRgb("rgba(255, 193, 7, 0.4)");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="rgba">A CSS rgba() string, e.g. "rgba(255, 193, 7, 0.4)".</param>
     /// <returns>The lowercase hex color, e.g. "#ffe69c".</returns>
@@ -46,6 +52,12 @@ public static class Colors
     /// Returns the color code for a signer given its role index. Indexes cycle through ten
     /// colors; index 0 gets its own shade so the first signer stands out from every tenth one
     /// after it.
+    ///
+    /// <example>
+    /// <code>
+    /// var color = Colors.GetRgba(2);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="roleIndex">Zero-based index of the role in the template's role list.</param>
     /// <returns>A CSS rgba() string.</returns>
@@ -78,6 +90,12 @@ public static class Colors
     /// hash of the name picks it, so the same name always yields the same color. Matches the
     /// js-sdk hash (including its 32-bit shift wraparound) so every SDK tints a given role
     /// identically.
+    ///
+    /// <example>
+    /// <code>
+    /// var color = Colors.NameToRgba("Signer 1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="name">
     /// The role name. Names ending in a digit get extra hash input so "Signer 1" and
@@ -130,6 +148,12 @@ public static class Colors
     /// Picks a color code for a role name from whichever inputs are available. An explicit
     /// index wins, then the name's position in the roles list, and a name absent from the
     /// list falls back to the name hash.
+    ///
+    /// <example>
+    /// <code>
+    /// var color = Colors.GetRoleColor("Seller", new[] { "Buyer", "Seller" });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="name">The role name to color.</param>
     /// <param name="roles">The template's role names, in order. May be null or empty.</param>

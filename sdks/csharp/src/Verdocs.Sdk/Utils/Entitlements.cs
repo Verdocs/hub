@@ -10,6 +10,12 @@ public static class Entitlements
     /// whose date window covers now survive, and the first record per feature wins, so
     /// presence of a key means the feature is currently enabled. This is the client-side twin
     /// of what <see cref="Resources.Organizations.GetActiveEntitlementsAsync"/> returns.
+    ///
+    /// <example>
+    /// <code>
+    /// var active = Entitlements.CollapseEntitlements(entitlements);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="entitlements">
     /// The raw records, e.g. from <see cref="Resources.Organizations.GetEntitlementsAsync"/>.

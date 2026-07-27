@@ -9,6 +9,12 @@ public static class Primitives
     /// <summary>
     /// Returns a list of consecutive integers, e.g. [start, start + 1, ...]. Frequently
     /// useful in rendering when there is no source list to iterate.
+    ///
+    /// <example>
+    /// <code>
+    /// var values = Primitives.IntegerSequence(1, 5); // [1, 2, 3, 4, 5]
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="start">The first value.</param>
     /// <param name="count">How many values to produce.</param>
@@ -33,6 +39,12 @@ public static class Primitives
     /// Formats a profile-like record's full name, capitalized. The js-sdk takes a structural
     /// source object; pass the record's name fields directly, e.g.
     /// FormatFullName(profile.FirstName, profile.LastName).
+    ///
+    /// <example>
+    /// <code>
+    /// var name = Primitives.FormatFullName("Paige", "Turner"); // "Paige Turner"
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="firstName">The first name; null is treated as empty.</param>
     /// <param name="lastName">The last name; null is treated as empty.</param>
@@ -50,6 +62,12 @@ public static class Primitives
 
     /// <summary>
     /// Formats a profile's initials, e.g. "T U", with "--" for no profile.
+    ///
+    /// <example>
+    /// <code>
+    /// var initials = Primitives.FormatInitials(profile); // "P T"
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">
     /// The profile to read. The js-sdk assumes both names are present; a missing one is
@@ -75,6 +93,12 @@ public static class Primitives
     /// Generates suggested initials for a full name, e.g. "John Doe" yields "JD". Splits on
     /// single spaces and keeps each word's first character unchanged, matching the js-sdk
     /// (which does not uppercase here).
+    ///
+    /// <example>
+    /// <code>
+    /// var initials = Primitives.FullNameToInitials("Paige Turner"); // "PT"
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="name">The full name.</param>
     /// <returns>The concatenated first characters.</returns>

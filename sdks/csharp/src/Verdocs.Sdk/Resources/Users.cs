@@ -15,7 +15,14 @@ public sealed class Users
         _endpoint = endpoint;
     }
 
-    /// <summary>Gets the caller's user record.</summary>
+    /// <summary>Gets the caller's user record.
+    ///
+    /// <example>
+    /// <code>
+    /// var me = await endpoint.Users.GetMeAsync();
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The caller's user record.</returns>
     /// <exception cref="VerdocsApiException">The call failed, for example because the session is invalid.</exception>
@@ -29,6 +36,12 @@ public sealed class Users
 
     /// <summary>
     /// Gets the caller's most recent in-app notifications. The API returns at most 20.
+    ///
+    /// <example>
+    /// <code>
+    /// var notifications = await endpoint.Users.GetNotificationsAsync();
+    /// </code>
+    /// </example>
     /// </summary>
     /// <remarks>
     /// The result is raw JSON on purpose: the deployed endpoint returns notification store

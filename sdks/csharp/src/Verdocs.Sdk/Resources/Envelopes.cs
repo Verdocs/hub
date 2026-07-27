@@ -64,6 +64,12 @@ public sealed class Envelopes
     /// <summary>
     /// Gets all metadata for an envelope. Non-creators such as recipients receive only the
     /// metadata they are allowed to view.
+    ///
+    /// <example>
+    /// <code>
+    /// var envelope = await endpoint.Envelopes.GetAsync(envelopeId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to retrieve.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -106,6 +112,15 @@ public sealed class Envelopes
     /// <summary>
     /// Updates an envelope's settings: name, sender identity, reminders, expiration,
     /// visibility, contact preferences, and metadata.
+    ///
+    /// <example>
+    /// <code>
+    /// var envelope = await endpoint.Envelopes.UpdateAsync(envelopeId, new UpdateEnvelopeRequest
+    /// {
+    ///     Name = "Bill of Sale (Revised)",
+    /// });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to update.</param>
     /// <param name="request">The fields to change; unset fields are left alone.</param>
@@ -125,6 +140,12 @@ public sealed class Envelopes
 
     /// <summary>
     /// Cancels an envelope. This is permanent: recipients can no longer act on it.
+    ///
+    /// <example>
+    /// <code>
+    /// var envelope = await endpoint.Envelopes.CancelAsync(envelopeId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to cancel.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -146,6 +167,12 @@ public sealed class Envelopes
     /// <summary>
     /// Gets an envelope document's metadata. Accepts a user or signing session; the caller must
     /// be the envelope's creator or one of its recipients.
+    ///
+    /// <example>
+    /// <code>
+    /// var document = await endpoint.Envelopes.GetDocumentAsync(documentId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="documentId">The document to retrieve.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -189,6 +216,12 @@ public sealed class Envelopes
     /// For attachment-type documents this serves the filled variant; for anything else it
     /// serves the certificate. Signed variants are generated asynchronously after finalize, so
     /// poll the envelope until the certificate document's Signed flag is true before fetching.
+    ///
+    /// <example>
+    /// <code>
+    /// var bytes = await endpoint.Envelopes.DownloadDocumentAsync(documentId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="documentId">The document to download.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -210,6 +243,12 @@ public sealed class Envelopes
     /// Gets a pre-signed download link for an envelope document. The link expires within an
     /// hour, so use it immediately and never store or share it. Accepts a user or signing
     /// session.
+    ///
+    /// <example>
+    /// <code>
+    /// var url = await endpoint.Envelopes.GetDocumentDownloadLinkAsync(documentId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="documentId">The document to link to.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -232,6 +271,12 @@ public sealed class Envelopes
     /// documents with its completion certificate, in workflow order. Pass the certificate
     /// document's ID; the combined PDF shares it. Older envelopes may predate combined PDF
     /// generation. The link expires within an hour.
+    ///
+    /// <example>
+    /// <code>
+    /// var url = await endpoint.Envelopes.GetCombinedDocumentDownloadLinkAsync(documentId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="documentId">The envelope's certificate document ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -253,6 +298,12 @@ public sealed class Envelopes
     /// Gets a pre-signed preview link for an envelope document (inline content disposition).
     /// The link expires within an hour, so use it immediately and never store or share it.
     /// Accepts a user or signing session.
+    ///
+    /// <example>
+    /// <code>
+    /// var url = await endpoint.Envelopes.GetDocumentPreviewLinkAsync(documentId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="documentId">The document to link to.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -273,6 +324,12 @@ public sealed class Envelopes
     /// <summary>
     /// Downloads a file attached to an envelope. Kept for parity with the js-sdk's deprecated
     /// getEnvelopeFile; it fetches the same bytes as <see cref="DownloadDocumentAsync"/>.
+    ///
+    /// <example>
+    /// <code>
+    /// var bytes = await endpoint.Envelopes.GetFileAsync(documentId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="documentId">The document to download.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -298,6 +355,12 @@ public sealed class Envelopes
     /// radio buttons take the strings "true"/"false" (the server deliberately does not coerce
     /// booleans). Attachment fields are updated with <see cref="UploadFieldAttachmentAsync"/>
     /// instead, and timestamp and payment fields reject direct writes.
+    ///
+    /// <example>
+    /// <code>
+    /// var field = await endpoint.Envelopes.UpdateFieldAsync(envelopeId, "Recipient 1", "full_name", "Paige Turner");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role the field is assigned to.</param>
@@ -335,6 +398,13 @@ public sealed class Envelopes
     /// field's role. Any content type is accepted (files are virus-scanned server-side), but
     /// set <paramref name="contentType"/> accurately because the server trusts the declared
     /// type. Large uploads can outlast short endpoint timeouts; the js-sdk allows two minutes.
+    ///
+    /// <example>
+    /// <code>
+    /// using var content = File.OpenRead("w9.pdf");
+    /// var field = await endpoint.Envelopes.UploadFieldAttachmentAsync(envelopeId, "Recipient 1", "attachment_1", content, "w9.pdf");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role the field is assigned to.</param>
@@ -383,6 +453,12 @@ public sealed class Envelopes
     /// Removes the file from an attachment field. This is a PUT rather than a DELETE because
     /// the field itself survives; omitting the file part is what signals the server to clear
     /// the current attachment. Accepts a user or signing session valid for the field's role.
+    ///
+    /// <example>
+    /// <code>
+    /// var field = await endpoint.Envelopes.DeleteFieldAttachmentAsync(envelopeId, "Recipient 1", "attachment_1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role the field is assigned to.</param>
@@ -419,6 +495,12 @@ public sealed class Envelopes
     /// signing session is blocked until the recipient completes their auth methods. The server
     /// also accepts the literal page "thumb" for a thumbnail, which this method (like the
     /// js-sdk) does not expose.
+    ///
+    /// <example>
+    /// <code>
+    /// var uri = await endpoint.Envelopes.GetDocumentPageDisplayUriAsync(documentId, 1);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="documentId">The document to retrieve.</param>
     /// <param name="page">The page number to retrieve.</param>
@@ -452,6 +534,12 @@ public sealed class Envelopes
     /// The archive arrives as application/octet-stream. Large envelopes take a while to
     /// assemble, so configure the endpoint timeout accordingly (the js-sdk allows two
     /// minutes).
+    ///
+    /// <example>
+    /// <code>
+    /// var zip = await endpoint.Envelopes.GetZipAsync(new[] { envelopeId });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeIds">The envelopes to include.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -476,6 +564,12 @@ public sealed class Envelopes
     /// Sorts fields in reading order: by page, then by Y coordinate in 5-unit bands (Y origin
     /// is the bottom-left corner, so bands sort descending), then by X coordinate. Sorts the
     /// list in place and returns it, like the js-sdk's sortFields. Local logic; no API call.
+    ///
+    /// <example>
+    /// <code>
+    /// Envelopes.SortFields(fields);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="fields">The fields to sort. Modified in place.</param>
     /// <returns>The same list, sorted.</returns>
@@ -504,6 +598,12 @@ public sealed class Envelopes
     /// <summary>
     /// Sorts documents by their order, falling back to creation date. Sorts the list in place
     /// and returns it, like the js-sdk's sortDocuments. Local logic; no API call.
+    ///
+    /// <example>
+    /// <code>
+    /// Envelopes.SortDocuments(documents);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="documents">The documents to sort. Modified in place.</param>
     /// <returns>The same list, sorted.</returns>
@@ -530,6 +630,12 @@ public sealed class Envelopes
     /// Sorts recipients by sequence, then by order within the sequence. Sorts the list in
     /// place and returns it, like the js-sdk's sortRecipients; a null list passes through.
     /// Local logic; no API call.
+    ///
+    /// <example>
+    /// <code>
+    /// Envelopes.SortRecipients(recipients);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="recipients">The recipients to sort. Modified in place.</param>
     /// <returns>The same list, sorted, or null if null was passed.</returns>

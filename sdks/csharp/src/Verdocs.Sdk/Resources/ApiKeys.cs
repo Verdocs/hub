@@ -21,6 +21,12 @@ public sealed class ApiKeys
     /// Gets the API keys for the caller's organization, each with its acting profile. Secrets
     /// are never included in listings; they are returned only by <see cref="CreateAsync"/>
     /// and <see cref="RotateAsync"/>.
+    ///
+    /// <example>
+    /// <code>
+    /// var apiKeys = await endpoint.ApiKeys.ListAsync();
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The organization's API keys, without secrets.</returns>
@@ -37,6 +43,16 @@ public sealed class ApiKeys
     /// <summary>
     /// Creates an API key acting as the given profile. Store the returned secret safely: this
     /// response and <see cref="RotateAsync"/> are the only places it appears.
+    ///
+    /// <example>
+    /// <code>
+    /// var apiKey = await endpoint.ApiKeys.CreateAsync(new CreateApiKeyRequest
+    /// {
+    ///     Name = "Integration key",
+    ///     ProfileId = "d2338742-f3a1-465b-8592-806587413cc1",
+    /// });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="request">Details for the new key.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -54,6 +70,12 @@ public sealed class ApiKeys
     /// <summary>
     /// Rotates an API key's secret. Existing sessions issued from the key stay valid, so
     /// rotation is safe to do at any time.
+    ///
+    /// <example>
+    /// <code>
+    /// var rotated = await endpoint.ApiKeys.RotateAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="clientId">The client ID of the key to rotate.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -72,6 +94,14 @@ public sealed class ApiKeys
     /// <summary>
     /// Updates an API key's name, acting profile, or admin flag. Only the fields set on the
     /// request are sent; fields omitted are left unchanged.
+    ///
+    /// <example>
+    /// <code>
+    /// var updated = await endpoint.ApiKeys.UpdateAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     new UpdateApiKeyRequest { Name = "Integration key (renamed)" });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="clientId">The client ID of the key to update.</param>
     /// <param name="request">The changes to apply.</param>
@@ -92,6 +122,12 @@ public sealed class ApiKeys
     /// <summary>
     /// Deletes an API key. Sessions already issued from the key remain valid until they
     /// expire, but no new sessions can be created with it.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.ApiKeys.DeleteAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="clientId">The client ID of the key to delete.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>

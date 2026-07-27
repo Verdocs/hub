@@ -38,7 +38,12 @@
             "description": "True when the profile ID matches the envelope\u0027s creator."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (EnvelopePermissions.IsEnvelopeOwner(profile.Id, envelope))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.isEnvelopeRecipient": {
@@ -71,7 +76,12 @@
             "description": "True when a recipient carries the profile ID."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (EnvelopePermissions.IsEnvelopeRecipient(profile.Id, envelope))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.canAccessEnvelope": {
@@ -104,7 +114,12 @@
             "description": "True when the profile ID may access the envelope."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (EnvelopePermissions.CanAccessEnvelope(profile.Id, envelope))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.userIsEnvelopeOwner": {
@@ -137,7 +152,12 @@
             "description": "True when the profile matches the envelope\u0027s creator."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (EnvelopePermissions.UserIsEnvelopeOwner(profile, envelope))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.userIsEnvelopeRecipient": {
@@ -170,7 +190,12 @@
             "description": "True when a recipient carries the profile\u0027s ID."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (EnvelopePermissions.UserIsEnvelopeRecipient(profile, envelope))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.envelopeIsActive": {
@@ -196,7 +221,12 @@
             "description": "True when the envelope is still active."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (EnvelopePermissions.EnvelopeIsActive(envelope))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.envelopeIsComplete": {
@@ -222,7 +252,12 @@
             "description": "True when the envelope is not complete."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (EnvelopePermissions.EnvelopeIsComplete(envelope))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.userCanCancelEnvelope": {
@@ -255,7 +290,12 @@
             "description": "True when the user may cancel the envelope."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (EnvelopePermissions.UserCanCancelEnvelope(profile, envelope))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.userCanFinishEnvelope": {
@@ -288,7 +328,12 @@
             "description": "True when the user may finish the envelope."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (EnvelopePermissions.UserCanFinishEnvelope(profile, envelope))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.recipientHasAction": {
@@ -314,7 +359,12 @@
             "description": "True when the recipient has not yet submitted, declined, or been canceled."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (EnvelopePermissions.RecipientHasAction(recipient))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.getRecipientsWithActions": {
@@ -340,7 +390,12 @@
             "description": "The recipients with actions remaining."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var pending = EnvelopePermissions.GetRecipientsWithActions(envelope);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.recipientCanAct": {
@@ -373,7 +428,12 @@
             "description": "True when the recipient can act now."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var pending = EnvelopePermissions.GetRecipientsWithActions(envelope);\nif (EnvelopePermissions.RecipientCanAct(recipient, pending))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.getMyRecipient": {
@@ -406,7 +466,12 @@
             "description": "The matching recipient, or null when there is none."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var myRecipient = EnvelopePermissions.GetMyRecipient(session, envelope);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.userCanAct": {
@@ -439,7 +504,12 @@
             "description": "True when the matching recipient can act now."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var pending = EnvelopePermissions.GetRecipientsWithActions(envelope);\nif (EnvelopePermissions.UserCanAct(email, pending))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.getRecipient": {
@@ -472,7 +542,12 @@
             "description": "The matching recipient, or null when there is none."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var recipient = EnvelopePermissions.GetRecipient(email, envelope);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.getRecipientWithActions": {
@@ -505,7 +580,12 @@
             "description": "True when the matching recipient can act now."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (EnvelopePermissions.GetRecipientWithActions(email, envelope))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.userCanSignNow": {
@@ -538,7 +618,12 @@
             "description": "True when the user can sign now."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (EnvelopePermissions.UserCanSignNow(profile, envelope))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.getNextRecipient": {
@@ -564,7 +649,12 @@
             "description": "The next pending recipient, or null when none remain."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var next = EnvelopePermissions.GetNextRecipient(envelope);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.isFieldFilled": {
@@ -597,7 +687,12 @@
             "description": "True when the field counts as filled."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (Validators.IsFieldFilled(field, allRecipientFields))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.isFieldValid": {
@@ -630,7 +725,12 @@
             "description": "True when the field is valid."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (Validators.IsFieldValid(field, allRecipientFields))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "envelope.createEnvelope": {
@@ -711,7 +811,12 @@
               "description": "The call failed, for example because the envelope was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var envelope = await endpoint.Envelopes.GetAsync(envelopeId);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.getEnvelopes": {
@@ -799,7 +904,12 @@
               "description": "The call failed, for example because the caller is not the creator."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var envelope = await endpoint.Envelopes.UpdateAsync(envelopeId, new UpdateEnvelopeRequest\n{\n    Name = \u0022Bill of Sale (Revised)\u0022,\n});"
+            }
+          ],
           "deprecated": false
         },
         "envelope.cancelEnvelope": {
@@ -837,7 +947,12 @@
               "description": "The call failed, for example because the caller is not the creator."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var envelope = await endpoint.Envelopes.CancelAsync(envelopeId);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.getEnvelopeDocument": {
@@ -875,7 +990,12 @@
               "description": "The call failed or the response could not be parsed."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var document = await endpoint.Envelopes.GetDocumentAsync(documentId);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.downloadEnvelopeDocument": {
@@ -913,7 +1033,12 @@
               "description": "The call failed, for example because the caller is not a participant."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var bytes = await endpoint.Envelopes.DownloadDocumentAsync(documentId);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.getEnvelopeDocumentDownloadLink": {
@@ -951,7 +1076,12 @@
               "description": "The call failed, for example because the caller is not a participant."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var url = await endpoint.Envelopes.GetDocumentDownloadLinkAsync(documentId);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.getCombinedEnvelopeDocumentDownloadLink": {
@@ -989,7 +1119,12 @@
               "description": "The call failed, for example because the envelope has no combined PDF."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var url = await endpoint.Envelopes.GetCombinedDocumentDownloadLinkAsync(documentId);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.getEnvelopeDocumentPreviewLink": {
@@ -1027,7 +1162,12 @@
               "description": "The call failed, for example because the caller is not a participant."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var url = await endpoint.Envelopes.GetDocumentPreviewLinkAsync(documentId);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.getEnvelopeFile": {
@@ -1065,7 +1205,12 @@
               "description": "The call failed, for example because the caller is not a participant."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var bytes = await endpoint.Envelopes.GetFileAsync(documentId);"
+            }
+          ],
           "deprecated": true
         },
         "envelope.updateEnvelopeField": {
@@ -1131,7 +1276,12 @@
               "description": "The call failed, for example because the value failed validation."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var field = await endpoint.Envelopes.UpdateFieldAsync(envelopeId, \u0022Recipient 1\u0022, \u0022full_name\u0022, \u0022Paige Turner\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.uploadEnvelopeFieldAttachment": {
@@ -1204,7 +1354,12 @@
               "description": "The call failed, for example because the file failed the virus scan."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "using var content = File.OpenRead(\u0022w9.pdf\u0022);\nvar field = await endpoint.Envelopes.UploadFieldAttachmentAsync(envelopeId, \u0022Recipient 1\u0022, \u0022attachment_1\u0022, content, \u0022w9.pdf\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.deleteEnvelopeFieldAttachment": {
@@ -1256,7 +1411,12 @@
               "description": "The call failed, for example because the field is not an attachment field."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var field = await endpoint.Envelopes.DeleteFieldAttachmentAsync(envelopeId, \u0022Recipient 1\u0022, \u0022attachment_1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.getEnvelopeDocumentPageDisplayUri": {
@@ -1308,7 +1468,12 @@
               "description": "The call failed, for example because auth steps are incomplete."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var uri = await endpoint.Envelopes.GetDocumentPageDisplayUriAsync(documentId, 1);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.getEnvelopesZip": {
@@ -1346,7 +1511,12 @@
               "description": "The call failed, for example because the caller is not a participant of every envelope."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var zip = await endpoint.Envelopes.GetZipAsync(new[] { envelopeId });"
+            }
+          ],
           "deprecated": false
         },
         "envelope.sortFields": {
@@ -1372,7 +1542,12 @@
             "description": "The same list, sorted."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "Envelopes.SortFields(fields);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.sortDocuments": {
@@ -1398,7 +1573,12 @@
             "description": "The same list, sorted."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "Envelopes.SortDocuments(documents);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.sortRecipients": {
@@ -1424,7 +1604,12 @@
             "description": "The same list, sorted, or null if null was passed."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "Envelopes.SortRecipients(recipients);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -1464,7 +1649,12 @@
             "description": "True when every requested permission is held."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (SessionPermissions.UserHasPermissions(profile, new[] { TemplatePermission.CreatePersonal }))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -1504,7 +1694,12 @@
             "description": "True when the profile matches the template\u0027s creator."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserIsTemplateCreator(profile, template))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.userHasSharedTemplate": {
@@ -1537,7 +1732,12 @@
             "description": "True when the template is shared with the profile\u0027s organization."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserHasSharedTemplate(profile, template))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.userCanCreatePersonalTemplate": {
@@ -1563,7 +1763,12 @@
             "description": "True when the user holds the personal-create permission."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserCanCreatePersonalTemplate(profile))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.userCanCreateOrgTemplate": {
@@ -1589,7 +1794,12 @@
             "description": "True when the user holds the org-create permission."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserCanCreateOrgTemplate(profile))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.userCanCreatePublicTemplate": {
@@ -1615,7 +1825,12 @@
             "description": "True when the user holds the public-create permission."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserCanCreatePublicTemplate(profile))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.userCanReadTemplate": {
@@ -1648,7 +1863,12 @@
             "description": "True when the user may view the template."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserCanReadTemplate(profile, template))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.userCanUpdateTemplate": {
@@ -1681,7 +1901,12 @@
             "description": "True when the user may modify the template."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserCanUpdateTemplate(profile, template))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.userCanMakeTemplatePrivate": {
@@ -1714,7 +1939,12 @@
             "description": "True when the user may change the template\u0027s visibility to private."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserCanMakeTemplatePrivate(profile, template))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.userCanMakeTemplateShared": {
@@ -1747,7 +1977,12 @@
             "description": "True when the user may change the template\u0027s visibility to shared."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserCanMakeTemplateShared(profile, template))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.userCanMakeTemplatePublic": {
@@ -1780,7 +2015,12 @@
             "description": "True when the user may change the template\u0027s visibility to public."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserCanMakeTemplatePublic(profile, template))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.userCanChangeOrgVisibility": {
@@ -1813,7 +2053,12 @@
             "description": "True when the user may change the template\u0027s organization visibility."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserCanChangeOrgVisibility(profile, template))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.userCanDeleteTemplate": {
@@ -1846,7 +2091,12 @@
             "description": "True when the user may delete the template."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserCanDeleteTemplate(profile, template))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.userCanSendTemplate": {
@@ -1879,7 +2129,12 @@
             "description": "True when the user may send the template."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserCanSendTemplate(profile, template))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.userCanCreateTemplate": {
@@ -1905,7 +2160,12 @@
             "description": "True when the user holds any of the template-create permissions."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserCanCreateTemplate(profile))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.userCanBuildTemplate": {
@@ -1938,7 +2198,12 @@
             "description": "True when the user may open the template in the builder."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserCanBuildTemplate(profile, template))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.getFieldsForRole": {
@@ -1971,7 +2236,12 @@
             "description": "The fields assigned to the role."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var fields = TemplatePermissions.GetFieldsForRole(template, \u0022Signer1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "template.userCanPreviewTemplate": {
@@ -2004,7 +2274,12 @@
             "description": "True when the user may preview the template."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.UserCanPreviewTemplate(profile, template))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.canPerformTemplateAction": {
@@ -2044,7 +2319,12 @@
             "description": "CanPerform, plus a Message explaining the denial (empty when allowed)."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var (canPerform, message) = TemplatePermissions.CanPerformTemplateAction(profile, TemplateAction.Delete, template);\nif (!canPerform)\n{\n    Console.WriteLine(message);\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.hasRequiredPermissions": {
@@ -2077,7 +2357,12 @@
             "description": "True when every requested permission is directly held."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (TemplatePermissions.HasRequiredPermissions(profile, new[] { TemplatePermission.MemberWrite }))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "template.getTemplates": {
@@ -2158,7 +2443,12 @@
               "description": "The call failed, for example because the template was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var template = await endpoint.Templates.GetAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "template.createTemplate": {
@@ -2196,7 +2486,12 @@
               "description": "The call failed, for example because a document was an unsupported type."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var template = await endpoint.Templates.CreateAsync(new CreateTemplateRequest\n{\n    Name = \u0022Bill of Sale\u0022,\n    Visibility = TemplateVisibility.Shared,\n});"
+            }
+          ],
           "deprecated": false
         },
         "template.updateTemplate": {
@@ -2241,7 +2536,12 @@
               "description": "The call failed, for example because the caller may not edit the template."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var template = await endpoint.Templates.UpdateAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    new UpdateTemplateRequest { Name = \u0022Bill of Sale (v2)\u0022 });"
+            }
+          ],
           "deprecated": false
         },
         "template.deleteTemplate": {
@@ -2279,7 +2579,12 @@
               "description": "The call failed, for example because the caller may not edit the template."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Templates.DeleteAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "template.duplicateTemplate": {
@@ -2324,7 +2629,12 @@
               "description": "The call failed, for example because the template was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var copy = await endpoint.Templates.DuplicateAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022, \u0022Bill of Sale (copy)\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "template.createTemplateFromSharepoint": {
@@ -2362,7 +2672,12 @@
               "description": "Always thrown today; the deployed API has no handler for this call."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var template = await endpoint.Templates.CreateFromSharepointAsync(new CreateTemplateFromSharepointRequest\n{\n    Name = \u0022Bill of Sale\u0022,\n    SiteId = \u0022site-id\u0022,\n    ItemId = \u0022item-id\u0022,\n    OboToken = \u0022obo-token\u0022,\n});"
+            }
+          ],
           "deprecated": false
         },
         "template.toggleTemplateStar": {
@@ -2400,7 +2715,12 @@
               "description": "Always thrown today; the deployed API rejects this call."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var template = await endpoint.Templates.ToggleStarAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -2440,7 +2760,12 @@
             "description": "True when the value is valid for the named validator."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (Validators.IsValidInput(value, \u0022email\u0022))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "validator.getValidators": {
@@ -2458,7 +2783,12 @@
             "description": "The validator names, in the js-sdk\u0027s order."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var validatorNames = Validators.GetValidators();"
+            }
+          ],
           "deprecated": false
         },
         "validator.isValidEmail": {
@@ -2484,7 +2814,12 @@
             "description": "True when the value is a valid email address."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (Validators.IsValidEmail(email))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "validator.isValidPhone": {
@@ -2510,7 +2845,12 @@
             "description": "True when the value contains a valid phone number."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (Validators.IsValidPhone(phone))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "validator.isValidRoleName": {
@@ -2543,7 +2883,12 @@
             "description": "True when a role with that exact name exists."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (Validators.IsValidRoleName(\u0022Signer1\u0022, roles))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         },
         "validator.isValidTag": {
@@ -2576,7 +2921,12 @@
             "description": "True when the tag is acceptable."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "if (Validators.IsValidTag(\u0022invoice\u0022, tags))\n{\n    // ...\n}"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -2614,7 +2964,12 @@
               "description": "The call failed, for example because the caller is not an admin."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var apiKeys = await endpoint.ApiKeys.ListAsync();"
+            }
+          ],
           "deprecated": false
         },
         "apiKey.createApiKey": {
@@ -2652,7 +3007,12 @@
               "description": "The call failed, for example because the profile is not in the caller\u0027s organization."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var apiKey = await endpoint.ApiKeys.CreateAsync(new CreateApiKeyRequest\n{\n    Name = \u0022Integration key\u0022,\n    ProfileId = \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n});"
+            }
+          ],
           "deprecated": false
         },
         "apiKey.rotateApiKey": {
@@ -2690,7 +3050,12 @@
               "description": "The call failed, for example because the key was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var rotated = await endpoint.ApiKeys.RotateAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "apiKey.updateApiKey": {
@@ -2735,7 +3100,12 @@
               "description": "The call failed, for example because the key was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var updated = await endpoint.ApiKeys.UpdateAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    new UpdateApiKeyRequest { Name = \u0022Integration key (renamed)\u0022 });"
+            }
+          ],
           "deprecated": false
         },
         "apiKey.deleteApiKey": {
@@ -2773,7 +3143,12 @@
               "description": "The call failed, for example because the caller is not an admin."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.ApiKeys.DeleteAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -2870,7 +3245,12 @@
             "description": "The authorization URL to redirect the user to."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var authorizeUrl = endpoint.Auth.GetOAuth2AuthorizeUrl(\u0022YOUR_CLIENT_ID\u0022, \u0022https://myapp.example.com/callback\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "auth.refreshToken": {
@@ -2908,7 +3288,12 @@
               "description": "The API rejected the refresh token or the call failed."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var auth = await endpoint.Auth.RefreshTokenAsync(refreshToken);\nendpoint.SetToken(auth.AccessToken);"
+            }
+          ],
           "deprecated": false
         },
         "auth.changePassword": {
@@ -2946,7 +3331,12 @@
               "description": "The API rejected the change or the call failed."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Auth.ChangePasswordAsync(new ChangePasswordRequest\n{\n    OldPassword = \u0022OLD_PASSWORD\u0022,\n    NewPassword = \u0022NEW_PASSWORD\u0022,\n});"
+            }
+          ],
           "deprecated": false
         },
         "auth.resetPassword": {
@@ -3020,7 +3410,12 @@
               "description": "The call failed, for example because the session is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Auth.ResendVerificationAsync();"
+            }
+          ],
           "deprecated": false
         },
         "auth.verifyEmail": {
@@ -3058,7 +3453,12 @@
               "description": "The code was wrong or expired, the session was missing, or the call failed."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var verified = await endpoint.Auth.VerifyEmailAsync(new VerifyEmailRequest { Email = \u0022you@example.com\u0022, Token = code });\nendpoint.SetToken(verified.AccessToken);"
+            }
+          ],
           "deprecated": false
         },
         "auth.getMyUser": {
@@ -3089,7 +3489,12 @@
               "description": "The call failed, for example because the session is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var me = await endpoint.Users.GetMeAsync();"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -3134,7 +3539,12 @@
               "description": "The call failed, for example because the caller is not an admin."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var brands = await endpoint.Brands.ListAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "brand.createBrand": {
@@ -3179,7 +3589,12 @@
               "description": "The call failed, for example because the key is already in use."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var brand = await endpoint.Brands.CreateAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    new CreateBrandRequest { Key = \u0022acme\u0022, Name = \u0022Acme\u0022 });"
+            }
+          ],
           "deprecated": false
         },
         "brand.getBrand": {
@@ -3224,7 +3639,12 @@
               "description": "The call failed, for example because the brand was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var brand = await endpoint.Brands.GetAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    \u0022b1f2e3d4-c5a6-478b-9012-345678901234\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "brand.updateBrand": {
@@ -3276,7 +3696,12 @@
               "description": "The call failed, for example because the brand was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var updated = await endpoint.Brands.UpdateAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    \u0022b1f2e3d4-c5a6-478b-9012-345678901234\u0022,\n    new UpdateBrandRequest { Name = \u0022Acme Corp\u0022 });"
+            }
+          ],
           "deprecated": false
         },
         "brand.updateBrandLogo": {
@@ -3342,7 +3767,12 @@
               "description": "The call failed, for example because the brand was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await using var file = File.OpenRead(\u0022logo.png\u0022);\nvar brand = await endpoint.Brands.UpdateLogoAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    \u0022b1f2e3d4-c5a6-478b-9012-345678901234\u0022,\n    file, \u0022logo.png\u0022, \u0022image/png\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "brand.updateBrandThumbnail": {
@@ -3408,7 +3838,12 @@
               "description": "The call failed, for example because the brand was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await using var file = File.OpenRead(\u0022thumbnail.png\u0022);\nvar brand = await endpoint.Brands.UpdateThumbnailAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    \u0022b1f2e3d4-c5a6-478b-9012-345678901234\u0022,\n    file, \u0022thumbnail.png\u0022, \u0022image/png\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "brand.deleteBrand": {
@@ -3453,7 +3888,12 @@
               "description": "The call failed, for example because the brand is the default."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Brands.DeleteAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    \u0022b1f2e3d4-c5a6-478b-9012-345678901234\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "brand.addBrandEmailDomain": {
@@ -3505,7 +3945,12 @@
               "description": "The call failed, for example because the domain is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var brand = await endpoint.Brands.AddEmailDomainAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    \u0022b1f2e3d4-c5a6-478b-9012-345678901234\u0022,\n    new AddBrandEmailDomainRequest { Subdomain = \u0022notify.acme.com\u0022, LocalPart = \u0022notifications\u0022 });"
+            }
+          ],
           "deprecated": false
         },
         "brand.removeBrandEmailDomain": {
@@ -3550,7 +3995,12 @@
               "description": "The call failed, for example because the brand was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var brand = await endpoint.Brands.RemoveEmailDomainAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    \u0022b1f2e3d4-c5a6-478b-9012-345678901234\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "brand.verifyBrandEmailDomain": {
@@ -3595,7 +4045,12 @@
               "description": "The call failed, for example because no email domain is configured."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var brand = await endpoint.Brands.VerifyEmailDomainAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    \u0022b1f2e3d4-c5a6-478b-9012-345678901234\u0022);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -3633,7 +4088,12 @@
               "description": "The call failed, for example because the session is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var contacts = await endpoint.Contacts.ListAsync();"
+            }
+          ],
           "deprecated": false
         },
         "contact.createOrganizationContact": {
@@ -3671,7 +4131,12 @@
               "description": "The call failed, for example because the caller is not an admin."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var contact = await endpoint.Contacts.CreateAsync(new CreateContactRequest\n{\n    FirstName = \u0022Paige\u0022,\n    LastName = \u0022Turner\u0022,\n    Email = \u0022paige.turner@example.com\u0022,\n});"
+            }
+          ],
           "deprecated": false
         },
         "contact.updateOrganizationContact": {
@@ -3716,7 +4181,12 @@
               "description": "The call failed, for example because the profile is not a contact."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var updated = await endpoint.Contacts.UpdateAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    new UpdateContactRequest { FirstName = \u0022Paige\u0022, LastName = \u0022Turner\u0022, Email = \u0022paige.turner@example.com\u0022 });"
+            }
+          ],
           "deprecated": false
         },
         "contact.deleteOrganizationContact": {
@@ -3754,7 +4224,12 @@
               "description": "The call failed, for example because the profile is not a contact."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Contacts.DeleteAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -3792,7 +4267,12 @@
               "description": "The call failed, for example because the session is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var groups = await endpoint.Groups.ListAsync();"
+            }
+          ],
           "deprecated": false
         },
         "group.getGroup": {
@@ -3830,7 +4310,12 @@
               "description": "The call failed, for example because the group was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var group = await endpoint.Groups.GetAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "group.createGroup": {
@@ -3868,7 +4353,12 @@
               "description": "The call failed, for example because the name is reserved."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var group = await endpoint.Groups.CreateAsync(new CreateGroupRequest\n{\n    Name = \u0022Sales\u0022,\n    Permissions = [\u0022send_envelopes\u0022, \u0022manage_templates\u0022],\n});"
+            }
+          ],
           "deprecated": false
         },
         "group.updateGroup": {
@@ -3913,7 +4403,12 @@
               "description": "The call failed, for example because the group is \u0022everyone\u0022."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var updated = await endpoint.Groups.UpdateAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    new UpdateGroupRequest { Name = \u0022Sales\u0022, Permissions = [\u0022send_envelopes\u0022] });"
+            }
+          ],
           "deprecated": false
         },
         "group.deleteGroup": {
@@ -3951,7 +4446,12 @@
               "description": "The call failed, for example because the group is \u0022everyone\u0022."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Groups.DeleteAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "group.addGroupMember": {
@@ -3996,7 +4496,12 @@
               "description": "The call failed, for example because the profile is already a member."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Groups.AddMemberAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    \u0022b1f2e3d4-c5a6-478b-9012-345678901234\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "group.deleteGroupMember": {
@@ -4041,7 +4546,12 @@
               "description": "The call failed, for example because the membership was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Groups.DeleteMemberAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    \u0022b1f2e3d4-c5a6-478b-9012-345678901234\u0022);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -4100,7 +4610,12 @@
               "description": "The call failed, for example because the session is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "using var content = File.OpenRead(\u0022initials.png\u0022);\nvar initial = await endpoint.Initials.CreateAsync(content, \u0022initials.png\u0022, \u0022image/png\u0022);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -4138,7 +4653,12 @@
               "description": "The call failed, for example because the session is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var invitations = await endpoint.Invitations.ListAsync();"
+            }
+          ],
           "deprecated": false
         },
         "invitation.createOrganizationInvitation": {
@@ -4176,7 +4696,12 @@
               "description": "The call failed, for example because an invitation already exists for the email."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var invitation = await endpoint.Invitations.CreateAsync(new CreateInvitationRequest\n{\n    Email = \u0022paige.turner@example.com\u0022,\n    FirstName = \u0022Paige\u0022,\n    LastName = \u0022Turner\u0022,\n    Role = \u0022member\u0022,\n});"
+            }
+          ],
           "deprecated": false
         },
         "invitation.deleteOrganizationInvitation": {
@@ -4214,7 +4739,12 @@
               "description": "The call failed, for example because the caller is not an admin."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Invitations.DeleteAsync(\u0022paige.turner@example.com\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "invitation.updateOrganizationInvitation": {
@@ -4259,7 +4789,12 @@
               "description": "The call failed; see the note above about the deployed handler."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Invitations.UpdateAsync(\u0022paige.turner@example.com\u0022, \u0022admin\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "invitation.resendOrganizationInvitation": {
@@ -4297,7 +4832,12 @@
               "description": "The call failed, for example because the invitation was declined."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Invitations.ResendAsync(\u0022paige.turner@example.com\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "invitation.getOrganizationInvitation": {
@@ -4342,7 +4882,12 @@
               "description": "The call failed, for example because the token is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var invitation = await endpoint.Invitations.GetAsync(\u0022paige.turner@example.com\u0022, \u0022a1b2c3d4e5f6\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "invitation.acceptOrganizationInvitation": {
@@ -4380,7 +4925,12 @@
               "description": "The call failed, for example because the invitation was declined."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var auth = await endpoint.Invitations.AcceptAsync(new AcceptOrganizationInvitationRequest\n{\n    Email = \u0022paige.turner@example.com\u0022,\n    Token = \u0022a1b2c3d4e5f6\u0022,\n    FirstName = \u0022Paige\u0022,\n    LastName = \u0022Turner\u0022,\n    Password = \u0022correct-horse-battery-staple\u0022,\n});\nendpoint.SetToken(auth.AccessToken);"
+            }
+          ],
           "deprecated": false
         },
         "invitation.declineOrganizationInvitation": {
@@ -4425,7 +4975,12 @@
               "description": "The call failed, for example because the token is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Invitations.DeclineAsync(\u0022paige.turner@example.com\u0022, \u0022a1b2c3d4e5f6\u0022);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -4477,7 +5032,12 @@
               "description": "Always, against the deployed API (404)."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var step = await endpoint.Kba.GetStepAsync(envelopeId, roleName);"
+            }
+          ],
           "deprecated": false
         },
         "kba.submitKbaPin": {
@@ -4529,7 +5089,12 @@
               "description": "Always, against the deployed API (404)."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var step = await endpoint.Kba.SubmitPinAsync(envelopeId, roleName, \u00221234\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "kba.submitKbaIdentity": {
@@ -4581,7 +5146,12 @@
               "description": "Always, against the deployed API (404)."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var step = await endpoint.Kba.SubmitIdentityAsync(envelopeId, roleName, new KbaIdentity\n{\n    FirstName = \u0022Paige\u0022,\n    LastName = \u0022Turner\u0022,\n    Address = \u0022123 Main St\u0022,\n});"
+            }
+          ],
           "deprecated": false
         },
         "kba.submitKbaChallengeResponse": {
@@ -4633,7 +5203,12 @@
               "description": "Always, against the deployed API (404)."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var step = await endpoint.Kba.SubmitChallengeResponseAsync(envelopeId, roleName, new[]\n{\n    new KbaResponse { Type = \u0022multiple_choice\u0022, Answer = \u00222\u0022 },\n});"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -4671,7 +5246,12 @@
               "description": "The call failed, for example because the session is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var members = await endpoint.Members.ListAsync();"
+            }
+          ],
           "deprecated": false
         },
         "member.createOrganizationMember": {
@@ -4759,7 +5339,12 @@
               "description": "The call failed, for example because the caller targeted their own profile."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var updated = await endpoint.Members.UpdateAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    new UpdateMemberRequest { Roles = [\u0022admin\u0022] });"
+            }
+          ],
           "deprecated": false
         },
         "member.deleteOrganizationMember": {
@@ -4797,7 +5382,12 @@
               "description": "The call failed, for example because the profile was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Members.DeleteAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "member.lockOrganizationMember": {
@@ -4842,7 +5432,12 @@
               "description": "The call failed, for example because the member has no user account."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var locked = await endpoint.Members.LockAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022, \u0022Suspicious activity\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "member.unlockOrganizationMember": {
@@ -4880,7 +5475,12 @@
               "description": "The call failed, for example because the member has no user account."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var unlocked = await endpoint.Members.UnlockAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -4918,7 +5518,12 @@
               "description": "The call failed, for example because the caller is not an admin."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var templates = await endpoint.NotificationTemplates.ListAsync();"
+            }
+          ],
           "deprecated": false
         },
         "notification.getNotificationTemplate": {
@@ -4956,7 +5561,12 @@
               "description": "The call failed, for example because the template was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var template = await endpoint.NotificationTemplates.GetAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "notification.createNotificationTemplate": {
@@ -4994,7 +5604,12 @@
               "description": "The call failed, for example because a template already exists for the event."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var template = await endpoint.NotificationTemplates.CreateAsync(new CreateNotificationTemplateRequest\n{\n    Type = \u0022email\u0022,\n    EventName = EventName.EnvelopeCompleted,\n    HtmlTemplate = \u0022\u003Cp\u003EYour document is complete.\u003C/p\u003E\u0022,\n});"
+            }
+          ],
           "deprecated": false
         },
         "notification.updateNotificationTemplate": {
@@ -5039,7 +5654,12 @@
               "description": "The call failed, for example because a required variable is missing."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var updated = await endpoint.NotificationTemplates.UpdateAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    new UpdateNotificationTemplateRequest { HtmlTemplate = \u0022\u003Cp\u003EUpdated message.\u003C/p\u003E\u0022 });"
+            }
+          ],
           "deprecated": false
         },
         "notification.deleteNotificationTemplate": {
@@ -5077,7 +5697,12 @@
               "description": "The call failed, for example because the caller is not an admin."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.NotificationTemplates.DeleteAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "notification.getNotifications": {
@@ -5108,7 +5733,12 @@
               "description": "The call failed, for example because the session is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var notifications = await endpoint.Users.GetNotificationsAsync();"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -5153,7 +5783,12 @@
               "description": "The call failed, for example because the caller is not a member."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var organization = await endpoint.Organizations.GetAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "organization.getOrganizationChildren": {
@@ -5191,7 +5826,12 @@
               "description": "The call failed, for example because there are no children."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var children = await endpoint.Organizations.GetChildrenAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "organization.getOrganizationUsage": {
@@ -5236,7 +5876,12 @@
               "description": "The call failed, for example because the caller is not an admin."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var usage = await endpoint.Organizations.GetUsageAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    new GetOrganizationUsageOptions { UsageType = UsageType.Envelope });"
+            }
+          ],
           "deprecated": false
         },
         "organization.createOrganization": {
@@ -5324,7 +5969,12 @@
               "description": "The call failed, for example because the caller is not an admin."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var updated = await endpoint.Organizations.UpdateAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    new UpdateOrganizationRequest { Name = \u0022Acme\u0022 });"
+            }
+          ],
           "deprecated": false
         },
         "organization.getOrganizationPipelineSettings": {
@@ -5362,7 +6012,12 @@
               "description": "The call failed, for example because the caller is not an admin."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var settings = await endpoint.Organizations.GetPipelineSettingsAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "organization.updateOrganizationPipelineSettings": {
@@ -5407,7 +6062,12 @@
               "description": "The call failed, for example because the caller is not an admin."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var settings = await endpoint.Organizations.UpdatePipelineSettingsAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    new UpdatePipelineSettingsRequest { ProcessTags = true });"
+            }
+          ],
           "deprecated": false
         },
         "organization.deleteOrganization": {
@@ -5437,7 +6097,7 @@
           ],
           "returns": {
             "type": "Task\u003CAuthenticateResponse\u003E",
-            "description": "Session tokens for the caller\u0027s next remaining profile, or null when no profile\n            remains and the caller is signed out."
+            "description": "Session tokens for the caller\u0027s next remaining profile, or null when no profile\n             remains and the caller is signed out."
           },
           "throws": [
             {
@@ -5445,7 +6105,12 @@
               "description": "The call failed, for example because deletion protection is on."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var tokens = await endpoint.Organizations.DeleteAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "organization.updateOrganizationLogo": {
@@ -5504,7 +6169,12 @@
               "description": "The call failed, for example because the caller is not an admin."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await using var file = File.OpenRead(\u0022logo.png\u0022);\nvar organization = await endpoint.Organizations.UpdateLogoAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022, file, \u0022logo.png\u0022, \u0022image/png\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "organization.updateOrganizationThumbnail": {
@@ -5563,7 +6233,12 @@
               "description": "The call failed, for example because the caller is not an admin."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await using var file = File.OpenRead(\u0022thumbnail.png\u0022);\nvar organization = await endpoint.Organizations.UpdateThumbnailAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022, file, \u0022thumbnail.png\u0022, \u0022image/png\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "organization.getEntitlements": {
@@ -5594,7 +6269,12 @@
               "description": "The call failed, for example because the session is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var entitlements = await endpoint.Organizations.GetEntitlementsAsync();"
+            }
+          ],
           "deprecated": false
         },
         "organization.getActiveEntitlements": {
@@ -5672,7 +6352,12 @@
               "description": "The call failed, for example because the session is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var profiles = await endpoint.Profiles.ListAsync();"
+            }
+          ],
           "deprecated": false
         },
         "profile.getCurrentProfile": {
@@ -5703,7 +6388,12 @@
               "description": "The call failed, for example because the session is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var current = await endpoint.Profiles.GetCurrentAsync();"
+            }
+          ],
           "deprecated": false
         },
         "profile.createProfile": {
@@ -5784,7 +6474,12 @@
               "description": "The profile was not found or the call failed."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var session = await endpoint.Profiles.SwitchAsync(profileId);\nendpoint.SetToken(session.AccessToken);"
+            }
+          ],
           "deprecated": false
         },
         "profile.updateProfile": {
@@ -5829,7 +6524,12 @@
               "description": "The profile was not found, a field was not accepted, or the call failed."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var profile = await endpoint.Profiles.UpdateAsync(profileId, new UpdateProfileRequest\n{\n    FirstName = \u0022Paige\u0022,\n    Timezone = \u0022America/New_York\u0022,\n});"
+            }
+          ],
           "deprecated": false
         },
         "profile.deleteProfile": {
@@ -5867,7 +6567,12 @@
               "description": "The profile was not found or the call failed."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var result = await endpoint.Profiles.DeleteAsync(profileId);"
+            }
+          ],
           "deprecated": false
         },
         "profile.updateProfilePhoto": {
@@ -5926,7 +6631,12 @@
               "description": "The upload was rejected or the call failed."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await using var photo = File.OpenRead(\u0022avatar.png\u0022);\nvar profile = await endpoint.Profiles.UpdatePhotoAsync(profileId, photo, \u0022avatar.png\u0022, \u0022image/png\u0022);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -5992,7 +6702,12 @@
               "description": "The call failed, for example because the session is not a signing session."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var recipient = await endpoint.Recipients.AgreeAsync(envelopeId, roleName, Disclosures.Default);"
+            }
+          ],
           "deprecated": false
         },
         "recipient.envelopeRecipientDecline": {
@@ -6037,7 +6752,12 @@
               "description": "The call failed, for example because the session is not a signing session."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var recipient = await endpoint.Recipients.DeclineAsync(envelopeId, roleName);"
+            }
+          ],
           "deprecated": false
         },
         "recipient.envelopeRecipientSubmit": {
@@ -6089,7 +6809,12 @@
               "description": "The call failed, for example because a required field is incomplete."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var recipient = await endpoint.Recipients.SubmitAsync(envelopeId, roleName);"
+            }
+          ],
           "deprecated": false
         },
         "recipient.startSigningSession": {
@@ -6141,7 +6866,12 @@
               "description": "The call failed, for example because the key is invalid or already used."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var session = await endpoint.Recipients.StartSigningSessionAsync(envelopeId, roleName, key);"
+            }
+          ],
           "deprecated": false
         },
         "recipient.getInPersonLink": {
@@ -6186,7 +6916,12 @@
               "description": "The call failed, for example because the caller is not the creator."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var link = await endpoint.Recipients.GetInPersonLinkAsync(envelopeId, roleName);"
+            }
+          ],
           "deprecated": false
         },
         "recipient.verifySigner": {
@@ -6224,7 +6959,12 @@
               "description": "The call failed, for example because the code was wrong."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var session = await endpoint.Recipients.VerifySignerAsync(new AuthenticateRecipientRequest\n{\n    AuthMethod = \u0022passcode\u0022,\n    Code = \u0022123456\u0022,\n});"
+            }
+          ],
           "deprecated": false
         },
         "recipient.delegateRecipient": {
@@ -6276,7 +7016,12 @@
               "description": "The call failed, for example because delegation is not enabled."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Recipients.DelegateAsync(envelopeId, roleName, new DelegateRecipientRequest\n{\n    FirstName = \u0022Paige\u0022,\n    LastName = \u0022Turner\u0022,\n    Email = \u0022paige.turner@example.com\u0022,\n});"
+            }
+          ],
           "deprecated": false
         },
         "recipient.updateRecipient": {
@@ -6328,7 +7073,12 @@
               "description": "The call failed, for example because the caller is not the creator."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var recipient = await endpoint.Recipients.UpdateAsync(envelopeId, roleName, new UpdateRecipientParams\n{\n    Email = \u0022paige.turner@example.com\u0022,\n});"
+            }
+          ],
           "deprecated": false
         },
         "recipient.remindRecipient": {
@@ -6373,7 +7123,12 @@
               "description": "The call failed, for example because the recipient already submitted."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Recipients.RemindAsync(envelopeId, roleName);"
+            }
+          ],
           "deprecated": false
         },
         "recipient.resetRecipient": {
@@ -6418,7 +7173,12 @@
               "description": "The call failed, for example because the envelope is complete."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Recipients.ResetAsync(envelopeId, roleName);"
+            }
+          ],
           "deprecated": false
         },
         "recipient.askQuestion": {
@@ -6470,7 +7230,12 @@
               "description": "The call failed, for example because the session is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var recipient = await endpoint.Recipients.AskQuestionAsync(envelopeId, roleName, \u0022Which page do I sign?\u0022);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -6529,7 +7294,12 @@
               "description": "The call failed, for example because the session is invalid."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "using var content = File.OpenRead(\u0022signature.png\u0022);\nvar signature = await endpoint.Signatures.CreateAsync(content, \u0022signature.png\u0022, \u0022image/png\u0022);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -6581,7 +7351,12 @@
               "description": "The call failed, for example because the file was an unsupported type."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await using var stream = File.OpenRead(\u0022bill-of-sale.pdf\u0022);\nvar document = await endpoint.TemplateDocuments.CreateAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    new TemplateFileUpload { Content = stream, FileName = \u0022bill-of-sale.pdf\u0022, ContentType = \u0022application/pdf\u0022 });"
+            }
+          ],
           "deprecated": false
         },
         "templateDocument.getTemplateDocument": {
@@ -6619,7 +7394,12 @@
               "description": "The call failed, for example because the document was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var document = await endpoint.TemplateDocuments.GetAsync(documentId);"
+            }
+          ],
           "deprecated": false
         },
         "templateDocument.downloadTemplateDocument": {
@@ -6657,7 +7437,12 @@
               "description": "The call failed, for example because the document was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var bytes = await endpoint.TemplateDocuments.DownloadAsync(documentId);"
+            }
+          ],
           "deprecated": false
         },
         "templateDocument.getTemplateDocumentDownloadLink": {
@@ -6695,7 +7480,12 @@
               "description": "The call failed, for example because the document was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var link = await endpoint.TemplateDocuments.GetDownloadLinkAsync(documentId);"
+            }
+          ],
           "deprecated": false
         },
         "templateDocument.getTemplateDocumentPreviewLink": {
@@ -6733,7 +7523,12 @@
               "description": "The call failed, for example because the document was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var link = await endpoint.TemplateDocuments.GetPreviewLinkAsync(documentId);"
+            }
+          ],
           "deprecated": false
         },
         "templateDocument.getTemplateDocumentFile": {
@@ -6778,7 +7573,12 @@
               "description": "Always thrown today; the deployed API has no handler for this call."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var bytes = await endpoint.TemplateDocuments.GetFileAsync(templateId, documentId);"
+            }
+          ],
           "deprecated": false
         },
         "templateDocument.getTemplateDocumentThumbnail": {
@@ -6823,7 +7623,12 @@
               "description": "Always thrown today; the deployed API has no handler for this call."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var bytes = await endpoint.TemplateDocuments.GetThumbnailAsync(templateId, documentId);"
+            }
+          ],
           "deprecated": false
         },
         "templateDocument.getTemplateDocumentPageDisplayUri": {
@@ -6875,7 +7680,12 @@
               "description": "The call failed, for example because the document was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var uri = await endpoint.TemplateDocuments.GetPageDisplayUriAsync(documentId, 0);"
+            }
+          ],
           "deprecated": false
         },
         "templateDocument.deleteTemplateDocument": {
@@ -6913,7 +7723,12 @@
               "description": "The call failed, for example because the caller may not edit the template."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var template = await endpoint.TemplateDocuments.DeleteAsync(documentId);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -6965,7 +7780,12 @@
               "description": "The call failed, for example because the role name does not exist."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var field = await endpoint.TemplateFields.CreateAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    new CreateFieldRequest\n    {\n        Name = \u0022Buyer-textbox-1\u0022,\n        RoleName = \u0022Recipient 1\u0022,\n        DocumentId = documentId,\n        Type = FieldType.Textbox,\n        Page = 0,\n        X = 100,\n        Y = 200,\n    });"
+            }
+          ],
           "deprecated": false
         },
         "field.updateField": {
@@ -7017,7 +7837,12 @@
               "description": "The call failed, for example because a new name is already in use."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var field = await endpoint.TemplateFields.UpdateAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    \u0022Buyer-textbox-1\u0022,\n    new UpdateFieldRequest { Required = true });"
+            }
+          ],
           "deprecated": false
         },
         "field.deleteField": {
@@ -7062,7 +7887,12 @@
               "description": "The call failed, for example because the field was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.TemplateFields.DeleteAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022, \u0022Buyer-textbox-1\u0022);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -7114,7 +7944,12 @@
               "description": "The call failed, for example because the role name is already in use."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var role = await endpoint.TemplateRoles.CreateAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    new CreateRoleRequest { Name = \u0022Recipient 1\u0022, Type = RecipientType.Signer });"
+            }
+          ],
           "deprecated": false
         },
         "role.updateTemplateRole": {
@@ -7166,7 +8001,12 @@
               "description": "The call failed, for example because a new name is already in use."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var role = await endpoint.TemplateRoles.UpdateAsync(\n    \u0022d2338742-f3a1-465b-8592-806587413cc1\u0022,\n    \u0022Recipient 1\u0022,\n    new UpdateRoleRequest { Email = \u0022recipient1@example.com\u0022 });"
+            }
+          ],
           "deprecated": false
         },
         "role.deleteTemplateRole": {
@@ -7211,7 +8051,12 @@
               "description": "The call failed, for example because the role was not found."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.TemplateRoles.DeleteAsync(\u0022d2338742-f3a1-465b-8592-806587413cc1\u0022, \u0022Recipient 1\u0022);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -7249,7 +8094,12 @@
               "description": "The call failed, for example because nothing is configured yet."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var webhook = await endpoint.Webhooks.GetAsync();"
+            }
+          ],
           "deprecated": false
         },
         "webhook.setWebhooks": {
@@ -7323,7 +8173,12 @@
               "description": "The call failed, for example because nothing is configured yet."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var webhook = await endpoint.Webhooks.RotateSecretAsync();\nvar newSecret = webhook.SecretKey;"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -7356,7 +8211,12 @@
             "description": "The lowercase hex color, e.g. \u0022#ffe69c\u0022."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var hex = Colors.GetRgb(\u0022rgba(255, 193, 7, 0.4)\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "color.getRGBA": {
@@ -7382,7 +8242,12 @@
             "description": "A CSS rgba() string."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var color = Colors.GetRgba(2);"
+            }
+          ],
           "deprecated": false
         },
         "color.nameToRGBA": {
@@ -7398,7 +8263,7 @@
             {
               "name": "name",
               "type": "string?",
-              "description": "The role name. Names ending in a digit get extra hash input so \u0022Signer 1\u0022 and\n            \u0022Signer 2\u0022 land on visibly different colors.",
+              "description": "The role name. Names ending in a digit get extra hash input so \u0022Signer 1\u0022 and\n             \u0022Signer 2\u0022 land on visibly different colors.",
               "optional": false,
               "default": null
             }
@@ -7408,7 +8273,12 @@
             "description": "A CSS rgba() string, or null for an empty name (the js-sdk returns undefined there)."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var color = Colors.NameToRgba(\u0022Signer 1\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "color.getRoleColor": {
@@ -7438,7 +8308,7 @@
             {
               "name": "index",
               "type": "int?",
-              "description": "Explicit role index. The js-sdk checks truthiness, so 0 falls through to the roles\n            lookup; we keep that quirk.",
+              "description": "Explicit role index. The js-sdk checks truthiness, so 0 falls through to the roles\n             lookup; we keep that quirk.",
               "optional": true,
               "default": "null"
             }
@@ -7448,7 +8318,12 @@
             "description": "A CSS rgba() string, or null when only an empty name is available."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var color = Colors.GetRoleColor(\u0022Seller\u0022, new[] { \u0022Buyer\u0022, \u0022Seller\u0022 });"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -7478,10 +8353,15 @@
           ],
           "returns": {
             "type": "string",
-            "description": "The elapsed time as \u0022\u003Cn\u003E\u003Cunit\u003E\u0022, or \u0022\u0022 when there is nothing to format. A\n            future moment comes out with a negative count, as in the js-sdk."
+            "description": "The elapsed time as \u0022\u003Cn\u003E\u003Cunit\u003E\u0022, or \u0022\u0022 when there is nothing to format. A\n             future moment comes out with a negative count, as in the js-sdk."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var elapsed = Dates.FormatShortTimeAgo(DateTimeOffset.UtcNow.AddMinutes(-5));"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -7514,7 +8394,12 @@
             "description": "Feature name (see EntitlementFeature) to the entitlement record currently granting it."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var active = Entitlements.CollapseEntitlements(entitlements);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -7568,7 +8453,12 @@
             "description": "The top offset in pixels."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var top = FieldUtils.GetRTop(120, 24, 792, 1.5);"
+            }
+          ],
           "deprecated": false
         },
         "fieldUtil.getRLeft": {
@@ -7601,7 +8491,12 @@
             "description": "The left offset in pixels."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var left = FieldUtils.GetRLeft(72, 1.5);"
+            }
+          ],
           "deprecated": false
         },
         "fieldUtil.getRValue": {
@@ -7634,7 +8529,12 @@
             "description": "The value in pixels."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var value = FieldUtils.GetRValue(48, 1.5);"
+            }
+          ],
           "deprecated": false
         },
         "fieldUtil.rescale": {
@@ -7667,7 +8567,12 @@
             "description": "The scaled value."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var scaled = FieldUtils.Rescale(100, 1.5);"
+            }
+          ],
           "deprecated": false
         },
         "fieldUtil.blobToBase64": {
@@ -7693,7 +8598,12 @@
             "description": "The base64-encoded string."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var base64 = FieldUtils.BytesToBase64(pdfBytes);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -7733,7 +8643,12 @@
             "description": "The \u0022data:\u003Ctype\u003E;base64,\u003Cpayload\u003E\u0022 string."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var dataUrl = FileUtils.BytesToDataUrl(pdfBytes, \u0022application/pdf\u0022);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -7766,7 +8681,12 @@
             "description": "The matching country, or null."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var country = Locales.GetCountryByCode(\u0022\u002B33\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "locale.isFrenchGuiana": {
@@ -7792,7 +8712,12 @@
             "description": "True when the prefix matches."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var isFrenchGuiana = Locales.IsFrenchGuiana(\u0022\u002B594\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "locale.isGuadeloupe": {
@@ -7818,7 +8743,12 @@
             "description": "True when the prefix matches."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var isGuadeloupe = Locales.IsGuadeloupe(\u0022\u002B590\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "locale.isMartinique": {
@@ -7844,7 +8774,12 @@
             "description": "True when the prefix matches."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var isMartinique = Locales.IsMartinique(\u0022\u002B596\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "locale.isMayotte": {
@@ -7870,7 +8805,12 @@
             "description": "True when the prefix matches."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var isMayotte = Locales.IsMayotte(\u0022\u002B262\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "locale.getPlusOneCountry": {
@@ -7896,7 +8836,12 @@
             "description": "The matching country, or null for unrecognized prefixes."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var country = Locales.GetPlusOneCountry(\u0022\u002B1242\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "locale.isCanada": {
@@ -7922,7 +8867,12 @@
             "description": "True when the area code is Canadian."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var isCanada = Locales.IsCanada(\u0022\u002B1416\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "locale.isAmericanSamoa": {
@@ -7948,7 +8898,12 @@
             "description": "True when the prefix matches."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var isAmericanSamoa = Locales.IsAmericanSamoa(\u0022\u002B1684\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "locale.isDominicanRepublic": {
@@ -7974,7 +8929,12 @@
             "description": "True when the prefix matches."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var isDominicanRepublic = Locales.IsDominicanRepublic(\u0022\u002B1809\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "locale.isPuertoRico": {
@@ -8000,7 +8960,12 @@
             "description": "True only for the literal string \u0022\u002B\u0022."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var isPuertoRico = Locales.IsPuertoRico(\u0022\u002B\u0022);"
+            }
+          ],
           "deprecated": false
         },
         "locale.getMatchingCountry": {
@@ -8033,7 +8998,12 @@
             "description": "How many Countries rows carry exactly that code prefix."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var count = Locales.GetMatchingCountry(\u0022\u002B1\u0022, 2);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -8073,7 +9043,12 @@
             "description": "A list of  integers beginning at ."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var values = Primitives.IntegerSequence(1, 5); // [1, 2, 3, 4, 5]"
+            }
+          ],
           "deprecated": false
         },
         "primitive.formatFullName": {
@@ -8103,10 +9078,15 @@
           ],
           "returns": {
             "type": "string",
-            "description": "\u0022First Last\u0022, trimmed, so a single known name comes back alone and no names at all\n            come back as \u0022\u0022."
+            "description": "\u0022First Last\u0022, trimmed, so a single known name comes back alone and no names at all\n             come back as \u0022\u0022."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var name = Primitives.FormatFullName(\u0022Paige\u0022, \u0022Turner\u0022); // \u0022Paige Turner\u0022"
+            }
+          ],
           "deprecated": false
         },
         "primitive.formatInitials": {
@@ -8122,7 +9102,7 @@
             {
               "name": "profile",
               "type": "Profile?",
-              "description": "The profile to read. The js-sdk assumes both names are present; a missing one is\n            treated as empty here rather than throwing.",
+              "description": "The profile to read. The js-sdk assumes both names are present; a missing one is\n             treated as empty here rather than throwing.",
               "optional": false,
               "default": null
             }
@@ -8132,7 +9112,12 @@
             "description": "The space-separated uppercase initials, or \u0022--\u0022 when there is no profile to read."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var initials = Primitives.FormatInitials(profile); // \u0022P T\u0022"
+            }
+          ],
           "deprecated": false
         },
         "primitive.fullNameToInitials": {
@@ -8158,7 +9143,12 @@
             "description": "The concatenated first characters."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var initials = Primitives.FullNameToInitials(\u0022Paige Turner\u0022); // \u0022PT\u0022"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -8191,7 +9181,12 @@
             "description": "The input with the first character uppercased, other characters untouched."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var result = Strings.Capitalize(\u0022hello\u0022); // \u0022Hello\u0022"
+            }
+          ],
           "deprecated": false
         },
         "string.convertToE164": {
@@ -8248,7 +9243,12 @@
             "description": "A random string of exactly  characters from [0-9a-z]."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var id = Strings.RandomString(12);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -8290,7 +9290,12 @@
               "description": "The payload segment does not decode to JSON."
             }
           ],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var payload = Token.DecodeJwtBody(jwt);"
+            }
+          ],
           "deprecated": false
         },
         "token.decodeAccessTokenBody": {
@@ -8313,10 +9318,15 @@
           ],
           "returns": {
             "type": "VerdocsSession?",
-            "description": "The decoded session, or null. Stricter than the js-sdk: the token must have three\n            segments, an object payload, and a user or signing session_type claim, where js\n            accepts any segment count and any JSON type."
+            "description": "The decoded session, or null. Stricter than the js-sdk: the token must have three\n             segments, an object payload, and a user or signing session_type claim, where js\n             accepts any segment count and any JSON type."
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var session = Token.DecodeAccessTokenBody(accessToken);"
+            }
+          ],
           "deprecated": false
         }
       }

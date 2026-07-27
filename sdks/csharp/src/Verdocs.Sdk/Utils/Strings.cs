@@ -10,7 +10,15 @@ public static class Strings
     // alphabet so its output is interchangeable with the js-sdk's.
     private const string Base36Alphabet = "0123456789abcdefghijklmnopqrstuvwxyz";
 
-    /// <summary>Returns the string with its first letter uppercased.</summary>
+    /// <summary>
+    /// Returns the string with its first letter uppercased.
+    ///
+    /// <example>
+    /// <code>
+    /// var result = Strings.Capitalize("hello"); // "Hello"
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="value">The string to capitalize. May be empty.</param>
     /// <returns>The input with the first character uppercased, other characters untouched.</returns>
     /// <sdkOperation>string.capitalize</sdkOperation>
@@ -76,6 +84,12 @@ public static class Strings
     /// <paramref name="length"/> characters from the same base36 alphabet using a
     /// cryptographic RNG (per the true-up handoff), so the output is also safe for more than
     /// DOM-id duty.
+    ///
+    /// <example>
+    /// <code>
+    /// var id = Strings.RandomString(12);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="length">Number of characters to generate.</param>
     /// <returns>A random string of exactly <paramref name="length"/> characters from [0-9a-z].</returns>

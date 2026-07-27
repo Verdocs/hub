@@ -18,7 +18,17 @@ public sealed class TemplateRoles
         _endpoint = endpoint;
     }
 
-    /// <summary>Adds a role to a template.</summary>
+    /// <summary>
+    /// Adds a role to a template.
+    ///
+    /// <example>
+    /// <code>
+    /// var role = await endpoint.TemplateRoles.CreateAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     new CreateRoleRequest { Name = "Recipient 1", Type = RecipientType.Signer });
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="templateId">The template to add the role to.</param>
     /// <param name="request">The role to create.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -35,7 +45,18 @@ public sealed class TemplateRoles
             HttpMethod.Post, "/v2/roles/" + Uri.EscapeDataString(templateId), request, cancellationToken);
     }
 
-    /// <summary>Updates a role. Unset request properties leave the stored values unchanged.</summary>
+    /// <summary>
+    /// Updates a role. Unset request properties leave the stored values unchanged.
+    ///
+    /// <example>
+    /// <code>
+    /// var role = await endpoint.TemplateRoles.UpdateAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     "Recipient 1",
+    ///     new UpdateRoleRequest { Email = "recipient1@example.com" });
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="templateId">The template the role belongs to.</param>
     /// <param name="roleName">The role's current name.</param>
     /// <param name="request">The properties to change.</param>
@@ -57,7 +78,15 @@ public sealed class TemplateRoles
             cancellationToken);
     }
 
-    /// <summary>Deletes a role.</summary>
+    /// <summary>
+    /// Deletes a role.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.TemplateRoles.DeleteAsync("d2338742-f3a1-465b-8592-806587413cc1", "Recipient 1");
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="templateId">The template the role belongs to.</param>
     /// <param name="roleName">The role's name.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>

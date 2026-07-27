@@ -22,6 +22,12 @@ public sealed class Kba
     /// Gets the current KBA status. Per the js-sdk this may only be called by the recipient
     /// under a signing session. NOTE: the deployed API has no such route; use
     /// <see cref="Recipients.VerifySignerAsync"/> for real KBA.
+    ///
+    /// <example>
+    /// <code>
+    /// var step = await endpoint.Kba.GetStepAsync(envelopeId, roleName);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role being verified.</param>
@@ -45,6 +51,12 @@ public sealed class Kba
     /// <summary>
     /// Submits a response to a KBA PIN challenge. NOTE: the deployed API has no such route;
     /// use <see cref="Recipients.VerifySignerAsync"/> for real KBA.
+    ///
+    /// <example>
+    /// <code>
+    /// var step = await endpoint.Kba.SubmitPinAsync(envelopeId, roleName, "1234");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role being verified.</param>
@@ -70,6 +82,17 @@ public sealed class Kba
     /// <summary>
     /// Submits an identity response to a KBA challenge. NOTE: the deployed API has no such
     /// route; use <see cref="Recipients.VerifySignerAsync"/> for real KBA.
+    ///
+    /// <example>
+    /// <code>
+    /// var step = await endpoint.Kba.SubmitIdentityAsync(envelopeId, roleName, new KbaIdentity
+    /// {
+    ///     FirstName = "Paige",
+    ///     LastName = "Turner",
+    ///     Address = "123 Main St",
+    /// });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role being verified.</param>
@@ -100,6 +123,15 @@ public sealed class Kba
     /// Submits answers to KBA challenge questions, in the same order the challenges were
     /// listed in <see cref="RecipientKbaStep.Questions"/>. NOTE: the deployed API has no such
     /// route; use <see cref="Recipients.VerifySignerAsync"/> for real KBA.
+    ///
+    /// <example>
+    /// <code>
+    /// var step = await endpoint.Kba.SubmitChallengeResponseAsync(envelopeId, roleName, new[]
+    /// {
+    ///     new KbaResponse { Type = "multiple_choice", Answer = "2" },
+    /// });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role being verified.</param>

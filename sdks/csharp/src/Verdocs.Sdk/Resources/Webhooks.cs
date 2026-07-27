@@ -20,6 +20,12 @@ public sealed class Webhooks
     /// Gets the webhook configuration for the caller's organization. The server answers 404
     /// when no configuration has ever been set. The client secret and signing secret are
     /// masked to their last four characters in this response.
+    ///
+    /// <example>
+    /// <code>
+    /// var webhook = await endpoint.Webhooks.GetAsync();
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The organization's webhook configuration.</returns>
@@ -67,6 +73,13 @@ public sealed class Webhooks
     /// signature; new events use the new secret. To authenticate a delivery, compare an
     /// HMAC-SHA256 hex digest of the payload's inner "body" field against the
     /// x-webhook-signature request header.
+    ///
+    /// <example>
+    /// <code>
+    /// var webhook = await endpoint.Webhooks.RotateSecretAsync();
+    /// var newSecret = webhook.SecretKey;
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The webhook configuration including the new, unmasked secret key.</returns>

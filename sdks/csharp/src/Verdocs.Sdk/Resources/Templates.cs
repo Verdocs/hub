@@ -46,6 +46,12 @@ public sealed class Templates
     /// Gets one template by its ID. The caller must have at least view access to it. The
     /// detail response includes the template's roles, documents, and fields, which the list
     /// response omits.
+    ///
+    /// <example>
+    /// <code>
+    /// var template = await endpoint.Templates.GetAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="templateId">The template's unique ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -67,6 +73,16 @@ public sealed class Templates
     /// are created inline when supplied. Fields cannot be created here (the server validates
     /// a create-time fields array but discards it); add them afterward through
     /// <see cref="TemplateFields.CreateAsync"/>.
+    ///
+    /// <example>
+    /// <code>
+    /// var template = await endpoint.Templates.CreateAsync(new CreateTemplateRequest
+    /// {
+    ///     Name = "Bill of Sale",
+    ///     Visibility = TemplateVisibility.Shared,
+    /// });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="request">The template to create.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -136,6 +152,14 @@ public sealed class Templates
     /// <summary>
     /// Updates a template's settings. Reminder settings are rewritten on every update; see
     /// <see cref="UpdateTemplateRequest"/> for the details.
+    ///
+    /// <example>
+    /// <code>
+    /// var template = await endpoint.Templates.UpdateAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     new UpdateTemplateRequest { Name = "Bill of Sale (v2)" });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="templateId">The template's unique ID.</param>
     /// <param name="request">The settings to change.</param>
@@ -153,7 +177,15 @@ public sealed class Templates
             HttpMethod.Patch, "/v2/templates/" + Uri.EscapeDataString(templateId), request, cancellationToken);
     }
 
-    /// <summary>Deletes a template.</summary>
+    /// <summary>
+    /// Deletes a template.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Templates.DeleteAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="templateId">The template's unique ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that completes when the template has been deleted.</returns>
@@ -171,6 +203,12 @@ public sealed class Templates
     /// <summary>
     /// Duplicates a template as a complete clone: settings (reminders included), documents,
     /// roles, and fields.
+    ///
+    /// <example>
+    /// <code>
+    /// var copy = await endpoint.Templates.DuplicateAsync("d2338742-f3a1-465b-8592-806587413cc1", "Bill of Sale (copy)");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="templateId">The template to copy.</param>
     /// <param name="name">Name for the new copy.</param>
@@ -192,6 +230,18 @@ public sealed class Templates
     /// Creates a template from a Sharepoint file. Dead on the deployed API: no handler exists
     /// for this route, so every call fails. Ported to match the js-sdk surface; retirement is
     /// pending.
+    ///
+    /// <example>
+    /// <code>
+    /// var template = await endpoint.Templates.CreateFromSharepointAsync(new CreateTemplateFromSharepointRequest
+    /// {
+    ///     Name = "Bill of Sale",
+    ///     SiteId = "site-id",
+    ///     ItemId = "item-id",
+    ///     OboToken = "obo-token",
+    /// });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="request">The Sharepoint source and template name.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -211,6 +261,12 @@ public sealed class Templates
     /// this port, which mirrors it) POSTs a path that does not exist, and the server's own
     /// star route is a GET whose handler cannot be satisfied, so the deployed API rejects
     /// every client. Retirement is pending an API fix.
+    ///
+    /// <example>
+    /// <code>
+    /// var template = await endpoint.Templates.ToggleStarAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="templateId">The template to star or unstar.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>

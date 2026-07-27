@@ -20,6 +20,15 @@ public static class EnvelopePermissions
 
     /// <summary>
     /// True when the profile ID owns the envelope. Ports the js-sdk's isEnvelopeOwner.
+    ///
+    /// <example>
+    /// <code>
+    /// if (EnvelopePermissions.IsEnvelopeOwner(profile.Id, envelope))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profileId">The profile ID to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
@@ -33,6 +42,15 @@ public static class EnvelopePermissions
     /// <summary>
     /// True when the profile ID is a recipient within the envelope. Ports the js-sdk's
     /// isEnvelopeRecipient.
+    ///
+    /// <example>
+    /// <code>
+    /// if (EnvelopePermissions.IsEnvelopeRecipient(profile.Id, envelope))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profileId">The profile ID to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
@@ -46,6 +64,15 @@ public static class EnvelopePermissions
     /// <summary>
     /// True when the profile ID is the envelope's sender or one of its recipients. Ports the
     /// js-sdk's canAccessEnvelope.
+    ///
+    /// <example>
+    /// <code>
+    /// if (EnvelopePermissions.CanAccessEnvelope(profile.Id, envelope))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profileId">The profile ID to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
@@ -58,6 +85,15 @@ public static class EnvelopePermissions
 
     /// <summary>
     /// True when the user's profile owns the envelope. Ports the js-sdk's userIsEnvelopeOwner.
+    ///
+    /// <example>
+    /// <code>
+    /// if (EnvelopePermissions.UserIsEnvelopeOwner(profile, envelope))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
@@ -72,6 +108,15 @@ public static class EnvelopePermissions
     /// True when the user's profile is a recipient within the envelope. Ports the js-sdk's
     /// userIsEnvelopeRecipient. Matches by profile ID only; recipients matched by email alone
     /// do not count.
+    ///
+    /// <example>
+    /// <code>
+    /// if (EnvelopePermissions.UserIsEnvelopeRecipient(profile, envelope))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
@@ -85,6 +130,15 @@ public static class EnvelopePermissions
     /// <summary>
     /// True when the envelope still has pending actions (not complete, declined, or
     /// canceled). Ports the js-sdk's envelopeIsActive.
+    ///
+    /// <example>
+    /// <code>
+    /// if (EnvelopePermissions.EnvelopeIsActive(envelope))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelope">The envelope to check.</param>
     /// <returns>True when the envelope is still active.</returns>
@@ -100,6 +154,15 @@ public static class EnvelopePermissions
     /// True when the envelope's status is anything other than "complete". Ports the js-sdk's
     /// envelopeIsComplete, which despite its name returns true for envelopes that are NOT
     /// complete; the inverted comparison is kept as-is for parity.
+    ///
+    /// <example>
+    /// <code>
+    /// if (EnvelopePermissions.EnvelopeIsComplete(envelope))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelope">The envelope to check.</param>
     /// <returns>True when the envelope is not complete.</returns>
@@ -112,6 +175,15 @@ public static class EnvelopePermissions
     /// <summary>
     /// True when the user owns the envelope and it is still active enough to cancel. Ports
     /// the js-sdk's userCanCancelEnvelope.
+    ///
+    /// <example>
+    /// <code>
+    /// if (EnvelopePermissions.UserCanCancelEnvelope(profile, envelope))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
@@ -128,6 +200,15 @@ public static class EnvelopePermissions
     /// <summary>
     /// True when the user owns the envelope and it is still active enough to finish early.
     /// Ports the js-sdk's userCanFinishEnvelope.
+    ///
+    /// <example>
+    /// <code>
+    /// if (EnvelopePermissions.UserCanFinishEnvelope(profile, envelope))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
@@ -145,6 +226,15 @@ public static class EnvelopePermissions
     /// True when the recipient has a pending action. Ports the js-sdk's recipientHasAction.
     /// Note this does not necessarily mean the recipient can act yet; see
     /// <see cref="RecipientCanAct"/>.
+    ///
+    /// <example>
+    /// <code>
+    /// if (EnvelopePermissions.RecipientHasAction(recipient))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="recipient">The recipient to check.</param>
     /// <returns>True when the recipient has not yet submitted, declined, or been canceled.</returns>
@@ -158,6 +248,12 @@ public static class EnvelopePermissions
     /// The recipients who still have a pending action, in the envelope's stored order. Ports
     /// the js-sdk's getRecipientsWithActions. Not all of these recipients may be able to act
     /// yet, and a complete, declined, or canceled envelope returns an empty list.
+    ///
+    /// <example>
+    /// <code>
+    /// var pending = EnvelopePermissions.GetRecipientsWithActions(envelope);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelope">The envelope to scan.</param>
     /// <returns>The recipients with actions remaining.</returns>
@@ -173,6 +269,16 @@ public static class EnvelopePermissions
     /// True when the recipient is next up to act. Ports the js-sdk's recipientCanAct: the
     /// recipient acts when it shares a sequence number with the first entry in the
     /// pending-actions list.
+    ///
+    /// <example>
+    /// <code>
+    /// var pending = EnvelopePermissions.GetRecipientsWithActions(envelope);
+    /// if (EnvelopePermissions.RecipientCanAct(recipient, pending))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="recipient">The recipient to check.</param>
     /// <param name="recipientsWithActions">The pending recipients, from <see cref="GetRecipientsWithActions"/>.</param>
@@ -187,6 +293,12 @@ public static class EnvelopePermissions
     /// The envelope recipient matching the session's email, regardless of whether the session
     /// is a user or signing session. Ports the js-sdk's getMyRecipient. The email comparison
     /// is exact (case-sensitive), matching the js-sdk.
+    ///
+    /// <example>
+    /// <code>
+    /// var myRecipient = EnvelopePermissions.GetMyRecipient(session, envelope);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="session">The current session, or null for no session.</param>
     /// <param name="envelope">The envelope to scan.</param>
@@ -200,6 +312,16 @@ public static class EnvelopePermissions
     /// <summary>
     /// True when the recipient matching the email (case-insensitive) is next up to act. Ports
     /// the js-sdk's userCanAct.
+    ///
+    /// <example>
+    /// <code>
+    /// var pending = EnvelopePermissions.GetRecipientsWithActions(envelope);
+    /// if (EnvelopePermissions.UserCanAct(email, pending))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="email">The email address to look for.</param>
     /// <param name="recipientsWithActions">The pending recipients, from <see cref="GetRecipientsWithActions"/>.</param>
@@ -217,6 +339,12 @@ public static class EnvelopePermissions
     /// <summary>
     /// The envelope recipient matching the email (case-insensitive). Ports the js-sdk's
     /// getRecipient.
+    ///
+    /// <example>
+    /// <code>
+    /// var recipient = EnvelopePermissions.GetRecipient(email, envelope);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="email">The email address to look for.</param>
     /// <param name="envelope">The envelope to scan.</param>
@@ -232,6 +360,15 @@ public static class EnvelopePermissions
     /// True when the recipient matching the email (case-insensitive) is next up to act.
     /// Ports the js-sdk's getRecipientWithActions, which despite its name returns a flag
     /// rather than the recipient; the behavior is kept as-is for parity.
+    ///
+    /// <example>
+    /// <code>
+    /// if (EnvelopePermissions.GetRecipientWithActions(email, envelope))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="email">The email address to look for.</param>
     /// <param name="envelope">The envelope to scan.</param>
@@ -253,6 +390,15 @@ public static class EnvelopePermissions
     /// turn lookup matches by profile ID or email, but the recipient membership check matches
     /// by profile ID only, so a recipient tied to the user by email alone never passes; the
     /// js-sdk behaves the same way.
+    ///
+    /// <example>
+    /// <code>
+    /// if (EnvelopePermissions.UserCanSignNow(profile, envelope))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="envelope">The envelope to check against.</param>
@@ -279,6 +425,12 @@ public static class EnvelopePermissions
     /// <summary>
     /// The next recipient with a pending action, in the envelope's stored order. Ports the
     /// js-sdk's getNextRecipient.
+    ///
+    /// <example>
+    /// <code>
+    /// var next = EnvelopePermissions.GetNextRecipient(envelope);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelope">The envelope to scan.</param>
     /// <returns>The next pending recipient, or null when none remain.</returns>

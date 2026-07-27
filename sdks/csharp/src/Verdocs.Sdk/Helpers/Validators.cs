@@ -63,6 +63,15 @@ public static class Validators
     /// <summary>
     /// True when the value passes the named validator. Ports the js-sdk's isValidInput
     /// (Templates/Validators.ts). Unknown validator names always fail.
+    ///
+    /// <example>
+    /// <code>
+    /// if (Validators.IsValidInput(value, "email"))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="value">The value to check.</param>
     /// <param name="validator">The validator name; see <see cref="GetValidators"/> for the known names.</param>
@@ -76,6 +85,12 @@ public static class Validators
     /// <summary>
     /// The available validator names for field inputs. Ports the js-sdk's getValidators
     /// (Templates/Validators.ts).
+    ///
+    /// <example>
+    /// <code>
+    /// var validatorNames = Validators.GetValidators();
+    /// </code>
+    /// </example>
     /// </summary>
     /// <returns>The validator names, in the js-sdk's order.</returns>
     /// <sdkOperation>validator.getValidators</sdkOperation>
@@ -86,6 +101,15 @@ public static class Validators
     /// <summary>
     /// True when the value is a well-formed email address. Ports the js-sdk's isValidEmail
     /// (Templates/Validators.ts). Null and empty values fail.
+    ///
+    /// <example>
+    /// <code>
+    /// if (Validators.IsValidEmail(email))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="email">The value to check, or null.</param>
     /// <returns>True when the value is a valid email address.</returns>
@@ -98,6 +122,15 @@ public static class Validators
     /// <summary>
     /// True when the value contains a plausible phone number. Ports the js-sdk's isValidPhone
     /// (Templates/Validators.ts). Null and empty values fail.
+    ///
+    /// <example>
+    /// <code>
+    /// if (Validators.IsValidPhone(phone))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="phone">The value to check, or null.</param>
     /// <returns>True when the value contains a valid phone number.</returns>
@@ -110,6 +143,15 @@ public static class Validators
     /// <summary>
     /// True when the value names one of the given template roles. Ports the js-sdk's
     /// isValidRoleName (Templates/Validators.ts).
+    ///
+    /// <example>
+    /// <code>
+    /// if (Validators.IsValidRoleName("Signer1", roles))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="value">The role name to look for.</param>
     /// <param name="roles">The template's roles.</param>
@@ -124,6 +166,15 @@ public static class Validators
     /// True when the value is an acceptable tag: up to 32 letters, digits, or hyphens, or an
     /// exact match for an existing tag. Ports the js-sdk's isValidTag
     /// (Templates/Validators.ts), including its quirk that the empty string passes.
+    ///
+    /// <example>
+    /// <code>
+    /// if (Validators.IsValidTag("invoice", tags))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="value">The tag to check.</param>
     /// <param name="tags">The existing tags.</param>
@@ -140,6 +191,15 @@ public static class Validators
     /// fields must have been acted on, timestamps always count as filled, and grouped radio
     /// buttons count when any field in the group is selected. Ports the js-sdk's
     /// isFieldFilled (Envelopes/Fields.ts). Unknown field types are never filled.
+    ///
+    /// <example>
+    /// <code>
+    /// if (Validators.IsFieldFilled(field, allRecipientFields))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="field">The field to check.</param>
     /// <param name="allRecipientFields">Every field assigned to the same recipient, used to resolve grouped fields.</param>
@@ -206,6 +266,15 @@ public static class Validators
     /// <summary>
     /// True when the field is valid to submit: optional fields always pass, required fields
     /// must be filled. Ports the js-sdk's isFieldValid (Envelopes/Fields.ts).
+    ///
+    /// <example>
+    /// <code>
+    /// if (Validators.IsFieldValid(field, allRecipientFields))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="field">The field to check.</param>
     /// <param name="allRecipientFields">Every field assigned to the same recipient, used to resolve grouped fields.</param>

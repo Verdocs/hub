@@ -19,6 +19,12 @@ public sealed class Profiles
     /// Gets the caller's profiles. A user has one profile per organization membership;
     /// exactly one is marked <see cref="Profile.Current"/> at a time and operations are
     /// performed as that profile.
+    ///
+    /// <example>
+    /// <code>
+    /// var profiles = await endpoint.Profiles.ListAsync();
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The caller's profiles.</returns>
@@ -34,6 +40,12 @@ public sealed class Profiles
     /// <summary>
     /// Gets the caller's current profile. A user has one profile per organization membership
     /// and exactly one is current at a time; operations are performed as that profile.
+    ///
+    /// <example>
+    /// <code>
+    /// var current = await endpoint.Profiles.GetCurrentAsync();
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The profile marked current, or null if the caller has none.</returns>
@@ -91,6 +103,13 @@ public sealed class Profiles
     /// select the appropriate profile before making other calls. The endpoint does not apply
     /// the new tokens automatically; pass the access token to
     /// <see cref="VerdocsEndpoint.SetToken"/>, matching <see cref="Auth.AuthenticateAsync"/>.
+    ///
+    /// <example>
+    /// <code>
+    /// var session = await endpoint.Profiles.SwitchAsync(profileId);
+    /// endpoint.SetToken(session.AccessToken);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profileId">The profile to make current. Must belong to the caller.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -113,6 +132,16 @@ public sealed class Profiles
     /// Updates a profile: the caller's own current profile, or, for admins, another member
     /// of the same organization. The two paths accept different fields; see
     /// <see cref="UpdateProfileRequest"/>.
+    ///
+    /// <example>
+    /// <code>
+    /// var profile = await endpoint.Profiles.UpdateAsync(profileId, new UpdateProfileRequest
+    /// {
+    ///     FirstName = "Paige",
+    ///     Timezone = "America/New_York",
+    /// });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profileId">The profile to update.</param>
     /// <param name="request">The fields to change. Unset properties are left as they are.</param>
@@ -141,6 +170,12 @@ public sealed class Profiles
     /// the delete but the deployed API sends no response at all, so the call ends in a
     /// TimeoutException. Until that is fixed server-side, the workaround is to
     /// <see cref="SwitchAsync"/> to the profile first and then delete it.
+    ///
+    /// <example>
+    /// <code>
+    /// var result = await endpoint.Profiles.DeleteAsync(profileId);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profileId">The profile to delete. Must belong to the caller.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -162,6 +197,13 @@ public sealed class Profiles
     /// <summary>
     /// Replaces the profile photo. Only the caller's own current profile accepts a photo.
     /// The stream is read to the end and disposed when the request completes.
+    ///
+    /// <example>
+    /// <code>
+    /// await using var photo = File.OpenRead("avatar.png");
+    /// var profile = await endpoint.Profiles.UpdatePhotoAsync(profileId, photo, "avatar.png", "image/png");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profileId">The profile to update. Must be the caller's current profile.</param>
     /// <param name="photo">The image content.</param>

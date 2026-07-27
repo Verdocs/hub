@@ -17,7 +17,26 @@ public sealed class TemplateFields
         _endpoint = endpoint;
     }
 
-    /// <summary>Adds a field to a template. Note that Y positions are measured bottom to top.</summary>
+    /// <summary>
+    /// Adds a field to a template. Note that Y positions are measured bottom to top.
+    ///
+    /// <example>
+    /// <code>
+    /// var field = await endpoint.TemplateFields.CreateAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     new CreateFieldRequest
+    ///     {
+    ///         Name = "Buyer-textbox-1",
+    ///         RoleName = "Recipient 1",
+    ///         DocumentId = documentId,
+    ///         Type = FieldType.Textbox,
+    ///         Page = 0,
+    ///         X = 100,
+    ///         Y = 200,
+    ///     });
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="templateId">The template to add the field to.</param>
     /// <param name="request">The field to create.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -34,7 +53,18 @@ public sealed class TemplateFields
             HttpMethod.Post, "/v2/fields/" + Uri.EscapeDataString(templateId), request, cancellationToken);
     }
 
-    /// <summary>Updates a field. Unset request properties leave the stored values unchanged.</summary>
+    /// <summary>
+    /// Updates a field. Unset request properties leave the stored values unchanged.
+    ///
+    /// <example>
+    /// <code>
+    /// var field = await endpoint.TemplateFields.UpdateAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     "Buyer-textbox-1",
+    ///     new UpdateFieldRequest { Required = true });
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="templateId">The template the field belongs to.</param>
     /// <param name="fieldName">The field's current name.</param>
     /// <param name="request">The properties to change.</param>
@@ -56,7 +86,15 @@ public sealed class TemplateFields
             cancellationToken);
     }
 
-    /// <summary>Removes a field from a template.</summary>
+    /// <summary>
+    /// Removes a field from a template.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.TemplateFields.DeleteAsync("d2338742-f3a1-465b-8592-806587413cc1", "Buyer-textbox-1");
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="templateId">The template the field belongs to.</param>
     /// <param name="fieldName">The field's name.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>

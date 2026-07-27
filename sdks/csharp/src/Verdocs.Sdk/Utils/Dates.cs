@@ -17,6 +17,12 @@ public static class Dates
     /// <summary>
     /// Formats how long ago a moment was as a compact unit string, e.g. "5M". Units are S,
     /// M (minutes), H, D, W, and Y, matching the js-sdk output byte for byte.
+    ///
+    /// <example>
+    /// <code>
+    /// var elapsed = Dates.FormatShortTimeAgo(DateTimeOffset.UtcNow.AddMinutes(-5));
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="value">The moment to describe; null yields "".</param>
     /// <returns>

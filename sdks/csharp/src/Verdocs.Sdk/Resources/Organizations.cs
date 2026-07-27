@@ -21,6 +21,12 @@ public sealed class Organizations
     /// <summary>
     /// Gets one organization by its ID. The caller must be a member of it; the response
     /// includes the organization's entitlements, children, and parent.
+    ///
+    /// <example>
+    /// <code>
+    /// var organization = await endpoint.Organizations.GetAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -40,6 +46,12 @@ public sealed class Organizations
     /// Gets an organization's child organizations, each with its entitlements. The caller
     /// must be an admin of the parent. The server answers 404 when the organization has no
     /// children, so expect an exception rather than an empty list for a childless parent.
+    ///
+    /// <example>
+    /// <code>
+    /// var children = await endpoint.Organizations.GetChildrenAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The parent organization's unique ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -65,6 +77,14 @@ public sealed class Organizations
     /// Gets an organization's usage counters, including its children's when it is a parent.
     /// The caller must be an admin. The result is keyed by organization ID, and each entry
     /// maps a usage type (see <see cref="UsageType"/>) to its count for the period.
+    ///
+    /// <example>
+    /// <code>
+    /// var usage = await endpoint.Organizations.GetUsageAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     new GetOrganizationUsageOptions { UsageType = UsageType.Envelope });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="options">Optional date range and usage-type filters.</param>
@@ -151,6 +171,14 @@ public sealed class Organizations
     /// <summary>
     /// Updates an organization. The caller must be an admin. Only the fields set on the
     /// request are sent; fields omitted are left unchanged.
+    ///
+    /// <example>
+    /// <code>
+    /// var updated = await endpoint.Organizations.UpdateAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     new UpdateOrganizationRequest { Name = "Acme" });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="request">The changes to apply.</param>
@@ -170,6 +198,12 @@ public sealed class Organizations
 
     /// <summary>
     /// Gets an organization's document-pipeline settings. The caller must be an admin.
+    ///
+    /// <example>
+    /// <code>
+    /// var settings = await endpoint.Organizations.GetPipelineSettingsAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -188,6 +222,14 @@ public sealed class Organizations
     /// <summary>
     /// Updates an organization's document-pipeline settings. The caller must be an admin.
     /// Only the flags set on the request are sent; flags omitted are left unchanged.
+    ///
+    /// <example>
+    /// <code>
+    /// var settings = await endpoint.Organizations.UpdatePipelineSettingsAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     new UpdatePipelineSettingsRequest { ProcessTags = true });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="request">The flags to change.</param>
@@ -212,6 +254,12 @@ public sealed class Organizations
     /// Deletes the caller's current organization. The caller must be an owner, the ID must
     /// match the caller's current organization, and deletion protection must be off. Document
     /// files are retained in storage even though the database records are removed.
+    ///
+    /// <example>
+    /// <code>
+    /// var tokens = await endpoint.Organizations.DeleteAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID, as a safety check.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -256,6 +304,14 @@ public sealed class Organizations
     /// Uploads a new full-size logo for the organization. The caller must be an admin. The
     /// stream is read once and disposed with the request. Large uploads may need a longer
     /// endpoint timeout than the 60-second default.
+    ///
+    /// <example>
+    /// <code>
+    /// await using var file = File.OpenRead("logo.png");
+    /// var organization = await endpoint.Organizations.UpdateLogoAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1", file, "logo.png", "image/png");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="file">The image content.</param>
@@ -280,6 +336,14 @@ public sealed class Organizations
     /// <summary>
     /// Uploads a new thumbnail logo for the organization. The caller must be an admin. The
     /// stream is read once and disposed with the request.
+    ///
+    /// <example>
+    /// <code>
+    /// await using var file = File.OpenRead("thumbnail.png");
+    /// var organization = await endpoint.Organizations.UpdateThumbnailAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1", file, "thumbnail.png", "image/png");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="organizationId">The organization's unique ID.</param>
     /// <param name="file">The image content. A square image is recommended.</param>
@@ -305,6 +369,12 @@ public sealed class Organizations
     /// Gets the entitlements granted to the caller's organization. The list may include
     /// entries that are not yet active or have expired; see
     /// <see cref="GetActiveEntitlementsAsync"/> for the collapsed current view.
+    ///
+    /// <example>
+    /// <code>
+    /// var entitlements = await endpoint.Organizations.GetEntitlementsAsync();
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>All entitlement grants for the caller's organization.</returns>

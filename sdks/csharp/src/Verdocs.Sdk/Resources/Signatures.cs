@@ -22,6 +22,13 @@ public sealed class Signatures
     /// auto-created profile and typically hold one block tied to that session, while
     /// authenticated users can keep several and use them interchangeably. The stored image is
     /// not fetchable through the v2 API; the block's ID is what matters.
+    ///
+    /// <example>
+    /// <code>
+    /// using var content = File.OpenRead("signature.png");
+    /// var signature = await endpoint.Signatures.CreateAsync(content, "signature.png", "image/png");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="content">The signature image to store.</param>
     /// <param name="fileName">The filename to store with the image.</param>

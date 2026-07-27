@@ -73,6 +73,10 @@
           "returns": {
             "type": "Task<RecipientKbaStep>",
             "description": "The next KBA step required."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var step = await endpoint.Kba.GetStepAsync(envelopeId, roleName);"
           }
         },
         {
@@ -184,6 +188,10 @@
           "returns": {
             "type": "Task<RecipientKbaStep>",
             "description": "The next KBA step required."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var step = await endpoint.Kba.SubmitChallengeResponseAsync(envelopeId, roleName, new[]\n{\n    new KbaResponse { Type = \"multiple_choice\", Answer = \"2\" },\n});"
           }
         },
         {
@@ -302,6 +310,10 @@
           "returns": {
             "type": "Task<RecipientKbaStep>",
             "description": "The next KBA step required."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var step = await endpoint.Kba.SubmitIdentityAsync(envelopeId, roleName, new KbaIdentity\n{\n    FirstName = \"Paige\",\n    LastName = \"Turner\",\n    Address = \"123 Main St\",\n});"
           }
         },
         {
@@ -420,6 +432,10 @@
           "returns": {
             "type": "Task<RecipientKbaStep>",
             "description": "The next KBA step required."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var step = await endpoint.Kba.SubmitPinAsync(envelopeId, roleName, \"1234\");"
           }
         },
         {
@@ -514,6 +530,10 @@
           "returns": {
             "type": "bool",
             "description": "True when every requested permission is held."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (SessionPermissions.UserHasPermissions(profile, new[] { TemplatePermission.CreatePersonal }))\n{\n    // ...\n}"
           }
         },
         {
@@ -597,6 +617,10 @@
           "returns": {
             "type": "Task<AuthenticateResponse>",
             "description": "Session tokens for the new profile."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var auth = await endpoint.Invitations.AcceptAsync(new AcceptOrganizationInvitationRequest\n{\n    Email = \"paige.turner@example.com\",\n    Token = \"a1b2c3d4e5f6\",\n    FirstName = \"Paige\",\n    LastName = \"Turner\",\n    Password = \"correct-horse-battery-staple\",\n});\nendpoint.SetToken(auth.AccessToken);"
           }
         },
         {
@@ -677,6 +701,10 @@
           "returns": {
             "type": "Task<OrganizationInvitation>",
             "description": "The new invitation."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var invitation = await endpoint.Invitations.CreateAsync(new CreateInvitationRequest\n{\n    Email = \"paige.turner@example.com\",\n    FirstName = \"Paige\",\n    LastName = \"Turner\",\n    Role = \"member\",\n});"
           }
         },
         {
@@ -771,6 +799,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the invitation is declined."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Invitations.DeclineAsync(\"paige.turner@example.com\", \"a1b2c3d4e5f6\");"
           }
         },
         {
@@ -853,6 +885,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the invitation is deleted."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Invitations.DeleteAsync(\"paige.turner@example.com\");"
           }
         },
         {
@@ -942,6 +978,10 @@
           "returns": {
             "type": "Task<OrganizationInvitation>",
             "description": "The invitation, with its organization."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var invitation = await endpoint.Invitations.GetAsync(\"paige.turner@example.com\", \"a1b2c3d4e5f6\");"
           }
         },
         {
@@ -1011,6 +1051,10 @@
           "returns": {
             "type": "Task<IReadOnlyList<OrganizationInvitation>>",
             "description": "The organization's pending invitations."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var invitations = await endpoint.Invitations.ListAsync();"
           }
         },
         {
@@ -1078,6 +1122,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the reminder is sent."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Invitations.ResendAsync(\"paige.turner@example.com\");"
           }
         },
         {
@@ -1167,6 +1215,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the server accepts the request."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Invitations.UpdateAsync(\"paige.turner@example.com\", \"admin\");"
           }
         },
         {
@@ -1278,6 +1330,10 @@
           "returns": {
             "type": "Task<Brand>",
             "description": "The updated brand with its email domain configuration."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var brand = await endpoint.Brands.AddEmailDomainAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"b1f2e3d4-c5a6-478b-9012-345678901234\",\n    new AddBrandEmailDomainRequest { Subdomain = \"notify.acme.com\", LocalPart = \"notifications\" });"
           }
         },
         {
@@ -1386,6 +1442,10 @@
           "returns": {
             "type": "Task<Brand>",
             "description": "The new brand."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var brand = await endpoint.Brands.CreateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new CreateBrandRequest { Key = \"acme\", Name = \"Acme\" });"
           }
         },
         {
@@ -1487,6 +1547,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the brand is deleted."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Brands.DeleteAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"b1f2e3d4-c5a6-478b-9012-345678901234\");"
           }
         },
         {
@@ -1583,6 +1647,10 @@
           "returns": {
             "type": "Task<Brand>",
             "description": "The requested brand."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var brand = await endpoint.Brands.GetAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"b1f2e3d4-c5a6-478b-9012-345678901234\");"
           }
         },
         {
@@ -1670,6 +1738,10 @@
           "returns": {
             "type": "Task<IReadOnlyList<Brand>>",
             "description": "The organization's brands."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var brands = await endpoint.Brands.ListAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -1760,6 +1832,10 @@
           "returns": {
             "type": "Task<Brand>",
             "description": "The updated brand with the email domain removed."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var brand = await endpoint.Brands.RemoveEmailDomainAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"b1f2e3d4-c5a6-478b-9012-345678901234\");"
           }
         },
         {
@@ -1871,6 +1947,10 @@
           "returns": {
             "type": "Task<Brand>",
             "description": "The updated brand."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var updated = await endpoint.Brands.UpdateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"b1f2e3d4-c5a6-478b-9012-345678901234\",\n    new UpdateBrandRequest { Name = \"Acme Corp\" });"
           }
         },
         {
@@ -2010,6 +2090,10 @@
           "returns": {
             "type": "Task<Brand>",
             "description": "The updated brand."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await using var file = File.OpenRead(\"logo.png\");\nvar brand = await endpoint.Brands.UpdateLogoAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"b1f2e3d4-c5a6-478b-9012-345678901234\",\n    file, \"logo.png\", \"image/png\");"
           }
         },
         {
@@ -2153,6 +2237,10 @@
           "returns": {
             "type": "Task<Brand>",
             "description": "The updated brand."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await using var file = File.OpenRead(\"thumbnail.png\");\nvar brand = await endpoint.Brands.UpdateThumbnailAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"b1f2e3d4-c5a6-478b-9012-345678901234\",\n    file, \"thumbnail.png\", \"image/png\");"
           }
         },
         {
@@ -2257,6 +2345,10 @@
           "returns": {
             "type": "Task<Brand>",
             "description": "The updated brand with its current verification status."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var brand = await endpoint.Brands.VerifyEmailDomainAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"b1f2e3d4-c5a6-478b-9012-345678901234\");"
           }
         },
         {
@@ -2358,6 +2450,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the server accepts the request."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Groups.AddMemberAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"b1f2e3d4-c5a6-478b-9012-345678901234\");"
           }
         },
         {
@@ -2445,6 +2541,10 @@
           "returns": {
             "type": "Task<Group>",
             "description": "The new group."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var group = await endpoint.Groups.CreateAsync(new CreateGroupRequest\n{\n    Name = \"Sales\",\n    Permissions = [\"send_envelopes\", \"manage_templates\"],\n});"
           }
         },
         {
@@ -2529,6 +2629,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the group is deleted."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Groups.DeleteAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -2622,6 +2726,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the membership is removed."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Groups.DeleteMemberAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"b1f2e3d4-c5a6-478b-9012-345678901234\");"
           }
         },
         {
@@ -2708,6 +2816,10 @@
           "returns": {
             "type": "Task<Group>",
             "description": "The requested group."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var group = await endpoint.Groups.GetAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -2774,6 +2886,10 @@
           "returns": {
             "type": "Task<IReadOnlyList<Group>>",
             "description": "The organization's groups."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var groups = await endpoint.Groups.ListAsync();"
           }
         },
         {
@@ -2859,6 +2975,10 @@
           "returns": {
             "type": "Task<Group>",
             "description": "The updated group."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var updated = await endpoint.Groups.UpdateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new UpdateGroupRequest { Name = \"Sales\", Permissions = [\"send_envelopes\"] });"
           }
         },
         {
@@ -2970,6 +3090,10 @@
           "returns": {
             "type": "Task<Recipient>",
             "description": "The recipient, as the server echoes it back."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var recipient = await endpoint.Recipients.AskQuestionAsync(envelopeId, roleName, \"Which page do I sign?\");"
           }
         },
         {
@@ -3087,6 +3211,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the delegation is recorded. The server responds with a status body that carries nothing."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Recipients.DelegateAsync(envelopeId, roleName, new DelegateRecipientRequest\n{\n    FirstName = \"Paige\",\n    LastName = \"Turner\",\n    Email = \"paige.turner@example.com\",\n});"
           }
         },
         {
@@ -3219,6 +3347,10 @@
           "returns": {
             "type": "Task<Recipient>",
             "description": "The updated recipient."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var recipient = await endpoint.Recipients.AgreeAsync(envelopeId, roleName, Disclosures.Default);"
           }
         },
         {
@@ -3330,6 +3462,10 @@
           "returns": {
             "type": "Task<Recipient>",
             "description": "The updated recipient."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var recipient = await endpoint.Recipients.DeclineAsync(envelopeId, roleName);"
           }
         },
         {
@@ -3441,6 +3577,10 @@
           "returns": {
             "type": "Task<Recipient>",
             "description": "The updated recipient."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var recipient = await endpoint.Recipients.SubmitAsync(envelopeId, roleName);"
           }
         },
         {
@@ -3545,6 +3685,10 @@
           "returns": {
             "type": "Task<InPersonLinkResponse>",
             "description": "The signing link, key, token, and envelope/recipient metadata."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var link = await endpoint.Recipients.GetInPersonLinkAsync(envelopeId, roleName);"
           }
         },
         {
@@ -3642,6 +3786,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the reminder is queued. The server responds with a status body that carries nothing."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Recipients.RemindAsync(envelopeId, roleName);"
           }
         },
         {
@@ -3739,6 +3887,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the reset is recorded. The server responds with a status body that carries nothing."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Recipients.ResetAsync(envelopeId, roleName);"
           }
         },
         {
@@ -3850,6 +4002,10 @@
           "returns": {
             "type": "Task<SignerTokenResponse>",
             "description": "The signing session token plus envelope and recipient metadata."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var session = await endpoint.Recipients.StartSigningSessionAsync(envelopeId, roleName, key);"
           }
         },
         {
@@ -3972,6 +4128,10 @@
           "returns": {
             "type": "Task<Recipient>",
             "description": "The updated recipient."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var recipient = await endpoint.Recipients.UpdateAsync(envelopeId, roleName, new UpdateRecipientParams\n{\n    Email = \"paige.turner@example.com\",\n});"
           }
         },
         {
@@ -4062,6 +4222,10 @@
           "returns": {
             "type": "Task<SignerTokenResponse>",
             "description": "The updated signing session."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var session = await endpoint.Recipients.VerifySignerAsync(new AuthenticateRecipientRequest\n{\n    AuthMethod = \"passcode\",\n    Code = \"123456\",\n});"
           }
         },
         {
@@ -4157,7 +4321,11 @@
           "deprecated": false,
           "returns": {
             "type": "VerdocsSession?",
-            "description": "The decoded session, or null. Stricter than the js-sdk: the token must have three\n            segments, an object payload, and a user or signing session_type claim, where js\n            accepts any segment count and any JSON type."
+            "description": "The decoded session, or null. Stricter than the js-sdk: the token must have three\n             segments, an object payload, and a user or signing session_type claim, where js\n             accepts any segment count and any JSON type."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var session = Token.DecodeAccessTokenBody(accessToken);"
           }
         },
         {
@@ -4224,6 +4392,10 @@
           "returns": {
             "type": "JsonElement",
             "description": "The parsed payload, whatever JSON it holds."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var payload = Token.DecodeJwtBody(jwt);"
           }
         },
         {
@@ -4392,6 +4564,10 @@
           "returns": {
             "type": "Task<ChangePasswordResponse>",
             "description": "The change status; \"OK\" on success."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Auth.ChangePasswordAsync(new ChangePasswordRequest\n{\n    OldPassword = \"OLD_PASSWORD\",\n    NewPassword = \"NEW_PASSWORD\",\n});"
           }
         },
         {
@@ -4461,6 +4637,10 @@
           "returns": {
             "type": "Task<User>",
             "description": "The caller's user record."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var me = await endpoint.Users.GetMeAsync();"
           }
         },
         {
@@ -4546,6 +4726,10 @@
           "returns": {
             "type": "string",
             "description": "The authorization URL to redirect the user to."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var authorizeUrl = endpoint.Auth.GetOAuth2AuthorizeUrl(\"YOUR_CLIENT_ID\", \"https://myapp.example.com/callback\");"
           }
         },
         {
@@ -4654,6 +4838,10 @@
           "returns": {
             "type": "Task<AuthenticateResponse>",
             "description": "Fresh authentication tokens and expiration details."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var auth = await endpoint.Auth.RefreshTokenAsync(refreshToken);\nendpoint.SetToken(auth.AccessToken);"
           }
         },
         {
@@ -4731,6 +4919,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the message has been queued."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Auth.ResendVerificationAsync();"
           }
         },
         {
@@ -4912,6 +5104,10 @@
           "returns": {
             "type": "Task<AuthenticateResponse>",
             "description": "Fresh authentication tokens for the now-verified session."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var verified = await endpoint.Auth.VerifyEmailAsync(new VerifyEmailRequest { Email = \"you@example.com\", Token = code });\nendpoint.SetToken(verified.AccessToken);"
           }
         },
         {
@@ -4999,6 +5195,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the profile ID may access the envelope."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (EnvelopePermissions.CanAccessEnvelope(profile.Id, envelope))\n{\n    // ...\n}"
           }
         }
       ]
@@ -5057,6 +5257,10 @@
           "returns": {
             "type": "Task<Envelope>",
             "description": "The updated envelope. The response omits relations such as recipients, so those properties are null here."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var envelope = await endpoint.Envelopes.CancelAsync(envelopeId);"
           }
         },
         {
@@ -5249,6 +5453,10 @@
           "returns": {
             "type": "Task<EnvelopeField>",
             "description": "A copy of the updated field."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var field = await endpoint.Envelopes.DeleteFieldAttachmentAsync(envelopeId, \"Recipient 1\", \"attachment_1\");"
           }
         },
         {
@@ -5339,6 +5547,10 @@
           "returns": {
             "type": "Task<byte[]>",
             "description": "The raw file bytes."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var bytes = await endpoint.Envelopes.DownloadDocumentAsync(documentId);"
           }
         },
         {
@@ -5401,6 +5613,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the envelope is still active."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (EnvelopePermissions.EnvelopeIsActive(envelope))\n{\n    // ...\n}"
           }
         }
       ]
@@ -5445,6 +5661,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the envelope is not complete."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (EnvelopePermissions.EnvelopeIsComplete(envelope))\n{\n    // ...\n}"
           }
         }
       ]
@@ -5503,6 +5723,10 @@
           "returns": {
             "type": "Task<string>",
             "description": "The download URL, fetchable without auth headers."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var url = await endpoint.Envelopes.GetCombinedDocumentDownloadLinkAsync(documentId);"
           }
         },
         {
@@ -5579,6 +5803,10 @@
           "returns": {
             "type": "Task<Envelope>",
             "description": "The detailed metadata for the envelope requested."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var envelope = await endpoint.Envelopes.GetAsync(envelopeId);"
           }
         },
         {
@@ -5655,6 +5883,10 @@
           "returns": {
             "type": "Task<EnvelopeDocument>",
             "description": "The detailed metadata for the document requested."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var document = await endpoint.Envelopes.GetDocumentAsync(documentId);"
           }
         },
         {
@@ -5731,6 +5963,10 @@
           "returns": {
             "type": "Task<string>",
             "description": "The download URL, fetchable without auth headers."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var url = await endpoint.Envelopes.GetDocumentDownloadLinkAsync(documentId);"
           }
         },
         {
@@ -5835,6 +6071,10 @@
           "returns": {
             "type": "Task<string>",
             "description": "The page display URI."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var uri = await endpoint.Envelopes.GetDocumentPageDisplayUriAsync(documentId, 1);"
           }
         },
         {
@@ -5925,6 +6165,10 @@
           "returns": {
             "type": "Task<string>",
             "description": "The preview URL, fetchable without auth headers."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var url = await endpoint.Envelopes.GetDocumentPreviewLinkAsync(documentId);"
           }
         },
         {
@@ -6001,6 +6245,10 @@
           "returns": {
             "type": "Task<byte[]>",
             "description": "The raw file bytes."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var bytes = await endpoint.Envelopes.GetFileAsync(documentId);"
           }
         },
         {
@@ -6165,6 +6413,10 @@
           "returns": {
             "type": "Task<byte[]>",
             "description": "The raw ZIP bytes."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var zip = await endpoint.Envelopes.GetZipAsync(new[] { envelopeId });"
           }
         },
         {
@@ -6241,6 +6493,10 @@
           "returns": {
             "type": "Recipient?",
             "description": "The matching recipient, or null when there is none."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var myRecipient = EnvelopePermissions.GetMyRecipient(session, envelope);"
           }
         }
       ]
@@ -6285,6 +6541,10 @@
           "returns": {
             "type": "Recipient?",
             "description": "The next pending recipient, or null when none remain."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var next = EnvelopePermissions.GetNextRecipient(envelope);"
           }
         }
       ]
@@ -6343,6 +6603,10 @@
           "returns": {
             "type": "Recipient?",
             "description": "The matching recipient, or null when there is none."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var recipient = EnvelopePermissions.GetRecipient(email, envelope);"
           }
         }
       ]
@@ -6387,6 +6651,10 @@
           "returns": {
             "type": "IReadOnlyList<Recipient>",
             "description": "The recipients with actions remaining."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var pending = EnvelopePermissions.GetRecipientsWithActions(envelope);"
           }
         }
       ]
@@ -6445,6 +6713,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the matching recipient can act now."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (EnvelopePermissions.GetRecipientWithActions(email, envelope))\n{\n    // ...\n}"
           }
         }
       ]
@@ -6503,6 +6775,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the profile ID matches the envelope's creator."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (EnvelopePermissions.IsEnvelopeOwner(profile.Id, envelope))\n{\n    // ...\n}"
           }
         }
       ]
@@ -6561,6 +6837,10 @@
           "returns": {
             "type": "bool",
             "description": "True when a recipient carries the profile ID."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (EnvelopePermissions.IsEnvelopeRecipient(profile.Id, envelope))\n{\n    // ...\n}"
           }
         }
       ]
@@ -6619,6 +6899,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the field counts as filled."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (Validators.IsFieldFilled(field, allRecipientFields))\n{\n    // ...\n}"
           }
         }
       ]
@@ -6677,6 +6961,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the field is valid."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (Validators.IsFieldValid(field, allRecipientFields))\n{\n    // ...\n}"
           }
         }
       ]
@@ -6735,6 +7023,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the recipient can act now."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var pending = EnvelopePermissions.GetRecipientsWithActions(envelope);\nif (EnvelopePermissions.RecipientCanAct(recipient, pending))\n{\n    // ...\n}"
           }
         }
       ]
@@ -6779,6 +7071,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the recipient has not yet submitted, declined, or been canceled."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (EnvelopePermissions.RecipientHasAction(recipient))\n{\n    // ...\n}"
           }
         }
       ]
@@ -6851,6 +7147,10 @@
           "returns": {
             "type": "Task<Envelope>",
             "description": "A copy of the updated envelope."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var envelope = await endpoint.Envelopes.UpdateAsync(envelopeId, new UpdateEnvelopeRequest\n{\n    Name = \"Bill of Sale (Revised)\",\n});"
           }
         },
         {
@@ -6990,6 +7290,10 @@
           "returns": {
             "type": "Task<EnvelopeField>",
             "description": "A copy of the updated field."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var field = await endpoint.Envelopes.UpdateFieldAsync(envelopeId, \"Recipient 1\", \"full_name\", \"Paige Turner\");"
           }
         },
         {
@@ -7157,6 +7461,10 @@
           "returns": {
             "type": "Task<EnvelopeField>",
             "description": "A copy of the updated field."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "using var content = File.OpenRead(\"w9.pdf\");\nvar field = await endpoint.Envelopes.UploadFieldAttachmentAsync(envelopeId, \"Recipient 1\", \"attachment_1\", content, \"w9.pdf\");"
           }
         },
         {
@@ -7291,6 +7599,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the matching recipient can act now."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var pending = EnvelopePermissions.GetRecipientsWithActions(envelope);\nif (EnvelopePermissions.UserCanAct(email, pending))\n{\n    // ...\n}"
           }
         }
       ]
@@ -7349,6 +7661,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user may cancel the envelope."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (EnvelopePermissions.UserCanCancelEnvelope(profile, envelope))\n{\n    // ...\n}"
           }
         }
       ]
@@ -7407,6 +7723,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user may finish the envelope."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (EnvelopePermissions.UserCanFinishEnvelope(profile, envelope))\n{\n    // ...\n}"
           }
         }
       ]
@@ -7465,6 +7785,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user can sign now."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (EnvelopePermissions.UserCanSignNow(profile, envelope))\n{\n    // ...\n}"
           }
         }
       ]
@@ -7523,6 +7847,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the profile matches the envelope's creator."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (EnvelopePermissions.UserIsEnvelopeOwner(profile, envelope))\n{\n    // ...\n}"
           }
         }
       ]
@@ -7581,6 +7909,10 @@
           "returns": {
             "type": "bool",
             "description": "True when a recipient carries the profile's ID."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (EnvelopePermissions.UserIsEnvelopeRecipient(profile, envelope))\n{\n    // ...\n}"
           }
         }
       ]
@@ -7653,6 +7985,10 @@
           "returns": {
             "type": "ValueTuple<bool, string>",
             "description": "CanPerform, plus a Message explaining the denial (empty when allowed)."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var (canPerform, message) = TemplatePermissions.CanPerformTemplateAction(profile, TemplateAction.Delete, template);\nif (!canPerform)\n{\n    Console.WriteLine(message);\n}"
           }
         }
       ]
@@ -7722,6 +8058,10 @@
           "returns": {
             "type": "Task<Template>",
             "description": "The new template, including its documents, roles, and fields."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var template = await endpoint.Templates.CreateAsync(new CreateTemplateRequest\n{\n    Name = \"Bill of Sale\",\n    Visibility = TemplateVisibility.Shared,\n});"
           }
         },
         {
@@ -7813,6 +8153,10 @@
           "returns": {
             "type": "Task<Template>",
             "description": "The new template, if the API ever serves this route."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var template = await endpoint.Templates.CreateFromSharepointAsync(new CreateTemplateFromSharepointRequest\n{\n    Name = \"Bill of Sale\",\n    SiteId = \"site-id\",\n    ItemId = \"item-id\",\n    OboToken = \"obo-token\",\n});"
           }
         },
         {
@@ -7893,6 +8237,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the template has been deleted."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Templates.DeleteAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -7986,6 +8334,10 @@
           "returns": {
             "type": "Task<Template>",
             "description": "The new copy."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var copy = await endpoint.Templates.DuplicateAsync(\"d2338742-f3a1-465b-8592-806587413cc1\", \"Bill of Sale (copy)\");"
           }
         },
         {
@@ -8069,6 +8421,10 @@
           "returns": {
             "type": "IReadOnlyList<TemplateField>",
             "description": "The fields assigned to the role."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var fields = TemplatePermissions.GetFieldsForRole(template, \"Signer1\");"
           }
         }
       ]
@@ -8131,6 +8487,10 @@
           "returns": {
             "type": "Task<Template>",
             "description": "The requested template."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var template = await endpoint.Templates.GetAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -8295,6 +8655,10 @@
           "returns": {
             "type": "bool",
             "description": "True when every requested permission is directly held."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.HasRequiredPermissions(profile, new[] { TemplatePermission.MemberWrite }))\n{\n    // ...\n}"
           }
         }
       ]
@@ -8357,6 +8721,10 @@
           "returns": {
             "type": "Task<Template>",
             "description": "The template, if the API ever serves this route."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var template = await endpoint.Templates.ToggleStarAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -8451,6 +8819,10 @@
           "returns": {
             "type": "Task<Template>",
             "description": "The updated template."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var template = await endpoint.Templates.UpdateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new UpdateTemplateRequest { Name = \"Bill of Sale (v2)\" });"
           }
         },
         {
@@ -8534,6 +8906,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user may open the template in the builder."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserCanBuildTemplate(profile, template))\n{\n    // ...\n}"
           }
         }
       ]
@@ -8592,6 +8968,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user may change the template's organization visibility."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserCanChangeOrgVisibility(profile, template))\n{\n    // ...\n}"
           }
         }
       ]
@@ -8636,6 +9016,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user holds the org-create permission."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserCanCreateOrgTemplate(profile))\n{\n    // ...\n}"
           }
         }
       ]
@@ -8680,6 +9064,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user holds the personal-create permission."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserCanCreatePersonalTemplate(profile))\n{\n    // ...\n}"
           }
         }
       ]
@@ -8724,6 +9112,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user holds the public-create permission."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserCanCreatePublicTemplate(profile))\n{\n    // ...\n}"
           }
         }
       ]
@@ -8768,6 +9160,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user holds any of the template-create permissions."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserCanCreateTemplate(profile))\n{\n    // ...\n}"
           }
         }
       ]
@@ -8826,6 +9222,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user may delete the template."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserCanDeleteTemplate(profile, template))\n{\n    // ...\n}"
           }
         }
       ]
@@ -8884,6 +9284,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user may change the template's visibility to private."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserCanMakeTemplatePrivate(profile, template))\n{\n    // ...\n}"
           }
         }
       ]
@@ -8942,6 +9346,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user may change the template's visibility to public."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserCanMakeTemplatePublic(profile, template))\n{\n    // ...\n}"
           }
         }
       ]
@@ -9000,6 +9408,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user may change the template's visibility to shared."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserCanMakeTemplateShared(profile, template))\n{\n    // ...\n}"
           }
         }
       ]
@@ -9058,6 +9470,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user may preview the template."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserCanPreviewTemplate(profile, template))\n{\n    // ...\n}"
           }
         }
       ]
@@ -9116,6 +9532,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user may view the template."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserCanReadTemplate(profile, template))\n{\n    // ...\n}"
           }
         }
       ]
@@ -9174,6 +9594,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user may send the template."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserCanSendTemplate(profile, template))\n{\n    // ...\n}"
           }
         }
       ]
@@ -9232,6 +9656,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the user may modify the template."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserCanUpdateTemplate(profile, template))\n{\n    // ...\n}"
           }
         }
       ]
@@ -9290,6 +9718,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the template is shared with the profile's organization."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserHasSharedTemplate(profile, template))\n{\n    // ...\n}"
           }
         }
       ]
@@ -9348,6 +9780,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the profile matches the template's creator."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (TemplatePermissions.UserIsTemplateCreator(profile, template))\n{\n    // ...\n}"
           }
         }
       ]
@@ -9392,6 +9828,10 @@
           "returns": {
             "type": "string",
             "description": "The input with the first character uppercased, other characters untouched."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var result = Strings.Capitalize(\"hello\"); // \"Hello\""
           }
         },
         {
@@ -9524,6 +9964,10 @@
           "returns": {
             "type": "string",
             "description": "A random string of exactly  characters from [0-9a-z]."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var id = Strings.RandomString(12);"
           }
         },
         {
@@ -9586,6 +10030,10 @@
           "returns": {
             "type": "IReadOnlyDictionary<string, Entitlement>",
             "description": "Feature name (see EntitlementFeature) to the entitlement record currently granting it."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var active = Entitlements.CollapseEntitlements(entitlements);"
           }
         },
         {
@@ -9666,6 +10114,10 @@
           "returns": {
             "type": "Task<ApiKey>",
             "description": "The new key, including its secret."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var apiKey = await endpoint.ApiKeys.CreateAsync(new CreateApiKeyRequest\n{\n    Name = \"Integration key\",\n    ProfileId = \"d2338742-f3a1-465b-8592-806587413cc1\",\n});"
           }
         },
         {
@@ -9750,6 +10202,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the key is deleted."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.ApiKeys.DeleteAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -9815,6 +10271,10 @@
           "returns": {
             "type": "Task<IReadOnlyList<ApiKey>>",
             "description": "The organization's API keys, without secrets."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var apiKeys = await endpoint.ApiKeys.ListAsync();"
           }
         },
         {
@@ -9886,6 +10346,10 @@
           "returns": {
             "type": "Task<ApiKey>",
             "description": "The key with its new secret."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var rotated = await endpoint.ApiKeys.RotateAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -9980,6 +10444,10 @@
           "returns": {
             "type": "Task<ApiKey>",
             "description": "The updated key, without its secret."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var updated = await endpoint.ApiKeys.UpdateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new UpdateApiKeyRequest { Name = \"Integration key (renamed)\" });"
           }
         },
         {
@@ -10081,6 +10549,10 @@
           "returns": {
             "type": "Task<TemplateField>",
             "description": "The new field."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var field = await endpoint.TemplateFields.CreateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new CreateFieldRequest\n    {\n        Name = \"Buyer-textbox-1\",\n        RoleName = \"Recipient 1\",\n        DocumentId = documentId,\n        Type = FieldType.Textbox,\n        Page = 0,\n        X = 100,\n        Y = 200,\n    });"
           }
         },
         {
@@ -10186,6 +10658,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the field has been deleted."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.TemplateFields.DeleteAsync(\"d2338742-f3a1-465b-8592-806587413cc1\", \"Buyer-textbox-1\");"
           }
         },
         {
@@ -10300,6 +10776,10 @@
           "returns": {
             "type": "Task<TemplateField>",
             "description": "The updated field."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var field = await endpoint.TemplateFields.UpdateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"Buyer-textbox-1\",\n    new UpdateFieldRequest { Required = true });"
           }
         },
         {
@@ -10411,6 +10891,10 @@
           "returns": {
             "type": "Task<Initial>",
             "description": "The newly created initials block."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "using var content = File.OpenRead(\"initials.png\");\nvar initial = await endpoint.Initials.CreateAsync(content, \"initials.png\", \"image/png\");"
           }
         },
         {
@@ -10495,6 +10979,10 @@
           "returns": {
             "type": "Task<NotificationTemplate>",
             "description": "The new notification template."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var template = await endpoint.NotificationTemplates.CreateAsync(new CreateNotificationTemplateRequest\n{\n    Type = \"email\",\n    EventName = EventName.EnvelopeCompleted,\n    HtmlTemplate = \"<p>Your document is complete.</p>\",\n});"
           }
         },
         {
@@ -10579,6 +11067,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the template is deleted."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.NotificationTemplates.DeleteAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -10640,6 +11132,10 @@
           "returns": {
             "type": "Task<JsonElement>",
             "description": "The raw JSON array of notification rows."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var notifications = await endpoint.Users.GetNotificationsAsync();"
           }
         },
         {
@@ -10711,6 +11207,10 @@
           "returns": {
             "type": "Task<NotificationTemplate>",
             "description": "The requested notification template."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var template = await endpoint.NotificationTemplates.GetAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -10777,6 +11277,10 @@
           "returns": {
             "type": "Task<IReadOnlyList<NotificationTemplate>>",
             "description": "The organization's notification templates, without message bodies."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var templates = await endpoint.NotificationTemplates.ListAsync();"
           }
         },
         {
@@ -10862,6 +11366,10 @@
           "returns": {
             "type": "Task<NotificationTemplate>",
             "description": "The updated notification template."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var updated = await endpoint.NotificationTemplates.UpdateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new UpdateNotificationTemplateRequest { HtmlTemplate = \"<p>Updated message.</p>\" });"
           }
         },
         {
@@ -11036,7 +11544,11 @@
           "deprecated": false,
           "returns": {
             "type": "Task<AuthenticateResponse>",
-            "description": "Session tokens for the caller's next remaining profile, or null when no profile\n            remains and the caller is signed out."
+            "description": "Session tokens for the caller's next remaining profile, or null when no profile\n             remains and the caller is signed out."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var tokens = await endpoint.Organizations.DeleteAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -11164,6 +11676,10 @@
           "returns": {
             "type": "Task<IReadOnlyList<Entitlement>>",
             "description": "All entitlement grants for the caller's organization."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var entitlements = await endpoint.Organizations.GetEntitlementsAsync();"
           }
         },
         {
@@ -11235,6 +11751,10 @@
           "returns": {
             "type": "Task<Organization>",
             "description": "The requested organization."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var organization = await endpoint.Organizations.GetAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -11315,6 +11835,10 @@
           "returns": {
             "type": "Task<IReadOnlyList<Organization>>",
             "description": "The child organizations."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var children = await endpoint.Organizations.GetChildrenAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -11395,6 +11919,10 @@
           "returns": {
             "type": "Task<PipelineSettings>",
             "description": "The pipeline settings, with every flag normalized to a boolean."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var settings = await endpoint.Organizations.GetPipelineSettingsAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -11489,6 +12017,10 @@
           "returns": {
             "type": "Task<IReadOnlyDictionary<string, IReadOnlyDictionary<string, long>>>",
             "description": "Usage counts grouped by organization ID, then usage type."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var usage = await endpoint.Organizations.GetUsageAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new GetOrganizationUsageOptions { UsageType = UsageType.Envelope });"
           }
         },
         {
@@ -11608,6 +12140,10 @@
           "returns": {
             "type": "Task<Organization>",
             "description": "The updated organization, including its groups and entitlements."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var updated = await endpoint.Organizations.UpdateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new UpdateOrganizationRequest { Name = \"Acme\" });"
           }
         },
         {
@@ -11730,6 +12266,10 @@
           "returns": {
             "type": "Task<Organization>",
             "description": "The updated organization, including its groups and entitlements."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await using var file = File.OpenRead(\"logo.png\");\nvar organization = await endpoint.Organizations.UpdateLogoAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\", file, \"logo.png\", \"image/png\");"
           }
         },
         {
@@ -11835,6 +12375,10 @@
           "returns": {
             "type": "Task<PipelineSettings>",
             "description": "The updated pipeline settings, with every flag normalized to a boolean."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var settings = await endpoint.Organizations.UpdatePipelineSettingsAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new UpdatePipelineSettingsRequest { ProcessTags = true });"
           }
         },
         {
@@ -11957,6 +12501,10 @@
           "returns": {
             "type": "Task<Organization>",
             "description": "The updated organization, including its groups and entitlements."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await using var file = File.OpenRead(\"thumbnail.png\");\nvar organization = await endpoint.Organizations.UpdateThumbnailAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\", file, \"thumbnail.png\", \"image/png\");"
           }
         },
         {
@@ -12044,6 +12592,10 @@
           "returns": {
             "type": "Task<Profile>",
             "description": "The new contact profile."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var contact = await endpoint.Contacts.CreateAsync(new CreateContactRequest\n{\n    FirstName = \"Paige\",\n    LastName = \"Turner\",\n    Email = \"paige.turner@example.com\",\n});"
           }
         },
         {
@@ -12128,6 +12680,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the contact is deleted."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Contacts.DeleteAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -12193,6 +12749,10 @@
           "returns": {
             "type": "Task<IReadOnlyList<Profile>>",
             "description": "The organization's contact profiles."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var contacts = await endpoint.Contacts.ListAsync();"
           }
         },
         {
@@ -12278,6 +12838,10 @@
           "returns": {
             "type": "Task<Profile>",
             "description": "The updated contact profile."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var updated = await endpoint.Contacts.UpdateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new UpdateContactRequest { FirstName = \"Paige\", LastName = \"Turner\", Email = \"paige.turner@example.com\" });"
           }
         },
         {
@@ -12453,6 +13017,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the member is removed."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Members.DeleteAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -12518,6 +13086,10 @@
           "returns": {
             "type": "Task<IReadOnlyList<Profile>>",
             "description": "The organization's member profiles."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var members = await endpoint.Members.ListAsync();"
           }
         },
         {
@@ -12603,6 +13175,10 @@
           "returns": {
             "type": "Task<Profile>",
             "description": "The member's profile with the joined user record."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var locked = await endpoint.Members.LockAsync(\"d2338742-f3a1-465b-8592-806587413cc1\", \"Suspicious activity\");"
           }
         },
         {
@@ -12690,6 +13266,10 @@
           "returns": {
             "type": "Task<Profile>",
             "description": "The member's profile with the joined user record."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var unlocked = await endpoint.Members.UnlockAsync(\"d2338742-f3a1-465b-8592-806587413cc1\");"
           }
         },
         {
@@ -12784,6 +13364,10 @@
           "returns": {
             "type": "Task<Profile>",
             "description": "The updated profile."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var updated = await endpoint.Members.UpdateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new UpdateMemberRequest { Roles = [\"admin\"] });"
           }
         },
         {
@@ -12959,6 +13543,10 @@
           "returns": {
             "type": "Task<DeleteProfileResponse>",
             "description": "Tokens for the next profile, or a logout notice when it was the last one."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var result = await endpoint.Profiles.DeleteAsync(profileId);"
           }
         },
         {
@@ -13025,6 +13613,10 @@
           "returns": {
             "type": "Task<Profile>",
             "description": "The profile marked current, or null if the caller has none."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var current = await endpoint.Profiles.GetCurrentAsync();"
           }
         },
         {
@@ -13082,6 +13674,10 @@
           "returns": {
             "type": "Task<IReadOnlyList<Profile>>",
             "description": "The caller's profiles."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var profiles = await endpoint.Profiles.ListAsync();"
           }
         },
         {
@@ -13153,6 +13749,10 @@
           "returns": {
             "type": "Task<AuthenticateResponse>",
             "description": "Fresh session tokens for the newly current profile."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var session = await endpoint.Profiles.SwitchAsync(profileId);\nendpoint.SetToken(session.AccessToken);"
           }
         },
         {
@@ -13251,6 +13851,10 @@
           "returns": {
             "type": "Task<Profile>",
             "description": "The updated profile."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var profile = await endpoint.Profiles.UpdateAsync(profileId, new UpdateProfileRequest\n{\n    FirstName = \"Paige\",\n    Timezone = \"America/New_York\",\n});"
           }
         },
         {
@@ -13373,6 +13977,10 @@
           "returns": {
             "type": "Task<Profile>",
             "description": "The updated profile; Picture carries the new photo URL."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await using var photo = File.OpenRead(\"avatar.png\");\nvar profile = await endpoint.Profiles.UpdatePhotoAsync(profileId, photo, \"avatar.png\", \"image/png\");"
           }
         },
         {
@@ -13477,6 +14085,10 @@
           "returns": {
             "type": "Task<Signature>",
             "description": "The newly created signature block."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "using var content = File.OpenRead(\"signature.png\");\nvar signature = await endpoint.Signatures.CreateAsync(content, \"signature.png\", \"image/png\");"
           }
         },
         {
@@ -13582,6 +14194,10 @@
           "returns": {
             "type": "Task<TemplateDocument>",
             "description": "The new template document."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await using var stream = File.OpenRead(\"bill-of-sale.pdf\");\nvar document = await endpoint.TemplateDocuments.CreateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new TemplateFileUpload { Content = stream, FileName = \"bill-of-sale.pdf\", ContentType = \"application/pdf\" });"
           }
         },
         {
@@ -13673,6 +14289,10 @@
           "returns": {
             "type": "Task<Template>",
             "description": "The template the document was removed from, with its remaining documents, roles, and fields."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var template = await endpoint.TemplateDocuments.DeleteAsync(documentId);"
           }
         },
         {
@@ -13749,6 +14369,10 @@
           "returns": {
             "type": "Task<byte[]>",
             "description": "The file's raw bytes."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var bytes = await endpoint.TemplateDocuments.DownloadAsync(documentId);"
           }
         },
         {
@@ -13825,6 +14449,10 @@
           "returns": {
             "type": "Task<TemplateDocument>",
             "description": "The document's metadata."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var document = await endpoint.TemplateDocuments.GetAsync(documentId);"
           }
         },
         {
@@ -13908,6 +14536,10 @@
           "returns": {
             "type": "Task<string>",
             "description": "The signed URL, as a bare string."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var link = await endpoint.TemplateDocuments.GetDownloadLinkAsync(documentId);"
           }
         },
         {
@@ -13998,6 +14630,10 @@
           "returns": {
             "type": "Task<byte[]>",
             "description": "The file's raw bytes, if the API ever serves this route."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var bytes = await endpoint.TemplateDocuments.GetFileAsync(templateId, documentId);"
           }
         },
         {
@@ -14109,6 +14745,10 @@
           "returns": {
             "type": "Task<string>",
             "description": "The signed URL, as a bare string."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var uri = await endpoint.TemplateDocuments.GetPageDisplayUriAsync(documentId, 0);"
           }
         },
         {
@@ -14210,6 +14850,10 @@
           "returns": {
             "type": "Task<string>",
             "description": "The signed URL, as a bare string."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var link = await endpoint.TemplateDocuments.GetPreviewLinkAsync(documentId);"
           }
         },
         {
@@ -14300,6 +14944,10 @@
           "returns": {
             "type": "Task<byte[]>",
             "description": "The thumbnail's raw bytes, if the API ever serves this route."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var bytes = await endpoint.TemplateDocuments.GetThumbnailAsync(templateId, documentId);"
           }
         },
         {
@@ -14401,6 +15049,10 @@
           "returns": {
             "type": "Task<Role>",
             "description": "The new role."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var role = await endpoint.TemplateRoles.CreateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new CreateRoleRequest { Name = \"Recipient 1\", Type = RecipientType.Signer });"
           }
         },
         {
@@ -14506,6 +15158,10 @@
           "returns": {
             "type": "Task",
             "description": "A task that completes when the role has been deleted."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.TemplateRoles.DeleteAsync(\"d2338742-f3a1-465b-8592-806587413cc1\", \"Recipient 1\");"
           }
         },
         {
@@ -14620,6 +15276,10 @@
           "returns": {
             "type": "Task<Role>",
             "description": "The updated role."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var role = await endpoint.TemplateRoles.UpdateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"Recipient 1\",\n    new UpdateRoleRequest { Email = \"recipient1@example.com\" });"
           }
         },
         {
@@ -14736,6 +15396,10 @@
           "returns": {
             "type": "string",
             "description": "The \"data:<type>;base64,<payload>\" string."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var dataUrl = FileUtils.BytesToDataUrl(pdfBytes, \"application/pdf\");"
           }
         },
         {
@@ -14815,7 +15479,11 @@
           "deprecated": false,
           "returns": {
             "type": "string",
-            "description": "\"First Last\", trimmed, so a single known name comes back alone and no names at all\n            come back as \"\"."
+            "description": "\"First Last\", trimmed, so a single known name comes back alone and no names at all\n             come back as \"\"."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var name = Primitives.FormatFullName(\"Paige\", \"Turner\"); // \"Paige Turner\""
           }
         },
         {
@@ -14871,13 +15539,17 @@
               "type": "Profile?",
               "optional": false,
               "default": null,
-              "description": "The profile to read. The js-sdk assumes both names are present; a missing one is\n            treated as empty here rather than throwing."
+              "description": "The profile to read. The js-sdk assumes both names are present; a missing one is\n             treated as empty here rather than throwing."
             }
           ],
           "deprecated": false,
           "returns": {
             "type": "string",
             "description": "The space-separated uppercase initials, or \"--\" when there is no profile to read."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var initials = Primitives.FormatInitials(profile); // \"P T\""
           }
         },
         {
@@ -14940,6 +15612,10 @@
           "returns": {
             "type": "string",
             "description": "The concatenated first characters."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var initials = Primitives.FullNameToInitials(\"Paige Turner\"); // \"PT\""
           }
         },
         {
@@ -15016,6 +15692,10 @@
           "returns": {
             "type": "IReadOnlyList<int>",
             "description": "A list of  integers beginning at ."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var values = Primitives.IntegerSequence(1, 5); // [1, 2, 3, 4, 5]"
           }
         },
         {
@@ -15084,7 +15764,11 @@
           "deprecated": false,
           "returns": {
             "type": "string",
-            "description": "The elapsed time as \"<n><unit>\", or \"\" when there is nothing to format. A\n            future moment comes out with a negative count, as in the js-sdk."
+            "description": "The elapsed time as \"<n><unit>\", or \"\" when there is nothing to format. A\n             future moment comes out with a negative count, as in the js-sdk."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var elapsed = Dates.FormatShortTimeAgo(DateTimeOffset.UtcNow.AddMinutes(-5));"
           }
         },
         {
@@ -15133,6 +15817,10 @@
           "returns": {
             "type": "IReadOnlyList<string>",
             "description": "The validator names, in the js-sdk's order."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var validatorNames = Validators.GetValidators();"
           }
         },
         {
@@ -15190,6 +15878,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the value is a valid email address."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (Validators.IsValidEmail(email))\n{\n    // ...\n}"
           }
         },
         {
@@ -15266,6 +15958,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the value is valid for the named validator."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (Validators.IsValidInput(value, \"email\"))\n{\n    // ...\n}"
           }
         },
         {
@@ -15339,6 +16035,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the value contains a valid phone number."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (Validators.IsValidPhone(phone))\n{\n    // ...\n}"
           }
         },
         {
@@ -15415,6 +16115,10 @@
           "returns": {
             "type": "bool",
             "description": "True when a role with that exact name exists."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (Validators.IsValidRoleName(\"Signer1\", roles))\n{\n    // ...\n}"
           }
         },
         {
@@ -15498,6 +16202,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the tag is acceptable."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "if (Validators.IsValidTag(\"invoice\", tags))\n{\n    // ...\n}"
           }
         },
         {
@@ -15571,6 +16279,10 @@
           "returns": {
             "type": "Task<Webhook>",
             "description": "The organization's webhook configuration."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var webhook = await endpoint.Webhooks.GetAsync();"
           }
         },
         {
@@ -15628,6 +16340,10 @@
           "returns": {
             "type": "Task<Webhook>",
             "description": "The webhook configuration including the new, unmasked secret key."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var webhook = await endpoint.Webhooks.RotateSecretAsync();\nvar newSecret = webhook.SecretKey;"
           }
         },
         {
@@ -15756,6 +16472,10 @@
           "returns": {
             "type": "List<EnvelopeField>",
             "description": "The same list, sorted."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "Envelopes.SortFields(fields);"
           }
         }
       ]
@@ -15783,6 +16503,10 @@
           "returns": {
             "type": "List<EnvelopeDocument>",
             "description": "The same list, sorted."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "Envelopes.SortDocuments(documents);"
           }
         }
       ]
@@ -15810,6 +16534,10 @@
           "returns": {
             "type": "List<Recipient>?",
             "description": "The same list, sorted, or null if null was passed."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "Envelopes.SortRecipients(recipients);"
           }
         }
       ]
@@ -15837,6 +16565,10 @@
           "returns": {
             "type": "string",
             "description": "The lowercase hex color, e.g. \"#ffe69c\"."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var hex = Colors.GetRgb(\"rgba(255, 193, 7, 0.4)\");"
           }
         }
       ]
@@ -15864,6 +16596,10 @@
           "returns": {
             "type": "string",
             "description": "A CSS rgba() string."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var color = Colors.GetRgba(2);"
           }
         }
       ]
@@ -15884,13 +16620,17 @@
               "type": "string?",
               "optional": false,
               "default": null,
-              "description": "The role name. Names ending in a digit get extra hash input so \"Signer 1\" and\n            \"Signer 2\" land on visibly different colors."
+              "description": "The role name. Names ending in a digit get extra hash input so \"Signer 1\" and\n             \"Signer 2\" land on visibly different colors."
             }
           ],
           "deprecated": false,
           "returns": {
             "type": "string?",
             "description": "A CSS rgba() string, or null for an empty name (the js-sdk returns undefined there)."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var color = Colors.NameToRgba(\"Signer 1\");"
           }
         }
       ]
@@ -15925,13 +16665,17 @@
               "type": "int?",
               "optional": true,
               "default": "null",
-              "description": "Explicit role index. The js-sdk checks truthiness, so 0 falls through to the roles\n            lookup; we keep that quirk."
+              "description": "Explicit role index. The js-sdk checks truthiness, so 0 falls through to the roles\n             lookup; we keep that quirk."
             }
           ],
           "deprecated": false,
           "returns": {
             "type": "string?",
             "description": "A CSS rgba() string, or null when only an empty name is available."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var color = Colors.GetRoleColor(\"Seller\", new[] { \"Buyer\", \"Seller\" });"
           }
         }
       ]
@@ -15980,6 +16724,10 @@
           "returns": {
             "type": "double",
             "description": "The top offset in pixels."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var top = FieldUtils.GetRTop(120, 24, 792, 1.5);"
           }
         }
       ]
@@ -16014,6 +16762,10 @@
           "returns": {
             "type": "double",
             "description": "The left offset in pixels."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var left = FieldUtils.GetRLeft(72, 1.5);"
           }
         }
       ]
@@ -16048,6 +16800,10 @@
           "returns": {
             "type": "double",
             "description": "The value in pixels."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var value = FieldUtils.GetRValue(48, 1.5);"
           }
         }
       ]
@@ -16082,6 +16838,10 @@
           "returns": {
             "type": "double",
             "description": "The scaled value."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var scaled = FieldUtils.Rescale(100, 1.5);"
           }
         }
       ]
@@ -16109,6 +16869,10 @@
           "returns": {
             "type": "string",
             "description": "The base64-encoded string."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var base64 = FieldUtils.BytesToBase64(pdfBytes);"
           }
         }
       ]
@@ -16136,6 +16900,10 @@
           "returns": {
             "type": "Country?",
             "description": "The matching country, or null."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var country = Locales.GetCountryByCode(\"+33\");"
           }
         }
       ]
@@ -16163,6 +16931,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the prefix matches."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isFrenchGuiana = Locales.IsFrenchGuiana(\"+594\");"
           }
         }
       ]
@@ -16190,6 +16962,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the prefix matches."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isGuadeloupe = Locales.IsGuadeloupe(\"+590\");"
           }
         }
       ]
@@ -16217,6 +16993,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the prefix matches."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isMartinique = Locales.IsMartinique(\"+596\");"
           }
         }
       ]
@@ -16244,6 +17024,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the prefix matches."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isMayotte = Locales.IsMayotte(\"+262\");"
           }
         }
       ]
@@ -16271,6 +17055,10 @@
           "returns": {
             "type": "Country?",
             "description": "The matching country, or null for unrecognized prefixes."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var country = Locales.GetPlusOneCountry(\"+1242\");"
           }
         }
       ]
@@ -16298,6 +17086,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the area code is Canadian."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isCanada = Locales.IsCanada(\"+1416\");"
           }
         }
       ]
@@ -16325,6 +17117,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the prefix matches."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isAmericanSamoa = Locales.IsAmericanSamoa(\"+1684\");"
           }
         }
       ]
@@ -16352,6 +17148,10 @@
           "returns": {
             "type": "bool",
             "description": "True when the prefix matches."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isDominicanRepublic = Locales.IsDominicanRepublic(\"+1809\");"
           }
         }
       ]
@@ -16379,6 +17179,10 @@
           "returns": {
             "type": "bool",
             "description": "True only for the literal string \"+\"."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isPuertoRico = Locales.IsPuertoRico(\"+\");"
           }
         }
       ]
@@ -16413,6 +17217,10 @@
           "returns": {
             "type": "int",
             "description": "How many Countries rows carry exactly that code prefix."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var count = Locales.GetMatchingCountry(\"+1\", 2);"
           }
         }
       ]

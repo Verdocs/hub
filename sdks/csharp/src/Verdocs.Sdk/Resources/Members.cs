@@ -20,6 +20,12 @@ public sealed class Members
     /// Gets the members of the caller's organization, sorted by name. Admins and owners also
     /// receive each member's joined user record (for lock-state management); other callers
     /// get the plain profiles.
+    ///
+    /// <example>
+    /// <code>
+    /// var members = await endpoint.Members.ListAsync();
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The organization's member profiles.</returns>
@@ -67,6 +73,14 @@ public sealed class Members
     /// <summary>
     /// Updates a member's roles. The caller must be an admin (an owner, to grant the owner
     /// role) and may not update their own profile here.
+    ///
+    /// <example>
+    /// <code>
+    /// var updated = await endpoint.Members.UpdateAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     new UpdateMemberRequest { Roles = ["admin"] });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profileId">The member's profile ID.</param>
     /// <param name="request">The changes to apply.</param>
@@ -88,6 +102,12 @@ public sealed class Members
     /// Removes a member from the caller's organization. The caller must be an admin. The
     /// member's envelopes, recipient records, and templates are reassigned to the caller;
     /// their signatures, API keys, and group memberships are deleted.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Members.DeleteAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profileId">The member's profile ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -107,6 +127,12 @@ public sealed class Members
     /// Locks a member's account so they cannot sign in until an admin unlocks them or they
     /// complete a password reset. The caller must be an admin (an owner, to lock another
     /// owner), may not lock themselves, and the member must have a linked user account.
+    ///
+    /// <example>
+    /// <code>
+    /// var locked = await endpoint.Members.LockAsync("d2338742-f3a1-465b-8592-806587413cc1", "Suspicious activity");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profileId">The member's profile ID.</param>
     /// <param name="reason">Why the account is being locked (1 to 255 characters). Stored on the user record and shown to admins.</param>
@@ -131,6 +157,12 @@ public sealed class Members
     /// Unlocks a member whose account was locked by an admin or by too many failed sign-in
     /// attempts. Clears the lock reason and the failure counter. The caller must be an admin
     /// and may not target themselves.
+    ///
+    /// <example>
+    /// <code>
+    /// var unlocked = await endpoint.Members.UnlockAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profileId">The member's profile ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>

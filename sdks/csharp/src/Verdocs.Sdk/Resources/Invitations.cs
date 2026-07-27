@@ -18,6 +18,12 @@ public sealed class Invitations
 
     /// <summary>
     /// Gets the invitations pending for the caller's organization, sorted by email.
+    ///
+    /// <example>
+    /// <code>
+    /// var invitations = await endpoint.Invitations.ListAsync();
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The organization's pending invitations.</returns>
@@ -35,6 +41,18 @@ public sealed class Invitations
     /// <summary>
     /// Invites a person to join the organization and emails them the invitation. The caller
     /// must be an admin. Fails when an invitation or profile already exists for the email.
+    ///
+    /// <example>
+    /// <code>
+    /// var invitation = await endpoint.Invitations.CreateAsync(new CreateInvitationRequest
+    /// {
+    ///     Email = "paige.turner@example.com",
+    ///     FirstName = "Paige",
+    ///     LastName = "Turner",
+    ///     Role = "member",
+    /// });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="request">Details for the invitation.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -54,6 +72,12 @@ public sealed class Invitations
     /// Deletes a pending invitation. No cancellation message is sent, and the invitee sees an
     /// error if they later try to accept. This also removes any profile rows for that email
     /// in the caller's organization.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Invitations.DeleteAsync("paige.turner@example.com");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="email">The invitee's email address.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -75,6 +99,12 @@ public sealed class Invitations
     /// schema accepts the role alone. NOTE: the deployed handler's existence check is
     /// inverted, so updating an invitation that exists currently fails with a 400 ("An
     /// invitation already exists for this email") until the API is fixed.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Invitations.UpdateAsync("paige.turner@example.com", "admin");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="email">The invitee's email address.</param>
     /// <param name="role">The role the invitee will hold: "contact", "basic_user", "member", "admin", or "owner".</param>
@@ -96,6 +126,12 @@ public sealed class Invitations
     /// Re-sends the invitation email to a pending invitee. Declined invitations cannot be
     /// re-sent. The js-sdk types the response as the invitation, but the server answers with
     /// a status marker only, so nothing is returned here.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Invitations.ResendAsync("paige.turner@example.com");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="email">The invitee's email address.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -116,6 +152,12 @@ public sealed class Invitations
     /// authenticated by the invite token rather than a session, and a successful response
     /// means the token is still valid. Includes the organization's summary details for
     /// branding the acceptance screen.
+    ///
+    /// <example>
+    /// <code>
+    /// var invitation = await endpoint.Invitations.GetAsync("paige.turner@example.com", "a1b2c3d4e5f6");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="email">The invitee's email address.</param>
     /// <param name="token">The invite token from the invitation email.</param>
@@ -140,6 +182,20 @@ public sealed class Invitations
     /// Accepts an invitation. Creates a user for the invitee when needed, creates a profile
     /// with the invited role and makes it current, and returns session tokens for it; apply
     /// them with <see cref="VerdocsEndpoint.SetToken"/>.
+    ///
+    /// <example>
+    /// <code>
+    /// var auth = await endpoint.Invitations.AcceptAsync(new AcceptOrganizationInvitationRequest
+    /// {
+    ///     Email = "paige.turner@example.com",
+    ///     Token = "a1b2c3d4e5f6",
+    ///     FirstName = "Paige",
+    ///     LastName = "Turner",
+    ///     Password = "correct-horse-battery-staple",
+    /// });
+    /// endpoint.SetToken(auth.AccessToken);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="request">The acceptance details.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -159,6 +215,12 @@ public sealed class Invitations
     /// Declines an invitation. The status becomes "declined", which shows the organization's
     /// admins the invite was refused, blocks further invitations to the email, and stops
     /// reminder emails.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Invitations.DeclineAsync("paige.turner@example.com", "a1b2c3d4e5f6");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="email">The invitee's email address.</param>
     /// <param name="token">The invite token from the invitation email.</param>

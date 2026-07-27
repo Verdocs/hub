@@ -21,6 +21,12 @@ public sealed class Groups
     /// <summary>
     /// Gets the groups in the caller's organization, without their membership lists; call
     /// <see cref="GetAsync"/> for a group's members.
+    ///
+    /// <example>
+    /// <code>
+    /// var groups = await endpoint.Groups.ListAsync();
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The organization's groups.</returns>
@@ -36,6 +42,12 @@ public sealed class Groups
 
     /// <summary>
     /// Gets one group with its permissions and membership entries.
+    ///
+    /// <example>
+    /// <code>
+    /// var group = await endpoint.Groups.GetAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="groupId">The group's unique ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -53,6 +65,16 @@ public sealed class Groups
 
     /// <summary>
     /// Creates a group. The caller must be an admin; "everyone" is a reserved name.
+    ///
+    /// <example>
+    /// <code>
+    /// var group = await endpoint.Groups.CreateAsync(new CreateGroupRequest
+    /// {
+    ///     Name = "Sales",
+    ///     Permissions = ["send_envelopes", "manage_templates"],
+    /// });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="request">The new group's name and permissions.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -70,6 +92,14 @@ public sealed class Groups
     /// <summary>
     /// Updates a group's name and permissions. The caller must be an admin. Both fields are
     /// required and the permissions list replaces the previous one.
+    ///
+    /// <example>
+    /// <code>
+    /// var updated = await endpoint.Groups.UpdateAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     new UpdateGroupRequest { Name = "Sales", Permissions = ["send_envelopes"] });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="groupId">The group's unique ID.</param>
     /// <param name="request">The replacement name and permissions.</param>
@@ -90,6 +120,12 @@ public sealed class Groups
     /// <summary>
     /// Deletes a group and its membership entries. The caller must be an admin; the
     /// "everyone" group cannot be deleted.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Groups.DeleteAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="groupId">The group's unique ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -110,6 +146,14 @@ public sealed class Groups
     /// the same organization. NOTE: the deployed handler validates the request and rejects
     /// duplicates, but it never actually creates the membership row and answers with an empty
     /// body, so this call is a no-op until the API is fixed.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Groups.AddMemberAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     "b1f2e3d4-c5a6-478b-9012-345678901234");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="groupId">The group's unique ID.</param>
     /// <param name="profileId">The profile to add.</param>
@@ -132,6 +176,14 @@ public sealed class Groups
 
     /// <summary>
     /// Removes a member from a group. The caller must be an admin.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Groups.DeleteMemberAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     "b1f2e3d4-c5a6-478b-9012-345678901234");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="groupId">The group's unique ID.</param>
     /// <param name="profileId">The profile to remove.</param>

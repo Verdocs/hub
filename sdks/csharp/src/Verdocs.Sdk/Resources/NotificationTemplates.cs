@@ -20,6 +20,12 @@ public sealed class NotificationTemplates
     /// <summary>
     /// Gets the notification templates for the caller's organization. The list omits the
     /// HTML and text bodies; call <see cref="GetAsync"/> for a template's content.
+    ///
+    /// <example>
+    /// <code>
+    /// var templates = await endpoint.NotificationTemplates.ListAsync();
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The organization's notification templates, without message bodies.</returns>
@@ -36,6 +42,12 @@ public sealed class NotificationTemplates
 
     /// <summary>
     /// Gets one notification template by its ID, including its message bodies.
+    ///
+    /// <example>
+    /// <code>
+    /// var template = await endpoint.NotificationTemplates.GetAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="templateId">The notification template's unique ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -56,6 +68,17 @@ public sealed class NotificationTemplates
     /// name, and scoped document template. The server validates that the bodies include the
     /// event's required variables, and may attach non-blocking warnings and an HTML quality
     /// score, which arrive in the result's AdditionalData.
+    ///
+    /// <example>
+    /// <code>
+    /// var template = await endpoint.NotificationTemplates.CreateAsync(new CreateNotificationTemplateRequest
+    /// {
+    ///     Type = "email",
+    ///     EventName = EventName.EnvelopeCompleted,
+    ///     HtmlTemplate = "&lt;p&gt;Your document is complete.&lt;/p&gt;",
+    /// });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="request">Details for the new template.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -75,6 +98,14 @@ public sealed class NotificationTemplates
     /// Updates a notification template's message bodies. The server validates that the
     /// bodies include the event's required variables, and may attach non-blocking warnings
     /// and an HTML quality score, which arrive in the result's AdditionalData.
+    ///
+    /// <example>
+    /// <code>
+    /// var updated = await endpoint.NotificationTemplates.UpdateAsync(
+    ///     "d2338742-f3a1-465b-8592-806587413cc1",
+    ///     new UpdateNotificationTemplateRequest { HtmlTemplate = "&lt;p&gt;Updated message.&lt;/p&gt;" });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="templateId">The notification template's unique ID.</param>
     /// <param name="request">The changes to apply.</param>
@@ -97,6 +128,12 @@ public sealed class NotificationTemplates
 
     /// <summary>
     /// Deletes a notification template. The event reverts to the platform's default message.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.NotificationTemplates.DeleteAsync("d2338742-f3a1-465b-8592-806587413cc1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="templateId">The notification template's unique ID.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>

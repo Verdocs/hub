@@ -12,6 +12,15 @@ public static class TemplatePermissions
 {
     /// <summary>
     /// True when the user created the template. Ports the js-sdk's userIsTemplateCreator.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserIsTemplateCreator(profile, template))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against, or null.</param>
@@ -25,6 +34,15 @@ public static class TemplatePermissions
     /// <summary>
     /// True when the template is shared with the user: it is not personal and belongs to the
     /// user's organization. Ports the js-sdk's userHasSharedTemplate.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserHasSharedTemplate(profile, template))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against, or null.</param>
@@ -39,6 +57,15 @@ public static class TemplatePermissions
     /// <summary>
     /// True when the user can create a personal (private) template. Ports the js-sdk's
     /// userCanCreatePersonalTemplate.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserCanCreatePersonalTemplate(profile))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <returns>True when the user holds the personal-create permission.</returns>
@@ -51,6 +78,15 @@ public static class TemplatePermissions
     /// <summary>
     /// True when the user can create an org-shared template. Ports the js-sdk's
     /// userCanCreateOrgTemplate.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserCanCreateOrgTemplate(profile))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <returns>True when the user holds the org-create permission.</returns>
@@ -63,6 +99,15 @@ public static class TemplatePermissions
     /// <summary>
     /// True when the user can create a public template. Ports the js-sdk's
     /// userCanCreatePublicTemplate.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserCanCreatePublicTemplate(profile))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <returns>True when the user holds the public-create permission.</returns>
@@ -74,6 +119,15 @@ public static class TemplatePermissions
 
     /// <summary>
     /// True when the user can read/view the template. Ports the js-sdk's userCanReadTemplate.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserCanReadTemplate(profile, template))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
@@ -89,6 +143,15 @@ public static class TemplatePermissions
 
     /// <summary>
     /// True when the user can update the template. Ports the js-sdk's userCanUpdateTemplate.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserCanUpdateTemplate(profile, template))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
@@ -105,6 +168,15 @@ public static class TemplatePermissions
     /// <summary>
     /// True when the user can make the template personal (private). Ports the js-sdk's
     /// userCanMakeTemplatePrivate.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserCanMakeTemplatePrivate(profile, template))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
@@ -120,6 +192,15 @@ public static class TemplatePermissions
     /// <summary>
     /// True when the user can make the template org-shared. Ports the js-sdk's
     /// userCanMakeTemplateShared.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserCanMakeTemplateShared(profile, template))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
@@ -135,6 +216,15 @@ public static class TemplatePermissions
     /// <summary>
     /// True when the user can make the template public. Ports the js-sdk's
     /// userCanMakeTemplatePublic.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserCanMakeTemplatePublic(profile, template))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
@@ -150,6 +240,15 @@ public static class TemplatePermissions
     /// <summary>
     /// True when the user, as the template's creator, can change whether it is personal vs
     /// org-shared. Ports the js-sdk's userCanChangeOrgVisibility.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserCanChangeOrgVisibility(profile, template))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
@@ -163,6 +262,15 @@ public static class TemplatePermissions
 
     /// <summary>
     /// True when the user can delete the template. Ports the js-sdk's userCanDeleteTemplate.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserCanDeleteTemplate(profile, template))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
@@ -181,6 +289,15 @@ public static class TemplatePermissions
     /// by anyone in the owning organization, and public templates by anyone; a template whose
     /// visibility is missing or unrecognized is never sendable (the js-sdk's tail checks on
     /// roles and fields can only return a falsy result, and that is kept for parity).
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserCanSendTemplate(profile, template))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
@@ -222,6 +339,15 @@ public static class TemplatePermissions
     /// <summary>
     /// True when the user can create a new template of any visibility. Ports the js-sdk's
     /// userCanCreateTemplate.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserCanCreateTemplate(profile))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <returns>True when the user holds any of the template-create permissions.</returns>
@@ -237,6 +363,15 @@ public static class TemplatePermissions
     /// True when the user can "build" the template (use the field builder): the user must
     /// have write access and the template must have at least one signer role. Ports the
     /// js-sdk's userCanBuildTemplate.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserCanBuildTemplate(profile, template))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
@@ -250,6 +385,12 @@ public static class TemplatePermissions
 
     /// <summary>
     /// The template's fields assigned to the named role. Ports the js-sdk's getFieldsForRole.
+    ///
+    /// <example>
+    /// <code>
+    /// var fields = TemplatePermissions.GetFieldsForRole(template, "Signer1");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="template">The template to scan.</param>
     /// <param name="roleName">The role name to filter by.</param>
@@ -264,6 +405,15 @@ public static class TemplatePermissions
     /// True when the user can preview the template: the user must have read access, the
     /// template must have at least one signer, and every signer must have at least one field.
     /// Ports the js-sdk's userCanPreviewTemplate.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.UserCanPreviewTemplate(profile, template))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="template">The template to check against.</param>
@@ -285,6 +435,16 @@ public static class TemplatePermissions
     /// template may be omitted only for the create actions. Note this checks the profile's
     /// directly assigned permissions only (via <see cref="HasRequiredPermissions"/>), not
     /// role- or group-conferred ones, matching the js-sdk.
+    ///
+    /// <example>
+    /// <code>
+    /// var (canPerform, message) = TemplatePermissions.CanPerformTemplateAction(profile, TemplateAction.Delete, template);
+    /// if (!canPerform)
+    /// {
+    ///     Console.WriteLine(message);
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="action">The action to test; see <see cref="TemplateAction"/> for known values.</param>
@@ -387,6 +547,15 @@ public static class TemplatePermissions
     /// specified permissions. Ports the js-sdk's hasRequiredPermissions (Templates/Actions.ts).
     /// Unlike <see cref="SessionPermissions.UserHasPermissions"/>, this ignores role- and
     /// group-conferred permissions, matching the js-sdk. An empty permission list always passes.
+    ///
+    /// <example>
+    /// <code>
+    /// if (TemplatePermissions.HasRequiredPermissions(profile, new[] { TemplatePermission.MemberWrite }))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session.</param>
     /// <param name="permissions">The permissions that must all be present.</param>

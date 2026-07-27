@@ -268,6 +268,12 @@ public static class Locales
     /// the French overseas territories whose codes are stored with extra digits. Codes shared
     /// by several countries return the first table entry ("+1" returns American Samoa, never
     /// the United States); use <see cref="GetPlusOneCountry"/> to tell NANP territories apart.
+    ///
+    /// <example>
+    /// <code>
+    /// var country = Locales.GetCountryByCode("+33");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="code">The display code to look up.</param>
     /// <returns>The matching country, or null.</returns>
@@ -309,7 +315,15 @@ public static class Locales
         return null;
     }
 
-    /// <summary>Whether the code starts with French Guiana's +594 prefix.</summary>
+    /// <summary>
+    /// Whether the code starts with French Guiana's +594 prefix.
+    ///
+    /// <example>
+    /// <code>
+    /// var isFrenchGuiana = Locales.IsFrenchGuiana("+594");
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True when the prefix matches.</returns>
     /// <sdkOperation>locale.isFrenchGuiana</sdkOperation>
@@ -321,7 +335,15 @@ public static class Locales
         return Prefix(code, 4) == "+594";
     }
 
-    /// <summary>Whether the code starts with Guadeloupe's +590 prefix.</summary>
+    /// <summary>
+    /// Whether the code starts with Guadeloupe's +590 prefix.
+    ///
+    /// <example>
+    /// <code>
+    /// var isGuadeloupe = Locales.IsGuadeloupe("+590");
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True when the prefix matches.</returns>
     /// <sdkOperation>locale.isGuadeloupe</sdkOperation>
@@ -333,7 +355,15 @@ public static class Locales
         return Prefix(code, 4) == "+590";
     }
 
-    /// <summary>Whether the code starts with Martinique's +596 prefix.</summary>
+    /// <summary>
+    /// Whether the code starts with Martinique's +596 prefix.
+    ///
+    /// <example>
+    /// <code>
+    /// var isMartinique = Locales.IsMartinique("+596");
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True when the prefix matches.</returns>
     /// <sdkOperation>locale.isMartinique</sdkOperation>
@@ -345,7 +375,15 @@ public static class Locales
         return Prefix(code, 4) == "+596";
     }
 
-    /// <summary>Whether the code starts with the Mayotte/Reunion +262 prefix.</summary>
+    /// <summary>
+    /// Whether the code starts with the Mayotte/Reunion +262 prefix.
+    ///
+    /// <example>
+    /// <code>
+    /// var isMayotte = Locales.IsMayotte("+262");
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True when the prefix matches.</returns>
     /// <sdkOperation>locale.isMayotte</sdkOperation>
@@ -361,6 +399,12 @@ public static class Locales
     /// Resolves a "+1" NANP code to its territory by area-code prefix. The first five
     /// characters decide the match, so the literal "+1" (nothing after it) yields a country
     /// with an empty name, as in the js-sdk switch.
+    ///
+    /// <example>
+    /// <code>
+    /// var country = Locales.GetPlusOneCountry("+1242");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="code">The phone code to resolve.</param>
     /// <returns>The matching country, or null for unrecognized prefixes.</returns>
@@ -385,7 +429,15 @@ public static class Locales
         };
     }
 
-    /// <summary>Whether a "+1" code carries a Canadian area code.</summary>
+    /// <summary>
+    /// Whether a "+1" code carries a Canadian area code.
+    ///
+    /// <example>
+    /// <code>
+    /// var isCanada = Locales.IsCanada("+1416");
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True when the area code is Canadian.</returns>
     /// <sdkOperation>locale.isCanada</sdkOperation>
@@ -407,7 +459,15 @@ public static class Locales
         return false;
     }
 
-    /// <summary>Whether the code starts with American Samoa's +1684 prefix.</summary>
+    /// <summary>
+    /// Whether the code starts with American Samoa's +1684 prefix.
+    ///
+    /// <example>
+    /// <code>
+    /// var isAmericanSamoa = Locales.IsAmericanSamoa("+1684");
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True when the prefix matches.</returns>
     /// <sdkOperation>locale.isAmericanSamoa</sdkOperation>
@@ -419,7 +479,15 @@ public static class Locales
         return Prefix(code, 5) == "+1684";
     }
 
-    /// <summary>Whether the code starts with a Dominican Republic prefix (+1809/+1829/+1849).</summary>
+    /// <summary>
+    /// Whether the code starts with a Dominican Republic prefix (+1809/+1829/+1849).
+    ///
+    /// <example>
+    /// <code>
+    /// var isDominicanRepublic = Locales.IsDominicanRepublic("+1809");
+    /// </code>
+    /// </example>
+    /// </summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True when the prefix matches.</returns>
     /// <sdkOperation>locale.isDominicanRepublic</sdkOperation>
@@ -438,6 +506,12 @@ public static class Locales
     /// twice where the real prefixes are +1787 and +1939, so this returns true only for the
     /// literal string "+". Kept as-is per the true-up policy of porting quirks rather than
     /// fixing them.
+    ///
+    /// <example>
+    /// <code>
+    /// var isPuertoRico = Locales.IsPuertoRico("+");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="code">The phone code to check.</param>
     /// <returns>True only for the literal string "+".</returns>
@@ -454,6 +528,12 @@ public static class Locales
     /// Counts the table entries whose code equals the first <paramref name="substrings"/>
     /// characters of the input. The js-sdk marks this one "need to finish": despite the name
     /// it returns a count, not a country, and duplicate rows count twice. Ported as-is.
+    ///
+    /// <example>
+    /// <code>
+    /// var count = Locales.GetMatchingCountry("+1", 2);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="code">The phone code to match.</param>
     /// <param name="substrings">How many leading characters to compare (negative counts as zero, like the JS substring bound).</param>

@@ -13,6 +13,12 @@ public static class FileUtils
     /// "data:image/png;base64,iVBORw0K...". Adapted from the js-sdk's fileToDataUrl; that
     /// helper returns the browser File's metadata alongside the data URL, but a byte array
     /// has no metadata, so this returns the data URL string directly.
+    ///
+    /// <example>
+    /// <code>
+    /// var dataUrl = FileUtils.BytesToDataUrl(pdfBytes, "application/pdf");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="data">The file content.</param>
     /// <param name="contentType">The MIME type to embed, e.g. "application/pdf".</param>

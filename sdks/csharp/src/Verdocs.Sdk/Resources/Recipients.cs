@@ -18,6 +18,12 @@ public sealed class Recipients
     /// <summary>
     /// Agrees to the electronic signing disclosures. Requires a signing session, and must
     /// happen before the recipient completes fields or submits.
+    ///
+    /// <example>
+    /// <code>
+    /// var recipient = await endpoint.Recipients.AgreeAsync(envelopeId, roleName, Disclosures.Default);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role to operate on.</param>
@@ -51,6 +57,12 @@ public sealed class Recipients
     /// Declines to sign. If any recipient declines, the entire envelope becomes non-viable and
     /// later recipients may no longer act; the creator is notified when this happens. Requires
     /// a signing session.
+    ///
+    /// <example>
+    /// <code>
+    /// var recipient = await endpoint.Recipients.DeclineAsync(envelopeId, roleName);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role to operate on.</param>
@@ -70,6 +82,12 @@ public sealed class Recipients
     /// <summary>
     /// Submits the envelope: the recipient's signing is finished. Every field must be valid
     /// and complete for this to succeed. Requires a signing session.
+    ///
+    /// <example>
+    /// <code>
+    /// var recipient = await endpoint.Recipients.SubmitAsync(envelopeId, roleName);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role to submit.</param>
@@ -97,6 +115,12 @@ public sealed class Recipients
     /// session is required. On success the signing token is stored on this endpoint (the
     /// js-sdk does the same), so call this on a dedicated endpoint instance to avoid replacing
     /// an active user session.
+    ///
+    /// <example>
+    /// <code>
+    /// var session = await endpoint.Recipients.StartSigningSessionAsync(envelopeId, roleName, key);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role to request.</param>
@@ -146,6 +170,12 @@ public sealed class Recipients
     /// <see cref="StartSigningSessionAsync"/>) and an access token for immediate signing in
     /// embeds. In-person signing is a lower-security operation than authenticated signing and
     /// the final envelope certificate reflects this.
+    ///
+    /// <example>
+    /// <code>
+    /// var link = await endpoint.Recipients.GetInPersonLinkAsync(envelopeId, roleName);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role to request.</param>
@@ -172,6 +202,16 @@ public sealed class Recipients
     /// viewing documents, completing fields, or submitting. Requires a signing session. This
     /// is also where real knowledge-based authentication runs; the endpoint's Kba resource
     /// targets legacy /v2/kba routes that were never deployed.
+    ///
+    /// <example>
+    /// <code>
+    /// var session = await endpoint.Recipients.VerifySignerAsync(new AuthenticateRecipientRequest
+    /// {
+    ///     AuthMethod = "passcode",
+    ///     Code = "123456",
+    /// });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="request">The verification step being completed.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
@@ -192,6 +232,17 @@ public sealed class Recipients
     /// The original role is renamed to record the delegation and a new recipient with the same
     /// role name, order, and sequence is added; unless no_contact is set, the new recipient
     /// and the creator are notified.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Recipients.DelegateAsync(envelopeId, roleName, new DelegateRecipientRequest
+    /// {
+    ///     FirstName = "Paige",
+    ///     LastName = "Turner",
+    ///     Email = "paige.turner@example.com",
+    /// });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role to operate on.</param>
@@ -219,6 +270,15 @@ public sealed class Recipients
     /// action. Rate-limit this in user interfaces to avoid spamming recipients; excessive use
     /// may lead Verdocs to rate-limit the calling application. Returns 200 OK even when the
     /// envelope's no_contact flag silently suppresses the resulting notification.
+    ///
+    /// <example>
+    /// <code>
+    /// var recipient = await endpoint.Recipients.UpdateAsync(envelopeId, roleName, new UpdateRecipientParams
+    /// {
+    ///     Email = "paige.turner@example.com",
+    /// });
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role to update.</param>
@@ -244,6 +304,12 @@ public sealed class Recipients
     /// <summary>
     /// Sends a reminder to a recipient. The recipient must still be an active member of the
     /// signing flow (not declined or already submitted).
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Recipients.RemindAsync(envelopeId, roleName);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role to remind.</param>
@@ -264,6 +330,12 @@ public sealed class Recipients
     /// Fully resets a recipient, letting them restart failed KBA flows or redo fields they
     /// filled in incorrectly. Cannot be used on a canceled or completed envelope, but may
     /// restart a declined one.
+    ///
+    /// <example>
+    /// <code>
+    /// await endpoint.Recipients.ResetAsync(envelopeId, roleName);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role to reset.</param>
@@ -284,6 +356,12 @@ public sealed class Recipients
     /// Asks the sender a question. Emails the envelope's sender (via sender_email, if set at
     /// creation) with the recipient's information and their question; replying is up to the
     /// sender. Called by recipients during signing.
+    ///
+    /// <example>
+    /// <code>
+    /// var recipient = await endpoint.Recipients.AskQuestionAsync(envelopeId, roleName, "Which page do I sign?");
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="envelopeId">The envelope to operate on.</param>
     /// <param name="roleName">The role asking the question.</param>

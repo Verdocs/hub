@@ -16,6 +16,12 @@ public static class Token
     /// read claims (expiry, IDs, session type) without a JWT dependency. Only real JWTs work;
     /// opaque tokens throw, mirroring the js-sdk's throw. Use
     /// <see cref="DecodeAccessTokenBody"/> for the non-throwing form.
+    ///
+    /// <example>
+    /// <code>
+    /// var payload = Token.DecodeJwtBody(jwt);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="token">The JWT; null is treated as empty.</param>
     /// <returns>The parsed payload, whatever JSON it holds.</returns>
@@ -45,6 +51,12 @@ public static class Token
     /// <see cref="VerdocsEndpoint.SetToken"/> runs this same decode when it stores a token;
     /// this helper hands back the claims for callers inspecting a token directly, without
     /// checking expiry.
+    ///
+    /// <example>
+    /// <code>
+    /// var session = Token.DecodeAccessTokenBody(accessToken);
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="token">The access token; null is treated as empty.</param>
     /// <returns>

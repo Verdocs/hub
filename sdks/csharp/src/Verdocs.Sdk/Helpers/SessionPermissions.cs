@@ -105,6 +105,15 @@ public static class SessionPermissions
     /// True when the profile has every one of the specified permissions, whether granted
     /// directly, by a role, or through a group. Ports the js-sdk's userHasPermissions
     /// (Sessions/Permissions.ts). An empty permission list always passes.
+    ///
+    /// <example>
+    /// <code>
+    /// if (SessionPermissions.UserHasPermissions(profile, new[] { TemplatePermission.CreatePersonal }))
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="profile">The profile to check, or null for no session (always fails a non-empty check).</param>
     /// <param name="permissions">The permissions that must all be present.</param>
