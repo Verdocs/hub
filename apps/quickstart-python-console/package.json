@@ -1,0 +1,8 @@
+{
+  "name": "verdocs-quickstart-python-console",
+  "version": "1.0.0",
+  "description": "Task runner stub for the Python SDK console quickstart (pnpm/turbo). Real packaging is pyproject.toml.",
+  "scripts": {
+    "start": ".venv/bin/python main.py"
+  }
+}

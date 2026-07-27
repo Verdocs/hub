@@ -1,0 +1,14 @@
+[project]
+name = "verdocs-quickstart-console"
+version = "1.0.0"
+description = "Console quickstart for the Verdocs Python SDK"
+requires-python = ">=3.10"
+classifiers = ["Private :: Do Not Upload"]
+dependencies = ["verdocs>=1.0.0"]
+
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+only-include = ["main.py"]

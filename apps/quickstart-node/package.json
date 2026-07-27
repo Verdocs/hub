@@ -1,0 +1,13 @@
+{
+  "name": "verdocs-quickstart-node",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Console quickstart for the Verdocs JS SDK: authenticate, create an envelope from a PDF, get a signing link, cancel.",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@verdocs/js-sdk": "^6.10.0"
+  }
+}
