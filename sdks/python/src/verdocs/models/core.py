@@ -521,8 +521,10 @@ class Envelope(VerdocsModel):
     # handler stores and compares ms); 0 or null disables them.
     initial_reminder: int | None = None
     followup_reminders: int | None = None
-    # Maximum days after creation for which reminders are sent.
-    max_reminder_days: int
+    # Maximum days after creation for which reminders are sent. The js-sdk types this required, but
+    # the signing-session projection (the envelope embedded in an in-person link response) leaves it
+    # out, so requiring it here breaks get_in_person_link.
+    max_reminder_days: int | None = None
     next_reminder: datetime | None = None
     created_at: datetime
     updated_at: datetime

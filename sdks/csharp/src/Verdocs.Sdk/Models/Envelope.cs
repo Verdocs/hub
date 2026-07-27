@@ -44,8 +44,8 @@ public sealed record Envelope
     /// <summary>Delay in milliseconds before subsequent reminders are sent (minimum twelve hours; ms for the same reason as InitialReminder). Null or zero disables follow-ups.</summary>
     public long? FollowupReminders { get; init; }
 
-    /// <summary>Maximum number of days after envelope creation for which reminders are sent.</summary>
-    public int MaxReminderDays { get; init; }
+    /// <summary>Maximum number of days after envelope creation for which reminders are sent. Null on the signing-session projection (the envelope embedded in an in-person link response), which leaves the value out entirely.</summary>
+    public int? MaxReminderDays { get; init; }
 
     /// <summary>When the next reminder is scheduled to be sent.</summary>
     public DateTimeOffset? NextReminder { get; init; }

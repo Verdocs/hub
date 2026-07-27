@@ -1,3 +1,4 @@
+using System.Net.Http.Json;
 using Verdocs.Models;
 
 namespace Verdocs.Resources;
@@ -21,7 +22,7 @@ public sealed class Auth
     ///
     /// <example>
     /// <code>
-    /// var auth = await endpoint.Auth.AuthenticateAsync(new AuthenticateRequest
+    /// var auth = await endpoint.Auth.AuthenticateAsync(new PasswordGrantRequest
     /// {
     ///     Username = "you@example.com",
     ///     Password = "PASSWORD",
@@ -30,14 +31,20 @@ public sealed class Auth
     /// </code>
     /// </example>
     /// </summary>
-    /// <param name="request">The credentials to authenticate with.</param>
+    /// <param name="request">The credentials to authenticate with, one of the grant-specific subtypes.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>Authentication tokens and expiration details.</returns>
     /// <exception cref="VerdocsApiException">The API rejected the credentials or the call failed.</exception>
     public Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
-        return _endpoint.SendAsync<AuthenticateResponse>(HttpMethod.Post, "/v2/oauth2/token", request, cancellationToken);
+
+        // Serialize against the base type on purpose. System.Text.Json only writes the grant_type
+        // discriminator when the declared type is the polymorphic base, and the endpoint's usual
+        // path serializes whatever concrete runtime type it was handed, which silently drops it and
+        // earns a 400 from the token endpoint.
+        var content = JsonContent.Create(request, typeof(AuthenticateRequest), mediaType: null, VerdocsJson.Options);
+        return _endpoint.SendAsync<AuthenticateResponse>(HttpMethod.Post, "/v2/oauth2/token", content, cancellationToken);
     }
 
     /// <summary>

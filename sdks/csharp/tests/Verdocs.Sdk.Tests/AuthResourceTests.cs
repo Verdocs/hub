@@ -32,6 +32,41 @@ public sealed class AuthResourceTests
         return (endpoint, handler);
     }
 
+    [Theory]
+    [InlineData("password")]
+    [InlineData("client_credentials")]
+    [InlineData("refresh_token")]
+    [InlineData("authorization_code")]
+    public async Task AuthenticateAsync_AnyGrant_SendsGrantTypeDiscriminator(string grantType)
+    {
+        // System.Text.Json only writes the grant_type discriminator when the request is serialized
+        // as the polymorphic base type. Serializing the concrete subtype drops it and the token
+        // endpoint answers 400, so pin the wire shape for every grant.
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.OK, AuthPayload);
+
+        AuthenticateRequest request = grantType switch
+        {
+            "password" => new PasswordGrantRequest { Username = "you@example.com", Password = "secret" },
+            "client_credentials" => new ClientCredentialsRequest { ClientId = "client-1", ClientSecret = "secret-1" },
+            "refresh_token" => new RefreshTokenGrantRequest { RefreshToken = "refresh-1" },
+            _ => new AuthorizationCodeRequest
+            {
+                Code = "code-1",
+                ClientId = "client-1",
+                ClientSecret = "secret-1",
+                RedirectUri = "https://example.com/cb",
+            },
+        };
+
+        await endpoint.Auth.AuthenticateAsync(request, TestContext.Current.CancellationToken);
+
+        var captured = Assert.Single(handler.Requests);
+        Assert.Equal("/v2/oauth2/token", captured.Uri!.PathAndQuery);
+        var body = Assert.IsType<JsonObject>(JsonNode.Parse(captured.Body!));
+        Assert.Equal(grantType, (string?)body["grant_type"]);
+    }
+
     [Fact]
     public async Task ChangePasswordAsync_PostsOldAndNewPasswords()
     {
