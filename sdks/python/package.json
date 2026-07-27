@@ -4,6 +4,7 @@
   "private": true,
   "description": "Task runner stub for the Verdocs Python SDK (pnpm/turbo). Real packaging is pyproject.toml.",
   "scripts": {
-    "generate-sdk-docs": "./docs/generate-sdk-docs.sh"
+    "generate-sdk-docs": "./docs/generate-sdk-docs.sh",
+    "conformance": ".venv/bin/python -m pytest -m conformance"
   }
 }

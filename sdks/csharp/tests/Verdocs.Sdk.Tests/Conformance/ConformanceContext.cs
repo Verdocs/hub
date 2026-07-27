@@ -66,7 +66,7 @@ internal sealed class ConformanceContext
                 + "set in the environment or in the hub root .env file.");
 
         var sdk = new VerdocsEndpoint(new VerdocsEndpointOptions { BaseUrl = settings.ApiBase });
-        var auth = await sdk.Auth.AuthenticateAsync(new AuthenticateRequest
+        var auth = await sdk.Auth.AuthenticateAsync(new PasswordGrantRequest
         {
             Username = settings.Email,
             Password = settings.Password,
@@ -74,6 +74,12 @@ internal sealed class ConformanceContext
         sdk.SetToken(auth.AccessToken);
 
         return new ConformanceContext(settings, new HttpClient(), sdk, auth.AccessToken);
+    }
+
+    /// <summary>The common case: an authenticated GET with no body.</summary>
+    internal Task<(HttpStatusCode Status, string Body)> RawGetAsync(string pathAndQuery)
+    {
+        return RawAsync(HttpMethod.Get, pathAndQuery, auth: true, body: null);
     }
 
     /// <summary>The raw side of a case: a plain HTTP call with no SDK code in the path.</summary>

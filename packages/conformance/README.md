@@ -15,6 +15,16 @@ pnpm test:conformance
 
 The star toggle check needs the test account to have at least one template.
 
+## Running every language's lane
+
+`pnpm conformance` from the hub root runs this suite plus every other language's conformance
+lane (currently C# and Python under `sdks/*`) in one shot, via `pnpm --if-present -r run
+conformance`. It fans out to any workspace package that defines a `conformance` script, so a
+new SDK under `sdks/<language>/` is picked up automatically the moment its `package.json` gains
+one (following the existing "task runner stub" `package.json` pattern already used by
+`sdks/csharp` and `sdks/python`) — nothing here needs to change. `--no-bail` means every lane
+runs even if an earlier one fails, so one broken language never hides the others' results.
+
 ## The signup lane
 
 `src/signup.spec.ts` exercises the full self-serve signup flow against beta with the SDK alone (no browser), mirroring VerdocsAuth's call sequence: `createProfile`, pull the verification code from the test mailbox over IMAP, `verifyEmail`, then a fresh password-grant login as the new identity. Each run creates one real account (and its own new org) on beta, so the lane is gated: it runs only when `VERDOCS_TEST_IMAP_HOST`, `VERDOCS_TEST_IMAP_USER`, and `VERDOCS_TEST_IMAP_PASSWORD` are set (hub root `.env` or the environment). Without them the spec skips with a note and the rest of the suite is unaffected.

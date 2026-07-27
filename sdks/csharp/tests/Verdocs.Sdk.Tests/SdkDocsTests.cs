@@ -20,7 +20,33 @@ public sealed class SdkDocsTests
 
     private static readonly HashSet<string> ExpectedTemplateOperations =
     [
+        "template.canPerformTemplateAction",
         "template.createTemplate",
+        "template.createTemplateFromSharepoint",
+        "template.deleteTemplate",
+        "template.duplicateTemplate",
+        "template.getFieldsForRole",
+        "template.getTemplate",
+        "template.getTemplates",
+        "template.hasRequiredPermissions",
+        "template.toggleTemplateStar",
+        "template.updateTemplate",
+        "template.userCanBuildTemplate",
+        "template.userCanChangeOrgVisibility",
+        "template.userCanCreateOrgTemplate",
+        "template.userCanCreatePersonalTemplate",
+        "template.userCanCreatePublicTemplate",
+        "template.userCanCreateTemplate",
+        "template.userCanDeleteTemplate",
+        "template.userCanMakeTemplatePrivate",
+        "template.userCanMakeTemplatePublic",
+        "template.userCanMakeTemplateShared",
+        "template.userCanPreviewTemplate",
+        "template.userCanReadTemplate",
+        "template.userCanSendTemplate",
+        "template.userCanUpdateTemplate",
+        "template.userHasSharedTemplate",
+        "template.userIsTemplateCreator",
     ];
 
     [Fact]
@@ -54,7 +80,7 @@ public sealed class SdkDocsTests
         Assert.True(createTemplate.GetProperty("gettingStarted").GetBoolean());
         Assert.Equal("Endpoints", createTemplate.GetProperty("page").GetString());
         Assert.Equal("csharp", createTemplate.GetProperty("examples")[0].GetProperty("language").GetString());
-        Assert.Contains("TemplateCreateParams", createTemplate.GetProperty("examples")[0].GetProperty("code").GetString(), StringComparison.Ordinal);
+        Assert.Contains("CreateTemplateRequest", createTemplate.GetProperty("examples")[0].GetProperty("code").GetString(), StringComparison.Ordinal);
     }
 
     private static string FindSdkDocsPath()

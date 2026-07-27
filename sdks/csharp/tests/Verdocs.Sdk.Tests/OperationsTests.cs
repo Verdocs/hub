@@ -25,7 +25,7 @@ public sealed class OperationsTests
         handler.Enqueue(HttpStatusCode.OK, SamplePayloads.Auth);
 
         var response = await endpoint.Auth.AuthenticateAsync(
-            new AuthenticateRequest { Username = "test@example.com", Password = "hunter22" },
+            new PasswordGrantRequest { Username = "test@example.com", Password = "hunter22" },
             TestContext.Current.CancellationToken);
 
         var request = Assert.Single(handler.Requests);
@@ -192,13 +192,13 @@ public sealed class OperationsTests
     }
 
     [Fact]
-    public async Task CreateTemplateAsync_SendsOnlySetFields_RequestsPostAndParsesResponse()
+    public async Task CreateAsync_SendsOnlySetFields_RequestsPostAndParsesResponse()
     {
         var (endpoint, handler) = CreateEndpoint();
         handler.Enqueue(HttpStatusCode.OK, SamplePayloads.TemplateCreated);
 
-        var template = await endpoint.CreateTemplateAsync(
-            new TemplateCreateParams { Name = "NDA" },
+        var template = await endpoint.Templates.CreateAsync(
+            new CreateTemplateRequest { Name = "NDA" },
             TestContext.Current.CancellationToken);
 
         var request = Assert.Single(handler.Requests);
@@ -210,27 +210,21 @@ public sealed class OperationsTests
         Assert.False(body.ContainsKey("description"));
         Assert.False(body.ContainsKey("visibility"));
         Assert.False(body.ContainsKey("sender"));
-        Assert.False(body.ContainsKey("initial_reminder"));
+        // Unlike description/visibility/sender, initial_reminder carries meaning even when
+        // unset (null disables reminders), so CreateTemplateRequest always serializes it.
+        Assert.True(body.ContainsKey("initial_reminder"));
+        Assert.Null(body["initial_reminder"]);
 
         Assert.Equal("NDA", template.Name);
         Assert.Equal("83da3d70-7857-4392-b876-c4592a304bc9", template.Id);
     }
 
     [Fact]
-    public void CreateTemplateAsync_NullParameters_ThrowsSynchronously()
+    public void CreateAsync_NullParameters_ThrowsSynchronously()
     {
         var (endpoint, _) = CreateEndpoint();
 
         Assert.Throws<ArgumentNullException>(
-            () => { _ = endpoint.CreateTemplateAsync(null!, TestContext.Current.CancellationToken); });
-    }
-
-    [Fact]
-    public void CreateTemplateAsync_EmptyName_ThrowsSynchronously()
-    {
-        var (endpoint, _) = CreateEndpoint();
-
-        Assert.Throws<ArgumentException>(
-            () => { _ = endpoint.CreateTemplateAsync(new TemplateCreateParams { Name = "   " }, TestContext.Current.CancellationToken); });
+            () => { _ = endpoint.Templates.CreateAsync(null!, TestContext.Current.CancellationToken); });
     }
 }

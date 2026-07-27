@@ -25,18 +25,27 @@ public sealed class ConformanceTests
     // "members-list" is Members.ListAsync, "groups-list" is Groups.ListAsync, and
     // "entitlements" is Organizations.GetEntitlementsAsync.
 
-    public static TheoryData<string> Cases()
+    [Fact]
+    public async Task Authenticate_MatchesRawHttp()
     {
-        var data = new TheoryData<string>();
-        foreach (var id in ConformanceFixtures.CaseIds)
-        {
-            data.Add(id);
-        }
+        var context = await GetContextAsync();
+
+        var (status, rawBody) = await context.RawAsync(
+            HttpMethod.Post,
+            "/v2/oauth2/token",
+            auth: false,
+            new JsonObject
+            {
+                ["username"] = context.Settings.Email,
+                ["password"] = context.Settings.Password,
+                ["grant_type"] = "password",
+            });
+        Assert.Equal(HttpStatusCode.OK, status);
 
         // A fresh endpoint, so this case stands alone rather than reusing the shared session.
         using var endpoint = new VerdocsEndpoint(new VerdocsEndpointOptions { BaseUrl = context.Settings.ApiBase });
         var viaSdk = await endpoint.Auth.AuthenticateAsync(
-            new AuthenticateRequest
+            new PasswordGrantRequest
             {
                 Username = context.Settings.Email,
                 Password = context.Settings.Password,
@@ -50,11 +59,8 @@ public sealed class ConformanceTests
     public async Task UsersMe_MatchesRawHttp()
     {
         var context = await GetContextAsync();
-        var fixtureCase = ConformanceFixtures.GetCase(caseId);
 
-        var method = new HttpMethod(fixtureCase["method"]!.GetValue<string>());
-        var auth = fixtureCase["auth"]?.GetValue<bool>() ?? false;
-        var (status, rawBody) = await context.RawAsync(method, BuildPath(fixtureCase), auth, BuildBody(fixtureCase, context.Settings));
+        var (status, rawBody) = await context.RawGetAsync("/v2/users/me");
         Assert.Equal(HttpStatusCode.OK, status);
 
         var viaSdk = await context.Sdk.Users.GetMeAsync(TestContext.Current.CancellationToken);
@@ -85,16 +91,10 @@ public sealed class ConformanceTests
     [Fact]
     public async Task TemplatesList_MatchesRawHttp()
     {
-        var path = fixtureCase["path"]!.GetValue<string>();
-        if (fixtureCase["query"] is not JsonObject query || query.Count == 0)
-        {
-            return path;
-        }
+        var context = await GetContextAsync();
 
-        var pairs = query.Select(entry =>
-            $"{Uri.EscapeDataString(entry.Key)}={Uri.EscapeDataString(entry.Value?.ToString() ?? string.Empty)}");
-        return $"{path}?{string.Join("&", pairs)}";
-    }
+        var (status, rawBody) = await context.RawGetAsync("/v2/templates?visibility=private_shared&rows=10&page=0");
+        Assert.Equal(HttpStatusCode.OK, status);
 
         var viaSdk = await context.Sdk.Templates.ListAsync(
             new GetTemplatesOptions
