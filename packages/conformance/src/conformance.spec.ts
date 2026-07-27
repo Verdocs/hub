@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import type { IRole, ITemplate } from '@verdocs/js-sdk';
 import {
   authenticate,
@@ -5,12 +7,27 @@ import {
   createTemplateRole,
   deleteTemplate,
   deleteTemplateRole,
+  getApiKeys,
+  getBrands,
   getCurrentProfile,
+  getEntitlements,
   getEnvelope,
   getEnvelopes,
+  getGroups,
   getMyUser,
+  getNotificationTemplates,
+  getNotifications,
+  getOrganization,
+  getOrganizationChildren,
+  getOrganizationContacts,
+  getOrganizationInvitations,
+  getOrganizationMembers,
+  getOrganizationPipelineSettings,
+  getOrganizationUsage,
+  getProfiles,
   getTemplate,
   getTemplates,
+  getWebhooks,
   updateTemplate,
   updateTemplateRole,
   VerdocsEndpoint,
@@ -21,59 +38,167 @@ import { curl, loadEnv, normalizeVolatile } from './support.js';
  * Conformance baseline: each covered endpoint is called twice, once with raw
  * curl and once with the SDK, then status, shape, and data are compared with
  * volatile fields normalized. See platform/specs/sdk-restructure/SDKS.md.
+ *
+ * The read-only cases below are driven entirely by fixtures.json, the
+ * contract this lane shares with the xunit and pytest lanes (sdks/csharp,
+ * sdks/python): add a case there and every lane that reads the file picks it
+ * up. Only callSdkForCase's dispatch table needs a new branch per case here,
+ * mirroring sdks/python/tests/conformance/test_conformance.py's call_sdk.
+ * Mutating flows (create, update, delete) intentionally aren't fixtures.json
+ * cases (those stay read-only); they're the bespoke describe blocks below
+ * the fixture loop instead.
  */
+
+interface IConformanceCase {
+  id: string;
+  sdk: string;
+  method: string;
+  path: string;
+  auth: boolean;
+  query?: Record<string, unknown>;
+  body?: Record<string, unknown>;
+  note?: string;
+}
+
+const fixtures = JSON.parse(readFileSync(path.resolve(import.meta.dirname, '../fixtures.json'), 'utf8')) as {
+  cases: IConformanceCase[];
+};
 
 const env = loadEnv();
 
 const endpoint = new VerdocsEndpoint({ baseURL: env.apiBase, persist: false });
 let token = '';
+let organizationId = '';
 
 beforeAll(async () => {
   const auth = await authenticate(endpoint, { username: env.email, password: env.password, grant_type: 'password' });
   token = auth.access_token;
   endpoint.setToken(token);
+
+  organizationId = endpoint.session?.session_type === 'user' ? endpoint.session.organization_id : '';
+  if (!organizationId) {
+    throw new Error('The authenticated session carries no organization_id claim.');
+  }
 });
 
-describe('authenticate (password grant)', () => {
-  it('matches curl', async () => {
-    const request = { username: env.email, password: env.password, grant_type: 'password' as const };
+const resolvePath = (rawPath: string): string => rawPath.replace('$SESSION.organization_id', organizationId);
 
-    const viaCurl = await curl('POST', `${env.apiBase}/v2/oauth2/token`, { json: request });
-    const viaSdk = await authenticate(new VerdocsEndpoint({ baseURL: env.apiBase, persist: false }), request);
+const ENV_PLACEHOLDERS: Record<string, () => string> = {
+  $VERDOCS_TEST_EMAIL: () => env.email,
+  $VERDOCS_TEST_PASSWORD: () => env.password,
+};
 
-    expect(viaCurl.status).toBe(200);
-    expect(normalizeVolatile(viaSdk)).toEqual(normalizeVolatile(viaCurl.body));
+/** Fills in $VERDOCS_* placeholders from fixture request bodies. */
+const substituteEnv = (value: unknown): unknown => {
+  if (Array.isArray(value)) {
+    return value.map(substituteEnv);
+  }
+
+  if (value !== null && typeof value === 'object') {
+    return Object.fromEntries(Object.entries(value as Record<string, unknown>).map(([ key, entry ]) => [ key, substituteEnv(entry) ]));
+  }
+
+  if (typeof value === 'string' && value.startsWith('$')) {
+    const resolve = ENV_PLACEHOLDERS[value];
+    if (!resolve) {
+      throw new Error(`No substitution for fixture placeholder ${value}`);
+    }
+
+    return resolve();
+  }
+
+  return value;
+};
+
+const buildQuery = (query: Record<string, unknown> | undefined): string => {
+  if (!query || Object.keys(query).length === 0) {
+    return '';
+  }
+
+  const pairs = Object.entries(query).map(([ key, value ]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
+  return `?${pairs.join('&')}`;
+};
+
+const callRawForCase = (kase: IConformanceCase) =>
+  curl(kase.method, `${env.apiBase}${resolvePath(kase.path)}${buildQuery(kase.query)}`, {
+    token: kase.auth ? token : undefined,
+    json: kase.body ? substituteEnv(kase.body) : undefined,
   });
-});
 
-describe('current user', () => {
-  it('matches curl for /users/me', async () => {
-    const viaCurl = await curl('GET', `${env.apiBase}/v2/users/me`, { token });
-    const viaSdk = await getMyUser(endpoint);
+/**
+ * Maps each fixture case's "sdk" field -- an @sdkOperation id
+ * (docs/sdk-docs-generation.md), not a bare js-sdk function name -- to the
+ * actual typed SDK call. This is the one hand-written piece per case;
+ * everything else (the raw call, the status check, and the comparison) is
+ * generic and shared by every case.
+ */
+const callSdkForCase = async (kase: IConformanceCase): Promise<unknown> => {
+  switch (kase.sdk) {
+    case 'auth.authenticate':
+      // A fresh endpoint proves authenticate needs no existing session.
+      return authenticate(new VerdocsEndpoint({ baseURL: env.apiBase, persist: false }), {
+        username: env.email,
+        password: env.password,
+        grant_type: 'password',
+      });
+    case 'auth.getMyUser':
+      return getMyUser(endpoint);
+    case 'profile.getCurrentProfile':
+      return getCurrentProfile(endpoint);
+    case 'profile.getProfiles':
+      return getProfiles(endpoint);
+    case 'notification.getNotifications':
+      return getNotifications(endpoint);
+    case 'template.getTemplates':
+      return getTemplates(endpoint, kase.query as Parameters<typeof getTemplates>[1]);
+    case 'envelope.getEnvelopes':
+      return getEnvelopes(endpoint, kase.query as Parameters<typeof getEnvelopes>[1]);
+    case 'organization.getOrganization':
+      return getOrganization(endpoint, organizationId);
+    case 'member.getOrganizationMembers':
+      return getOrganizationMembers(endpoint);
+    case 'group.getGroups':
+      return getGroups(endpoint);
+    case 'organization.getEntitlements':
+      return getEntitlements(endpoint);
+    case 'apiKey.getApiKeys':
+      return getApiKeys(endpoint);
+    case 'brand.getBrands':
+      return getBrands(endpoint, organizationId);
+    case 'contact.getOrganizationContacts':
+      return getOrganizationContacts(endpoint);
+    case 'invitation.getOrganizationInvitations':
+      return getOrganizationInvitations(endpoint);
+    case 'notification.getNotificationTemplates':
+      return getNotificationTemplates(endpoint);
+    case 'webhook.getWebhooks':
+      return getWebhooks(endpoint);
+    case 'organization.getOrganizationChildren':
+      return getOrganizationChildren(endpoint, organizationId);
+    case 'organization.getOrganizationPipelineSettings':
+      return getOrganizationPipelineSettings(endpoint, organizationId);
+    case 'organization.getOrganizationUsage':
+      return getOrganizationUsage(endpoint, organizationId);
+    default:
+      throw new Error(`Conformance case '${kase.id}' has no SDK mapping; add one when the SDK grows the operation.`);
+  }
+};
 
+describe('fixture cases', () => {
+  it.each(fixtures.cases)('$id matches curl', async kase => {
+    const viaCurl = await callRawForCase(kase);
     expect(viaCurl.status).toBe(200);
-    expect(normalizeVolatile(viaSdk)).toEqual(normalizeVolatile(viaCurl.body));
-  });
 
-  it('matches curl for the current profile', async () => {
-    const viaCurl = await curl('GET', `${env.apiBase}/v2/profiles`, { token });
-    const viaSdk = await getCurrentProfile(endpoint);
+    const viaSdk = await callSdkForCase(kase);
 
-    expect(viaCurl.status).toBe(200);
-    const curlCurrent = (viaCurl.body as Array<{ current: boolean }>).find(profile => profile.current);
-    expect(normalizeVolatile(viaSdk)).toEqual(normalizeVolatile(curlCurrent));
-  });
-});
+    let reference: unknown = viaCurl.body;
+    if (kase.id === 'profiles-current') {
+      // The raw response is an array; the SDK returns the entry with
+      // current=true, so that entry is the comparison target (fixture note).
+      reference = (viaCurl.body as Array<{ current: boolean }>).find(profile => profile.current);
+    }
 
-describe('getTemplates', () => {
-  it('matches curl', async () => {
-    const query = 'visibility=private_shared&rows=10&page=0';
-
-    const viaCurl = await curl('GET', `${env.apiBase}/v2/templates?${query}`, { token });
-    const viaSdk = await getTemplates(endpoint, { visibility: 'private_shared', rows: 10, page: 0 });
-
-    expect(viaCurl.status).toBe(200);
-    expect(normalizeVolatile(viaSdk)).toEqual(normalizeVolatile(viaCurl.body));
+    expect(normalizeVolatile(viaSdk)).toEqual(normalizeVolatile(reference));
   });
 });
 
@@ -137,17 +262,7 @@ describe('template roles lifecycle', () => {
   });
 });
 
-describe('envelopes', () => {
-  it('matches curl for the envelope list', async () => {
-    const query = 'rows=10&page=0';
-
-    const viaCurl = await curl('GET', `${env.apiBase}/v2/envelopes?${query}`, { token });
-    const viaSdk = await getEnvelopes(endpoint, { rows: 10, page: 0 });
-
-    expect(viaCurl.status).toBe(200);
-    expect(normalizeVolatile(viaSdk)).toEqual(normalizeVolatile(viaCurl.body));
-  });
-
+describe('envelope detail', () => {
   it('matches curl for envelope detail when one exists', async () => {
     const { envelopes } = await getEnvelopes(endpoint, { rows: 1, page: 0 });
     const envelope = envelopes?.[0];

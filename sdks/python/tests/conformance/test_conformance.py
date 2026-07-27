@@ -18,6 +18,7 @@ import pytest
 
 from verdocs import (
     EnvelopeListParams,
+    PasswordGrantRequest,
     TemplateCreateParams,
     TemplateListParams,
     TemplateUpdateParams,
@@ -65,27 +66,54 @@ def call_raw(client: httpx.Client, case: dict[str, Any], env, token: str | None,
 
 
 def call_sdk(endpoint: VerdocsEndpoint, case: dict[str, Any], env) -> Any:
+    # sdk_name is the case's @sdkOperation id (docs/sdk-docs-generation.md),
+    # e.g. "envelope.getEnvelopes" -- not a bare js-sdk function name. It's
+    # the same cross-language merge key the SDK reference docs use, so this
+    # dispatch table and the js-sdk function the case mirrors always agree
+    # on which operation is under test.
     sdk_name = case["sdk"]
-    if sdk_name == "authenticate":
+    if sdk_name == "auth.authenticate":
         # A fresh endpoint proves authenticate needs no existing session.
         with VerdocsEndpoint(base_url=env.api_base) as fresh:
             return fresh.auth.authenticate(PasswordGrantRequest(username=env.email, password=env.password))
-    if sdk_name == "getMyUser":
+    if sdk_name == "auth.getMyUser":
         return endpoint.users.me()
-    if sdk_name == "getCurrentProfile":
+    if sdk_name == "profile.getCurrentProfile":
         return endpoint.profiles.current()
-    if sdk_name == "getTemplates":
+    if sdk_name == "profile.getProfiles":
+        return endpoint.profiles.list()
+    if sdk_name == "notification.getNotifications":
+        return endpoint.users.notifications()
+    if sdk_name == "template.getTemplates":
         return endpoint.templates.list(TemplateListParams(**case.get("query", {})))
-    if sdk_name == "getEnvelopes":
+    if sdk_name == "envelope.getEnvelopes":
         return endpoint.envelopes.list(EnvelopeListParams(**case.get("query", {})))
-    if sdk_name == "getOrganization":
+    if sdk_name == "organization.getOrganization":
         return endpoint.organizations.get(session_organization_id(endpoint))
-    if sdk_name == "getOrganizationMembers":
+    if sdk_name == "member.getOrganizationMembers":
         return endpoint.members.list()
-    if sdk_name == "getGroups":
+    if sdk_name == "group.getGroups":
         return endpoint.groups.list()
-    if sdk_name == "getEntitlements":
+    if sdk_name == "organization.getEntitlements":
         return endpoint.organizations.get_entitlements()
+    if sdk_name == "apiKey.getApiKeys":
+        return endpoint.api_keys.list()
+    if sdk_name == "brand.getBrands":
+        return endpoint.brands.list(session_organization_id(endpoint))
+    if sdk_name == "contact.getOrganizationContacts":
+        return endpoint.contacts.list()
+    if sdk_name == "invitation.getOrganizationInvitations":
+        return endpoint.invitations.list()
+    if sdk_name == "notification.getNotificationTemplates":
+        return endpoint.notification_templates.list()
+    if sdk_name == "webhook.getWebhooks":
+        return endpoint.webhooks.get()
+    if sdk_name == "organization.getOrganizationChildren":
+        return endpoint.organizations.get_children(session_organization_id(endpoint))
+    if sdk_name == "organization.getOrganizationPipelineSettings":
+        return endpoint.organizations.get_pipeline_settings(session_organization_id(endpoint))
+    if sdk_name == "organization.getOrganizationUsage":
+        return endpoint.organizations.get_usage(session_organization_id(endpoint))
     pytest.fail(f"Conformance case '{case['id']}' has no SDK mapping; add one when the SDK grows the operation.")
 
 

@@ -318,12 +318,12 @@ Concrete today:
 
 | Concern       | Python                                        | C#                                                 | TS package                                   |
 | ------------- | --------------------------------------------- | -------------------------------------------------- | -------------------------------------------- |
-| Fixtures path | `conftest.py` (`FIXTURES_PATH`)               | not loaded yet; cases hardcoded                    | file exists; suite still partly hand-written |
+| Fixtures path | `conftest.py` (`FIXTURES_PATH`)               | `ConformanceFixtures`                              | file exists; suite still partly hand-written |
 | Env / gate    | `conftest.py` (hard fail if missing)          | `ConformanceEnv.cs` + `VERDOCS_CONFORMANCE=1` skip | `support.ts` `loadEnv`                       |
 | Session       | `sdk_endpoint` fixture                        | `ConformanceContext`                               | `beforeAll` authenticate                     |
 | Normalize     | `normalize_volatile` in `test_conformance.py` | `VolatileJson.cs`                                  | `normalizeVolatile` in `support.ts`          |
 | Raw HTTP      | httpx in `call_raw`                           | `HttpClient` in `ConformanceContext`               | `curl` child process                         |
-| Dispatch      | `call_sdk`                                    | one `[Fact]` per case                              | one `it` per case                            |
+| Dispatch      | `call_sdk`                                    | `CallSdkForCaseAsync`, one arm per case            | one `it` per case                            |
 | Entrypoint    | `test_case_matches_raw_http` parametrized     | `ConformanceTests.cs`                              | `conformance.spec.ts`                        |
 
 
@@ -573,10 +573,10 @@ Concrete map today:
 | Role      | Python                         | C#                                      | TS (`packages/conformance`)      |
 | --------- | ------------------------------ | --------------------------------------- | -------------------------------- |
 | Env/gate  | `conftest.py`                  | `ConformanceEnv` + `VERDOCS_CONFORMANCE=1` | `support.ts` `loadEnv`         |
-| Fixtures  | `conftest.py` loads JSON       | not yet (Facts hardcoded)               | file exists; suite partly hand-written |
+| Fixtures  | `conftest.py` loads JSON       | `ConformanceFixtures` loads JSON        | file exists; suite partly hand-written |
 | Normalize | `normalize_volatile`           | `VolatileJson`                          | `normalizeVolatile`              |
 | Raw       | httpx `call_raw`               | `ConformanceContext` HttpClient         | `curl` helper                    |
-| Dispatch  | `call_sdk`                     | one Fact per case                       | one `it` per case                |
+| Dispatch  | `call_sdk`                     | `CallSdkForCaseAsync`, one arm per case | one `it` per case                |
 | Entry     | `test_case_matches_raw_http`   | `ConformanceTests`                      | `conformance.spec.ts`            |
 
 
@@ -597,9 +597,8 @@ Use this when adding a language or closing a gap:
 
 ### Gaps (conformance trees)
 
-1. **C#**: Theory + MemberData (or equivalent) from `fixtures.json` instead of duplicating paths in Facts.
-2. **TS**: Drive shared cases from fixtures; keep lifecycle / write smokes beside them, not as a replacement for the shared list.
-3. **Gates**: Keep documenting both mechanisms (`pytest -m conformance`, `VERDOCS_CONFORMANCE=1`) without forcing one implementation; same semantics (default offline, opt-in live).
-4. **Token-first env**: Teach all loaders to accept `VERDOCS_CONFORMANCE_TOKEN` when we simplify nightly secrets.
+1. **TS**: Drive shared cases from fixtures; keep lifecycle / write smokes beside them, not as a replacement for the shared list.
+2. **Gates**: Keep documenting both mechanisms (`pytest -m conformance`, `VERDOCS_CONFORMANCE=1`) without forcing one implementation; same semantics (default offline, opt-in live).
+3. **Token-first env**: Teach all loaders to accept `VERDOCS_CONFORMANCE_TOKEN` when we simplify nightly secrets.
 
 Done means: edit the JSON, add a language-native dispatch arm, run the opt-in conformance command, and get the same case ids green in every lane.
