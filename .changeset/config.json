@@ -1,12 +1,13 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.1.4/schema.json",
-  "changelog": "@changesets/cli/changelog",
+  "changelog": "../scripts/generate-changelog.mjs",
   "commit": false,
   "fixed": [
     [
       "@verdocs/js-sdk",
       "@verdocs/python-sdk",
-      "@verdocs/csharp-sdk"
+      "@verdocs/csharp-sdk",
+      "@verdocs/conformance"
     ],
     [
       "@verdocs/react-sdk",
@@ -20,7 +21,11 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": [],
+  "ignore": [
+    "verdocs-styled-builder",
+    "verdocs-styled-signer",
+    "@verdocs/collections"
+  ],
   "privatePackages": {
     "version": true,
     "tag": true

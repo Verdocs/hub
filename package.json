@@ -13,7 +13,9 @@
     "generate:docs": "node scripts/clean-sdk-docs.mjs && turbo run generate-sdk-docs && pnpm --filter @verdocs/js-sdk docs",
     "changeset:version": "changeset version",
     "changeset:add": "changeset",
-    "changeset:status": "changeset status"
+    "changeset:status": "changeset status",
+    "changeset:publish": "changeset publish",
+    "changeset:docs": "node ./scripts/generate-changelog.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.1",
