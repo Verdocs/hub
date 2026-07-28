@@ -10,12 +10,15 @@
     "test": "turbo run test",
     "test:report": "vitest run",
     "conformance": "pnpm --if-present --no-bail -r run conformance",
-    "generate:docs": "node scripts/clean-sdk-docs.mjs && turbo run generate-sdk-docs && pnpm --filter @verdocs/js-sdk docs"
+    "generate:docs": "node scripts/clean-sdk-docs.mjs && turbo run generate-sdk-docs && pnpm --filter @verdocs/js-sdk docs",
+    "changeset:version": "changeset version",
+    "changeset:add": "changeset",
+    "changeset:status": "changeset status"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.1",
     "@vitest/ui": "^4.1.10",
-    "turbo": "^2.10.4",
+    "turbo": "^2.10.7",
     "typescript": "5.9.3",
     "vitest": "^4.1.10"
   },
