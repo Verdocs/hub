@@ -38,16 +38,42 @@ const changesByCategory = {
   patch: [],
 };
 
+const parsedEntries = [];
+
 for (const file of changesetFiles) {
   const fileData = fs.readFileSync(`${changesetPath}/${file}`, {
     encoding: "utf-8",
   });
-  console.log("Ze file data: ", fileData);
+  // This regex extracts the YAML frontmatter block at the top of the file (between triple dashes),
+  // which contains the header info like package name and release type ("minor", "major", etc).
+  // Extract YAML frontmatter and body
+  const headerMatch = fileData.match(/^---\s*([\s\S]*?)\s*---/m);
+  const headerBlock = headerMatch ? headerMatch[1] : "";
+  const body = fileData.replace(/^---[\s\S]*?---\s*/, "").trim();
+
+  // Parse YAML block into an object (very basic parse, real YAML needs a parser, but changeset is simple)
+  const yamlLines = headerBlock
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+  const headerMap = {};
+  for (const line of yamlLines) {
+    const [key, ...rest] = line.split(":");
+    if (!key || !rest.length) continue;
+    let value = rest.join(":").trim();
+    // Remove quotes if present
+    value = value.replace(/^["']|["']$/g, "");
+    headerMap[key] = value;
+  }
+
+  parsedEntries.push({ header: headerMap, body });
 }
+
+console.log("Parsed entries: ", parsedEntries);
 
 // console.log("Backend thing: ", { backendPath, backendPackage });
 // console.log("Frontend thing: ", { frontendPath, frontendPackage });
-console.log("Changeset things: ", { changesetPath, changesetFiles });
+// console.log("Changeset things: ", { changesetPath, changesetFiles });
 const groups = Object.keys(pathsByGroup);
 
 for (const group of groups) {
@@ -72,8 +98,6 @@ for (const group of groups) {
   const patchChanges = !!version
     ? ["### Patch Changes", ""].join("\n")
     : undefined;
-
-  console.log("Patch changes? ", patchChanges);
 
   const content = [
     `# Verdocs Changelog - ${normalizedGroupName}`,
