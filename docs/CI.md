@@ -35,21 +35,11 @@ Also **no CI today**. `sdks/csharp/package.json` only wires `generate-sdk-docs` 
 
 
 
-### `packages/web-sdk` (frozen Stencil line)
-
-This tree is npm-based and outside the pnpm workspace glob (its five sub-packages — `verdocs-web-sdk`, `-react`, `-vue`, `-angular`, `storybook` — each carry their own `package-lock.json`), so **turbo never touches it and it has zero CI today**. Per `CLAUDE.md` this line is bugfix-only and not to be modernized, but an untested frozen package is still a regression risk on the bugfixes it does get.
-
-- [ ] Build + test workflow for `verdocs-web-sdk` (`stencil build`, `stencil test --spec`), scoped with a path filter so it only runs when `packages/web-sdk/**` changes
-- [ ] Build workflow for `verdocs-web-sdk-react` / `-vue` / `-angular` wrapper packages (no test scripts exist for react/vue; angular's `test` script is a placeholder stub — build-only is the realistic bar here)
-- [ ] Decide whether `storybook` sub-package needs a CI build check or is dev-only tooling
-
-
-
 ### Docs generation (`generate:docs`, `generate-sdk-docs` turbo task)
 
 The root `generate:docs` script and `js-sdk`'s `docs`/`generate-openapi`/`unify-sdks` scripts write output (`openapi.json`, `unified-sdks.json`, `sdk-docs.json`) directly into `../../../platform/apps/dev-docs/app/` — a sibling checkout of the private platform repo. The old per-package `generate-docs.yml` (deleted from `packages/js-sdk/.github/workflows/`) deployed to `gh-pages` and no longer reflects how docs are produced.
 
-- [ ] Decide if/how this should run in CI at all, since it needs a second repo checked out with write access — may be intentionally local/manual-only, or may belong in the platform repo's own CI rather than this one
+- [x] Decide if/how this should run in CI at all, since it needs a second repo checked out with write access — may be intentionally local/manual-only, or may belong in the platform repo's own CI rather than this one
 - [ ] If automated here, needs a path filter (`src/**`, `docs/**`, etc.) and a token/checkout step for the private repo
 
 
