@@ -1,6 +1,6 @@
 {
   "name": "@verdocs/vue-sdk",
-  "version": "1.0.0",
+  "version": "6.10.5",
   "description": "Native Vue 3 components, composables, and provider for building document workflows with Verdocs",
   "license": "MIT",
   "type": "module",

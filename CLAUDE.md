@@ -12,6 +12,7 @@ Layout notes:
 - `packages/web-sdk`: the frozen Stencil 6.x line and its wrapper packages. Bugfix-only, and only when instructed. Do not modernize or refactor it.
 - `packages/react-sdk`, `packages/angular-sdk`: the new native SDKs (React 19 is primary; Angular, Vue, and raw web components are mirrored independently from the React work, never generated).
 - `apps/`: Storybook, quick-starts, and other runnable projects.
+- `sdks/`: Collection of SDKs that cover a variety of programming languages.
 
 New SDK packages are versioned 1.0.0 and consumed via `workspace:^`. Publishing to npm happens only when instructed.
 

@@ -8,29 +8,21 @@ jobs:
   js-sdk:
     name: JS SDK Conformance
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: packages/conformance
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 24
+          cache: pnpm
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
-
-      - name: Install dependencies
-        run: pnpm install
+      - run: pnpm install --frozen-lockfile
 
       - name: Conformance Test (JS SDK)
         env:
-          VERDOCS_CONFORMANCE_EMAIL: ${{ secrets.VERDOCS_CONFORMANCE_EMAIL }}
-          VERDOCS_CONFORMANCE_PASSWORD: ${{ secrets.VERDOCS_CONFORMANCE_PASSWORD }}
-          VERDOCS_CONFORMANCE_API_BASE: ${{ secrets.VERDOCS_CONFORMANCE_API_BASE }}
-        run: pnpm --filter conformance run test
+          VERDOCS_API_BASE: ${{ secrets.VERDOCS_CONFORMANCE_API_BASE }}
+          VERDOCS_TEST_EMAIL: ${{ secrets.VERDOCS_CONFORMANCE_EMAIL }}
+          VERDOCS_TEST_PASSWORD: ${{ secrets.VERDOCS_CONFORMANCE_PASSWORD }}
+        run: pnpm --filter @verdocs/conformance run conformance

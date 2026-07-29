@@ -1,6 +1,6 @@
 {
   "name": "@verdocs/wc-sdk",
-  "version": "1.0.0",
+  "version": "6.10.5",
   "description": "Native Lit web components for building document workflows with Verdocs",
   "license": "MIT",
   "type": "module",
