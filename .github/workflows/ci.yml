@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history so turbo can diff against the PR base ref below.
+          fetch-depth: 0
 
       # - uses: pnpm/action-setup@v4
 
@@ -37,6 +40,14 @@ jobs:
 
       # - run: pnpm install --frozen-lockfile
 
-      # - run: pnpm exec turbo run lint typecheck test build
+      # # PRs run affected-only, filtered against the base branch, so a docs-only
+      # # or single-package PR doesn't rebuild/retest everything; a push to main
+      # # always runs the full pipeline as the safety net.
+      # - run: |
+      #     if [ "${{ github.event_name }}" = "pull_request" ]; then
+      #       pnpm exec turbo run lint typecheck test build --filter="...[origin/${{ github.base_ref }}]"
+      #     else
+      #       pnpm exec turbo run lint typecheck test build
+      #     fi
 
       # - run: pnpm --filter @verdocs/collections check

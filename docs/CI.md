@@ -11,7 +11,7 @@ Checklist of workflow coverage needed across the monorepo. Checked items exist t
 - [x] JS SDK conformance on PRs to `main` (`conformance.yml`)
 - [x] JS SDK conformance nightly (`nightly.yml`, 7am UTC)
 - [ ] Angular SDK's test builder (`@angular/build:unit-test`) runs headless in CI today only because it's Vitest-based, not Karma — worth a one-time confirmation run rather than an assumption
-- [ ] Path filtering / affected-only runs (turbo supports `--filter` on changed packages) so a docs-only or single-package PR doesn't rebuild everything — optional, only worth it if CI time becomes a problem
+- [x] Path filtering / affected-only runs (turbo supports `--filter` on changed packages) so a docs-only or single-package PR doesn't rebuild everything — optional, only worth it if CI time becomes a problem
 
 
 
