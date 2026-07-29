@@ -24,6 +24,13 @@ EXPECTED_AUTH_OPERATIONS = {
 
 EXPECTED_TEMPLATE_OPERATIONS = {
     "template.createTemplate",
+    "template.createTemplateFromSharepoint",
+    "template.deleteTemplate",
+    "template.duplicateTemplate",
+    "template.getTemplate",
+    "template.getTemplates",
+    "template.toggleTemplateStar",
+    "template.updateTemplate",
 }
 
 

@@ -155,7 +155,7 @@
       { "id": "chain-create-template", "sdk": "template.createTemplate", "note": "Multipart with one small PDF under the documents part; name carries a conformance marker and timestamp." },
       { "id": "chain-add-role", "sdk": "role.createTemplateRole", "note": "One signer role on the created template (skip if the lane created it inline on the JSON path; multipart cannot carry roles)." },
       { "id": "chain-add-field", "sdk": "field.createField", "note": "One signature field for the role on page 0 of the uploaded document." },
-      { "id": "chain-create-envelope", "sdk": "envelope.createEnvelope", "note": "JSON create from the template; recipient is the test account (email key required even for phone-only recipients)." },
+      { "id": "chain-create-envelope", "sdk": "envelope.createEnvelope", "note": "JSON create from the template; recipient is the test account (email key required even for phone-only recipients). no_contact: true so the run sends no real email/SMS invite." },
       { "id": "chain-get-envelope", "sdk": "envelope.getEnvelope", "note": "Read back by id; SDK result equals raw result after volatile-key normalization." },
       { "id": "chain-list-envelopes", "sdk": "envelope.getEnvelopes", "note": "List contains the created envelope id." },
       { "id": "chain-cancel-envelope", "sdk": "envelope.cancelEnvelope", "note": "Cancel; status reads canceled afterward." }

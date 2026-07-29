@@ -119,6 +119,7 @@ def test_canonical_chain(conformance_env, sdk_endpoint, raw_client, normalize, s
                     email=conformance_env.email,
                 )
             ],
+            no_contact=True,
         )
     )
     uuid.UUID(envelope.id)

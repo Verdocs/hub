@@ -118,6 +118,7 @@ describe('canonical chain', () => {
           email: env.email,
         },
       ],
+      no_contact: true,
     });
     expect(envelope.id).toMatch(/^[0-9a-f-]{36}$/i);
     expect(envelope.template_id).toBe(template.id);

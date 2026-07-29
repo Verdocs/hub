@@ -105,6 +105,7 @@ public sealed class ChainTests
                         Email = context.Settings.Email,
                     },
                 ],
+                NoContact = true,
             },
             cancellationToken);
         _output.WriteLine("chain envelope id: " + envelope.Id);

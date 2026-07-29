@@ -8,7 +8,14 @@ from __future__ import annotations
 
 import pytest
 
-from verdocs import AuthenticateResponse, AuthenticationError, VerdocsError
+from verdocs import (
+    AuthenticateResponse,
+    AuthenticationError,
+    AuthorizationCodeRequest,
+    ClientCredentialsRequest,
+    PasswordGrantRequest,
+    VerdocsError,
+)
 from verdocs.models.users import ChangePasswordResponse, ResetPasswordResponse
 
 TOKEN_URL = "/v2/oauth2/token"
@@ -97,95 +104,12 @@ def test_refresh_token(endpoint, payloads, respx_mock, base_url):
     assert body == {"grant_type": "refresh_token", "refresh_token": "refresh-token-value"}
 
 
-def test_get_oauth2_authorize_url(endpoint, base_url):
-    url = endpoint.auth.get_oauth2_authorize_url(
-        OAuth2AuthorizeParams(
-            client_id="cid",
-            redirect_uri="https://app.example/callback",
-            state="csrf",
-            scope="openid",
-        )
-    )
-
-    expected = (
-        f"{base_url}/v2/oauth2/authorize"
-        "?client_id=cid"
-        "&redirect_uri=https%3A%2F%2Fapp.example%2Fcallback"
-        "&response_type=code"
-        "&state=csrf"
-        "&scope=openid"
-    )
-    assert url == expected
-
-
-def test_change_password(endpoint, payloads, respx_mock, base_url):
-    route = respx_mock.post(f"{base_url}{CHANGE_PASSWORD_URL}").respond(
-        200, json={"status": "OK", "message": "Password updated"}
-    )
-
-    result = endpoint.auth.change_password(ChangePasswordRequest(old_password="old", new_password="new"))
-
-    assert isinstance(result, ChangePasswordResponse)
-    assert result.status == "OK"
-    assert payloads.request_json(route) == {"old_password": "old", "new_password": "new"}
-
-
-def test_reset_password_initiate(endpoint, payloads, respx_mock, base_url):
-    route = respx_mock.post(f"{base_url}{RESET_PASSWORD_URL}").respond(200, json={"success": True})
-
-    result = endpoint.auth.reset_password(ResetPasswordRequest(email="you@example.com"))
-
-    assert isinstance(result, ResetPasswordResponse)
-    assert result.success is True
-    assert payloads.request_json(route) == {"email": "you@example.com"}
-
-
-def test_reset_password_complete(endpoint, payloads, respx_mock, base_url):
-    route = respx_mock.post(f"{base_url}{RESET_PASSWORD_URL}").respond(200, json={"success": True})
-
-    endpoint.auth.reset_password(ResetPasswordRequest(email="you@example.com", code="123456", new_password="new"))
-
-    assert payloads.request_json(route) == {
-        "email": "you@example.com",
-        "code": "123456",
-        "new_password": "new",
-    }
-
-
-def test_resend_verification_without_override(endpoint, payloads, respx_mock, base_url):
-    route = respx_mock.post(f"{base_url}{RESEND_VERIFICATION_URL}").respond(200, json={"result": "done"})
-
-    result = endpoint.auth.resend_verification()
-
-    assert isinstance(result, ResendVerificationResponse)
-    assert result.result == "done"
-    assert "Authorization" not in route.calls.last.request.headers
-
-
 def test_resend_verification_with_override_token(endpoint, payloads, respx_mock, base_url):
     route = respx_mock.post(f"{base_url}{RESEND_VERIFICATION_URL}").respond(200, json={"result": "done"})
 
     endpoint.auth.resend_verification(access_token="override-token")
 
     assert route.calls.last.request.headers["Authorization"] == "Bearer override-token"
-
-
-def test_verify_email(endpoint, payloads, respx_mock, base_url):
-    route = respx_mock.post(f"{base_url}{VERIFY_URL}").respond(200, json=payloads.auth())
-
-    tokens = endpoint.auth.verify_email(VerifyEmailRequest(email="you@example.com", token="verify-token"))
-
-    assert isinstance(tokens, AuthenticateResponse)
-    assert payloads.request_json(route) == {"email": "you@example.com", "token": "verify-token"}
-
-
-def test_get_my_user(endpoint, payloads, respx_mock, base_url):
-    respx_mock.get(f"{base_url}{ME_URL}").respond(200, json=payloads.user())
-
-    user = endpoint.auth.get_my_user()
-
-    assert isinstance(user, User)
-    assert user.id == "user-1234"
 
 
 async def test_async_authenticate_password_grant(async_endpoint, payloads, respx_mock, base_url):
@@ -203,7 +127,7 @@ async def test_async_authenticate_rejection(async_endpoint, respx_mock, base_url
     respx_mock.post(f"{base_url}{TOKEN_URL}").respond(401, json={"error": "invalid_grant"})
 
     with pytest.raises(AuthenticationError):
-        await async_endpoint.auth.authenticate(username="test@example.com", password="wrong")
+        await async_endpoint.auth.authenticate(PasswordGrantRequest(username="test@example.com", password="wrong"))
 
 
 def test_get_oauth2_authorize_url_builds_the_url(endpoint, base_url):

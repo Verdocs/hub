@@ -5,6 +5,8 @@
   "description": "Task runner stub for the Verdocs C# SDK (pnpm/turbo). Real packaging is the .NET solution.",
   "scripts": {
     "generate-sdk-docs": "./docs/generate-sdk-docs.sh",
+    "build": "dotnet build Verdocs.Sdk.sln",
+    "test": "dotnet test tests/Verdocs.Sdk.Tests/Verdocs.Sdk.Tests.csproj --filter FullyQualifiedName!~Conformance",
     "conformance": "VERDOCS_CONFORMANCE=1 dotnet test tests/Verdocs.Sdk.Tests/Verdocs.Sdk.Tests.csproj --filter FullyQualifiedName~Conformance"
   }
 }

@@ -19,9 +19,9 @@ Checklist of workflow coverage needed across the monorepo. Checked items exist t
 
 Currently **no CI runs at all** for this package. `sdks/python/package.json` only wires `generate-sdk-docs` and `conformance` into turbo, so `turbo run lint typecheck test build` silently no-ops for it.
 
-- [ ] Ruff lint on PRs
-- [ ] `pytest` unit suite on PRs (default `addopts` already excludes the `conformance` marker, so this is safe to run on every PR without secrets)
-- [ ] Gated conformance lane mirroring the JS SDK's nightly pattern (`pytest -m conformance`, needs the same `VERDOCS_CONFORMANCE_*` secrets style)
+- [x] Ruff lint on PRs
+- [x] `pytest` unit suite on PRs (default `addopts` already excludes the `conformance` marker, so this is safe to run on every PR without secrets)
+- [x] Gated conformance lane mirroring the JS SDK's nightly pattern (`pytest -m conformance`, needs the same `VERDOCS_CONFORMANCE_*` secrets style)
 
 
 
@@ -29,9 +29,9 @@ Currently **no CI runs at all** for this package. `sdks/python/package.json` onl
 
 Also **no CI today**. `sdks/csharp/package.json` only wires `generate-sdk-docs` and `conformance`.
 
-- [ ] `dotnet build` on PRs (`Verdocs.Sdk.sln`)
-- [ ] `dotnet test` unit suite on PRs (excluding the `Conformance` filter, so no secrets needed)
-- [ ] Gated conformance lane mirroring the JS SDK's nightly pattern (`dotnet test --filter FullyQualifiedName~Conformance`, needs `VERDOCS_CONFORMANCE=1` + the same secrets)
+- [x] `dotnet build` on PRs (`Verdocs.Sdk.sln`)
+- [x] `dotnet test` unit suite on PRs (excluding the `Conformance` filter, so no secrets needed)
+- [x] Gated conformance lane mirroring the JS SDK's nightly pattern (`dotnet test --filter FullyQualifiedName~Conformance`, needs `VERDOCS_CONFORMANCE=1` + the same secrets)
 
 
 

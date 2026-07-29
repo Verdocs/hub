@@ -26,3 +26,64 @@ jobs:
       #     VERDOCS_TEST_EMAIL: ${{ secrets.VERDOCS_CONFORMANCE_EMAIL }}
       #     VERDOCS_TEST_PASSWORD: ${{ secrets.VERDOCS_CONFORMANCE_PASSWORD }}
       #   run: pnpm --filter @verdocs/conformance run conformance
+
+  # python-conformance:
+  #   name: Nightly Python SDK conformance
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - uses: pnpm/action-setup@v4
+
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 24
+  #         cache: pnpm
+
+  #     - uses: actions/setup-python@v5
+  #       with:
+  #         python-version: "3.12"
+
+  #     - name: Set up Python SDK virtualenv
+  #       working-directory: sdks/python
+  #       run: |
+  #         python3 -m venv .venv
+  #         .venv/bin/python -m pip install --upgrade pip
+  #         .venv/bin/python -m pip install -e . --group dev
+
+  #     - run: pnpm install --frozen-lockfile
+
+  #     - name: Conformance Test (Python SDK)
+  #       env:
+  #         VERDOCS_API_BASE: ${{ secrets.VERDOCS_CONFORMANCE_API_BASE }}
+  #         VERDOCS_TEST_EMAIL: ${{ secrets.VERDOCS_CONFORMANCE_EMAIL }}
+  #         VERDOCS_TEST_PASSWORD: ${{ secrets.VERDOCS_CONFORMANCE_PASSWORD }}
+  #       run: pnpm --filter @verdocs/python-sdk run conformance
+
+  # csharp-conformance:
+  #   name: Nightly C# SDK conformance
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - uses: pnpm/action-setup@v4
+
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 24
+  #         cache: pnpm
+
+  #     - uses: actions/setup-dotnet@v4
+  #       with:
+  #         dotnet-version: |
+  #           8.0.x
+  #           10.0.x
+
+  #     - run: pnpm install --frozen-lockfile
+
+  #     - name: Conformance Test (C# SDK)
+  #       env:
+  #         VERDOCS_API_BASE: ${{ secrets.VERDOCS_CONFORMANCE_API_BASE }}
+  #         VERDOCS_TEST_EMAIL: ${{ secrets.VERDOCS_CONFORMANCE_EMAIL }}
+  #         VERDOCS_TEST_PASSWORD: ${{ secrets.VERDOCS_CONFORMANCE_PASSWORD }}
+  #       run: pnpm --filter @verdocs/csharp-sdk run conformance

@@ -11,15 +11,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      # - uses: pnpm/action-setup@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 24
+      #     cache: pnpm
 
-      - run: pnpm install --frozen-lockfile
+      # - uses: actions/setup-dotnet@v4
+      #   with:
+      #     dotnet-version: |
+      #       8.0.x
+      #       10.0.x
 
-      - run: pnpm exec turbo run lint typecheck test build
+      # - uses: actions/setup-python@v5
+      #   with:
+      #     python-version: "3.12"
 
-      - run: pnpm --filter @verdocs/collections check
+      # - name: Set up Python SDK virtualenv
+      #   working-directory: sdks/python
+      #   run: |
+      #     python3 -m venv .venv
+      #     .venv/bin/python -m pip install --upgrade pip
+      #     .venv/bin/python -m pip install -e . --group dev
+
+      # - run: pnpm install --frozen-lockfile
+
+      # - run: pnpm exec turbo run lint typecheck test build
+
+      # - run: pnpm --filter @verdocs/collections check

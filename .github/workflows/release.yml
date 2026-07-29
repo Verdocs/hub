@@ -1,0 +1,149 @@
+name: Release
+
+# Manual trigger only. Run from the Actions tab: Release -> Run workflow.
+# Defaults to a dry run, which does everything except push the version
+# commit/tags and publish to npm, PyPI, and NuGet.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (build/version/pack only, no push or publish)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # - uses: pnpm/action-setup@v4
+
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 24
+      #     cache: pnpm
+
+      # - uses: actions/setup-python@v5
+      #   with:
+      #     python-version: "3.12"
+
+      # - uses: actions/setup-dotnet@v4
+      #   with:
+      #     dotnet-version: |
+      #       8.0.x
+      #       10.0.x
+
+      # - run: pnpm install --frozen-lockfile
+
+      # # 1. changeset version: bump package.json versions in the fixed/linked
+      # # groups and regenerate changelogs.
+      # - name: changeset version
+      #   run: pnpm changeset:version
+
+      # - name: Read release version
+      #   id: release
+      #   run: echo "version=$(node -p "require('./packages/js-sdk/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      # # changesets only tracks npm package.json files, so the Python and C#
+      # # SDKs need their version kept in sync by hand here.
+      # - name: Sync Python and C# SDK versions
+      #   env:
+      #     VERSION: ${{ steps.release.outputs.version }}
+      #   run: |
+      #     python3 - <<'PY'
+      #     import os
+      #     import re
+      #     import pathlib
+
+      #     version = os.environ["VERSION"]
+
+      #     pyproject = pathlib.Path("sdks/python/pyproject.toml")
+      #     pyproject.write_text(
+      #         re.sub(r'(?m)^version = ".*"$', f'version = "{version}"', pyproject.read_text(), count=1)
+      #     )
+
+      #     csproj = pathlib.Path("sdks/csharp/src/Verdocs.Sdk/Verdocs.Sdk.csproj")
+      #     csproj.write_text(
+      #         re.sub(r"<Version>.*?</Version>", f"<Version>{version}</Version>", csproj.read_text(), count=1)
+      #     )
+      #     PY
+
+      # - name: Show pending version changes
+      #   run: git --no-pager diff --stat
+
+      # - name: Commit and push version bump
+      #   if: ${{ inputs.dry_run == false }}
+      #   run: |
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "github-actions[bot]@users.noreply.github.com"
+      #     git add -A
+      #     git diff --cached --quiet || git commit -m "chore: release v${{ steps.release.outputs.version }}"
+      #     git push origin HEAD:${{ github.ref_name }}
+
+      # - run: pnpm build
+
+      # # 2 & 3. changeset publish: publishes each changed public package to
+      # # npm and creates a git tag per published package.
+      # - name: Configure npm registry auth
+      #   if: ${{ inputs.dry_run == false }}
+      #   env:
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #   run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+
+      # - name: changeset publish (npm + git tags)
+      #   if: ${{ inputs.dry_run == false }}
+      #   run: pnpm changeset:publish
+
+      # - name: Push tags
+      #   if: ${{ inputs.dry_run == false }}
+      #   run: git push --follow-tags origin HEAD:${{ github.ref_name }}
+
+      # - name: Preview npm publish (dry run)
+      #   if: ${{ inputs.dry_run == true }}
+      #   run: pnpm exec changeset status --verbose
+
+      # # 4. Publish to PyPI
+      # - name: Install Python build tools
+      #   run: python3 -m pip install --upgrade build twine
+
+      # - name: Build Python package
+      #   working-directory: sdks/python
+      #   run: python3 -m build
+
+      # - name: Publish to PyPI
+      #   if: ${{ inputs.dry_run == false }}
+      #   working-directory: sdks/python
+      #   env:
+      #     TWINE_USERNAME: __token__
+      #     TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      #   run: twine upload dist/*
+
+      # - name: Check Python package (dry run)
+      #   if: ${{ inputs.dry_run == true }}
+      #   working-directory: sdks/python
+      #   run: twine check dist/*
+
+      # # 5. Publish to NuGet
+      # - name: Pack .NET package
+      #   working-directory: sdks/csharp
+      #   run: dotnet pack src/Verdocs.Sdk/Verdocs.Sdk.csproj -c Release -o out
+
+      # - name: Publish to NuGet
+      #   if: ${{ inputs.dry_run == false }}
+      #   working-directory: sdks/csharp
+      #   run: dotnet nuget push "out/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      # - name: List packed .nupkg (dry run)
+      #   if: ${{ inputs.dry_run == true }}
+      #   working-directory: sdks/csharp
+      #   run: ls -la out/
