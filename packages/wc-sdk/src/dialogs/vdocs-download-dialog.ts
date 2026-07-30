@@ -29,7 +29,8 @@ interface IDownloadOption {
  * React prop mapping: documents is a property-only array, signed and polling
  * are the same-named attributes, and hasCertificate is has-certificate.
  *
- * @fires vdocs-download - Fired with the chosen IDownloadSelection in detail. Envelope-level picks with no single source document pass detail.document as undefined (React's onDownload).
+ * @fires vdocs-download - Fired with the chosen IDownloadSelection in detail. Envelope-level picks with no single source
+ * document pass detail.document as undefined (React's onDownload).
  * @fires vdocs-cancel - Fired when the user dismisses the dialog via the overlay or the close button (React's onCancel).
  */
 export class VdocsDownloadDialog extends VdocsElement {

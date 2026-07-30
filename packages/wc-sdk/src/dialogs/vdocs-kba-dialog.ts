@@ -93,7 +93,8 @@ const STATE_OPTIONS: ISelectOption[] = [
  * initialDetails seed is captured once, at first render.
  *
  * @fires vdocs-submit-identity - Fired in identity mode with the completed IKbaIdentityDetails in detail (React's onSubmitIdentity).
- * @fires vdocs-answer-question - Fired in questions mode as each question is answered, the last included, with an IKbaAnswer in detail (React's onAnswerQuestion).
+ * @fires vdocs-answer-question - Fired in questions mode as each question is answered, the last included, with an IKbaAnswer in detail
+ * (React's onAnswerQuestion).
  * @fires vdocs-cancel - Fired when the signer cancels via the Cancel button, the close control, or the overlay (React's onCancel).
  */
 export class VdocsKbaDialog extends VdocsElement {
