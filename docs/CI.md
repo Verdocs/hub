@@ -48,8 +48,8 @@ The root `generate:docs` script and `js-sdk`'s `docs`/`generate-openapi`/`unify-
 
 `.changeset/config.json` is configured (fixed groups for JS/Python/C#/conformance and for react/angular/vue/wc-sdk/storybook), but no workflow uses it yet.
 
-- [ ] PR gate that fails if a PR touching a versioned package has no changeset (common `changeset status` check) — lightweight, doesn't publish anything
-- [ ] Release automation (e.g. `changesets/action` opening a "Version Packages" PR) — per `CLAUDE.md`, actual `npm publish` only happens when instructed, so at most this should stop at opening the version PR, never auto-publish
+- [x] PR gate that fails if a PR touching a versioned package has no changeset (common `changeset status` check) — lightweight, doesn't publish anything (`changeset-check.yml`)
+- [x] Release automation (e.g. `changesets/action` opening a "Version Packages" PR) — per `CLAUDE.md`, actual `npm publish` only happens when instructed, so at most this should stop at opening the version PR, never auto-publish (`changeset-release.yml`)
 
 
 

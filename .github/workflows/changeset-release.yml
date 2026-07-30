@@ -1,0 +1,46 @@
+name: Version Packages
+
+# Opens/updates a "Version Packages" PR whenever main has unreleased changesets.
+# This only bumps versions and changelogs via changesets/action - it never
+# publishes. Actual npm/PyPI/NuGet publishing is the manual `release.yml`
+# workflow, run only when instructed.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: changeset-release
+  cancel-in-progress: false
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # - uses: pnpm/action-setup@v4
+
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 24
+      #     cache: pnpm
+
+      # - run: pnpm install --frozen-lockfile
+
+      # # If there multiple PRs are merged into main and they each include changes
+      # # that effect the changeset version, a single PR will be created/updated
+      # # using the branch `changeset-release/main`. 
+      # - name: Open Version Packages PR
+      #   uses: changesets/action@v1
+      #   with:
+      #     version: pnpm changeset:version
+      #     commit: "chore: version packages"
+      #     title: "Version Packages"
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

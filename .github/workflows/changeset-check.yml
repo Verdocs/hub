@@ -1,0 +1,26 @@
+name: Changeset Check
+
+# Lets us know if any version updates will be made, based on the changes in the PR.
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  changeset-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history so `changeset status --since` can diff against the base branch.
+          fetch-depth: 0
+
+      # - uses: pnpm/action-setup@v4
+
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 24
+      #     cache: pnpm
+
+      # - run: pnpm install --frozen-lockfile
+
+      # - run: pnpm exec changeset status --since=origin/${{ github.base_ref }}
