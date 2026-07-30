@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <!-- net10.0 only: the local toolchain has just the net10 runtime installed, and xunit v3
-       test projects build as executables. The library still multi-targets net8.0. -->
+  <!-- net10.0, matching the library. xunit v3 test projects build as executables, so the
+       test TFM has to be one the local runtime can actually run. -->
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <OutputType>Exe</OutputType>

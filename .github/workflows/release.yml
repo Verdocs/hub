@@ -54,8 +54,13 @@ jobs:
       #   id: release
       #   run: echo "version=$(node -p "require('./packages/js-sdk/package.json').version")" >> "$GITHUB_OUTPUT"
 
-      # # changesets only tracks npm package.json files, so the Python and C#
-      # # SDKs need their version kept in sync by hand here.
+      # # STALE AS OF 2026-07-29, DO NOT UNCOMMENT AS WRITTEN. This step forces
+      # # pyproject.toml and the csproj to whatever version js-sdk is on. That was
+      # # right while the SDKs shared one number, and it is wrong now: the C# and
+      # # Python SDKs published 1.0.0 on their own version line and came out of the
+      # # js-sdk fixed group in .changeset/config.json. Running this today would
+      # # renumber both to 6.10.x. Rework it to read each package's own version, or
+      # # drop it, before turning the workflow on. See RELEASE-STATUS.md.
       # - name: Sync Python and C# SDK versions
       #   env:
       #     VERSION: ${{ steps.release.outputs.version }}

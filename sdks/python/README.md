@@ -1,29 +1,38 @@
 # Verdocs Python SDK
 
-Python SDK for the Verdocs e-signing platform, at full parity with the js-sdk 6.10.0
-public surface (the symbol-by-symbol mapping lives in `sdks/API-PARITY.md` at the hub
-root). Endpoint sessions with sync/async parity, pydantic v2 wire models that keep
+Python SDK for the Verdocs e-signing platform, at full parity with the js-sdk public
+surface. Endpoint sessions with sync/async parity, pydantic v2 wire models that keep
 undocumented server fields, resource namespaces for every API family (templates,
 template documents/roles/fields, envelopes, recipients, signatures, initials,
 organizations, members, groups, invitations, contacts, api keys, brands, webhooks,
-notification templates, users, profiles, auth), pure-logic helpers
-(`verdocs.permissions`, `verdocs.validators`, `verdocs.utils.*`), and the shared live
-conformance lane including the canonical create-to-cancel chain. The binding rules
-live in `docs/standards/python.md` at the hub root; wire-truth notes for the tricky
-endpoints are in `sdks/WIRE-NOTES.md`.
+notification templates, users, profiles, auth), and pure-logic helpers
+(`verdocs.permissions`, `verdocs.validators`, `verdocs.utils.*`).
+
+API reference and guides: https://developers.verdocs.com
+
+In the source repo, the symbol-by-symbol parity mapping lives in `sdks/API-PARITY.md`
+at the hub root, the binding rules in `docs/standards/python.md`, and wire-truth notes
+for the tricky endpoints in `sdks/WIRE-NOTES.md`.
 
 ## Install
 
-The package is private and installs from a checkout. From this directory:
+```
+pip install verdocs
+```
+
+Python 3.10 through 3.14. The only runtime dependencies are httpx and pydantic.
+
+Working on the SDK itself instead of consuming it? Install it editable from this
+directory:
 
 ```
 python3 -m venv .venv
 .venv/bin/python -m pip install -e . --group dev
 ```
 
-The dev group brings in pytest, pytest-asyncio, respx, and ruff (dev tooling lives in
-`[dependency-groups]`, not extras, so it is `--group dev` rather than `.[dev]`). Drop
-the flag if you only need the SDK itself.
+The dev group brings in pytest, pytest-asyncio, respx, ruff, and griffe (dev tooling
+lives in `[dependency-groups]`, not extras, so it is `--group dev` rather than
+`.[dev]`). Drop the flag if you only need the SDK itself.
 
 ## Quickstart
 

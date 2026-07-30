@@ -5,8 +5,6 @@
   "fixed": [
     [
       "@verdocs/js-sdk",
-      "@verdocs/python-sdk",
-      "@verdocs/csharp-sdk",
       "@verdocs/conformance"
     ],
     [

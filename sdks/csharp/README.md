@@ -1,29 +1,40 @@
 # Verdocs C# SDK
 
-The .NET client for the Verdocs e-signature platform, at full parity with the js-sdk 6.10.0
-public surface (the symbol-by-symbol mapping lives in `sdks/API-PARITY.md` at the hub root).
-`VerdocsEndpoint` groups every operation onto resource properties (the same layout as the
-Python SDK): Templates, TemplateDocuments, TemplateRoles, TemplateFields, Envelopes,
+The .NET client for the Verdocs e-signature platform, at full parity with the js-sdk public
+surface. `VerdocsEndpoint` groups every operation onto resource properties (the same layout
+as the Python SDK): Templates, TemplateDocuments, TemplateRoles, TemplateFields, Envelopes,
 Recipients, Kba, Signatures, Initials, Organizations, Members, Groups, Invitations, Contacts,
 ApiKeys, Brands, Webhooks, NotificationTemplates, Users, Profiles, and Auth. Pure-logic
 helpers live in `Verdocs.Helpers` (permissions, validators) and `Verdocs.Utils` (colors,
 dates, locales, primitives, strings, token, entitlements). Models are sealed records with
-snake_case serialization that keep undocumented server fields via extension data. The binding
-rules live in `docs/standards/csharp.md` at the hub root; wire-truth notes for the tricky
-endpoints are in `sdks/WIRE-NOTES.md`.
+snake_case serialization that keep undocumented server fields via extension data.
+
+API reference and guides: https://developers.verdocs.com
+
+In the source repo, the symbol-by-symbol parity mapping lives in `sdks/API-PARITY.md` at the
+hub root, the binding rules in `docs/standards/csharp.md`, and wire-truth notes for the tricky
+endpoints in `sdks/WIRE-NOTES.md`.
+
+## Install
+
+```bash
+dotnet add package Verdocs.Sdk
+```
+
+Targets net10.0, the current LTS line. No third-party dependencies.
 
 ## Layout
 
 - `src/Verdocs.Sdk`: the library. Package id `Verdocs.Sdk`, root namespace `Verdocs`,
-  multi-targets net8.0 and net10.0. Pack-ready metadata is in place but nothing publishes to
-  NuGet.org until instructed.
+  targets net10.0.
 - `tests/Verdocs.Sdk.Tests`: xunit v3 tests, plus the live conformance lane.
 
-A toolchain note: the library multi-targets net8.0 and net10.0, and building both works fine
-with only the .NET 10 SDK installed. Running net8.0 binaries would need the .NET 8 runtime,
-which this machine does not have, so the test project targets net10.0 only. That keeps
-`dotnet test` runnable locally while the library still proves it compiles against the net8.0
-surface.
+A targeting note: the library multi-targeted net8.0 and net10.0 up to the 1.0.0 release. Only
+the .NET 10 runtime is installed on the build machine, so the net8.0 output compiled but never
+ran against a real .NET 8 runtime, and 1.0.0 ships net10.0 only rather than shipping something
+untested. Adding a target framework back is additive and breaks no existing consumer, so
+net8.0 can return in a patch once there is a .NET 8 runtime in CI to exercise it. See
+`docs/standards/csharp.md` rule 2.
 
 ## Building and testing
 

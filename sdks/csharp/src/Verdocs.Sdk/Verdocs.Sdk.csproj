@@ -1,14 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>Verdocs</RootNamespace>
     <AssemblyName>Verdocs.Sdk</AssemblyName>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <!-- Pack-ready metadata per docs/standards/csharp.md rule 3. Nothing packs or
-       pushes to NuGet.org until instructed; there are no publish workflows. -->
+  <!-- Pack metadata per docs/standards/csharp.md rule 3. No RepositoryUrl yet: this
+       SDK lives in Verdocs/hub, which is still a private repo, and a dead "Source"
+       link on the NuGet listing is worse than none. Add it once hub goes public. -->
   <PropertyGroup>
     <PackageId>Verdocs.Sdk</PackageId>
     <Version>1.0.0</Version>
@@ -18,7 +19,15 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://verdocs.com</PackageProjectUrl>
     <PackageTags>verdocs;esignature;esign;documents</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+    <None Include="../../LICENSE" Pack="true" PackagePath="/" />
+  </ItemGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="Verdocs.Sdk.Tests" />

@@ -1,5 +1,6 @@
+# PEP 639 license expressions need hatchling 1.27 or newer.
 [build-system]
-requires = ["hatchling >= 1.26"]
+requires = ["hatchling >= 1.27"]
 build-backend = "hatchling.build"
 
 [project]
@@ -8,9 +9,34 @@ version = "1.0.0"
 description = "Verdocs e-signing SDK for Python"
 readme = "README.md"
 license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.10"
-classifiers = ["Private :: Do Not Upload"]
+authors = [{ name = "Verdocs", email = "support@verdocs.com" }]
+keywords = ["verdocs", "esignature", "esign", "signing", "documents", "pdf"]
+# No "License :: OSI Approved" classifier here on purpose: PyPI rejects an upload
+# that carries both a license classifier and a PEP 639 license expression.
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Office/Business",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
 dependencies = ["httpx>=0.28,<1", "pydantic>=2,<3"]
+
+# No Repository or Issues link yet: this SDK lives in Verdocs/hub, which is still a
+# private repo, and a 404 on the PyPI sidebar is worse than no link. Add both once
+# hub goes public.
+[project.urls]
+Homepage = "https://verdocs.com"
+Documentation = "https://developers.verdocs.com"
 
 [dependency-groups]
 dev = ["pytest", "pytest-asyncio", "respx", "ruff", "griffe"]
