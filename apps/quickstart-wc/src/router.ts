@@ -47,7 +47,7 @@ export const startRouter = (outlet: HTMLElement) => {
   // this listener and the guard above redirects accordingly.
   endpoint.onSessionChanged(() => {
     loaded = true;
-    rendered = null;
+    // rendered = null;
     render();
   });
 

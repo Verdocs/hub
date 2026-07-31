@@ -24114,6 +24114,7 @@
           "envelope:signed",
           "email:verify",
           "email:otp",
+          "sms:otp",
           "password:reset",
           "recipient:question",
           "delegate:requested",

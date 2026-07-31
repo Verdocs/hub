@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "build": "tsup && tailwindcss -i ./src/styles.css -o ./dist/styles.css --minify",
-    "dev": "tsup --watch",
+    "start": "tsup --watch",
     "lint": "eslint .",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",

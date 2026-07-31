@@ -19,18 +19,6 @@ Put those in `.env` as `VERDOCS_CLIENT_ID` and `VERDOCS_CLIENT_SECRET`.
 `PDF_PATH` defaults to the blank one-pager bundled at `docs/sample-pdfs/blank.pdf`. Point it at
 anything you like; relative paths resolve from this directory.
 
-### Verdocs.Sdk is not on NuGet.org yet
-
-The csproj references `Verdocs.Sdk` the way it will once the package ships, so until then you have
-to pack the SDK from this repo into the local feed that [nuget.config](nuget.config) points at:
-
-```bash
-dotnet pack ../../sdks/csharp/src/Verdocs.Sdk -o local-packages
-```
-
-Delete `nuget.config` once the package is published and the reference resolves from NuGet.org with
-no other changes.
-
 ## Run it
 
 ```bash

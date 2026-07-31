@@ -21,8 +21,9 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json && tailwindcss -i ./src/styles.css -o ./dist/styles.css --minify && cem analyze",
+    "setup:browser": "pnpm exec playwright install",
     "lint": "eslint .",
-    "test": "vitest run",
+    "test": "pnpm run setup:browser && vitest run",
     "typecheck": "tsc --noEmit",
     "format": "eslint . --fix"
   },

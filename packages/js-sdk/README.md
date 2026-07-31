@@ -28,6 +28,4 @@ suggestions! Please file a pull request with any change requests and we will rev
 
 ## TODO
 
-Currently, we have placeholder tests for a number of functions but had to disable the test suite. See
-https://jestjs.io/docs/ecmascript-modules and https://github.com/facebook/jest/issues/10025 for more information. Since we manage our
-own transport endpoint, we can probably do this mocking ourselves and eliminate the dependency in the first place.
+Expand the placeholder test suite with more mock data and result checks. HTTP mocking uses `axios-mock-adapter` today; we may replace that with a lighter transport mock later.

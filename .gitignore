@@ -38,6 +38,7 @@ yarn-error.log*
 .DS_Store
 *.pem
 .idea/
+.pnpm-store/
 CHANGELOG_BACKEND_SDK.md
 CHANGELOG_FRONTEND_SDK.md
 

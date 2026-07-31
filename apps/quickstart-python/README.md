@@ -6,12 +6,24 @@ insurance company that authenticates as itself, then issues a policy (the bundle
 
 ## Setup
 
-From this directory:
+From this directory. Needs Python 3.10 or newer — macOS ships an older `python3` by default (3.9,
+whose bundled pip also predates the editable-install support this quickstart needs), so check
+`python3 --version` first and point the venv at a newer interpreter (e.g. `python3.12`) if it's
+below 3.10.
 
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install verdocs
 .venv/bin/python -m pip install -e . --group dev
+```
+
+### verdocs is not on PyPI yet
+
+`pip install verdocs` will not find anything until the package ships. Until then, install the SDK
+from this repo instead:
+
+```bash
+.venv/bin/python -m pip install -e ../../sdks/python
 ```
 
 Get an API key: log in (or register) at https://app.verdocs.com, go to **Settings > API Keys**,

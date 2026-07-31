@@ -8,6 +8,6 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@verdocs/js-sdk": "^6.10.0"
+    "@verdocs/js-sdk": "workspace:^"
   }
 }

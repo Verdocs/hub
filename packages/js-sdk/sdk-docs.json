@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.10.0",
+  "version": "6.10.4",
   "groups": {
     "endpoint": {
       "id": "endpoint",

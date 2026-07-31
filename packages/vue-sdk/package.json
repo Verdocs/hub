@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "build": "vite build && vue-tsc -p tsconfig.build.json && tailwindcss -i ./src/styles.css -o ./dist/styles.css --minify",
-    "dev": "vite build --watch",
+    "start": "vite build --watch",
     "lint": "eslint .",
     "test": "vitest run",
     "typecheck": "vue-tsc --noEmit",

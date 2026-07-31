@@ -12,6 +12,10 @@ If you want the same flow inside a web app instead of a script, see
 
 ## Setup
 
+Needs Python 3.10 or newer. macOS ships an older `python3` by default (3.9, whose bundled pip also
+predates the editable-install support this quickstart needs) — check `python3 --version` first and
+point the venv at a newer interpreter (e.g. `python3.12`) if it's below 3.10.
+
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install verdocs

@@ -1,4 +1,4 @@
-import {jest} from '@jest/globals';
+import {vi} from 'vitest';
 import MockAdapter from 'axios-mock-adapter';
 import {createProfile, deleteProfile, getProfiles, switchProfile, updateProfile} from '../../Users';
 import {VerdocsEndpoint} from '../../VerdocsEndpoint';
@@ -36,8 +36,8 @@ const MockProfile: IProfile = {
 };
 
 it('getProfiles should return a "current" profile', async () => {
-  const catchFn = jest.fn();
-  const thenFn = jest.fn();
+  const catchFn = vi.fn();
+  const thenFn = vi.fn();
 
   const mock = new MockAdapter(endpoint.api);
   mock.onGet('/v2/profiles').reply(200, [MockProfile]);
@@ -48,8 +48,8 @@ it('getProfiles should return a "current" profile', async () => {
 });
 
 it('createProfile should return the new profile', async () => {
-  const catchFn = jest.fn();
-  const thenFn = jest.fn();
+  const catchFn = vi.fn();
+  const thenFn = vi.fn();
 
   const mock = new MockAdapter(endpoint.api);
   const profile = {email: 'EMAIL', password: 'BOGUS', first_name: 'FIRST', last_name: 'LAST', org_name: 'ORG', phone: 'ORG'};
@@ -61,8 +61,8 @@ it('createProfile should return the new profile', async () => {
 });
 
 it('switchProfile should return a new profile', async () => {
-  const catchFn = jest.fn();
-  const thenFn = jest.fn();
+  const catchFn = vi.fn();
+  const thenFn = vi.fn();
 
   const mock = new MockAdapter(endpoint.api);
   mock.onPost('/v2/profiles/TEST/switch').reply(200, {});
@@ -73,8 +73,8 @@ it('switchProfile should return a new profile', async () => {
 });
 
 it('updateProfile should return a new profile', async () => {
-  const catchFn = jest.fn();
-  const thenFn = jest.fn();
+  const catchFn = vi.fn();
+  const thenFn = vi.fn();
 
   const mock = new MockAdapter(endpoint.api);
   mock.onPatch('/v2/profiles/TEST').reply(200, {});
@@ -85,8 +85,8 @@ it('updateProfile should return a new profile', async () => {
 });
 
 it('deleteProfile should return a new profile', async () => {
-  const catchFn = jest.fn();
-  const thenFn = jest.fn();
+  const catchFn = vi.fn();
+  const thenFn = vi.fn();
 
   const mock = new MockAdapter(endpoint.api);
   mock.onDelete('/v2/profiles/TEST').reply(200);
