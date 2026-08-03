@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
 import type { ITemplate, ITemplateDocument, ITemplateField } from '@verdocs/js-sdk';
 import VerdocsProvider from '../../provider/VerdocsProvider';
+import { TEST_API_BASE } from '../../test/setup';
 import TemplateFields from './TemplateFields';
 
 const makeField = (overrides: Partial<ITemplateField> = {}): ITemplateField => ({
@@ -99,7 +100,7 @@ const installFakeApi = (endpoint: VerdocsEndpoint, serverTemplate: ITemplate) =>
 };
 
 const renderFields = (serverTemplate: ITemplate, props = {}) => {
-  const endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+  const endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
   const calls = installFakeApi(endpoint, serverTemplate);
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 

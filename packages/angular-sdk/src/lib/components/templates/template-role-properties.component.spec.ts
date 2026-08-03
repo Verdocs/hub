@@ -5,6 +5,7 @@ import { TestBed, type ComponentFixture } from '@angular/core/testing';
 import type { IRole, ITemplate, ITemplateField } from '@verdocs/js-sdk';
 import { VerdocsTemplateRolePropertiesComponent } from './template-role-properties.component';
 import { provideVerdocs } from '../../provide-verdocs';
+import { TEST_API_BASE } from '../../session';
 import type { SDKError } from '../../types';
 
 const sampleRole: IRole = {
@@ -73,7 +74,7 @@ describe('VerdocsTemplateRolePropertiesComponent', () => {
     vi.spyOn(window, 'confirm').mockReturnValue(true);
 
     TestBed.configureTestingModule({
-      providers: [ provideVerdocs({ baseUrl: 'https://stage-api.verdocs.com' }) ],
+      providers: [ provideVerdocs({ baseUrl: TEST_API_BASE }) ],
     });
   });
 

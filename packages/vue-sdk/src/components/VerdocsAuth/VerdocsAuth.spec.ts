@@ -2,8 +2,8 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { VerdocsEndpoint } from '@verdocs/js-sdk';
 import { flushPromises, mount } from '@vue/test-utils';
+import { makeTestJwt, TEST_API_BASE } from '../../test/support';
 import { VERDOCS_ENDPOINT_KEY } from '../../provider/keys';
-import { makeTestJwt } from '../../test/support';
 import VerdocsAuth from './VerdocsAuth.vue';
 
 describe('VerdocsAuth', () => {
@@ -24,7 +24,7 @@ describe('VerdocsAuth', () => {
   });
 
   const mountAuth = (props = {}) => {
-    const endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+    const endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
     return mount(VerdocsAuth, {
       props,
       global: {

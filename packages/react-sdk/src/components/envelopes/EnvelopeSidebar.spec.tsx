@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
 import type { IEnvelope, IEnvelopeHistory, IProfile, IRecipient, TSession } from '@verdocs/js-sdk';
 import VerdocsProvider from '../../provider/VerdocsProvider';
+import { TEST_API_BASE } from '../../test/setup';
 import EnvelopeSidebar from './EnvelopeSidebar';
 
 interface IFakeCall {
@@ -87,7 +88,7 @@ describe('EnvelopeSidebar', () => {
 
   beforeEach(() => {
     localStorage.clear();
-    endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+    endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
 
     // The sidebar's owner-only affordances key off the endpoint's profile.
     endpoint.session = { profile_id: 'profile-1' } as unknown as TSession;

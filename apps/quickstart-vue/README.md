@@ -9,7 +9,7 @@ pnpm install
 pnpm --filter verdocs-quickstart-vue dev
 ```
 
-The app runs on port 5174 (the React quickstart keeps 5173) and talks to the beta environment (`https://stage-api.verdocs.com`) by default. Point it elsewhere with an env var:
+The app runs on port 5174 (the React quickstart keeps 5173). Point it elsewhere with an env var:
 
 ```bash
 VITE_VERDOCS_API_BASE=https://api.verdocs.com pnpm --filter verdocs-quickstart-vue dev
@@ -23,3 +23,4 @@ VITE_VERDOCS_API_BASE=https://api.verdocs.com pnpm --filter verdocs-quickstart-v
 - [src/routes/RequireSession.vue](src/routes/RequireSession.vue): the session guard built on `useSession()`
 - [src/routes/LoginView.vue](src/routes/LoginView.vue): `VerdocsAuth` with navigation on login
 - [src/routes/DashboardView.vue](src/routes/DashboardView.vue): `VerdocsTemplatesList` with row-action handlers
+

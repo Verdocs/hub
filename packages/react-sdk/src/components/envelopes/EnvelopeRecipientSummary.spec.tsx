@@ -4,6 +4,7 @@ import type { IEnvelope, IRecipient } from '@verdocs/js-sdk';
 import { render, screen, waitFor } from '@testing-library/react';
 import EnvelopeRecipientSummary from './EnvelopeRecipientSummary';
 import VerdocsProvider from '../../provider/VerdocsProvider';
+import { TEST_API_BASE } from '../../test/setup';
 
 interface IFakeCall {
   method: string;
@@ -61,7 +62,7 @@ describe('EnvelopeRecipientSummary', () => {
 
   beforeEach(() => {
     localStorage.clear();
-    endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+    endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
     calls = installFakeApi(endpoint, method => {
       if (method === 'post') {
         return { link: 'https://verdocs.com/sign/abc123' };

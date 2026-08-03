@@ -6,6 +6,7 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { QueryClient, VUE_QUERY_CLIENT } from '@tanstack/vue-query';
 import VerdocsTemplateSettings from './VerdocsTemplateSettings.vue';
 import { VERDOCS_ENDPOINT_KEY } from '../../provider/keys';
+import { TEST_API_BASE } from '../../test/support';
 import type { ITemplateEvent } from '../../types';
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
@@ -38,7 +39,7 @@ describe('VerdocsTemplateSettings', () => {
   afterEach(() => mock.restore());
 
   const mountSettings = async (props = {}) => {
-    const endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+    const endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(VerdocsTemplateSettings, {
       props: { templateId: 'template-1', ...props },

@@ -6,6 +6,7 @@ import { QueryClient, VUE_QUERY_CLIENT } from '@tanstack/vue-query';
 import type { ITemplate, ITemplateDocument } from '@verdocs/js-sdk';
 import VerdocsTemplateAttachments from './VerdocsTemplateAttachments.vue';
 import { VERDOCS_ENDPOINT_KEY } from '../../provider/keys';
+import { TEST_API_BASE } from '../../test/support';
 import type { ITemplateEvent } from '../../types';
 
 const makeDocument = (overrides: Partial<ITemplateDocument>): ITemplateDocument =>
@@ -47,7 +48,7 @@ describe('VerdocsTemplateAttachments', () => {
 
   const mountAttachments = async (template = makeTemplate(), props = {}) => {
     mock.onGet('/v2/templates/template-1').reply(200, template);
-    const endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+    const endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(VerdocsTemplateAttachments, {
       props: { templateId: 'template-1', ...props },

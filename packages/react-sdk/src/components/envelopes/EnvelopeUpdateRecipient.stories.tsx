@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { IEnvelope, IRecipient } from '@verdocs/js-sdk';
 import EnvelopeUpdateRecipient from './EnvelopeUpdateRecipient';
 import VerdocsProvider from '../../provider/VerdocsProvider';
+import { TEST_API_BASE } from '../../test/setup';
 import { showToast } from '../../utils/toast';
 
 const sampleEnvelope = {
@@ -72,7 +73,7 @@ export const UpdateRecipient: Story = {
     },
   },
   render: args => (
-    <VerdocsProvider baseUrl="https://stage-api.verdocs.com" queryClient={queryClient}>
+    <VerdocsProvider baseUrl={TEST_API_BASE} queryClient={queryClient}>
       <EnvelopeUpdateRecipient {...args} />
     </VerdocsProvider>
   ),

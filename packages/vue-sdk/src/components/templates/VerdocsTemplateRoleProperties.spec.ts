@@ -6,6 +6,7 @@ import { QueryClient, VUE_QUERY_CLIENT } from '@tanstack/vue-query';
 import type { IRole, ITemplate, ITemplateField } from '@verdocs/js-sdk';
 import VerdocsTemplateRoleProperties from './VerdocsTemplateRoleProperties.vue';
 import { VERDOCS_ENDPOINT_KEY } from '../../provider/keys';
+import { TEST_API_BASE } from '../../test/support';
 
 const sampleRole: IRole = {
   template_id: 'template-1',
@@ -44,7 +45,7 @@ describe('VerdocsTemplateRoleProperties', () => {
 
   const mountPanel = async (props = {}, template = makeTemplate()) => {
     mock.onGet('/v2/templates/template-1').reply(200, template);
-    const endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+    const endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(VerdocsTemplateRoleProperties, {
       props: { templateId: 'template-1', role: sampleRole, ...props },

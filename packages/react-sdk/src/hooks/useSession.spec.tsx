@@ -1,5 +1,6 @@
 import { VerdocsEndpoint } from '@verdocs/js-sdk';
 import { act, renderHook, waitFor } from '@testing-library/react';
+import { TEST_API_BASE } from '../test/setup';
 import { useSession } from './useSession';
 
 describe('useSession', () => {
@@ -8,7 +9,7 @@ describe('useSession', () => {
   });
 
   it('settles as unauthenticated when no session is stored', async () => {
-    const endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+    const endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
     const { result } = renderHook(() => useSession(endpoint));
 
     await waitFor(() => {
@@ -22,7 +23,7 @@ describe('useSession', () => {
   });
 
   it('updates when the session changes', async () => {
-    const endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+    const endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
     const { result } = renderHook(() => useSession(endpoint));
 
     await waitFor(() => {

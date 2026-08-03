@@ -6,6 +6,7 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { QueryClient, VUE_QUERY_CLIENT } from '@tanstack/vue-query';
 import VerdocsTemplatesList from './VerdocsTemplatesList.vue';
 import { VERDOCS_ENDPOINT_KEY } from '../../provider/keys';
+import { TEST_API_BASE } from '../../test/support';
 import type { ITemplateEvent } from '../../types';
 
 const makeTemplate = (overrides: Partial<ITemplate>): ITemplate =>
@@ -43,7 +44,7 @@ describe('VerdocsTemplatesList', () => {
   });
 
   const mountList = async (props = {}) => {
-    const endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+    const endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(VerdocsTemplatesList, {
       props,

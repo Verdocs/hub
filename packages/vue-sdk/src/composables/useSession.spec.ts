@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
 import { VerdocsEndpoint } from '@verdocs/js-sdk';
 import { useSession, type ISessionState } from './useSession';
+import { TEST_API_BASE } from '../test/support';
 
 // The composable needs a component scope for its listener cleanup, so specs
 // mount a minimal probe and assert against the returned refs.
@@ -24,7 +25,7 @@ describe('useSession', () => {
   });
 
   it('settles as unauthenticated when no session is stored', () => {
-    const endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+    const endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
     const { state } = mountSession(endpoint);
 
     expect(state.loaded.value).toBe(true);
@@ -35,7 +36,7 @@ describe('useSession', () => {
   });
 
   it('updates when the session changes', () => {
-    const endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+    const endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
     const { state } = mountSession(endpoint);
 
     expect(state.loaded.value).toBe(true);

@@ -5,6 +5,7 @@ import type { IEnvelope, IRecipient } from '@verdocs/js-sdk';
 import { TestBed, type ComponentFixture } from '@angular/core/testing';
 import { VerdocsEnvelopeUpdateRecipientComponent } from './envelope-update-recipient.component';
 import { provideVerdocs } from '../../provide-verdocs';
+import { TEST_API_BASE } from '../../session';
 import type { SDKError } from '../../types';
 
 const recipient = {
@@ -65,7 +66,7 @@ describe('VerdocsEnvelopeUpdateRecipientComponent', () => {
     mock.onGet('/v2/envelopes/envelope-1').reply(200, envelope);
 
     TestBed.configureTestingModule({
-      providers: [ provideVerdocs({ baseUrl: 'https://stage-api.verdocs.com' }) ],
+      providers: [ provideVerdocs({ baseUrl: TEST_API_BASE }) ],
     });
   });
 

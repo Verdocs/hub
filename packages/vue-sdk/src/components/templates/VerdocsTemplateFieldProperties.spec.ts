@@ -6,6 +6,7 @@ import type { ITemplate, ITemplateField } from '@verdocs/js-sdk';
 import { QueryClient, VUE_QUERY_CLIENT } from '@tanstack/vue-query';
 import VerdocsTemplateFieldProperties from './VerdocsTemplateFieldProperties.vue';
 import { VERDOCS_ENDPOINT_KEY } from '../../provider/keys';
+import { TEST_API_BASE } from '../../test/support';
 
 const makeField = (overrides: Partial<ITemplateField> = {}): ITemplateField => ({
   name: 'textboxP1-1',
@@ -53,7 +54,7 @@ describe('VerdocsTemplateFieldProperties', () => {
 
   const mountPanel = async (field: ITemplateField, props = {}) => {
     mock.onGet('/v2/templates/tpl-1').reply(200, makeTemplate(field));
-    const endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+    const endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(VerdocsTemplateFieldProperties, {
       props: { templateId: 'tpl-1', fieldName: field.name, ...props },

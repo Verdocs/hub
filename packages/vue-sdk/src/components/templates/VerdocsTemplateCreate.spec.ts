@@ -6,6 +6,7 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { QueryClient, VUE_QUERY_CLIENT } from '@tanstack/vue-query';
 import VerdocsTemplateCreate from './VerdocsTemplateCreate.vue';
 import { VERDOCS_ENDPOINT_KEY } from '../../provider/keys';
+import { TEST_API_BASE } from '../../test/support';
 
 const created = { id: 't-new', name: 'Lease.pdf' } as ITemplate;
 
@@ -25,7 +26,7 @@ describe('VerdocsTemplateCreate', () => {
   afterEach(() => mock.restore());
 
   const mountCreate = (props = {}) => {
-    const endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+    const endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     return mount(VerdocsTemplateCreate, {
       props,

@@ -5,6 +5,7 @@ import { Component, signal } from '@angular/core';
 import { TestBed, type ComponentFixture } from '@angular/core/testing';
 import { VerdocsTemplateCreateComponent } from './template-create.component';
 import { provideVerdocs } from '../../provide-verdocs';
+import { TEST_API_BASE } from '../../session';
 import type { SDKError } from '../../types';
 
 const pdf = (name: string) => new File([ '%PDF-1.4' ], name, { type: 'application/pdf' });
@@ -53,7 +54,7 @@ describe('VerdocsTemplateCreateComponent', () => {
     mock.onPost('/v2/templates').reply(200, created);
 
     TestBed.configureTestingModule({
-      providers: [ provideVerdocs({ baseUrl: 'https://stage-api.verdocs.com' }) ],
+      providers: [ provideVerdocs({ baseUrl: TEST_API_BASE }) ],
     });
   });
 

@@ -6,10 +6,10 @@ import type { IEnvelope, IRecipient } from '@verdocs/js-sdk';
 import { getStatusColor, getStatusMessage } from './vdocs-status-indicator.js';
 import type { IDocumentPageInfo } from './vdocs-envelope-document-page.js';
 import type { IEnvelopeUpdatedEvent } from './vdocs-envelope-sidebar.js';
+import { makeTestJwt, mount, TEST_API_BASE } from '../test/helpers.js';
 import type { IContactSelectEvent } from './vdocs-contact-picker.js';
 import { invalidateEnvelopeLists } from '../store/envelopes.js';
 import type { IEnvelopeEvent } from './vdocs-envelopes-list.js';
-import { makeTestJwt, mount } from '../test/helpers.js';
 import './vdocs-envelope-recipient-summary.js';
 import './vdocs-envelope-update-recipient.js';
 import './vdocs-envelope-recipient-link.js';
@@ -65,7 +65,7 @@ beforeEach(() => {
   invalidateEnvelopeLists();
 
   mock = new MockAdapter(axios);
-  endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com' });
+  endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE });
   endpoint.setDefault();
 });
 

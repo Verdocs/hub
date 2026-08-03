@@ -5,6 +5,7 @@ import type { LitElement } from 'lit';
  * axios-mock-adapter (the same pattern as the angular-sdk specs), which
  * exercises the real js-sdk request path.
  */
+export const TEST_API_BASE = 'https://stage-api.verdocs.com';
 
 /** Build a decodable, unexpired JWT for VerdocsEndpoint.setToken. */
 export const makeTestJwt = (claims: Record<string, unknown> = {}) => {

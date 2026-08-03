@@ -5,8 +5,8 @@ import { VerdocsEndpoint } from '@verdocs/js-sdk';
 import { DOMWrapper, flushPromises, mount } from '@vue/test-utils';
 import { QueryClient, VUE_QUERY_CLIENT } from '@tanstack/vue-query';
 import VerdocsEnvelopeSidebar from './VerdocsEnvelopeSidebar.vue';
+import { makeTestJwt, TEST_API_BASE } from '../../test/support';
 import { VERDOCS_ENDPOINT_KEY } from '../../provider/keys';
-import { makeTestJwt } from '../../test/support';
 
 const makeEnvelope = (overrides: Partial<IEnvelope> = {}): IEnvelope =>
   ({
@@ -44,7 +44,7 @@ describe('VerdocsEnvelopeSidebar', () => {
   });
 
   const mountSidebar = async () => {
-    const endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+    const endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
     endpoint.setToken(makeTestJwt({ profile_id: 'profile-1' }));
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(VerdocsEnvelopeSidebar, {

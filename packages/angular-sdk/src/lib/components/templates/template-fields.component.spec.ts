@@ -5,6 +5,7 @@ import { TestBed, type ComponentFixture } from '@angular/core/testing';
 import type { ITemplate, ITemplateDocument, ITemplateField } from '@verdocs/js-sdk';
 import { VerdocsTemplateFieldsComponent, type ITemplateFieldsEvent } from './template-fields.component';
 import { provideVerdocs } from '../../provide-verdocs';
+import { TEST_API_BASE } from '../../session';
 import type { SDKError } from '../../types';
 
 const makeField = (overrides: Partial<ITemplateField> = {}): ITemplateField => ({
@@ -106,7 +107,7 @@ describe('VerdocsTemplateFieldsComponent', () => {
     });
 
     TestBed.configureTestingModule({
-      providers: [ provideVerdocs({ baseUrl: 'https://stage-api.verdocs.com' }) ],
+      providers: [ provideVerdocs({ baseUrl: TEST_API_BASE }) ],
     });
   });
 

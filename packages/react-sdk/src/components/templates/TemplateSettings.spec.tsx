@@ -5,6 +5,7 @@ import { getTemplate, updateTemplate } from '@verdocs/js-sdk';
 import { render, screen, waitFor } from '@testing-library/react';
 import VerdocsProvider from '../../provider/VerdocsProvider';
 import TemplateSettings from './TemplateSettings';
+import { TEST_API_BASE } from '../../test/setup';
 
 vi.mock('@verdocs/js-sdk', async importOriginal => {
   const actual = await importOriginal<typeof import('@verdocs/js-sdk')>();
@@ -33,7 +34,7 @@ const makeTemplate = (overrides: Partial<ITemplate> = {}): ITemplate =>
 
 const renderSettings = (props = {}, queryClient?: QueryClient) =>
   render(
-    <VerdocsProvider baseUrl="https://stage-api.verdocs.com" queryClient={queryClient}>
+    <VerdocsProvider baseUrl={TEST_API_BASE} queryClient={queryClient}>
       <TemplateSettings templateId="template-1" {...props} />
     </VerdocsProvider>,
   );

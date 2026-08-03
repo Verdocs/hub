@@ -5,6 +5,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import type { ITemplate, ITemplateField } from '@verdocs/js-sdk';
 import TemplateFieldProperties from './TemplateFieldProperties';
 import VerdocsProvider from '../../provider/VerdocsProvider';
+import { TEST_API_BASE } from '../../test/setup';
 
 const makeField = (overrides: Partial<ITemplateField> = {}): ITemplateField => ({
   name: 'textboxP1-1',
@@ -81,7 +82,7 @@ const renderPanel = (field: ITemplateField, props = {}) => {
     fields: [field],
   } as ITemplate;
 
-  const endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+  const endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
   const calls = installFakeApi(endpoint, serverTemplate);
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 

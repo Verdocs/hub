@@ -4,6 +4,7 @@ import type { ITemplate, ITemplateDocument } from '@verdocs/js-sdk';
 import { createTemplateDocument, deleteTemplateDocument, getTemplate } from '@verdocs/js-sdk';
 import VerdocsProvider from '../../provider/VerdocsProvider';
 import TemplateAttachments from './TemplateAttachments';
+import { TEST_API_BASE } from '../../test/setup';
 
 vi.mock('@verdocs/js-sdk', async importOriginal => {
   const actual = await importOriginal<typeof import('@verdocs/js-sdk')>();
@@ -47,7 +48,7 @@ const makeTemplate = (overrides: Partial<ITemplate> = {}): ITemplate =>
 
 const renderAttachments = (props = {}) =>
   render(
-    <VerdocsProvider baseUrl="https://stage-api.verdocs.com">
+    <VerdocsProvider baseUrl={TEST_API_BASE}>
       <TemplateAttachments templateId="template-1" {...props} />
     </VerdocsProvider>,
   );

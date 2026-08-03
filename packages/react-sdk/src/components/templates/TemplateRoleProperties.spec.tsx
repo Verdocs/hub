@@ -4,6 +4,7 @@ import type { IRole, ITemplate, ITemplateField } from '@verdocs/js-sdk';
 import { deleteTemplateRole, getTemplate, updateTemplateRole } from '@verdocs/js-sdk';
 import TemplateRoleProperties from './TemplateRoleProperties';
 import VerdocsProvider from '../../provider/VerdocsProvider';
+import { TEST_API_BASE } from '../../test/setup';
 
 vi.mock('@verdocs/js-sdk', async importOriginal => {
   const actual = await importOriginal<typeof import('@verdocs/js-sdk')>();
@@ -43,7 +44,7 @@ const makeTemplate = (overrides: Partial<ITemplate> = {}): ITemplate =>
 
 const renderPanel = (props = {}) =>
   render(
-    <VerdocsProvider baseUrl="https://stage-api.verdocs.com">
+    <VerdocsProvider baseUrl={TEST_API_BASE}>
       <TemplateRoleProperties templateId="template-1" role={sampleRole} {...props} />
     </VerdocsProvider>,
   );

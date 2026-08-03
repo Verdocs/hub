@@ -4,8 +4,8 @@ import MockAdapter from 'axios-mock-adapter';
 import type { ITemplate } from '@verdocs/js-sdk';
 import { VerdocsEndpoint } from '@verdocs/js-sdk';
 import { invalidateTemplateLists } from '../store/templates.js';
+import { mount, TEST_API_BASE } from '../test/helpers.js';
 import type { ITemplateEvent } from '../types.js';
-import { mount } from '../test/helpers.js';
 import './vdocs-templates-list.js';
 
 const makeTemplate = (overrides: Partial<ITemplate>): ITemplate =>
@@ -40,7 +40,7 @@ describe('vdocs-templates-list', () => {
     mock.onGet('/v2/profiles').reply(200, []);
     mock.onGet('/v2/templates').reply(200, { count: 2, rows: 2, page: 0, templates });
 
-    new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com' }).setDefault();
+    new VerdocsEndpoint({ baseURL: TEST_API_BASE }).setDefault();
   });
 
   afterEach(() => {

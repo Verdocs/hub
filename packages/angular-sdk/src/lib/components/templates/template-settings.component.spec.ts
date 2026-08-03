@@ -6,6 +6,7 @@ import { TestBed, type ComponentFixture } from '@angular/core/testing';
 import { VerdocsTemplateSettingsComponent } from './template-settings.component';
 import type { ITemplateEvent, SDKError } from '../../types';
 import { provideVerdocs } from '../../provide-verdocs';
+import { TEST_API_BASE } from '../../session';
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
@@ -60,7 +61,7 @@ describe('VerdocsTemplateSettingsComponent', () => {
     mock.onGet('/v2/templates/template-1').reply(200, makeTemplate());
 
     TestBed.configureTestingModule({
-      providers: [ provideVerdocs({ baseUrl: 'https://stage-api.verdocs.com' }) ],
+      providers: [ provideVerdocs({ baseUrl: TEST_API_BASE }) ],
     });
   });
 

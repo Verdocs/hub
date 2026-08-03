@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import type { ITemplate } from '@verdocs/js-sdk';
 import { VerdocsTemplatesListComponent } from './templates-list.component';
 import { provideVerdocs } from '../../provide-verdocs';
+import { TEST_API_BASE } from '../../session';
 
 const makeTemplate = (overrides: Partial<ITemplate>): ITemplate =>
   ({
@@ -35,7 +36,7 @@ describe('VerdocsTemplatesListComponent', () => {
     mock.onGet('/v2/templates').reply(200, { count: 2, rows: 2, page: 0, templates });
 
     TestBed.configureTestingModule({
-      providers: [ provideVerdocs({ baseUrl: 'https://stage-api.verdocs.com' }) ],
+      providers: [ provideVerdocs({ baseUrl: TEST_API_BASE }) ],
     });
   });
 

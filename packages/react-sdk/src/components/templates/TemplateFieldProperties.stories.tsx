@@ -5,6 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ITemplate, ITemplateField } from '@verdocs/js-sdk';
 import TemplateFieldProperties from './TemplateFieldProperties';
 import VerdocsProvider from '../../provider/VerdocsProvider';
+import { TEST_API_BASE } from '../../test/setup';
 import { showToast } from '../../utils/toast';
 
 const sampleField = (overrides: Partial<ITemplateField> = {}): ITemplateField => ({
@@ -44,7 +45,7 @@ const sampleTemplate = (field: ITemplateField): ITemplate =>
 // and deletes still fire real requests, which fail against the sample IDs;
 // the point here is the form itself, and the callbacks log via toasts.
 function SampleData({ field, children }: { field: ITemplateField; children: React.ReactNode }) {
-  const [endpoint] = useState(() => new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false }));
+  const [endpoint] = useState(() => new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false }));
   const [queryClient] = useState(() => {
     const client = new QueryClient({ defaultOptions: { queries: { staleTime: Infinity, retry: false } } });
     client.setQueryData(['templates', 'sample-template'], sampleTemplate(field));

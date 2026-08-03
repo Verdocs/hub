@@ -6,6 +6,7 @@ import { TestBed, type ComponentFixture } from '@angular/core/testing';
 import { VerdocsEnvelopeRecipientSummaryComponent } from './envelope-recipient-summary.component';
 import type { IEnvelopeEvent } from './envelopes-list.component';
 import { provideVerdocs } from '../../provide-verdocs';
+import { TEST_API_BASE } from '../../session';
 
 const makeRecipient = (overrides: Partial<IRecipient>): IRecipient =>
   ({
@@ -76,7 +77,7 @@ describe('VerdocsEnvelopeRecipientSummaryComponent', () => {
     mock.onGet('/v2/envelopes/envelope-1').reply(200, envelope);
 
     TestBed.configureTestingModule({
-      providers: [ provideVerdocs({ baseUrl: 'https://stage-api.verdocs.com' }) ],
+      providers: [ provideVerdocs({ baseUrl: TEST_API_BASE }) ],
     });
   });
 

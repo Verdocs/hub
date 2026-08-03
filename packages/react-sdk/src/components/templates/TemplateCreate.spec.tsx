@@ -3,6 +3,7 @@ import { createTemplate } from '@verdocs/js-sdk';
 import userEvent from '@testing-library/user-event';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import VerdocsProvider from '../../provider/VerdocsProvider';
+import { TEST_API_BASE } from '../../test/setup';
 import TemplateCreate from './TemplateCreate';
 
 vi.mock('@verdocs/js-sdk', async importOriginal => {
@@ -19,7 +20,7 @@ const created = { id: 't-new', name: 'Lease.pdf' } as ITemplate;
 
 const renderCreate = (props = {}) =>
   render(
-    <VerdocsProvider baseUrl="https://stage-api.verdocs.com">
+    <VerdocsProvider baseUrl={TEST_API_BASE}>
       <TemplateCreate {...props} />
     </VerdocsProvider>,
   );

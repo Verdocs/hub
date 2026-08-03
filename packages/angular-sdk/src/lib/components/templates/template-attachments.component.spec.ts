@@ -6,6 +6,7 @@ import { TestBed, type ComponentFixture } from '@angular/core/testing';
 import { VerdocsTemplateAttachmentsComponent } from './template-attachments.component';
 import type { ITemplateEvent, SDKError } from '../../types';
 import { provideVerdocs } from '../../provide-verdocs';
+import { TEST_API_BASE } from '../../session';
 
 const makeDocument = (overrides: Partial<ITemplateDocument>): ITemplateDocument =>
   ({
@@ -79,7 +80,7 @@ describe('VerdocsTemplateAttachmentsComponent', () => {
     mock.onGet('/v2/templates/template-1').reply(200, makeTemplate());
 
     TestBed.configureTestingModule({
-      providers: [ provideVerdocs({ baseUrl: 'https://stage-api.verdocs.com' }) ],
+      providers: [ provideVerdocs({ baseUrl: TEST_API_BASE }) ],
     });
   });
 

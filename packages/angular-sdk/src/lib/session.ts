@@ -2,6 +2,8 @@ import type { IProfile, TSession, VerdocsEndpoint } from '@verdocs/js-sdk';
 import { computed, DestroyRef, inject, Injectable, signal, type Signal } from '@angular/core';
 import { injectVerdocsEndpoint } from './provide-verdocs';
 
+export const TEST_API_BASE = 'https://stage-api.verdocs.com';
+
 export interface ISessionSignals {
   /** True once the initial session check has completed. */
   loaded: Signal<boolean>;

@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { IEnvelope, IRecipient } from '@verdocs/js-sdk';
 import EnvelopeRecipientSummary from './EnvelopeRecipientSummary';
 import VerdocsProvider from '../../provider/VerdocsProvider';
+import { TEST_API_BASE } from '../../test/setup';
 import { showToast } from '../../utils/toast';
 
 const makeRecipient = (overrides: Partial<IRecipient>): IRecipient =>
@@ -71,7 +72,7 @@ const meta = {
     onSdkError: error => showToast(`SDK error: ${error.message}`, { style: 'error' }),
   },
   render: args => (
-    <VerdocsProvider baseUrl="https://stage-api.verdocs.com" queryClient={queryClient}>
+    <VerdocsProvider baseUrl={TEST_API_BASE} queryClient={queryClient}>
       <EnvelopeRecipientSummary {...args} />
     </VerdocsProvider>
   ),

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { page } from 'vitest/browser';
 import MockAdapter from 'axios-mock-adapter';
 import { VerdocsEndpoint } from '@verdocs/js-sdk';
-import { makeTestJwt, mount } from '../test/helpers.js';
+import { makeTestJwt, mount, TEST_API_BASE } from '../test/helpers.js';
 import type { IAuthStatus } from '../types.js';
 import './vdocs-auth.js';
 
@@ -17,7 +17,7 @@ describe('vdocs-auth', () => {
     mock = new MockAdapter(axios);
     mock.onGet('/v2/profiles').reply(200, []);
 
-    new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com' }).setDefault();
+    new VerdocsEndpoint({ baseURL: TEST_API_BASE }).setDefault();
   });
 
   afterEach(() => {

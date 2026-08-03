@@ -2,6 +2,7 @@ import userEvent from '@testing-library/user-event';
 import { authenticate, getMyUser } from '@verdocs/js-sdk';
 import { render, screen, waitFor } from '@testing-library/react';
 import VerdocsProvider from '../../provider/VerdocsProvider';
+import { TEST_API_BASE } from '../../test/setup';
 import VerdocsAuth from './VerdocsAuth';
 
 vi.mock('@verdocs/js-sdk', async importOriginal => {
@@ -19,7 +20,7 @@ vi.mock('@verdocs/js-sdk', async importOriginal => {
 
 const renderAuth = (props = {}) =>
   render(
-    <VerdocsProvider baseUrl="https://stage-api.verdocs.com">
+    <VerdocsProvider baseUrl={TEST_API_BASE}>
       <VerdocsAuth {...props} />
     </VerdocsProvider>,
   );

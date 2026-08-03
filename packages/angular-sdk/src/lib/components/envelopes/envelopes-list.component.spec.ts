@@ -6,6 +6,7 @@ import { TestBed, type ComponentFixture } from '@angular/core/testing';
 import { VerdocsEnvelopesListComponent, type IEnvelopeEvent } from './envelopes-list.component';
 import { provideVerdocs, VERDOCS_ENDPOINT } from '../../provide-verdocs';
 import { makeTestJwt } from '../../test-support';
+import { TEST_API_BASE } from '../../session';
 
 const makeEnvelope = (overrides: Partial<IEnvelope>): IEnvelope =>
   ({
@@ -62,7 +63,7 @@ describe('VerdocsEnvelopesListComponent', () => {
     mock.onGet('/v2/profiles').reply(200, [ { id: 'profile-1', current: true } ]);
 
     TestBed.configureTestingModule({
-      providers: [ provideVerdocs({ baseUrl: 'https://stage-api.verdocs.com' }) ],
+      providers: [ provideVerdocs({ baseUrl: TEST_API_BASE }) ],
     });
     TestBed.inject(VERDOCS_ENDPOINT).setToken(makeTestJwt({ profile_id: 'profile-1' }));
   });

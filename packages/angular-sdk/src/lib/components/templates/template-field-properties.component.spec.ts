@@ -5,6 +5,7 @@ import type { ITemplate, ITemplateField } from '@verdocs/js-sdk';
 import { TestBed, type ComponentFixture } from '@angular/core/testing';
 import { VerdocsTemplateFieldPropertiesComponent } from './template-field-properties.component';
 import { provideVerdocs } from '../../provide-verdocs';
+import { TEST_API_BASE } from '../../session';
 import type { SDKError } from '../../types';
 
 const makeField = (overrides: Partial<ITemplateField> = {}): ITemplateField => ({
@@ -95,7 +96,7 @@ describe('VerdocsTemplateFieldPropertiesComponent', () => {
     mock = new MockAdapter(axios);
 
     TestBed.configureTestingModule({
-      providers: [ provideVerdocs({ baseUrl: 'https://stage-api.verdocs.com' }) ],
+      providers: [ provideVerdocs({ baseUrl: TEST_API_BASE }) ],
     });
   });
 

@@ -6,6 +6,7 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { QueryClient, VUE_QUERY_CLIENT } from '@tanstack/vue-query';
 import VerdocsEnvelopeRecipientSummary from './VerdocsEnvelopeRecipientSummary.vue';
 import { VERDOCS_ENDPOINT_KEY } from '../../provider/keys';
+import { TEST_API_BASE } from '../../test/support';
 
 const envelope = {
   id: 'env-1',
@@ -34,7 +35,7 @@ describe('VerdocsEnvelopeRecipientSummary', () => {
   });
 
   const mountSummary = async () => {
-    const endpoint = new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com', persist: false });
+    const endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE, persist: false });
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(VerdocsEnvelopeRecipientSummary, {
       props: { envelopeId: 'env-1' },

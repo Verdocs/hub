@@ -5,6 +5,7 @@ import { VerdocsEndpoint } from '@verdocs/js-sdk';
 import type { IRole, ITemplate, ITemplateDocument, ITemplateField } from '@verdocs/js-sdk';
 import { invalidateTemplateDetail } from '../store/template-detail.js';
 import { invalidateTemplateLists } from '../store/templates.js';
+import { TEST_API_BASE } from '../test/helpers.js';
 import './vdocs-template-field-properties.js';
 import './vdocs-template-role-properties.js';
 import './vdocs-template-document-page.js';
@@ -96,7 +97,7 @@ beforeEach(() => {
 
   mock = new MockAdapter(axios);
   mock.onGet('/v2/profiles').reply(200, []);
-  new VerdocsEndpoint({ baseURL: 'https://stage-api.verdocs.com' }).setDefault();
+  new VerdocsEndpoint({ baseURL: TEST_API_BASE }).setDefault();
 });
 
 afterEach(() => {

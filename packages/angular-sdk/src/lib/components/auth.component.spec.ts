@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { VerdocsAuthComponent } from './auth.component';
 import { provideVerdocs } from '../provide-verdocs';
 import { makeTestJwt } from '../test-support';
+import { TEST_API_BASE } from '../session';
 
 describe('VerdocsAuthComponent', () => {
   let mock: MockAdapter;
@@ -17,7 +18,7 @@ describe('VerdocsAuthComponent', () => {
     mock.onGet('/v2/profiles').reply(200, []);
 
     TestBed.configureTestingModule({
-      providers: [ provideVerdocs({ baseUrl: 'https://stage-api.verdocs.com' }) ],
+      providers: [ provideVerdocs({ baseUrl: TEST_API_BASE }) ],
     });
   });
 
