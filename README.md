@@ -1,159 +1,108 @@
-# Turborepo starter
+# Verdocs Hub
 
-This Turborepo starter is maintained by the Turborepo core team.
+SDKs, quick-starts, and API collections for integrating with Verdocs.
 
-## Using this example
+## SDKs
 
-Run the following command:
+### JavaScript and TypeScript
 
-```sh
-npx create-turbo@latest
+
+| Package                                         | Use when                                              |
+| ----------------------------------------------- | ----------------------------------------------------- |
+| `[js-sdk](packages/js-sdk/README.md)`           | You need the core API client for Node or the browser. |
+| `[react-sdk](packages/react-sdk/README.md)`     | You're building with React.                           |
+| `[angular-sdk](packages/angular-sdk/README.md)` | You're building with Angular.                         |
+| `[vue-sdk](packages/vue-sdk/README.md)`         | You're building with Vue 3.                           |
+| `[wc-sdk](packages/wc-sdk/README.md)`           | You want framework-agnostic web components.           |
+
+
+`js-sdk` is the foundation: `VerdocsEndpoint` handles user and signing sessions, and the UI SDKs build on the same model. Check each package's README (or [Storybook](#component-reference) for React) for supported components and flows.
+
+### Supported Languages (SDKs)
+
+
+| SDK    | Location                               |
+| ------ | -------------------------------------- |
+| Python | `[sdks/python](sdks/python/README.md)` |
+| C#     | `[sdks/csharp](sdks/csharp/README.md)` |
+
+
+
+
+## Quick-starts
+
+Runnable examples live in `[apps/](apps/)`. Most web quick-starts are a minimal login + dashboard you can use as a starting point for your own app.
+
+### Web apps
+
+
+| App                                                       | Framework      |
+| --------------------------------------------------------- | -------------- |
+| `[quickstart-react](apps/quickstart-react/README.md)`     | React (Vite)   |
+| `[quickstart-nextjs](apps/quickstart-nextjs/README.md)`   | Next.js        |
+| `[quickstart-angular](apps/quickstart-angular/README.md)` | Angular        |
+| `[quickstart-vue](apps/quickstart-vue/README.md)`         | Vue            |
+| `[quickstart-wc](apps/quickstart-wc/README.md)`           | Web components |
+
+
+
+
+### Server and CLI
+
+> The tem "console script" refers to a quickstart workflow, using the respective native language. The script consists of the following workflow: `Authenticate → Create an envelope → Get a signing link → Cancel the envelope.
+
+
+| App                                                                     | What it shows                            |
+| ----------------------------------------------------------------------- | ---------------------------------------- |
+| `[quickstart-node](apps/quickstart-node/README.md)`                     | Console script using the JS SDK.         |
+| `[quickstart-python](apps/quickstart-python/README.md)`                       | Console script using the Python SDK.     |
+| `[quickstart-python-server](apps/quickstart-python-server/README.md)`         | Django web app backed by the Python SDK. |
+| `[quickstart-csharp](apps/quickstart-csharp/README.md)`                 | Console script using the C# SDK.         |
+
+
+
+
+### Theming examples
+
+
+| App                                               | What it shows                                                           |
+| ------------------------------------------------- | ----------------------------------------------------------------------- |
+| `[styled-builder](apps/styled-builder/README.md)` | White-labeled template builder using `--vdocs-*` CSS custom properties. |
+| `[styled-signer](apps/styled-signer/README.md)`   | White-labeled signing ceremony with the same theming approach.          |
+
+
+No live API calls in these two; they're reference UIs for styling your integration.
+
+### Component reference
+
+`[storybook](apps/storybook/README.md)` catalogs React SDK components. Angular, Vue, and web-component examples are in their quick-starts and package READMEs.
+
+## API collections
+
+Postman and Bruno collections for exploring the API are in `[collections/](collections/)`, generated from the OpenAPI spec behind `js-sdk`.
+
+## Getting started
+
+Requires Node >= 24 and pnpm 10.
+
+```bash
+pnpm install
 ```
 
-## What's inside?
+Run a quick-start:
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+```bash
+pnpm --filter verdocs-quickstart-react dev       # Vite, :5173
+pnpm --filter verdocs-quickstart-nextjs dev      # Next.js
+pnpm --filter verdocs-quickstart-angular dev     # :4200
+pnpm --filter verdocs-storybook dev              # :6006
 ```
 
-Without global `turbo`, use your package manager:
+Quick-starts default to Verdocs' beta API. Copy `.env.example` to `.env` at the repo root and fill in your API base URL and test account credentials.
 
-```sh
-cd my-turborepo
-npx turbo build
-pnpm dlx turbo build
-pnpm exec turbo build
+To build or test the whole monorepo:
+
+```bash
+pnpm exec turbo run lint typecheck test build
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo build --filter=docs
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)

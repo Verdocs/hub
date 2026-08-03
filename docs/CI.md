@@ -56,7 +56,7 @@ The root `generate:docs` script and `js-sdk`'s `docs`/`generate-openapi`/`unify-
 ### Quickstarts (`apps/quickstart-*`)
 
 - [x] `quickstart-angular` / `-react` / `-vue` / `-wc` already get lint/typecheck/build via the root turbo pipeline
-- [ ] `quickstart-node`, `quickstart-python`, `quickstart-python-console`, `quickstart-csharp` have no lint/test/build scripts and no CI — likely low priority since they're live-API demos, but flag whether even a smoke build/import check is wanted
+- [ ] `quickstart-node`, `quickstart-python`, `quickstart-python-server`, `quickstart-csharp` have no lint/test/build scripts and no CI — likely low priority since they're live-API demos, but flag whether even a smoke build/import check is wanted
 
 
 

@@ -1,0 +1,8 @@
+{
+  "name": "verdocs-quickstart-python-server",
+  "version": "1.0.0",
+  "description": "Task runner stub for the Django Python SDK server quickstart (pnpm/turbo). Real packaging is pyproject.toml.",
+  "scripts": {
+    "start": ".venv/bin/python manage.py runserver"
+  }
+}

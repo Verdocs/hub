@@ -1,21 +1,33 @@
-# Verdocs Python SDK Quickstart
+# Verdocs Python SDK Quickstart (console)
 
-A minimal Django app showing the intended integration pattern for the `verdocs` Python SDK: a mock
-insurance company that authenticates as itself, then issues a policy (the bundled
-[assets/i-9.pdf](assets/i-9.pdf), attached directly with no template) for the policyholder to sign.
+A single console script showing the shortest path from "I have a PDF" to "somebody signed it": the
+integration authenticates as itself, sends the PDF out for signature with no template involved,
+grabs an in-person signing link, then cancels so a test run leaves nothing live behind.
+
+Everything lives in [main.py](main.py). The only dependency is the `verdocs` package; env loading is
+a dozen lines of standard library, so there is no python-dotenv to install.
+
+If you want the same flow inside a web app instead of a script, see
+[quickstart-python-server](../quickstart-python-server), which does it in Django.
 
 ## Setup
 
-From this directory. Needs Python 3.10 or newer — macOS ships an older `python3` by default (3.9,
-whose bundled pip also predates the editable-install support this quickstart needs), so check
-`python3 --version` first and point the venv at a newer interpreter (e.g. `python3.12`) if it's
-below 3.10.
+Needs Python 3.10 or newer. macOS ships an older `python3` by default (3.9, whose bundled pip also
+predates the editable-install support this quickstart needs) — check `python3 --version` first and
+point the venv at a newer interpreter (e.g. `python3.12`) if it's below 3.10.
 
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install verdocs
-.venv/bin/python -m pip install -e . --group dev
+cp .env.example .env
 ```
+
+Get an API key: log in (or register) at https://app.verdocs.com, go to **Settings > API Keys**, and
+create a key with global admin access enabled. Creating the key gives you a client ID and secret.
+Put those in `.env` as `VERDOCS_CLIENT_ID` and `VERDOCS_CLIENT_SECRET`.
+
+`PDF_PATH` defaults to the blank one-pager bundled at `docs/sample-pdfs/blank.pdf`. Point it at
+anything you like; relative paths resolve from this directory.
 
 ### verdocs is not on PyPI yet
 
@@ -26,42 +38,29 @@ from this repo instead:
 .venv/bin/python -m pip install -e ../../sdks/python
 ```
 
-Get an API key: log in (or register) at https://app.verdocs.com, go to **Settings > API Keys**,
-and create a key with global admin access enabled. Creating the key generates a client ID and
-client secret.
-
-Copy `.env.example` to `.env` and set `VERDOCS_CLIENT_ID` / `VERDOCS_CLIENT_SECRET` to the client
-ID and secret from that API key.
-
 ## Run it
 
 ```bash
-set -a; source .env; set +a
-.venv/bin/python manage.py runserver
+.venv/bin/python main.py
 ```
 
-## Try it
+Expected output, four lines:
 
-```bash
-# 1. Authenticate the integration
-curl -X POST http://127.0.0.1:8000/api/auth/login/
-
-# 2. Issue a policy for signature, using the access_token from step 1
-curl -X POST http://127.0.0.1:8000/api/policies/ \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <access_token>" \
-  -d '{"policy_name": "Auto Policy", "policyholder": {"first_name": "Paige", "last_name": "Turner", "email": "paige.turner@nomail.com"}}'
+```
+Organization: Your Company (b221d09d-...)
+Envelope: Quickstart Envelope (3c0a7112-...)
+In-person signing link: https://verdocs.com/sign/3c0a7112-.../Recipient/...
+Canceled: canceled
 ```
 
-## What to look at
+## What it does, in order
 
-- [insurance/views.py](insurance/views.py): `login()` calls `endpoint.auth.authenticate`, `create_policy()` calls `endpoint.envelopes.create` with `EnvelopeCreateDirectParams`, attaching [assets/i-9.pdf](assets/i-9.pdf) as base64 document data (no template)
-- [quickstart/settings.py](quickstart/settings.py): Verdocs config read once from the environment
-
-## Tests
-
-```bash
-.venv/bin/python -m pytest
-```
-
-Tests stub the Verdocs API with respx and never touch the live network.
+1. Loads `.env` and stops with a usage message if anything required is missing.
+2. Authenticates with the `client_credentials` grant. No user logs in; the API key *is* the identity.
+3. Prints the organization the token belongs to. The token carries the org ID but not its name, so
+   the name costs one lookup.
+4. Creates an envelope directly from the PDF: one signer and one required signature field on page 1.
+   Field coordinates are PDF points from the bottom-left of the page.
+5. Prints the envelope ID, which is the thing a real integration would store.
+6. Gets an in-person signing link, for handing your device to the signer instead of emailing them.
+7. Cancels the envelope, which is terminal.
