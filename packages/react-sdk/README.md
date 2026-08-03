@@ -1,18 +1,20 @@
 # @verdocs/react-sdk
 
-Native React 19 components, hooks, and provider for building document workflows with Verdocs.
+React 19 components and hooks for auth, template management, envelope workflows, and signing. Built on `@verdocs/js-sdk` and TanStack Query.
 
-## Install
+Install:
 
 ```bash
 npm install @verdocs/react-sdk @verdocs/js-sdk
 ```
 
-React 19 is a peer dependency. TanStack Query is bundled as a regular dependency; if your app already uses it, pass your own QueryClient to the provider to share one cache.
+React 19 is a peer dependency. If your app already uses TanStack Query, pass your `QueryClient` to `VerdocsProvider` so the SDK shares your cache.
 
-## Usage
+Docs and live examples: https://developers.verdocs.com — component stories also run locally via [`apps/storybook`](../../apps/storybook/README.md).
 
-Wrap your app in the provider and import the stylesheet once:
+## Setup
+
+Import the stylesheet once, wrap your app in the provider, and point `baseUrl` at your Verdocs environment:
 
 ```tsx
 import '@verdocs/react-sdk/styles.css';
@@ -21,34 +23,56 @@ import { VerdocsProvider, VerdocsAuth } from '@verdocs/react-sdk';
 export function App() {
   return (
     <VerdocsProvider baseUrl="https://api.verdocs.com">
-      <VerdocsAuth onAuthenticated={status => console.log('Auth state', status)} />
+      <VerdocsAuth onAuthenticated={status => console.log(status)} />
     </VerdocsProvider>
   );
 }
 ```
 
-## Components
+Pass a preconfigured `VerdocsEndpoint` instead of `baseUrl` when you manage the client yourself (dual user/signing sessions, custom axios instance, etc.).
 
-- `VerdocsAuth`: login, signup, email verification, and password reset flows
-- `VerdocsTemplatesList`: filterable, sortable, paginated template list with starring
-- Controls: `Button`, `TextInput`, `Spinner`, `QuickFilter`, `Dropdown`, `Pagination`
+## What's in the box
+
+**Auth and lists**
+
+- `VerdocsAuth` — login, signup, email verification, password reset
+- `VerdocsTemplatesList` — searchable template list with starring and row actions
+- `VerdocsEnvelopesList` — envelope list with status filters and actions
+
+**Template builder pieces**
+
+- `TemplateCreate`, `TemplateSettings`, `TemplateAttachments`, `TemplateRoles`, `TemplateRoleProperties`, `TemplateFields`, `TemplateFieldProperties`, `TemplateBuildTabs`, `TemplateDocumentPage`, `TemplateCard`, `TemplateTags`
+
+**Envelope and signing**
+
+- `EnvelopeSidebar`, `EnvelopeRecipientSummary`, `EnvelopeUpdateRecipient`, `EnvelopeRecipientLink`, `ContactPicker`, `EnvelopeDocumentPage`, `SignFooter`, `StatusIndicator`
+
+**Primitives**
+
+- Form controls (`Button`, `TextInput`, `SelectInput`, `Checkbox`, …), dialogs (signature adoption, KBA, OTP, delegate, download, …), field renderers for each template field type, and layout helpers (`Table`, `Tabs`, `Pagination`, …)
+
+Export list is in `src/index.ts`. TypeScript types ship for every component prop and event.
 
 ## Hooks
 
-- `useVerdocs()`: the active VerdocsEndpoint from context
-- `useSession()`: reactive session and profile state
-- `useTemplates(params)`: template list query
-- `useToggleTemplateStar()`: star toggle mutation with cache invalidation
+- `useVerdocs()` — the active `VerdocsEndpoint`
+- `useSession()` — session and profile state, updates when the token changes
+- `useTemplates`, `useTemplate`, `useCreateTemplate`, `useUpdateTemplate`, `useDeleteTemplate`, `useToggleTemplateStar`
+- `useEnvelopes`, `useEnvelope`
 
 ## Theming
 
-All design tokens are `--vdocs-*` CSS custom properties on `:root`. White-label by overriding them:
+Design tokens are `--vdocs-*` CSS custom properties on `:root`. Override them to white-label:
 
 ```css
 :root {
   --vdocs-color-primary: #0f766e;
-  --vdocs-font-sans: 'Custom Font', sans-serif;
+  --vdocs-font-sans: 'Your Font', sans-serif;
 }
 ```
 
-Utilities are single-class and low-specificity, so plain CSS overrides work as an escape hatch. Nothing uses Shadow DOM.
+Components render in the light DOM (no Shadow DOM), so your global CSS and token overrides apply directly. See [`apps/styled-builder`](../../apps/styled-builder/README.md) and [`apps/styled-signer`](../../apps/styled-signer/README.md) for interactive demos.
+
+## Quick-start
+
+[`apps/quickstart-react`](../../apps/quickstart-react/README.md) — Vite app with login, session guard, and templates dashboard. [`apps/quickstart-nextjs`](../../apps/quickstart-nextjs/README.md) is the same pattern on the App Router.

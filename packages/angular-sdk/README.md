@@ -1,16 +1,16 @@
 # @verdocs/angular-sdk
 
-Native Angular components, services, and provider for building document workflows with Verdocs. Standalone components, signal-based inputs and outputs, zoneless-compatible.
+Angular components and services for auth, template management, envelope workflows, and signing. Standalone components, signal-based inputs and outputs, zoneless-compatible. Built on `@verdocs/js-sdk`.
 
-## Install
+Install:
 
 ```bash
 npm install @verdocs/angular-sdk @verdocs/js-sdk
 ```
 
-## Usage
+## Setup
 
-Register the provider at bootstrap and import the stylesheet once (for example in your root styles file):
+Register the provider at bootstrap and import the stylesheet once (for example in `styles.css`):
 
 ```ts
 import { bootstrapApplication } from '@angular/platform-browser';
@@ -25,33 +25,42 @@ bootstrapApplication(AppComponent, {
 @import '@verdocs/angular-sdk/styles.css';
 ```
 
-Then use the components:
+Use the components in templates:
 
 ```html
 <verdocs-auth (authenticated)="onAuthenticated($event)" />
 <verdocs-templates-list (viewTemplate)="onViewTemplate($event)" />
 ```
 
-## Components
+## What's in the box
 
-- `verdocs-auth`: login, signup, email verification, and password reset flows
-- `verdocs-templates-list`: filterable, sortable, paginated template list with starring
-- Controls: `verdocs-button`, `verdocs-text-input`, `verdocs-spinner`, `verdocs-quick-filter`, `verdocs-dropdown`, `verdocs-pagination`
+Same feature set as `@verdocs/react-sdk`, expressed as Angular standalone components with `verdocs-*` selectors:
+
+- **Auth and lists** — `verdocs-auth`, `verdocs-templates-list`, `verdocs-envelopes-list`
+- **Template builder** — `verdocs-template-create`, `verdocs-template-settings`, `verdocs-template-attachments`, `verdocs-template-roles`, `verdocs-template-fields`, and the rest of the build flow
+- **Envelopes and signing** — `verdocs-envelope-sidebar`, `verdocs-envelope-recipient-summary`, `verdocs-envelope-update-recipient`, `verdocs-sign-footer`, field renderers, dialogs, and shared controls
+
+See `src/public-api.ts` for the full export list.
 
 ## Services
 
-- `VerdocsSessionService`: reactive session and profile signals, for guards and headers
-- `VerdocsTemplatesService`: signal-based template queries and the star toggle. Query keys and invalidation semantics mirror `@verdocs/react-sdk`.
+- `VerdocsSessionService` — session and profile signals for route guards and headers
+- `VerdocsTemplatesService` — template queries and star toggle
+- `VerdocsEnvelopesService` — envelope list and detail queries, updates
+
+Inject `VERDOCS_ENDPOINT` or use `injectVerdocsEndpoint()` when you need the underlying `VerdocsEndpoint`.
 
 ## Theming
 
-All design tokens are `--vdocs-*` CSS custom properties on `:root`, shared with the React SDK. White-label by overriding them:
+Same `--vdocs-*` tokens as the React SDK. Override on `:root`; no Shadow DOM.
 
 ```css
 :root {
   --vdocs-color-primary: #0f766e;
-  --vdocs-font-sans: 'Custom Font', sans-serif;
+  --vdocs-font-sans: 'Your Font', sans-serif;
 }
 ```
 
-Utilities are single-class and low-specificity, so plain CSS overrides work as an escape hatch. Nothing uses Shadow DOM.
+## Quick-start
+
+[`apps/quickstart-angular`](../../apps/quickstart-angular/README.md) — login route, session guard, templates dashboard.

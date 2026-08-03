@@ -1,8 +1,16 @@
 # @verdocs/wc-sdk
 
-Native web components for building document workflows with Verdocs, written with Lit 3. This is the framework-free mirror of `@verdocs/react-sdk`: same visual states, same events (as DOM CustomEvents), same wire behavior.
+Framework-agnostic web components for auth, template management, envelope workflows, and signing. Lit 3, same behavior and events as `@verdocs/react-sdk`.
 
-## Usage
+Install:
+
+```bash
+npm install @verdocs/wc-sdk @verdocs/js-sdk
+```
+
+## Setup
+
+Import the stylesheet and register the elements. Configure a default `VerdocsEndpoint` once at startup (the web-component equivalent of `VerdocsProvider`):
 
 ```ts
 import '@verdocs/wc-sdk/styles.css';
@@ -11,20 +19,35 @@ import { VerdocsEndpoint } from '@verdocs/js-sdk';
 
 new VerdocsEndpoint({ baseURL: 'https://api.verdocs.com' }).setDefault();
 
-document.body.innerHTML = '<vdocs-auth></vdocs-auth>';
-document.querySelector('vdocs-auth')!.addEventListener('vdocs-authenticated', e => {
-  console.log('session state', e.detail);
+const auth = document.querySelector('vdocs-auth');
+auth?.addEventListener('vdocs-authenticated', e => {
+  console.log(e.detail);
 });
 ```
 
-There is no provider tree in plain HTML, so the js-sdk's default endpoint singleton plays that role: configure it once at startup. Every component that talks to the API also accepts an `endpoint` property override for dual-session scenarios (a signing flow inside a user app).
+```html
+<vdocs-auth></vdocs-auth>
+<vdocs-templates-list></vdocs-templates-list>
+```
 
-## Design notes
+Any component that calls the API also accepts an `endpoint` property when you need a non-default client (for example a signing session alongside your user session).
 
-- Components render to light DOM on purpose: white-label CSS from the host page reaches our markup. Styling comes entirely from the compiled stylesheet (`vdocs:`-prefixed utilities, `--vdocs-*` tokens on `:root`), so theming is a matter of overriding CSS variables.
-- Public events use the `vdocs-` prefix, bubble, and are composed: `vdocs-authenticated`, `vdocs-sdk-error`, `vdocs-view-template`, and so on, with typed payloads in `detail`.
-- Objects and arrays travel through properties, not attributes. A couple of booleans that default to true (`visible` on vdocs-auth, `showPagination` on vdocs-templates-list) are property-only, since a boolean attribute cannot express false-by-absence against a true default.
-- Elements self-register at module scope. Importing `@verdocs/wc-sdk` (or an individual element module) is what makes the tags usable; registration no-ops on the server and warns instead of throwing when a tag is already defined.
-- No SSR: Lit's server renderer only supports shadow DOM components, so load these on the client.
+## Elements
 
-See `docs/standards/web-components.md` in the repo for the full rules, and `apps/quickstart-wc` for a runnable login + dashboard example.
+Custom element tags use the `vdocs-` prefix:
+
+- **Auth and lists** — `vdocs-auth`, `vdocs-templates-list`, `vdocs-envelopes-list`
+- **Template builder** — `vdocs-template-create`, `vdocs-template-settings`, `vdocs-template-attachments`, `vdocs-template-roles`, `vdocs-template-fields`, and the rest of the build flow
+- **Envelopes and signing** — `vdocs-envelope-sidebar`, `vdocs-envelope-recipient-summary`, `vdocs-envelope-update-recipient`, `vdocs-sign-footer`, field elements, dialogs, controls
+
+Public events are `vdocs-*` custom events with typed `detail` payloads (`vdocs-authenticated`, `vdocs-view-template`, `vdocs-sdk-error`, …). Objects and arrays are properties, not attributes.
+
+## Styling and SSR
+
+Components render to the light DOM so host-page CSS reaches the markup. Theming is `--vdocs-*` tokens on `:root`, same as the React SDK.
+
+These elements are client-only. Do not render them on the server.
+
+## Quick-start
+
+[`apps/quickstart-wc`](../../apps/quickstart-wc/README.md) — Vite app with hash routing, login, and templates dashboard.

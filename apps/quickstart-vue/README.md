@@ -1,26 +1,33 @@
 # Verdocs Vue Quickstart
 
-A minimal Vite + Vue 3 app showing the intended integration pattern for `@verdocs/vue-sdk`: a login route and an auth-guarded dashboard hosting the templates list.
+Minimal Vite + Vue 3 app: login route, session guard, templates dashboard.
 
-## Run it
+## Run
+
+From the repo root:
 
 ```bash
 pnpm install
-pnpm --filter verdocs-quickstart-vue dev
+pnpm --filter verdocs-quickstart-vue start
 ```
 
-The app runs on port 5174 (the React quickstart keeps 5173). Point it elsewhere with an env var:
+Opens at http://localhost:5174 (React quickstart uses 5173). Defaults to the beta API.
+
+Another environment:
 
 ```bash
-VITE_VERDOCS_API_BASE=https://api.verdocs.com pnpm --filter verdocs-quickstart-vue dev
+VITE_VERDOCS_API_BASE=https://api.verdocs.com pnpm --filter verdocs-quickstart-vue start
 ```
 
-## What to look at
+## Files worth reading
 
-- [src/main.ts](src/main.ts): app bootstrap and the one-line stylesheet import
-- [src/App.vue](src/App.vue): `VerdocsProvider` wrapping the router view
-- [src/router.ts](src/router.ts): vue-router 5 routes, with the dashboard nested under a guard component
-- [src/routes/RequireSession.vue](src/routes/RequireSession.vue): the session guard built on `useSession()`
-- [src/routes/LoginView.vue](src/routes/LoginView.vue): `VerdocsAuth` with navigation on login
-- [src/routes/DashboardView.vue](src/routes/DashboardView.vue): `VerdocsTemplatesList` with row-action handlers
+| File | What it does |
+| --- | --- |
+| [`src/main.ts`](src/main.ts) | App bootstrap, stylesheet import |
+| [`src/App.vue`](src/App.vue) | `VerdocsProvider` around the router view |
+| [`src/router.ts`](src/router.ts) | Routes; dashboard behind a guard |
+| [`src/routes/RequireSession.vue`](src/routes/RequireSession.vue) | Session guard via `useSession()` |
+| [`src/routes/LoginView.vue`](src/routes/LoginView.vue) | `VerdocsAuth` |
+| [`src/routes/DashboardView.vue`](src/routes/DashboardView.vue) | `VerdocsTemplatesList` |
 
+Package docs: [`packages/vue-sdk/README.md`](../../packages/vue-sdk/README.md)

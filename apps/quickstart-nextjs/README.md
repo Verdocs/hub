@@ -1,26 +1,34 @@
 # Verdocs Next.js Quickstart
 
-A minimal Next.js (App Router) app showing the intended integration pattern for `@verdocs/react-sdk`: a login page and an auth-guarded dashboard hosting the templates list.
+Minimal Next.js App Router app: login page, session guard, templates dashboard. Same integration pattern as the React quickstart, adapted for Next's client boundary.
 
-## Run it
+## Run
+
+From the repo root:
 
 ```bash
 pnpm install
-pnpm --filter verdocs-quickstart-nextjs dev
+pnpm --filter verdocs-quickstart-nextjs start
 ```
 
-The app talks to the beta environment (`https://stage-api.verdocs.com`) by default. Point it elsewhere with an env var:
+Defaults to the beta API (`https://stage-api.verdocs.com`).
+
+Another environment:
 
 ```bash
-NEXT_PUBLIC_VERDOCS_API_BASE=https://api.verdocs.com pnpm --filter verdocs-quickstart-nextjs dev
+NEXT_PUBLIC_VERDOCS_API_BASE=https://api.verdocs.com pnpm --filter verdocs-quickstart-nextjs start
 ```
 
-## What to look at
+## Files worth reading
 
-- [app/providers.tsx](app/providers.tsx): the client-side provider boundary and the one-line stylesheet import in [app/layout.tsx](app/layout.tsx)
-- [app/page.tsx](app/page.tsx): the root route, which always sends visitors into the dashboard
-- [app/dashboard/layout.tsx](app/dashboard/layout.tsx): a session guard built on `useSession()` that bounces unauthenticated visitors to `/login`
-- [app/login/page.tsx](app/login/page.tsx): `VerdocsAuth` with a redirect once a session exists
-- [app/dashboard/page.tsx](app/dashboard/page.tsx): `VerdocsTemplatesList` with row-action callbacks
+| File | What it does |
+| --- | --- |
+| [`app/providers.tsx`](app/providers.tsx) | Client-side `VerdocsProvider` |
+| [`app/layout.tsx`](app/layout.tsx) | Stylesheet import |
+| [`app/dashboard/layout.tsx`](app/dashboard/layout.tsx) | Session guard with `useSession()` |
+| [`app/login/page.tsx`](app/login/page.tsx) | `VerdocsAuth` |
+| [`app/dashboard/page.tsx`](app/dashboard/page.tsx) | `VerdocsTemplatesList` |
 
-`@verdocs/react-sdk` has no `'use client'` directives of its own, so every route or component that touches its hooks or components is marked `'use client'` here. That is the boundary Next.js needs; the SDK does not need to know about it.
+`@verdocs/react-sdk` does not ship `'use client'` directives. Every route or component that imports its hooks or components is marked `'use client'` here. That is a Next.js requirement, not something the SDK needs to know about.
+
+Package docs: [`packages/react-sdk/README.md`](../../packages/react-sdk/README.md)

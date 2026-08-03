@@ -18,9 +18,9 @@ Written at the end of the POC build session on 2026-07-09. Everything below is s
 ```bash
 pnpm install                                       # hub root
 pnpm exec turbo run lint check-types test build    # the full gate
-pnpm --filter verdocs-quickstart-react dev         # React quickstart (Vite, port 5173)
-pnpm --filter verdocs-storybook dev                # Storybook on 6006
-pnpm --filter verdocs-quickstart-angular dev       # Angular quickstart on 4200
+pnpm --filter verdocs-quickstart-react start         # React quickstart (Vite, port 5173)
+pnpm --filter verdocs-storybook start                # Storybook on 6006
+pnpm --filter verdocs-quickstart-angular start       # Angular quickstart on 4200
 pnpm conformance                                   # live against beta, needs .env
 ```
 

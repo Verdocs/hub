@@ -1,27 +1,24 @@
-# Verdocs Platform API Bruno collection
+# Verdocs Platform API — Bruno
 
-This folder is a [Bruno](https://www.usebruno.com/) collection in the .bru file format, covering every endpoint in the Verdocs Platform API. Each endpoint area is a folder, and each request is one .bru file.
+[Bruno](https://www.usebruno.com/) collection in `.bru` format. One folder per endpoint area, one file per request.
 
 ## Open
 
-In Bruno, choose Open Collection and select this folder (`collections/bruno`).
+In Bruno: **Open Collection** → select this folder (`collections/bruno`).
 
-## Set your token
+## Token and environment
 
-Select the `beta` environment, then edit it and fill in the `access_token` secret variable with your bearer token. Obtain one with the requests in the Authentication folder. Bruno stores secret values locally, so your token never lands in these committed files.
+Select the `beta` environment and set `access_token` (secret) to your bearer token. Obtain one from the Authentication folder. Bruno stores secrets locally; they are not committed.
 
-Collection-level auth sends `Authorization: Bearer {{access_token}}` on every request; each request declares `auth: inherit`.
+Collection auth sends `Authorization: Bearer {{access_token}}`; each request uses `auth: inherit`.
 
-The beta environment points base_url at https://stage-api.verdocs.com. For production, add an environment with base_url set to https://api.verdocs.com.
+| Environment | `base_url` |
+| --- | --- |
+| beta (included) | `https://stage-api.verdocs.com` |
+| production (add your own) | `https://api.verdocs.com` |
 
-Optional query parameters are present but unchecked. Path parameters live in each request's params and must be filled in before sending. Request bodies are pre-filled with example JSON derived from the API schemas.
+Optional query params are unchecked by default. Path params live in each request's `params` block. Bodies include example JSON from the API schemas.
 
-## These files are generated
+## Regeneration
 
-Everything in this folder is generated from `packages/js-sdk/openapi.json`. Do not edit these files by hand. To make a change, edit the generator in `packages/collections` (or the spec inputs in js-sdk) and run:
-
-```
-pnpm --filter @verdocs/collections generate
-```
-
-CI runs `pnpm --filter @verdocs/collections check` and fails if the committed output no longer matches what the generator produces.
+This folder is generated from the OpenAPI spec in `@verdocs/js-sdk`. Do not edit by hand. If you maintain the hub repo and need to refresh the collection, run `pnpm --filter @verdocs/collections generate` and commit the result.

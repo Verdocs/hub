@@ -1,31 +1,57 @@
-# Verdocs JS SDK
+# @verdocs/js-sdk
 
-> Verdocs SDK for Javascript / Typescript
+Typed JavaScript/TypeScript client for the Verdocs REST API. Runs in Node and the browser.
 
-This SDK provides convenience wrappers for both Browser-based and NodeJS applications to call the Verdocs API, with strong typing and
-documentation to help you get started quickly developing for the Verdocs platform.
+Install:
 
-Please see the [Documentation](https://developers.verdocs.com/sdks/js-ts/overview) for installation
-and usage instructions.
+```bash
+npm install @verdocs/js-sdk
+```
 
-## Structure
+Full API reference: [https://developers.verdocs.com/docs/reference/SDK/languages/js-sdk](https://developers.verdocs.com/docs/reference/SDK/languages/js-sdk)
 
-Verdocs functions are organized into high-level modules that represent the main objects within the platform:
+## VerdocsEndpoint
 
-- Documents - An individual document to be signed. Documents are created from templates.
-- HTTP - General support functionality for Verdocs' REST endpoints. Typically not used directly.
-- Organizations - An Organization is a container for user profiles, templates, documents, billing, and other related objects.
-- Templates - A template for a document containing a PDF file, metadata for signature fields, and other information.
-- Users - All operations related to authentication and user-related operations.
-- Utils - General support functions used by the other modules and exported for convenience.
+Everything goes through `VerdocsEndpoint`. It holds your API base URL, the active bearer token, and decoded session claims.
 
-Please see the [API Docs](https://github.com/Verdocs/js-sdk/tree/main/docs) for details on the functions provided by each module.
+```ts
+import { VerdocsEndpoint, authenticate } from '@verdocs/js-sdk';
 
-## Contributing
+const endpoint = new VerdocsEndpoint({ baseURL: 'https://api.verdocs.com' });
+endpoint.setDefault(); // optional singleton for browser apps
 
-This repository is actively maintained and supported by [Verdocs](https://verdocs.com/). We welcome community contributions and
-suggestions! Please file a pull request with any change requests and we will review them as soon as possible.
+const { access_token } = await authenticate(endpoint, {
+  username: 'you@example.com',
+  password: 'secret',
+});
+endpoint.setToken(access_token);
+```
 
-## TODO
+Verdocs has two session types: **user** (your app, managing templates and envelopes) and **signing** (an ephemeral recipient session). Run one of each in parallel when you need both: create two endpoints, pass `sessionType: 'signing'` on the signing one, and call `setToken` on each with the right token.
 
-Expand the placeholder test suite with more mock data and result checks. HTTP mocking uses `axios-mock-adapter` today; we may replace that with a lighter transport mock later.
+## API surface
+
+Functions are grouped by domain and mirror the REST API:
+
+- **Users / Auth** — login, signup, password reset, profile management
+- **Templates** — template CRUD, documents, roles, fields
+- **Envelopes** — send, track, cancel, recipient management
+- **Organizations** — members, groups, brands, webhooks, API keys
+- **Documents** — direct document operations outside templates
+
+Import what you need from the package root or from subpaths if your bundler supports it. Types for request and response bodies ship with the functions.
+
+## UI SDKs
+
+If you are embedding Verdocs in a web app, you probably want a UI package on top of this client:
+
+- [@verdocs/react-sdk](../react-sdk/README.md)
+- [@verdocs/angular-sdk](../angular-sdk/README.md)
+- [@verdocs/vue-sdk](../vue-sdk/README.md)
+- [@verdocs/wc-sdk](../wc-sdk/README.md)
+
+Those packages call the same endpoints through `VerdocsEndpoint` under the hood.
+
+## Quick-start
+
+A minimal Node script that creates and cancels an envelope lives at `[apps/quickstart-node](../../apps/quickstart-node/README.md)`.

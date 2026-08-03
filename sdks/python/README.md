@@ -1,38 +1,16 @@
 # Verdocs Python SDK
 
-Python SDK for the Verdocs e-signing platform, at full parity with the js-sdk public
-surface. Endpoint sessions with sync/async parity, pydantic v2 wire models that keep
-undocumented server fields, resource namespaces for every API family (templates,
-template documents/roles/fields, envelopes, recipients, signatures, initials,
-organizations, members, groups, invitations, contacts, api keys, brands, webhooks,
-notification templates, users, profiles, auth), and pure-logic helpers
-(`verdocs.permissions`, `verdocs.validators`, `verdocs.utils.*`).
+Python client for the Verdocs REST API. Sync and async endpoints, pydantic v2 models, and the same resource layout as the JavaScript SDK.
 
-API reference and guides: https://developers.verdocs.com
+Install:
 
-In the source repo, the symbol-by-symbol parity mapping lives in `sdks/API-PARITY.md`
-at the hub root, the binding rules in `docs/standards/python.md`, and wire-truth notes
-for the tricky endpoints in `sdks/WIRE-NOTES.md`.
-
-## Install
-
-```
+```bash
 pip install verdocs
 ```
 
-Python 3.10 through 3.14. The only runtime dependencies are httpx and pydantic.
+Python 3.10+. Runtime dependencies: httpx and pydantic.
 
-Working on the SDK itself instead of consuming it? Install it editable from this
-directory:
-
-```
-python3 -m venv .venv
-.venv/bin/python -m pip install -e . --group dev
-```
-
-The dev group brings in pytest, pytest-asyncio, respx, ruff, and griffe (dev tooling
-lives in `[dependency-groups]`, not extras, so it is `--group dev` rather than
-`.[dev]`). Drop the flag if you only need the SDK itself.
+API reference: https://developers.verdocs.com
 
 ## Quickstart
 
@@ -51,13 +29,11 @@ with VerdocsEndpoint() as endpoint:
         print(template.id, template.name)
 ```
 
-`AsyncVerdocsEndpoint` is the method-for-method async twin:
+Async twin — same methods, `async`/`await`:
 
 ```python
 import asyncio
-
 from verdocs import AsyncVerdocsEndpoint, PasswordGrantRequest
-
 
 async def main() -> None:
     async with AsyncVerdocsEndpoint() as endpoint:
@@ -68,56 +44,38 @@ async def main() -> None:
         page = await endpoint.templates.list()
         print(page.count)
 
-
 asyncio.run(main())
 ```
 
 ## Sessions
 
-An endpoint is one session context. Verdocs has two session types, user and signing,
-and an app can run one of each side by side: authenticate a user endpoint for regular
-operations, and hand a signing token to a second endpoint for an ephemeral signing
-flow, then discard it. `set_token()` decodes the token, keeps its claims on
-`endpoint.session`, and sets the right auth header for the session type; a malformed
-or expired token clears the session instead of raising, mirroring the js-sdk.
+An endpoint is one session context. Verdocs distinguishes **user** sessions (your integration managing templates and envelopes) from **signing** sessions (a recipient in a ceremony). Keep two endpoints when you need both:
 
 ```python
-user_endpoint = VerdocsEndpoint()
-user_endpoint.set_token(user_access_token)
+user = VerdocsEndpoint()
+user.set_token(user_access_token)
 
-signing_endpoint = VerdocsEndpoint(session_type="signing")
-signing_endpoint.set_token(signing_token)
+signing = VerdocsEndpoint(session_type="signing")
+signing.set_token(signing_token)
 ```
 
-Everything the SDK raises derives from `VerdocsError`: API failures are
-`VerdocsAPIError` (with `AuthenticationError`, `NotFoundError`, and `RateLimitError`
-for the common statuses, plus `status_code`, `response`, and `body` on every one),
-and transport failures are `VerdocsConnectionError`.
+`set_token` decodes the JWT, stores claims on `endpoint.session`, and sets the correct auth header. A bad or expired token clears the session instead of raising.
 
-## Checks
+## Errors
 
-```
-.venv/bin/python -m ruff format --check .
-.venv/bin/python -m ruff check .
-.venv/bin/python -m pytest
-./docs/generate-sdk-docs.sh
-```
+All SDK exceptions inherit from `VerdocsError`. API failures are `VerdocsAPIError` (with `status_code`, `response`, and `body`). Common statuses have subclasses: `AuthenticationError`, `NotFoundError`, `RateLimitError`. Transport failures are `VerdocsConnectionError`.
 
-From the hub root, regenerate every language then unify:
+## Resource namespaces
 
-```
-pnpm generate:sdk-docs
-```
+`endpoint.templates`, `endpoint.envelopes`, `endpoint.users`, `endpoint.organizations`, and the rest map directly to the REST API. Helpers for permissions, validators, and common utilities live under `verdocs.permissions`, `verdocs.validators`, and `verdocs.utils`.
 
-Unit tests mock every route with respx and never touch the live API.
-`docs/generate_sdk_docs.py` regenerates `sdk-docs.json` from Auth docstrings via griffe.
+## Quick-starts
 
-The conformance lane is the exception: it runs the shared cases from
-`packages/conformance/fixtures.json` against live beta, comparing SDK results to raw
-httpx calls with volatile fields normalized. It is excluded from the default run and
-needs `VERDOCS_API_BASE`, `VERDOCS_TEST_EMAIL`, and `VERDOCS_TEST_PASSWORD`, read
-from the hub root `.env` (or the environment):
+- [`apps/quickstart-python`](../../apps/quickstart-python/README.md) — console script: API key auth, create envelope from PDF, signing link, cancel
+- [`apps/quickstart-python-server`](../../apps/quickstart-python-server/README.md) — Django app issuing policies for signature
 
-```
-.venv/bin/python -m pytest -m conformance
+If you are working from a clone of this repo before the PyPI release is available, install editable from `sdks/python`:
+
+```bash
+pip install -e path/to/hub/sdks/python
 ```

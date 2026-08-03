@@ -1,29 +1,25 @@
 # Verdocs Styled Builder
 
-A sales-demo stub of the template builder, built to show what a customer's white-labeled
-builder could look like. Nothing here talks to an API: the toolbar, fields palette, document
-page, and properties panel are representative DOM styled entirely with the `--vdocs-*` design
-tokens from `@verdocs/react-sdk`, so restyling the whole app is just a matter of overriding
-those custom properties on the document element.
+Demo of a white-labeled template builder. No API calls — toolbar, field palette, document page, and properties panel are representative markup styled with `--vdocs-*` tokens from `@verdocs/react-sdk`.
 
-## Run it
+Use it to show prospects how their brand would look on the builder surface before you wire up the real embed.
+
+## Run
+
+From the repo root:
 
 ```bash
 pnpm install
-pnpm --filter verdocs-styled-builder dev
+pnpm --filter verdocs-styled-builder start
 ```
 
-## What to demo
+## Walkthrough
 
-1. Click "Brand theme" in the toolbar.
-2. Click a preset (Meridian Trust, Harbor Realty Group, CarePoint Health) to dress the
-   builder as a fictional customer in one click, or paste a prospect's real values:
-   colors, corner radius, font stack, logo URL, company name.
-3. Everything restyles live: SDK controls, panels, the placed field tints, all of it. The
-   document page itself stays white on purpose, because a real uploaded PDF would not
-   change with the brand.
-4. "Reset to Verdocs" puts the stock theme back. The last values persist in localStorage,
-   so a refresh keeps the demo dressed.
+1. Click **Brand theme** in the toolbar.
+2. Pick a preset (Meridian Trust, Harbor Realty Group, CarePoint Health) or paste your own colors, radius, font stack, logo URL, and company name.
+3. The UI restyles live. The document page stays white on purpose — a real uploaded PDF would not inherit your brand fill.
+4. **Reset to Verdocs** restores defaults. Values persist in `localStorage` across refresh.
 
-The real builder embed is not ported to the React SDK yet. When it lands, this app swaps
-its stub components for the real one and the theming story stays exactly the same.
+When the production builder ships in the React SDK, this app swaps stub markup for the real component. The theming approach does not change.
+
+Theming docs: [`packages/react-sdk/README.md`](../../packages/react-sdk/README.md#theming)

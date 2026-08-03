@@ -1,20 +1,14 @@
-# Verdocs Python SDK Quickstart (console)
+# Verdocs Python Quickstart
 
-A single console script showing the shortest path from "I have a PDF" to "somebody signed it": the
-integration authenticates as itself, sends the PDF out for signature with no template involved,
-grabs an in-person signing link, then cancels so a test run leaves nothing live behind.
+Console script with the same flow as the Node quickstart: API key auth, envelope from a PDF, in-person signing link, cancel.
 
-Everything lives in [main.py](main.py). The only dependency is the `verdocs` package; env loading is
-a dozen lines of standard library, so there is no python-dotenv to install.
+All logic is in [`main.py`](main.py). Depends on `verdocs` only. Environment loading is a few lines of stdlib — no python-dotenv.
 
-If you want the same flow inside a web app instead of a script, see
-[quickstart-python-server](../quickstart-python-server), which does it in Django.
+For a web-app version of the same pattern, see [`quickstart-python-server`](../quickstart-python-server/README.md).
 
 ## Setup
 
-Needs Python 3.10 or newer. macOS ships an older `python3` by default (3.9, whose bundled pip also
-predates the editable-install support this quickstart needs) — check `python3 --version` first and
-point the venv at a newer interpreter (e.g. `python3.12`) if it's below 3.10.
+Python 3.10+. On macOS, check `python3 --version` — the system Python is often 3.9, which is too old.
 
 ```bash
 python3 -m venv .venv
@@ -22,29 +16,23 @@ python3 -m venv .venv
 cp .env.example .env
 ```
 
-Get an API key: log in (or register) at https://app.verdocs.com, go to **Settings > API Keys**, and
-create a key with global admin access enabled. Creating the key gives you a client ID and secret.
-Put those in `.env` as `VERDOCS_CLIENT_ID` and `VERDOCS_CLIENT_SECRET`.
+API key at https://app.verdocs.com → **Settings → API Keys** (global admin). Set `VERDOCS_CLIENT_ID` and `VERDOCS_CLIENT_SECRET` in `.env`.
 
-`PDF_PATH` defaults to the blank one-pager bundled at `docs/sample-pdfs/blank.pdf`. Point it at
-anything you like; relative paths resolve from this directory.
+`PDF_PATH` defaults to [`docs/sample-pdfs/blank.pdf`](../../docs/sample-pdfs/blank.pdf).
 
-### verdocs is not on PyPI yet
-
-`pip install verdocs` will not find anything until the package ships. Until then, install the SDK
-from this repo instead:
+If `pip install verdocs` is not available yet, install from a clone of this repo:
 
 ```bash
 .venv/bin/python -m pip install -e ../../sdks/python
 ```
 
-## Run it
+## Run
 
 ```bash
 .venv/bin/python main.py
 ```
 
-Expected output, four lines:
+Expected output:
 
 ```
 Organization: Your Company (b221d09d-...)
@@ -53,14 +41,8 @@ In-person signing link: https://verdocs.com/sign/3c0a7112-.../Recipient/...
 Canceled: canceled
 ```
 
-## What it does, in order
+## What happens
 
-1. Loads `.env` and stops with a usage message if anything required is missing.
-2. Authenticates with the `client_credentials` grant. No user logs in; the API key *is* the identity.
-3. Prints the organization the token belongs to. The token carries the org ID but not its name, so
-   the name costs one lookup.
-4. Creates an envelope directly from the PDF: one signer and one required signature field on page 1.
-   Field coordinates are PDF points from the bottom-left of the page.
-5. Prints the envelope ID, which is the thing a real integration would store.
-6. Gets an in-person signing link, for handing your device to the signer instead of emailing them.
-7. Cancels the envelope, which is terminal.
+Same seven steps as the Node quickstart: load env, `client_credentials` auth, org lookup, direct envelope create, print ID, in-person link, cancel.
+
+Package docs: [`sdks/python/README.md`](../../sdks/python/README.md)

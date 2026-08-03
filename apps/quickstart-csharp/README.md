@@ -1,10 +1,8 @@
-# Verdocs C# SDK Quickstart
+# Verdocs C# Quickstart
 
-A single console app showing the shortest path from "I have a PDF" to "somebody signed it": the
-integration authenticates as itself, sends the PDF out for signature with no template involved,
-grabs an in-person signing link, then cancels so a test run leaves nothing live behind.
+Console app: API key auth, envelope from a PDF, in-person signing link, cancel. Same flow as the Node and Python console quickstarts.
 
-Everything lives in [Program.cs](Program.cs). The only dependency is the `Verdocs.Sdk` package.
+All logic is in [`Program.cs`](Program.cs). Depends on `Verdocs.Sdk`.
 
 ## Setup
 
@@ -12,20 +10,17 @@ Everything lives in [Program.cs](Program.cs). The only dependency is the `Verdoc
 cp .env.example .env
 ```
 
-Get an API key: log in (or register) at https://app.verdocs.com, go to **Settings > API Keys**, and
-create a key with global admin access enabled. Creating the key gives you a client ID and secret.
-Put those in `.env` as `VERDOCS_CLIENT_ID` and `VERDOCS_CLIENT_SECRET`.
+API key at https://app.verdocs.com → **Settings → API Keys** (global admin). Set `VERDOCS_CLIENT_ID` and `VERDOCS_CLIENT_SECRET` in `.env`.
 
-`PDF_PATH` defaults to the blank one-pager bundled at `docs/sample-pdfs/blank.pdf`. Point it at
-anything you like; relative paths resolve from this directory.
+`PDF_PATH` defaults to [`docs/sample-pdfs/blank.pdf`](../../docs/sample-pdfs/blank.pdf).
 
-## Run it
+## Run
 
 ```bash
 dotnet run
 ```
 
-Expected output, four lines:
+Expected output:
 
 ```
 Organization: Your Company (b221d09d-...)
@@ -34,14 +29,8 @@ In-person signing link: https://verdocs.com/sign/3c0a7112-.../Recipient/...
 Canceled: canceled
 ```
 
-## What it does, in order
+## What happens
 
-1. Loads `.env` and stops with a usage message if anything required is missing.
-2. Authenticates with the `client_credentials` grant. No user logs in; the API key *is* the identity.
-3. Prints the organization the token belongs to. The token carries the org ID but not its name, so
-   the name costs one lookup.
-4. Creates an envelope directly from the PDF: one signer and one required signature field on page 1.
-   Field coordinates are PDF points from the bottom-left of the page.
-5. Prints the envelope ID, which is the thing a real integration would store.
-6. Gets an in-person signing link, for handing your device to the signer instead of emailing them.
-7. Cancels the envelope, which is terminal.
+Load env, `client_credentials` auth, org lookup, direct envelope create, print ID, in-person link, cancel.
+
+Package docs: [`sdks/csharp/README.md`](../../sdks/csharp/README.md)
