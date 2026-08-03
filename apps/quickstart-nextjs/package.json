@@ -1,0 +1,30 @@
+{
+  "name": "verdocs-quickstart-nextjs",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "pnpm --filter @verdocs/react-sdk build && next dev",
+    "dev": "next dev",
+    "build": "next build",
+    "preview": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "eslint . --fix"
+  },
+  "dependencies": {
+    "@verdocs/react-sdk": "workspace:^",
+    "next": "^16.2.12",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@verdocs/eslint-config": "^1.0.0",
+    "@verdocs/typescript-config": "^1.0.0",
+    "eslint": "^9.39.1",
+    "typescript": "5.9.3"
+  }
+}
