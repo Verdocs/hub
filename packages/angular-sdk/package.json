@@ -1,5 +1,6 @@
 {
   "name": "@verdocs/angular-sdk",
+  "private": false,
   "version": "6.10.5",
   "description": "Native Angular components, services, and provider for building document workflows with Verdocs",
   "license": "MIT",

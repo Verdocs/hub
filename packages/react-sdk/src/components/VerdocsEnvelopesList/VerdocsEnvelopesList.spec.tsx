@@ -3,8 +3,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { getEnvelopes, userCanCancelEnvelope } from '@verdocs/js-sdk';
 import type { IEnvelope, IListEnvelopesParams, IRecipient } from '@verdocs/js-sdk';
 import VerdocsProvider from '../../provider/VerdocsProvider';
-import { TEST_API_BASE } from '../../test/setup';
 import VerdocsEnvelopesList from './VerdocsEnvelopesList';
+import { TEST_API_BASE } from '../../test/setup';
 
 vi.mock('@verdocs/js-sdk', async importOriginal => {
   const actual = await importOriginal<typeof import('@verdocs/js-sdk')>();

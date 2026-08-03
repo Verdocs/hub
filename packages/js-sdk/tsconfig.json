@@ -10,7 +10,7 @@
     "strict": true,
     "noEmit": false,
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "strictNullChecks": true,
     "skipLibCheck": true,
     "types": ["vitest/globals"]

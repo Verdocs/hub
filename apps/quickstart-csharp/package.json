@@ -1,5 +1,6 @@
 {
   "name": "verdocs-quickstart-csharp",
+  "private": true,
   "version": "1.0.0",
   "description": "Task runner stub for the C# SDK quickstart (pnpm/turbo). Real packaging is Verdocs.Quickstart.csproj.",
   "scripts": {

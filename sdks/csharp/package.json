@@ -1,7 +1,7 @@
 {
   "name": "@verdocs/csharp-sdk",
-  "version": "1.0.0",
-  "private": true,
+  "private": false,
+  "version": "6.10.4",
   "description": "Task runner stub for the Verdocs C# SDK (pnpm/turbo). Real packaging is the .NET solution.",
   "scripts": {
     "generate-sdk-docs": "./docs/generate-sdk-docs.sh",

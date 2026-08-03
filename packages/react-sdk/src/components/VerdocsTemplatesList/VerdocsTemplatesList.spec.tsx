@@ -3,9 +3,9 @@ import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
 import { canPerformTemplateAction, getTemplates } from '@verdocs/js-sdk';
 import VerdocsProvider from '../../provider/VerdocsProvider';
-import { TEST_API_BASE } from '../../test/setup';
 import { toggleTemplateStar } from '../../api/templateStar';
 import VerdocsTemplatesList from './VerdocsTemplatesList';
+import { TEST_API_BASE } from '../../test/setup';
 
 vi.mock('@verdocs/js-sdk', async importOriginal => {
   const actual = await importOriginal<typeof import('@verdocs/js-sdk')>();
