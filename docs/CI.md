@@ -10,8 +10,8 @@ Checklist of workflow coverage needed across the monorepo. Checked items exist t
 - [x] `@verdocs/collections` schema check (`pnpm --filter @verdocs/collections check`)
 - [x] JS SDK conformance on PRs to `main` (`conformance.yml`)
 - [x] JS SDK conformance nightly (`nightly.yml`, 7am UTC)
-- [ ] Angular SDK's test builder (`@angular/build:unit-test`) runs headless in CI today only because it's Vitest-based, not Karma — worth a one-time confirmation run rather than an assumption
-- [x] Path filtering / affected-only runs (turbo supports `--filter` on changed packages) so a docs-only or single-package PR doesn't rebuild everything — optional, only worth it if CI time becomes a problem
+- [ ] Angular SDK's test builder (`@angular/build:unit-test`) runs headless in CI today only because it's Vitest-based, not Karma, so it is worth a one-time confirmation run rather than an assumption
+- [x] Path filtering / affected-only runs (turbo supports `--filter` on changed packages) so a docs-only or single-package PR doesn't rebuild everything. Optional, and only worth it if CI time becomes a problem
 
 
 
@@ -37,9 +37,9 @@ Also **no CI today**. `sdks/csharp/package.json` only wires `generate-sdk-docs` 
 
 ### Docs generation (`generate:docs`, `generate-sdk-docs` turbo task)
 
-The root `generate:docs` script and `js-sdk`'s `docs`/`generate-openapi`/`unify-sdks` scripts write output (`openapi.json`, `unified-sdks.json`, `sdk-docs.json`) directly into `../../../platform/apps/dev-docs/app/` — a sibling checkout of the private platform repo. The old per-package `generate-docs.yml` (deleted from `packages/js-sdk/.github/workflows/`) deployed to `gh-pages` and no longer reflects how docs are produced.
+The root `generate:docs` script and `js-sdk`'s `docs`/`generate-openapi`/`unify-sdks` scripts write output (`openapi.json`, `unified-sdks.json`, `sdk-docs.json`) directly into `../../../platform/apps/dev-docs/app/`, a sibling checkout of the private platform repo. The old per-package `generate-docs.yml` (deleted from `packages/js-sdk/.github/workflows/`) deployed to `gh-pages` and no longer reflects how docs are produced.
 
-- [x] Decide if/how this should run in CI at all, since it needs a second repo checked out with write access — may be intentionally local/manual-only, or may belong in the platform repo's own CI rather than this one
+- [x] Decide if/how this should run in CI at all, since it needs a second repo checked out with write access. It may be intentionally local/manual-only, or may belong in the platform repo's own CI rather than this one
 - [ ] If automated here, needs a path filter (`src/**`, `docs/**`, etc.) and a token/checkout step for the private repo
 
 
@@ -48,15 +48,15 @@ The root `generate:docs` script and `js-sdk`'s `docs`/`generate-openapi`/`unify-
 
 `.changeset/config.json` is configured (fixed groups for JS/Python/C#/conformance and for react/angular/vue/wc-sdk/storybook), but no workflow uses it yet.
 
-- [x] PR gate that fails if a PR touching a versioned package has no changeset (common `changeset status` check) — lightweight, doesn't publish anything (`changeset-check.yml`)
-- [x] Release automation (e.g. `changesets/action` opening a "Version Packages" PR) — per `CLAUDE.md`, actual `npm publish` only happens when instructed, so at most this should stop at opening the version PR, never auto-publish (`changeset-release.yml`)
+- [x] PR gate that fails if a PR touching a versioned package has no changeset (common `changeset status` check). Lightweight, and doesn't publish anything (`changeset-check.yml`)
+- [x] Release automation (e.g. `changesets/action` opening a "Version Packages" PR). Per `CLAUDE.md`, actual `npm publish` only happens when instructed, so at most this should stop at opening the version PR, never auto-publish (`changeset-release.yml`)
 
 
 
 ### Quickstarts (`apps/quickstart-*`)
 
 - [x] `quickstart-angular` / `-react` / `-vue` / `-wc` already get lint/typecheck/build via the root turbo pipeline
-- [ ] `quickstart-node`, `quickstart-python`, `quickstart-python-server`, `quickstart-csharp` have no lint/test/build scripts and no CI — likely low priority since they're live-API demos, but flag whether even a smoke build/import check is wanted
+- [ ] `quickstart-node`, `quickstart-python`, `quickstart-python-server`, `quickstart-csharp` have no lint/test/build scripts and no CI. Likely low priority since they're live-API demos, but flag whether even a smoke build/import check is wanted
 
 
 

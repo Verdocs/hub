@@ -1,10 +1,10 @@
-# Verdocs Platform API — Bruno
+# Verdocs Platform API, Bruno Collection
 
 [Bruno](https://www.usebruno.com/) collection in `.bru` format. One folder per endpoint area, one file per request.
 
 ## Open
 
-In Bruno: **Open Collection** → select this folder (`collections/bruno`).
+In Bruno: **Open Collection** -> select this folder (`collections/bruno`).
 
 ## Token and environment
 

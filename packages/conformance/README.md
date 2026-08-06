@@ -17,7 +17,7 @@ That runs every language lane (JS, Python, C#) that defines a `conformance` scri
 
 Optional gates:
 
-- `VERDOCS_STAR_TOGGLE=1` — include the star-toggle equivalence check (off by default)
-- `VERDOCS_SIGNUP_E2E=1` plus IMAP vars — full signup flow test (`VERDOCS_TEST_IMAP_HOST`, `VERDOCS_TEST_IMAP_USER`, `VERDOCS_TEST_IMAP_PASSWORD`)
+- `VERDOCS_STAR_TOGGLE=1`: include the star-toggle equivalence check (off by default)
+- `VERDOCS_SIGNUP_E2E=1` plus IMAP vars: full signup flow test (`VERDOCS_TEST_IMAP_HOST`, `VERDOCS_TEST_IMAP_USER`, `VERDOCS_TEST_IMAP_PASSWORD`)
 
 Fixture definitions live in `fixtures.json`. The canonical create-to-cancel lifecycle is in `src/chain.spec.ts`.

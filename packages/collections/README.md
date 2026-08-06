@@ -18,7 +18,7 @@ Output is deterministic: sorted folders and requests, fixed example values, no t
 
 ## Output
 
-- `collections/postman/verdocs-api.postman_collection.json` — single collection, bearer auth via `{{access_token}}`, `{{base_url}}` defaulting to beta
-- `collections/bruno/` — `bruno.json`, `collection.bru`, `environments/beta.bru`, one `.bru` per request
+- `collections/postman/verdocs-api.postman_collection.json`: single collection, bearer auth via `{{access_token}}`, `{{base_url}}` defaulting to beta
+- `collections/bruno/`: `bruno.json`, `collection.bru`, `environments/beta.bru`, one `.bru` per request
 
 Each output folder has its own README for import and token setup.

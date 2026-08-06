@@ -10,7 +10,7 @@ All logic is in [`Program.cs`](Program.cs). Depends on `Verdocs.Sdk`.
 cp .env.example .env
 ```
 
-API key at https://app.verdocs.com → **Settings → API Keys** (global admin). Set `VERDOCS_CLIENT_ID` and `VERDOCS_CLIENT_SECRET` in `.env`.
+API key at https://app.verdocs.com -> **Settings -> API Keys** (global admin). Set `VERDOCS_CLIENT_ID` and `VERDOCS_CLIENT_SECRET` in `.env`.
 
 `PDF_PATH` defaults to [`docs/sample-pdfs/blank.pdf`](../../docs/sample-pdfs/blank.pdf).
 

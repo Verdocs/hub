@@ -10,10 +10,10 @@ The first version of this plan gave every language its own navigation subtree:
 
 ```
 sdk
-└── languages
-    ├── js      (getting-started, endpoints, helpers)
-    ├── python  (getting-started, endpoints, helpers)
-    └── csharp  (getting-started, endpoints, helpers)
++-- languages
+    +-- js      (getting-started, endpoints, helpers)
+    +-- python  (getting-started, endpoints, helpers)
+    +-- csharp  (getting-started, endpoints, helpers)
 ```
 
 That means a reader picks a language up front and stays in a silo, and we maintain three parallel copies of the same conceptual pages. We are dropping it.
@@ -22,9 +22,9 @@ The new structure is a single page set, with the language chosen per code snippe
 
 ```
 sdk
-├── getting-started
-├── endpoints
-└── helpers
++-- getting-started
++-- endpoints
++-- helpers
 ```
 
 There is one "Create an Envelope" entry, and the code block on it toggles between TypeScript, Python, and C#. The reader never leaves the page to change languages, and we author each conceptual page once.
@@ -57,9 +57,9 @@ The generated tree is three pages under `content/docs/reference/SDK/`:
 
 ```
 content/docs/reference/SDK/
-├── getting-started/
-├── endpoints/
-└── helpers/
++-- getting-started/
++-- endpoints/
++-- helpers/
 ```
 
 - **Getting Started**: the most important page. The essentials for standing up the SDK: installing, authentication, creating a template, creating an envelope, and the handful of flows a new caller needs. This page is authored MDX (we own the prose and the ordering) that embeds operations tagged `@sdkGettingStarted`, so the code snippets stay in sync with the source while the narrative stays curated. It is not a home for operations; every featured operation still lives on Endpoints or Helpers.

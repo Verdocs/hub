@@ -33,11 +33,11 @@ Verdocs has two session types: **user** (your app, managing templates and envelo
 
 Functions are grouped by domain and mirror the REST API:
 
-- **Users / Auth** — login, signup, password reset, profile management
-- **Templates** — template CRUD, documents, roles, fields
-- **Envelopes** — send, track, cancel, recipient management
-- **Organizations** — members, groups, brands, webhooks, API keys
-- **Documents** — direct document operations outside templates
+- **Users / Auth**: login, signup, password reset, profile management
+- **Templates**: template CRUD, documents, roles, fields
+- **Envelopes**: send, track, cancel, recipient management
+- **Organizations**: members, groups, brands, webhooks, API keys
+- **Documents**: direct document operations outside templates
 
 Import what you need from the package root or from subpaths if your bundler supports it. Types for request and response bodies ship with the functions.
 

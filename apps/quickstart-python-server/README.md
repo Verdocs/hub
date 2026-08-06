@@ -18,7 +18,7 @@ If `pip install verdocs` is not available yet:
 .venv/bin/python -m pip install -e ../../sdks/python
 ```
 
-API key at https://app.verdocs.com → **Settings → API Keys** (global admin). Copy `.env.example` to `.env` and set `VERDOCS_CLIENT_ID` / `VERDOCS_CLIENT_SECRET`.
+API key at https://app.verdocs.com -> **Settings -> API Keys** (global admin). Copy `.env.example` to `.env` and set `VERDOCS_CLIENT_ID` / `VERDOCS_CLIENT_SECRET`.
 
 ## Run
 

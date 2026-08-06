@@ -58,7 +58,7 @@ export const PREAMBLE_TAGS: OpenAITag[] = [
   {
     name: Tag.SIGNATURES_AND_INITIALS,
     description:
-      'Signatures & Initials are the visual marks applied by recipients to indicate approval or acknowledgment of a document. A signature represents a recipient’s full legal signature, while an initial is typically used to confirm review of specific sections or pages. In the Verdocs platform, signatures and initials are placed within designated signing fields in a document. When a recipient completes a signing step, the platform captures the signature or initials along with metadata such as the timestamp, signer identity, and audit trail information.',
+      'Signatures & Initials are the visual marks applied by recipients to indicate approval or acknowledgment of a document. A signature represents a recipient\'s full legal signature, while an initial is typically used to confirm review of specific sections or pages. In the Verdocs platform, signatures and initials are placed within designated signing fields in a document. When a recipient completes a signing step, the platform captures the signature or initials along with metadata such as the timestamp, signer identity, and audit trail information.',
     'x-displayName': Tag.SIGNATURES_AND_INITIALS,
   },
   {
@@ -108,7 +108,7 @@ export const PREAMBLE_TAGS: OpenAITag[] = [
   {
     name: Tag.TEMPLATES,
     description:
-      'A Template is a reusable document configuration that defines the structure of a signing workflow. Templates typically include one or more documents, predefined fields, recipient roles, and routing rules. By using templates, organizations can standardize frequently used agreements and automate document preparation. When a template is used, the platform generates a new signing transaction based on the template’s configuration, allowing documents to be sent for signature quickly and consistently.',
+      'A Template is a reusable document configuration that defines the structure of a signing workflow. Templates typically include one or more documents, predefined fields, recipient roles, and routing rules. By using templates, organizations can standardize frequently used agreements and automate document preparation. When a template is used, the platform generates a new signing transaction based on the template\'s configuration, allowing documents to be sent for signature quickly and consistently.',
     'x-displayName': Tag.TEMPLATES,
   },
   {
@@ -119,7 +119,7 @@ export const PREAMBLE_TAGS: OpenAITag[] = [
   {
     name: Tag.PROFILES,
     description:
-      'A Profile represents the personal or account information of a user within the platform. Profiles store data such as the user’s name, email, contact information, and preferences. Profiles are used to identify users in signing workflows, manage access, and personalize communications or notifications.',
+      'A Profile represents the personal or account information of a user within the platform. Profiles store data such as the user\'s name, email, contact information, and preferences. Profiles are used to identify users in signing workflows, manage access, and personalize communications or notifications.',
     'x-displayName': Tag.PROFILES,
   },
   {

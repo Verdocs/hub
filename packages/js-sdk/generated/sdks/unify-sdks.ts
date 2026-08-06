@@ -186,7 +186,7 @@ const main = async () => {
   await writeFile(OUTPUT_PATH, `${JSON.stringify(unified, null, 2)}\n`);
 
   console.log(
-    `Unified ${unified.operations.length} operations (${INCLUDED_KINDS.join(', ')} only) → ${OUTPUT_PATH}`,
+    `Unified ${unified.operations.length} operations (${INCLUDED_KINDS.join(', ')} only) -> ${OUTPUT_PATH}`,
   );
 };
 

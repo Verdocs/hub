@@ -1,6 +1,6 @@
 # Verdocs Styled Signer
 
-Demo of a white-labeled signing ceremony. No API calls — header, progress bar, document page, sign flag, footer, and adopt-signature modal are representative markup styled with `--vdocs-*` tokens from `@verdocs/react-sdk`.
+Demo of a white-labeled signing ceremony. No API calls. The header, progress bar, document page, sign flag, footer, and adopt-signature modal are representative markup styled with `--vdocs-*` tokens from `@verdocs/react-sdk`.
 
 Use it to show prospects how their brand would look on the signing surface.
 
