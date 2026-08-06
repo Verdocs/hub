@@ -10,7 +10,7 @@
     "test": "turbo run test",
     "test:report": "vitest run",
     "conformance": "pnpm --if-present --no-bail -r run conformance",
-    "generate:docs": "node scripts/clean-sdk-docs.mjs && turbo run generate-sdk-docs && pnpm --filter @verdocs/js-sdk docs",
+    "generate:docs": "node scripts/clean-sdk-docs.mjs && turbo run generate-sdk-docs --filter=!@verdocs/js-sdk && pnpm --filter @verdocs/js-sdk docs",
     "changeset:version": "changeset version",
     "changeset:add": "changeset",
     "changeset:status": "changeset status",
