@@ -56,4 +56,5 @@ API failures throw typed exceptions derived from `VerdocsException`, with status
 
 ## Quick-start
 
-[`apps/quickstart-csharp`](../../apps/quickstart-csharp/README.md) — console app: API key auth, create envelope from PDF, signing link, cancel.
+`apps/quickstart-csharp` in the source repo is a console app: API key auth, create envelope from
+PDF, signing link, cancel.

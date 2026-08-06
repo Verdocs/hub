@@ -2,95 +2,105 @@
 
 Official SDKs, quick-starts, and API collections for building on the Verdocs e-signing platform.
 
-Pick your language or framework below and follow that package's README. If you learn better from a running app, the quick-starts in `[apps/](apps/)` are minimal login-and-dashboard examples you can copy from.
+Pick the language or framework you work in, then follow that package's README. If a running app
+teaches you faster than a README does, the quick-starts in [apps/](apps/) are small, complete
+integrations you can copy from.
 
-API reference and guides: [https://developers.verdocs.com](https://developers.verdocs.com)
+API reference and guides live at [developers.verdocs.com](https://developers.verdocs.com).
 
-## JavaScript and TypeScript
+## What you can use today
 
+We publish a package when it is genuinely ready, so this table is the honest state of things rather
+than a roadmap.
 
-| Package                                                | When to use it                                                             |
-| ------------------------------------------------------ | -------------------------------------------------------------------------- |
-| [@verdocs/js-sdk](packages/js-sdk/README.md)           | API client for Node or the browser. Every other JS package builds on this. |
-| [@verdocs/react-sdk](packages/react-sdk/README.md)     | React 19                                                                   |
-| [@verdocs/angular-sdk](packages/angular-sdk/README.md) | Angular                                                                    |
-| [@verdocs/vue-sdk](packages/vue-sdk/README.md)         | Vue 3                                                                      |
-| [@verdocs/wc-sdk](packages/wc-sdk/README.md)           | Framework-agnostic web components                                          |
+| Package | Status | Install |
+| --- | --- | --- |
+| [@verdocs/js-sdk](packages/js-sdk/README.md) | Stable | `npm install @verdocs/js-sdk` |
+| [Verdocs.Sdk](sdks/csharp/README.md) (.NET) | Stable | `dotnet add package Verdocs.Sdk` |
+| [verdocs](sdks/python/README.md) (Python) | Complete, publishing soon | Install from this repo for now |
+| [@verdocs/react-sdk](packages/react-sdk/README.md) | In development | Not yet on npm |
+| [@verdocs/angular-sdk](packages/angular-sdk/README.md) | In development | Not yet on npm |
+| [@verdocs/vue-sdk](packages/vue-sdk/README.md) | In development | Not yet on npm |
+| [@verdocs/wc-sdk](packages/wc-sdk/README.md) | In development | Not yet on npm |
 
+The four framework SDKs are real, tested code with a growing component catalog, and you are welcome
+to read them or build against them from a checkout. They are not on npm yet because the catalog is
+still filling in, and we would rather you hit a missing package than a missing component halfway
+through an integration.
 
-`VerdocsEndpoint` in js-sdk owns authentication and session state. The UI packages expose the same flows as components in your stack. See [Storybook](apps/storybook/README.md) for the React component catalog.
+## How the pieces fit
 
-## Supported Language SDKs
+`VerdocsEndpoint` in js-sdk owns authentication and session state. One endpoint holds one session,
+and Verdocs distinguishes a user session from a signing session, so an app that authenticates a user
+and also runs a signing ceremony keeps two endpoints side by side. Every other package builds on
+that same object, and the framework SDKs wrap the same flows as components in your stack.
 
+The C# and Python SDKs mirror the js-sdk surface method for method, so an integration you have
+already written in one language reads the same in another.
 
-| SDK                             | Install                          |
-| ------------------------------- | -------------------------------- |
-| [Python](sdks/python/README.md) | `pip install verdocs`            |
-| [C#](sdks/csharp/README.md)     | `dotnet add package Verdocs.Sdk` |
-
-
-
+Component stories run locally through [Storybook](apps/storybook/README.md).
 
 ## Quick-starts
 
+Every server and CLI quick-start runs the same workflow end to end: authenticate with an API key,
+create an envelope from a PDF, fetch an in-person signing link, then cancel the envelope so a test
+run leaves nothing open.
 
+| App | Stack |
+| --- | --- |
+| [quickstart-node](apps/quickstart-node/README.md) | Node.js |
+| [quickstart-python](apps/quickstart-python/README.md) | Python |
+| [quickstart-python-server](apps/quickstart-python-server/README.md) | Django |
+| [quickstart-csharp](apps/quickstart-csharp/README.md) | .NET |
 
-### Web apps
+The web quick-starts each build a login route, a session guard, and a templates dashboard.
 
+| App | Stack |
+| --- | --- |
+| [quickstart-react](apps/quickstart-react/README.md) | Vite and React |
+| [quickstart-nextjs](apps/quickstart-nextjs/README.md) | Next.js App Router |
+| [quickstart-angular](apps/quickstart-angular/README.md) | Angular |
+| [quickstart-vue](apps/quickstart-vue/README.md) | Vue |
+| [quickstart-wc](apps/quickstart-wc/README.md) | Web components |
 
-| App                                                     | Stack              |
-| ------------------------------------------------------- | ------------------ |
-| [quickstart-react](apps/quickstart-react/README.md)     | Vite + React       |
-| [quickstart-nextjs](apps/quickstart-nextjs/README.md)   | Next.js App Router |
-| [quickstart-angular](apps/quickstart-angular/README.md) | Angular            |
-| [quickstart-vue](apps/quickstart-vue/README.md)         | Vue                |
-| [quickstart-wc](apps/quickstart-wc/README.md)           | Web components     |
-
-
-
-
-### Server and CLI
-
-Each server quick-start runs the same workflow: authenticate with an API key, create an envelope from a PDF, fetch an in-person signing link, then cancel the envelope so nothing is left open.
-
-
-| App                                                                 | Stack   |
-| ------------------------------------------------------------------- | ------- |
-| [quickstart-node](apps/quickstart-node/README.md)                   | Node.js |
-| [quickstart-python](apps/quickstart-python/README.md)               | Python  |
-| [quickstart-python-server](apps/quickstart-python-server/README.md) | Django  |
-| [quickstart-csharp](apps/quickstart-csharp/README.md)               | .NET    |
-
-
-
-
-### Theming demos
-
-
-| App                                             | What it shows                  |
-| ----------------------------------------------- | ------------------------------ |
-| [styled-builder](apps/styled-builder/README.md) | White-labeled template builder |
-| [styled-signer](apps/styled-signer/README.md)   | White-labeled signing ceremony |
-
-
-Static UIs only. No API calls.
+Two more demos show theming without touching the API. [styled-builder](apps/styled-builder/README.md)
+white-labels the template builder and [styled-signer](apps/styled-signer/README.md) white-labels the
+signing ceremony. Both are static UIs and make no network calls.
 
 ## API collections
 
-Postman and Bruno collections for the REST API live in `[collections/](collections/)`. They are generated from the OpenAPI spec that ships with js-sdk.
+Postman and Bruno collections for the REST API live in [collections/](collections/). We generate
+them from the OpenAPI spec that ships with js-sdk, so they track the API rather than drifting from
+it.
 
-## Cloning this repo
+## Working in this repo
 
-Requires Node >= 24 and pnpm 10.
+You need Node 24 or newer and pnpm 10.
 
 ```bash
 pnpm install
-pnpm --filter verdocs-quickstart-react start   # http://localhost:5173
+pnpm --filter verdocs-quickstart-react start
 ```
 
-Quick-starts default to the beta API (`https://stage-api.verdocs.com`). Copy `[.env.example](.env.example)` to `.env` at the repo root when you need credentials for live calls.
+That serves the React quick-start at http://localhost:5173 against the beta API at
+`https://stage-api.verdocs.com`. Every quick-start defaults to beta, so you can explore without
+touching production data. When you need credentials for live calls, copy
+[.env.example](.env.example) to `.env` at the repo root and fill it in.
+
+Run the full gate the way CI does:
 
 ```bash
 pnpm exec turbo run lint typecheck test build
 ```
 
+Release mechanics, including how to add a changeset, are in [.changeset/README.md](.changeset/README.md).
+
+## Getting help
+
+Questions about the API belong at [developers.verdocs.com](https://developers.verdocs.com). If you
+find a bug in an SDK or a quick-start, open an issue here with the package name and enough detail to
+reproduce it, and we will take a look.
+
+## License
+
+MIT. See [LICENSE](LICENSE).

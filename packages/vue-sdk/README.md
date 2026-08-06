@@ -2,7 +2,12 @@
 
 Vue 3 components and composables for auth, template management, envelope workflows, and signing. Built on `@verdocs/js-sdk` and TanStack Vue Query.
 
-Install:
+This package is still in development and is not on npm yet. The component catalog is filling in, and
+we would rather you find that out here than halfway through an integration. Build against it from a
+checkout in the meantime, and use [@verdocs/js-sdk](../js-sdk/README.md) directly for anything the
+catalog does not cover yet.
+
+Once it ships, installing looks like this:
 
 ```bash
 npm install @verdocs/vue-sdk @verdocs/js-sdk
@@ -29,17 +34,17 @@ import { VerdocsProvider, VerdocsAuth } from '@verdocs/vue-sdk';
 
 Parity with `@verdocs/react-sdk`:
 
-- **Auth and lists** — `VerdocsAuth`, `VerdocsTemplatesList`, `VerdocsEnvelopesList`
-- **Template builder** — `VerdocsTemplateCreate`, `VerdocsTemplateSettings`, `VerdocsTemplateAttachments`, `VerdocsTemplateRoles`, `VerdocsTemplateFields`, and related components
-- **Envelopes and signing** — `VerdocsEnvelopeSidebar`, `VerdocsEnvelopeRecipientSummary`, `VerdocsEnvelopeUpdateRecipient`, `VerdocsSignFooter`, field components, dialogs, controls
+- **Auth and lists**: `VerdocsAuth`, `VerdocsTemplatesList`, `VerdocsEnvelopesList`
+- **Template builder**: `VerdocsTemplateCreate`, `VerdocsTemplateSettings`, `VerdocsTemplateAttachments`, `VerdocsTemplateRoles`, `VerdocsTemplateFields`, and related components
+- **Envelopes and signing**: `VerdocsEnvelopeSidebar`, `VerdocsEnvelopeRecipientSummary`, `VerdocsEnvelopeUpdateRecipient`, `VerdocsSignFooter`, field components, dialogs, controls
 
 Component names are prefixed with `Verdocs`. See `src/index.ts` for exports.
 
 ## Composables
 
-- `useVerdocs()` — the active `VerdocsEndpoint`
-- `useSession()` — session and profile state
-- `useTemplates()` — template list query
+- `useVerdocs()`: the active `VerdocsEndpoint`
+- `useSession()`: session and profile state
+- `useTemplates()`: template list query
 
 ## Theming
 
@@ -54,4 +59,4 @@ Component names are prefixed with `Verdocs`. See `src/index.ts` for exports.
 
 ## Quick-start
 
-[`apps/quickstart-vue`](../../apps/quickstart-vue/README.md) — Vite app with login, session guard, templates dashboard.
+[`apps/quickstart-vue`](../../apps/quickstart-vue/README.md) is a Vite app with a login route, a session guard, and a templates dashboard.

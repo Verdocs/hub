@@ -2,7 +2,12 @@
 
 Framework-agnostic web components for auth, template management, envelope workflows, and signing. Lit 3, same behavior and events as `@verdocs/react-sdk`.
 
-Install:
+This package is still in development and is not on npm yet. The component catalog is filling in, and
+we would rather you find that out here than halfway through an integration. Build against it from a
+checkout in the meantime, and use [@verdocs/js-sdk](../js-sdk/README.md) directly for anything the
+catalog does not cover yet.
+
+Once it ships, installing looks like this:
 
 ```bash
 npm install @verdocs/wc-sdk @verdocs/js-sdk
@@ -36,11 +41,11 @@ Any component that calls the API also accepts an `endpoint` property when you ne
 
 Custom element tags use the `vdocs-` prefix:
 
-- **Auth and lists** — `vdocs-auth`, `vdocs-templates-list`, `vdocs-envelopes-list`
-- **Template builder** — `vdocs-template-create`, `vdocs-template-settings`, `vdocs-template-attachments`, `vdocs-template-roles`, `vdocs-template-fields`, and the rest of the build flow
-- **Envelopes and signing** — `vdocs-envelope-sidebar`, `vdocs-envelope-recipient-summary`, `vdocs-envelope-update-recipient`, `vdocs-sign-footer`, field elements, dialogs, controls
+- **Auth and lists**: `vdocs-auth`, `vdocs-templates-list`, `vdocs-envelopes-list`
+- **Template builder**: `vdocs-template-create`, `vdocs-template-settings`, `vdocs-template-attachments`, `vdocs-template-roles`, `vdocs-template-fields`, and the rest of the build flow
+- **Envelopes and signing**: `vdocs-envelope-sidebar`, `vdocs-envelope-recipient-summary`, `vdocs-envelope-update-recipient`, `vdocs-sign-footer`, field elements, dialogs, controls
 
-Public events are `vdocs-*` custom events with typed `detail` payloads (`vdocs-authenticated`, `vdocs-view-template`, `vdocs-sdk-error`, …). Objects and arrays are properties, not attributes.
+Public events are `vdocs-*` custom events with typed `detail` payloads (`vdocs-authenticated`, `vdocs-view-template`, `vdocs-sdk-error`, ...). Objects and arrays are properties, not attributes.
 
 ## Styling and SSR
 
@@ -50,4 +55,4 @@ These elements are client-only. Do not render them on the server.
 
 ## Quick-start
 
-[`apps/quickstart-wc`](../../apps/quickstart-wc/README.md) — Vite app with hash routing, login, and templates dashboard.
+[`apps/quickstart-wc`](../../apps/quickstart-wc/README.md) is a Vite app with hash routing, a login route, and a templates dashboard.

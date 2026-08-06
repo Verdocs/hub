@@ -4,7 +4,10 @@ Release workflow for this monorepo. If you are integrating Verdocs into your app
 
 We use [Changesets](https://github.com/changesets/changesets) to record version bumps and changelog entries. Add a changeset in the same PR as your code change; cut a release when the team is ready to publish.
 
-The frozen Stencil line under `packages/web-sdk/` is outside the pnpm workspace and has its own versioning.
+The C# and Python SDKs under `sdks/` carry their own version numbers in `pyproject.toml` and the
+csproj, because changesets only tracks npm package.json files. Bump those by hand when you release
+them. The `@verdocs/python-sdk` and `@verdocs/csharp-sdk` package.json files exist only so turbo can
+run tasks against those directories, which is why both are marked private.
 
 ## Commands
 

@@ -2,7 +2,14 @@
 
 Python client for the Verdocs REST API. Sync and async endpoints, pydantic v2 models, and the same resource layout as the JavaScript SDK.
 
-Install:
+The package is complete and tested, and the PyPI release is waiting on account paperwork rather than
+on the code. Until it lands, install it from a checkout:
+
+```bash
+pip install path/to/hub/sdks/python
+```
+
+Once it ships:
 
 ```bash
 pip install verdocs
@@ -29,7 +36,7 @@ with VerdocsEndpoint() as endpoint:
         print(template.id, template.name)
 ```
 
-Async twin — same methods, `async`/`await`:
+Async twin, same methods, `async`/`await`:
 
 ```python
 import asyncio
@@ -71,10 +78,13 @@ All SDK exceptions inherit from `VerdocsError`. API failures are `VerdocsAPIErro
 
 ## Quick-starts
 
-- [`apps/quickstart-python`](../../apps/quickstart-python/README.md) — console script: API key auth, create envelope from PDF, signing link, cancel
-- [`apps/quickstart-python-server`](../../apps/quickstart-python-server/README.md) — Django app issuing policies for signature
+Both live under `apps/` in the source repo:
 
-If you are working from a clone of this repo before the PyPI release is available, install editable from `sdks/python`:
+- `quickstart-python`, a console script: API key auth, create envelope from PDF, signing link, cancel
+- `quickstart-python-server`, a Django app issuing policies for signature
+
+Working from a clone of this repo instead of the published package? Install editable from
+`sdks/python`:
 
 ```bash
 pip install -e path/to/hub/sdks/python

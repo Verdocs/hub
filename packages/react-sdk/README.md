@@ -2,7 +2,12 @@
 
 React 19 components and hooks for auth, template management, envelope workflows, and signing. Built on `@verdocs/js-sdk` and TanStack Query.
 
-Install:
+This package is still in development and is not on npm yet. The component catalog is filling in, and
+we would rather you find that out here than halfway through an integration. Build against it from a
+checkout in the meantime, and use [@verdocs/js-sdk](../js-sdk/README.md) directly for anything the
+catalog does not cover yet.
+
+Once it ships, installing looks like this:
 
 ```bash
 npm install @verdocs/react-sdk @verdocs/js-sdk
@@ -10,7 +15,7 @@ npm install @verdocs/react-sdk @verdocs/js-sdk
 
 React 19 is a peer dependency. If your app already uses TanStack Query, pass your `QueryClient` to `VerdocsProvider` so the SDK shares your cache.
 
-Docs and live examples: https://developers.verdocs.com — component stories also run locally via [`apps/storybook`](../../apps/storybook/README.md).
+Docs and live examples: https://developers.verdocs.com. Component stories also run locally via [`apps/storybook`](../../apps/storybook/README.md).
 
 ## Setup
 
@@ -35,9 +40,9 @@ Pass a preconfigured `VerdocsEndpoint` instead of `baseUrl` when you manage the 
 
 **Auth and lists**
 
-- `VerdocsAuth` — login, signup, email verification, password reset
-- `VerdocsTemplatesList` — searchable template list with starring and row actions
-- `VerdocsEnvelopesList` — envelope list with status filters and actions
+- `VerdocsAuth`: login, signup, email verification, password reset
+- `VerdocsTemplatesList`: searchable template list with starring and row actions
+- `VerdocsEnvelopesList`: envelope list with status filters and actions
 
 **Template builder pieces**
 
@@ -49,14 +54,14 @@ Pass a preconfigured `VerdocsEndpoint` instead of `baseUrl` when you manage the 
 
 **Primitives**
 
-- Form controls (`Button`, `TextInput`, `SelectInput`, `Checkbox`, …), dialogs (signature adoption, KBA, OTP, delegate, download, …), field renderers for each template field type, and layout helpers (`Table`, `Tabs`, `Pagination`, …)
+- Form controls (`Button`, `TextInput`, `SelectInput`, `Checkbox`, ...), dialogs (signature adoption, KBA, OTP, delegate, download, ...), field renderers for each template field type, and layout helpers (`Table`, `Tabs`, `Pagination`, ...)
 
 Export list is in `src/index.ts`. TypeScript types ship for every component prop and event.
 
 ## Hooks
 
-- `useVerdocs()` — the active `VerdocsEndpoint`
-- `useSession()` — session and profile state, updates when the token changes
+- `useVerdocs()`: the active `VerdocsEndpoint`
+- `useSession()`: session and profile state, updates when the token changes
 - `useTemplates`, `useTemplate`, `useCreateTemplate`, `useUpdateTemplate`, `useDeleteTemplate`, `useToggleTemplateStar`
 - `useEnvelopes`, `useEnvelope`
 
@@ -75,4 +80,4 @@ Components render in the light DOM (no Shadow DOM), so your global CSS and token
 
 ## Quick-start
 
-[`apps/quickstart-react`](../../apps/quickstart-react/README.md) — Vite app with login, session guard, and templates dashboard. [`apps/quickstart-nextjs`](../../apps/quickstart-nextjs/README.md) is the same pattern on the App Router.
+[`apps/quickstart-react`](../../apps/quickstart-react/README.md) is a Vite app with a login route, a session guard, and a templates dashboard. [`apps/quickstart-nextjs`](../../apps/quickstart-nextjs/README.md) is the same pattern on the App Router.
