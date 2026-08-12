@@ -1,0 +1,334 @@
+name: SDK Sync
+
+# Ports js-sdk changes into the Python and C# SDKs, keeps the conformance fixtures
+# and generated doc tags in sync, authors a changeset, and opens a PR for review.
+# js-sdk stays hand-maintained (packages/conformance/docs/multi-language-ci.md);
+# this workflow is what keeps sdks/python and sdks/csharp true to it. Never
+# auto-merges and never publishes - release.yml is still the only, manual publish
+# path. See packages/conformance/docs/sdk-sync-agent.md for how this works.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/js-sdk/src/**"
+      - "packages/js-sdk/generated/sdks/**"
+      - "packages/js-sdk/typedoc.json"
+      - "packages/js-sdk/tsdoc.json"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sdk-sync
+  cancel-in-progress: false
+
+env:
+  SDK_SYNC_BRANCH: sdk-sync/main
+  # Comma-separated GitHub usernames/teams to request review from, e.g.
+  # "octocat,my-org/sdk-team". Left empty on purpose: no team handle has been
+  # given yet. gh pr create's --reviewer is skipped entirely while this is empty.
+  SDK_SYNC_REVIEWERS: ""
+
+jobs:
+  generate:
+    name: Generate (port js-sdk changes)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Python SDK virtualenv
+        working-directory: sdks/python
+        run: |
+          python3 -m venv .venv
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/python -m pip install -e . --group dev
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Configure bot git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Reset sync branch from main
+        run: git checkout -B "$SDK_SYNC_BRANCH"
+
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Build generation prompt
+        env:
+          SDK_SYNC_BASE_SHA: ${{ github.event.before }}
+          SDK_SYNC_HEAD_SHA: ${{ github.sha }}
+          SDK_SYNC_PROMPT_PATH: sdk-sync-prompt.md
+        run: node scripts/sdk-sync/write-prompt.mjs
+
+      # NOT YET VERIFIED: the exact non-interactive permission flags below
+      # (--permission-mode, --allowedTools, --max-turns) need confirming against
+      # the current Claude Code CLI docs before this step is turned on for real -
+      # there is no TTY here to approve tool calls interactively, and getting this
+      # wrong means the agent either can't edit/run anything or has no guardrails
+      # at all. Treat this invocation as a placeholder, not a verified one.
+      - name: Run generation agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          claude -p "$(cat sdk-sync-prompt.md)" \
+            --permission-mode acceptEdits \
+            --allowedTools "Edit,Write,Bash" \
+            --max-turns 60
+
+      - name: Commit and push sync branch
+        run: |
+          rm -f sdk-sync-prompt.md
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Generation agent produced no changes."
+          else
+            git commit -m "chore: sync js-sdk changes into python/csharp SDKs (${GITHUB_SHA::12})"
+          fi
+          git push --force-with-lease origin "$SDK_SYNC_BRANCH"
+
+  verify:
+    name: Verify (lint/build/test/conformance)
+    needs: generate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SDK_SYNC_BRANCH }}
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Python SDK virtualenv
+        working-directory: sdks/python
+        run: |
+          python3 -m venv .venv
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/python -m pip install -e . --group dev
+
+      - run: pnpm install --frozen-lockfile
+
+      # Every lane runs regardless of earlier failures (open-PR-anyway-flagged
+      # policy); scripts/sdk-sync/run-verify-lanes.mjs records pass/fail per lane
+      # into verify-results.json rather than the workflow step itself failing.
+      - name: Run verify lanes
+        env:
+          VERDOCS_API_BASE: ${{ secrets.VERDOCS_CONFORMANCE_API_BASE }}
+          VERDOCS_TEST_EMAIL: ${{ secrets.VERDOCS_CONFORMANCE_EMAIL }}
+          VERDOCS_TEST_PASSWORD: ${{ secrets.VERDOCS_CONFORMANCE_PASSWORD }}
+        run: node scripts/sdk-sync/run-verify-lanes.mjs
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verify-results
+          path: verify-results.json
+
+  docs-sync:
+    name: Docs sync (tags, parity, examples)
+    needs: generate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SDK_SYNC_BRANCH }}
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Python SDK virtualenv
+        working-directory: sdks/python
+        run: |
+          python3 -m venv .venv
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/python -m pip install -e . --group dev
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Configure bot git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Regenerate per-language doc models
+        run: node scripts/clean-sdk-docs.mjs && pnpm exec turbo run generate-sdk-docs --filter=!@verdocs/js-sdk
+
+      # js-sdk's own "docs"/"generate-openapi"/"unify-sdks" package.json scripts each
+      # end with `cp ... ../../../platform/apps/dev-docs/app/...`, writing into a
+      # sibling private repo that isn't checked out here (docs/CI.md flags this as an
+      # open gap). Call the underlying typedoc/tsx commands directly so this job
+      # never touches that path.
+      - name: Regenerate unified doc model (js-sdk)
+        working-directory: packages/js-sdk
+        run: |
+          npx typedoc
+          npx tsx generated/sdks/generate-sdks.ts
+          npx tsx generated/sdks/unify-sdks.ts
+
+      - name: Regenerate API-PARITY.md
+        run: node sdks/parity/generate.mjs
+
+      - name: Check doc tag / example parity
+        run: node scripts/sdk-sync/check-doc-parity.mjs
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docs-parity-results
+          path: docs-parity-results.json
+
+      - name: Commit and push regenerated docs
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No doc regeneration changes."
+          else
+            git commit -m "chore: regenerate SDK doc tags and API parity"
+          fi
+          git push origin "$SDK_SYNC_BRANCH"
+
+  changelog:
+    name: Changelog
+    needs: docs-sync
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SDK_SYNC_BRANCH }}
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Configure bot git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Write changeset from sync-summary.json
+        env:
+          SDK_SYNC_HEAD_SHA: ${{ github.sha }}
+        run: node scripts/sdk-sync/write-changeset.mjs
+
+      - name: Commit and push changeset
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changeset needed this run."
+          else
+            git commit -m "chore: add sdk-sync changeset"
+          fi
+          git push origin "$SDK_SYNC_BRANCH"
+
+  open-pr:
+    name: Open PR
+    needs: [verify, changelog]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SDK_SYNC_BRANCH }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: verify-results
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: docs-parity-results
+
+      - name: Build PR title/body
+        run: node scripts/sdk-sync/write-pr-body.mjs
+
+      - name: Open or update PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # gh pr create/edit --label fails outright if the label doesn't exist yet;
+          # create both up front, ignoring the "already exists" error on repeat runs.
+          gh label create "sdk-sync" --color "0e8a16" --description "Opened by the sdk-sync pipeline" 2>/dev/null || true
+          gh label create "needs-attention" --color "d93f0b" --description "sdk-sync flagged something for human review" 2>/dev/null || true
+
+          TITLE="$(node -p "require('./pr-meta.json').title")"
+          NEEDS_ATTENTION="$(node -p "require('./pr-meta.json').needsAttention")"
+
+          LABELS="sdk-sync"
+          if [ "$NEEDS_ATTENTION" = "true" ]; then
+            LABELS="sdk-sync,needs-attention"
+          fi
+
+          EXISTING_PR="$(gh pr list --head "$SDK_SYNC_BRANCH" --base main --json number --jq '.[0].number // empty')"
+
+          if [ -n "$EXISTING_PR" ]; then
+            gh pr edit "$EXISTING_PR" --title "$TITLE" --body-file pr-body.md
+            gh pr edit "$EXISTING_PR" --add-label "$LABELS"
+          else
+            REVIEWER_ARGS=()
+            if [ -n "$SDK_SYNC_REVIEWERS" ]; then
+              REVIEWER_ARGS=(--reviewer "$SDK_SYNC_REVIEWERS")
+            fi
+
+            gh pr create \
+              --base main \
+              --head "$SDK_SYNC_BRANCH" \
+              --title "$TITLE" \
+              --body-file pr-body.md \
+              --label "$LABELS" \
+              "${REVIEWER_ARGS[@]}"
+          fi
