@@ -6667,7 +6667,7 @@
                   "documents": {
                     "type": "array",
                     "items": {
-                      "type": "object"
+                      "$ref": "#/components/schemas/ITemplateDocument"
                     },
                     "description": "Optional list of documents to attach to the template"
                   },
