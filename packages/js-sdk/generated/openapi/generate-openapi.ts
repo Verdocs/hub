@@ -111,9 +111,11 @@ const parseApiOptionTag = (option: string) => {
 // /v2/envelopes/:id/path/:otherParam/path2
 const PATH_REGEX = /\/:([a-zA-Z0-9-_]+)/g;
 
+const namedSchemas = () => (Preamble.components?.schemas ?? {}) as Record<string, any>;
+
 const parseResponseType = (currentResponseSchema: any, param: string) => {
   const parsed = parseApiOptionTag(param);
-  const schema = jsTypeToSchema(parsed.type, parsed.options);
+  const schema = jsTypeToSchema(parsed.type, parsed.options, namedSchemas());
 
   if (parsed.name === '.') {
     Object.keys(currentResponseSchema).forEach((key) => delete currentResponseSchema[key]);
@@ -133,7 +135,7 @@ const parseParam = (paramIn: 'body' | 'cookie' | 'header' | 'path' | 'query', pa
     name: (name || '').replace('?', '').trim(),
     description: (desc || '').trim(),
     required: !(name || '').includes('?') || paramIn === 'path' || undefined,
-    schema: jsTypeToSchema(type, options),
+    schema: jsTypeToSchema(type, options, namedSchemas()),
   };
 
   if (type && name) {
@@ -141,12 +143,12 @@ const parseParam = (paramIn: 'body' | 'cookie' | 'header' | 'path' | 'query', pa
   }
 };
 
-const processChild = (child: Record<string, any>) => {
+const processChild = (child: Record<string, any>, phase: 'schemas' | 'operations') => {
   const { name, kind, comment } = child as { name: string; kind: number; comment: any; child: any };
   const summary = comment?.summary?.[0]?.text || '';
 
   // console.log('Processing child', name, kind, child);
-  if (kind === 2097152) {
+  if (phase === 'schemas' && kind === 2097152) {
     Preamble.components = Preamble.components ?? {};
     Preamble.components.schemas = Preamble.components.schemas ?? {};
     // console.log('Type', {name, kind, comment, description, child});
@@ -160,7 +162,7 @@ const processChild = (child: Record<string, any>) => {
     return;
   }
 
-  if (kind === 256) {
+  if (phase === 'schemas' && kind === 256) {
     Preamble.components = Preamble.components ?? {};
     Preamble.components.schemas = Preamble.components.schemas ?? {};
 
@@ -192,7 +194,7 @@ const processChild = (child: Record<string, any>) => {
     return;
   }
 
-  if (kind !== 64 || !summary) {
+  if (phase !== 'operations' || kind !== 64 || !summary) {
     // console.log('returning', {kind, summary});
     return;
   }
@@ -431,16 +433,18 @@ const reconcilePathParameters = (entry: any, method: string, path: string) => {
   entry.parameters = [...reconciled, ...others];
 };
 
-const processEntry = (child: Record<string, any>) => {
-  processChild(child);
+const processEntry = (child: Record<string, any>, phase: 'schemas' | 'operations') => {
+  processChild(child, phase);
   if (child.children) {
-    return child.children.map(processEntry);
+    return child.children.map((entry: Record<string, any>) => processEntry(entry, phase));
   }
 };
 
 const generateDocs = async () => {
   console.log('Generating docs');
-  processEntry(docsJson);
+  // Collect I*/T* schemas first so operations can $ref enums. Object models are title-only.
+  processEntry(docsJson, 'schemas');
+  processEntry(docsJson, 'operations');
 };
 
 generateDocs()

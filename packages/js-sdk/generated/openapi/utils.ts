@@ -59,7 +59,7 @@ export const unionToEnumArray = (union: string) =>
 
 // string (enum: 'name' | 'created_at' | 'updated_at' | 'canceled_at' | 'status')
 // IEnvelope undefined
-export const jsTypeToSchema = (type: string, options?: string) => {
+export const jsTypeToSchema = (type: string, options?: string, schemas?: Record<string, any>) => {
   const typeComponents = processBaseType(type);
 
   const schema: any = {type: typeComponents.baseType};
@@ -81,8 +81,16 @@ export const jsTypeToSchema = (type: string, options?: string) => {
     schema.enum = unionToEnumArray(type);
     schema.type = typeof schema.enum[0];
   } else {
-    schema.$ref = `#/components/schemas/${schema.type}`;
-    delete schema.type;
+    const named = schemas?.[schema.type];
+    if (named && Array.isArray(named.enum)) {
+      schema.$ref = `#/components/schemas/${schema.type}`;
+      delete schema.type;
+    } else {
+      // Fumadocs prints array<item> from items.title, and only opens a modal when the
+      // item is an object/$ref with properties or a description. A title-only schema
+      // keeps the model name without making ITemplateDocument clickable.
+      return {title: schema.type};
+    }
   }
 
   if (options) {
@@ -94,7 +102,7 @@ export const jsTypeToSchema = (type: string, options?: string) => {
       switch (option) {
         case 'items':
           schema.type = 'array';
-          schema.items = jsTypeToSchema(value);
+          schema.items = jsTypeToSchema(value, undefined, schemas);
           break;
 
         case 'enum':

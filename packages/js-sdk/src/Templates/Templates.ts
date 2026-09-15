@@ -216,7 +216,7 @@ const ALLOWED_CREATE_FIELDS: (keyof ITemplateCreateParams)[] = [
  * @apiBody number initial_reminder? Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable.
  * @apiBody number followup_reminders? Delay (in seconds) before the subsequent reminders are sent (min: 12hrs). Set to 0 or null to disable.
  * @apiBody number max_reminder_days? Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14.
- * @apiBody array(items:object) documents? Optional list of documents to attach to the template
+ * @apiBody array(items:ITemplateDocument) documents? Optional list of documents to attach to the template
  * @apiBody array(items:IRole) roles? Optional list of roles to create. Note that if roles are not included in the request, fields will be ignored.
  * @apiBody array(fields:ITemplateField) fields? Optional list of fields to create. Note that if fields that do not match a role will be ignored.
  * @apiSuccess ITemplate . The newly-created template
