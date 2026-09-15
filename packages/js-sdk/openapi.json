@@ -142,7 +142,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IAuthenticateResponse"
+                  "title": "IAuthenticateResponse"
                 }
               }
             }
@@ -363,7 +363,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IBrand"
+                  "title": "IBrand"
                 }
               }
             }
@@ -567,7 +567,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IBrand"
+                  "title": "IBrand"
                 }
               }
             }
@@ -740,7 +740,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IGroup"
+                  "title": "IGroup"
                 }
               }
             }
@@ -1125,7 +1125,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IAuthenticateResponse"
+                  "title": "IAuthenticateResponse"
                 }
               }
             }
@@ -1355,7 +1355,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IEnvelope"
+                  "title": "IEnvelope"
                 }
               }
             }
@@ -1549,7 +1549,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IEnvelope"
+                  "title": "IEnvelope"
                 }
               }
             }
@@ -1720,7 +1720,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IEnvelope"
+                  "title": "IEnvelope"
                 }
               }
             }
@@ -2127,7 +2127,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IApiKey"
+                  "title": "IApiKey"
                 }
               }
             }
@@ -2323,7 +2323,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/IApiKey"
+                    "title": "IApiKey"
                   }
                 }
               }
@@ -2496,7 +2496,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IBrand"
+                  "title": "IBrand"
                 }
               }
             }
@@ -2696,7 +2696,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/IBrand"
+                    "title": "IBrand"
                   }
                 }
               }
@@ -2859,7 +2859,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IEnvelope"
+                  "title": "IEnvelope"
                 }
               }
             }
@@ -2993,21 +2993,21 @@
                   "recipients": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/ICreateEnvelopeRecipientDirectly"
+                      "title": "ICreateEnvelopeRecipientDirectly"
                     },
                     "description": "A list of recipients to include in the workflow. Must specify one recipient to match each template Role."
                   },
                   "documents": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/IEnvelopeDocument"
+                      "title": "IEnvelopeDocument"
                     },
                     "description": "If not using a template, a list of documents to include in the envelope."
                   },
                   "fields": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/IEnvelopeField"
+                      "title": "IEnvelopeField"
                     },
                     "description": "If not using a template, a list of fields to include in the envelope."
                   },
@@ -3238,7 +3238,7 @@
                       "description": "List of envelopes found",
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/IEnvelope"
+                        "title": "IEnvelope"
                       }
                     }
                   }
@@ -3413,7 +3413,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ITemplateField"
+                  "title": "ITemplateField"
                 }
               }
             }
@@ -3614,7 +3614,7 @@
                   "options": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/IDropdownOption"
+                      "title": "IDropdownOption"
                     },
                     "description": "For dropdown fields, the options to display"
                   },
@@ -3675,7 +3675,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IGroup"
+                  "title": "IGroup"
                 }
               }
             }
@@ -3865,7 +3865,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/IGroup"
+                    "title": "IGroup"
                   }
                 }
               }
@@ -4028,7 +4028,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IInitial"
+                  "title": "IInitial"
                 }
               }
             }
@@ -4210,7 +4210,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/INotificationTemplate"
+                  "title": "INotificationTemplate"
                 }
               }
             }
@@ -4414,7 +4414,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/INotificationTemplate"
+                    "title": "INotificationTemplate"
                   }
                 }
               }
@@ -4577,7 +4577,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IAuthenticateResponse"
+                  "title": "IAuthenticateResponse"
                 }
               }
             }
@@ -4824,7 +4824,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IProfile"
+                  "title": "IProfile"
                 }
               }
             }
@@ -5020,7 +5020,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/IProfile"
+                    "title": "IProfile"
                   }
                 }
               }
@@ -5183,7 +5183,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IOrganizationInvitation"
+                  "title": "IOrganizationInvitation"
                 }
               }
             }
@@ -5380,7 +5380,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/IProfile"
+                    "title": "IProfile"
                   }
                 }
               }
@@ -5576,7 +5576,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IProfile"
+                  "title": "IProfile"
                 }
               }
             }
@@ -5779,7 +5779,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/IProfile"
+                    "title": "IProfile"
                   }
                 }
               }
@@ -5942,7 +5942,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IAuthenticateResponse"
+                  "title": "IAuthenticateResponse"
                 }
               }
             }
@@ -6157,7 +6157,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/IProfile"
+                    "title": "IProfile"
                   }
                 }
               }
@@ -6321,7 +6321,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ISignature"
+                  "title": "ISignature"
                 }
               }
             }
@@ -6503,7 +6503,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ITemplate"
+                  "title": "ITemplate"
                 }
               }
             }
@@ -6667,14 +6667,14 @@
                   "documents": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/ITemplateDocument"
+                      "title": "ITemplateDocument"
                     },
                     "description": "Optional list of documents to attach to the template"
                   },
                   "roles": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/IRole"
+                      "title": "IRole"
                     },
                     "description": "Optional list of roles to create. Note that if roles are not included in the request, fields will be ignored."
                   },
@@ -6835,7 +6835,7 @@
                       "description": "List of templates found",
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/ITemplate"
+                        "title": "ITemplate"
                       }
                     }
                   }
@@ -7000,7 +7000,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ITemplateDocument"
+                  "title": "ITemplateDocument"
                 }
               }
             }
@@ -7189,7 +7189,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ITemplate"
+                  "title": "ITemplate"
                 }
               }
             }
@@ -7397,7 +7397,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IRole"
+                  "title": "IRole"
                 }
               }
             }
@@ -8207,7 +8207,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IApiKey"
+                  "title": "IApiKey"
                 }
               }
             }
@@ -8594,7 +8594,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IBrand"
+                  "title": "IBrand"
                 }
               }
             }
@@ -8773,7 +8773,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IBrand"
+                  "title": "IBrand"
                 }
               }
             }
@@ -8985,7 +8985,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IEnvelopeFieldSettings"
+                  "title": "IEnvelopeFieldSettings"
                 }
               }
             }
@@ -9366,7 +9366,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ITemplateField"
+                  "title": "ITemplateField"
                 }
               }
             }
@@ -9561,7 +9561,7 @@
                   "options": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/IDropdownOption"
+                      "title": "IDropdownOption"
                     },
                     "description": "For dropdown fields, the options to display"
                   },
@@ -9804,7 +9804,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IGroup"
+                  "title": "IGroup"
                 }
               }
             }
@@ -9975,7 +9975,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IGroup"
+                  "title": "IGroup"
                 }
               }
             }
@@ -10183,7 +10183,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IGroup"
+                  "title": "IGroup"
                 }
               }
             }
@@ -10527,7 +10527,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/INotificationTemplate"
+                  "title": "INotificationTemplate"
                 }
               }
             }
@@ -10698,7 +10698,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/INotificationTemplate"
+                  "title": "INotificationTemplate"
                 }
               }
             }
@@ -10892,7 +10892,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IAuthenticateResponse"
+                  "title": "IAuthenticateResponse"
                 }
               }
             }
@@ -11062,7 +11062,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IOrganization"
+                  "title": "IOrganization"
                 }
               }
             }
@@ -11233,7 +11233,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IOrganization"
+                  "title": "IOrganization"
                 }
               }
             }
@@ -11598,7 +11598,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IProfile"
+                  "title": "IProfile"
                 }
               }
             }
@@ -11970,7 +11970,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IOrganizationInvitation"
+                  "title": "IOrganizationInvitation"
                 }
               }
             }
@@ -12344,7 +12344,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IProfile"
+                  "title": "IProfile"
                 }
               }
             }
@@ -12538,7 +12538,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IProfile"
+                  "title": "IProfile"
                 }
               }
             }
@@ -12739,7 +12739,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IAuthenticateResponse"
+                  "title": "IAuthenticateResponse"
                 }
               }
             }
@@ -12910,7 +12910,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IProfile"
+                  "title": "IProfile"
                 }
               }
             }
@@ -13273,7 +13273,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ITemplate"
+                  "title": "ITemplate"
                 }
               }
             }
@@ -13470,7 +13470,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ITemplate"
+                  "title": "ITemplate"
                 }
               }
             }
@@ -13640,7 +13640,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ITemplate"
+                  "title": "ITemplate"
                 }
               }
             }
@@ -14407,7 +14407,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IRole"
+                  "title": "IRole"
                 }
               }
             }
@@ -14841,7 +14841,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IRecipient"
+                  "title": "IRecipient"
                 }
               }
             }
@@ -15045,7 +15045,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IRecipient"
+                  "title": "IRecipient"
                 }
               }
             }
@@ -15227,7 +15227,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IRecipient"
+                  "title": "IRecipient"
                 }
               }
             }
@@ -15413,7 +15413,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/IEntitlement"
+                    "title": "IEntitlement"
                   }
                 }
               }
@@ -15587,7 +15587,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IEnvelopeDocument"
+                  "title": "IEnvelopeDocument"
                 }
               }
             }
@@ -16137,7 +16137,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IInPersonLinkResponse"
+                  "title": "IInPersonLinkResponse"
                 }
               }
             }
@@ -16481,7 +16481,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IUser"
+                  "title": "IUser"
                 }
               }
             }
@@ -16645,7 +16645,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/INotification"
+                    "title": "INotification"
                   }
                 }
               }
@@ -17030,7 +17030,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IOrganization"
+                  "title": "IOrganization"
                 }
               }
             }
@@ -17211,7 +17211,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IOrganizationInvitation"
+                  "title": "IOrganizationInvitation"
                 }
               }
             }
@@ -17383,7 +17383,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IPipelineSettings"
+                  "title": "IPipelineSettings"
                 }
               }
             }
@@ -17553,7 +17553,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IPipelineSettings"
+                  "title": "IPipelineSettings"
                 }
               }
             }
@@ -17928,7 +17928,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ITemplateDocument"
+                  "title": "ITemplateDocument"
                 }
               }
             }
@@ -18479,7 +18479,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IWebhook"
+                  "title": "IWebhook"
                 }
               }
             }
@@ -18639,7 +18639,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IWebhook"
+                  "title": "IWebhook"
                 }
               }
             }
@@ -18877,7 +18877,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IRecipient"
+                  "title": "IRecipient"
                 }
               }
             }
@@ -19109,7 +19109,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IOrganizationInvitation"
+                  "title": "IOrganizationInvitation"
                 }
               }
             }
@@ -19654,7 +19654,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IApiKey"
+                  "title": "IApiKey"
                 }
               }
             }
@@ -19816,7 +19816,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IWebhook"
+                  "title": "IWebhook"
                 }
               }
             }
@@ -20008,7 +20008,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ISignerTokenResponse"
+                  "title": "ISignerTokenResponse"
                 }
               }
             }
@@ -20309,7 +20309,7 @@
                   "responses": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/IKbaChallengeResponse"
+                      "title": "IKbaChallengeResponse"
                     },
                     "description": "Answers in the same order as the challenge questions"
                   }
@@ -20762,7 +20762,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IAuthenticateResponse"
+                  "title": "IAuthenticateResponse"
                 }
               }
             }
@@ -20934,7 +20934,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ITemplate"
+                  "title": "ITemplate"
                 }
               }
             }
@@ -21115,7 +21115,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IBrand"
+                  "title": "IBrand"
                 }
               }
             }
@@ -21277,7 +21277,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IAuthenticateResponse"
+                  "title": "IAuthenticateResponse"
                 }
               }
             }
@@ -21439,7 +21439,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ISignerTokenResponse"
+                  "title": "ISignerTokenResponse"
                 }
               }
             }
@@ -21618,7 +21618,7 @@
                   "responses": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/IKBAResponse"
+                      "title": "IKBAResponse"
                     },
                     "description": "For KBA, responses to any challenge questions presented"
                   }
