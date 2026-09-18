@@ -204,7 +204,10 @@ const extractExamples = (comment: any) => {
 };
 
 const processChild = (child: Record<string, any>) => {
-  const {name, kind, comment, flags} = child as {name: string; kind: number; comment: any; flags: any};
+  const {name, kind, flags} = child as {name: string; kind: number; flags: any};
+  // TypeDoc 0.28 attaches a function's comment (and deprecation flag) to its call signature
+  // rather than the function reflection itself. Interfaces and type aliases keep it at the top.
+  const comment = child.comment ?? child.signatures?.[0]?.comment;
 
   if (!DOCUMENTABLE_KINDS.has(kind) || !comment) {
     return;
@@ -215,7 +218,7 @@ const processChild = (child: Record<string, any>) => {
   let page = '';
   let language = 'typescript';
   let hasApi = false;
-  let deprecated = flags?.isDeprecated === true;
+  let deprecated = flags?.isDeprecated === true || child.signatures?.[0]?.flags?.isDeprecated === true;
   let since: string | undefined;
 
   // Modifier tags (e.g. @sdkGettingStarted) land on comment.modifierTags; block tags stay on blockTags.

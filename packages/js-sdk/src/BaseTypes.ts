@@ -2,6 +2,8 @@ import { IEnvelope } from './Models';
 
 export type TRequestStatus = 'OK' | 'ERROR';
 
+export type TBasicResponse = { status: TRequestStatus, message?: string }
+
 export type TTemplateSender = 'envelope_creator' | 'template_owner';
 
 export type TTemplateAction =
@@ -31,8 +33,6 @@ export type TRecipientType = 'signer' | 'cc' | 'approver';
 export type TSortTemplateBy = 'created_at' | 'updated_at' | 'name' | 'last_used_at' | 'counter' | 'star_counter';
 
 export type TAccessKeyType = 'email' | 'in_app' | 'in_person_link' | 'sms';
-
-export type TApiKeyPermission = 'personal' | 'global_read' | 'global_write';
 
 /** @deprecated. See envelope.created_at, .updated_at, and .canceled_at. */
 export type TDeprecatedHistoryEvent = 'envelope:created' | 'envelope:completed';

@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.10.4",
+  "version": "6.12.0",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -26,6 +26,472 @@
             }
           ],
           "deprecated": false
+        },
+        "endpoint.clearSession": {
+          "sdkOperation": "endpoint.clearSession",
+          "kind": "method",
+          "name": "clearSession",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "clearSession(): VerdocsEndpoint",
+          "summary": "Clear the active session.",
+          "params": [],
+          "returns": {
+            "type": "VerdocsEndpoint",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "endpoint.clearSignerSession": {
+          "sdkOperation": "endpoint.clearSignerSession",
+          "kind": "method",
+          "name": "clearSignerSession",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "clearSignerSession(): VerdocsEndpoint",
+          "summary": "Clear the active signing session.",
+          "params": [],
+          "returns": {
+            "type": "VerdocsEndpoint",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "endpoint.getBaseURL": {
+          "sdkOperation": "endpoint.getBaseURL",
+          "kind": "method",
+          "name": "getBaseURL",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getBaseURL(): string",
+          "summary": "Get the current base URL. This should rarely be anything other than 'https://api.verdocs.com'.",
+          "params": [],
+          "returns": {
+            "type": "string",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "endpoint.getClientID": {
+          "sdkOperation": "endpoint.getClientID",
+          "kind": "method",
+          "name": "getClientID",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getClientID(): string",
+          "summary": "Get the current client ID, if set.",
+          "params": [],
+          "returns": {
+            "type": "string",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "endpoint.getEnvironment": {
+          "sdkOperation": "endpoint.getEnvironment",
+          "kind": "method",
+          "name": "getEnvironment",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getEnvironment(): TEnvironment",
+          "summary": "Get the current environment.",
+          "params": [],
+          "returns": {
+            "type": "TEnvironment",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "endpoint.getSession": {
+          "sdkOperation": "endpoint.getSession",
+          "kind": "method",
+          "name": "getSession",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getSession(): TSession",
+          "summary": "Get the current session, if any.",
+          "params": [],
+          "returns": {
+            "type": "TSession",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "endpoint.getSessionType": {
+          "sdkOperation": "endpoint.getSessionType",
+          "kind": "method",
+          "name": "getSessionType",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getSessionType(): TSessionType",
+          "summary": "Get the current session type.",
+          "params": [],
+          "returns": {
+            "type": "TSessionType",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "endpoint.getTimeout": {
+          "sdkOperation": "endpoint.getTimeout",
+          "kind": "method",
+          "name": "getTimeout",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getTimeout(): number",
+          "summary": "Get the current timeout.",
+          "params": [],
+          "returns": {
+            "type": "number",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "endpoint.getToken": {
+          "sdkOperation": "endpoint.getToken",
+          "kind": "method",
+          "name": "getToken",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getToken(): string | null",
+          "summary": "Retrieves the current session token, if any. Tokens should rarely be used for direct actions, but this is\nrequired by the `<VerdocsView>` and other components to authorize requests to raw PDF files.",
+          "params": [],
+          "returns": {
+            "type": "string | null",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "endpoint.loadSession": {
+          "sdkOperation": "endpoint.loadSession",
+          "kind": "method",
+          "name": "loadSession",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "loadSession(): VerdocsEndpoint",
+          "summary": "Load a persisted session from localStorage. Typically called once after the endpoint is configured\nwhen the app or component starts. Ignored if the endpoint is configured to not persist sessions.",
+          "params": [],
+          "returns": {
+            "type": "VerdocsEndpoint",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "endpoint.logRequests": {
+          "sdkOperation": "endpoint.logRequests",
+          "kind": "method",
+          "name": "logRequests",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "logRequests(enable: boolean): VerdocsEndpoint",
+          "summary": "Enable or disable request logging. This may expose sensitive data in the console log, so it should only be used for debugging.",
+          "params": [
+            {
+              "name": "enable",
+              "type": "boolean",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "VerdocsEndpoint",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {VerdocsEndpoint} from '@verdocs/js-sdk/HTTP';\n\nconst endpoint = new VerdocsEndpoint();\nendpoint.logRequests(true);"
+            }
+          ],
+          "deprecated": false
+        },
+        "endpoint.onSessionChanged": {
+          "sdkOperation": "endpoint.onSessionChanged",
+          "kind": "method",
+          "name": "onSessionChanged",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "onSessionChanged(listener: TSessionChangedListener): object",
+          "summary": "Subscribe to session state change events.",
+          "params": [
+            {
+              "name": "listener",
+              "type": "TSessionChangedListener",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "object",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "endpoint.setBaseURL": {
+          "sdkOperation": "endpoint.setBaseURL",
+          "kind": "method",
+          "name": "setBaseURL",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "setBaseURL(url: string): VerdocsEndpoint",
+          "summary": "Set the base URL for API calls. Should be called only upon direction from Verdocs Customer Solutions Engineering.",
+          "params": [
+            {
+              "name": "url",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "VerdocsEndpoint",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {VerdocsEndpoint} from '@verdocs/js-sdk/HTTP';\n\nconst endpoint = new VerdocsEndpoint();\nendpoint.setBaseURL('https://api.verdocs.com');"
+            }
+          ],
+          "deprecated": false
+        },
+        "endpoint.setClientID": {
+          "sdkOperation": "endpoint.setClientID",
+          "kind": "method",
+          "name": "setClientID",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "setClientID(clientID: string): VerdocsEndpoint",
+          "summary": "Set the Client ID for Verdocs API calls.",
+          "params": [
+            {
+              "name": "clientID",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "VerdocsEndpoint",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {VerdocsEndpoint} from '@verdocs/js-sdk/HTTP';\n\nconst endpoint = new VerdocsEndpoint();\nendpoint.setClientID('1234);"
+            }
+          ],
+          "deprecated": false
+        },
+        "endpoint.setDefault": {
+          "sdkOperation": "endpoint.setDefault",
+          "kind": "method",
+          "name": "setDefault",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "setDefault(): void",
+          "summary": "",
+          "params": [],
+          "returns": {
+            "type": "void",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "endpoint.setEnvironment": {
+          "sdkOperation": "endpoint.setEnvironment",
+          "kind": "method",
+          "name": "setEnvironment",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "setEnvironment(environment: TEnvironment): VerdocsEndpoint",
+          "summary": "Set the operating environment. This should rarely be anything other than 'verdocs'.",
+          "params": [
+            {
+              "name": "environment",
+              "type": "TEnvironment",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "VerdocsEndpoint",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {VerdocsEndpoint} from '@verdocs/js-sdk/HTTP';\n\nconst endpoint = new VerdocsEndpoint();\nendpoint.setEnvironment('verdocs-stage');"
+            }
+          ],
+          "deprecated": false
+        },
+        "endpoint.setSessionType": {
+          "sdkOperation": "endpoint.setSessionType",
+          "kind": "method",
+          "name": "setSessionType",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "setSessionType(sessionType: TSessionType): VerdocsEndpoint",
+          "summary": "Set the session type. In general this should be done immediately when the endpoint is created. Changing the\nsession type may be done at any time, but may have unintended consequences if the endpoint is shared between\nmultiple widgets.\n\nChanging the session type will clear/reload the action session. This may trigger notifications to session state\nobservers. Apps that use observers to trigger UI updates such as logging the user out should be prepared to\nhandle this event.",
+          "params": [
+            {
+              "name": "sessionType",
+              "type": "TSessionType",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "VerdocsEndpoint",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {VerdocsEndpoint} from '@verdocs/js-sdk/HTTP';\n\nconst endpoint = new VerdocsEndpoint();\nendpoint.setEnvironment('verdocs-stage');"
+            }
+          ],
+          "deprecated": false
+        },
+        "endpoint.setTimeout": {
+          "sdkOperation": "endpoint.setTimeout",
+          "kind": "method",
+          "name": "setTimeout",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "setTimeout(timeout: number): VerdocsEndpoint",
+          "summary": "Set the timeout for API calls in milliseconds. 5000-20000ms is recommended for most purposes. 15000ms is the default.\nNote that some calls may involve rendering operations that require some time to complete, so very short timeouts\nare not recommended.",
+          "params": [
+            {
+              "name": "timeout",
+              "type": "number",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "VerdocsEndpoint",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {VerdocsEndpoint} from '@verdocs/js-sdk/HTTP';\n\nconst endpoint = new VerdocsEndpoint();\nendpoint.setTimeout(3000);"
+            }
+          ],
+          "deprecated": false
+        },
+        "endpoint.setToken": {
+          "sdkOperation": "endpoint.setToken",
+          "kind": "method",
+          "name": "setToken",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "setToken(token: string | null, sessionType: TSessionType = 'user'): VerdocsEndpoint",
+          "summary": "Set the authorization token that will be used for Verdocs API calls. This will also set the session metadata\nand notify any listeners of the new data.\n\nIf this Endpoint will be used for non-default purposes (e.g. signing, or in an alternate environment) those\nsettings should be made before calling this. Sessions are persisted to localStorage, and the environment and\ntype become part of the storage key.",
+          "params": [
+            {
+              "name": "token",
+              "type": "string | null",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "sessionType",
+              "type": "TSessionType",
+              "description": "",
+              "optional": true,
+              "default": "'user'"
+            }
+          ],
+          "returns": {
+            "type": "VerdocsEndpoint",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {VerdocsEndpoint} from '@verdocs/js-sdk/HTTP';\n\nconst endpoint = new VerdocsEndpoint();\nendpoint.setToken(accessToken);"
+            }
+          ],
+          "deprecated": false
+        },
+        "endpoint.getDefault": {
+          "sdkOperation": "endpoint.getDefault",
+          "kind": "method",
+          "name": "getDefault",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getDefault(): VerdocsEndpoint",
+          "summary": "",
+          "params": [],
+          "returns": {
+            "type": "VerdocsEndpoint",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
         }
       }
     },
@@ -34,6 +500,34 @@
       "name": "Ungrouped",
       "summary": "",
       "symbols": {
+        "ungrouped.IAuthorizationCodeRequest": {
+          "sdkOperation": "ungrouped.IAuthorizationCodeRequest",
+          "kind": "interface",
+          "name": "IAuthorizationCodeRequest",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IAuthorizationCodeRequest",
+          "summary": "Standard PKCE flow.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClientCredentialsRequest": {
+          "sdkOperation": "ungrouped.IClientCredentialsRequest",
+          "kind": "interface",
+          "name": "IClientCredentialsRequest",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClientCredentialsRequest",
+          "summary": "NOTE: This should _only_ be used for _server-to-server_ requests.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.IDocumentFromData": {
           "sdkOperation": "ungrouped.IDocumentFromData",
           "kind": "interface",
@@ -85,6 +579,118 @@
           "resource": "interface",
           "signature": "IEnvelopeDocument",
           "summary": "An EnvelopeDocument is an individual document inside an Envelope package.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ILoginCodeGrantRequest": {
+          "sdkOperation": "ungrouped.ILoginCodeGrantRequest",
+          "kind": "interface",
+          "name": "ILoginCodeGrantRequest",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ILoginCodeGrantRequest",
+          "summary": "Second half of a PKCE flow specifically from a social IdP.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IMFABackupCodes": {
+          "sdkOperation": "ungrouped.IMFABackupCodes",
+          "kind": "interface",
+          "name": "IMFABackupCodes",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IMFABackupCodes",
+          "summary": "A set of one-time backup codes. These are returned only once, at the moment they are generated.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IMFAEnrollment": {
+          "sdkOperation": "ungrouped.IMFAEnrollment",
+          "kind": "interface",
+          "name": "IMFAEnrollment",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IMFAEnrollment",
+          "summary": "A pending MFA enrollment. The secret is not active until it is confirmed with `verifyMFAEnrollment()`.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IMFAOtpGrantRequest": {
+          "sdkOperation": "ungrouped.IMFAOtpGrantRequest",
+          "kind": "interface",
+          "name": "IMFAOtpGrantRequest",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IMFAOtpGrantRequest",
+          "summary": "Complete a sign-in that had an MFA challenge issued, using a TOTP code.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IMFARecoveryCodeGrantRequest": {
+          "sdkOperation": "ungrouped.IMFARecoveryCodeGrantRequest",
+          "kind": "interface",
+          "name": "IMFARecoveryCodeGrantRequest",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IMFARecoveryCodeGrantRequest",
+          "summary": "Complete a sign-in that had an MFA challenge issued, using a backup code. Note that backup codes are one-time-use.\nDevelopers providing Web or mobile UIs that allow users to enter backup MFA codes should include dialogs/workflows\nthat encourage users to generate new backup codes to prevent them from being fully depleted.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IMFARequiredAxiosError": {
+          "sdkOperation": "ungrouped.IMFARequiredAxiosError",
+          "kind": "interface",
+          "name": "IMFARequiredAxiosError",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IMFARequiredAxiosError",
+          "summary": "",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IMFARequiredError": {
+          "sdkOperation": "ungrouped.IMFARequiredError",
+          "kind": "interface",
+          "name": "IMFARequiredError",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IMFARequiredError",
+          "summary": "NOTE: This is not a \"failure\" error. MFA flows use a 403 to issue their MFA challenges.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IMFAStatus": {
+          "sdkOperation": "ungrouped.IMFAStatus",
+          "kind": "interface",
+          "name": "IMFAStatus",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IMFAStatus",
+          "summary": "The caller's multi-factor authentication status.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -188,6 +794,34 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.IRefreshTokenRequest": {
+          "sdkOperation": "ungrouped.IRefreshTokenRequest",
+          "kind": "interface",
+          "name": "IRefreshTokenRequest",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IRefreshTokenRequest",
+          "summary": "Refresh any existing session.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IRevokeSessionsResponse": {
+          "sdkOperation": "ungrouped.IRevokeSessionsResponse",
+          "kind": "interface",
+          "name": "IRevokeSessionsResponse",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IRevokeSessionsResponse",
+          "summary": "The result of revoking the caller's other sessions.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.IRole": {
           "sdkOperation": "ungrouped.IRole",
           "kind": "interface",
@@ -202,6 +836,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.IROPCRequest": {
+          "sdkOperation": "ungrouped.IROPCRequest",
+          "kind": "interface",
+          "name": "IROPCRequest",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IROPCRequest",
+          "summary": "@deprecated. Use IAuthorizationCodeRequest instead.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.ISigningSession": {
           "sdkOperation": "ungrouped.ISigningSession",
           "kind": "interface",
@@ -211,6 +859,20 @@
           "resource": "interface",
           "signature": "ISigningSession",
           "summary": "A Signing Session connects a caller to a role within an envelope, and can be used only for calls related to signing that envelope.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ISocialProviders": {
+          "sdkOperation": "ungrouped.ISocialProviders",
+          "kind": "interface",
+          "name": "ISocialProviders",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ISocialProviders",
+          "summary": "The identity providers enabled in the current environment. Buttons for providers that are not\nenabled should be hidden, because their sign-in URLs will return 404.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -239,6 +901,20 @@
           "resource": "interface",
           "signature": "ITemplateDocument",
           "summary": "A file attached to the template for display/signing.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IUserLoginSession": {
+          "sdkOperation": "ungrouped.IUserLoginSession",
+          "kind": "interface",
+          "name": "IUserLoginSession",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IUserLoginSession",
+          "summary": "Server-side record of a login session (not to be confused with IUserSession, a client-side tracker for a decoded JWT.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -454,6 +1130,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.TMFAType": {
+          "sdkOperation": "ungrouped.TMFAType",
+          "kind": "type",
+          "name": "TMFAType",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TMFAType",
+          "summary": "The type of second factor enrolled. Only time-based one-time passwords are supported today.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.TOrgPermissionCreate": {
           "sdkOperation": "ungrouped.TOrgPermissionCreate",
           "kind": "type",
@@ -589,6 +1279,34 @@
           "resource": "type",
           "signature": "TSessionType",
           "summary": "Verdocs supports two types of authenticated sessions: User and Signing. Both behave similarly and have similar\nproperties, but signing sessions only have access to a small set of signing-related functions.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TSignInProvider": {
+          "sdkOperation": "ungrouped.TSignInProvider",
+          "kind": "type",
+          "name": "TSignInProvider",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TSignInProvider",
+          "summary": "IdP used for sign-in. Note that \"microsoft\" covers both Entra ID (work and school) and personal accounts.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TSocialLoginProvider": {
+          "sdkOperation": "ungrouped.TSocialLoginProvider",
+          "kind": "type",
+          "name": "TSocialLoginProvider",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TSocialLoginProvider",
+          "summary": "An identity provider that may be used to sign in to Verdocs.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -983,12 +1701,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userHasPermissions(profile: undefined | null | IProfile, permissions: TPermission[]): boolean",
+          "signature": "userHasPermissions(profile: IProfile | null | undefined, permissions: TPermission[]): boolean",
           "summary": "Confirm whether the user has all of the specified permissions, resolving the profile's direct\npermissions, the permissions granted by its roles, and any group profiles.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -1266,7 +1984,7 @@
           "page": "Endpoints",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "updateOrganizationInvitation(endpoint: VerdocsEndpoint, email: string, params: Pick<ICreateInvitationRequest, 'first_name' | 'last_name' | 'role'>): Promise<IOrganizationInvitation>",
+          "signature": "updateOrganizationInvitation(endpoint: VerdocsEndpoint, email: string, params: Pick<ICreateInvitationRequest, 'role' | 'first_name' | 'last_name'>): Promise<IOrganizationInvitation>",
           "summary": "Update an invitation. Note that email may not be changed after the invite is sent. To change\nan invitee's email, delete the incorrect entry and create one with the correct value.",
           "params": [
             {
@@ -1285,7 +2003,7 @@
             },
             {
               "name": "params",
-              "type": "Pick<ICreateInvitationRequest, 'first_name' | 'last_name' | 'role'>",
+              "type": "Pick<ICreateInvitationRequest, 'role' | 'first_name' | 'last_name'>",
               "description": "",
               "optional": false,
               "default": null
@@ -2700,6 +3418,91 @@
           ],
           "deprecated": false
         },
+        "auth.createCodeChallenge": {
+          "sdkOperation": "auth.createCodeChallenge",
+          "kind": "function",
+          "name": "createCodeChallenge",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "createCodeChallenge(verifier: string): Promise<string>",
+          "summary": "Create the PKCE code challenge for a verifier: the base64url-encoded SHA-256 of it. Isomorphic,\nusing WebCrypto in both browsers and Node 18 or later.",
+          "params": [
+            {
+              "name": "verifier",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<string>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {createCodeChallenge, createCodeVerifier} from '@verdocs/js-sdk';\n\nconst verifier = createCodeVerifier();\nconst challenge = await createCodeChallenge(verifier);"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.createCodeVerifier": {
+          "sdkOperation": "auth.createCodeVerifier",
+          "kind": "function",
+          "name": "createCodeVerifier",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "createCodeVerifier(): string",
+          "summary": "Create a PKCE code verifier: 43 characters of URL-safe randomness, per RFC 7636. Keep it where\nit will survive the round trip to the provider (`sessionStorage` in a browser), pass its\nchallenge to `getSocialLoginUrl()`, and send it back with the `login-code` grant.",
+          "params": [],
+          "returns": {
+            "type": "string",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {createCodeVerifier} from '@verdocs/js-sdk';\n\nconst verifier = createCodeVerifier();"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.getMFAChallenge": {
+          "sdkOperation": "auth.getMFAChallenge",
+          "kind": "function",
+          "name": "getMFAChallenge",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getMFAChallenge(e: unknown): IMFARequiredError | null",
+          "summary": "Companion to `isMFARequired()` that returns the challenge body, or null if the error is\nsomething else. Handy in `catch` blocks that just need the `mfa_token`.",
+          "params": [
+            {
+              "name": "e",
+              "type": "unknown",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "IMFARequiredError | null",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getMFAChallenge} from '@verdocs/js-sdk';\n\nconst challenge = getMFAChallenge(e);\nif (challenge) {\n  // Switch the form to its \"enter your code\" mode, carrying challenge.mfa_token.\n}"
+            }
+          ],
+          "deprecated": false
+        },
         "auth.getMyUser": {
           "sdkOperation": "auth.getMyUser",
           "kind": "function",
@@ -2760,6 +3563,113 @@
             {
               "language": "typescript",
               "code": "import {getOAuth2AuthorizeUrl} from '@verdocs/js-sdk';\n\nconst url = getOAuth2AuthorizeUrl(VerdocsEndpoint.getDefault(), {\n  client_id: 'your-client-id',\n  redirect_uri: 'https://your-app.com/callback',\n  response_type: 'code',\n  state: 'random-csrf-token',\n});\nwindow.location.href = url;"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.getSocialLoginUrl": {
+          "sdkOperation": "auth.getSocialLoginUrl",
+          "kind": "function",
+          "name": "getSocialLoginUrl",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getSocialLoginUrl(endpoint: VerdocsEndpoint, provider: TSocialLoginProvider, params: object): string",
+          "summary": "Build the URL that starts a Google or Microsoft sign-in. Send the browser to it. The provider\nexchange happens server-side, and the user comes back to `returnUri` with `login_code` and\n`state` query parameters. Exchange the code for tokens with `authenticate()` using the\n`login-code` grant and the verifier that produced `codeChallenge`.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "provider",
+              "type": "TSocialLoginProvider",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "object",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "string",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {authenticate, createCodeChallenge, createCodeVerifier, getSocialLoginUrl, VerdocsEndpoint} from '@verdocs/js-sdk';\n\n// Starting the flow. Keep the verifier and state in sessionStorage, the browser is leaving.\nconst code_verifier = createCodeVerifier();\nconst codeChallenge = await createCodeChallenge(code_verifier);\nconst state = createCodeVerifier();\nsessionStorage.setItem('verdocs_pkce', JSON.stringify({code_verifier, state}));\nwindow.location.href = getSocialLoginUrl(VerdocsEndpoint.getDefault(), 'google', {\n  returnUri: 'https://your-app.com/login', codeChallenge, state});\n\n// Back at returnUri, with ?login_code=...&state=...\nconst {access_token} = await authenticate(VerdocsEndpoint.getDefault(), {\n  grant_type: 'urn:verdocs:params:oauth:grant-type:login-code', login_code, code_verifier});"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.getSocialProviders": {
+          "sdkOperation": "auth.getSocialProviders",
+          "kind": "function",
+          "name": "getSocialProviders",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getSocialProviders(endpoint: VerdocsEndpoint): Promise<ISocialProviders>",
+          "summary": "Get the identity providers enabled in the current environment. Google and Microsoft are\nconfigured per-environment, and a provider that is not configured will 404 from its sign-in\nURL, so call this before rendering provider buttons and hide the ones that are off.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<ISocialProviders>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getSocialProviders, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {google, microsoft} = await getSocialProviders(VerdocsEndpoint.getDefault());"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.isMFARequired": {
+          "sdkOperation": "auth.isMFARequired",
+          "kind": "function",
+          "name": "isMFARequired",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "isMFARequired(e: unknown): boolean",
+          "summary": "Type guard for the `mfa_required` challenge. A sign-in for a user with MFA enabled fails with\na 403 carrying `{error: 'mfa_required', mfa_token}`, and the app finishes the sign-in with an\nmfa grant. Use `getMFAChallenge()` instead if it is easier to work with the body directly.",
+          "params": [
+            {
+              "name": "e",
+              "type": "unknown",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "boolean",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {authenticate, isMFARequired, VerdocsEndpoint} from '@verdocs/js-sdk';\n\ntry {\n  const {access_token} = await authenticate(VerdocsEndpoint.getDefault(), {grant_type: 'password', username, password});\n} catch (e) {\n  if (isMFARequired(e)) {\n    const {mfa_token} = e.response.data;\n    // Collect a code from the user, then:\n    const {access_token} = await authenticate(VerdocsEndpoint.getDefault(), {\n      grant_type: 'urn:verdocs:params:oauth:grant-type:mfa-otp', mfa_token, otp});\n  }\n}"
             }
           ],
           "deprecated": false
@@ -2918,6 +3828,327 @@
         }
       }
     },
+    "field": {
+      "id": "field",
+      "name": "Field",
+      "summary": "",
+      "symbols": {
+        "field.blobToBase64": {
+          "sdkOperation": "field.blobToBase64",
+          "kind": "function",
+          "name": "blobToBase64",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "blobToBase64(image: Blob): Promise<unknown>",
+          "summary": "",
+          "params": [
+            {
+              "name": "image",
+              "type": "Blob",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<unknown>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "field.createField": {
+          "sdkOperation": "field.createField",
+          "kind": "function",
+          "name": "createField",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "createField(endpoint: VerdocsEndpoint, templateId: string, params: ITemplateField): Promise<ITemplateField>",
+          "summary": "Add a field to a template.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "ITemplateField",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<ITemplateField>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {createField} from '@verdocs/js-sdk/Templates';\n\nawait createField((VerdocsEndpoint.getDefault(), template_id, { ... });"
+            }
+          ],
+          "deprecated": false
+        },
+        "field.deleteField": {
+          "sdkOperation": "field.deleteField",
+          "kind": "function",
+          "name": "deleteField",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "deleteField(endpoint: VerdocsEndpoint, templateId: string, name: string): Promise<any>",
+          "summary": "Remove a field from a template.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<any>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {deleteField} from '@verdocs/js-sdk/Templates';\n\nawait deleteField((VerdocsEndpoint.getDefault(), template_id, field_name);"
+            }
+          ],
+          "deprecated": false
+        },
+        "field.getRLeft": {
+          "sdkOperation": "field.getRLeft",
+          "kind": "function",
+          "name": "getRLeft",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getRLeft(x: number, ratio: number): number",
+          "summary": "",
+          "params": [
+            {
+              "name": "x",
+              "type": "number",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "ratio",
+              "type": "number",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "number",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "field.getRTop": {
+          "sdkOperation": "field.getRTop",
+          "kind": "function",
+          "name": "getRTop",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getRTop(y: number, fieldHeight: number, iTextHeight: number, yRatio: number): number",
+          "summary": "",
+          "params": [
+            {
+              "name": "y",
+              "type": "number",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "fieldHeight",
+              "type": "number",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "iTextHeight",
+              "type": "number",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "yRatio",
+              "type": "number",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "number",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "field.getRValue": {
+          "sdkOperation": "field.getRValue",
+          "kind": "function",
+          "name": "getRValue",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getRValue(y: number, ratio: number): number",
+          "summary": "",
+          "params": [
+            {
+              "name": "y",
+              "type": "number",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "ratio",
+              "type": "number",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "number",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "field.rescale": {
+          "sdkOperation": "field.rescale",
+          "kind": "function",
+          "name": "rescale",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "rescale(r: number, n: number): number",
+          "summary": "",
+          "params": [
+            {
+              "name": "r",
+              "type": "number",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "n",
+              "type": "number",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "number",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "field.updateField": {
+          "sdkOperation": "field.updateField",
+          "kind": "function",
+          "name": "updateField",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "updateField(endpoint: VerdocsEndpoint, templateId: string, name: string, params: Partial<ITemplateField>): Promise<ITemplateField>",
+          "summary": "Update a template field.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "Partial<ITemplateField>",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<ITemplateField>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {updateField} from '@verdocs/js-sdk/Templates';\n\nawait updateField((VerdocsEndpoint.getDefault(), template_id, field_name, { ... });"
+            }
+          ],
+          "deprecated": false
+        }
+      }
+    },
     "envelope": {
       "id": "envelope",
       "name": "Envelope",
@@ -2930,12 +4161,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "canAccessEnvelope(profile_id: undefined | null | string, envelope: IEnvelope): boolean",
+          "signature": "canAccessEnvelope(profile_id: string | null | undefined, envelope: IEnvelope): boolean",
           "summary": "Check to see if the profile ID is the envelope's sender or one of the recipients.",
           "params": [
             {
               "name": "profile_id",
-              "type": "undefined | null | string",
+              "type": "string | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -3449,7 +4680,7 @@
           "page": "Endpoints",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "getEnvelopesZip(endpoint: VerdocsEndpoint, envelope_ids: string[]): Promise<AxiosResponse<any, any, object>>",
+          "signature": "getEnvelopesZip(endpoint: VerdocsEndpoint, envelope_ids: string[]): Promise<AxiosResponse<any, any, object, any>>",
           "summary": "Generate a ZIP file containing all data for the specified envelopes. The caller must be the\nowner of each envelope. The returned ZIP file contains a folder for each envelope.",
           "params": [
             {
@@ -3468,7 +4699,7 @@
             }
           ],
           "returns": {
-            "type": "Promise<AxiosResponse<any, any, object>>",
+            "type": "Promise<AxiosResponse<any, any, object, any>>",
             "description": ""
           },
           "throws": [],
@@ -3482,7 +4713,7 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "getMyRecipient(session: TSession, envelope: IEnvelope): undefined | IRecipient",
+          "signature": "getMyRecipient(session: TSession, envelope: IEnvelope): IRecipient | undefined",
           "summary": "Regardless of if the session is `user` or `signer`, returns the envelope's recipient that matches the user's session.",
           "params": [
             {
@@ -3501,7 +4732,7 @@
             }
           ],
           "returns": {
-            "type": "undefined | IRecipient",
+            "type": "IRecipient | undefined",
             "description": ""
           },
           "throws": [],
@@ -3541,7 +4772,7 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "getRecipient(email: string, envelope: IEnvelope): undefined | IRecipient",
+          "signature": "getRecipient(email: string, envelope: IEnvelope): IRecipient | undefined",
           "summary": "Get a recipient from an envelope via an email match.",
           "params": [
             {
@@ -3560,7 +4791,7 @@
             }
           ],
           "returns": {
-            "type": "undefined | IRecipient",
+            "type": "IRecipient | undefined",
             "description": ""
           },
           "throws": [],
@@ -3600,7 +4831,7 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "getRecipientWithActions(email: string, envelope: IEnvelope): undefined | boolean",
+          "signature": "getRecipientWithActions(email: string, envelope: IEnvelope): boolean | undefined",
           "summary": "Get a recipient that can act from an envelope via an email match.",
           "params": [
             {
@@ -3619,7 +4850,7 @@
             }
           ],
           "returns": {
-            "type": "undefined | boolean",
+            "type": "boolean | undefined",
             "description": ""
           },
           "throws": [],
@@ -3633,12 +4864,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "isEnvelopeOwner(profile_id: undefined | null | string, envelope: IEnvelope): boolean",
+          "signature": "isEnvelopeOwner(profile_id: string | null | undefined, envelope: IEnvelope): boolean",
           "summary": "Check to see if the profile ID owns the envelope.",
           "params": [
             {
               "name": "profile_id",
-              "type": "undefined | null | string",
+              "type": "string | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -3666,12 +4897,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "isEnvelopeRecipient(profile_id: undefined | null | string, envelope: IEnvelope): boolean",
+          "signature": "isEnvelopeRecipient(profile_id: string | null | undefined, envelope: IEnvelope): boolean",
           "summary": "Check to see if the profile ID is a recipient within the envelope.",
           "params": [
             {
               "name": "profile_id",
-              "type": "undefined | null | string",
+              "type": "string | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -3699,7 +4930,7 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "isFieldFilled(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): null | boolean | ''",
+          "signature": "isFieldFilled(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean | '' | null",
           "summary": "",
           "params": [
             {
@@ -3718,7 +4949,7 @@
             }
           ],
           "returns": {
-            "type": "null | boolean | ''",
+            "type": "boolean | '' | null",
             "description": ""
           },
           "throws": [],
@@ -3732,7 +4963,7 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "isFieldValid(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): null | boolean | ''",
+          "signature": "isFieldValid(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean | '' | null",
           "summary": "",
           "params": [
             {
@@ -3751,7 +4982,7 @@
             }
           ],
           "returns": {
-            "type": "null | boolean | ''",
+            "type": "boolean | '' | null",
             "description": ""
           },
           "throws": [],
@@ -3817,6 +5048,84 @@
           "examples": [],
           "deprecated": false
         },
+        "envelope.sortDocuments": {
+          "sdkOperation": "envelope.sortDocuments",
+          "kind": "function",
+          "name": "sortDocuments",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "sortDocuments(documents: object[]): object[]",
+          "summary": "Utility function to sort documents by their order, falling back to created_at.\nNOTE: This function mutates the input array.",
+          "params": [
+            {
+              "name": "documents",
+              "type": "object[]",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "object[]",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "envelope.sortFields": {
+          "sdkOperation": "envelope.sortFields",
+          "kind": "function",
+          "name": "sortFields",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "sortFields(fields: object[]): object[]",
+          "summary": "Utility function to sort fields by page, then by Y coordinate, then by X coordinate.\nNOTE: This function mutates the input array.",
+          "params": [
+            {
+              "name": "fields",
+              "type": "object[]",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "object[]",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "envelope.sortRecipients": {
+          "sdkOperation": "envelope.sortRecipients",
+          "kind": "function",
+          "name": "sortRecipients",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "sortRecipients(recipients?: object[]): object[] | undefined",
+          "summary": "Utility function to sort documents by their order, falling back to created_at.\nNOTE: This function mutates the input array.",
+          "params": [
+            {
+              "name": "recipients",
+              "type": "object[]",
+              "description": "",
+              "optional": true,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "object[] | undefined",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "envelope.updateEnvelope": {
           "sdkOperation": "envelope.updateEnvelope",
           "kind": "function",
@@ -3824,7 +5133,7 @@
           "page": "Endpoints",
           "gettingStarted": true,
           "resource": "function",
-          "signature": "updateEnvelope(endpoint: VerdocsEndpoint, envelopeId: string, params: Partial<Pick<IEnvelope, 'name' | 'sender_name' | 'sender_email' | 'no_contact' | 'initial_reminder' | 'followup_reminders' | 'expires_at' | 'visibility' | 'data'>>): Promise<IEnvelope>",
+          "signature": "updateEnvelope(endpoint: VerdocsEndpoint, envelopeId: string, params: Partial<Pick<IEnvelope, 'name' | 'sender_name' | 'sender_email' | 'initial_reminder' | 'followup_reminders' | 'expires_at' | 'visibility' | 'no_contact' | 'data'>>): Promise<IEnvelope>",
           "summary": "Update an envelope. Currently, only reminder settings may be changed.",
           "params": [
             {
@@ -3843,7 +5152,7 @@
             },
             {
               "name": "params",
-              "type": "Partial<Pick<IEnvelope, 'name' | 'sender_name' | 'sender_email' | 'no_contact' | 'initial_reminder' | 'followup_reminders' | 'expires_at' | 'visibility' | 'data'>>",
+              "type": "Partial<Pick<IEnvelope, 'name' | 'sender_name' | 'sender_email' | 'initial_reminder' | 'followup_reminders' | 'expires_at' | 'visibility' | 'no_contact' | 'data'>>",
               "description": "",
               "optional": false,
               "default": null
@@ -3986,12 +5295,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "useCanAccessEnvelope(profile: undefined | null | IProfile, envelope: IEnvelope): boolean",
+          "signature": "useCanAccessEnvelope(profile: IProfile | null | undefined, envelope: IEnvelope): boolean",
           "summary": "Check to see if the profile ID is the envelope's sender or one of the recipients.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4019,7 +5328,7 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanAct(email: string, recipientsWithActions: IRecipient[]): undefined | boolean",
+          "signature": "userCanAct(email: string, recipientsWithActions: IRecipient[]): boolean | undefined",
           "summary": "Returns true if the user can act.",
           "params": [
             {
@@ -4038,7 +5347,7 @@
             }
           ],
           "returns": {
-            "type": "undefined | boolean",
+            "type": "boolean | undefined",
             "description": ""
           },
           "throws": [],
@@ -4052,12 +5361,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanCancelEnvelope(profile: undefined | null | IProfile, envelope: IEnvelope): boolean",
+          "signature": "userCanCancelEnvelope(profile: IProfile | null | undefined, envelope: IEnvelope): boolean",
           "summary": "Check to see if the user owns the envelope.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4085,12 +5394,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanFinishEnvelope(profile: undefined | null | IProfile, envelope: IEnvelope): boolean",
+          "signature": "userCanFinishEnvelope(profile: IProfile | null | undefined, envelope: IEnvelope): boolean",
           "summary": "Check to see if the user owns the envelope.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4118,12 +5427,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanSignNow(profile: undefined | null | IProfile, envelope: IEnvelope): undefined | boolean",
+          "signature": "userCanSignNow(profile: IProfile | null | undefined, envelope: IEnvelope): boolean | undefined",
           "summary": "Returns true if the user can act.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4137,7 +5446,7 @@
             }
           ],
           "returns": {
-            "type": "undefined | boolean",
+            "type": "boolean | undefined",
             "description": ""
           },
           "throws": [],
@@ -4151,12 +5460,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userIsEnvelopeOwner(profile: undefined | null | IProfile, envelope: IEnvelope): boolean",
+          "signature": "userIsEnvelopeOwner(profile: IProfile | null | undefined, envelope: IEnvelope): boolean",
           "summary": "Check to see if the user owns the envelope.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4184,12 +5493,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userIsEnvelopeRecipient(profile: undefined | null | IProfile, envelope: IEnvelope): boolean",
+          "signature": "userIsEnvelopeRecipient(profile: IProfile | null | undefined, envelope: IEnvelope): boolean",
           "summary": "Check to see if the user is a recipient within the envelope.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4224,12 +5533,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "canPerformTemplateAction(profile: undefined | null | IProfile, action: TTemplateAction, template?: ITemplate): object",
+          "signature": "canPerformTemplateAction(profile: IProfile | null | undefined, action: TTemplateAction, template?: ITemplate): object",
           "summary": "",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4539,12 +5848,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "hasRequiredPermissions(profile: undefined | null | IProfile, permissions: TPermission[]): boolean",
+          "signature": "hasRequiredPermissions(profile: IProfile | null | undefined, permissions: TPermission[]): boolean",
           "summary": "",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4655,12 +5964,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanBuildTemplate(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userCanBuildTemplate(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "summary": "Check to see if the user can \"build\" the template (use the field builder). The user must have write access to the\ntemplate, and the template must have at least one signer role.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4674,7 +5983,7 @@
             }
           ],
           "returns": {
-            "type": "undefined | null | boolean",
+            "type": "boolean | null | undefined",
             "description": ""
           },
           "throws": [],
@@ -4688,12 +5997,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanChangeOrgVisibility(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userCanChangeOrgVisibility(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "summary": "Check to see if the user can change whether a template is personal vs org-shared.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4707,7 +6016,7 @@
             }
           ],
           "returns": {
-            "type": "undefined | null | boolean",
+            "type": "boolean | null | undefined",
             "description": ""
           },
           "throws": [],
@@ -4721,12 +6030,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanCreateOrgTemplate(profile: undefined | null | IProfile): boolean",
+          "signature": "userCanCreateOrgTemplate(profile: IProfile | null | undefined): boolean",
           "summary": "Check to see if the user can create an org-shared template.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4747,12 +6056,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanCreatePersonalTemplate(profile: undefined | null | IProfile): boolean",
+          "signature": "userCanCreatePersonalTemplate(profile: IProfile | null | undefined): boolean",
           "summary": "Check to see if the user can create a personal/private template.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4773,12 +6082,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanCreatePublicTemplate(profile: undefined | null | IProfile): boolean",
+          "signature": "userCanCreatePublicTemplate(profile: IProfile | null | undefined): boolean",
           "summary": "Check to see if the user can create a public template.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4799,12 +6108,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanCreateTemplate(profile: undefined | null | IProfile): boolean",
+          "signature": "userCanCreateTemplate(profile: IProfile | null | undefined): boolean",
           "summary": "Confirm whether the user can create a new template.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4825,12 +6134,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanDeleteTemplate(profile: undefined | null | IProfile, template: ITemplate): boolean",
+          "signature": "userCanDeleteTemplate(profile: IProfile | null | undefined, template: ITemplate): boolean",
           "summary": "Check to see if the user can change whether a template is personal vs org-shared.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4858,12 +6167,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanMakeTemplatePrivate(profile: undefined | null | IProfile, template: ITemplate): boolean",
+          "signature": "userCanMakeTemplatePrivate(profile: IProfile | null | undefined, template: ITemplate): boolean",
           "summary": "Check to see if the user can change whether a template is personal vs org-shared.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4891,12 +6200,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanMakeTemplatePublic(profile: undefined | null | IProfile, template: ITemplate): boolean",
+          "signature": "userCanMakeTemplatePublic(profile: IProfile | null | undefined, template: ITemplate): boolean",
           "summary": "Check to see if the user can change whether a template is personal vs org-shared.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4924,12 +6233,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanMakeTemplateShared(profile: undefined | null | IProfile, template: ITemplate): boolean",
+          "signature": "userCanMakeTemplateShared(profile: IProfile | null | undefined, template: ITemplate): boolean",
           "summary": "Check to see if the user can change whether a template is personal vs org-shared.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4957,12 +6266,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanPreviewTemplate(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userCanPreviewTemplate(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "summary": "Check to see if the user can preview the template. The user must have read access to the template, the template must\nhave at least one signer, and every signer must have at least one field.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -4976,7 +6285,7 @@
             }
           ],
           "returns": {
-            "type": "undefined | null | boolean",
+            "type": "boolean | null | undefined",
             "description": ""
           },
           "throws": [],
@@ -4990,12 +6299,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanReadTemplate(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userCanReadTemplate(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "summary": "Check to see if the user can read/view a template.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -5009,7 +6318,7 @@
             }
           ],
           "returns": {
-            "type": "undefined | null | boolean",
+            "type": "boolean | null | undefined",
             "description": ""
           },
           "throws": [],
@@ -5023,12 +6332,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanSendTemplate(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userCanSendTemplate(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "summary": "Confirm whether the user can create an envelope using the specified template.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -5042,7 +6351,7 @@
             }
           ],
           "returns": {
-            "type": "undefined | null | boolean",
+            "type": "boolean | null | undefined",
             "description": ""
           },
           "throws": [],
@@ -5056,12 +6365,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userCanUpdateTemplate(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userCanUpdateTemplate(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "summary": "Check to see if the user can update a tempate.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -5075,7 +6384,7 @@
             }
           ],
           "returns": {
-            "type": "undefined | null | boolean",
+            "type": "boolean | null | undefined",
             "description": ""
           },
           "throws": [],
@@ -5089,12 +6398,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userHasSharedTemplate(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userHasSharedTemplate(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "summary": "Check to see if a template is \"shared\" with the user.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -5108,7 +6417,7 @@
             }
           ],
           "returns": {
-            "type": "undefined | null | boolean",
+            "type": "boolean | null | undefined",
             "description": ""
           },
           "throws": [],
@@ -5122,12 +6431,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "userIsTemplateCreator(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userIsTemplateCreator(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "summary": "Check to see if the user created the template.",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -5141,7 +6450,7 @@
             }
           ],
           "returns": {
-            "type": "undefined | null | boolean",
+            "type": "boolean | null | undefined",
             "description": ""
           },
           "throws": [],
@@ -5459,155 +6768,6 @@
             {
               "language": "typescript",
               "code": "import {updateApiKey} from '@verdocs/js-sdk';\n\nawait updateApiKey(ORGID, CLIENTID, {name: NEWNAME});"
-            }
-          ],
-          "deprecated": false
-        }
-      }
-    },
-    "field": {
-      "id": "field",
-      "name": "Field",
-      "summary": "",
-      "symbols": {
-        "field.createField": {
-          "sdkOperation": "field.createField",
-          "kind": "function",
-          "name": "createField",
-          "page": "Endpoints",
-          "gettingStarted": false,
-          "resource": "function",
-          "signature": "createField(endpoint: VerdocsEndpoint, templateId: string, params: ITemplateField): Promise<ITemplateField>",
-          "summary": "Add a field to a template.",
-          "params": [
-            {
-              "name": "endpoint",
-              "type": "VerdocsEndpoint",
-              "description": "",
-              "optional": false,
-              "default": null
-            },
-            {
-              "name": "templateId",
-              "type": "string",
-              "description": "",
-              "optional": false,
-              "default": null
-            },
-            {
-              "name": "params",
-              "type": "ITemplateField",
-              "description": "",
-              "optional": false,
-              "default": null
-            }
-          ],
-          "returns": {
-            "type": "Promise<ITemplateField>",
-            "description": ""
-          },
-          "throws": [],
-          "examples": [
-            {
-              "language": "typescript",
-              "code": "import {createField} from '@verdocs/js-sdk/Templates';\n\nawait createField((VerdocsEndpoint.getDefault(), template_id, { ... });"
-            }
-          ],
-          "deprecated": false
-        },
-        "field.deleteField": {
-          "sdkOperation": "field.deleteField",
-          "kind": "function",
-          "name": "deleteField",
-          "page": "Endpoints",
-          "gettingStarted": false,
-          "resource": "function",
-          "signature": "deleteField(endpoint: VerdocsEndpoint, templateId: string, name: string): Promise<any>",
-          "summary": "Remove a field from a template.",
-          "params": [
-            {
-              "name": "endpoint",
-              "type": "VerdocsEndpoint",
-              "description": "",
-              "optional": false,
-              "default": null
-            },
-            {
-              "name": "templateId",
-              "type": "string",
-              "description": "",
-              "optional": false,
-              "default": null
-            },
-            {
-              "name": "name",
-              "type": "string",
-              "description": "",
-              "optional": false,
-              "default": null
-            }
-          ],
-          "returns": {
-            "type": "Promise<any>",
-            "description": ""
-          },
-          "throws": [],
-          "examples": [
-            {
-              "language": "typescript",
-              "code": "import {deleteField} from '@verdocs/js-sdk/Templates';\n\nawait deleteField((VerdocsEndpoint.getDefault(), template_id, field_name);"
-            }
-          ],
-          "deprecated": false
-        },
-        "field.updateField": {
-          "sdkOperation": "field.updateField",
-          "kind": "function",
-          "name": "updateField",
-          "page": "Endpoints",
-          "gettingStarted": false,
-          "resource": "function",
-          "signature": "updateField(endpoint: VerdocsEndpoint, templateId: string, name: string, params: Partial<ITemplateField>): Promise<ITemplateField>",
-          "summary": "Update a template field.",
-          "params": [
-            {
-              "name": "endpoint",
-              "type": "VerdocsEndpoint",
-              "description": "",
-              "optional": false,
-              "default": null
-            },
-            {
-              "name": "templateId",
-              "type": "string",
-              "description": "",
-              "optional": false,
-              "default": null
-            },
-            {
-              "name": "name",
-              "type": "string",
-              "description": "",
-              "optional": false,
-              "default": null
-            },
-            {
-              "name": "params",
-              "type": "Partial<ITemplateField>",
-              "description": "",
-              "optional": false,
-              "default": null
-            }
-          ],
-          "returns": {
-            "type": "Promise<ITemplateField>",
-            "description": ""
-          },
-          "throws": [],
-          "examples": [
-            {
-              "language": "typescript",
-              "code": "import {updateField} from '@verdocs/js-sdk/Templates';\n\nawait updateField((VerdocsEndpoint.getDefault(), template_id, field_name, { ... });"
             }
           ],
           "deprecated": false
@@ -5934,7 +7094,7 @@
           "page": "Endpoints",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "deleteOrganization(endpoint: VerdocsEndpoint, organizationId: string): Promise<null | IAuthenticateResponse>",
+          "signature": "deleteOrganization(endpoint: VerdocsEndpoint, organizationId: string): Promise<IAuthenticateResponse | null>",
           "summary": "Delete an organization. This can only be called by an owner. Inclusion of the organization ID to delete\nis just a safety check. The caller may only delete the organization they have currently selected.",
           "params": [
             {
@@ -5953,7 +7113,7 @@
             }
           ],
           "returns": {
-            "type": "Promise<null | IAuthenticateResponse>",
+            "type": "Promise<IAuthenticateResponse | null>",
             "description": ""
           },
           "throws": [],
@@ -6389,7 +7549,7 @@
           "page": "Endpoints",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "createOrganizationContact(endpoint: VerdocsEndpoint, params: Pick<IProfile, 'email' | 'first_name' | 'last_name' | 'phone'>): Promise<any>",
+          "signature": "createOrganizationContact(endpoint: VerdocsEndpoint, params: Pick<IProfile, 'first_name' | 'last_name' | 'email' | 'phone'>): Promise<any>",
           "summary": "Create a contact in the caller's organization.",
           "params": [
             {
@@ -6401,7 +7561,7 @@
             },
             {
               "name": "params",
-              "type": "Pick<IProfile, 'email' | 'first_name' | 'last_name' | 'phone'>",
+              "type": "Pick<IProfile, 'first_name' | 'last_name' | 'email' | 'phone'>",
               "description": "",
               "optional": false,
               "default": null
@@ -6496,7 +7656,7 @@
           "page": "Endpoints",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "updateOrganizationContact(endpoint: VerdocsEndpoint, profileId: string, params: Pick<IProfile, 'email' | 'first_name' | 'last_name' | 'phone'>): Promise<any>",
+          "signature": "updateOrganizationContact(endpoint: VerdocsEndpoint, profileId: string, params: Pick<IProfile, 'first_name' | 'last_name' | 'email' | 'phone'>): Promise<any>",
           "summary": "Update a contact in the caller's organization.",
           "params": [
             {
@@ -6515,7 +7675,7 @@
             },
             {
               "name": "params",
-              "type": "Pick<IProfile, 'email' | 'first_name' | 'last_name' | 'phone'>",
+              "type": "Pick<IProfile, 'first_name' | 'last_name' | 'email' | 'phone'>",
               "description": "",
               "optional": false,
               "default": null
@@ -6738,7 +7898,7 @@
           "page": "Endpoints",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "updateOrganizationMember(endpoint: VerdocsEndpoint, profileId: string, params: Partial<Pick<IProfile, 'first_name' | 'last_name' | 'roles'>>): Promise<IProfile>",
+          "signature": "updateOrganizationMember(endpoint: VerdocsEndpoint, profileId: string, params: Partial<Pick<IProfile, 'roles' | 'first_name' | 'last_name'>>): Promise<IProfile>",
           "summary": "Update an organization member.",
           "params": [
             {
@@ -6757,7 +7917,7 @@
             },
             {
               "name": "params",
-              "type": "Partial<Pick<IProfile, 'first_name' | 'last_name' | 'roles'>>",
+              "type": "Partial<Pick<IProfile, 'roles' | 'first_name' | 'last_name'>>",
               "description": "",
               "optional": false,
               "default": null
@@ -6866,7 +8026,7 @@
           "page": "Endpoints",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "getCurrentProfile(endpoint: VerdocsEndpoint): Promise<undefined | IProfile>",
+          "signature": "getCurrentProfile(endpoint: VerdocsEndpoint): Promise<IProfile | undefined>",
           "summary": "Get the caller's current profile. This is just a convenience accessor that calls `getProfiles()`\nand returns the first `current: true` entry.",
           "params": [
             {
@@ -6878,7 +8038,7 @@
             }
           ],
           "returns": {
-            "type": "Promise<undefined | IProfile>",
+            "type": "Promise<IProfile | undefined>",
             "description": ""
           },
           "throws": [],
@@ -7624,6 +8784,189 @@
         }
       }
     },
+    "mfa": {
+      "id": "mfa",
+      "name": "MFA",
+      "summary": "",
+      "symbols": {
+        "mfa.disableMFA": {
+          "sdkOperation": "mfa.disableMFA",
+          "kind": "function",
+          "name": "disableMFA",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "disableMFA(endpoint: VerdocsEndpoint, code: string): Promise<TBasicResponse>",
+          "summary": "Turn off MFA for the caller. A valid code is always required, so knowing the password alone is\nnot enough to remove the second factor. Either a TOTP code or an unused backup code is accepted.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "code",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<TBasicResponse>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {disableMFA, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nawait disableMFA(VerdocsEndpoint.getDefault(), '123456');"
+            }
+          ],
+          "deprecated": false
+        },
+        "mfa.enrollMFA": {
+          "sdkOperation": "mfa.enrollMFA",
+          "kind": "function",
+          "name": "enrollMFA",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "enrollMFA(endpoint: VerdocsEndpoint): Promise<IMFAEnrollment>",
+          "summary": "Begin MFA enrollment. This returns a pending secret that does not take effect until it is\nconfirmed with `verifyMFAEnrollment()`. Render `otpauth_url` as a QR code for authenticator\napps, and show `secret` for users who need to type it in by hand. Calling this again replaces\nthe pending secret, so a user who abandons the flow can safely restart it.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IMFAEnrollment>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {enrollMFA, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {secret, otpauth_url} = await enrollMFA(VerdocsEndpoint.getDefault());"
+            }
+          ],
+          "deprecated": false
+        },
+        "mfa.getMFAStatus": {
+          "sdkOperation": "mfa.getMFAStatus",
+          "kind": "function",
+          "name": "getMFAStatus",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getMFAStatus(endpoint: VerdocsEndpoint): Promise<IMFAStatus>",
+          "summary": "Get the caller's multi-factor authentication status.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IMFAStatus>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getMFAStatus, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {enabled, backup_codes_remaining} = await getMFAStatus(VerdocsEndpoint.getDefault());"
+            }
+          ],
+          "deprecated": false
+        },
+        "mfa.regenerateBackupCodes": {
+          "sdkOperation": "mfa.regenerateBackupCodes",
+          "kind": "function",
+          "name": "regenerateBackupCodes",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "regenerateBackupCodes(endpoint: VerdocsEndpoint, code: string): Promise<IMFABackupCodes>",
+          "summary": "Replace the caller's backup codes with a new set. The previous codes stop working immediately,\nand the new ones are returned only once.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "code",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IMFABackupCodes>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {regenerateBackupCodes, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {backup_codes} = await regenerateBackupCodes(VerdocsEndpoint.getDefault(), '123456');"
+            }
+          ],
+          "deprecated": false
+        },
+        "mfa.verifyMFAEnrollment": {
+          "sdkOperation": "mfa.verifyMFAEnrollment",
+          "kind": "function",
+          "name": "verifyMFAEnrollment",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "verifyMFAEnrollment(endpoint: VerdocsEndpoint, code: string): Promise<IMFABackupCodes>",
+          "summary": "Complete MFA enrollment by proving the user can generate codes from the pending secret. The\nbackup codes are returned once and never again, so they must be shown to the user before the\nflow closes.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "code",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IMFABackupCodes>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {verifyMFAEnrollment, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {backup_codes} = await verifyMFAEnrollment(VerdocsEndpoint.getDefault(), '123456');"
+            }
+          ],
+          "deprecated": false
+        }
+      }
+    },
     "file": {
       "id": "file",
       "name": "File",
@@ -7702,12 +9045,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "formatFullName(source?: null | object): string",
+          "signature": "formatFullName(source?: object | null): string",
           "summary": "Format a profile's full name",
           "params": [
             {
               "name": "source",
-              "type": "null | object",
+              "type": "object | null",
               "description": "",
               "optional": true,
               "default": null
@@ -7841,6 +9184,538 @@
         }
       }
     },
+    "locale": {
+      "id": "locale",
+      "name": "Locale",
+      "summary": "",
+      "symbols": {
+        "locale.getCountryByCode": {
+          "sdkOperation": "locale.getCountryByCode",
+          "kind": "function",
+          "name": "getCountryByCode",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getCountryByCode(code: string): ICountry | null",
+          "summary": "",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ICountry | null",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "locale.getMatchingCountry": {
+          "sdkOperation": "locale.getMatchingCountry",
+          "kind": "function",
+          "name": "getMatchingCountry",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getMatchingCountry(code: string, substrings: number): number",
+          "summary": "",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "substrings",
+              "type": "number",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "number",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "locale.getPlusOneCountry": {
+          "sdkOperation": "locale.getPlusOneCountry",
+          "kind": "function",
+          "name": "getPlusOneCountry",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getPlusOneCountry(code: string): ICountry | null",
+          "summary": "",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ICountry | null",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "locale.isAmericanSamoa": {
+          "sdkOperation": "locale.isAmericanSamoa",
+          "kind": "function",
+          "name": "isAmericanSamoa",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "isAmericanSamoa(code: string): boolean",
+          "summary": "",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "boolean",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "locale.isCanada": {
+          "sdkOperation": "locale.isCanada",
+          "kind": "function",
+          "name": "isCanada",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "isCanada(code: string): boolean",
+          "summary": "",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "boolean",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "locale.isDominicanRepublic": {
+          "sdkOperation": "locale.isDominicanRepublic",
+          "kind": "function",
+          "name": "isDominicanRepublic",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "isDominicanRepublic(code: string): boolean",
+          "summary": "",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "boolean",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "locale.isFrenchGuiana": {
+          "sdkOperation": "locale.isFrenchGuiana",
+          "kind": "function",
+          "name": "isFrenchGuiana",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "isFrenchGuiana(code: string): boolean",
+          "summary": "",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "boolean",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "locale.isGuadeloupe": {
+          "sdkOperation": "locale.isGuadeloupe",
+          "kind": "function",
+          "name": "isGuadeloupe",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "isGuadeloupe(code: string): boolean",
+          "summary": "",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "boolean",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "locale.isMartinique": {
+          "sdkOperation": "locale.isMartinique",
+          "kind": "function",
+          "name": "isMartinique",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "isMartinique(code: string): boolean",
+          "summary": "",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "boolean",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "locale.isMayotte": {
+          "sdkOperation": "locale.isMayotte",
+          "kind": "function",
+          "name": "isMayotte",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "isMayotte(code: string): boolean",
+          "summary": "",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "boolean",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "locale.isPuertoRico": {
+          "sdkOperation": "locale.isPuertoRico",
+          "kind": "function",
+          "name": "isPuertoRico",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "isPuertoRico(code: string): boolean",
+          "summary": "",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "boolean",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        }
+      }
+    },
+    "color": {
+      "id": "color",
+      "name": "Color",
+      "summary": "",
+      "symbols": {
+        "color.getRGB": {
+          "sdkOperation": "color.getRGB",
+          "kind": "function",
+          "name": "getRGB",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getRGB(rgba: string): string",
+          "summary": "Given a `rgba(r,g,b,a)` string value, returns the hex equivalent, dropping the alpha channel.",
+          "params": [
+            {
+              "name": "rgba",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "string",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "color.getRGBA": {
+          "sdkOperation": "color.getRGBA",
+          "kind": "function",
+          "name": "getRGBA",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getRGBA(roleIndex: number): 'rgba(255, 193, 7, 0.4)' | 'rgba(134, 134, 134, 0.3)' | 'rgba(156, 39, 176, .4)' | 'rgba(33, 150, 243, .4)' | 'rgba(220, 231, 117, 0.3)' | 'rgba(121, 134, 203, 0.3)' | 'rgba(77, 182, 172, 0.3)' | 'rgba(255, 202, 165, 0.3)' | 'rgba(2, 247, 190, 0.3)' | 'rgba(255, 138, 101, 0.3)' | 'rgba(82, 255, 79, 0.3)' | 'rgba(229, 115, 155, 0.3)'",
+          "summary": "Given a signer role index, return the color code for that signer.",
+          "params": [
+            {
+              "name": "roleIndex",
+              "type": "number",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "'rgba(255, 193, 7, 0.4)' | 'rgba(134, 134, 134, 0.3)' | 'rgba(156, 39, 176, .4)' | 'rgba(33, 150, 243, .4)' | 'rgba(220, 231, 117, 0.3)' | 'rgba(121, 134, 203, 0.3)' | 'rgba(77, 182, 172, 0.3)' | 'rgba(255, 202, 165, 0.3)' | 'rgba(2, 247, 190, 0.3)' | 'rgba(255, 138, 101, 0.3)' | 'rgba(82, 255, 79, 0.3)' | 'rgba(229, 115, 155, 0.3)'",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "color.getRoleColor": {
+          "sdkOperation": "color.getRoleColor",
+          "kind": "function",
+          "name": "getRoleColor",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getRoleColor(name: string, roles: TRole[], index?: number): string | undefined",
+          "summary": "Helper function to obtain a color code given a role name given various possible inputs.",
+          "params": [
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "roles",
+              "type": "TRole[]",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "index",
+              "type": "number",
+              "description": "",
+              "optional": true,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "string | undefined",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "color.nameToRGBA": {
+          "sdkOperation": "color.nameToRGBA",
+          "kind": "function",
+          "name": "nameToRGBA",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "nameToRGBA(str: string): string | undefined",
+          "summary": "Given a role name, return a color code for it. This works by computing a hash code so the specific color returned\nis not specified explicitly, but will be the same for every call with the same input value.",
+          "params": [
+            {
+              "name": "str",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "string | undefined",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        }
+      }
+    },
+    "session": {
+      "id": "session",
+      "name": "Session",
+      "summary": "",
+      "symbols": {
+        "session.getSessions": {
+          "sdkOperation": "session.getSessions",
+          "kind": "function",
+          "name": "getSessions",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getSessions(endpoint: VerdocsEndpoint): Promise<IUserLoginSession[]>",
+          "summary": "Get the caller's active login sessions, newest first. The session the caller is using to make\nthe request is marked with `current: true`, and should not be offered for revocation in UI\n(use logout instead).",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IUserLoginSession[]>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getSessions, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst sessions = await getSessions(VerdocsEndpoint.getDefault());"
+            }
+          ],
+          "deprecated": false
+        },
+        "session.revokeOtherSessions": {
+          "sdkOperation": "session.revokeOtherSessions",
+          "kind": "function",
+          "name": "revokeOtherSessions",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "revokeOtherSessions(endpoint: VerdocsEndpoint): Promise<IRevokeSessionsResponse>",
+          "summary": "Revoke every login session for the caller except the one making the request. This is the\n\"sign out everywhere else\" operation.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IRevokeSessionsResponse>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {revokeOtherSessions, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {revoked} = await revokeOtherSessions(VerdocsEndpoint.getDefault());"
+            }
+          ],
+          "deprecated": false
+        },
+        "session.revokeSession": {
+          "sdkOperation": "session.revokeSession",
+          "kind": "function",
+          "name": "revokeSession",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "revokeSession(endpoint: VerdocsEndpoint, sessionId: string): Promise<TBasicResponse>",
+          "summary": "Revoke one of the caller's login sessions. Tokens issued for that session stop working\nimmediately. The caller's current session may not be revoked this way.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "sessionId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<TBasicResponse>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {revokeSession, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nawait revokeSession(VerdocsEndpoint.getDefault(), 'SESSIONID');"
+            }
+          ],
+          "deprecated": false
+        }
+      }
+    },
     "validators": {
       "id": "validators",
       "name": "Validators",
@@ -7876,12 +9751,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "isValidEmail(email: undefined | string): boolean",
+          "signature": "isValidEmail(email: string | undefined): boolean",
           "summary": "Check whether a string is a validly-formatted email address.",
           "params": [
             {
               "name": "email",
-              "type": "undefined | string",
+              "type": "string | undefined",
               "description": "",
               "optional": false,
               "default": null
@@ -7940,12 +9815,12 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "isValidPhone(phone: undefined | string): boolean",
+          "signature": "isValidPhone(phone: string | undefined): boolean",
           "summary": "Check whether a string looks like a valid phone number, in domestic or international format.",
           "params": [
             {
               "name": "phone",
-              "type": "undefined | string",
+              "type": "string | undefined",
               "description": "",
               "optional": false,
               "default": null

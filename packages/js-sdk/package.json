@@ -1,8 +1,8 @@
 {
   "name": "@verdocs/js-sdk",
   "private": false,
-  "version": "6.10.4",
-  "homepage": "https://github.com/Verdocs/js-sdk",
+  "version": "6.12.0",
+  "homepage": "https://github.com/Verdocs/hub/tree/main/packages/js-sdk",
   "description": "Isomorphic JS/TS SDK providing types and API wrappers for the Verdocs platform for Node and browser clients",
   "keywords": [
     "pdf",
@@ -20,20 +20,19 @@
   "browser": "dist/browser.js",
   "files": [
     "dist/*",
-    "node.js",
-    "browser.js",
     "README.md"
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/Verdocs/js-sdk.git"
+    "url": "git+https://github.com/Verdocs/hub.git",
+    "directory": "packages/js-sdk"
   },
   "bugs": {
-    "url": "https://github.com/Verdocs/js-sdk/issues"
+    "url": "https://github.com/Verdocs/hub/issues"
   },
   "scripts": {
     "tsc": "pnpm run build",
-    "build": "rollup -c --sourcemap --bundleConfigAsCjs",
+    "build": "tsup",
     "prepare": "pnpm run build",
     "test": "vitest run",
     "lint": "eslint .",
@@ -52,23 +51,18 @@
     "access": "public"
   },
   "dependencies": {
-    "axios": "^1.18.1"
+    "axios": "^1.20.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.9",
-    "@types/node": "^24.1.0",
-    "axios-mock-adapter": "^2.1.0",
-    "esbuild": "^0.25.10",
-    "rollup": "^4.60.3",
-    "rollup-plugin-clear": "^2.0.7",
-    "rollup-plugin-copy": "^3.5.0",
-    "rollup-plugin-ts": "^3.4.5",
-    "tsx": "4.23.1",
-    "typedoc": "0.27.0-beta.0",
-    "typescript": "5.9.3",
+    "@types/node": "^24.13.5",
     "@verdocs/eslint-config": "^1.0.0",
+    "axios-mock-adapter": "^2.1.0",
     "eslint": "^9.39.4",
-    "vitest": "^4.1.10"
+    "tsup": "^8.5.1",
+    "tsx": "^4.23.13",
+    "typedoc": "^0.28.20",
+    "typescript": "6.0.3",
+    "vitest": "^5.0.1"
   },
   "exports": {
     ".": {

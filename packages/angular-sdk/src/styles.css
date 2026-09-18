@@ -25,12 +25,14 @@
   --font-sans: 'Inter', -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 
   --color-white: #ffffff;
-  --color-primary: #55bc81;
-  --color-primary-dark: #2b995b;
+  --color-primary: #2fa062;
+  --color-primary-dark: #278a54;
   --color-primary-light: #54d68c;
   --color-accent: #654dcb;
   --color-accent-dark: #4c56cb;
   --color-accent-light: #707ae5;
+  --color-accent-tint: #efedfb;
+  --color-accent-tint-dark: #e4e0f8;
   --color-ink: #092c4c;
   --color-muted: #5c6575;
   --color-surface: #ffffff;
@@ -41,8 +43,9 @@
   --color-success: #3dc763;
   --color-info: #2379c7;
   --color-disabled: #6c727f;
+  --color-disabled-fill: #e6e7eb;
 
-  --radius-ctl: 4px;
+  --radius-ctl: 6px;
   --radius-row: 5px;
 }
 

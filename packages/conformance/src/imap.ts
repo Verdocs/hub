@@ -170,7 +170,7 @@ export const waitForMessage = async (env: IImapEnv, params: IWaitForMessageParam
             }
 
             const stamp = message.internalDate ? new Date(message.internalDate) : envelope.date;
-            if (stamp && stamp.getTime() < earliest) {
+            if (stamp && new Date(stamp).getTime() < earliest) {
               continue;
             }
 

@@ -141,8 +141,13 @@ const parseParam = (paramIn: 'body' | 'cookie' | 'header' | 'path' | 'query', pa
   }
 };
 
+// TypeDoc 0.28 attaches a function's comment to its call signature rather than the function
+// reflection itself. Interfaces and type aliases still carry it at the top level.
+const commentOf = (child: Record<string, any>) => child.comment ?? child.signatures?.[0]?.comment;
+
 const processChild = (child: Record<string, any>) => {
-  const { name, kind, comment } = child as { name: string; kind: number; comment: any; child: any };
+  const { name, kind } = child as { name: string; kind: number };
+  const comment = commentOf(child);
   const summary = comment?.summary?.[0]?.text || '';
 
   // console.log('Processing child', name, kind, child);
@@ -295,7 +300,7 @@ const processChild = (child: Record<string, any>) => {
     },
   };
 
-  child.comment?.blockTags?.forEach((tag: IBlockTag) => {
+  commentOf(child)?.blockTags?.forEach((tag: IBlockTag) => {
     switch (tag.tag) {
       case '@category':
       case '@group':

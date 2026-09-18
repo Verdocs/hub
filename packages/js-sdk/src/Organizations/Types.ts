@@ -1,15 +1,16 @@
-import {TApiKeyPermission, TEventName, TNotificationType, type TWebhookAuthMethod, TWebhookEvent} from '../BaseTypes';
+import {TEventName, TNotificationType, type TWebhookAuthMethod, TWebhookEvent} from '../BaseTypes';
 import {TRole} from '../Sessions';
 
 export interface ICreateApiKeyRequest {
   name: string;
   profile_id: string;
-  permission: TApiKeyPermission;
+  global_admin?: boolean;
 }
 
 export interface IUpdateApiKeyRequest {
   name?: string;
-  permission?: TApiKeyPermission;
+  profile_id?: string;
+  global_admin?: boolean;
 }
 
 export interface ICreateInvitationRequest {

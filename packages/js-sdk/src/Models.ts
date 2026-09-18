@@ -1,23 +1,6 @@
-import type {
-  TApiKeyPermission,
-  TEntitlement,
-  TEnvelopeStatus,
-  TEventDetail,
-  TFieldType,
-  THistoryEvent,
-  TRecipientAuthMethod,
-  TRecipientAuthStep,
-  TRecipientStatus,
-  TRecipientType,
-  TTemplateSender,
-  TTemplateVisibility,
-  TEventName,
-  TNotificationType,
-  TUsageType,
-  TWebhookAuthMethod,
-  TWebhookEvent,
-  TEnvelopeDocumentType,
-} from './BaseTypes';
+import type {TTemplateSender, TTemplateVisibility, TEventName, TNotificationType, TUsageType, TWebhookAuthMethod} from './BaseTypes';
+import type {TEntitlement, TEnvelopeStatus, TEventDetail, TFieldType, THistoryEvent, TRecipientAuthMethod} from './BaseTypes';
+import type {TRecipientAuthStep, TRecipientStatus, TRecipientType, TWebhookEvent, TEnvelopeDocumentType} from './BaseTypes';
 import {TPermission, TRole} from './Sessions';
 
 /////////////////////////////// NOTIFICATIONS /////////////////////////////
@@ -67,13 +50,22 @@ export interface INotificationTemplate {
 //////////////////////////////////////// IAM //////////////////////////////
 
 export interface IApiKey {
-  client_id: string;
+  /** User-provided name for the key. Only used for identification. */
   name: string;
+  /** Organization the key is connected to. */
   organization_id: string;
+  /** The profile calls made with this key will act as. Ignored if global_admin is set. */
   profile_id: string;
+  /** If set, the key has full access to the organization, overriding the permissions of its assigned profile. */
   global_admin: boolean;
-  client_secret?: string | null;
-  permission: TApiKeyPermission;
+  /** Only returned when a key is created or rotated. */
+  client_id: string;
+  /** Only returned when a key is created or rotated. */
+  client_secret?: string;
+  /** Creation date/time. */
+  created_at: string;
+  /** Last date/time the key was used. */
+  last_used_at: string | null;
 
   profile?: IProfile;
   organization?: IOrganization;
@@ -326,6 +318,9 @@ export interface IProfile {
   initials?: IInitial[];
 }
 
+/** IdP used for sign-in. Note that "microsoft" covers both Entra ID (work and school) and personal accounts. */
+export type TSignInProvider = 'google' | 'apple' | 'github' | 'microsoft';
+
 export interface IUser {
   id: string;
   /** Email address. */
@@ -356,6 +351,17 @@ export interface IUser {
   locale?: string | null;
   /** The locale code */
   timezone?: string | null;
+  /** Social-IdP accounts have no password set. Used to gate some front-end features like password-reset UI controls. */
+  has_password: boolean;
+  /** Last password-change datetime. */
+  password_changed_at: string | null;
+  /** Linked social IdP's if any. */
+  sign_in_providers: TSignInProvider[];
+  mfa: {
+    enabled: boolean;
+    enrolled_at: string | null;
+    backup_codes_remaining: number;
+  };
   created_at: string;
   updated_at: string;
 }

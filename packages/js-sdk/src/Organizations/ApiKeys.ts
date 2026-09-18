@@ -50,7 +50,7 @@ export const getApiKeys = (endpoint: VerdocsEndpoint) =>
  * @api POST /v2/api-keys Create API key
  * @apiBody string name A name used to identify the key in the Verdocs Web App
  * @apiBody string(format:uuid) profile_id The profile ID that calls made using the key will act as
- * @apiBody array(items:string) permission An array of permissions to assign to the new key. Extends (but does not override) the API key's profile permissions.
+ * @apiBody boolean global_admin? If true, the key has full access to the organization, overriding the permissions of its assigned profile. Defaults to false.
  * @apiSuccess IApiKey . The newly-created API key, including its secret.
  *
  * @sdkOperation apiKey.createApiKey
@@ -97,7 +97,8 @@ export const rotateApiKey = (endpoint: VerdocsEndpoint, clientId: string) =>
  * @group API Keys
  * @api PATCH /v2/api-keys/:client_id Update API key
  * @apiBody string name? New name for the API key
- * @apiBody array(items:string) permission New array of permissions to assign to the new key. Extends (but does not override) the API key's profile permissions.
+ * @apiBody string(format:uuid) profile_id? New profile ID that calls made using the key will act as
+ * @apiBody boolean global_admin? If true, the key has full access to the organization, overriding the permissions of its assigned profile.
  * @apiSuccess IApiKey . The updated API key. The secret will not be included.
  *
  * @sdkOperation apiKey.updateApiKey
@@ -120,7 +121,7 @@ export const updateApiKey = (endpoint: VerdocsEndpoint, clientId: string, params
  *
  * @group API Keys
  * @api DELETE /v2/api-keys/:client_id Delete API key
- * @apiSuccess string . Success.
+ * @apiSuccess TBasicResponse . Success.
  *
  * @sdkOperation apiKey.deleteApiKey
  * @sdkGroup ApiKey

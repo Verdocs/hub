@@ -29,6 +29,7 @@ export interface ISigningSession {
  */
 export interface IUserSession {
   jti: string;
+  sid?: string; // TODO: After all sessions are upgraded, this will no longer be optional
   aud: string;
   iss: string;
   sub: string; // Verdocs user_id
