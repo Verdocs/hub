@@ -64,7 +64,9 @@ beforeEach(() => {
   // The list store is module-level; drop it so each test observes its own requests.
   invalidateEnvelopeLists();
 
-  mock = new MockAdapter(axios);
+  // Under NodeNext resolution the spec sees axios's ESM types and the adapter's CJS types see the CJS
+  // ones, and the Axios class has private members, so the two AxiosInstance declarations do not unify.
+  mock = new MockAdapter(axios as unknown as ConstructorParameters<typeof MockAdapter>[0]);
   endpoint = new VerdocsEndpoint({ baseURL: TEST_API_BASE });
   endpoint.setDefault();
 });
@@ -159,7 +161,7 @@ describe('vdocs-envelopes-list', () => {
     el.addEventListener('vdocs-view-envelope', e => events.push(e.detail));
 
     await vi.waitFor(() => expect(el.textContent).toContain('Onboarding'));
-    await page.getByText('Onboarding').click();
+    await page.getByText('Onboarding', { exact: false }).click();
 
     expect(events.map(event => event.envelope.id)).toEqual([ 'e-1' ]);
   });

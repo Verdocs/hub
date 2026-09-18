@@ -36,7 +36,9 @@ describe('vdocs-templates-list', () => {
     // every test observes its own requests.
     invalidateTemplateLists();
 
-    mock = new MockAdapter(axios);
+    // Under NodeNext resolution the spec sees axios's ESM types and the adapter's CJS types see the CJS
+    // ones, and the Axios class has private members, so the two AxiosInstance declarations do not unify.
+    mock = new MockAdapter(axios as unknown as ConstructorParameters<typeof MockAdapter>[0]);
     mock.onGet('/v2/profiles').reply(200, []);
     mock.onGet('/v2/templates').reply(200, { count: 2, rows: 2, page: 0, templates });
 

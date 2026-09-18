@@ -28,6 +28,7 @@ import { showToast } from '../toast';
           [disabled]="disabled()"
           [placeholder]="placeholder()"
           [attr.autocomplete]="autocomplete() || null"
+          [attr.inputmode]="inputmode() || null"
           data-lpignore="true"
           class="vdocs:w-full vdocs:h-10 vdocs:px-2.5 vdocs:text-sm vdocs:text-ink vdocs:bg-surface vdocs:border vdocs:border-solid vdocs:border-edge vdocs:rounded-ctl vdocs:outline-none vdocs:focus:border-accent vdocs:disabled:bg-canvas vdocs:disabled:text-muted"
           (input)="onInput($event)"
@@ -95,6 +96,8 @@ export class VerdocsTextInputComponent {
   readonly description = input('');
   /** If set, the autocomplete attribute to apply. */
   readonly autocomplete = input('');
+  /** If set, the inputmode attribute to apply, e.g. 'numeric' for a one-time code field. */
+  readonly inputmode = input('');
   /** If set, a clear button will be displayed when the field has a value. */
   readonly clearable = input(false);
   /**

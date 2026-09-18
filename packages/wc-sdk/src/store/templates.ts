@@ -40,7 +40,9 @@ const activeControllers = new Set<TemplatesController>();
  */
 export const invalidateTemplateLists = () => {
   cache.clear();
-  activeControllers.forEach(controller => void controller.refresh());
+  activeControllers.forEach(controller => {
+    controller.refresh().catch(() => undefined);
+  });
 };
 
 /**

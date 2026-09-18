@@ -95,7 +95,9 @@ beforeEach(() => {
   invalidateTemplateLists();
   invalidateTemplateDetail(TEMPLATE_ID).catch(() => undefined);
 
-  mock = new MockAdapter(axios);
+  // Under NodeNext resolution the spec sees axios's ESM types and the adapter's CJS types see the CJS
+  // ones, and the Axios class has private members, so the two AxiosInstance declarations do not unify.
+  mock = new MockAdapter(axios as unknown as ConstructorParameters<typeof MockAdapter>[0]);
   mock.onGet('/v2/profiles').reply(200, []);
   new VerdocsEndpoint({ baseURL: TEST_API_BASE }).setDefault();
 });

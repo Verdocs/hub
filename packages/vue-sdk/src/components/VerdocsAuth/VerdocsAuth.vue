@@ -2,7 +2,7 @@
 import { VerdocsEndpoint } from '@verdocs/js-sdk';
 import { SDKError, type IAuthStatus } from '../../types';
 
-export type TAuthMode = 'login' | 'forgot' | 'reset' | 'signup' | 'verify';
+export type TAuthMode = 'login' | 'forgot' | 'reset' | 'signup' | 'verify' | 'mfa';
 
 /**
  * Props for VerdocsAuth, an authentication panel that allows the user to log
@@ -45,9 +45,10 @@ export interface VerdocsAuthProps {
 </script>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch, watchEffect } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, watchEffect } from 'vue';
 import { authenticate, convertToE164, createProfile, getMyUser, resendVerification, resetPassword, verifyEmail } from '@verdocs/js-sdk';
-import type { IAuthenticateResponse } from '@verdocs/js-sdk';
+import { createCodeChallenge, createCodeVerifier, getMFAChallenge, getSocialLoginUrl, getSocialProviders } from '@verdocs/js-sdk';
+import type { IAuthenticateResponse, ISocialProviders, TSocialLoginProvider } from '@verdocs/js-sdk';
 import VerdocsTextInput from '../../controls/VerdocsTextInput.vue';
 import VerdocsButton from '../../controls/VerdocsButton.vue';
 import { useSession } from '../../composables/useSession';
@@ -81,6 +82,62 @@ const isPasswordComplex = (password: string) => {
 const PASSWORD_COMPLEXITY_MESSAGE =
   'Password must be at least 8 characters long and contain at least one uppercase, one lowercase, and one special character.';
 
+const MFA_CODE_ERROR = 'That code did not work. Try the current one from your app.';
+
+const SOCIAL_START_ERROR = 'Sign-in could not be started. Try again.';
+
+const SOCIAL_LOGIN_KEY = 'vdocs-social-login';
+
+// The provider flow leaves and comes back to this page, so the PKCE verifier and the state we
+// generated have to survive a full page load. Session storage is per-tab, which is what we want.
+interface ISocialLoginAttempt {
+  verifier: string;
+  state: string;
+  provider: TSocialLoginProvider;
+}
+
+const SOCIAL_ERROR_MESSAGES: Record<string, string> = {
+  email_unverified: 'That account does not have a verified email address.',
+  provider_error: 'That provider could not sign you in. Try again.',
+  access_denied: 'Sign-in was canceled.',
+};
+
+const socialErrorMessage = (code: string) => SOCIAL_ERROR_MESSAGES[code] || 'Sign-in did not work. Try again.';
+
+const readSocialLoginAttempt = (): ISocialLoginAttempt | null => {
+  try {
+    const stored = window.sessionStorage.getItem(SOCIAL_LOGIN_KEY);
+    return stored ? JSON.parse(stored) as ISocialLoginAttempt : null;
+  } catch {
+    return null;
+  }
+};
+
+const clearSocialLoginAttempt = () => {
+  try {
+    window.sessionStorage.removeItem(SOCIAL_LOGIN_KEY);
+  } catch {
+    // Storage can be blocked in third-party embeds. Nothing to clean up if we never wrote it.
+  }
+};
+
+// Our return parameters are not the host app's to route on, and leaving them in place would
+// replay the exchange on a reload with a code that is already spent.
+const cleanSocialLoginParams = () => {
+  const url = new URL(window.location.href);
+  url.searchParams.delete('login_code');
+  url.searchParams.delete('state');
+  url.searchParams.delete('error');
+  window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+};
+
+const currentReturnUri = () => `${window.location.origin}${window.location.pathname}`;
+
+const formatRecoveryCode = (value: string) => {
+  const cleaned = value.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 8);
+  return cleaned.length > 4 ? `${cleaned.slice(0, 4)}-${cleaned.slice(4)}` : cleaned;
+};
+
 const { loaded, session, profile, endpoint: resolvedEndpoint } = useSession(endpoint);
 
 const mode = ref<TAuthMode>(initialMode);
@@ -95,6 +152,13 @@ const phone = ref('');
 const verificationCode = ref('');
 const submitting = ref(false);
 const resendDisabled = ref(false);
+const providers = ref<ISocialProviders>({ google: false, microsoft: false });
+const mfaToken = ref('');
+const mfaCode = ref('');
+const recoveryCode = ref('');
+const useRecoveryCode = ref(false);
+const mfaError = ref('');
+const mfaForm = ref<HTMLFormElement | null>(null);
 
 let resendTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -138,6 +202,11 @@ onBeforeUnmount(() => {
 const clearForms = () => {
   submitting.value = false;
   resendDisabled.value = false;
+  mfaToken.value = '';
+  mfaCode.value = '';
+  recoveryCode.value = '';
+  useRecoveryCode.value = false;
+  mfaError.value = '';
   email.value = '';
   phone.value = '';
   password.value = '';
@@ -155,6 +224,41 @@ const completeLogin = (result: IAuthenticateResponse) => {
   resolvedEndpoint.setToken(result.access_token);
 };
 
+// The tail every route into a session shares: password, an mfa grant, or a provider login.
+const finishLogin = async (authResult: IAuthenticateResponse) => {
+  tempEndpoint.setToken(authResult.access_token);
+
+  const user = await getMyUser(tempEndpoint);
+  submitting.value = false;
+
+  if (!user.email_verified) {
+    mode.value = 'verify';
+  } else {
+    completeLogin(authResult);
+  }
+};
+
+const startMFA = (token: string) => {
+  mfaToken.value = token;
+  mfaCode.value = '';
+  recoveryCode.value = '';
+  useRecoveryCode.value = false;
+  mfaError.value = '';
+  submitting.value = false;
+  mode.value = 'mfa';
+};
+
+const returnToLogin = () => {
+  mfaToken.value = '';
+  mfaCode.value = '';
+  recoveryCode.value = '';
+  useRecoveryCode.value = false;
+  mfaError.value = '';
+  password.value = '';
+  submitting.value = false;
+  mode.value = 'login';
+};
+
 const handleLogin = async () => {
   if (submitting.value) {
     return;
@@ -165,21 +269,169 @@ const handleLogin = async () => {
 
   try {
     const authResult = await authenticate(tempEndpoint, { username: email.value.trim(), password: password.value, grant_type: 'password' });
-    tempEndpoint.setToken(authResult.access_token);
-
-    const user = await getMyUser(tempEndpoint);
-    submitting.value = false;
-
-    if (!user.email_verified) {
-      mode.value = 'verify';
-    } else {
-      completeLogin(authResult);
+    await finishLogin(authResult);
+  } catch (e) {
+    const challenge = getMFAChallenge(e);
+    if (challenge) {
+      startMFA(challenge.mfa_token);
+      return;
     }
-  } catch {
+
     submitting.value = false;
     showToast('Login failed. Please check your credentials and try again.', { style: 'error' });
   }
 };
+
+const handleMFAFailure = (e: unknown) => {
+  submitting.value = false;
+  mfaCode.value = '';
+  recoveryCode.value = '';
+
+  // Every wrong attempt spends the token, so the API hands back a fresh one until the attempts
+  // run out. A 401 means the challenge is gone and the password step starts over.
+  const challenge = getMFAChallenge(e);
+  if (challenge) {
+    mfaToken.value = challenge.mfa_token;
+    mfaError.value = MFA_CODE_ERROR;
+    return;
+  }
+
+  if ((e as { response?: { status?: number } })?.response?.status === 401) {
+    returnToLogin();
+    showToast('Your sign-in timed out. Enter your password again.', { style: 'error' });
+    return;
+  }
+
+  mfaError.value = MFA_CODE_ERROR;
+};
+
+const submitMFA = async (code: string, isRecoveryCode: boolean) => {
+  if (submitting.value || !code) {
+    return;
+  }
+
+  submitting.value = true;
+  mfaError.value = '';
+  tempEndpoint.clearSession();
+
+  try {
+    const authResult = await authenticate(
+      tempEndpoint,
+      isRecoveryCode
+        ? { grant_type: 'urn:verdocs:params:oauth:grant-type:mfa-recovery-code', mfa_token: mfaToken.value, recovery_code: code }
+        : { grant_type: 'urn:verdocs:params:oauth:grant-type:mfa-otp', mfa_token: mfaToken.value, otp: code },
+    );
+    await finishLogin(authResult);
+  } catch (e) {
+    handleMFAFailure(e);
+  }
+};
+
+const handleVerifyMFA = () => {
+  submitMFA(useRecoveryCode.value ? recoveryCode.value : mfaCode.value, useRecoveryCode.value).catch(() => undefined);
+};
+
+const handleMFACodeInput = (value: string) => {
+  const digits = value.replace(/\D/g, '').slice(0, 6);
+  mfaCode.value = digits;
+
+  // Authenticator codes are always six digits, so there is nothing to wait for once we have them.
+  if (digits.length === 6) {
+    submitMFA(digits, false).catch(() => undefined);
+  }
+};
+
+const handleRecoveryCodeInput = (value: string) => {
+  recoveryCode.value = formatRecoveryCode(value);
+};
+
+const toggleRecoveryCode = () => {
+  useRecoveryCode.value = !useRecoveryCode.value;
+  mfaCode.value = '';
+  recoveryCode.value = '';
+  mfaError.value = '';
+};
+
+const handleSocialLogin = (provider: TSocialLoginProvider) => {
+  try {
+    const verifier = createCodeVerifier();
+    const state = createCodeVerifier();
+
+    createCodeChallenge(verifier)
+      .then(codeChallenge => {
+        window.sessionStorage.setItem(SOCIAL_LOGIN_KEY, JSON.stringify({ verifier, state, provider } satisfies ISocialLoginAttempt));
+        window.location.assign(getSocialLoginUrl(resolvedEndpoint, provider, { returnUri: currentReturnUri(), codeChallenge, state }));
+      })
+      .catch(() => showToast(SOCIAL_START_ERROR, { style: 'error' }));
+  } catch {
+    showToast(SOCIAL_START_ERROR, { style: 'error' });
+  }
+};
+
+const exchangeLoginCode = (loginCode: string, codeVerifier: string) => {
+  submitting.value = true;
+  tempEndpoint.clearSession();
+
+  authenticate(tempEndpoint, { grant_type: 'urn:verdocs:params:oauth:grant-type:login-code', login_code: loginCode, code_verifier: codeVerifier })
+    .then(finishLogin)
+    .catch(e => {
+      const challenge = getMFAChallenge(e);
+      if (challenge) {
+        startMFA(challenge.mfa_token);
+        return;
+      }
+
+      submitting.value = false;
+      showToast('Sign-in did not work. Try again.', { style: 'error' });
+    });
+};
+
+onMounted(() => {
+  // A provider that is not configured 404s from its start URL, so we ask which ones exist
+  // before offering them. If the probe itself fails we simply show no provider buttons.
+  getSocialProviders(resolvedEndpoint)
+    .then(result => {
+      providers.value = result;
+    })
+    .catch(() => undefined);
+
+  const params = new URLSearchParams(window.location.search);
+  const loginCode = params.get('login_code');
+  const state = params.get('state');
+  const error = params.get('error');
+
+  if (!loginCode && !error) {
+    return;
+  }
+
+  const attempt = readSocialLoginAttempt();
+  clearSocialLoginAttempt();
+  cleanSocialLoginParams();
+
+  if (error) {
+    showToast(socialErrorMessage(error), { style: 'error' });
+    return;
+  }
+
+  if (!loginCode) {
+    return;
+  }
+
+  if (!attempt || attempt.state !== state) {
+    showToast('Sign-in could not be verified. Try again.', { style: 'error' });
+    return;
+  }
+
+  exchangeLoginCode(loginCode, attempt.verifier);
+});
+
+watch([ mode, useRecoveryCode ], ([ currentMode ]) => {
+  if (currentMode !== 'mfa') {
+    return;
+  }
+
+  nextTick(() => mfaForm.value?.querySelector('input')?.focus()).catch(() => undefined);
+});
 
 const handleSignup = async () => {
   if (!isPasswordComplex(password.value)) {
@@ -319,6 +571,11 @@ const handleLogout = () => {
   mode.value = 'login';
 };
 
+const showProviders = computed(() => providers.value.google || providers.value.microsoft);
+
+const mfaCodeComplete = computed(() =>
+  (useRecoveryCode.value ? recoveryCode.value.replace('-', '').length === 8 : mfaCode.value.length === 6));
+
 const signupInvalid = computed(
   () =>
     submitting.value
@@ -372,6 +629,34 @@ const formClasses =
           :disabled="submitting"
           @click="mode = 'login'"
         />
+      </div>
+
+      <div
+        v-if="showProviders"
+        class="vdocs:w-full"
+      >
+        <VerdocsButton
+          v-if="providers.google"
+          label="Continue with Google"
+          variant="outline"
+          class="vdocs:w-full vdocs:mb-2.5"
+          :disabled="submitting"
+          @click="handleSocialLogin('google')"
+        />
+        <VerdocsButton
+          v-if="providers.microsoft"
+          label="Continue with Microsoft"
+          variant="outline"
+          class="vdocs:w-full vdocs:mb-2.5"
+          :disabled="submitting"
+          @click="handleSocialLogin('microsoft')"
+        />
+
+        <div class="vdocs:flex vdocs:items-center vdocs:gap-2 vdocs:my-4 vdocs:text-xs vdocs:text-muted">
+          <div class="vdocs:flex-1 vdocs:h-px vdocs:bg-edge" />
+          or
+          <div class="vdocs:flex-1 vdocs:h-px vdocs:bg-edge" />
+        </div>
       </div>
 
       <form
@@ -633,6 +918,86 @@ const formClasses =
     </div>
 
     <div
+      v-else-if="mode === 'mfa'"
+      :class="formClasses"
+    >
+      <a href="https://verdocs.com/en/">
+        <img
+          :src="logo"
+          alt="Verdocs Logo"
+          class="vdocs:w-32 vdocs:max-w-full vdocs:mt-5 vdocs:mb-7"
+        >
+      </a>
+
+      <h3 class="vdocs:text-lg vdocs:font-normal vdocs:text-ink vdocs:text-center vdocs:leading-7 vdocs:m-0">
+        Two-factor authentication
+      </h3>
+
+      <p class="vdocs:text-sm vdocs:text-ink vdocs:my-4">
+        {{ useRecoveryCode
+          ? 'Enter one of the backup codes you saved when you turned on two-factor authentication.'
+          : 'Enter the six-digit code from your authenticator app.' }}
+      </p>
+
+      <form
+        ref="mfaForm"
+        class="vdocs:w-full"
+        @submit.prevent="handleVerifyMFA"
+      >
+        <VerdocsTextInput
+          v-if="useRecoveryCode"
+          label="Backup code"
+          placeholder="xxxx-xxxx"
+          autocomplete="one-time-code"
+          :model-value="recoveryCode"
+          :disabled="submitting"
+          @update:model-value="handleRecoveryCodeInput"
+        />
+        <VerdocsTextInput
+          v-else
+          label="Authentication code"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          :model-value="mfaCode"
+          :disabled="submitting"
+          @update:model-value="handleMFACodeInput"
+        />
+
+        <div
+          v-if="mfaError"
+          role="alert"
+          class="vdocs:text-sm vdocs:text-danger vdocs:mb-2"
+        >
+          {{ mfaError }}
+        </div>
+
+        <div class="vdocs:flex vdocs:flex-row vdocs:justify-center vdocs:gap-5 vdocs:mt-5">
+          <VerdocsButton
+            label="Cancel"
+            variant="outline"
+            :disabled="submitting"
+            @click="returnToLogin"
+          />
+          <VerdocsButton
+            label="Verify"
+            type="submit"
+            :disabled="submitting || !mfaCodeComplete"
+          />
+        </div>
+
+        <div class="vdocs:flex vdocs:justify-center vdocs:mt-2">
+          <VerdocsButton
+            :label="useRecoveryCode ? 'Use your authenticator app instead' : 'Use a backup code instead'"
+            variant="text"
+            size="small"
+            :disabled="submitting"
+            @click="toggleRecoveryCode"
+          />
+        </div>
+      </form>
+    </div>
+
+    <div
       v-else
       :class="formClasses"
     >
@@ -656,6 +1021,34 @@ const formClasses =
           :disabled="submitting"
           @click="mode = 'signup'"
         />
+      </div>
+
+      <div
+        v-if="showProviders"
+        class="vdocs:w-full"
+      >
+        <VerdocsButton
+          v-if="providers.google"
+          label="Continue with Google"
+          variant="outline"
+          class="vdocs:w-full vdocs:mb-2.5"
+          :disabled="submitting"
+          @click="handleSocialLogin('google')"
+        />
+        <VerdocsButton
+          v-if="providers.microsoft"
+          label="Continue with Microsoft"
+          variant="outline"
+          class="vdocs:w-full vdocs:mb-2.5"
+          :disabled="submitting"
+          @click="handleSocialLogin('microsoft')"
+        />
+
+        <div class="vdocs:flex vdocs:items-center vdocs:gap-2 vdocs:my-4 vdocs:text-xs vdocs:text-muted">
+          <div class="vdocs:flex-1 vdocs:h-px vdocs:bg-edge" />
+          or
+          <div class="vdocs:flex-1 vdocs:h-px vdocs:bg-edge" />
+        </div>
       </div>
 
       <form

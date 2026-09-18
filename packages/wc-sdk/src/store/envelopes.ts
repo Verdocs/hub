@@ -63,7 +63,9 @@ const activeDetailControllers = new Set<EnvelopeDetailController>();
  */
 export const invalidateEnvelopeLists = () => {
   listCache.clear();
-  activeListControllers.forEach(controller => void controller.refresh());
+  activeListControllers.forEach(controller => {
+    controller.refresh().catch(() => undefined);
+  });
 };
 
 /**
@@ -85,7 +87,9 @@ export const invalidateEnvelope = (envelopeId: string) => {
 // the whole ['envelopes'] family.
 const invalidateAllEnvelopes = () => {
   detailCache.clear();
-  activeDetailControllers.forEach(controller => void controller.refresh());
+  activeDetailControllers.forEach(controller => {
+    controller.refresh().catch(() => undefined);
+  });
   invalidateEnvelopeLists();
 };
 

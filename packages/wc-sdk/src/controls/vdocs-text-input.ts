@@ -34,6 +34,7 @@ export class VdocsTextInput extends VdocsElement {
     disabled: { type: Boolean },
     placeholder: { type: String },
     autocomplete: { type: String },
+    inputmode: { type: String },
     value: { type: String },
     showingPw: { state: true },
   };
@@ -56,6 +57,8 @@ export class VdocsTextInput extends VdocsElement {
   declare placeholder: string;
   /** Forwarded to the native input's autocomplete attribute. */
   declare autocomplete: string;
+  /** Forwarded to the native input's inputmode attribute, e.g. 'numeric' for a one-time code field. */
+  declare inputmode: string;
   declare value: string;
 
   private declare showingPw: boolean;
@@ -71,6 +74,7 @@ export class VdocsTextInput extends VdocsElement {
     this.disabled = false;
     this.placeholder = '';
     this.autocomplete = '';
+    this.inputmode = '';
     this.value = '';
     this.showingPw = false;
   }
@@ -124,6 +128,7 @@ export class VdocsTextInput extends VdocsElement {
             ?disabled=${this.disabled}
             placeholder=${this.placeholder || nothing}
             autocomplete=${this.autocomplete || nothing}
+            inputmode=${this.inputmode || nothing}
             data-lpignore="true"
             class="vdocs:w-full vdocs:h-10 vdocs:px-2.5 vdocs:text-sm vdocs:text-ink vdocs:bg-surface vdocs:border vdocs:border-solid vdocs:border-edge vdocs:rounded-ctl vdocs:outline-none vdocs:focus:border-accent vdocs:disabled:bg-canvas vdocs:disabled:text-muted"
             @input=${this.handleInput}
