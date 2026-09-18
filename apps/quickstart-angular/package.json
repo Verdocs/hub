@@ -10,23 +10,23 @@
     "format": "eslint . --fix"
   },
   "dependencies": {
-    "@angular/common": "^22.0.6",
-    "@angular/compiler": "^22.0.6",
-    "@angular/core": "^22.0.6",
-    "@angular/platform-browser": "^22.0.6",
-    "@angular/router": "^22.0.6",
+    "@angular/common": "^22.1.7",
+    "@angular/compiler": "^22.1.7",
+    "@angular/core": "^22.1.7",
+    "@angular/platform-browser": "^22.1.7",
+    "@angular/router": "^22.1.7",
     "@verdocs/angular-sdk": "workspace:^",
     "@verdocs/js-sdk": "workspace:^",
     "rxjs": "^7.8.2",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@angular/build": "^22.0.6",
-    "@angular/cli": "^22.0.6",
-    "@angular/compiler-cli": "^22.0.6",
+    "@angular/build": "^22.1.8",
+    "@angular/cli": "^22.1.8",
+    "@angular/compiler-cli": "^22.1.7",
     "@verdocs/eslint-config": "^1.0.0",
     "@verdocs/typescript-config": "^1.0.0",
-    "eslint": "^9.39.1",
-    "typescript": "5.9.3"
+    "eslint": "^9.39.4",
+    "typescript": "6.0.3"
   }
 }

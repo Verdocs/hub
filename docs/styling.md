@@ -43,10 +43,12 @@ as components land; the sheet only carries tokens the components actually use.
 
 | Token | Default | Drives |
 |---|---|---|
-| `--vdocs-color-primary` | `#55bc81` | Primary action buttons: fills, borders, tinted hovers |
-| `--vdocs-color-primary-dark` | `#2b995b` | Primary button hover state, emphasized primary text |
-| `--vdocs-color-accent` | `#654dcb` | Focus borders, links, selected states, filled accent controls |
+| `--vdocs-color-primary` | `#2fa062` | Primary action buttons: fills, borders, tinted hovers |
+| `--vdocs-color-primary-dark` | `#278a54` | Primary button hover state, emphasized primary text |
+| `--vdocs-color-accent` | `#654dcb` | Focus borders, links, selected states, filled accent controls, secondary button text |
 | `--vdocs-color-accent-light` | `#707ae5` | Accent hover borders and tinted hover fills |
+| `--vdocs-color-accent-tint` | `#efedfb` | Secondary (outline variant) button fill |
+| `--vdocs-color-accent-tint-dark` | `#e4e0f8` | Secondary button hover fill |
 | `--vdocs-color-ink` | `#092c4c` | Main text |
 | `--vdocs-color-muted` | `#5c6575` | Secondary text, quiet hover borders |
 | `--vdocs-color-surface` | `#ffffff` | Control and menu backgrounds |
@@ -56,7 +58,8 @@ as components land; the sheet only carries tokens the components actually use.
 | `--vdocs-color-danger` | `#cc0000` | Error text, destructive actions, error toasts |
 | `--vdocs-color-success` | `#3dc763` | Success toasts and status accents |
 | `--vdocs-color-info` | `#2379c7` | Info toasts and status accents |
-| `--vdocs-color-disabled` | `#6c727f` | Disabled text, fills, and borders |
+| `--vdocs-color-disabled` | `#6c727f` | Disabled text and borders |
+| `--vdocs-color-disabled-fill` | `#e6e7eb` | Disabled button fill |
 | `--vdocs-color-white` | `#ffffff` | Text and icons on filled buttons |
 
 ### Typography
@@ -78,7 +81,7 @@ Each text size has a paired `--vdocs-text-*--line-height` you can override too.
 
 | Token | Default | Drives |
 |---|---|---|
-| `--vdocs-radius-ctl` | `4px` | Buttons, inputs, and other controls |
+| `--vdocs-radius-ctl` | `6px` | Buttons, inputs, and other controls |
 | `--vdocs-radius-row` | `5px` | List rows |
 | `--vdocs-radius-md` | `0.375rem` | Menus and popovers |
 | `--vdocs-spacing` | `0.25rem` | Base unit; all padding, margin, gap, and size math multiplies it |
