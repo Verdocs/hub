@@ -10,10 +10,12 @@ from .initials import AsyncInitials, Initials
 from .invitations import AsyncInvitations, Invitations
 from .kba import KBA, AsyncKBA
 from .members import AsyncMembers, Members
+from .mfa import MFA, AsyncMFA
 from .notification_templates import AsyncNotificationTemplates, NotificationTemplates
 from .organizations import AsyncOrganizations, Organizations
 from .profiles import AsyncProfiles, Profiles
 from .recipients import AsyncRecipients, Recipients
+from .sessions import AsyncSessions, Sessions
 from .signatures import AsyncSignatures, Signatures
 from .template_documents import AsyncTemplateDocuments, TemplateDocuments
 from .template_fields import AsyncTemplateFields, TemplateFields
@@ -24,6 +26,7 @@ from .webhooks import AsyncWebhooks, Webhooks
 
 __all__ = [
     "KBA",
+    "MFA",
     "ApiKeys",
     "AsyncApiKeys",
     "AsyncAuth",
@@ -34,11 +37,13 @@ __all__ = [
     "AsyncInitials",
     "AsyncInvitations",
     "AsyncKBA",
+    "AsyncMFA",
     "AsyncMembers",
     "AsyncNotificationTemplates",
     "AsyncOrganizations",
     "AsyncProfiles",
     "AsyncRecipients",
+    "AsyncSessions",
     "AsyncSignatures",
     "AsyncTemplateDocuments",
     "AsyncTemplateFields",
@@ -58,6 +63,7 @@ __all__ = [
     "Organizations",
     "Profiles",
     "Recipients",
+    "Sessions",
     "Signatures",
     "TemplateDocuments",
     "TemplateFields",

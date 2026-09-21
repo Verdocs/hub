@@ -1,5 +1,11 @@
 # @verdocs/js-sdk
 
+## 6.12.1
+
+### Patch Changes
+
+- Envelope creation accepts an optional `brand_key`, pinning the new envelope to one of the organization's brands. The brand must belong to the organization the envelope is created under. Left unset, branding is resolved when the envelope is read, from the organization's default brand and then its parent's, which is the existing behavior.
+
 ## 6.12.0
 
 ### Minor Changes

@@ -65,6 +65,35 @@ public sealed record User
     /// <summary>The long-form timezone.</summary>
     public string? Timezone { get; init; }
 
+    /// <summary>
+    /// False for accounts created through a social identity provider, which have no password
+    /// set. Useful for gating password-reset controls in a UI. Sent only by GET /v2/users/me;
+    /// null on user records embedded in other responses.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public bool? HasPassword { get; init; }
+
+    /// <summary>
+    /// When the password was last changed. Null if it never has been, and on user records
+    /// embedded in other responses, which omit it.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public DateTimeOffset? PasswordChangedAt { get; init; }
+
+    /// <summary>
+    /// Linked social identity providers, if any; see <see cref="SignInProvider"/> for known
+    /// values. Sent only by GET /v2/users/me; null on user records embedded in other responses.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<string>? SignInProviders { get; init; }
+
+    /// <summary>
+    /// The user's multi-factor authentication summary. Sent only by GET /v2/users/me; null on
+    /// user records embedded in other responses.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public UserMfa? Mfa { get; init; }
+
     /// <summary>Creation date and time.</summary>
     public DateTimeOffset CreatedAt { get; init; }
 

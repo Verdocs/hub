@@ -1,7 +1,7 @@
 {
   "language": "csharp",
   "package": "Verdocs.Sdk",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "groups": {
     "envelope": {
       "id": "envelope",
@@ -3166,7 +3166,7 @@
           "gettingStarted": true,
           "resource": "function",
           "signature": "Task\u003CAuthenticateResponse\u003E AuthenticateAsync(AuthenticateRequest request, CancellationToken cancellationToken = default)",
-          "summary": "Authenticates to Verdocs with a username and password (the OAuth2 password grant) and returns the session tokens. Call SetToken with the access token to apply it to the endpoint.",
+          "summary": "Authenticates to Verdocs and returns the session tokens. Pass the AuthenticateRequest subtype for the grant in hand: the password grant for web and mobile apps, client credentials for server apps (never expose the client secret in front-end code), the authorization code grant for third-party OAuth2 integrations, the MFA grants to finish a sign-in that raised MfaRequiredException, and the login-code grant to finish a Google or Microsoft sign-in. Call SetToken with the access token to apply it to the endpoint.",
           "params": [
             {
               "name": "request",
@@ -3189,6 +3189,10 @@
           },
           "throws": [
             {
+              "type": "MfaRequiredException",
+              "description": "The credentials were accepted but the user has MFA enabled; finish the sign-in with an MFA grant carrying the exception\u0027s MfaToken."
+            },
+            {
               "type": "VerdocsApiException",
               "description": "The API rejected the credentials or the call failed."
             }
@@ -3196,7 +3200,7 @@
           "examples": [
             {
               "language": "csharp",
-              "code": "var auth = await endpoint.Auth.AuthenticateAsync(new PasswordGrantRequest\n{\n    Username = \u0022you@example.com\u0022,\n    Password = \u0022PASSWORD\u0022,\n});\nendpoint.SetToken(auth.AccessToken);"
+              "code": "// Client-side call, suitable for web and mobile apps:\nvar auth = await endpoint.Auth.AuthenticateAsync(new PasswordGrantRequest\n{\n    Username = \u0022you@example.com\u0022,\n    Password = \u0022PASSWORD\u0022,\n});\nendpoint.SetToken(auth.AccessToken);\n\n// Server-side call. NEVER EXPOSE ClientSecret IN FRONT-END CODE:\nvar auth = await endpoint.Auth.AuthenticateAsync(new ClientCredentialsRequest\n{\n    ClientId = \u0022...\u0022,\n    ClientSecret = \u0022...\u0022,\n});\nendpoint.SetToken(auth.AccessToken);"
             }
           ],
           "deprecated": false
@@ -3461,6 +3465,94 @@
           ],
           "deprecated": false
         },
+        "auth.getSocialProviders": {
+          "sdkOperation": "auth.getSocialProviders",
+          "kind": "function",
+          "name": "GetSocialProvidersAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CSocialProviders\u003E GetSocialProvidersAsync(CancellationToken cancellationToken = default)",
+          "summary": "Gets the identity providers enabled in the current environment. Google and Microsoft are configured per environment, and a provider that is not configured answers 404 from its sign-in URL, so call this before rendering provider buttons and hide the ones that are off.",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CSocialProviders\u003E",
+            "description": "The enabled providers."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var providers = await endpoint.Auth.GetSocialProvidersAsync();\nif (providers.Google)\n{\n    // Show the Google button.\n}"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.getSocialLoginUrl": {
+          "sdkOperation": "auth.getSocialLoginUrl",
+          "kind": "function",
+          "name": "GetSocialLoginUrl",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "string GetSocialLoginUrl(string provider, string returnUri, string codeChallenge, string state)",
+          "summary": "Builds the URL that starts a Google or Microsoft sign-in. Send the user\u0027s browser there. The provider exchange happens server-side, and the user comes back to with login_code and state query parameters. Exchange the code for tokens with AuthenticateAsync using a LoginCodeGrantRequest and the verifier that produced . This builds the URL locally and makes no network call, which is why it is synchronous.",
+          "params": [
+            {
+              "name": "provider",
+              "type": "string",
+              "description": "The identity provider to sign in with; see SocialLoginProvider for known values.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "returnUri",
+              "type": "string",
+              "description": "Where to send the user after the provider returns. Must belong to a registered origin.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "codeChallenge",
+              "type": "string",
+              "description": "The PKCE challenge from CreateCodeChallenge, the base64url SHA-256 of the verifier the app keeps.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "state",
+              "type": "string",
+              "description": "An opaque value returned unchanged to the app, used to prevent CSRF attacks.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "string",
+            "description": "The sign-in URL to redirect the user to. The challenge method is always S256."
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "// Starting the flow. Keep the verifier and state where they survive the redirect.\nvar codeVerifier = Pkce.CreateCodeVerifier();\nvar codeChallenge = Pkce.CreateCodeChallenge(codeVerifier);\nvar state = Pkce.CreateCodeVerifier();\nvar loginUrl = endpoint.Auth.GetSocialLoginUrl(SocialLoginProvider.Google, \u0022https://your-app.com/login\u0022, codeChallenge, state);\n\n// Back at the return URI, with ?login_code=...\u0026state=...\nvar auth = await endpoint.Auth.AuthenticateAsync(new LoginCodeGrantRequest { LoginCode = loginCode, CodeVerifier = codeVerifier });\nendpoint.SetToken(auth.AccessToken);"
+            }
+          ],
+          "deprecated": false
+        },
         "auth.getMyUser": {
           "sdkOperation": "auth.getMyUser",
           "kind": "function",
@@ -3493,6 +3585,60 @@
             {
               "language": "csharp",
               "code": "var me = await endpoint.Users.GetMeAsync();"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.createCodeVerifier": {
+          "sdkOperation": "auth.createCodeVerifier",
+          "kind": "function",
+          "name": "CreateCodeVerifier",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "string CreateCodeVerifier()",
+          "summary": "Creates a PKCE code verifier: 43 characters of URL-safe randomness (32 random bytes, base64url encoded). Keep it where it will survive the round trip to the provider, pass its challenge to GetSocialLoginUrl, and send it back with the login-code grant.",
+          "params": [],
+          "returns": {
+            "type": "string",
+            "description": "A new random verifier."
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var verifier = Pkce.CreateCodeVerifier();"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.createCodeChallenge": {
+          "sdkOperation": "auth.createCodeChallenge",
+          "kind": "function",
+          "name": "CreateCodeChallenge",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "string CreateCodeChallenge(string verifier)",
+          "summary": "Creates the PKCE code challenge for a verifier: the base64url-encoded SHA-256 of it, without padding. Pure computation, so it is synchronous.",
+          "params": [
+            {
+              "name": "verifier",
+              "type": "string",
+              "description": "The verifier from CreateCodeVerifier.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "string",
+            "description": "The S256 challenge to send as code_challenge."
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var verifier = Pkce.CreateCodeVerifier();\nvar challenge = Pkce.CreateCodeChallenge(verifier);"
             }
           ],
           "deprecated": false
@@ -5485,6 +5631,214 @@
         }
       }
     },
+    "mfa": {
+      "id": "mfa",
+      "name": "MFA",
+      "summary": "",
+      "symbols": {
+        "mfa.getMFAStatus": {
+          "sdkOperation": "mfa.getMFAStatus",
+          "kind": "function",
+          "name": "GetMfaStatusAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CMfaStatus\u003E GetMfaStatusAsync(CancellationToken cancellationToken = default)",
+          "summary": "Gets the caller\u0027s multi-factor authentication status.",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CMfaStatus\u003E",
+            "description": "The caller\u0027s MFA status."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because the session is invalid."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var status = await endpoint.Mfa.GetMfaStatusAsync();\nif (status.Enabled \u0026\u0026 status.BackupCodesRemaining \u003C 3)\n{\n    // Suggest regenerating backup codes.\n}"
+            }
+          ],
+          "deprecated": false
+        },
+        "mfa.enrollMFA": {
+          "sdkOperation": "mfa.enrollMFA",
+          "kind": "function",
+          "name": "EnrollMfaAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CMfaEnrollment\u003E EnrollMfaAsync(CancellationToken cancellationToken = default)",
+          "summary": "Begins MFA enrollment. The returned secret is pending and does not take effect until it is confirmed with VerifyMfaEnrollmentAsync. Render OtpauthUrl as a QR code for authenticator apps, and show Secret for users who need to type it in by hand. Calling this again replaces the pending secret, so a user who abandons the flow can safely restart it.",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CMfaEnrollment\u003E",
+            "description": "The pending enrollment."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed; a 400 means MFA is already enabled for the caller."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var enrollment = await endpoint.Mfa.EnrollMfaAsync();"
+            }
+          ],
+          "deprecated": false
+        },
+        "mfa.verifyMFAEnrollment": {
+          "sdkOperation": "mfa.verifyMFAEnrollment",
+          "kind": "function",
+          "name": "VerifyMfaEnrollmentAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CMfaBackupCodes\u003E VerifyMfaEnrollmentAsync(string code, CancellationToken cancellationToken = default)",
+          "summary": "Completes MFA enrollment by proving the user can generate codes from the pending secret. The backup codes are returned once and never again, so show them to the user before the flow closes. Three incorrect codes discard the pending enrollment and the user must start over.",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "description": "The current six-digit code from the user\u0027s authenticator app.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CMfaBackupCodes\u003E",
+            "description": "One-time backup codes, returned only once."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The code was wrong, the pending enrollment expired, or the call failed."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var backup = await endpoint.Mfa.VerifyMfaEnrollmentAsync(\u0022123456\u0022);"
+            }
+          ],
+          "deprecated": false
+        },
+        "mfa.regenerateBackupCodes": {
+          "sdkOperation": "mfa.regenerateBackupCodes",
+          "kind": "function",
+          "name": "RegenerateBackupCodesAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CMfaBackupCodes\u003E RegenerateBackupCodesAsync(string code, CancellationToken cancellationToken = default)",
+          "summary": "Replaces the caller\u0027s backup codes with a new set. The previous codes stop working immediately, and the new ones are returned only once.",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "description": "The current six-digit code from the user\u0027s authenticator app.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CMfaBackupCodes\u003E",
+            "description": "The new one-time backup codes, returned only once."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The code was wrong or the call failed."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var backup = await endpoint.Mfa.RegenerateBackupCodesAsync(\u0022123456\u0022);"
+            }
+          ],
+          "deprecated": false
+        },
+        "mfa.disableMFA": {
+          "sdkOperation": "mfa.disableMFA",
+          "kind": "function",
+          "name": "DisableMfaAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task DisableMfaAsync(string code, CancellationToken cancellationToken = default)",
+          "summary": "Turns off MFA for the caller. A valid code is always required, so knowing the password alone is not enough to remove the second factor. Either a TOTP code or an unused backup code is accepted.",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "description": "A current six-digit code from the user\u0027s authenticator app, or an unused backup code.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task",
+            "description": "A task that completes when MFA is disabled."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The code was wrong or the call failed."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Mfa.DisableMfaAsync(\u0022123456\u0022);"
+            }
+          ],
+          "deprecated": false
+        }
+      }
+    },
     "notification": {
       "id": "notification",
       "name": "Notification",
@@ -7234,6 +7588,128 @@
             {
               "language": "csharp",
               "code": "var recipient = await endpoint.Recipients.AskQuestionAsync(envelopeId, roleName, \u0022Which page do I sign?\u0022);"
+            }
+          ],
+          "deprecated": false
+        }
+      }
+    },
+    "session": {
+      "id": "session",
+      "name": "Session",
+      "summary": "",
+      "symbols": {
+        "session.getSessions": {
+          "sdkOperation": "session.getSessions",
+          "kind": "function",
+          "name": "GetSessionsAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CIReadOnlyList\u003CUserLoginSession\u003E\u003E GetSessionsAsync(CancellationToken cancellationToken = default)",
+          "summary": "Gets the caller\u0027s active login sessions, newest first. The session the caller is using to make the request has Current set, and should be offered sign-out rather than revocation in a UI.",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CIReadOnlyList\u003CUserLoginSession\u003E\u003E",
+            "description": "The caller\u0027s active sessions, newest first."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because the session is invalid."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var sessions = await endpoint.Sessions.GetSessionsAsync();"
+            }
+          ],
+          "deprecated": false
+        },
+        "session.revokeSession": {
+          "sdkOperation": "session.revokeSession",
+          "kind": "function",
+          "name": "RevokeSessionAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task RevokeSessionAsync(string sessionId, CancellationToken cancellationToken = default)",
+          "summary": "Revokes one of the caller\u0027s login sessions. Tokens issued for that session stop working immediately. The caller\u0027s current session cannot be revoked this way.",
+          "params": [
+            {
+              "name": "sessionId",
+              "type": "string",
+              "description": "The ID of the session to revoke. May not be the caller\u0027s current session.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task",
+            "description": "A task that completes when the session is revoked."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because the session was not found or is the current one."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Sessions.RevokeSessionAsync(\u0022SESSIONID\u0022);"
+            }
+          ],
+          "deprecated": false
+        },
+        "session.revokeOtherSessions": {
+          "sdkOperation": "session.revokeOtherSessions",
+          "kind": "function",
+          "name": "RevokeOtherSessionsAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CRevokeSessionsResponse\u003E RevokeOtherSessionsAsync(CancellationToken cancellationToken = default)",
+          "summary": "Revokes every login session for the caller except the one making the request: the \u0022sign out everywhere else\u0022 operation.",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CRevokeSessionsResponse\u003E",
+            "description": "The number of sessions revoked."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because the session is invalid."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var result = await endpoint.Sessions.RevokeOtherSessionsAsync();\nConsole.WriteLine($\u0022Revoked {result.Revoked} sessions\u0022);"
             }
           ],
           "deprecated": false

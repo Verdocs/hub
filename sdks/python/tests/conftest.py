@@ -71,6 +71,10 @@ def user_payload(**overrides: Any) -> dict[str, Any]:
         "b2cId": None,
         "googleId": None,
         "appleId": None,
+        "has_password": True,
+        "password_changed_at": "2026-01-01T00:00:00.000Z",
+        "sign_in_providers": [],
+        "mfa": {"enabled": False, "enrolled_at": None, "backup_codes_remaining": 0},
         "created_at": "2026-01-01T00:00:00.000Z",
         "updated_at": "2026-01-02T00:00:00.000Z",
     }

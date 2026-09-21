@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "verdocs"
-version = "1.0.0"
+version = "1.1.0"
 description = "Verdocs e-signing SDK for Python"
 readme = "README.md"
 license = "MIT"

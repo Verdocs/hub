@@ -104,18 +104,23 @@ class NotificationTemplate(VerdocsModel):
 
 
 class ApiKey(VerdocsModel):
-    """An API key attached to a profile within an organization."""
+    """An API key attached to a profile within an organization.
+
+    Keys act as their assigned profile unless global_admin is set, in which
+    case the key has full access to the organization. client_secret is only
+    returned when a key is created or rotated; list() never includes it.
+    """
 
     client_id: str
+    # Display name used to identify the key in the Verdocs web app.
     name: str
     organization_id: str
+    # The profile calls made with this key act as. Ignored when global_admin is set.
     profile_id: str
     global_admin: bool
     client_secret: str | None = None
-    # js-sdk declares permission required, but the deployed API has no permission
-    # column and never sends it (verified against the prisma schema during the
-    # true-up); the create/update schemas speak global_admin instead.
-    permission: str | None = None  # Known values: ApiKeyPermission in base.py.
+    created_at: datetime
+    last_used_at: datetime | None = None
     profile: Profile | None = None
     organization: Organization | None = None
 
@@ -370,6 +375,20 @@ class Profile(VerdocsModel):
     initials: list[Initial] | None = None
 
 
+# Identity providers a user can sign in with. "microsoft" covers both Entra ID
+# (work and school) and personal accounts.
+SignInProvider = Literal["google", "apple", "github", "microsoft"]
+
+
+class UserMFA(VerdocsModel):
+    """Multi-factor authentication summary carried on a user record."""
+
+    enabled: bool
+    # When MFA was enabled, or None if it is not enabled.
+    enrolled_at: datetime | None = None
+    backup_codes_remaining: int
+
+
 class User(VerdocsModel):
     """A Verdocs user account. A user is one person; profiles connect that person to organizations."""
 
@@ -393,6 +412,14 @@ class User(VerdocsModel):
     login_failures: int | None = None
     locale: str | None = None
     timezone: str | None = None
+    # Account-security fields. Accounts created through a social identity
+    # provider have no password, so has_password gates password-reset UI. They
+    # are optional here because user records joined onto other payloads (a
+    # profile's user, for instance) may be sent without them.
+    has_password: bool | None = None
+    password_changed_at: datetime | None = None
+    sign_in_providers: list[str] | None = None  # Known values: SignInProvider above.
+    mfa: UserMFA | None = None
     created_at: datetime
     updated_at: datetime
 

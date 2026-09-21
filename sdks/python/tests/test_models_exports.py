@@ -22,7 +22,6 @@ from verdocs.models import (
 
 BASE_EXPORTS = [
     "AccessKeyType",
-    "ApiKeyPermission",
     "DeprecatedHistoryEvent",
     "EntitlementFeature",
     "EnvelopeDocumentType",
@@ -88,6 +87,7 @@ CORE_MODEL_EXPORTS = [
     "Recipient",
     "Role",
     "SMSAccessKey",
+    "SignInProvider",
     "Signature",
     "Template",
     "TemplateDocument",
@@ -95,9 +95,25 @@ CORE_MODEL_EXPORTS = [
     "TemplateFieldSetting",
     "TextFieldSetting",
     "User",
+    "UserMFA",
     "VerdocsModel",
     "Webhook",
     "WebhookEvents",
+]
+
+USERS_MODULE_EXPORTS = [
+    "LoginCodeGrantRequest",
+    "MFABackupCodes",
+    "MFAChallenge",
+    "MFAEnrollment",
+    "MFAOtpGrantRequest",
+    "MFARecoveryCodeGrantRequest",
+    "MFAStatus",
+    "MFAType",
+    "RevokeSessionsResponse",
+    "SocialLoginProvider",
+    "SocialProviders",
+    "UserLoginSession",
 ]
 
 MOVED_MODULE_EXPORTS = [
@@ -115,8 +131,29 @@ MOVED_MODULE_EXPORTS = [
 
 
 def test_base_and_core_exports_are_reachable():
-    for name in BASE_EXPORTS + CORE_MODEL_EXPORTS + MOVED_MODULE_EXPORTS:
+    for name in BASE_EXPORTS + CORE_MODEL_EXPORTS + MOVED_MODULE_EXPORTS + USERS_MODULE_EXPORTS:
         assert hasattr(models, name), f"verdocs.models.{name} is missing"
+
+
+def test_api_key_permission_is_gone():
+    # The deployed API has no permission field on keys; the old Literal must not linger anywhere.
+    assert not hasattr(models, "ApiKeyPermission")
+    assert not hasattr(verdocs, "ApiKeyPermission")
+    assert "ApiKeyPermission" not in verdocs.__all__
+
+
+def test_package_barrel_exposes_account_security_surface():
+    for name in USERS_MODULE_EXPORTS + [
+        "MFARequiredError",
+        "UserMFA",
+        "SignInProvider",
+        "create_code_challenge",
+        "create_code_verifier",
+        "get_mfa_challenge",
+        "is_mfa_required",
+    ]:
+        assert hasattr(verdocs, name), f"verdocs.{name} is missing"
+        assert name in verdocs.__all__
 
 
 def test_package_barrel_exposes_shared_wire_models():

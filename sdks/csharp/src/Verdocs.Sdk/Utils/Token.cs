@@ -97,6 +97,7 @@ public static class Token
         {
             SessionType = resolvedType,
             Sub = claims.Sub,
+            Sid = claims.Sid,
             Email = claims.Email,
             ProfileId = claims.ProfileId,
             OrganizationId = claims.OrganizationId,

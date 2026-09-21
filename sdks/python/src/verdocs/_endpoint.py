@@ -30,6 +30,7 @@ from .errors import VerdocsConnectionError, api_error_from_response
 from .models import SigningSession, UserSession
 from .resources import (
     KBA,
+    MFA,
     ApiKeys,
     AsyncApiKeys,
     AsyncAuth,
@@ -41,10 +42,12 @@ from .resources import (
     AsyncInvitations,
     AsyncKBA,
     AsyncMembers,
+    AsyncMFA,
     AsyncNotificationTemplates,
     AsyncOrganizations,
     AsyncProfiles,
     AsyncRecipients,
+    AsyncSessions,
     AsyncSignatures,
     AsyncTemplateDocuments,
     AsyncTemplateFields,
@@ -64,6 +67,7 @@ from .resources import (
     Organizations,
     Profiles,
     Recipients,
+    Sessions,
     Signatures,
     TemplateDocuments,
     TemplateFields,
@@ -237,6 +241,8 @@ class VerdocsEndpoint(_EndpointState):
         self._client = httpx.Client(base_url=base_url, timeout=timeout, headers=self._default_headers())
         self.auth = Auth(self)
         self.users = Users(self)
+        self.sessions = Sessions(self)
+        self.mfa = MFA(self)
         self.profiles = Profiles(self)
         self.templates = Templates(self)
         self.template_documents = TemplateDocuments(self)
@@ -327,6 +333,8 @@ class AsyncVerdocsEndpoint(_EndpointState):
         self._client = httpx.AsyncClient(base_url=base_url, timeout=timeout, headers=self._default_headers())
         self.auth = AsyncAuth(self)
         self.users = AsyncUsers(self)
+        self.sessions = AsyncSessions(self)
+        self.mfa = AsyncMFA(self)
         self.profiles = AsyncProfiles(self)
         self.templates = AsyncTemplates(self)
         self.template_documents = AsyncTemplateDocuments(self)

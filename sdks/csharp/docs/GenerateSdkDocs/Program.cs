@@ -12,6 +12,15 @@ namespace Verdocs.Sdk.Docs;
 /// </summary>
 internal static class Program
 {
+    // The docs carry the package version so consumers can tell which release they describe.
+    // It comes from the csproj, the single place the version is set.
+    private static string ReadPackageVersion(string csharpRoot)
+    {
+        var csproj = Path.Combine(csharpRoot, "src", "Verdocs.Sdk", "Verdocs.Sdk.csproj");
+        var match = Regex.Match(File.ReadAllText(csproj), "<Version>([^<]+)</Version>");
+        return match.Success ? match.Groups[1].Value.Trim() : "0.0.0";
+    }
+
     private static readonly HashSet<string> SdkPages = ["Endpoints", "Helpers"];
 
     // The operations we document live on the resource/helper/util classes, not on
@@ -98,7 +107,7 @@ internal static class Program
         {
             Language = "csharp",
             Package = "Verdocs.Sdk",
-            Version = "1.0.0",
+            Version = ReadPackageVersion(csharpRoot),
             Groups = groups,
         };
 

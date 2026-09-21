@@ -107,6 +107,19 @@ def test_profile_role_names_match_the_js_sdk():
     assert get_args(ProfileRole) == ("contact", "basic_user", "member", "admin", "owner")
 
 
+def test_user_session_reads_the_sid_claim():
+    session = UserSession.model_validate({"sub": "user-1234", "session_type": "user", "sid": "session-1234"})
+
+    assert session.sid == "session-1234"
+
+
+def test_user_session_sid_is_optional():
+    # Tokens issued before login sessions existed carry no sid.
+    session = UserSession.model_validate({"sub": "user-1234", "session_type": "user"})
+
+    assert session.sid is None
+
+
 def test_signing_session_still_parses_signing_claims():
     session = SigningSession.model_validate(
         {

@@ -4,4 +4,9 @@ packages:
   - "sdks/*"
 
 onlyBuiltDependencies:
+  - '@parcel/watcher'
   - esbuild
+  - lmdb
+  - msgpackr-extract
+  - rs-module-lexer
+  - vue-demi

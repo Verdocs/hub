@@ -1,7 +1,7 @@
 {
   "name": "@verdocs/python-sdk",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Task runner stub for the Verdocs Python SDK (pnpm/turbo). Real packaging is pyproject.toml.",
   "scripts": {
     "generate-sdk-docs": "./docs/generate-sdk-docs.sh",

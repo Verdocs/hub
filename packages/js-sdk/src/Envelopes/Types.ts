@@ -356,7 +356,7 @@ export interface ICreateEnvelopeFromTemplateRequest {
   sender_email?: string;
   /** If set, Verdocs will not attempt to contact the recipient via email or SMS. */
   no_contact?: boolean;
-  /** If set, the envelope will automatically expire at the specified date/time (ISO8601, UTC) */
+  /** If set, the envelope will automatically expire at the specified date/time (ISO8601, UTC). Must be at least 1 day in the future. */
   expires_at?: string;
   /** Environment in which to execute the envelope. Do not set this unless instructed to do so by Verdocs support. */
   environment?: string;
@@ -378,6 +378,8 @@ export interface ICreateEnvelopeFromTemplateRequest {
   locale?: string | null;
   /** The locale code */
   timezone?: string | null;
+  /** Set the "Brand" used when the signing experience is rendered. If not set, the Organization's default Brand will be used, if any. */
+  brand_key?: string;
 }
 
 export interface ICreateEnvelopeDirectlyRequest {
@@ -415,6 +417,8 @@ export interface ICreateEnvelopeDirectlyRequest {
   locale?: string | null;
   /** The locale code */
   timezone?: string | null;
+  /** Set the "Brand" used when the signing experience is rendered. If not set, the Organization's default Brand will be used, if any. */
+  brand_key?: string;
 }
 
 export type TCreateEnvelopeRequest = ICreateEnvelopeFromTemplateRequest | ICreateEnvelopeDirectlyRequest;

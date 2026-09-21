@@ -41,6 +41,14 @@ public static class SamplePayloads
           "githubId": null,
           "timezone": null,
           "locale": "en-US",
+          "has_password": true,
+          "password_changed_at": "2026-01-20T10:00:00.000Z",
+          "sign_in_providers": ["google"],
+          "mfa": {
+            "enabled": true,
+            "enrolled_at": "2026-02-01T09:00:00.000Z",
+            "backup_codes_remaining": 7
+          },
           "created_at": "2026-01-05T12:00:00.000Z",
           "updated_at": "2026-02-06T08:30:00.000Z"
         }
@@ -504,13 +512,14 @@ public static class SamplePayloads
     /// <summary>One entry from the GET /v2/api-keys response array.</summary>
     public const string ApiKey = """
         {
-          "client_id": "6f7a8b9c-0d1e-4f2a-3b4c-5d6e7f8a9b0c",
           "name": "Default",
           "organization_id": "b1a2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
           "profile_id": "0a9e8b1c-2d3e-4f50-8a9b-0c1d2e3f4a5b",
           "global_admin": false,
+          "client_id": "6f7a8b9c-0d1e-4f2a-3b4c-5d6e7f8a9b0c",
           "client_secret": null,
-          "permission": "personal"
+          "created_at": "2026-01-05T12:00:00.000Z",
+          "last_used_at": null
         }
         """;
 

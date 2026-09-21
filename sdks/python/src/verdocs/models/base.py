@@ -54,8 +54,6 @@ TemplateSortBy = Literal["created_at", "updated_at", "name", "last_used_at", "co
 
 AccessKeyType = Literal["email", "in_app", "in_person_link", "sms"]
 
-ApiKeyPermission = Literal["personal", "global_read", "global_write"]
-
 # Deprecated upstream: see envelope.created_at, .updated_at, and .canceled_at.
 DeprecatedHistoryEvent = Literal["envelope:created", "envelope:completed"]
 

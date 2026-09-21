@@ -251,31 +251,25 @@ class ContactUpdateParams(VerdocsModel):
 
 
 class ApiKeyCreateParams(VerdocsModel):
-    """Fields for creating an API key (js-sdk: ICreateApiKeyRequest, adapted).
-
-    The js-sdk sends a permission string, but the deployed schema
-    (CreateApiKeySchema) has no such field: it reads global_admin instead and
-    silently strips permission. This model carries the fields the server
-    actually consumes.
-    """
+    """Fields for creating an API key (js-sdk: ICreateApiKeyRequest)."""
 
     # Display name used to identify the key in the Verdocs web app.
     name: str
     # The profile calls made with this key will act as.
     profile_id: str
-    # Grants the key global admin rights. The server defaults to False.
+    # If true, the key has full access to the organization, overriding the
+    # permissions of its assigned profile. The server defaults to False.
     global_admin: bool | None = None
 
 
 class ApiKeyUpdateParams(VerdocsModel):
-    """Fields for updating an API key (js-sdk: IUpdateApiKeyRequest, adapted).
-
-    Same divergence as create: the server reads name, profile_id, and
-    global_admin (UpdateApiKeySchema) and ignores the js-sdk's permission field.
-    """
+    """Fields for updating an API key (js-sdk: IUpdateApiKeyRequest). Only the fields you set are sent."""
 
     name: str | None = None
+    # New profile that calls made with the key will act as.
     profile_id: str | None = None
+    # If true, the key has full access to the organization, overriding the
+    # permissions of its assigned profile.
     global_admin: bool | None = None
 
 

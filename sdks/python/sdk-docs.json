@@ -1,7 +1,7 @@
 {
   "language": "python",
   "package": "verdocs",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "groups": {
     "apikey": {
       "id": "apikey",
@@ -52,7 +52,7 @@
             {
               "name": "params",
               "type": "ApiKeyCreateParams",
-              "description": "Name and acting profile for the new key.",
+              "description": "Name and acting profile for the new key, plus global_admin\nto give it full access to the organization.",
               "optional": false,
               "default": null
             }
@@ -130,7 +130,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "update(client_id: str, params: ApiKeyUpdateParams) -> ApiKey",
-          "summary": "Update an API key's name or acting profile via PATCH /v2/api-keys/{client_id}.",
+          "summary": "Update an API key's name, acting profile, or global_admin flag via PATCH /v2/api-keys/{client_id}.",
           "params": [
             {
               "name": "client_id",
@@ -223,7 +223,7 @@
             {
               "name": "params",
               "type": "AuthenticationRequest",
-              "description": "OAuth2 token request (password, client_credentials,\nrefresh_token, or authorization_code).",
+              "description": "OAuth2 token request (password, client_credentials,\nrefresh_token, authorization_code, or one of the MFA and\nlogin-code grants).",
               "optional": false,
               "default": null
             }
@@ -233,6 +233,10 @@
             "description": "The token set for the new session."
           },
           "throws": [
+            {
+              "type": "MFARequiredError",
+              "description": "The credentials were accepted but the user must\nsupply a second factor; carries mfa_token."
+            },
             {
               "type": "AuthenticationError",
               "description": "The credentials were rejected."
@@ -546,6 +550,90 @@
           ],
           "deprecated": false
         },
+        "auth.getSocialProviders": {
+          "sdkOperation": "auth.getSocialProviders",
+          "kind": "function",
+          "name": "get_social_providers",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "get_social_providers() -> SocialProviders",
+          "summary": "Get the identity providers enabled in the current environment, via GET /v2/oauth2/social/providers.",
+          "params": [],
+          "returns": {
+            "type": "SocialProviders",
+            "description": "Which of google and microsoft are enabled."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned a non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "providers = endpoint.auth.get_social_providers()\nif providers.google:\n    show_google_button()"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.getSocialLoginUrl": {
+          "sdkOperation": "auth.getSocialLoginUrl",
+          "kind": "function",
+          "name": "get_social_login_url",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "get_social_login_url(provider: SocialLoginProvider, return_uri: str, code_challenge: str, state: str) -> str",
+          "summary": "Build the URL that starts a Google or Microsoft sign-in.",
+          "params": [
+            {
+              "name": "provider",
+              "type": "SocialLoginProvider",
+              "description": "\"google\" or \"microsoft\".",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "return_uri",
+              "type": "str",
+              "description": "Where to send the user after the provider returns. Must belong to a registered origin.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "code_challenge",
+              "type": "str",
+              "description": "The PKCE challenge, the base64url SHA-256 of the verifier the app keeps.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "state",
+              "type": "str",
+              "description": "An opaque value returned unchanged to the app, used to prevent CSRF attacks.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "str",
+            "description": "The sign-in URL to redirect the user to."
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "python",
+              "code": "from verdocs import LoginCodeGrantRequest, create_code_challenge, create_code_verifier\n\n# Starting the flow. Keep the verifier and state somewhere that\n# survives the redirect, the browser is leaving.\ncode_verifier = create_code_verifier()\nstate = create_code_verifier()\nurl = endpoint.auth.get_social_login_url(\n    \"google\",\n    return_uri=\"https://your-app.com/login\",\n    code_challenge=create_code_challenge(code_verifier),\n    state=state,\n)\n\n# Back at return_uri, with ?login_code=...&state=...\ntokens = endpoint.auth.authenticate(\n    LoginCodeGrantRequest(login_code=login_code, code_verifier=code_verifier)\n)"
+            }
+          ],
+          "deprecated": false
+        },
         "auth.getMyUser": {
           "sdkOperation": "auth.getMyUser",
           "kind": "function",
@@ -575,6 +663,122 @@
             }
           ],
           "examples": [],
+          "deprecated": false
+        },
+        "auth.createCodeVerifier": {
+          "sdkOperation": "auth.createCodeVerifier",
+          "kind": "function",
+          "name": "create_code_verifier",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "create_code_verifier() -> str",
+          "summary": "Create a PKCE code verifier: 43 characters of URL-safe randomness, per RFC 7636.",
+          "params": [],
+          "returns": {
+            "type": "str",
+            "description": "A fresh 43-character base64url string built from 32 random bytes."
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "python",
+              "code": "from verdocs import create_code_challenge, create_code_verifier\n\nverifier = create_code_verifier()\nchallenge = create_code_challenge(verifier)"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.createCodeChallenge": {
+          "sdkOperation": "auth.createCodeChallenge",
+          "kind": "function",
+          "name": "create_code_challenge",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "create_code_challenge(verifier: str) -> str",
+          "summary": "Create the PKCE code challenge for a verifier: the base64url-encoded SHA-256 of it.",
+          "params": [
+            {
+              "name": "verifier",
+              "type": "str",
+              "description": "The value returned by create_code_verifier().",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "str",
+            "description": "The S256 challenge to pass to get_social_login_url(), without padding."
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "python",
+              "code": "from verdocs import create_code_challenge, create_code_verifier\n\nverifier = create_code_verifier()\nchallenge = create_code_challenge(verifier)"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.isMFARequired": {
+          "sdkOperation": "auth.isMFARequired",
+          "kind": "function",
+          "name": "is_mfa_required",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "is_mfa_required(error: object) -> TypeGuard[MFARequiredError]",
+          "summary": "Check whether an exception is the mfa_required challenge.",
+          "params": [
+            {
+              "name": "error",
+              "type": "object",
+              "description": "Any object, usually a caught exception.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "TypeGuard[MFARequiredError]",
+            "description": "True if error is an MFARequiredError, narrowing its type for checkers."
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "python",
+              "code": "from verdocs import MFAOtpGrantRequest, PasswordGrantRequest, VerdocsError, is_mfa_required\n\ntry:\n    tokens = endpoint.auth.authenticate(PasswordGrantRequest(username=email, password=password))\nexcept VerdocsError as error:\n    if is_mfa_required(error):\n        # Collect a code from the user, then:\n        tokens = endpoint.auth.authenticate(MFAOtpGrantRequest(mfa_token=error.mfa_token, otp=otp))"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.getMFAChallenge": {
+          "sdkOperation": "auth.getMFAChallenge",
+          "kind": "function",
+          "name": "get_mfa_challenge",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "get_mfa_challenge(error: object) -> MFAChallenge | None",
+          "summary": "Companion to is_mfa_required() that returns the challenge body, or None for anything else.",
+          "params": [
+            {
+              "name": "error",
+              "type": "object",
+              "description": "Any object, usually a caught exception.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "MFAChallenge | None",
+            "description": "The parsed 403 body when error is an MFARequiredError, otherwise None."
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "python",
+              "code": "from verdocs import get_mfa_challenge\n\nchallenge = get_mfa_challenge(error)\nif challenge:\n    # Switch the form to its \"enter your code\" mode, carrying challenge.mfa_token.\n    ..."
+            }
+          ],
           "deprecated": false
         }
       }
@@ -3058,6 +3262,217 @@
         }
       }
     },
+    "mfa": {
+      "id": "mfa",
+      "name": "MFA",
+      "summary": "",
+      "symbols": {
+        "mfa.getMFAStatus": {
+          "sdkOperation": "mfa.getMFAStatus",
+          "kind": "function",
+          "name": "status",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "status() -> MFAStatus",
+          "summary": "Get the caller's multi-factor authentication status via GET /v2/users/mfa.",
+          "params": [],
+          "returns": {
+            "type": "MFAStatus",
+            "description": "Whether MFA is enabled, the factor type, and the backup codes remaining."
+          },
+          "throws": [
+            {
+              "type": "AuthenticationError",
+              "description": "The endpoint has no valid user session."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "status = endpoint.mfa.status()\nprint(status.enabled, status.backup_codes_remaining)"
+            }
+          ],
+          "deprecated": false
+        },
+        "mfa.enrollMFA": {
+          "sdkOperation": "mfa.enrollMFA",
+          "kind": "function",
+          "name": "enroll",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "enroll() -> MFAEnrollment",
+          "summary": "Begin MFA enrollment via POST /v2/users/mfa/enroll.",
+          "params": [],
+          "returns": {
+            "type": "MFAEnrollment",
+            "description": "The pending enrollment: secret, otpauth URL, and expiry."
+          },
+          "throws": [
+            {
+              "type": "AuthenticationError",
+              "description": "The endpoint has no valid user session."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status; a 400\nmeans MFA is already enabled for the caller."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "enrollment = endpoint.mfa.enroll()\nshow_qr_code(enrollment.otpauth_url)"
+            }
+          ],
+          "deprecated": false
+        },
+        "mfa.verifyMFAEnrollment": {
+          "sdkOperation": "mfa.verifyMFAEnrollment",
+          "kind": "function",
+          "name": "verify_enrollment",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "verify_enrollment(code: str) -> MFABackupCodes",
+          "summary": "Complete MFA enrollment via POST /v2/users/mfa/enroll/verify.",
+          "params": [
+            {
+              "name": "code",
+              "type": "str",
+              "description": "The current six-digit code from the user's authenticator app.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "MFABackupCodes",
+            "description": "One-time backup codes, returned only once."
+          },
+          "throws": [
+            {
+              "type": "AuthenticationError",
+              "description": "The endpoint has no valid user session."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The code was wrong, or the API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "codes = endpoint.mfa.verify_enrollment(\"123456\")\nshow_backup_codes(codes.backup_codes)"
+            }
+          ],
+          "deprecated": false
+        },
+        "mfa.regenerateBackupCodes": {
+          "sdkOperation": "mfa.regenerateBackupCodes",
+          "kind": "function",
+          "name": "regenerate_backup_codes",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "regenerate_backup_codes(code: str) -> MFABackupCodes",
+          "summary": "Replace the caller's backup codes with a new set via POST /v2/users/mfa/backup-codes.",
+          "params": [
+            {
+              "name": "code",
+              "type": "str",
+              "description": "The current six-digit code from the user's authenticator app.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "MFABackupCodes",
+            "description": "The new one-time backup codes, returned only once."
+          },
+          "throws": [
+            {
+              "type": "AuthenticationError",
+              "description": "The endpoint has no valid user session."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The code was wrong, or the API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "codes = endpoint.mfa.regenerate_backup_codes(\"123456\")"
+            }
+          ],
+          "deprecated": false
+        },
+        "mfa.disableMFA": {
+          "sdkOperation": "mfa.disableMFA",
+          "kind": "function",
+          "name": "disable",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "disable(code: str) -> None",
+          "summary": "Turn off MFA for the caller via DELETE /v2/users/mfa.",
+          "params": [
+            {
+              "name": "code",
+              "type": "str",
+              "description": "A current six-digit code from the user's authenticator app, or an unused backup code.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "None",
+            "description": ""
+          },
+          "throws": [
+            {
+              "type": "AuthenticationError",
+              "description": "The endpoint has no valid user session."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The code was wrong, or the API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "endpoint.mfa.disable(\"123456\")"
+            }
+          ],
+          "deprecated": false
+        }
+      }
+    },
     "notification": {
       "id": "notification",
       "name": "Notification",
@@ -4608,6 +5023,124 @@
             }
           ],
           "examples": [],
+          "deprecated": false
+        }
+      }
+    },
+    "session": {
+      "id": "session",
+      "name": "Session",
+      "summary": "",
+      "symbols": {
+        "session.getSessions": {
+          "sdkOperation": "session.getSessions",
+          "kind": "function",
+          "name": "list",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "list() -> list[UserLoginSession]",
+          "summary": "Get the caller's active login sessions, newest first, via GET /v2/users/sessions.",
+          "params": [],
+          "returns": {
+            "type": "list[UserLoginSession]",
+            "description": "The caller's active sessions, newest first."
+          },
+          "throws": [
+            {
+              "type": "AuthenticationError",
+              "description": "The endpoint has no valid user session."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "for session in endpoint.sessions.list():\n    print(session.id, session.browser, session.location, session.current)"
+            }
+          ],
+          "deprecated": false
+        },
+        "session.revokeSession": {
+          "sdkOperation": "session.revokeSession",
+          "kind": "function",
+          "name": "revoke",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "revoke(session_id: str) -> None",
+          "summary": "Revoke one of the caller's login sessions via DELETE /v2/users/sessions/{session_id}.",
+          "params": [
+            {
+              "name": "session_id",
+              "type": "str",
+              "description": "The ID of the session to revoke. May not be the caller's current session.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "None",
+            "description": ""
+          },
+          "throws": [
+            {
+              "type": "AuthenticationError",
+              "description": "The endpoint has no valid user session."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status, including\nan attempt to revoke the current session."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "session.revokeOtherSessions": {
+          "sdkOperation": "session.revokeOtherSessions",
+          "kind": "function",
+          "name": "revoke_others",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "revoke_others() -> RevokeSessionsResponse",
+          "summary": "Revoke every login session for the caller except the one making the request.",
+          "params": [],
+          "returns": {
+            "type": "RevokeSessionsResponse",
+            "description": "The number of sessions revoked."
+          },
+          "throws": [
+            {
+              "type": "AuthenticationError",
+              "description": "The endpoint has no valid user session."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "result = endpoint.sessions.revoke_others()\nprint(f\"Signed out of {result.revoked} other devices\")"
+            }
+          ],
           "deprecated": false
         }
       }

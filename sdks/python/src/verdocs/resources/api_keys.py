@@ -59,7 +59,8 @@ class ApiKeys:
             client_secret = key.client_secret  # only shown here and on rotate
 
         Args:
-            params: Name and acting profile for the new key.
+            params: Name and acting profile for the new key, plus global_admin
+                to give it full access to the organization.
 
         Returns:
             The new API key, including its client_secret. Store the secret;
@@ -102,7 +103,7 @@ class ApiKeys:
         return ApiKey.model_validate(response.json())
 
     def update(self, client_id: str, params: ApiKeyUpdateParams) -> ApiKey:
-        """Update an API key's name or acting profile via PATCH /v2/api-keys/{client_id}.
+        """Update an API key's name, acting profile, or global_admin flag via PATCH /v2/api-keys/{client_id}.
 
         Mirrors js-sdk updateApiKey.
 
@@ -177,7 +178,8 @@ class AsyncApiKeys:
             client_secret = key.client_secret  # only shown here and on rotate
 
         Args:
-            params: Name and acting profile for the new key.
+            params: Name and acting profile for the new key, plus global_admin
+                to give it full access to the organization.
 
         Returns:
             The new API key, including its client_secret. Store the secret;
@@ -212,7 +214,7 @@ class AsyncApiKeys:
         return ApiKey.model_validate(response.json())
 
     async def update(self, client_id: str, params: ApiKeyUpdateParams) -> ApiKey:
-        """Update an API key's name or acting profile via PATCH /v2/api-keys/{client_id}.
+        """Update an API key's name, acting profile, or global_admin flag via PATCH /v2/api-keys/{client_id}.
 
         Mirrors js-sdk updateApiKey.
 

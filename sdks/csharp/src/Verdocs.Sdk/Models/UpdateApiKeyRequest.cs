@@ -4,9 +4,7 @@ namespace Verdocs.Models;
 
 /// <summary>
 /// Changes for <see cref="Resources.ApiKeys.UpdateAsync"/>. Only the fields set are sent;
-/// fields omitted are left unchanged. The js-sdk sends a "permission" value here, which the
-/// deployed API strips; it does accept <see cref="ProfileId"/> and <see cref="GlobalAdmin"/>,
-/// which the js-sdk does not expose.
+/// fields omitted are left unchanged.
 /// </summary>
 public sealed record UpdateApiKeyRequest
 {

@@ -10,8 +10,12 @@ public sealed class SdkDocsTests
     [
         "auth.authenticate",
         "auth.changePassword",
+        "auth.createCodeChallenge",
+        "auth.createCodeVerifier",
         "auth.getMyUser",
         "auth.getOAuth2AuthorizeUrl",
+        "auth.getSocialLoginUrl",
+        "auth.getSocialProviders",
         "auth.refreshToken",
         "auth.resendVerification",
         "auth.resetPassword",

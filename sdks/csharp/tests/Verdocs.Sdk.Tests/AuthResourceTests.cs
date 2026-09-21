@@ -37,6 +37,9 @@ public sealed class AuthResourceTests
     [InlineData("client_credentials")]
     [InlineData("refresh_token")]
     [InlineData("authorization_code")]
+    [InlineData("urn:verdocs:params:oauth:grant-type:mfa-otp")]
+    [InlineData("urn:verdocs:params:oauth:grant-type:mfa-recovery-code")]
+    [InlineData("urn:verdocs:params:oauth:grant-type:login-code")]
     public async Task AuthenticateAsync_AnyGrant_SendsGrantTypeDiscriminator(string grantType)
     {
         // System.Text.Json only writes the grant_type discriminator when the request is serialized
@@ -50,6 +53,9 @@ public sealed class AuthResourceTests
             "password" => new PasswordGrantRequest { Username = "you@example.com", Password = "secret" },
             "client_credentials" => new ClientCredentialsRequest { ClientId = "client-1", ClientSecret = "secret-1" },
             "refresh_token" => new RefreshTokenGrantRequest { RefreshToken = "refresh-1" },
+            "urn:verdocs:params:oauth:grant-type:mfa-otp" => new MfaOtpGrantRequest { MfaToken = "mfa-1", Otp = "123456" },
+            "urn:verdocs:params:oauth:grant-type:mfa-recovery-code" => new MfaRecoveryCodeGrantRequest { MfaToken = "mfa-1", RecoveryCode = "abcd-1234" },
+            "urn:verdocs:params:oauth:grant-type:login-code" => new LoginCodeGrantRequest { LoginCode = "login-1", CodeVerifier = "verifier-1" },
             _ => new AuthorizationCodeRequest
             {
                 Code = "code-1",
@@ -65,6 +71,208 @@ public sealed class AuthResourceTests
         Assert.Equal("/v2/oauth2/token", captured.Uri!.PathAndQuery);
         var body = Assert.IsType<JsonObject>(JsonNode.Parse(captured.Body!));
         Assert.Equal(grantType, (string?)body["grant_type"]);
+    }
+
+    [Fact]
+    public async Task AuthenticateAsync_MfaOtpGrant_SendsMfaTokenAndOtp()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.OK, AuthPayload);
+
+        var response = await endpoint.Auth.AuthenticateAsync(
+            new MfaOtpGrantRequest { MfaToken = "mfa-1", Otp = "123456" },
+            TestContext.Current.CancellationToken);
+
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Post, request.Method);
+        Assert.Equal("/v2/oauth2/token", request.Uri!.PathAndQuery);
+        var body = Assert.IsType<JsonObject>(JsonNode.Parse(request.Body!));
+        Assert.Equal("urn:verdocs:params:oauth:grant-type:mfa-otp", (string?)body["grant_type"]);
+        Assert.Equal("mfa-1", (string?)body["mfa_token"]);
+        Assert.Equal("123456", (string?)body["otp"]);
+        Assert.Equal(3, body.Count);
+
+        Assert.Equal("access-1", response.AccessToken);
+    }
+
+    [Fact]
+    public async Task AuthenticateAsync_MfaRecoveryCodeGrant_SendsMfaTokenAndRecoveryCode()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.OK, AuthPayload);
+
+        await endpoint.Auth.AuthenticateAsync(
+            new MfaRecoveryCodeGrantRequest { MfaToken = "mfa-1", RecoveryCode = "abcd-1234" },
+            TestContext.Current.CancellationToken);
+
+        var request = Assert.Single(handler.Requests);
+        var body = Assert.IsType<JsonObject>(JsonNode.Parse(request.Body!));
+        Assert.Equal("urn:verdocs:params:oauth:grant-type:mfa-recovery-code", (string?)body["grant_type"]);
+        Assert.Equal("mfa-1", (string?)body["mfa_token"]);
+        Assert.Equal("abcd-1234", (string?)body["recovery_code"]);
+        Assert.Equal(3, body.Count);
+    }
+
+    [Fact]
+    public async Task AuthenticateAsync_LoginCodeGrant_SendsLoginCodeAndVerifier()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.OK, AuthPayload);
+
+        await endpoint.Auth.AuthenticateAsync(
+            new LoginCodeGrantRequest { LoginCode = "login-1", CodeVerifier = "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk" },
+            TestContext.Current.CancellationToken);
+
+        var request = Assert.Single(handler.Requests);
+        var body = Assert.IsType<JsonObject>(JsonNode.Parse(request.Body!));
+        Assert.Equal("urn:verdocs:params:oauth:grant-type:login-code", (string?)body["grant_type"]);
+        Assert.Equal("login-1", (string?)body["login_code"]);
+        Assert.Equal("dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk", (string?)body["code_verifier"]);
+        Assert.Equal(3, body.Count);
+    }
+
+    [Fact]
+    public async Task AuthenticateAsync_MfaRequiredChallenge_ThrowsMfaRequiredException()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        const string challengeBody = """{"error":"mfa_required","error_description":"Multi-factor authentication required","mfa_token":"mfa-1"}""";
+        handler.Enqueue(HttpStatusCode.Forbidden, challengeBody);
+
+        var exception = await Assert.ThrowsAsync<MfaRequiredException>(
+            () => endpoint.Auth.AuthenticateAsync(
+                new PasswordGrantRequest { Username = "you@example.com", Password = "secret" },
+                TestContext.Current.CancellationToken));
+
+        Assert.Equal("mfa-1", exception.MfaToken);
+        Assert.Equal("Multi-factor authentication required", exception.ErrorDescription);
+        Assert.Equal("Multi-factor authentication required", exception.Message);
+        // The base-type contract still holds so a catch of VerdocsApiException sees the real 403.
+        Assert.Equal(HttpStatusCode.Forbidden, exception.StatusCode);
+        Assert.Equal(challengeBody, exception.ResponseBody);
+        Assert.IsAssignableFrom<VerdocsApiException>(exception);
+    }
+
+    [Fact]
+    public async Task AuthenticateAsync_MfaRequiredWithoutDescription_UsesDefaultMessage()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.Forbidden, """{"error":"mfa_required","mfa_token":"mfa-1"}""");
+
+        var exception = await Assert.ThrowsAsync<MfaRequiredException>(
+            () => endpoint.Auth.AuthenticateAsync(
+                new PasswordGrantRequest { Username = "you@example.com", Password = "secret" },
+                TestContext.Current.CancellationToken));
+
+        Assert.Equal("mfa-1", exception.MfaToken);
+        Assert.Null(exception.ErrorDescription);
+        Assert.Contains("Multi-factor authentication is required", exception.Message, StringComparison.Ordinal);
+    }
+
+    [Theory]
+    [InlineData("""{"error":"invalid_grant"}""")]
+    [InlineData("""{"error":"mfa_required"}""")]
+    [InlineData("""{"error":"mfa_required","mfa_token":123}""")]
+    [InlineData("not json")]
+    public async Task AuthenticateAsync_OtherForbidden_ThrowsPlainVerdocsApiException(string body)
+    {
+        // The challenge needs error "mfa_required" plus a string mfa_token, the same test the
+        // js-sdk's isMFARequired applies; anything else on a 403 is an ordinary failure.
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.Forbidden, body);
+
+        var exception = await Assert.ThrowsAsync<VerdocsApiException>(
+            () => endpoint.Auth.AuthenticateAsync(
+                new PasswordGrantRequest { Username = "you@example.com", Password = "secret" },
+                TestContext.Current.CancellationToken));
+
+        Assert.IsNotType<MfaRequiredException>(exception);
+        Assert.Equal(HttpStatusCode.Forbidden, exception.StatusCode);
+        Assert.Equal(body, exception.ResponseBody);
+    }
+
+    [Fact]
+    public async Task AuthenticateAsync_MfaRequiredOnNonForbiddenStatus_ThrowsPlainVerdocsApiException()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.BadRequest, """{"error":"mfa_required","mfa_token":"mfa-1"}""");
+
+        var exception = await Assert.ThrowsAsync<VerdocsApiException>(
+            () => endpoint.Auth.AuthenticateAsync(
+                new PasswordGrantRequest { Username = "you@example.com", Password = "secret" },
+                TestContext.Current.CancellationToken));
+
+        Assert.IsNotType<MfaRequiredException>(exception);
+        Assert.Equal(HttpStatusCode.BadRequest, exception.StatusCode);
+    }
+
+    [Fact]
+    public void AuthenticateAsync_NullRequest_ThrowsSynchronously()
+    {
+        var (endpoint, _) = CreateEndpoint();
+
+        Assert.Throws<ArgumentNullException>(
+            () => { _ = endpoint.Auth.AuthenticateAsync(null!, TestContext.Current.CancellationToken); });
+    }
+
+    [Fact]
+    public async Task GetSocialProvidersAsync_RequestsProvidersPath_ParsesFlags()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+        handler.Enqueue(HttpStatusCode.OK, """{"google": true, "microsoft": false}""");
+
+        var providers = await endpoint.Auth.GetSocialProvidersAsync(TestContext.Current.CancellationToken);
+
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Get, request.Method);
+        Assert.Equal("/v2/oauth2/social/providers", request.Uri!.PathAndQuery);
+        Assert.Null(request.Body);
+
+        Assert.True(providers.Google);
+        Assert.False(providers.Microsoft);
+    }
+
+    [Fact]
+    public void GetSocialLoginUrl_AllParams_BuildsEscapedUrl()
+    {
+        var (endpoint, handler) = CreateEndpoint();
+
+        var url = endpoint.Auth.GetSocialLoginUrl(
+            SocialLoginProvider.Google,
+            "https://your-app.com/login",
+            "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM",
+            "csrf token");
+
+        Assert.Equal(
+            "https://api.test/v2/oauth2/social/google/start?return_uri=https%3A%2F%2Fyour-app.com%2Flogin"
+            + "&code_challenge=E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"
+            + "&code_challenge_method=S256&state=csrf%20token",
+            url);
+
+        // Pure URL builder: nothing goes over the wire.
+        Assert.Empty(handler.Requests);
+    }
+
+    [Fact]
+    public void GetSocialLoginUrl_MicrosoftProvider_UsesProviderPath()
+    {
+        var (endpoint, _) = CreateEndpoint();
+
+        var url = endpoint.Auth.GetSocialLoginUrl(SocialLoginProvider.Microsoft, "https://your-app.com/login", "challenge", "state");
+
+        Assert.StartsWith("https://api.test/v2/oauth2/social/microsoft/start?", url, StringComparison.Ordinal);
+    }
+
+    [Theory]
+    [InlineData("", "https://your-app.com/login", "challenge", "state")]
+    [InlineData("google", "", "challenge", "state")]
+    [InlineData("google", "https://your-app.com/login", "", "state")]
+    [InlineData("google", "https://your-app.com/login", "challenge", "")]
+    public void GetSocialLoginUrl_MissingParam_ThrowsSynchronously(string provider, string returnUri, string codeChallenge, string state)
+    {
+        var (endpoint, _) = CreateEndpoint();
+
+        Assert.Throws<ArgumentException>(
+            () => endpoint.Auth.GetSocialLoginUrl(provider, returnUri, codeChallenge, state));
     }
 
     [Fact]

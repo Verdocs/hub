@@ -32,10 +32,12 @@ _RESOURCE_CLASSES: list[tuple[str, str]] = [
     ("verdocs.resources.invitations", "Invitations"),
     ("verdocs.resources.kba", "KBA"),
     ("verdocs.resources.members", "Members"),
+    ("verdocs.resources.mfa", "MFA"),
     ("verdocs.resources.notification_templates", "NotificationTemplates"),
     ("verdocs.resources.organizations", "Organizations"),
     ("verdocs.resources.profiles", "Profiles"),
     ("verdocs.resources.recipients", "Recipients"),
+    ("verdocs.resources.sessions", "Sessions"),
     ("verdocs.resources.signatures", "Signatures"),
     ("verdocs.resources.template_documents", "TemplateDocuments"),
     ("verdocs.resources.template_fields", "TemplateFields"),
@@ -55,6 +57,7 @@ _HELPER_MODULES: list[str] = [
     "verdocs.utils.entitlements",
     "verdocs.utils.dates",
     "verdocs.utils.files",
+    "verdocs.utils.auth",
 ]
 
 _SDK_TAG_RE = re.compile(

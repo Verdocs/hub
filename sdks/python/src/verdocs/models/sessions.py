@@ -26,6 +26,10 @@ class UserSession(VerdocsModel):
     """
 
     jti: str | None = None
+    # The server-side login session this token belongs to; matches
+    # UserLoginSession.id from endpoint.sessions.list(). Tokens issued before
+    # login sessions existed do not carry it.
+    sid: str | None = None
     aud: str | None = None
     iss: str | None = None
     sub: str | None = None

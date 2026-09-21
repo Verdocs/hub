@@ -44,7 +44,7 @@ One endpoint carries one session. For a user session and a signing session at th
 
 Resource properties on `VerdocsEndpoint` mirror the API:
 
-`Templates`, `TemplateDocuments`, `TemplateRoles`, `TemplateFields`, `Envelopes`, `Recipients`, `Signatures`, `Initials`, `Organizations`, `Members`, `Groups`, `Invitations`, `Contacts`, `ApiKeys`, `Brands`, `Webhooks`, `NotificationTemplates`, `Users`, `Profiles`, `Auth`
+`Templates`, `TemplateDocuments`, `TemplateRoles`, `TemplateFields`, `Envelopes`, `Recipients`, `Signatures`, `Initials`, `Organizations`, `Members`, `Groups`, `Invitations`, `Contacts`, `ApiKeys`, `Brands`, `Webhooks`, `NotificationTemplates`, `Users`, `Profiles`, `Auth`, `Sessions`, `Mfa`
 
 Models are sealed records with snake_case JSON serialization. Undocumented fields from the server are preserved in `AdditionalData` so round-trips stay lossless.
 
@@ -52,7 +52,7 @@ Pure helpers (permissions, validators, colors, dates, token parsing) live in `Ve
 
 ## Errors
 
-API failures throw typed exceptions derived from `VerdocsException`, with status code and response body attached.
+API failures throw typed exceptions derived from `VerdocsException`, with status code and response body attached. A sign-in that needs a second factor throws `MfaRequiredException` (a `VerdocsApiException` subtype) carrying the `MfaToken` to send back with an MFA grant.
 
 ## Quick-start
 

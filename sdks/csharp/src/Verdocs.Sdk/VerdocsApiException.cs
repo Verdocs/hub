@@ -5,9 +5,11 @@ namespace Verdocs;
 /// <summary>
 /// Thrown when a Verdocs API call fails: the server returned a non-success status code, or a
 /// success response whose body could not be read as the expected type. Carries the HTTP status
-/// and the raw response body so callers can inspect exactly what the server said.
+/// and the raw response body so callers can inspect exactly what the server said. The one
+/// subtype, <see cref="MfaRequiredException"/>, marks a 403 that is a sign-in challenge
+/// rather than a failure.
 /// </summary>
-public sealed class VerdocsApiException : VerdocsException
+public class VerdocsApiException : VerdocsException
 {
     /// <summary>Creates the exception for a failed API response.</summary>
     /// <param name="statusCode">The HTTP status code the server returned.</param>

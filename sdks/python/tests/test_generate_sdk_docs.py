@@ -14,12 +14,32 @@ OUTPUT = ROOT / "sdk-docs.json"
 EXPECTED_AUTH_OPERATIONS = {
     "auth.authenticate",
     "auth.changePassword",
+    "auth.createCodeChallenge",
+    "auth.createCodeVerifier",
+    "auth.getMFAChallenge",
     "auth.getMyUser",
     "auth.getOAuth2AuthorizeUrl",
+    "auth.getSocialLoginUrl",
+    "auth.getSocialProviders",
+    "auth.isMFARequired",
     "auth.refreshToken",
     "auth.resendVerification",
     "auth.resetPassword",
     "auth.verifyEmail",
+}
+
+EXPECTED_MFA_OPERATIONS = {
+    "mfa.disableMFA",
+    "mfa.enrollMFA",
+    "mfa.getMFAStatus",
+    "mfa.regenerateBackupCodes",
+    "mfa.verifyMFAEnrollment",
+}
+
+EXPECTED_SESSION_OPERATIONS = {
+    "session.getSessions",
+    "session.revokeOtherSessions",
+    "session.revokeSession",
 }
 
 EXPECTED_TEMPLATE_OPERATIONS = {
@@ -55,6 +75,13 @@ def test_generate_sdk_docs_emits_auth_operations():
     assert authenticate["resource"] == "function"
     assert authenticate["examples"][0]["language"] == "python"
     assert "PasswordGrantRequest" in authenticate["examples"][0]["code"]
+
+    # The PKCE and MFA challenge helpers are module functions on the Helpers page.
+    assert auth_symbols["auth.createCodeChallenge"]["page"] == "Helpers"
+    assert auth_symbols["auth.getSocialProviders"]["page"] == "Endpoints"
+
+    assert set(model["groups"]["mfa"]["symbols"]) == EXPECTED_MFA_OPERATIONS
+    assert set(model["groups"]["session"]["symbols"]) == EXPECTED_SESSION_OPERATIONS
 
     template_symbols = model["groups"]["template"]["symbols"]
     assert set(template_symbols) == EXPECTED_TEMPLATE_OPERATIONS

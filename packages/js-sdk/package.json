@@ -1,7 +1,7 @@
 {
   "name": "@verdocs/js-sdk",
   "private": false,
-  "version": "6.12.0",
+  "version": "6.12.1",
   "homepage": "https://github.com/Verdocs/hub/tree/main/packages/js-sdk",
   "description": "Isomorphic JS/TS SDK providing types and API wrappers for the Verdocs platform for Node and browser clients",
   "keywords": [
@@ -38,9 +38,9 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "docs": "pnpm run generate-openapi && pnpm run generate-sdk-docs && pnpm run unify-sdks",
-    "generate-openapi": "typedoc && npx tsx generated/openapi/generate-openapi.ts && cp openapi.json ../../../platform/apps/dev-docs/app/openapi.json",
-    "generate-sdk-docs": "npx tsx generated/sdks/generate-sdks.ts",
-    "unify-sdks": "npx tsx generated/sdks/unify-sdks.ts && cp unified-sdks.json ../../../platform/apps/dev-docs/app/unified-sdks.json",
+    "generate-openapi": "typedoc && tsx generated/openapi/generate-openapi.ts && cp openapi.json ../../../platform/apps/dev-docs/app/openapi.json",
+    "generate-sdk-docs": "tsx generated/sdks/generate-sdks.ts",
+    "unify-sdks": "tsx generated/sdks/unify-sdks.ts && cp unified-sdks.json ../../../platform/apps/dev-docs/app/unified-sdks.json",
     "edit-openapi": "docker run -p 8081:80 -v $(pwd):/sdk -v $(pwd):/sdk swaggerapi/swagger-editor:next-v5",
     "view-openapi": "docker run -p 8081:80 -v $(pwd):/sdk swaggerapi/swagger-ui",
     "push-beta": "pnpm run build && pnpm publish --tag beta && pnpm run docs",

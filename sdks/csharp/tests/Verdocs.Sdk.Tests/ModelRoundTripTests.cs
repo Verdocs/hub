@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Verdocs.Models;
 using Xunit;
 
@@ -39,12 +40,53 @@ public sealed class ModelRoundTripTests
         Assert.Equal("google-1234567890", model.GoogleId);
         Assert.Null(model.B2CId);
         Assert.Equal(new DateTimeOffset(2026, 1, 5, 12, 0, 0, TimeSpan.Zero), model.CreatedAt);
+        Assert.True(model.HasPassword);
+        Assert.Equal(new DateTimeOffset(2026, 1, 20, 10, 0, 0, TimeSpan.Zero), model.PasswordChangedAt);
+        Assert.Equal([SignInProvider.Google], model.SignInProviders);
+        Assert.NotNull(model.Mfa);
+        Assert.True(model.Mfa.Enabled);
+        Assert.Equal(new DateTimeOffset(2026, 2, 1, 9, 0, 0, TimeSpan.Zero), model.Mfa.EnrolledAt);
+        Assert.Equal(7, model.Mfa.BackupCodesRemaining);
         // Fields the seed does not model yet ride along in extension data.
         Assert.NotNull(model.AdditionalData);
         Assert.Contains("recent_hashes", model.AdditionalData.Keys);
         Assert.Contains("entra_id", model.AdditionalData.Keys);
 
         Assert.Equal(VolatileJson.NormalizeText(SamplePayloads.User), VolatileJson.NormalizeValue(model));
+    }
+
+    [Fact]
+    public void Serialize_User_EmbeddedRecordWithoutAccountSecurityFields_OmitsThem()
+    {
+        // Only GET /v2/users/me sends the account-security fields; user records embedded in
+        // the organization members list are selected without them, so they must read as null
+        // and stay off the wire when written back.
+        const string embedded = """
+            {
+              "id": "6f0bb35a-6a1f-4b15-9f52-1f8d3c2a7c11",
+              "email": "test@example.com",
+              "email_verified": true,
+              "first_name": "Test",
+              "last_name": "User",
+              "phone": null,
+              "picture": null,
+              "created_at": "2026-01-05T12:00:00.000Z",
+              "updated_at": "2026-02-06T08:30:00.000Z"
+            }
+            """;
+
+        var model = Deserialize<User>(embedded);
+
+        Assert.Null(model.HasPassword);
+        Assert.Null(model.PasswordChangedAt);
+        Assert.Null(model.SignInProviders);
+        Assert.Null(model.Mfa);
+
+        var written = Assert.IsType<JsonObject>(JsonNode.Parse(JsonSerializer.Serialize(model, VerdocsJson.Options)));
+        Assert.False(written.ContainsKey("has_password"));
+        Assert.False(written.ContainsKey("password_changed_at"));
+        Assert.False(written.ContainsKey("sign_in_providers"));
+        Assert.False(written.ContainsKey("mfa"));
     }
 
     [Fact]
@@ -171,10 +213,14 @@ public sealed class ModelRoundTripTests
     {
         var model = Deserialize<ApiKey>(SamplePayloads.ApiKey);
 
+        Assert.Equal("6f7a8b9c-0d1e-4f2a-3b4c-5d6e7f8a9b0c", model.ClientId);
         Assert.Equal("Default", model.Name);
-        Assert.Equal(ApiKeyPermission.Personal, model.Permission);
         Assert.False(model.GlobalAdmin);
         Assert.Null(model.ClientSecret);
+        Assert.Equal(new DateTimeOffset(2026, 1, 5, 12, 0, 0, TimeSpan.Zero), model.CreatedAt);
+        Assert.Null(model.LastUsedAt);
+        // Every field of the deployed shape is modeled, so nothing lands in extension data.
+        Assert.Null(model.AdditionalData);
 
         Assert.Equal(VolatileJson.NormalizeText(SamplePayloads.ApiKey), VolatileJson.NormalizeValue(model));
     }

@@ -18,7 +18,7 @@ namespace Verdocs;
 /// <example>
 /// <code>
 /// using var endpoint = new VerdocsEndpoint();
-/// var auth = await endpoint.Auth.AuthenticateAsync(new AuthenticateRequest
+/// var auth = await endpoint.Auth.AuthenticateAsync(new PasswordGrantRequest
 /// {
 ///     Username = "you@example.com",
 ///     Password = "PASSWORD",
@@ -92,6 +92,8 @@ public sealed class VerdocsEndpoint : IDisposable
 
         Auth = new Auth(this);
         Users = new Users(this);
+        Sessions = new Sessions(this);
+        Mfa = new Mfa(this);
         Profiles = new Profiles(this);
         Templates = new Templates(this);
         TemplateDocuments = new TemplateDocuments(this);
@@ -146,6 +148,12 @@ public sealed class VerdocsEndpoint : IDisposable
 
     /// <summary>User account calls for this endpoint.</summary>
     public Users Users { get; }
+
+    /// <summary>Login session calls for this endpoint.</summary>
+    public Sessions Sessions { get; }
+
+    /// <summary>Multi-factor authentication calls for this endpoint.</summary>
+    public Mfa Mfa { get; }
 
     /// <summary>Profile calls for this endpoint.</summary>
     public Profiles Profiles { get; }
@@ -248,6 +256,7 @@ public sealed class VerdocsEndpoint : IDisposable
         {
             SessionType = resolvedType,
             Sub = claims.Sub,
+            Sid = claims.Sid,
             Email = claims.Email,
             ProfileId = claims.ProfileId,
             OrganizationId = claims.OrganizationId,

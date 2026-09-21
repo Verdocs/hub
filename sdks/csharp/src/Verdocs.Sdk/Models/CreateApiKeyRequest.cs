@@ -3,9 +3,8 @@ using System.Text.Json.Serialization;
 namespace Verdocs.Models;
 
 /// <summary>
-/// Details for <see cref="Resources.ApiKeys.CreateAsync"/>. The js-sdk sends a "permission"
-/// value here, but the deployed API's schema has no such field and strips it; the real access
-/// control is <see cref="GlobalAdmin"/>.
+/// Details for <see cref="Resources.ApiKeys.CreateAsync"/>. Access is controlled by the
+/// acting profile plus the optional <see cref="GlobalAdmin"/> override.
 /// </summary>
 public sealed record CreateApiKeyRequest
 {

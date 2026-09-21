@@ -8,6 +8,8 @@ internal sealed record SessionClaims
 {
     public string? Sub { get; init; }
 
+    public string? Sid { get; init; }
+
     public string? Email { get; init; }
 
     public string? SessionType { get; init; }

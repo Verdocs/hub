@@ -1,11 +1,14 @@
 """Auth resource: happy paths and error paths, sync and async.
 
-Covers authenticate, the OAuth2 authorize-URL builder, refresh_token,
-change_password, reset_password, resend_verification, and verify_email.
+Covers authenticate (every grant, including the MFA challenge round trip),
+the OAuth2 authorize-URL builder, refresh_token, change_password,
+reset_password, resend_verification, verify_email, and the social sign-in
+calls.
 """
 
 from __future__ import annotations
 
+import httpx
 import pytest
 
 from verdocs import (
@@ -13,7 +16,13 @@ from verdocs import (
     AuthenticationError,
     AuthorizationCodeRequest,
     ClientCredentialsRequest,
+    LoginCodeGrantRequest,
+    MFAOtpGrantRequest,
+    MFARecoveryCodeGrantRequest,
+    MFARequiredError,
     PasswordGrantRequest,
+    SocialProviders,
+    VerdocsAPIError,
     VerdocsError,
 )
 from verdocs.models.users import ChangePasswordResponse, ResetPasswordResponse
@@ -24,6 +33,9 @@ CHANGE_PASSWORD_URL = "/v2/users/change-password"
 RESET_PASSWORD_URL = "/v2/users/reset-password"
 RESEND_VERIFICATION_URL = "/v2/users/resend-verification"
 VERIFY_URL = "/v2/users/verify"
+SOCIAL_PROVIDERS_URL = "/v2/oauth2/social/providers"
+
+MFA_CHALLENGE = {"error": "mfa_required", "error_description": "MFA required", "mfa_token": "mfa-token-1234"}
 
 
 def test_authenticate_password_grant(endpoint, payloads, respx_mock, base_url):
@@ -314,3 +326,166 @@ async def test_async_verify_email(async_endpoint, token_factory, payloads, respx
     tokens = await async_endpoint.auth.verify_email(email="test@example.com", token="EMAILED-CODE")
 
     assert isinstance(tokens, AuthenticateResponse)
+
+
+def test_authenticate_mfa_otp_grant(endpoint, payloads, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{TOKEN_URL}").respond(200, json=payloads.auth())
+
+    tokens = endpoint.auth.authenticate(MFAOtpGrantRequest(mfa_token="mfa-token-1234", otp="123456"))
+
+    assert isinstance(tokens, AuthenticateResponse)
+    assert payloads.request_json(route) == {
+        "grant_type": "urn:verdocs:params:oauth:grant-type:mfa-otp",
+        "mfa_token": "mfa-token-1234",
+        "otp": "123456",
+    }
+
+
+def test_authenticate_mfa_recovery_code_grant(endpoint, payloads, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{TOKEN_URL}").respond(200, json=payloads.auth())
+
+    endpoint.auth.authenticate(MFARecoveryCodeGrantRequest(mfa_token="mfa-token-1234", recovery_code="ab12-cd34"))
+
+    assert payloads.request_json(route) == {
+        "grant_type": "urn:verdocs:params:oauth:grant-type:mfa-recovery-code",
+        "mfa_token": "mfa-token-1234",
+        "recovery_code": "ab12-cd34",
+    }
+
+
+def test_authenticate_login_code_grant(endpoint, payloads, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{TOKEN_URL}").respond(200, json=payloads.auth())
+
+    endpoint.auth.authenticate(LoginCodeGrantRequest(login_code="login-code-1234", code_verifier="verifier-1234"))
+
+    assert payloads.request_json(route) == {
+        "grant_type": "urn:verdocs:params:oauth:grant-type:login-code",
+        "login_code": "login-code-1234",
+        "code_verifier": "verifier-1234",
+    }
+
+
+def test_authenticate_mfa_challenge_raises_mfa_required_error(endpoint, respx_mock, base_url):
+    respx_mock.post(f"{base_url}{TOKEN_URL}").respond(403, json=MFA_CHALLENGE)
+
+    with pytest.raises(MFARequiredError) as excinfo:
+        endpoint.auth.authenticate(PasswordGrantRequest(username="test@example.com", password="secret"))
+
+    error = excinfo.value
+    assert error.status_code == 403
+    assert error.mfa_token == "mfa-token-1234"
+    assert error.error_description == "MFA required"
+    assert error.body == MFA_CHALLENGE
+    # Still an API error, so a blanket except VerdocsAPIError catches it too.
+    assert isinstance(error, VerdocsAPIError)
+    assert isinstance(error, VerdocsError)
+
+
+def test_authenticate_mfa_challenge_round_trip(endpoint, payloads, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{TOKEN_URL}")
+    route.side_effect = [
+        httpx.Response(403, json=MFA_CHALLENGE),
+        httpx.Response(200, json=payloads.auth()),
+    ]
+
+    try:
+        endpoint.auth.authenticate(PasswordGrantRequest(username="test@example.com", password="secret"))
+        raise AssertionError("expected an MFA challenge")
+    except MFARequiredError as error:
+        tokens = endpoint.auth.authenticate(MFAOtpGrantRequest(mfa_token=error.mfa_token, otp="123456"))
+
+    assert isinstance(tokens, AuthenticateResponse)
+    assert payloads.request_json(route)["mfa_token"] == "mfa-token-1234"
+
+
+def test_plain_403_is_not_an_mfa_challenge(endpoint, respx_mock, base_url):
+    respx_mock.post(f"{base_url}{TOKEN_URL}").respond(403, json={"error": "access denied"})
+
+    with pytest.raises(VerdocsAPIError) as excinfo:
+        endpoint.auth.authenticate(PasswordGrantRequest(username="test@example.com", password="secret"))
+
+    assert not isinstance(excinfo.value, MFARequiredError)
+    assert excinfo.value.status_code == 403
+
+
+def test_mfa_challenge_without_token_is_a_plain_api_error(endpoint, respx_mock, base_url):
+    respx_mock.post(f"{base_url}{TOKEN_URL}").respond(403, json={"error": "mfa_required"})
+
+    with pytest.raises(VerdocsAPIError) as excinfo:
+        endpoint.auth.authenticate(PasswordGrantRequest(username="test@example.com", password="secret"))
+
+    assert not isinstance(excinfo.value, MFARequiredError)
+
+
+async def test_async_authenticate_mfa_challenge_raises_mfa_required_error(async_endpoint, respx_mock, base_url):
+    respx_mock.post(f"{base_url}{TOKEN_URL}").respond(403, json=MFA_CHALLENGE)
+
+    with pytest.raises(MFARequiredError) as excinfo:
+        await async_endpoint.auth.authenticate(PasswordGrantRequest(username="test@example.com", password="secret"))
+
+    assert excinfo.value.mfa_token == "mfa-token-1234"
+
+
+async def test_async_authenticate_mfa_otp_grant(async_endpoint, payloads, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{TOKEN_URL}").respond(200, json=payloads.auth())
+
+    tokens = await async_endpoint.auth.authenticate(MFAOtpGrantRequest(mfa_token="mfa-token-1234", otp="123456"))
+
+    assert isinstance(tokens, AuthenticateResponse)
+    assert payloads.request_json(route)["grant_type"] == "urn:verdocs:params:oauth:grant-type:mfa-otp"
+
+
+def test_get_social_providers(endpoint, respx_mock, base_url):
+    route = respx_mock.get(f"{base_url}{SOCIAL_PROVIDERS_URL}").respond(200, json={"google": True, "microsoft": False})
+
+    providers = endpoint.auth.get_social_providers()
+
+    assert isinstance(providers, SocialProviders)
+    assert providers.google is True
+    assert providers.microsoft is False
+    # No session is needed to ask which providers are on.
+    assert "authorization" not in route.calls.last.request.headers
+
+
+async def test_async_get_social_providers(async_endpoint, respx_mock, base_url):
+    respx_mock.get(f"{base_url}{SOCIAL_PROVIDERS_URL}").respond(200, json={"google": False, "microsoft": True})
+
+    providers = await async_endpoint.auth.get_social_providers()
+
+    assert providers.microsoft is True
+
+
+def test_get_social_login_url_builds_the_url(endpoint, base_url):
+    url = endpoint.auth.get_social_login_url(
+        "google",
+        return_uri="https://app.example/login",
+        code_challenge="E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM",
+        state="csrf-123",
+    )
+
+    # A pure URL builder: no route is stubbed because no request is made.
+    assert url == (
+        f"{base_url}/v2/oauth2/social/google/start"
+        "?return_uri=https%3A%2F%2Fapp.example%2Flogin"
+        "&code_challenge=E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"
+        "&code_challenge_method=S256"
+        "&state=csrf-123"
+    )
+
+
+def test_get_social_login_url_uses_the_provider_path(endpoint, base_url):
+    url = endpoint.auth.get_social_login_url(
+        "microsoft", return_uri="https://app.example/login", code_challenge="challenge", state="state"
+    )
+
+    assert url.startswith(f"{base_url}/v2/oauth2/social/microsoft/start?")
+
+
+async def test_async_get_social_login_url_is_a_plain_method(async_endpoint, base_url):
+    # No I/O happens, so the async twin returns the string directly, no await.
+    url = async_endpoint.auth.get_social_login_url(
+        "google", return_uri="https://app.example/login", code_challenge="challenge", state="state"
+    )
+
+    assert isinstance(url, str)
+    assert url.startswith(f"{base_url}/v2/oauth2/social/google/start?")

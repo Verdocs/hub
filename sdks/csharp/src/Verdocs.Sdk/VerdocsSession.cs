@@ -14,6 +14,13 @@ public sealed record VerdocsSession
     /// <summary>The subject claim: the user ID for user sessions, the access key ID for signing sessions.</summary>
     public string? Sub { get; init; }
 
+    /// <summary>
+    /// The login session the token belongs to (the sid claim), matching
+    /// <see cref="Models.UserLoginSession.Id"/>. Null for signing sessions and for user tokens
+    /// issued before login sessions were tracked.
+    /// </summary>
+    public string? Sid { get; init; }
+
     /// <summary>Email address associated with the session, if present in the token.</summary>
     public string? Email { get; init; }
 

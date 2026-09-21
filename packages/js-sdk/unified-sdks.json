@@ -481,11 +481,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userHasPermissions(profile: undefined | null | IProfile, permissions: TPermission[]): boolean",
+          "signature": "userHasPermissions(profile: IProfile | null | undefined, permissions: TPermission[]): boolean",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -1156,7 +1156,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "updateOrganizationInvitation(endpoint: VerdocsEndpoint, email: string, params: Pick<ICreateInvitationRequest, 'first_name' | 'last_name' | 'role'>): Promise<IOrganizationInvitation>",
+          "signature": "updateOrganizationInvitation(endpoint: VerdocsEndpoint, email: string, params: Pick<ICreateInvitationRequest, 'role' | 'first_name' | 'last_name'>): Promise<IOrganizationInvitation>",
           "params": [
             {
               "name": "endpoint",
@@ -1174,7 +1174,7 @@
             },
             {
               "name": "params",
-              "type": "Pick<ICreateInvitationRequest, 'first_name' | 'last_name' | 'role'>",
+              "type": "Pick<ICreateInvitationRequest, 'role' | 'first_name' | 'last_name'>",
               "optional": false,
               "default": null,
               "description": ""
@@ -4598,6 +4598,87 @@
       ]
     },
     {
+      "operationId": "auth.createCodeChallenge",
+      "group": "Auth",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Create the PKCE code challenge for a verifier: the base64url-encoded SHA-256 of it. Isomorphic,\nusing WebCrypto in both browsers and Node 18 or later.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "createCodeChallenge(verifier: string): Promise<string>",
+          "params": [
+            {
+              "name": "verifier",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<string>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {createCodeChallenge, createCodeVerifier} from '@verdocs/js-sdk';\n\nconst verifier = createCodeVerifier();\nconst challenge = await createCodeChallenge(verifier);"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "auth.createCodeVerifier",
+      "group": "Auth",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Create a PKCE code verifier: 43 characters of URL-safe randomness, per RFC 7636. Keep it where\nit will survive the round trip to the provider (`sessionStorage` in a browser), pass its\nchallenge to `getSocialLoginUrl()`, and send it back with the `login-code` grant.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "createCodeVerifier(): string",
+          "deprecated": false,
+          "returns": {
+            "type": "string"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {createCodeVerifier} from '@verdocs/js-sdk';\n\nconst verifier = createCodeVerifier();"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "auth.getMFAChallenge",
+      "group": "Auth",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Companion to `isMFARequired()` that returns the challenge body, or null if the error is\nsomething else. Handy in `catch` blocks that just need the `mfa_token`.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getMFAChallenge(e: unknown): IMFARequiredError | null",
+          "params": [
+            {
+              "name": "e",
+              "type": "unknown",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "IMFARequiredError | null"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getMFAChallenge} from '@verdocs/js-sdk';\n\nconst challenge = getMFAChallenge(e);\nif (challenge) {\n  // Switch the form to its \"enter your code\" mode, carrying challenge.mfa_token.\n}"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "auth.getMyUser",
       "group": "Auth",
       "page": "Endpoints",
@@ -4776,6 +4857,110 @@
           "returns": {
             "type": "str",
             "description": "The authorization URL to redirect the user to."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "auth.getSocialLoginUrl",
+      "group": "Auth",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Build the URL that starts a Google or Microsoft sign-in. Send the browser to it. The provider\nexchange happens server-side, and the user comes back to `returnUri` with `login_code` and\n`state` query parameters. Exchange the code for tokens with `authenticate()` using the\n`login-code` grant and the verifier that produced `codeChallenge`.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getSocialLoginUrl(endpoint: VerdocsEndpoint, provider: TSocialLoginProvider, params: object): string",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "provider",
+              "type": "TSocialLoginProvider",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "object",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "string"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {authenticate, createCodeChallenge, createCodeVerifier, getSocialLoginUrl, VerdocsEndpoint} from '@verdocs/js-sdk';\n\n// Starting the flow. Keep the verifier and state in sessionStorage, the browser is leaving.\nconst code_verifier = createCodeVerifier();\nconst codeChallenge = await createCodeChallenge(code_verifier);\nconst state = createCodeVerifier();\nsessionStorage.setItem('verdocs_pkce', JSON.stringify({code_verifier, state}));\nwindow.location.href = getSocialLoginUrl(VerdocsEndpoint.getDefault(), 'google', {\n  returnUri: 'https://your-app.com/login', codeChallenge, state});\n\n// Back at returnUri, with ?login_code=...&state=...\nconst {access_token} = await authenticate(VerdocsEndpoint.getDefault(), {\n  grant_type: 'urn:verdocs:params:oauth:grant-type:login-code', login_code, code_verifier});"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "auth.getSocialProviders",
+      "group": "Auth",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get the identity providers enabled in the current environment. Google and Microsoft are\nconfigured per-environment, and a provider that is not configured will 404 from its sign-in\nURL, so call this before rendering provider buttons and hide the ones that are off.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getSocialProviders(endpoint: VerdocsEndpoint): Promise<ISocialProviders>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<ISocialProviders>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getSocialProviders, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {google, microsoft} = await getSocialProviders(VerdocsEndpoint.getDefault());"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "auth.isMFARequired",
+      "group": "Auth",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Type guard for the `mfa_required` challenge. A sign-in for a user with MFA enabled fails with\na 403 carrying `{error: 'mfa_required', mfa_token}`, and the app finishes the sign-in with an\nmfa grant. Use `getMFAChallenge()` instead if it is easier to work with the body directly.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "isMFARequired(e: unknown): boolean",
+          "params": [
+            {
+              "name": "e",
+              "type": "unknown",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "boolean"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {authenticate, isMFARequired, VerdocsEndpoint} from '@verdocs/js-sdk';\n\ntry {\n  const {access_token} = await authenticate(VerdocsEndpoint.getDefault(), {grant_type: 'password', username, password});\n} catch (e) {\n  if (isMFARequired(e)) {\n    const {mfa_token} = e.response.data;\n    // Collect a code from the user, then:\n    const {access_token} = await authenticate(VerdocsEndpoint.getDefault(), {\n      grant_type: 'urn:verdocs:params:oauth:grant-type:mfa-otp', mfa_token, otp});\n  }\n}"
           }
         }
       ]
@@ -5142,6 +5327,517 @@
       ]
     },
     {
+      "operationId": "field.blobToBase64",
+      "group": "Field",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "blobToBase64(image: Blob): Promise<unknown>",
+          "params": [
+            {
+              "name": "image",
+              "type": "Blob",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<unknown>"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "field.createField",
+      "group": "Field",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Add a field to a template.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "createField(endpoint: VerdocsEndpoint, templateId: string, params: ITemplateField): Promise<ITemplateField>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "ITemplateField",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<ITemplateField>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {createField} from '@verdocs/js-sdk/Templates';\n\nawait createField((VerdocsEndpoint.getDefault(), template_id, { ... });"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<TemplateField> CreateAsync(string templateId, CreateFieldRequest request, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The template to add the field to."
+            },
+            {
+              "name": "request",
+              "type": "CreateFieldRequest",
+              "optional": false,
+              "default": null,
+              "description": "The field to create."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<TemplateField>",
+            "description": "The new field."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var field = await endpoint.TemplateFields.CreateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new CreateFieldRequest\n    {\n        Name = \"Buyer-textbox-1\",\n        RoleName = \"Recipient 1\",\n        DocumentId = documentId,\n        Type = FieldType.Textbox,\n        Page = 0,\n        X = 100,\n        Y = 200,\n    });"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create(template_id: str, params: FieldCreateParams) -> TemplateField",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template to add the field to."
+            },
+            {
+              "name": "params",
+              "type": "FieldCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "The field definition."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "TemplateField",
+            "description": "The newly created field."
+          },
+          "example": {
+            "language": "python",
+            "code": "field = template_fields.create(\n    template.id,\n    FieldCreateParams(\n        document_id=document.id,\n        name=\"tenant-signature-1\",\n        role_name=\"Tenant 1\",\n        type=\"signature\",\n        page=0,\n        x=100,\n        y=200,\n    ),\n)"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "field.deleteField",
+      "group": "Field",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Remove a field from a template.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "deleteField(endpoint: VerdocsEndpoint, templateId: string, name: string): Promise<any>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<any>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {deleteField} from '@verdocs/js-sdk/Templates';\n\nawait deleteField((VerdocsEndpoint.getDefault(), template_id, field_name);"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task DeleteAsync(string templateId, string fieldName, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The template the field belongs to."
+            },
+            {
+              "name": "fieldName",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The field's name."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task",
+            "description": "A task that completes when the field has been deleted."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.TemplateFields.DeleteAsync(\"d2338742-f3a1-465b-8592-806587413cc1\", \"Buyer-textbox-1\");"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "delete(template_id: str, name: str) -> None",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template the field belongs to."
+            },
+            {
+              "name": "name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "Name of the field to delete."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "field.getRLeft",
+      "group": "Field",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getRLeft(x: number, ratio: number): number",
+          "params": [
+            {
+              "name": "x",
+              "type": "number",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "ratio",
+              "type": "number",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "number"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "field.getRTop",
+      "group": "Field",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getRTop(y: number, fieldHeight: number, iTextHeight: number, yRatio: number): number",
+          "params": [
+            {
+              "name": "y",
+              "type": "number",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "fieldHeight",
+              "type": "number",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "iTextHeight",
+              "type": "number",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "yRatio",
+              "type": "number",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "number"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "field.getRValue",
+      "group": "Field",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getRValue(y: number, ratio: number): number",
+          "params": [
+            {
+              "name": "y",
+              "type": "number",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "ratio",
+              "type": "number",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "number"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "field.rescale",
+      "group": "Field",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "rescale(r: number, n: number): number",
+          "params": [
+            {
+              "name": "r",
+              "type": "number",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "n",
+              "type": "number",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "number"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "field.updateField",
+      "group": "Field",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Update a template field.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "updateField(endpoint: VerdocsEndpoint, templateId: string, name: string, params: Partial<ITemplateField>): Promise<ITemplateField>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "Partial<ITemplateField>",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<ITemplateField>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {updateField} from '@verdocs/js-sdk/Templates';\n\nawait updateField((VerdocsEndpoint.getDefault(), template_id, field_name, { ... });"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<TemplateField> UpdateAsync(string templateId, string fieldName, UpdateFieldRequest request, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The template the field belongs to."
+            },
+            {
+              "name": "fieldName",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The field's current name."
+            },
+            {
+              "name": "request",
+              "type": "UpdateFieldRequest",
+              "optional": false,
+              "default": null,
+              "description": "The properties to change."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<TemplateField>",
+            "description": "The updated field."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var field = await endpoint.TemplateFields.UpdateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"Buyer-textbox-1\",\n    new UpdateFieldRequest { Required = true });"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "update(template_id: str, name: str, params: FieldUpdateParams) -> TemplateField",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template the field belongs to."
+            },
+            {
+              "name": "name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The field's current name."
+            },
+            {
+              "name": "params",
+              "type": "FieldUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "The fields to change; unset fields are left alone."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "TemplateField",
+            "description": "The updated field."
+          }
+        }
+      ]
+    },
+    {
       "operationId": "envelope.canAccessEnvelope",
       "group": "Envelope",
       "page": "Helpers",
@@ -5150,11 +5846,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "canAccessEnvelope(profile_id: undefined | null | string, envelope: IEnvelope): boolean",
+          "signature": "canAccessEnvelope(profile_id: string | null | undefined, envelope: IEnvelope): boolean",
           "params": [
             {
               "name": "profile_id",
-              "type": "undefined | null | string",
+              "type": "string | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -6368,7 +7064,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "getEnvelopesZip(endpoint: VerdocsEndpoint, envelope_ids: string[]): Promise<AxiosResponse<any, any, object>>",
+          "signature": "getEnvelopesZip(endpoint: VerdocsEndpoint, envelope_ids: string[]): Promise<AxiosResponse<any, any, object, any>>",
           "params": [
             {
               "name": "endpoint",
@@ -6387,7 +7083,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "Promise<AxiosResponse<any, any, object>>"
+            "type": "Promise<AxiosResponse<any, any, object, any>>"
           }
         },
         {
@@ -6448,7 +7144,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "getMyRecipient(session: TSession, envelope: IEnvelope): undefined | IRecipient",
+          "signature": "getMyRecipient(session: TSession, envelope: IEnvelope): IRecipient | undefined",
           "params": [
             {
               "name": "session",
@@ -6467,7 +7163,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "undefined | IRecipient"
+            "type": "IRecipient | undefined"
           }
         },
         {
@@ -6558,7 +7254,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "getRecipient(email: string, envelope: IEnvelope): undefined | IRecipient",
+          "signature": "getRecipient(email: string, envelope: IEnvelope): IRecipient | undefined",
           "params": [
             {
               "name": "email",
@@ -6577,7 +7273,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "undefined | IRecipient"
+            "type": "IRecipient | undefined"
           }
         },
         {
@@ -6668,7 +7364,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "getRecipientWithActions(email: string, envelope: IEnvelope): undefined | boolean",
+          "signature": "getRecipientWithActions(email: string, envelope: IEnvelope): boolean | undefined",
           "params": [
             {
               "name": "email",
@@ -6687,7 +7383,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "undefined | boolean"
+            "type": "boolean | undefined"
           }
         },
         {
@@ -6730,11 +7426,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "isEnvelopeOwner(profile_id: undefined | null | string, envelope: IEnvelope): boolean",
+          "signature": "isEnvelopeOwner(profile_id: string | null | undefined, envelope: IEnvelope): boolean",
           "params": [
             {
               "name": "profile_id",
-              "type": "undefined | null | string",
+              "type": "string | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -6792,11 +7488,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "isEnvelopeRecipient(profile_id: undefined | null | string, envelope: IEnvelope): boolean",
+          "signature": "isEnvelopeRecipient(profile_id: string | null | undefined, envelope: IEnvelope): boolean",
           "params": [
             {
               "name": "profile_id",
-              "type": "undefined | null | string",
+              "type": "string | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -6854,7 +7550,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "isFieldFilled(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): null | boolean | ''",
+          "signature": "isFieldFilled(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean | '' | null",
           "params": [
             {
               "name": "field",
@@ -6873,7 +7569,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "null | boolean | ''"
+            "type": "boolean | '' | null"
           }
         },
         {
@@ -6916,7 +7612,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "isFieldValid(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): null | boolean | ''",
+          "signature": "isFieldValid(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean | '' | null",
           "params": [
             {
               "name": "field",
@@ -6935,7 +7631,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "null | boolean | ''"
+            "type": "boolean | '' | null"
           }
         },
         {
@@ -7080,6 +7776,150 @@
       ]
     },
     {
+      "operationId": "envelope.sortDocuments",
+      "group": "Envelope",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Utility function to sort documents by their order, falling back to created_at.\nNOTE: This function mutates the input array.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "sortDocuments(documents: object[]): object[]",
+          "params": [
+            {
+              "name": "documents",
+              "type": "object[]",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "object[]"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "List<EnvelopeDocument> SortDocuments(List<EnvelopeDocument> documents)",
+          "params": [
+            {
+              "name": "documents",
+              "type": "List<EnvelopeDocument>",
+              "optional": false,
+              "default": null,
+              "description": "The documents to sort. Modified in place."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "List<EnvelopeDocument>",
+            "description": "The same list, sorted."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "Envelopes.SortDocuments(documents);"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "envelope.sortFields",
+      "group": "Envelope",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Utility function to sort fields by page, then by Y coordinate, then by X coordinate.\nNOTE: This function mutates the input array.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "sortFields(fields: object[]): object[]",
+          "params": [
+            {
+              "name": "fields",
+              "type": "object[]",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "object[]"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "List<EnvelopeField> SortFields(List<EnvelopeField> fields)",
+          "params": [
+            {
+              "name": "fields",
+              "type": "List<EnvelopeField>",
+              "optional": false,
+              "default": null,
+              "description": "The fields to sort. Modified in place."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "List<EnvelopeField>",
+            "description": "The same list, sorted."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "Envelopes.SortFields(fields);"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "envelope.sortRecipients",
+      "group": "Envelope",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Utility function to sort documents by their order, falling back to created_at.\nNOTE: This function mutates the input array.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "sortRecipients(recipients?: object[]): object[] | undefined",
+          "params": [
+            {
+              "name": "recipients",
+              "type": "object[]",
+              "optional": true,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "object[] | undefined"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "List<Recipient>? SortRecipients(List<Recipient>? recipients)",
+          "params": [
+            {
+              "name": "recipients",
+              "type": "List<Recipient>?",
+              "optional": false,
+              "default": null,
+              "description": "The recipients to sort. Modified in place."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "List<Recipient>?",
+            "description": "The same list, sorted, or null if null was passed."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "Envelopes.SortRecipients(recipients);"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "envelope.updateEnvelope",
       "group": "Envelope",
       "page": "Endpoints",
@@ -7088,7 +7928,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "updateEnvelope(endpoint: VerdocsEndpoint, envelopeId: string, params: Partial<Pick<IEnvelope, 'name' | 'sender_name' | 'sender_email' | 'no_contact' | 'initial_reminder' | 'followup_reminders' | 'expires_at' | 'visibility' | 'data'>>): Promise<IEnvelope>",
+          "signature": "updateEnvelope(endpoint: VerdocsEndpoint, envelopeId: string, params: Partial<Pick<IEnvelope, 'name' | 'sender_name' | 'sender_email' | 'initial_reminder' | 'followup_reminders' | 'expires_at' | 'visibility' | 'no_contact' | 'data'>>): Promise<IEnvelope>",
           "params": [
             {
               "name": "endpoint",
@@ -7106,7 +7946,7 @@
             },
             {
               "name": "params",
-              "type": "Partial<Pick<IEnvelope, 'name' | 'sender_name' | 'sender_email' | 'no_contact' | 'initial_reminder' | 'followup_reminders' | 'expires_at' | 'visibility' | 'data'>>",
+              "type": "Partial<Pick<IEnvelope, 'name' | 'sender_name' | 'sender_email' | 'initial_reminder' | 'followup_reminders' | 'expires_at' | 'visibility' | 'no_contact' | 'data'>>",
               "optional": false,
               "default": null,
               "description": ""
@@ -7521,11 +8361,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "useCanAccessEnvelope(profile: undefined | null | IProfile, envelope: IEnvelope): boolean",
+          "signature": "useCanAccessEnvelope(profile: IProfile | null | undefined, envelope: IEnvelope): boolean",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -7554,7 +8394,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanAct(email: string, recipientsWithActions: IRecipient[]): undefined | boolean",
+          "signature": "userCanAct(email: string, recipientsWithActions: IRecipient[]): boolean | undefined",
           "params": [
             {
               "name": "email",
@@ -7573,7 +8413,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "undefined | boolean"
+            "type": "boolean | undefined"
           }
         },
         {
@@ -7616,11 +8456,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanCancelEnvelope(profile: undefined | null | IProfile, envelope: IEnvelope): boolean",
+          "signature": "userCanCancelEnvelope(profile: IProfile | null | undefined, envelope: IEnvelope): boolean",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -7678,11 +8518,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanFinishEnvelope(profile: undefined | null | IProfile, envelope: IEnvelope): boolean",
+          "signature": "userCanFinishEnvelope(profile: IProfile | null | undefined, envelope: IEnvelope): boolean",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -7740,11 +8580,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanSignNow(profile: undefined | null | IProfile, envelope: IEnvelope): undefined | boolean",
+          "signature": "userCanSignNow(profile: IProfile | null | undefined, envelope: IEnvelope): boolean | undefined",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -7759,7 +8599,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "undefined | boolean"
+            "type": "boolean | undefined"
           }
         },
         {
@@ -7802,11 +8642,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userIsEnvelopeOwner(profile: undefined | null | IProfile, envelope: IEnvelope): boolean",
+          "signature": "userIsEnvelopeOwner(profile: IProfile | null | undefined, envelope: IEnvelope): boolean",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -7864,11 +8704,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userIsEnvelopeRecipient(profile: undefined | null | IProfile, envelope: IEnvelope): boolean",
+          "signature": "userIsEnvelopeRecipient(profile: IProfile | null | undefined, envelope: IEnvelope): boolean",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -7926,11 +8766,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "canPerformTemplateAction(profile: undefined | null | IProfile, action: TTemplateAction, template?: ITemplate): object",
+          "signature": "canPerformTemplateAction(profile: IProfile | null | undefined, action: TTemplateAction, template?: ITemplate): object",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -8610,11 +9450,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "hasRequiredPermissions(profile: undefined | null | IProfile, permissions: TPermission[]): boolean",
+          "signature": "hasRequiredPermissions(profile: IProfile | null | undefined, permissions: TPermission[]): boolean",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -8861,11 +9701,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanBuildTemplate(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userCanBuildTemplate(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -8880,7 +9720,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "undefined | null | boolean"
+            "type": "boolean | null | undefined"
           }
         },
         {
@@ -8923,11 +9763,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanChangeOrgVisibility(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userCanChangeOrgVisibility(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -8942,7 +9782,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "undefined | null | boolean"
+            "type": "boolean | null | undefined"
           }
         },
         {
@@ -8985,11 +9825,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanCreateOrgTemplate(profile: undefined | null | IProfile): boolean",
+          "signature": "userCanCreateOrgTemplate(profile: IProfile | null | undefined): boolean",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -9033,11 +9873,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanCreatePersonalTemplate(profile: undefined | null | IProfile): boolean",
+          "signature": "userCanCreatePersonalTemplate(profile: IProfile | null | undefined): boolean",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -9081,11 +9921,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanCreatePublicTemplate(profile: undefined | null | IProfile): boolean",
+          "signature": "userCanCreatePublicTemplate(profile: IProfile | null | undefined): boolean",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -9129,11 +9969,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanCreateTemplate(profile: undefined | null | IProfile): boolean",
+          "signature": "userCanCreateTemplate(profile: IProfile | null | undefined): boolean",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -9177,11 +10017,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanDeleteTemplate(profile: undefined | null | IProfile, template: ITemplate): boolean",
+          "signature": "userCanDeleteTemplate(profile: IProfile | null | undefined, template: ITemplate): boolean",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -9239,11 +10079,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanMakeTemplatePrivate(profile: undefined | null | IProfile, template: ITemplate): boolean",
+          "signature": "userCanMakeTemplatePrivate(profile: IProfile | null | undefined, template: ITemplate): boolean",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -9301,11 +10141,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanMakeTemplatePublic(profile: undefined | null | IProfile, template: ITemplate): boolean",
+          "signature": "userCanMakeTemplatePublic(profile: IProfile | null | undefined, template: ITemplate): boolean",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -9363,11 +10203,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanMakeTemplateShared(profile: undefined | null | IProfile, template: ITemplate): boolean",
+          "signature": "userCanMakeTemplateShared(profile: IProfile | null | undefined, template: ITemplate): boolean",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -9425,11 +10265,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanPreviewTemplate(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userCanPreviewTemplate(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -9444,7 +10284,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "undefined | null | boolean"
+            "type": "boolean | null | undefined"
           }
         },
         {
@@ -9487,11 +10327,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanReadTemplate(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userCanReadTemplate(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -9506,7 +10346,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "undefined | null | boolean"
+            "type": "boolean | null | undefined"
           }
         },
         {
@@ -9549,11 +10389,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanSendTemplate(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userCanSendTemplate(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -9568,7 +10408,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "undefined | null | boolean"
+            "type": "boolean | null | undefined"
           }
         },
         {
@@ -9611,11 +10451,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userCanUpdateTemplate(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userCanUpdateTemplate(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -9630,7 +10470,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "undefined | null | boolean"
+            "type": "boolean | null | undefined"
           }
         },
         {
@@ -9673,11 +10513,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userHasSharedTemplate(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userHasSharedTemplate(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -9692,7 +10532,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "undefined | null | boolean"
+            "type": "boolean | null | undefined"
           }
         },
         {
@@ -9735,11 +10575,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "userIsTemplateCreator(profile: undefined | null | IProfile, template: ITemplate): undefined | null | boolean",
+          "signature": "userIsTemplateCreator(profile: IProfile | null | undefined, template: ITemplate): boolean | null | undefined",
           "params": [
             {
               "name": "profile",
-              "type": "undefined | null | IProfile",
+              "type": "IProfile | null | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -9754,7 +10594,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "undefined | null | boolean"
+            "type": "boolean | null | undefined"
           }
         },
         {
@@ -10478,345 +11318,6 @@
       ]
     },
     {
-      "operationId": "field.createField",
-      "group": "Field",
-      "page": "Endpoints",
-      "gettingStarted": false,
-      "summary": "Add a field to a template.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "createField(endpoint: VerdocsEndpoint, templateId: string, params: ITemplateField): Promise<ITemplateField>",
-          "params": [
-            {
-              "name": "endpoint",
-              "type": "VerdocsEndpoint",
-              "optional": false,
-              "default": null,
-              "description": ""
-            },
-            {
-              "name": "templateId",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": ""
-            },
-            {
-              "name": "params",
-              "type": "ITemplateField",
-              "optional": false,
-              "default": null,
-              "description": ""
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Promise<ITemplateField>"
-          },
-          "example": {
-            "language": "typescript",
-            "code": "import {createField} from '@verdocs/js-sdk/Templates';\n\nawait createField((VerdocsEndpoint.getDefault(), template_id, { ... });"
-          }
-        },
-        {
-          "language": "csharp",
-          "signature": "Task<TemplateField> CreateAsync(string templateId, CreateFieldRequest request, CancellationToken cancellationToken = default)",
-          "params": [
-            {
-              "name": "templateId",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The template to add the field to."
-            },
-            {
-              "name": "request",
-              "type": "CreateFieldRequest",
-              "optional": false,
-              "default": null,
-              "description": "The field to create."
-            },
-            {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task<TemplateField>",
-            "description": "The new field."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var field = await endpoint.TemplateFields.CreateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new CreateFieldRequest\n    {\n        Name = \"Buyer-textbox-1\",\n        RoleName = \"Recipient 1\",\n        DocumentId = documentId,\n        Type = FieldType.Textbox,\n        Page = 0,\n        X = 100,\n        Y = 200,\n    });"
-          }
-        },
-        {
-          "language": "python",
-          "signature": "create(template_id: str, params: FieldCreateParams) -> TemplateField",
-          "params": [
-            {
-              "name": "template_id",
-              "type": "str",
-              "optional": false,
-              "default": null,
-              "description": "ID of the template to add the field to."
-            },
-            {
-              "name": "params",
-              "type": "FieldCreateParams",
-              "optional": false,
-              "default": null,
-              "description": "The field definition."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "TemplateField",
-            "description": "The newly created field."
-          },
-          "example": {
-            "language": "python",
-            "code": "field = template_fields.create(\n    template.id,\n    FieldCreateParams(\n        document_id=document.id,\n        name=\"tenant-signature-1\",\n        role_name=\"Tenant 1\",\n        type=\"signature\",\n        page=0,\n        x=100,\n        y=200,\n    ),\n)"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "field.deleteField",
-      "group": "Field",
-      "page": "Endpoints",
-      "gettingStarted": false,
-      "summary": "Remove a field from a template.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "deleteField(endpoint: VerdocsEndpoint, templateId: string, name: string): Promise<any>",
-          "params": [
-            {
-              "name": "endpoint",
-              "type": "VerdocsEndpoint",
-              "optional": false,
-              "default": null,
-              "description": ""
-            },
-            {
-              "name": "templateId",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": ""
-            },
-            {
-              "name": "name",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": ""
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Promise<any>"
-          },
-          "example": {
-            "language": "typescript",
-            "code": "import {deleteField} from '@verdocs/js-sdk/Templates';\n\nawait deleteField((VerdocsEndpoint.getDefault(), template_id, field_name);"
-          }
-        },
-        {
-          "language": "csharp",
-          "signature": "Task DeleteAsync(string templateId, string fieldName, CancellationToken cancellationToken = default)",
-          "params": [
-            {
-              "name": "templateId",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The template the field belongs to."
-            },
-            {
-              "name": "fieldName",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The field's name."
-            },
-            {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task",
-            "description": "A task that completes when the field has been deleted."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "await endpoint.TemplateFields.DeleteAsync(\"d2338742-f3a1-465b-8592-806587413cc1\", \"Buyer-textbox-1\");"
-          }
-        },
-        {
-          "language": "python",
-          "signature": "delete(template_id: str, name: str) -> None",
-          "params": [
-            {
-              "name": "template_id",
-              "type": "str",
-              "optional": false,
-              "default": null,
-              "description": "ID of the template the field belongs to."
-            },
-            {
-              "name": "name",
-              "type": "str",
-              "optional": false,
-              "default": null,
-              "description": "Name of the field to delete."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "None"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "field.updateField",
-      "group": "Field",
-      "page": "Endpoints",
-      "gettingStarted": false,
-      "summary": "Update a template field.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "updateField(endpoint: VerdocsEndpoint, templateId: string, name: string, params: Partial<ITemplateField>): Promise<ITemplateField>",
-          "params": [
-            {
-              "name": "endpoint",
-              "type": "VerdocsEndpoint",
-              "optional": false,
-              "default": null,
-              "description": ""
-            },
-            {
-              "name": "templateId",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": ""
-            },
-            {
-              "name": "name",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": ""
-            },
-            {
-              "name": "params",
-              "type": "Partial<ITemplateField>",
-              "optional": false,
-              "default": null,
-              "description": ""
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Promise<ITemplateField>"
-          },
-          "example": {
-            "language": "typescript",
-            "code": "import {updateField} from '@verdocs/js-sdk/Templates';\n\nawait updateField((VerdocsEndpoint.getDefault(), template_id, field_name, { ... });"
-          }
-        },
-        {
-          "language": "csharp",
-          "signature": "Task<TemplateField> UpdateAsync(string templateId, string fieldName, UpdateFieldRequest request, CancellationToken cancellationToken = default)",
-          "params": [
-            {
-              "name": "templateId",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The template the field belongs to."
-            },
-            {
-              "name": "fieldName",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The field's current name."
-            },
-            {
-              "name": "request",
-              "type": "UpdateFieldRequest",
-              "optional": false,
-              "default": null,
-              "description": "The properties to change."
-            },
-            {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task<TemplateField>",
-            "description": "The updated field."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var field = await endpoint.TemplateFields.UpdateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"Buyer-textbox-1\",\n    new UpdateFieldRequest { Required = true });"
-          }
-        },
-        {
-          "language": "python",
-          "signature": "update(template_id: str, name: str, params: FieldUpdateParams) -> TemplateField",
-          "params": [
-            {
-              "name": "template_id",
-              "type": "str",
-              "optional": false,
-              "default": null,
-              "description": "ID of the template the field belongs to."
-            },
-            {
-              "name": "name",
-              "type": "str",
-              "optional": false,
-              "default": null,
-              "description": "The field's current name."
-            },
-            {
-              "name": "params",
-              "type": "FieldUpdateParams",
-              "optional": false,
-              "default": null,
-              "description": "The fields to change; unset fields are left alone."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "TemplateField",
-            "description": "The updated field."
-          }
-        }
-      ]
-    },
-    {
       "operationId": "initial.createInitials",
       "group": "Initial",
       "page": "Endpoints",
@@ -11496,7 +11997,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "deleteOrganization(endpoint: VerdocsEndpoint, organizationId: string): Promise<null | IAuthenticateResponse>",
+          "signature": "deleteOrganization(endpoint: VerdocsEndpoint, organizationId: string): Promise<IAuthenticateResponse | null>",
           "params": [
             {
               "name": "endpoint",
@@ -11515,7 +12016,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "Promise<null | IAuthenticateResponse>"
+            "type": "Promise<IAuthenticateResponse | null>"
           },
           "example": {
             "language": "typescript",
@@ -12543,7 +13044,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "createOrganizationContact(endpoint: VerdocsEndpoint, params: Pick<IProfile, 'email' | 'first_name' | 'last_name' | 'phone'>): Promise<any>",
+          "signature": "createOrganizationContact(endpoint: VerdocsEndpoint, params: Pick<IProfile, 'first_name' | 'last_name' | 'email' | 'phone'>): Promise<any>",
           "params": [
             {
               "name": "endpoint",
@@ -12554,7 +13055,7 @@
             },
             {
               "name": "params",
-              "type": "Pick<IProfile, 'email' | 'first_name' | 'last_name' | 'phone'>",
+              "type": "Pick<IProfile, 'first_name' | 'last_name' | 'email' | 'phone'>",
               "optional": false,
               "default": null,
               "description": ""
@@ -12775,7 +13276,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "updateOrganizationContact(endpoint: VerdocsEndpoint, profileId: string, params: Pick<IProfile, 'email' | 'first_name' | 'last_name' | 'phone'>): Promise<any>",
+          "signature": "updateOrganizationContact(endpoint: VerdocsEndpoint, profileId: string, params: Pick<IProfile, 'first_name' | 'last_name' | 'email' | 'phone'>): Promise<any>",
           "params": [
             {
               "name": "endpoint",
@@ -12793,7 +13294,7 @@
             },
             {
               "name": "params",
-              "type": "Pick<IProfile, 'email' | 'first_name' | 'last_name' | 'phone'>",
+              "type": "Pick<IProfile, 'first_name' | 'last_name' | 'email' | 'phone'>",
               "optional": false,
               "default": null,
               "description": ""
@@ -13301,7 +13802,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "updateOrganizationMember(endpoint: VerdocsEndpoint, profileId: string, params: Partial<Pick<IProfile, 'first_name' | 'last_name' | 'roles'>>): Promise<IProfile>",
+          "signature": "updateOrganizationMember(endpoint: VerdocsEndpoint, profileId: string, params: Partial<Pick<IProfile, 'roles' | 'first_name' | 'last_name'>>): Promise<IProfile>",
           "params": [
             {
               "name": "endpoint",
@@ -13319,7 +13820,7 @@
             },
             {
               "name": "params",
-              "type": "Partial<Pick<IProfile, 'first_name' | 'last_name' | 'roles'>>",
+              "type": "Partial<Pick<IProfile, 'roles' | 'first_name' | 'last_name'>>",
               "optional": false,
               "default": null,
               "description": ""
@@ -13578,7 +14079,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "getCurrentProfile(endpoint: VerdocsEndpoint): Promise<undefined | IProfile>",
+          "signature": "getCurrentProfile(endpoint: VerdocsEndpoint): Promise<IProfile | undefined>",
           "params": [
             {
               "name": "endpoint",
@@ -13590,7 +14091,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "Promise<undefined | IProfile>"
+            "type": "Promise<IProfile | undefined>"
           },
           "example": {
             "language": "typescript",
@@ -15317,6 +15818,177 @@
       ]
     },
     {
+      "operationId": "mfa.disableMFA",
+      "group": "MFA",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Turn off MFA for the caller. A valid code is always required, so knowing the password alone is\nnot enough to remove the second factor. Either a TOTP code or an unused backup code is accepted.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "disableMFA(endpoint: VerdocsEndpoint, code: string): Promise<TBasicResponse>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<TBasicResponse>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {disableMFA, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nawait disableMFA(VerdocsEndpoint.getDefault(), '123456');"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "mfa.enrollMFA",
+      "group": "MFA",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Begin MFA enrollment. This returns a pending secret that does not take effect until it is\nconfirmed with `verifyMFAEnrollment()`. Render `otpauth_url` as a QR code for authenticator\napps, and show `secret` for users who need to type it in by hand. Calling this again replaces\nthe pending secret, so a user who abandons the flow can safely restart it.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "enrollMFA(endpoint: VerdocsEndpoint): Promise<IMFAEnrollment>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IMFAEnrollment>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {enrollMFA, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {secret, otpauth_url} = await enrollMFA(VerdocsEndpoint.getDefault());"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "mfa.getMFAStatus",
+      "group": "MFA",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get the caller's multi-factor authentication status.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getMFAStatus(endpoint: VerdocsEndpoint): Promise<IMFAStatus>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IMFAStatus>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getMFAStatus, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {enabled, backup_codes_remaining} = await getMFAStatus(VerdocsEndpoint.getDefault());"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "mfa.regenerateBackupCodes",
+      "group": "MFA",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Replace the caller's backup codes with a new set. The previous codes stop working immediately,\nand the new ones are returned only once.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "regenerateBackupCodes(endpoint: VerdocsEndpoint, code: string): Promise<IMFABackupCodes>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IMFABackupCodes>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {regenerateBackupCodes, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {backup_codes} = await regenerateBackupCodes(VerdocsEndpoint.getDefault(), '123456');"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "mfa.verifyMFAEnrollment",
+      "group": "MFA",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Complete MFA enrollment by proving the user can generate codes from the pending secret. The\nbackup codes are returned once and never again, so they must be shown to the user before the\nflow closes.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "verifyMFAEnrollment(endpoint: VerdocsEndpoint, code: string): Promise<IMFABackupCodes>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IMFABackupCodes>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {verifyMFAEnrollment, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {backup_codes} = await verifyMFAEnrollment(VerdocsEndpoint.getDefault(), '123456');"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "file.downloadBlob",
       "group": "File",
       "page": "Helpers",
@@ -15442,11 +16114,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "formatFullName(source?: null | object): string",
+          "signature": "formatFullName(source?: object | null): string",
           "params": [
             {
               "name": "source",
-              "type": "null | object",
+              "type": "object | null",
               "optional": true,
               "default": null,
               "description": ""
@@ -15792,6 +16464,865 @@
       ]
     },
     {
+      "operationId": "locale.getCountryByCode",
+      "group": "Locale",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getCountryByCode(code: string): ICountry | null",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ICountry | null"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Country? GetCountryByCode(string code)",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The display code to look up."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Country?",
+            "description": "The matching country, or null."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var country = Locales.GetCountryByCode(\"+33\");"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "locale.getMatchingCountry",
+      "group": "Locale",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getMatchingCountry(code: string, substrings: number): number",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "substrings",
+              "type": "number",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "number"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "int GetMatchingCountry(string code, int substrings)",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The phone code to match."
+            },
+            {
+              "name": "substrings",
+              "type": "int",
+              "optional": false,
+              "default": null,
+              "description": "How many leading characters to compare (negative counts as zero, like the JS substring bound)."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "int",
+            "description": "How many Countries rows carry exactly that code prefix."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var count = Locales.GetMatchingCountry(\"+1\", 2);"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "locale.getPlusOneCountry",
+      "group": "Locale",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getPlusOneCountry(code: string): ICountry | null",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ICountry | null"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Country? GetPlusOneCountry(string code)",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The phone code to resolve."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Country?",
+            "description": "The matching country, or null for unrecognized prefixes."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var country = Locales.GetPlusOneCountry(\"+1242\");"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "locale.isAmericanSamoa",
+      "group": "Locale",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "isAmericanSamoa(code: string): boolean",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "bool IsAmericanSamoa(string code)",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The phone code to check."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bool",
+            "description": "True when the prefix matches."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isAmericanSamoa = Locales.IsAmericanSamoa(\"+1684\");"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "locale.isCanada",
+      "group": "Locale",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "isCanada(code: string): boolean",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "bool IsCanada(string code)",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The phone code to check."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bool",
+            "description": "True when the area code is Canadian."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isCanada = Locales.IsCanada(\"+1416\");"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "locale.isDominicanRepublic",
+      "group": "Locale",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "isDominicanRepublic(code: string): boolean",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "bool IsDominicanRepublic(string code)",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The phone code to check."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bool",
+            "description": "True when the prefix matches."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isDominicanRepublic = Locales.IsDominicanRepublic(\"+1809\");"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "locale.isFrenchGuiana",
+      "group": "Locale",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "isFrenchGuiana(code: string): boolean",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "bool IsFrenchGuiana(string code)",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The phone code to check."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bool",
+            "description": "True when the prefix matches."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isFrenchGuiana = Locales.IsFrenchGuiana(\"+594\");"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "locale.isGuadeloupe",
+      "group": "Locale",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "isGuadeloupe(code: string): boolean",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "bool IsGuadeloupe(string code)",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The phone code to check."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bool",
+            "description": "True when the prefix matches."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isGuadeloupe = Locales.IsGuadeloupe(\"+590\");"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "locale.isMartinique",
+      "group": "Locale",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "isMartinique(code: string): boolean",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "bool IsMartinique(string code)",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The phone code to check."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bool",
+            "description": "True when the prefix matches."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isMartinique = Locales.IsMartinique(\"+596\");"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "locale.isMayotte",
+      "group": "Locale",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "isMayotte(code: string): boolean",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "bool IsMayotte(string code)",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The phone code to check."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bool",
+            "description": "True when the prefix matches."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isMayotte = Locales.IsMayotte(\"+262\");"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "locale.isPuertoRico",
+      "group": "Locale",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "isPuertoRico(code: string): boolean",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "bool IsPuertoRico(string code)",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The phone code to check."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bool",
+            "description": "True only for the literal string \"+\"."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var isPuertoRico = Locales.IsPuertoRico(\"+\");"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "color.getRGB",
+      "group": "Color",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Given a `rgba(r,g,b,a)` string value, returns the hex equivalent, dropping the alpha channel.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getRGB(rgba: string): string",
+          "params": [
+            {
+              "name": "rgba",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "string"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "string GetRgb(string rgba)",
+          "params": [
+            {
+              "name": "rgba",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "A CSS rgba() string, e.g. \"rgba(255, 193, 7, 0.4)\"."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "string",
+            "description": "The lowercase hex color, e.g. \"#ffe69c\"."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var hex = Colors.GetRgb(\"rgba(255, 193, 7, 0.4)\");"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "color.getRGBA",
+      "group": "Color",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Given a signer role index, return the color code for that signer.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getRGBA(roleIndex: number): 'rgba(255, 193, 7, 0.4)' | 'rgba(134, 134, 134, 0.3)' | 'rgba(156, 39, 176, .4)' | 'rgba(33, 150, 243, .4)' | 'rgba(220, 231, 117, 0.3)' | 'rgba(121, 134, 203, 0.3)' | 'rgba(77, 182, 172, 0.3)' | 'rgba(255, 202, 165, 0.3)' | 'rgba(2, 247, 190, 0.3)' | 'rgba(255, 138, 101, 0.3)' | 'rgba(82, 255, 79, 0.3)' | 'rgba(229, 115, 155, 0.3)'",
+          "params": [
+            {
+              "name": "roleIndex",
+              "type": "number",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "'rgba(255, 193, 7, 0.4)' | 'rgba(134, 134, 134, 0.3)' | 'rgba(156, 39, 176, .4)' | 'rgba(33, 150, 243, .4)' | 'rgba(220, 231, 117, 0.3)' | 'rgba(121, 134, 203, 0.3)' | 'rgba(77, 182, 172, 0.3)' | 'rgba(255, 202, 165, 0.3)' | 'rgba(2, 247, 190, 0.3)' | 'rgba(255, 138, 101, 0.3)' | 'rgba(82, 255, 79, 0.3)' | 'rgba(229, 115, 155, 0.3)'"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "string GetRgba(int roleIndex)",
+          "params": [
+            {
+              "name": "roleIndex",
+              "type": "int",
+              "optional": false,
+              "default": null,
+              "description": "Zero-based index of the role in the template's role list."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "string",
+            "description": "A CSS rgba() string."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var color = Colors.GetRgba(2);"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "color.getRoleColor",
+      "group": "Color",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Helper function to obtain a color code given a role name given various possible inputs.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getRoleColor(name: string, roles: TRole[], index?: number): string | undefined",
+          "params": [
+            {
+              "name": "name",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "roles",
+              "type": "TRole[]",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "index",
+              "type": "number",
+              "optional": true,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "string | undefined"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "string? GetRoleColor(string? name, IReadOnlyList<string>? roles, int? index = null)",
+          "params": [
+            {
+              "name": "name",
+              "type": "string?",
+              "optional": false,
+              "default": null,
+              "description": "The role name to color."
+            },
+            {
+              "name": "roles",
+              "type": "IReadOnlyList<string>?",
+              "optional": false,
+              "default": null,
+              "description": "The template's role names, in order. May be null or empty."
+            },
+            {
+              "name": "index",
+              "type": "int?",
+              "optional": true,
+              "default": "null",
+              "description": "Explicit role index. The js-sdk checks truthiness, so 0 falls through to the roles\n             lookup; we keep that quirk."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "string?",
+            "description": "A CSS rgba() string, or null when only an empty name is available."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var color = Colors.GetRoleColor(\"Seller\", new[] { \"Buyer\", \"Seller\" });"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "color.nameToRGBA",
+      "group": "Color",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Given a role name, return a color code for it. This works by computing a hash code so the specific color returned\nis not specified explicitly, but will be the same for every call with the same input value.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "nameToRGBA(str: string): string | undefined",
+          "params": [
+            {
+              "name": "str",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "string | undefined"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "string? NameToRgba(string? name)",
+          "params": [
+            {
+              "name": "name",
+              "type": "string?",
+              "optional": false,
+              "default": null,
+              "description": "The role name. Names ending in a digit get extra hash input so \"Signer 1\" and\n             \"Signer 2\" land on visibly different colors."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "string?",
+            "description": "A CSS rgba() string, or null for an empty name (the js-sdk returns undefined there)."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var color = Colors.NameToRgba(\"Signer 1\");"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "session.getSessions",
+      "group": "Session",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get the caller's active login sessions, newest first. The session the caller is using to make\nthe request is marked with `current: true`, and should not be offered for revocation in UI\n(use logout instead).",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getSessions(endpoint: VerdocsEndpoint): Promise<IUserLoginSession[]>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IUserLoginSession[]>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getSessions, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst sessions = await getSessions(VerdocsEndpoint.getDefault());"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "session.revokeOtherSessions",
+      "group": "Session",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Revoke every login session for the caller except the one making the request. This is the\n\"sign out everywhere else\" operation.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "revokeOtherSessions(endpoint: VerdocsEndpoint): Promise<IRevokeSessionsResponse>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IRevokeSessionsResponse>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {revokeOtherSessions, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {revoked} = await revokeOtherSessions(VerdocsEndpoint.getDefault());"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "session.revokeSession",
+      "group": "Session",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Revoke one of the caller's login sessions. Tokens issued for that session stop working\nimmediately. The caller's current session may not be revoked this way.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "revokeSession(endpoint: VerdocsEndpoint, sessionId: string): Promise<TBasicResponse>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "sessionId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<TBasicResponse>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {revokeSession, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nawait revokeSession(VerdocsEndpoint.getDefault(), 'SESSIONID');"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "validator.getValidators",
       "group": "Validators",
       "page": "Helpers",
@@ -15843,11 +17374,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "isValidEmail(email: undefined | string): boolean",
+          "signature": "isValidEmail(email: string | undefined): boolean",
           "params": [
             {
               "name": "email",
-              "type": "undefined | string",
+              "type": "string | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -16000,11 +17531,11 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "isValidPhone(phone: undefined | string): boolean",
+          "signature": "isValidPhone(phone: string | undefined): boolean",
           "params": [
             {
               "name": "phone",
-              "type": "undefined | string",
+              "type": "string | undefined",
               "optional": false,
               "default": null,
               "description": ""
@@ -16450,237 +17981,6 @@
       ]
     },
     {
-      "operationId": "envelope.sortFields",
-      "group": "Envelope",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Sorts fields in reading order: by page, then by Y coordinate in 5-unit bands (Y origin is the bottom-left corner, so bands sort descending), then by X coordinate. Sorts the list in place and returns it, like the js-sdk's sortFields. Local logic; no API call.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "List<EnvelopeField> SortFields(List<EnvelopeField> fields)",
-          "params": [
-            {
-              "name": "fields",
-              "type": "List<EnvelopeField>",
-              "optional": false,
-              "default": null,
-              "description": "The fields to sort. Modified in place."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "List<EnvelopeField>",
-            "description": "The same list, sorted."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "Envelopes.SortFields(fields);"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "envelope.sortDocuments",
-      "group": "Envelope",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Sorts documents by their order, falling back to creation date. Sorts the list in place and returns it, like the js-sdk's sortDocuments. Local logic; no API call.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "List<EnvelopeDocument> SortDocuments(List<EnvelopeDocument> documents)",
-          "params": [
-            {
-              "name": "documents",
-              "type": "List<EnvelopeDocument>",
-              "optional": false,
-              "default": null,
-              "description": "The documents to sort. Modified in place."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "List<EnvelopeDocument>",
-            "description": "The same list, sorted."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "Envelopes.SortDocuments(documents);"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "envelope.sortRecipients",
-      "group": "Envelope",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Sorts recipients by sequence, then by order within the sequence. Sorts the list in place and returns it, like the js-sdk's sortRecipients; a null list passes through. Local logic; no API call.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "List<Recipient>? SortRecipients(List<Recipient>? recipients)",
-          "params": [
-            {
-              "name": "recipients",
-              "type": "List<Recipient>?",
-              "optional": false,
-              "default": null,
-              "description": "The recipients to sort. Modified in place."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "List<Recipient>?",
-            "description": "The same list, sorted, or null if null was passed."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "Envelopes.SortRecipients(recipients);"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "color.getRGB",
-      "group": "Colors",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Converts an \"rgba(r,g,b,a)\" string to its hex equivalent, dropping alpha. The alpha channel is composited against white first, so the hex color is what the translucent tint actually looks like on a page.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "string GetRgb(string rgba)",
-          "params": [
-            {
-              "name": "rgba",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "A CSS rgba() string, e.g. \"rgba(255, 193, 7, 0.4)\"."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "string",
-            "description": "The lowercase hex color, e.g. \"#ffe69c\"."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var hex = Colors.GetRgb(\"rgba(255, 193, 7, 0.4)\");"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "color.getRGBA",
-      "group": "Colors",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Returns the color code for a signer given its role index. Indexes cycle through ten colors; index 0 gets its own shade so the first signer stands out from every tenth one after it.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "string GetRgba(int roleIndex)",
-          "params": [
-            {
-              "name": "roleIndex",
-              "type": "int",
-              "optional": false,
-              "default": null,
-              "description": "Zero-based index of the role in the template's role list."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "string",
-            "description": "A CSS rgba() string."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var color = Colors.GetRgba(2);"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "color.nameToRGBA",
-      "group": "Colors",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Derives a stable color code from a role name. The color is not specified explicitly: a hash of the name picks it, so the same name always yields the same color. Matches the js-sdk hash (including its 32-bit shift wraparound) so every SDK tints a given role identically.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "string? NameToRgba(string? name)",
-          "params": [
-            {
-              "name": "name",
-              "type": "string?",
-              "optional": false,
-              "default": null,
-              "description": "The role name. Names ending in a digit get extra hash input so \"Signer 1\" and\n             \"Signer 2\" land on visibly different colors."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "string?",
-            "description": "A CSS rgba() string, or null for an empty name (the js-sdk returns undefined there)."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var color = Colors.NameToRgba(\"Signer 1\");"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "color.getRoleColor",
-      "group": "Colors",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Picks a color code for a role name from whichever inputs are available. An explicit index wins, then the name's position in the roles list, and a name absent from the list falls back to the name hash.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "string? GetRoleColor(string? name, IReadOnlyList<string>? roles, int? index = null)",
-          "params": [
-            {
-              "name": "name",
-              "type": "string?",
-              "optional": false,
-              "default": null,
-              "description": "The role name to color."
-            },
-            {
-              "name": "roles",
-              "type": "IReadOnlyList<string>?",
-              "optional": false,
-              "default": null,
-              "description": "The template's role names, in order. May be null or empty."
-            },
-            {
-              "name": "index",
-              "type": "int?",
-              "optional": true,
-              "default": "null",
-              "description": "Explicit role index. The js-sdk checks truthiness, so 0 falls through to the roles\n             lookup; we keep that quirk."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "string?",
-            "description": "A CSS rgba() string, or null when only an empty name is available."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var color = Colors.GetRoleColor(\"Seller\", new[] { \"Buyer\", \"Seller\" });"
-          }
-        }
-      ]
-    },
-    {
       "operationId": "fieldUtil.getRTop",
       "group": "FieldUtils",
       "page": "Helpers",
@@ -16873,354 +18173,6 @@
           "example": {
             "language": "csharp",
             "code": "var base64 = FieldUtils.BytesToBase64(pdfBytes);"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "locale.getCountryByCode",
-      "group": "Locales",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Finds the country for a display code, e.g. \"+44\". Falls back to prefix matching for the French overseas territories whose codes are stored with extra digits. Codes shared by several countries return the first table entry (\"+1\" returns American Samoa, never the United States); use GetPlusOneCountry to tell NANP territories apart.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "Country? GetCountryByCode(string code)",
-          "params": [
-            {
-              "name": "code",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The display code to look up."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Country?",
-            "description": "The matching country, or null."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var country = Locales.GetCountryByCode(\"+33\");"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "locale.isFrenchGuiana",
-      "group": "Locales",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Whether the code starts with French Guiana's +594 prefix.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "bool IsFrenchGuiana(string code)",
-          "params": [
-            {
-              "name": "code",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The phone code to check."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "bool",
-            "description": "True when the prefix matches."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var isFrenchGuiana = Locales.IsFrenchGuiana(\"+594\");"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "locale.isGuadeloupe",
-      "group": "Locales",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Whether the code starts with Guadeloupe's +590 prefix.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "bool IsGuadeloupe(string code)",
-          "params": [
-            {
-              "name": "code",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The phone code to check."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "bool",
-            "description": "True when the prefix matches."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var isGuadeloupe = Locales.IsGuadeloupe(\"+590\");"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "locale.isMartinique",
-      "group": "Locales",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Whether the code starts with Martinique's +596 prefix.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "bool IsMartinique(string code)",
-          "params": [
-            {
-              "name": "code",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The phone code to check."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "bool",
-            "description": "True when the prefix matches."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var isMartinique = Locales.IsMartinique(\"+596\");"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "locale.isMayotte",
-      "group": "Locales",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Whether the code starts with the Mayotte/Reunion +262 prefix.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "bool IsMayotte(string code)",
-          "params": [
-            {
-              "name": "code",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The phone code to check."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "bool",
-            "description": "True when the prefix matches."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var isMayotte = Locales.IsMayotte(\"+262\");"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "locale.getPlusOneCountry",
-      "group": "Locales",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Resolves a \"+1\" NANP code to its territory by area-code prefix. The first five characters decide the match, so the literal \"+1\" (nothing after it) yields a country with an empty name, as in the js-sdk switch.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "Country? GetPlusOneCountry(string code)",
-          "params": [
-            {
-              "name": "code",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The phone code to resolve."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Country?",
-            "description": "The matching country, or null for unrecognized prefixes."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var country = Locales.GetPlusOneCountry(\"+1242\");"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "locale.isCanada",
-      "group": "Locales",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Whether a \"+1\" code carries a Canadian area code.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "bool IsCanada(string code)",
-          "params": [
-            {
-              "name": "code",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The phone code to check."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "bool",
-            "description": "True when the area code is Canadian."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var isCanada = Locales.IsCanada(\"+1416\");"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "locale.isAmericanSamoa",
-      "group": "Locales",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Whether the code starts with American Samoa's +1684 prefix.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "bool IsAmericanSamoa(string code)",
-          "params": [
-            {
-              "name": "code",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The phone code to check."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "bool",
-            "description": "True when the prefix matches."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var isAmericanSamoa = Locales.IsAmericanSamoa(\"+1684\");"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "locale.isDominicanRepublic",
-      "group": "Locales",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Whether the code starts with a Dominican Republic prefix (+1809/+1829/+1849).",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "bool IsDominicanRepublic(string code)",
-          "params": [
-            {
-              "name": "code",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The phone code to check."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "bool",
-            "description": "True when the prefix matches."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var isDominicanRepublic = Locales.IsDominicanRepublic(\"+1809\");"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "locale.isPuertoRico",
-      "group": "Locales",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Whether the code is Puerto Rico's. Ported js-sdk bug: the js compares against \"+\" twice where the real prefixes are +1787 and +1939, so this returns true only for the literal string \"+\". Kept as-is per the true-up policy of porting quirks rather than fixing them.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "bool IsPuertoRico(string code)",
-          "params": [
-            {
-              "name": "code",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The phone code to check."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "bool",
-            "description": "True only for the literal string \"+\"."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var isPuertoRico = Locales.IsPuertoRico(\"+\");"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "locale.getMatchingCountry",
-      "group": "Locales",
-      "page": "Helpers",
-      "gettingStarted": false,
-      "summary": "Counts the table entries whose code equals the first characters of the input. The js-sdk marks this one \"need to finish\": despite the name it returns a count, not a country, and duplicate rows count twice. Ported as-is.",
-      "variants": [
-        {
-          "language": "csharp",
-          "signature": "int GetMatchingCountry(string code, int substrings)",
-          "params": [
-            {
-              "name": "code",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The phone code to match."
-            },
-            {
-              "name": "substrings",
-              "type": "int",
-              "optional": false,
-              "default": null,
-              "description": "How many leading characters to compare (negative counts as zero, like the JS substring bound)."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "int",
-            "description": "How many Countries rows carry exactly that code prefix."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var count = Locales.GetMatchingCountry(\"+1\", 2);"
           }
         }
       ]

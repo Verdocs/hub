@@ -1,13 +1,15 @@
 """Pure-logic helpers ported from the js-sdk Utils module.
 
 Each submodule mirrors one js-sdk source file (colors, dates, entitlements,
-fields, files, locales, primitives, strings, token); this barrel re-exports
-their public names so both import styles work:
+fields, files, locales, primitives, strings, token), plus auth for the
+sign-in helpers that Users/Auth.ts carries alongside its endpoint calls;
+this barrel re-exports their public names so both import styles work:
 
     from verdocs.utils import get_rgb
     from verdocs.utils.colors import get_rgb
 """
 
+from .auth import create_code_challenge, create_code_verifier, get_mfa_challenge, is_mfa_required
 from .colors import get_rgb, get_rgba, get_role_color, name_to_rgba
 from .dates import format_short_time_ago
 from .entitlements import collapse_entitlements
@@ -40,6 +42,8 @@ __all__ = [
     "capitalize",
     "collapse_entitlements",
     "convert_to_e164",
+    "create_code_challenge",
+    "create_code_verifier",
     "decode_access_token_body",
     "decode_jwt_body",
     "format_full_name",
@@ -48,6 +52,7 @@ __all__ = [
     "full_name_to_initials",
     "get_country_by_code",
     "get_matching_country",
+    "get_mfa_challenge",
     "get_plus_one_country",
     "get_r_left",
     "get_r_top",
@@ -63,6 +68,7 @@ __all__ = [
     "is_guadeloupe",
     "is_martinique",
     "is_mayotte",
+    "is_mfa_required",
     "is_puerto_rico",
     "name_to_rgba",
     "random_string",

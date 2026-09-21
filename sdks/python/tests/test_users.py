@@ -7,7 +7,7 @@ from typing import Any
 
 import pytest
 
-from verdocs import AuthenticationError, User
+from verdocs import AuthenticationError, User, UserMFA
 
 ME_URL = "/v2/users/me"
 NOTIFICATIONS_URL = "/v2/notifications"
@@ -50,6 +50,47 @@ def test_me_returns_user(endpoint, payloads, respx_mock, base_url):
     assert user.email == "test@example.com"
     assert user.email_verified is True
     assert isinstance(user.created_at, datetime)
+    assert user.has_password is True
+    assert isinstance(user.password_changed_at, datetime)
+    assert user.sign_in_providers == []
+    assert isinstance(user.mfa, UserMFA)
+    assert user.mfa.enabled is False
+    assert user.mfa.enrolled_at is None
+    assert user.mfa.backup_codes_remaining == 0
+
+
+def test_me_parses_social_account_security_fields(endpoint, payloads, respx_mock, base_url):
+    payload = payloads.user(
+        has_password=False,
+        password_changed_at=None,
+        sign_in_providers=["google", "microsoft"],
+        mfa={"enabled": True, "enrolled_at": "2026-03-01T00:00:00.000Z", "backup_codes_remaining": 8},
+    )
+    respx_mock.get(f"{base_url}{ME_URL}").respond(200, json=payload)
+
+    user = endpoint.users.me()
+
+    assert user.has_password is False
+    assert user.password_changed_at is None
+    assert user.sign_in_providers == ["google", "microsoft"]
+    assert user.mfa is not None
+    assert user.mfa.enabled is True
+    assert isinstance(user.mfa.enrolled_at, datetime)
+    assert user.mfa.backup_codes_remaining == 8
+
+
+def test_me_tolerates_a_record_without_account_security_fields(endpoint, payloads, respx_mock, base_url):
+    payload = payloads.user()
+    for key in ("has_password", "password_changed_at", "sign_in_providers", "mfa"):
+        payload.pop(key)
+    respx_mock.get(f"{base_url}{ME_URL}").respond(200, json=payload)
+
+    user = endpoint.users.me()
+
+    # User records joined onto other payloads may omit these; parsing must not depend on them.
+    assert user.has_password is None
+    assert user.sign_in_providers is None
+    assert user.mfa is None
 
 
 def test_me_keeps_unknown_fields(endpoint, payloads, respx_mock, base_url):

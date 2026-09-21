@@ -14,6 +14,8 @@ from ..models.users import (
     ChangePasswordRequest,
     ChangePasswordResponse,
     ResetPasswordResponse,
+    SocialLoginProvider,
+    SocialProviders,
     VerifyEmailRequest,
 )
 
@@ -26,6 +28,7 @@ _CHANGE_PASSWORD_PATH = "/v2/users/change-password"
 _RESET_PASSWORD_PATH = "/v2/users/reset-password"
 _RESEND_VERIFICATION_PATH = "/v2/users/resend-verification"
 _VERIFY_PATH = "/v2/users/verify"
+_SOCIAL_PROVIDERS_PATH = "/v2/oauth2/social/providers"
 
 
 def _auth_body(params: AuthenticationRequest) -> dict[str, Any]:
@@ -61,6 +64,23 @@ def _authorize_url(
     return urljoin(base_url, _AUTHORIZE_PATH) + "?" + urlencode(query)
 
 
+def _social_login_url(
+    base_url: str,
+    provider: SocialLoginProvider,
+    *,
+    return_uri: str,
+    code_challenge: str,
+    state: str,
+) -> str:
+    query = {
+        "return_uri": return_uri,
+        "code_challenge": code_challenge,
+        "code_challenge_method": "S256",
+        "state": state,
+    }
+    return urljoin(base_url, f"/v2/oauth2/social/{provider}/start") + "?" + urlencode(query)
+
+
 class Auth:
     """Authentication calls for a sync endpoint."""
 
@@ -79,14 +99,24 @@ class Auth:
             )
             endpoint.set_token(tokens.access_token)
 
+        A user with MFA enabled does not get tokens on the first call: the
+        API answers 403 with an mfa_required challenge, raised here as
+        MFARequiredError. Collect a code from the user and call again with
+        MFAOtpGrantRequest or MFARecoveryCodeGrantRequest carrying the
+        error's mfa_token. A Google or Microsoft sign-in started with
+        get_social_login_url() finishes here with LoginCodeGrantRequest.
+
         Args:
             params: OAuth2 token request (password, client_credentials,
-                refresh_token, or authorization_code).
+                refresh_token, authorization_code, or one of the MFA and
+                login-code grants).
 
         Returns:
             The token set for the new session.
 
         Raises:
+            MFARequiredError: The credentials were accepted but the user must
+                supply a second factor; carries mfa_token.
             AuthenticationError: The credentials were rejected.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
@@ -304,6 +334,90 @@ class Auth:
         response = self._endpoint._request("POST", _VERIFY_PATH, json=body.model_dump(mode="json"))
         return AuthenticateResponse.model_validate(response.json())
 
+    def get_social_providers(self) -> SocialProviders:
+        """Get the identity providers enabled in the current environment, via GET /v2/oauth2/social/providers.
+
+        Google and Microsoft are configured per-environment, and a provider
+        that is not configured will 404 from its sign-in URL, so call this
+        before rendering provider buttons and hide the ones that are off.
+        Mirrors js-sdk getSocialProviders.
+
+        Example:
+            providers = endpoint.auth.get_social_providers()
+            if providers.google:
+                show_google_button()
+
+        Returns:
+            Which of google and microsoft are enabled.
+
+        Raises:
+            VerdocsAPIError: The API returned a non-2xx status.
+            VerdocsConnectionError: The request never reached the API.
+
+        @sdkOperation auth.getSocialProviders
+        @sdkGroup Auth
+        @sdkPage Endpoints
+        """
+        response = self._endpoint._request("GET", _SOCIAL_PROVIDERS_PATH)
+        return SocialProviders.model_validate(response.json())
+
+    def get_social_login_url(
+        self,
+        provider: SocialLoginProvider,
+        *,
+        return_uri: str,
+        code_challenge: str,
+        state: str,
+    ) -> str:
+        """Build the URL that starts a Google or Microsoft sign-in.
+
+        A pure URL builder, no request is made. Send the browser to it. The
+        provider exchange happens server-side, and the user comes back to
+        return_uri with login_code and state query parameters. Exchange the
+        code for tokens with authenticate() using LoginCodeGrantRequest and
+        the verifier that produced code_challenge. Mirrors js-sdk
+        getSocialLoginUrl.
+
+        Example:
+            from verdocs import LoginCodeGrantRequest, create_code_challenge, create_code_verifier
+
+            # Starting the flow. Keep the verifier and state somewhere that
+            # survives the redirect, the browser is leaving.
+            code_verifier = create_code_verifier()
+            state = create_code_verifier()
+            url = endpoint.auth.get_social_login_url(
+                "google",
+                return_uri="https://your-app.com/login",
+                code_challenge=create_code_challenge(code_verifier),
+                state=state,
+            )
+
+            # Back at return_uri, with ?login_code=...&state=...
+            tokens = endpoint.auth.authenticate(
+                LoginCodeGrantRequest(login_code=login_code, code_verifier=code_verifier)
+            )
+
+        Args:
+            provider: "google" or "microsoft".
+            return_uri: Where to send the user after the provider returns. Must belong to a registered origin.
+            code_challenge: The PKCE challenge, the base64url SHA-256 of the verifier the app keeps.
+            state: An opaque value returned unchanged to the app, used to prevent CSRF attacks.
+
+        Returns:
+            The sign-in URL to redirect the user to.
+
+        @sdkOperation auth.getSocialLoginUrl
+        @sdkGroup Auth
+        @sdkPage Endpoints
+        """
+        return _social_login_url(
+            self._endpoint.base_url,
+            provider,
+            return_uri=return_uri,
+            code_challenge=code_challenge,
+            state=state,
+        )
+
 
 class AsyncAuth:
     """Authentication calls for an async endpoint."""
@@ -323,14 +437,24 @@ class AsyncAuth:
             )
             endpoint.set_token(tokens.access_token)
 
+        A user with MFA enabled does not get tokens on the first call: the
+        API answers 403 with an mfa_required challenge, raised here as
+        MFARequiredError. Collect a code from the user and call again with
+        MFAOtpGrantRequest or MFARecoveryCodeGrantRequest carrying the
+        error's mfa_token. A Google or Microsoft sign-in started with
+        get_social_login_url() finishes here with LoginCodeGrantRequest.
+
         Args:
             params: OAuth2 token request (password, client_credentials,
-                refresh_token, or authorization_code).
+                refresh_token, authorization_code, or one of the MFA and
+                login-code grants).
 
         Returns:
             The token set for the new session.
 
         Raises:
+            MFARequiredError: The credentials were accepted but the user must
+                supply a second factor; carries mfa_token.
             AuthenticationError: The credentials were rejected.
             VerdocsAPIError: The API returned another non-2xx status.
             VerdocsConnectionError: The request never reached the API.
@@ -519,3 +643,61 @@ class AsyncAuth:
         body = VerifyEmailRequest(email=email, token=token)
         response = await self._endpoint._request("POST", _VERIFY_PATH, json=body.model_dump(mode="json"))
         return AuthenticateResponse.model_validate(response.json())
+
+    async def get_social_providers(self) -> SocialProviders:
+        """Get the identity providers enabled in the current environment, via GET /v2/oauth2/social/providers.
+
+        Google and Microsoft are configured per-environment, and a provider
+        that is not configured will 404 from its sign-in URL, so call this
+        before rendering provider buttons and hide the ones that are off.
+        Mirrors js-sdk getSocialProviders.
+
+        Example:
+            providers = await endpoint.auth.get_social_providers()
+            if providers.google:
+                show_google_button()
+
+        Returns:
+            Which of google and microsoft are enabled.
+
+        Raises:
+            VerdocsAPIError: The API returned a non-2xx status.
+            VerdocsConnectionError: The request never reached the API.
+        """
+        response = await self._endpoint._request("GET", _SOCIAL_PROVIDERS_PATH)
+        return SocialProviders.model_validate(response.json())
+
+    def get_social_login_url(
+        self,
+        provider: SocialLoginProvider,
+        *,
+        return_uri: str,
+        code_challenge: str,
+        state: str,
+    ) -> str:
+        """Build the URL that starts a Google or Microsoft sign-in.
+
+        A pure URL builder, no request is made, so this is a plain method on
+        the async endpoint too (nothing to await). Send the browser to it.
+        The provider exchange happens server-side, and the user comes back
+        to return_uri with login_code and state query parameters. Exchange
+        the code for tokens with authenticate() using LoginCodeGrantRequest
+        and the verifier that produced code_challenge. Mirrors js-sdk
+        getSocialLoginUrl.
+
+        Args:
+            provider: "google" or "microsoft".
+            return_uri: Where to send the user after the provider returns. Must belong to a registered origin.
+            code_challenge: The PKCE challenge, the base64url SHA-256 of the verifier the app keeps.
+            state: An opaque value returned unchanged to the app, used to prevent CSRF attacks.
+
+        Returns:
+            The sign-in URL to redirect the user to.
+        """
+        return _social_login_url(
+            self._endpoint.base_url,
+            provider,
+            return_uri=return_uri,
+            code_challenge=code_challenge,
+            state=state,
+        )

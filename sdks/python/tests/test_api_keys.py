@@ -6,6 +6,7 @@ wiring for the Organizations namespaces belongs to the coordinator.
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any
 
 import pytest
@@ -24,6 +25,8 @@ def api_key_payload(**overrides: Any) -> dict[str, Any]:
         "organization_id": "org-1234",
         "profile_id": "profile-1234",
         "global_admin": False,
+        "created_at": "2026-01-01T00:00:00.000Z",
+        "last_used_at": None,
     }
     payload.update(overrides)
     return payload
@@ -38,6 +41,21 @@ def test_list_returns_keys_without_secrets(endpoint, respx_mock, base_url):
     assert isinstance(keys[0], ApiKey)
     assert keys[0].client_id == "ck-1234"
     assert keys[0].client_secret is None
+    assert isinstance(keys[0].created_at, datetime)
+    assert keys[0].last_used_at is None
+    # The deployed key record has no permission field; global_admin is the only access control.
+    assert "permission" not in ApiKey.model_fields
+
+
+def test_list_parses_last_used_at(endpoint, respx_mock, base_url):
+    respx_mock.get(f"{base_url}{API_KEYS_URL}").respond(
+        200, json=[api_key_payload(last_used_at="2026-02-01T12:00:00.000Z")]
+    )
+
+    keys = ApiKeys(endpoint).list()
+
+    assert isinstance(keys[0].last_used_at, datetime)
+    assert keys[0].last_used_at.year == 2026
 
 
 def test_create_sends_params_and_returns_secret(endpoint, payloads, respx_mock, base_url):
@@ -86,6 +104,18 @@ def test_update_sends_only_set_fields(endpoint, payloads, respx_mock, base_url):
     assert payloads.request_json(route) == {"name": "Renamed"}
     assert key.name == "Renamed"
     assert key.client_secret is None
+
+
+def test_update_sends_profile_id_and_global_admin(endpoint, payloads, respx_mock, base_url):
+    route = respx_mock.patch(f"{base_url}{API_KEYS_URL}/ck-1234").respond(
+        200, json=api_key_payload(profile_id="profile-5678", global_admin=True)
+    )
+
+    key = ApiKeys(endpoint).update("ck-1234", ApiKeyUpdateParams(profile_id="profile-5678", global_admin=True))
+
+    assert payloads.request_json(route) == {"profile_id": "profile-5678", "global_admin": True}
+    assert key.profile_id == "profile-5678"
+    assert key.global_admin is True
 
 
 def test_delete_returns_none(endpoint, respx_mock, base_url):
