@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.12.0",
+    "version": "6.12.1",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -23640,6 +23640,10 @@
           "recipients"
         ],
         "properties": {
+          "brand_key": {
+            "type": "string",
+            "description": "Set the \"Brand\" used when the signing experience is rendered. If not set, the Organization's default Brand will be used, if any."
+          },
           "data": {
             "type": "string",
             "description": "Optional metadata to attach to the envelope. This is not used by Verdocs, but may be used for internal tracking purposes by the caller. This is not shown to recipients, but is not private and should not be used to store sensitive data."
@@ -23923,6 +23927,10 @@
           "recipients"
         ],
         "properties": {
+          "brand_key": {
+            "type": "string",
+            "description": "Set the \"Brand\" used when the signing experience is rendered. If not set, the Organization's default Brand will be used, if any."
+          },
           "data": {
             "type": "string",
             "description": "Optional metadata to attach to the envelope. This is not used by Verdocs, but may be used for internal tracking purposes by the caller. This is not shown to recipients, but is not private and should not be used to store sensitive data."
@@ -23937,7 +23945,7 @@
           },
           "expires_at": {
             "type": "string",
-            "description": "If set, the envelope will automatically expire at the specified date/time (ISO8601, UTC)"
+            "description": "If set, the envelope will automatically expire at the specified date/time (ISO8601, UTC). Must be at least 1 day in the future."
           },
           "fields": {
             "type": "string",

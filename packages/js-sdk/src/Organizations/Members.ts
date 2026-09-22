@@ -166,3 +166,23 @@ export const unlockOrganizationMember = (endpoint: VerdocsEndpoint, profileId: s
   endpoint.api //
     .put<IProfile>(`/v2/organization-members/${profileId}`, {action: 'unlock'})
     .then((r) => r.data);
+
+/**
+ * Reset a member's multi-factor authentication so they can enroll again, if they've lost their
+ * authenticator and backup codes. The caller must be an admin or owner, may not reset their
+ * own MFA, and may only reset members of equal or lower role.
+ *
+ * ```typescript
+ * import {resetOrganizationMemberMFA} from '@verdocs/js-sdk';
+ *
+ * await resetOrganizationMemberMFA(VerdocsEndpoint.getDefault(), profileId);
+ * ```
+ *
+ * @sdkOperation member.resetOrganizationMemberMFA
+ * @sdkGroup Member
+ * @sdkPage Endpoints
+ */
+export const resetOrganizationMemberMFA = (endpoint: VerdocsEndpoint, profileId: string) =>
+  endpoint.api //
+    .put<IProfile>(`/v2/organization-members/${profileId}`, {action: 'reset_mfa'})
+    .then((r) => r.data);

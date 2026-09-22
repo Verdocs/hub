@@ -345,6 +345,10 @@ export interface IUser {
   locked?: boolean;
   /** Reason the account is locked. Only visible to admins or owners. */
   lock_reason?: string | null;
+  /** True if the user has multi-factor authentication enrolled. Only present for admins or owners. */
+  mfa_enabled?: boolean;
+  /** When multi-factor authentication was enrolled, if it is. Only present for admins or owners. */
+  mfa_enrolled_at?: string | null;
   /** Consecutive failed sign-in attempts. Only visible to admins or owners. */
   login_failures?: number;
   /** The long-form timezone. */

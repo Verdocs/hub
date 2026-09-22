@@ -60,3 +60,5 @@ __pycache__/
 db.sqlite3
 # Local session notes, never published
 STATUS.md
+# Browser test screenshots, regenerated on every run
+**/.vitest/attachments/

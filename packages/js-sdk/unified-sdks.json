@@ -4479,7 +4479,7 @@
           },
           "example": {
             "language": "csharp",
-            "code": "var auth = await endpoint.Auth.AuthenticateAsync(new PasswordGrantRequest\n{\n    Username = \"you@example.com\",\n    Password = \"PASSWORD\",\n});\nendpoint.SetToken(auth.AccessToken);"
+            "code": "// Client-side call, suitable for web and mobile apps:\nvar auth = await endpoint.Auth.AuthenticateAsync(new PasswordGrantRequest\n{\n    Username = \"you@example.com\",\n    Password = \"PASSWORD\",\n});\nendpoint.SetToken(auth.AccessToken);\n\n// Server-side call. NEVER EXPOSE ClientSecret IN FRONT-END CODE:\nvar auth = await endpoint.Auth.AuthenticateAsync(new ClientCredentialsRequest\n{\n    ClientId = \"...\",\n    ClientSecret = \"...\",\n});\nendpoint.SetToken(auth.AccessToken);"
           }
         },
         {
@@ -4491,7 +4491,7 @@
               "type": "AuthenticationRequest",
               "optional": false,
               "default": null,
-              "description": "OAuth2 token request (password, client_credentials,\nrefresh_token, or authorization_code)."
+              "description": "OAuth2 token request (password, client_credentials,\nrefresh_token, authorization_code, or one of the MFA and\nlogin-code grants)."
             }
           ],
           "deprecated": false,
@@ -4624,6 +4624,50 @@
             "language": "typescript",
             "code": "import {createCodeChallenge, createCodeVerifier} from '@verdocs/js-sdk';\n\nconst verifier = createCodeVerifier();\nconst challenge = await createCodeChallenge(verifier);"
           }
+        },
+        {
+          "language": "csharp",
+          "signature": "string CreateCodeChallenge(string verifier)",
+          "params": [
+            {
+              "name": "verifier",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The verifier from CreateCodeVerifier."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "string",
+            "description": "The S256 challenge to send as code_challenge."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var verifier = Pkce.CreateCodeVerifier();\nvar challenge = Pkce.CreateCodeChallenge(verifier);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create_code_challenge(verifier: str) -> str",
+          "params": [
+            {
+              "name": "verifier",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The value returned by create_code_verifier()."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "The S256 challenge to pass to get_social_login_url(), without padding."
+          },
+          "example": {
+            "language": "python",
+            "code": "from verdocs import create_code_challenge, create_code_verifier\n\nverifier = create_code_verifier()\nchallenge = create_code_challenge(verifier)"
+          }
         }
       ]
     },
@@ -4644,6 +4688,32 @@
           "example": {
             "language": "typescript",
             "code": "import {createCodeVerifier} from '@verdocs/js-sdk';\n\nconst verifier = createCodeVerifier();"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "string CreateCodeVerifier()",
+          "deprecated": false,
+          "returns": {
+            "type": "string",
+            "description": "A new random verifier."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var verifier = Pkce.CreateCodeVerifier();"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create_code_verifier() -> str",
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "A fresh 43-character base64url string built from 32 random bytes."
+          },
+          "example": {
+            "language": "python",
+            "code": "from verdocs import create_code_challenge, create_code_verifier\n\nverifier = create_code_verifier()\nchallenge = create_code_challenge(verifier)"
           }
         }
       ]
@@ -4674,6 +4744,28 @@
           "example": {
             "language": "typescript",
             "code": "import {getMFAChallenge} from '@verdocs/js-sdk';\n\nconst challenge = getMFAChallenge(e);\nif (challenge) {\n  // Switch the form to its \"enter your code\" mode, carrying challenge.mfa_token.\n}"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_mfa_challenge(error: object) -> MFAChallenge | None",
+          "params": [
+            {
+              "name": "error",
+              "type": "object",
+              "optional": false,
+              "default": null,
+              "description": "Any object, usually a caught exception."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "MFAChallenge | None",
+            "description": "The parsed 403 body when error is an MFARequiredError, otherwise None."
+          },
+          "example": {
+            "language": "python",
+            "code": "from verdocs import get_mfa_challenge\n\nchallenge = get_mfa_challenge(error)\nif challenge:\n    # Switch the form to its \"enter your code\" mode, carrying challenge.mfa_token.\n    ..."
           }
         }
       ]
@@ -4902,6 +4994,92 @@
             "language": "typescript",
             "code": "import {authenticate, createCodeChallenge, createCodeVerifier, getSocialLoginUrl, VerdocsEndpoint} from '@verdocs/js-sdk';\n\n// Starting the flow. Keep the verifier and state in sessionStorage, the browser is leaving.\nconst code_verifier = createCodeVerifier();\nconst codeChallenge = await createCodeChallenge(code_verifier);\nconst state = createCodeVerifier();\nsessionStorage.setItem('verdocs_pkce', JSON.stringify({code_verifier, state}));\nwindow.location.href = getSocialLoginUrl(VerdocsEndpoint.getDefault(), 'google', {\n  returnUri: 'https://your-app.com/login', codeChallenge, state});\n\n// Back at returnUri, with ?login_code=...&state=...\nconst {access_token} = await authenticate(VerdocsEndpoint.getDefault(), {\n  grant_type: 'urn:verdocs:params:oauth:grant-type:login-code', login_code, code_verifier});"
           }
+        },
+        {
+          "language": "csharp",
+          "signature": "string GetSocialLoginUrl(string provider, string returnUri, string codeChallenge, string state)",
+          "params": [
+            {
+              "name": "provider",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The identity provider to sign in with; see SocialLoginProvider for known values."
+            },
+            {
+              "name": "returnUri",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "Where to send the user after the provider returns. Must belong to a registered origin."
+            },
+            {
+              "name": "codeChallenge",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The PKCE challenge from CreateCodeChallenge, the base64url SHA-256 of the verifier the app keeps."
+            },
+            {
+              "name": "state",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "An opaque value returned unchanged to the app, used to prevent CSRF attacks."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "string",
+            "description": "The sign-in URL to redirect the user to. The challenge method is always S256."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "// Starting the flow. Keep the verifier and state where they survive the redirect.\nvar codeVerifier = Pkce.CreateCodeVerifier();\nvar codeChallenge = Pkce.CreateCodeChallenge(codeVerifier);\nvar state = Pkce.CreateCodeVerifier();\nvar loginUrl = endpoint.Auth.GetSocialLoginUrl(SocialLoginProvider.Google, \"https://your-app.com/login\", codeChallenge, state);\n\n// Back at the return URI, with ?login_code=...&state=...\nvar auth = await endpoint.Auth.AuthenticateAsync(new LoginCodeGrantRequest { LoginCode = loginCode, CodeVerifier = codeVerifier });\nendpoint.SetToken(auth.AccessToken);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_social_login_url(provider: SocialLoginProvider, return_uri: str, code_challenge: str, state: str) -> str",
+          "params": [
+            {
+              "name": "provider",
+              "type": "SocialLoginProvider",
+              "optional": false,
+              "default": null,
+              "description": "\"google\" or \"microsoft\"."
+            },
+            {
+              "name": "return_uri",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "Where to send the user after the provider returns. Must belong to a registered origin."
+            },
+            {
+              "name": "code_challenge",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The PKCE challenge, the base64url SHA-256 of the verifier the app keeps."
+            },
+            {
+              "name": "state",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "An opaque value returned unchanged to the app, used to prevent CSRF attacks."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "The sign-in URL to redirect the user to."
+          },
+          "example": {
+            "language": "python",
+            "code": "from verdocs import LoginCodeGrantRequest, create_code_challenge, create_code_verifier\n\n# Starting the flow. Keep the verifier and state somewhere that\n# survives the redirect, the browser is leaving.\ncode_verifier = create_code_verifier()\nstate = create_code_verifier()\nurl = endpoint.auth.get_social_login_url(\n    \"google\",\n    return_uri=\"https://your-app.com/login\",\n    code_challenge=create_code_challenge(code_verifier),\n    state=state,\n)\n\n# Back at return_uri, with ?login_code=...&state=...\ntokens = endpoint.auth.authenticate(\n    LoginCodeGrantRequest(login_code=login_code, code_verifier=code_verifier)\n)"
+          }
         }
       ]
     },
@@ -4932,6 +5110,41 @@
             "language": "typescript",
             "code": "import {getSocialProviders, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {google, microsoft} = await getSocialProviders(VerdocsEndpoint.getDefault());"
           }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<SocialProviders> GetSocialProvidersAsync(CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<SocialProviders>",
+            "description": "The enabled providers."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var providers = await endpoint.Auth.GetSocialProvidersAsync();\nif (providers.Google)\n{\n    // Show the Google button.\n}"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_social_providers() -> SocialProviders",
+          "deprecated": false,
+          "returns": {
+            "type": "SocialProviders",
+            "description": "Which of google and microsoft are enabled."
+          },
+          "example": {
+            "language": "python",
+            "code": "providers = endpoint.auth.get_social_providers()\nif providers.google:\n    show_google_button()"
+          }
         }
       ]
     },
@@ -4961,6 +5174,28 @@
           "example": {
             "language": "typescript",
             "code": "import {authenticate, isMFARequired, VerdocsEndpoint} from '@verdocs/js-sdk';\n\ntry {\n  const {access_token} = await authenticate(VerdocsEndpoint.getDefault(), {grant_type: 'password', username, password});\n} catch (e) {\n  if (isMFARequired(e)) {\n    const {mfa_token} = e.response.data;\n    // Collect a code from the user, then:\n    const {access_token} = await authenticate(VerdocsEndpoint.getDefault(), {\n      grant_type: 'urn:verdocs:params:oauth:grant-type:mfa-otp', mfa_token, otp});\n  }\n}"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "is_mfa_required(error: object) -> TypeGuard[MFARequiredError]",
+          "params": [
+            {
+              "name": "error",
+              "type": "object",
+              "optional": false,
+              "default": null,
+              "description": "Any object, usually a caught exception."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "TypeGuard[MFARequiredError]",
+            "description": "True if error is an MFARequiredError, narrowing its type for checkers."
+          },
+          "example": {
+            "language": "python",
+            "code": "from verdocs import MFAOtpGrantRequest, PasswordGrantRequest, VerdocsError, is_mfa_required\n\ntry:\n    tokens = endpoint.auth.authenticate(PasswordGrantRequest(username=email, password=password))\nexcept VerdocsError as error:\n    if is_mfa_required(error):\n        # Collect a code from the user, then:\n        tokens = endpoint.auth.authenticate(MFAOtpGrantRequest(mfa_token=error.mfa_token, otp=otp))"
           }
         }
       ]
@@ -10969,7 +11204,7 @@
               "type": "ApiKeyCreateParams",
               "optional": false,
               "default": null,
-              "description": "Name and acting profile for the new key."
+              "description": "Name and acting profile for the new key, plus global_admin\nto give it full access to the organization."
             }
           ],
           "deprecated": false,
@@ -15851,6 +16086,56 @@
             "language": "typescript",
             "code": "import {disableMFA, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nawait disableMFA(VerdocsEndpoint.getDefault(), '123456');"
           }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task DisableMfaAsync(string code, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "A current six-digit code from the user's authenticator app, or an unused backup code."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task",
+            "description": "A task that completes when MFA is disabled."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Mfa.DisableMfaAsync(\"123456\");"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "disable(code: str) -> None",
+          "params": [
+            {
+              "name": "code",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "A current six-digit code from the user's authenticator app, or an unused backup code."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
+          },
+          "example": {
+            "language": "python",
+            "code": "endpoint.mfa.disable(\"123456\")"
+          }
         }
       ]
     },
@@ -15881,6 +16166,41 @@
             "language": "typescript",
             "code": "import {enrollMFA, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {secret, otpauth_url} = await enrollMFA(VerdocsEndpoint.getDefault());"
           }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<MfaEnrollment> EnrollMfaAsync(CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<MfaEnrollment>",
+            "description": "The pending enrollment."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var enrollment = await endpoint.Mfa.EnrollMfaAsync();"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "enroll() -> MFAEnrollment",
+          "deprecated": false,
+          "returns": {
+            "type": "MFAEnrollment",
+            "description": "The pending enrollment: secret, otpauth URL, and expiry."
+          },
+          "example": {
+            "language": "python",
+            "code": "enrollment = endpoint.mfa.enroll()\nshow_qr_code(enrollment.otpauth_url)"
+          }
         }
       ]
     },
@@ -15910,6 +16230,41 @@
           "example": {
             "language": "typescript",
             "code": "import {getMFAStatus, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {enabled, backup_codes_remaining} = await getMFAStatus(VerdocsEndpoint.getDefault());"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<MfaStatus> GetMfaStatusAsync(CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<MfaStatus>",
+            "description": "The caller's MFA status."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var status = await endpoint.Mfa.GetMfaStatusAsync();\nif (status.Enabled && status.BackupCodesRemaining < 3)\n{\n    // Suggest regenerating backup codes.\n}"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "status() -> MFAStatus",
+          "deprecated": false,
+          "returns": {
+            "type": "MFAStatus",
+            "description": "Whether MFA is enabled, the factor type, and the backup codes remaining."
+          },
+          "example": {
+            "language": "python",
+            "code": "status = endpoint.mfa.status()\nprint(status.enabled, status.backup_codes_remaining)"
           }
         }
       ]
@@ -15948,6 +16303,57 @@
             "language": "typescript",
             "code": "import {regenerateBackupCodes, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {backup_codes} = await regenerateBackupCodes(VerdocsEndpoint.getDefault(), '123456');"
           }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<MfaBackupCodes> RegenerateBackupCodesAsync(string code, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The current six-digit code from the user's authenticator app."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<MfaBackupCodes>",
+            "description": "The new one-time backup codes, returned only once."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var backup = await endpoint.Mfa.RegenerateBackupCodesAsync(\"123456\");"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "regenerate_backup_codes(code: str) -> MFABackupCodes",
+          "params": [
+            {
+              "name": "code",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The current six-digit code from the user's authenticator app."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "MFABackupCodes",
+            "description": "The new one-time backup codes, returned only once."
+          },
+          "example": {
+            "language": "python",
+            "code": "codes = endpoint.mfa.regenerate_backup_codes(\"123456\")"
+          }
         }
       ]
     },
@@ -15984,6 +16390,57 @@
           "example": {
             "language": "typescript",
             "code": "import {verifyMFAEnrollment, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {backup_codes} = await verifyMFAEnrollment(VerdocsEndpoint.getDefault(), '123456');"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<MfaBackupCodes> VerifyMfaEnrollmentAsync(string code, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "code",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The current six-digit code from the user's authenticator app."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<MfaBackupCodes>",
+            "description": "One-time backup codes, returned only once."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var backup = await endpoint.Mfa.VerifyMfaEnrollmentAsync(\"123456\");"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "verify_enrollment(code: str) -> MFABackupCodes",
+          "params": [
+            {
+              "name": "code",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The current six-digit code from the user's authenticator app."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "MFABackupCodes",
+            "description": "One-time backup codes, returned only once."
+          },
+          "example": {
+            "language": "python",
+            "code": "codes = endpoint.mfa.verify_enrollment(\"123456\")\nshow_backup_codes(codes.backup_codes)"
           }
         }
       ]
@@ -17252,6 +17709,41 @@
             "language": "typescript",
             "code": "import {getSessions, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst sessions = await getSessions(VerdocsEndpoint.getDefault());"
           }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<IReadOnlyList<UserLoginSession>> GetSessionsAsync(CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<IReadOnlyList<UserLoginSession>>",
+            "description": "The caller's active sessions, newest first."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var sessions = await endpoint.Sessions.GetSessionsAsync();"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "list() -> list[UserLoginSession]",
+          "deprecated": false,
+          "returns": {
+            "type": "list[UserLoginSession]",
+            "description": "The caller's active sessions, newest first."
+          },
+          "example": {
+            "language": "python",
+            "code": "for session in endpoint.sessions.list():\n    print(session.id, session.browser, session.location, session.current)"
+          }
         }
       ]
     },
@@ -17281,6 +17773,41 @@
           "example": {
             "language": "typescript",
             "code": "import {revokeOtherSessions, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {revoked} = await revokeOtherSessions(VerdocsEndpoint.getDefault());"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<RevokeSessionsResponse> RevokeOtherSessionsAsync(CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<RevokeSessionsResponse>",
+            "description": "The number of sessions revoked."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var result = await endpoint.Sessions.RevokeOtherSessionsAsync();\nConsole.WriteLine($\"Revoked {result.Revoked} sessions\");"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "revoke_others() -> RevokeSessionsResponse",
+          "deprecated": false,
+          "returns": {
+            "type": "RevokeSessionsResponse",
+            "description": "The number of sessions revoked."
+          },
+          "example": {
+            "language": "python",
+            "code": "result = endpoint.sessions.revoke_others()\nprint(f\"Signed out of {result.revoked} other devices\")"
           }
         }
       ]
@@ -17318,6 +17845,52 @@
           "example": {
             "language": "typescript",
             "code": "import {revokeSession, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nawait revokeSession(VerdocsEndpoint.getDefault(), 'SESSIONID');"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task RevokeSessionAsync(string sessionId, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "sessionId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The ID of the session to revoke. May not be the caller's current session."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task",
+            "description": "A task that completes when the session is revoked."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Sessions.RevokeSessionAsync(\"SESSIONID\");"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "revoke(session_id: str) -> None",
+          "params": [
+            {
+              "name": "session_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The ID of the session to revoke. May not be the caller's current session."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
           }
         }
       ]
