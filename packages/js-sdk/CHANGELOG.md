@@ -1,5 +1,11 @@
 # @verdocs/js-sdk
 
+## 6.12.2
+
+### Patch Changes
+
+- Add `resetOrganizationMemberMFA` for org admins and owners, and `mfa_enabled` / `mfa_enrolled_at` on the admin-only user record returned with organization members.
+
 ## 6.12.1
 
 ### Patch Changes
