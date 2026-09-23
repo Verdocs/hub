@@ -1,5 +1,11 @@
 # @verdocs/js-sdk
 
+## 6.12.4
+
+### Patch Changes
+
+- Add `email_sender_name` to brands. This sets the default "from" name on emails when the brand is used. Note that custom email sender domain configurations will override this.
+
 ## 6.12.3
 
 ### Patch Changes
