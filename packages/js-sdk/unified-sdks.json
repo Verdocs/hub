@@ -1016,7 +1016,7 @@
       "group": "Invitation",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Get a list of invitations pending for the caller's organization. The caller must be an admin or owner.",
+      "summary": "Get a list of outstanding invitations for the caller's organization. Note that accepted invites\nare deleted, but rejected ones stay in the list to prevent nuisance re-invites.",
       "variants": [
         {
           "language": "typescript",

@@ -49,6 +49,7 @@ export interface ICreateBrandRequest {
   primary_color?: string;
   secondary_color?: string;
   powered_by_label?: string;
+  email_sender_name?: string;
   powered_by_url?: string;
   style_overrides?: string;
   disclaimer?: string;
@@ -70,6 +71,7 @@ export interface IUpdateBrandRequest {
   primary_color?: string | null;
   secondary_color?: string | null;
   powered_by_label?: string | null;
+  email_sender_name?: string | null;
   powered_by_url?: string | null;
   style_overrides?: string | null;
   disclaimer?: string | null;

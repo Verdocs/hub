@@ -128,7 +128,8 @@ if (!notes) {
 if (target.kind === 'npm') {
   run(`pnpm --filter ${target.filter} build`);
   run(`pnpm --filter ${target.filter} test`);
-  if (publish) run('pnpm publish --access public', target.dir);
+  // pnpm has its own clean-tree check on publish; --allow-dirty has to cover that one too.
+  if (publish) run(`pnpm publish --access public${allowDirty ? ' --no-git-checks' : ''}`, target.dir);
   else if (onRegistry) run('pnpm pack --pack-destination /tmp', target.dir); // npm refuses even a dry run over a published version
   else run('pnpm publish --access public --dry-run --no-git-checks', target.dir);
 }

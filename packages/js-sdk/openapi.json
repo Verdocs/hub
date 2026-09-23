@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.12.2",
+    "version": "6.12.3",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -5384,7 +5384,7 @@
       },
       "get": {
         "operationId": "getOrganizationInvitations",
-        "summary": "Get a list of pending invitations",
+        "summary": "Get a list of invitations",
         "tags": [
           "Organization Invitations"
         ],
@@ -25713,6 +25713,10 @@
           "has_password": {
             "type": "boolean",
             "description": "Social-IdP accounts have no password set. Used to gate some front-end features like password-reset UI controls."
+          },
+          "last_active_at": {
+            "type": "string",
+            "description": "When the user was last seen in any session. Only present for admins or owners."
           },
           "locale": {
             "type": "string",

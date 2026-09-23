@@ -218,6 +218,7 @@ export interface IBrand {
   primary_color: string | null;
   secondary_color: string | null;
   powered_by_label: string | null;
+  email_sender_name: string | null;
   powered_by_url: string | null;
   style_overrides: string | null;
   disclaimer: string | null;
