@@ -1,5 +1,11 @@
 # @verdocs/js-sdk
 
+## 6.12.3
+
+### Patch Changes
+
+- Add `last_active_at` to the admin-only user record returned with organization members.
+
 ## 6.12.2
 
 ### Patch Changes

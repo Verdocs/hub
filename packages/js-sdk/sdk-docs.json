@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.12.1",
+  "version": "6.12.2",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -7849,6 +7849,44 @@
             {
               "language": "typescript",
               "code": "import {lockOrganizationMember} from '@verdocs/js-sdk';\n\nconst result = await lockOrganizationMember(VerdocsEndpoint.getDefault(), 'PROFILEID', 'Departed employee');"
+            }
+          ],
+          "deprecated": false
+        },
+        "member.resetOrganizationMemberMFA": {
+          "sdkOperation": "member.resetOrganizationMemberMFA",
+          "kind": "function",
+          "name": "resetOrganizationMemberMFA",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "resetOrganizationMemberMFA(endpoint: VerdocsEndpoint, profileId: string): Promise<IProfile>",
+          "summary": "Reset a member's multi-factor authentication so they can enroll again, if they've lost their\nauthenticator and backup codes. The caller must be an admin or owner, may not reset their\nown MFA, and may only reset members of equal or lower role.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "profileId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IProfile>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {resetOrganizationMemberMFA} from '@verdocs/js-sdk';\n\nawait resetOrganizationMemberMFA(VerdocsEndpoint.getDefault(), profileId);"
             }
           ],
           "deprecated": false

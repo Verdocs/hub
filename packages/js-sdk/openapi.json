@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.12.1",
+    "version": "6.12.2",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -25729,6 +25729,14 @@
           "login_failures": {
             "type": "integer",
             "description": "Consecutive failed sign-in attempts. Only visible to admins or owners."
+          },
+          "mfa_enabled": {
+            "type": "boolean",
+            "description": "True if the user has multi-factor authentication enrolled. Only present for admins or owners."
+          },
+          "mfa_enrolled_at": {
+            "type": "string",
+            "description": "When multi-factor authentication was enrolled, if it is. Only present for admins or owners."
           },
           "pass_hash": {
             "type": "string",

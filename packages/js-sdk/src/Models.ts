@@ -254,7 +254,7 @@ export interface IOrganizationInvitation {
   email: string;
   first_name: string;
   last_name: string;
-  status: 'pending';
+  status: 'pending' | 'declined';
   role: TRole;
   generated_at: string;
   token?: string | null;
@@ -349,6 +349,8 @@ export interface IUser {
   mfa_enabled?: boolean;
   /** When multi-factor authentication was enrolled, if it is. Only present for admins or owners. */
   mfa_enrolled_at?: string | null;
+  /** When the user was last seen in any session. Only present for admins or owners. */
+  last_active_at?: string | null;
   /** Consecutive failed sign-in attempts. Only visible to admins or owners. */
   login_failures?: number;
   /** The long-form timezone. */

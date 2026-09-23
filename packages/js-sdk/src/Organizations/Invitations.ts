@@ -10,10 +10,11 @@ import {IOrganizationInvitation} from '../Models';
  */
 
 /**
- * Get a list of invitations pending for the caller's organization. The caller must be an admin or owner.
+ * Get a list of outstanding invitations for the caller's organization. Note that accepted invites
+ * are deleted, but rejected ones stay in the list to prevent nuisance re-invites.
  *
  * @group Organization Invitations
- * @api GET /v2/organization-invitations Get a list of pending invitations
+ * @api GET /v2/organization-invitations Get a list of invitations
  * @apiBody array(items:TRole) roles URL to send Webhook events to. An empty or invalid URL will disable Webhook calls.
  * @apiBody string first_name First name. The user may override this after accepting the invitation.
  * @apiBody string last_name Last name. The user may override this after accepting the invitation.

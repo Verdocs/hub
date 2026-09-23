@@ -13945,6 +13945,43 @@
       ]
     },
     {
+      "operationId": "member.resetOrganizationMemberMFA",
+      "group": "Member",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Reset a member's multi-factor authentication so they can enroll again, if they've lost their\nauthenticator and backup codes. The caller must be an admin or owner, may not reset their\nown MFA, and may only reset members of equal or lower role.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "resetOrganizationMemberMFA(endpoint: VerdocsEndpoint, profileId: string): Promise<IProfile>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "profileId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IProfile>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {resetOrganizationMemberMFA} from '@verdocs/js-sdk';\n\nawait resetOrganizationMemberMFA(VerdocsEndpoint.getDefault(), profileId);"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "member.unlockOrganizationMember",
       "group": "Member",
       "page": "Endpoints",
