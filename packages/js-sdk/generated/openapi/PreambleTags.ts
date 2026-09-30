@@ -11,6 +11,7 @@ const Tag = {
   ENVELOPE_DOCUMENTS: 'Envelope Documents',
   FIELDS: 'Fields',
   KBA: 'KBA',
+  MFA: 'MFA',
   NOTIFICATIONS: 'Notifications',
   ORGANIZATIONS: 'Organizations',
   ORGANIZATION_CONTACTS: 'Organization Contacts',
@@ -20,6 +21,7 @@ const Tag = {
   PROFILES: 'Profiles',
   RECIPIENTS: 'Recipients',
   ROLES: 'Roles',
+  SESSIONS: 'Sessions',
   SIGNATURES_AND_INITIALS: 'Signatures and Initials',
   TEMPLATE_DOCUMENTS: 'Template Documents',
   TEMPLATES: 'Templates',
@@ -149,5 +151,17 @@ export const PREAMBLE_TAGS: OpenAITag[] = [
     name: Tag.KBA,
     description: "Knowledge-Based Authentication endpoints for recipient identity verification during signing.",
     'x-displayName': "KBA"
-  }
+  },
+  {
+    name: Tag.SESSIONS,
+    description:
+      'A Session represents an active login for a user on a specific device or browser. Each session is issued its own tokens and is tracked separately, allowing users to review where their account is currently signed in. Sessions can be revoked individually or all at once (excluding the current session), immediately invalidating the associated tokens. Managing sessions helps users secure their accounts by signing out of devices they no longer use or do not recognize.',
+    'x-displayName': Tag.SESSIONS,
+  },
+  {
+    name: Tag.MFA,
+    description:
+      'Multi-Factor Authentication (MFA) adds a second layer of security to user accounts by requiring a time-based one-time passcode (TOTP) from an authenticator app in addition to a password. Users enroll by scanning a QR code or entering a secret manually, then confirming with a valid code. On successful enrollment, a set of single-use backup codes is issued for account recovery if the authenticator device is unavailable. A valid code is required to regenerate backup codes or disable MFA, ensuring that a password alone is not enough to remove the second factor.',
+    'x-displayName': Tag.MFA,
+  },
 ];
