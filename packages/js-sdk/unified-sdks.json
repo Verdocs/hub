@@ -3500,7 +3500,7 @@
       "group": "Recipient",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Submit an envelope (signing is finished). Note that all fields must be valid/completed for this to succeed.",
+      "summary": "Submit an envelope (signing is finished). Note that all fields must be valid/completed for this to succeed.\nFails with a 400 if the envelope has expired.",
       "variants": [
         {
           "language": "typescript",
@@ -3820,11 +3820,62 @@
       ]
     },
     {
+      "operationId": "recipient.requestFreshInvite",
+      "group": "Recipient",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Email a signer a new invite link. This is meant for signers who come back with an old or expired\nlink: any key previously issued for the role works here, expired or not, and no session is needed.\nThe link always goes to the recipient's address on file. Requests are throttled to one a minute\nper recipient, and a throttled call fails with a 429 whose body includes `retry_after` (seconds).\nFails with a 400 if the envelope is no longer active, is no_contact, or the recipient has already\nsubmitted, declined, or failed authentication.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "requestFreshInvite(endpoint: VerdocsEndpoint, envelope_id: string, role_name: string, key: string): Promise<object>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "envelope_id",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "role_name",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "key",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<object>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {requestFreshInvite, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nawait requestFreshInvite(new VerdocsEndpoint(), envelopeId, roleName, key);"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "recipient.resetRecipient",
       "group": "Recipient",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Fully reset a recipient. This allows the recipient to restart failed KBA flows, change\nfields they may have filled in incorrectly while signing, etc. This cannot be used on a\ncanceled or completed envelope, but may be used to restart an envelope marked declined.",
+      "summary": "Fully reset a recipient. This allows the recipient to restart failed KBA flows, change\nfields they may have filled in incorrectly while signing, etc. This cannot be used on a\ncanceled, completed, or expired envelope (use resetEnvelope() to revive an expired one), but\nmay be used to restart an envelope marked declined.",
       "variants": [
         {
           "language": "typescript",
@@ -4423,7 +4474,7 @@
       "group": "Auth",
       "page": "Endpoints",
       "gettingStarted": true,
-      "summary": "Authenticate to Verdocs.",
+      "summary": "Authenticate to Verdocs. Accounts that only use social sign-in have no password (see\n`IUser.has_password`), so the password grant always fails for them with a 401.",
       "variants": [
         {
           "language": "typescript",
@@ -8006,6 +8057,50 @@
           "example": {
             "language": "csharp",
             "code": "if (EnvelopePermissions.RecipientHasAction(recipient))\n{\n    // ...\n}"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "envelope.resetEnvelope",
+      "group": "Envelope",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Reset an envelope that has expired, or that stalled because a recipient failed authentication\n(too many wrong codes, or a failed or timed-out KBA check). Failed recipients get their\nauthentication cleared and a fresh invite. An expired envelope also re-invites everyone who was\nstill waiting to act, and gets a new expiration its original lifetime from now unless you pass\none. No emails go out for no_contact envelopes. Completed, declined, and canceled envelopes\ncannot be reset, and an envelope with nothing to reset is rejected with a 400.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "resetEnvelope(endpoint: VerdocsEndpoint, envelopeId: string, expiresAt?: string): Promise<TEnvelopeUpdateResult>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "envelopeId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "expiresAt",
+              "type": "string",
+              "optional": true,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<TEnvelopeUpdateResult>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {resetEnvelope, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nawait resetEnvelope(VerdocsEndpoint.getDefault(), envelopeId);\n\n// Or choose the new expiration yourself:\nawait resetEnvelope(VerdocsEndpoint.getDefault(), envelopeId, '2026-12-31T23:59:59Z');"
           }
         }
       ]

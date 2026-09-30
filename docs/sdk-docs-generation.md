@@ -1,6 +1,6 @@
 # SDK docs generation
 
-This is the plan for generating reference documentation for our backend language SDKs (`packages/js-sdk`, `sdks/python`, `sdks/csharp`, and whatever we add next) and publishing it into the Fumadocs dev-docs site. It supersedes the earlier per-language-tree design. It is a design doc, not shipped code. Nothing here is built yet.
+This is the plan for generating reference documentation for our backend language SDKs (`packages/js-sdk`, `sdks/python`, `sdks/csharp`, and whatever we add next) and publishing it into the Fumadocs dev-docs site. It supersedes the earlier per-language-tree design. It is a design doc, and part of it is built. Each SDK has an extractor that writes its own `sdk-docs.json` (`packages/js-sdk`, `sdks/python`, `sdks/csharp`), `packages/js-sdk/generated/sdks/unify-sdks.ts` merges them into `packages/js-sdk/unified-sdks.json`, and `pnpm generate:docs` copies that file and `openapi.json` into the platform dev-docs app (see [WORKFLOW.md](WORKFLOW.md)). Not built yet: the `@verdocs/sdk-docs` package, the JSON schemas (`unified-sdks.json` already points at a `sdk-unified.schema.json` that doesn't exist), and the CI checks. The C# extractor also differs from the table below: it reads the XML doc file and reflects over the built assembly instead of normalizing `docfx metadata` YAML.
 
 Scope: the API-client SDKs only. That means `packages/js-sdk` and `sdks/*`. The frontend UI SDKs (`react-sdk`, `angular-sdk`, `vue-sdk`, `wc-sdk`, `web-sdk`) are out of scope; their docs are component and Storybook driven and follow a different track. The REST route reference is already covered by the OpenAPI pipeline, so it is out of scope too.
 
@@ -43,7 +43,7 @@ Worth stating plainly, because the SDK pipeline mirrors it stage for stage.
 
 1. Source of truth is TSDoc plus custom `@api*` tags on the js-sdk functions.
 2. `packages/js-sdk` runs `typedoc` to emit `docs.json` (a reflection AST), then `generated/openapi/generate-openapi.ts` walks that AST and writes `packages/js-sdk/openapi.json` (OpenAPI 3.1).
-3. The spec is copied into the dev-docs app at `apps/dev-docs/app/openapi.json` (today a manual `cp` on publish).
+3. The spec is copied into the dev-docs app at `apps/dev-docs/app/openapi.json` (today js-sdk's `copy-openapi` script, run by `pnpm generate:docs`).
 4. At build time, dev-docs runs `app/scripts/generate-docs.ts`, which calls `fumadocs-openapi`'s `generateFiles({ per: 'operation', groupBy: 'tag' })` and writes MDX into `content/docs/reference/Rest-API/api-docs/` (gitignored, regenerated every build).
 5. Those MDX pages render through `createAPIPage(...)` from `fumadocs-openapi/ui`, registered in `app/mdx-components.tsx`.
 

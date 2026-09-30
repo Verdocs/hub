@@ -226,12 +226,14 @@ def _method_to_symbol(method: griffe.Function) -> dict[str, Any] | None:
 
 
 def _package_version() -> str:
-    try:
-        from verdocs import __version__
-
-        return __version__
-    except Exception:
-        return "1.0.0"
+    # We read pyproject.toml, the same place release.mjs checks, rather than importing verdocs. The import
+    # depends on the venv's editable install pointing at this checkout, and when it doesn't we'd publish
+    # docs stamped with the wrong release.
+    pyproject = ROOT / "pyproject.toml"
+    match = re.search(r'^version\s*=\s*"([^"]+)"', pyproject.read_text(encoding="utf-8"), re.MULTILINE)
+    if not match:
+        raise RuntimeError(f"No version found in {pyproject}")
+    return match.group(1)
 
 
 def _collect_class_symbols(klass: griffe.Class, groups: dict[str, Any]) -> None:

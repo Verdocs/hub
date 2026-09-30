@@ -58,7 +58,7 @@ import { TCreateEnvelopeRequest } from './Types';
  * @apiBody integer(min: 0) initial_reminder? Override the template initial-reminder setting in ms.
  * @apiBody integer(min: 0) followup_reminders? Override the template initial-reminder setting in ms.
  * @apiBody number max_reminder_days? Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14.
- * @apiBody string expires_at? If set, the envelope will automatically expire (be canceled) at this date and time. Expirations must be at least 1 day in the future.
+ * @apiBody string expires_at? If set, the envelope will automatically expire at this date and time (ISO8601), moving to the 'expired' status. Expirations must be at least 1 day in the future.
  * @apiBody string timezone? Define the long-form timezone.
  * @apiBody string locale? Define the locale code.
  * @apiSuccess IEnvelope . The newly-created envelope.
@@ -190,15 +190,20 @@ export const getEnvelopeDocumentPreviewLink = async (endpoint: VerdocsEndpoint, 
       .then((r) => r.data),
   );
 
+// cancelEnvelope and resetEnvelope share PUT /v2/envelopes/:id, and the OpenAPI generator keeps one
+// entry per path and method (the last one it sees wins). Both carry the tags for the whole operation
+// so the spec is right whichever one lands.
+
 /**
  * Cancel an Envelope.
  *
  * @group Envelopes
- * @api PUT /v2/envelopes/:id Cancel envelope
- * @apiParam string(format: 'uuid') id The ID of the envelope to cancel.
- * @apiBody string(enum: 'cancel') action The action to perform (currently only "cancel" is supported).
+ * @api PUT /v2/envelopes/:id Cancel or reset envelope
+ * @apiParam string(format: 'uuid') id The ID of the envelope to operate on.
+ * @apiBody string(enum: 'cancel'|'reset') action The action to perform. "cancel" ends the envelope permanently. "reset" revives an expired envelope, or one stalled on a recipient who failed authentication, and sends fresh invites.
+ * @apiBody string expires_at? Only used with "reset". A new expiration date/time (ISO8601) in the future. If omitted and the current expiration has passed, the new one is set the envelope's original lifetime from now (at least 1 day).
  * @apiSuccess IEnvelope . The updated envelope.
- * 
+ *
  * @sdkOperation envelope.cancelEnvelope
  * @sdkGroup Envelope
  * @sdkPage Endpoints
@@ -206,6 +211,39 @@ export const getEnvelopeDocumentPreviewLink = async (endpoint: VerdocsEndpoint, 
 export const cancelEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string) =>
   endpoint.api //
     .put<TEnvelopeUpdateResult>(`/v2/envelopes/${envelopeId}`, { action: 'cancel' })
+    .then((r) => r.data);
+
+/**
+ * Reset an envelope that has expired, or that stalled because a recipient failed authentication
+ * (too many wrong codes, or a failed or timed-out KBA check). Failed recipients get their
+ * authentication cleared and a fresh invite. An expired envelope also re-invites everyone who was
+ * still waiting to act, and gets a new expiration its original lifetime from now unless you pass
+ * one. No emails go out for no_contact envelopes. Completed, declined, and canceled envelopes
+ * cannot be reset, and an envelope with nothing to reset is rejected with a 400.
+ *
+ * ```typescript
+ * import {resetEnvelope, VerdocsEndpoint} from '@verdocs/js-sdk';
+ *
+ * await resetEnvelope(VerdocsEndpoint.getDefault(), envelopeId);
+ *
+ * // Or choose the new expiration yourself:
+ * await resetEnvelope(VerdocsEndpoint.getDefault(), envelopeId, '2026-12-31T23:59:59Z');
+ * ```
+ *
+ * @group Envelopes
+ * @api PUT /v2/envelopes/:id Cancel or reset envelope
+ * @apiParam string(format: 'uuid') id The ID of the envelope to operate on.
+ * @apiBody string(enum: 'cancel'|'reset') action The action to perform. "cancel" ends the envelope permanently. "reset" revives an expired envelope, or one stalled on a recipient who failed authentication, and sends fresh invites.
+ * @apiBody string expires_at? Only used with "reset". A new expiration date/time (ISO8601) in the future. If omitted and the current expiration has passed, the new one is set the envelope's original lifetime from now (at least 1 day).
+ * @apiSuccess IEnvelope . The updated envelope.
+ *
+ * @sdkOperation envelope.resetEnvelope
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
+ */
+export const resetEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: string, expiresAt?: string) =>
+  endpoint.api //
+    .put<TEnvelopeUpdateResult>(`/v2/envelopes/${envelopeId}`, { action: 'reset', expires_at: expiresAt })
     .then((r) => r.data);
 
 /**
@@ -242,7 +280,7 @@ export const getEnvelopeFile = async (endpoint: VerdocsEndpoint, documentId: str
  * @apiBody integer(min: 0) initial_reminder? Change the initial-reminder setting (in ms).
  * @apiBody integer(min: 0) followup_reminders? Change the followup-reminder setting (in ms).
  * @apiBody number max_reminder_days? Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14.
- * @apiBody string expires_at? If set, the envelope will automatically expire (be canceled) at this date and time. Expirations must be at least 1 day in the future.
+ * @apiBody string expires_at? If set, the envelope will automatically expire at this date and time (ISO8601), moving to the 'expired' status. Expirations must be at least 1 day in the future.
  * @apiBody string(enum:'private'|'shared') visibility? Change the envelope's visibility setting
  * @apiBody boolean no_contact? If set to true, no email or SMS messages will be sent to any recipients.
  * @apiBody object data? Update the developer-supplied metadata attached to the envelope.
@@ -401,7 +439,7 @@ export interface ITimeRange {
 export interface IListEnvelopesParams {
   q?: string;
   view?: 'inbox' | 'sent' | 'action' | 'waiting' | 'completed';
-  status?: ('complete' | 'pending' | 'in progress' | 'declined' | 'canceled')[];
+  status?: ('complete' | 'pending' | 'in progress' | 'declined' | 'canceled' | 'expired')[];
   include_org?: boolean;
   template_id?: string;
   created_before?: string;
@@ -424,8 +462,8 @@ export interface IListEnvelopesParams {
  * @group Envelopes
  * @api GET /v2/envelopes List envelopes
  * @apiQuery string q? Match envelopes whose name contains this string
- * @apiQuery string(enum: 'inbox' | 'sent' | 'action' | 'waiting' | 'completed') view? Request pre-defined view. `inbox` returns envelopes where action is required by the caller. `sent` returns envelopes created by the caller. `action` returns envelopes where action is required by the caller. `waiting` returns envelopes where action is required by anyone. `completed` returns envelopes where all actions are complete.
- * @apiQuery array(items: 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled') status? Match envelopes in one of the specified states.
+ * @apiQuery string(enum: 'inbox' | 'sent' | 'action' | 'waiting' | 'completed') view? Request pre-defined view. `inbox` returns envelopes the caller has been invited to as a recipient, including ones they have since submitted, declined, or failed authentication on. `sent` returns envelopes created by the caller. `action` returns envelopes where action is required by the caller. `waiting` returns envelopes where action is required by anyone. `completed` returns envelopes where all actions are complete.
+ * @apiQuery array(items: 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled' | 'expired') status? Match envelopes in one of the specified states.
  * @apiQuery boolean(default: false) include_org? If true, include organizations-shared envelopes
  * @apiQuery string(format: uuid) template_id? Match envelopes created from the specified template ID
  * @apiQuery string(format: date-time) created_before? Match envelopes created before this date

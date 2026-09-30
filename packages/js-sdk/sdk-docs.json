@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.12.3",
+  "version": "6.12.4",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -1130,6 +1130,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.TEnvelopeStatus": {
+          "sdkOperation": "ungrouped.TEnvelopeStatus",
+          "kind": "type",
+          "name": "TEnvelopeStatus",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TEnvelopeStatus",
+          "summary": "An envelope becomes 'expired' when it passes its expires_at before every recipient has acted. Unlike\n'canceled', the sender can bring it back with resetEnvelope().",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.TMFAType": {
           "sdkOperation": "ungrouped.TMFAType",
           "kind": "type",
@@ -1251,6 +1265,20 @@
           "resource": "type",
           "signature": "TRecipientAuthMethod",
           "summary": "The authentication method(s) required for a recipient to access an envelope. \"Passcode\" will require a\nPIN or passcode to be entered, which is intended to be known to the sender and recipient ahead of time\nand communicated by means of their choosing. \"SMS\" and \"Email\" will send a one-time-code via the respective\nchannel for the recipient to enter. \"KBA\" will require the recipient to confirm personal information such\nas prior addresses, phone numbers, etc. \"ID\" will require the recipient to perform full ID-based verification.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TRecipientStatus": {
+          "sdkOperation": "ungrouped.TRecipientStatus",
+          "kind": "type",
+          "name": "TRecipientStatus",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TRecipientStatus",
+          "summary": "A recipient becomes 'failed' after too many wrong passcode, SMS, or email codes, or a failed or timed-out\nKBA check. They cannot continue until the sender resets them with resetEnvelope() or resetRecipient().",
           "params": [],
           "throws": [],
           "examples": [],
@@ -2954,7 +2982,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "envelopeRecipientSubmit(endpoint: VerdocsEndpoint, envelopeId: string, roleName: string, data?: IRecipientSubmitBody): Promise<IRecipient>",
-          "summary": "Submit an envelope (signing is finished). Note that all fields must be valid/completed for this to succeed.",
+          "summary": "Submit an envelope (signing is finished). Note that all fields must be valid/completed for this to succeed.\nFails with a 400 if the envelope has expired.",
           "params": [
             {
               "name": "endpoint",
@@ -3073,6 +3101,58 @@
           "examples": [],
           "deprecated": false
         },
+        "recipient.requestFreshInvite": {
+          "sdkOperation": "recipient.requestFreshInvite",
+          "kind": "function",
+          "name": "requestFreshInvite",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "requestFreshInvite(endpoint: VerdocsEndpoint, envelope_id: string, role_name: string, key: string): Promise<object>",
+          "summary": "Email a signer a new invite link. This is meant for signers who come back with an old or expired\nlink: any key previously issued for the role works here, expired or not, and no session is needed.\nThe link always goes to the recipient's address on file. Requests are throttled to one a minute\nper recipient, and a throttled call fails with a 429 whose body includes `retry_after` (seconds).\nFails with a 400 if the envelope is no longer active, is no_contact, or the recipient has already\nsubmitted, declined, or failed authentication.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "envelope_id",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "role_name",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "key",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<object>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {requestFreshInvite, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nawait requestFreshInvite(new VerdocsEndpoint(), envelopeId, roleName, key);"
+            }
+          ],
+          "deprecated": false
+        },
         "recipient.resetRecipient": {
           "sdkOperation": "recipient.resetRecipient",
           "kind": "function",
@@ -3081,7 +3161,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "resetRecipient(endpoint: VerdocsEndpoint, envelopeId: string, roleName: string): Promise<object>",
-          "summary": "Fully reset a recipient. This allows the recipient to restart failed KBA flows, change\nfields they may have filled in incorrectly while signing, etc. This cannot be used on a\ncanceled or completed envelope, but may be used to restart an envelope marked declined.",
+          "summary": "Fully reset a recipient. This allows the recipient to restart failed KBA flows, change\nfields they may have filled in incorrectly while signing, etc. This cannot be used on a\ncanceled, completed, or expired envelope (use resetEnvelope() to revive an expired one), but\nmay be used to restart an envelope marked declined.",
           "params": [
             {
               "name": "endpoint",
@@ -3350,7 +3430,7 @@
           "gettingStarted": true,
           "resource": "function",
           "signature": "authenticate(endpoint: VerdocsEndpoint, params: TAuthenticationRequest): Promise<IAuthenticateResponse>",
-          "summary": "Authenticate to Verdocs.",
+          "summary": "Authenticate to Verdocs. Accounts that only use social sign-in have no password (see\n`IUser.has_password`), so the password grant always fails for them with a 401.",
           "params": [
             {
               "name": "endpoint",
@@ -5046,6 +5126,51 @@
           },
           "throws": [],
           "examples": [],
+          "deprecated": false
+        },
+        "envelope.resetEnvelope": {
+          "sdkOperation": "envelope.resetEnvelope",
+          "kind": "function",
+          "name": "resetEnvelope",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "resetEnvelope(endpoint: VerdocsEndpoint, envelopeId: string, expiresAt?: string): Promise<TEnvelopeUpdateResult>",
+          "summary": "Reset an envelope that has expired, or that stalled because a recipient failed authentication\n(too many wrong codes, or a failed or timed-out KBA check). Failed recipients get their\nauthentication cleared and a fresh invite. An expired envelope also re-invites everyone who was\nstill waiting to act, and gets a new expiration its original lifetime from now unless you pass\none. No emails go out for no_contact envelopes. Completed, declined, and canceled envelopes\ncannot be reset, and an envelope with nothing to reset is rejected with a 400.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "envelopeId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "expiresAt",
+              "type": "string",
+              "description": "",
+              "optional": true,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<TEnvelopeUpdateResult>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {resetEnvelope, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nawait resetEnvelope(VerdocsEndpoint.getDefault(), envelopeId);\n\n// Or choose the new expiration yourself:\nawait resetEnvelope(VerdocsEndpoint.getDefault(), envelopeId, '2026-12-31T23:59:59Z');"
+            }
+          ],
           "deprecated": false
         },
         "envelope.sortDocuments": {

@@ -82,7 +82,8 @@ export interface IOAuth2AuthorizeParams {
 }
 
 /**
- * Authenticate to Verdocs.
+ * Authenticate to Verdocs. Accounts that only use social sign-in have no password (see
+ * `IUser.has_password`), so the password grant always fails for them with a 401.
  *
  * ```typescript
  * import {authenticate, VerdocsEndpoint} from '@verdocs/js-sdk';
