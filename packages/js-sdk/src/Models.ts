@@ -466,7 +466,7 @@ export type TAccessKey = IInPersonAccessKey | IInAppAccessKey | IEmailAccessKey 
 export interface IEnvelope {
   /** Unique identifier for the envelope (UUID) */
   id: string;
-  /** Current status of the envelope. Note that 'complete', 'declined', and 'canceled' are immutable/permanent end states. Also, 'complete' does NOT mean "fully signed in all aspects" (see "signed" for that). 'complete' means complete from a user's perspective: all required data has been submitted and workflow steps completed. */
+  /** Current status of the envelope. Note that 'complete', 'declined', and 'canceled' are immutable/permanent end states, while an 'expired' envelope can be revived with resetEnvelope(). Also, 'complete' does NOT mean "fully signed in all aspects" (see "signed" for that). 'complete' means complete from a user's perspective: all required data has been submitted and workflow steps completed. */
   status: TEnvelopeStatus;
   /** ID of the envelope's creator. */
   profile_id: string;
@@ -494,7 +494,7 @@ export interface IEnvelope {
   created_at: string;
   /** Date/time when the envelope was created. */
   updated_at: string;
-  /** Date/time when the envelope was canceled, or null. */
+  /** Date/time when the envelope was canceled, or null. Expiring does not set this. */
   canceled_at: string;
   /** Date/time when the envelope will automatically expire, or null. */
   expires_at?: string;

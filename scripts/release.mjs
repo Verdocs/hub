@@ -165,8 +165,9 @@ if (publish) {
 // Docs: only packages with a docs script have one, and it writes into the
 // sibling platform checkout (apps/dev-docs), which is committed separately.
 if (target.docs && !skipDocs) {
-  if (publish) run(`pnpm --filter ${target.filter} docs`);
-  else console.log(`would run: pnpm --filter ${target.filter} docs (writes into ../platform/apps/dev-docs)`);
+  // `run` is required: without it `docs` can resolve to pnpm's built-in docs command.
+  if (publish) run(`pnpm --filter ${target.filter} run docs`);
+  else console.log(`would run: pnpm --filter ${target.filter} run docs (writes into ../platform/apps/dev-docs)`);
 }
 
 console.log(`\n${publish ? 'released' : 'dry run complete for'} ${tag}`);

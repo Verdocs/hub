@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.12.3",
+    "version": "6.12.4",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -125,6 +125,16 @@
       "name": "KBA",
       "description": "Knowledge-Based Authentication endpoints for recipient identity verification during signing.",
       "x-displayName": "KBA"
+    },
+    {
+      "name": "Sessions",
+      "description": "A Session represents an active login for a user on a specific device or browser. Each session is issued its own tokens and is tracked separately, allowing users to review where their account is currently signed in. Sessions can be revoked individually or all at once (excluding the current session), immediately invalidating the associated tokens. Managing sessions helps users secure their accounts by signing out of devices they no longer use or do not recognize.",
+      "x-displayName": "Sessions"
+    },
+    {
+      "name": "MFA",
+      "description": "Multi-Factor Authentication (MFA) adds a second layer of security to user accounts by requiring a time-based one-time passcode (TOTP) from an authenticator app in addition to a password. Users enroll by scanning a QR code or entering a secret manually, then confirming with a valid code. On successful enrollment, a set of single-use backup codes is issued for account recovery if the authenticator device is unavailable. A valid code is required to regenerate backup codes or disable MFA, ensuring that a password alone is not enough to remove the second factor.",
+      "x-displayName": "MFA"
     }
   ],
   "paths": {
@@ -1353,8 +1363,8 @@
     },
     "/v2/envelopes/{id}": {
       "put": {
-        "operationId": "cancelEnvelope",
-        "summary": "Cancel envelope",
+        "operationId": "resetEnvelope",
+        "summary": "Cancel or reset envelope",
         "tags": [
           "Envelopes"
         ],
@@ -1362,7 +1372,7 @@
           {
             "in": "path",
             "name": "id",
-            "description": "The ID of the envelope to cancel.",
+            "description": "The ID of the envelope to operate on.",
             "required": true,
             "schema": {
               "type": "string",
@@ -1504,9 +1514,14 @@
                   "action": {
                     "type": "string",
                     "enum": [
-                      "cancel"
+                      "cancel",
+                      "reset"
                     ],
-                    "description": "The action to perform (currently only \"cancel\" is supported)."
+                    "description": "The action to perform. \"cancel\" ends the envelope permanently. \"reset\" revives an expired envelope, or one stalled on a recipient who failed authentication, and sends fresh invites."
+                  },
+                  "expires_at": {
+                    "type": "string",
+                    "description": "Only used with \"reset\". A new expiration date/time (ISO8601) in the future. If omitted and the current expiration has passed, the new one is set the envelope's original lifetime from now (at least 1 day)."
                   }
                 }
               }
@@ -1890,7 +1905,7 @@
                   },
                   "expires_at": {
                     "type": "string",
-                    "description": "If set, the envelope will automatically expire (be canceled) at this date and time. Expirations must be at least 1 day in the future."
+                    "description": "If set, the envelope will automatically expire at this date and time (ISO8601), moving to the 'expired' status. Expirations must be at least 1 day in the future."
                   },
                   "visibility": {
                     "type": "string",
@@ -3054,7 +3069,7 @@
                   },
                   "expires_at": {
                     "type": "string",
-                    "description": "If set, the envelope will automatically expire (be canceled) at this date and time. Expirations must be at least 1 day in the future."
+                    "description": "If set, the envelope will automatically expire at this date and time (ISO8601), moving to the 'expired' status. Expirations must be at least 1 day in the future."
                   },
                   "timezone": {
                     "type": "string",
@@ -3120,7 +3135,7 @@
           {
             "in": "query",
             "name": "view",
-            "description": "Request pre-defined view. `inbox` returns envelopes where action is required by the caller. `sent` returns envelopes created by the caller. `action` returns envelopes where action is required by the caller. `waiting` returns envelopes where action is required by anyone. `completed` returns envelopes where all actions are complete.",
+            "description": "Request pre-defined view. `inbox` returns envelopes the caller has been invited to as a recipient, including ones they have since submitted, declined, or failed authentication on. `sent` returns envelopes created by the caller. `action` returns envelopes where action is required by the caller. `waiting` returns envelopes where action is required by anyone. `completed` returns envelopes where all actions are complete.",
             "schema": {
               "type": "string",
               "enum": [
@@ -3145,7 +3160,8 @@
                   "pending",
                   "in progress",
                   "declined",
-                  "canceled"
+                  "canceled",
+                  "expired"
                 ]
               }
             }
@@ -20510,6 +20526,207 @@
         ]
       }
     },
+    "/v2/sign/unauth/{envelope_id}/{role_name}/{key}/fresh-link": {
+      "post": {
+        "operationId": "requestFreshInvite",
+        "summary": "Request a fresh signing link",
+        "tags": [
+          "Recipients"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "envelope_id",
+            "description": "The envelope to operate on.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "name": "role_name",
+            "description": "The role to send a new link to.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "key",
+            "description": "Any access key previously issued for this role, expired or not.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "description": "Set to \"OK\" when the invite has been sent.",
+                      "type": "string",
+                      "enum": [
+                        "OK"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Emails a new invite link to the recipient's address on file. Throttled to one request per minute per recipient. A throttled request fails with a 429 whose body includes retry_after, the number of seconds to wait.",
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X POST \"https://api.verdocs.com/v2/sign/unauth/ENVELOPE_ID/ROLE_NAME/KEY/fresh-link\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/sign/unauth/ENVELOPE_ID/ROLE_NAME/KEY/fresh-link', {\n  method: 'post',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/sign/unauth/ENVELOPE_ID/ROLE_NAME/KEY/fresh-link\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"POST\", \"/v2/sign/unauth/{envelope_id}/{role_name}/{key}/fresh-link\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/sign/unauth/ENVELOPE_ID/ROLE_NAME/KEY/fresh-link\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/sign/unauth/ENVELOPE_ID/ROLE_NAME/KEY/fresh-link\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
     "/v2/organization-invitations/resend": {
       "post": {
         "operationId": "resendOrganizationInvitation",
@@ -24265,7 +24482,7 @@
         "properties": {
           "canceled_at": {
             "type": "string",
-            "description": "Date/time when the envelope was canceled, or null."
+            "description": "Date/time when the envelope was canceled, or null. Expiring does not set this."
           },
           "created_at": {
             "type": "string",
@@ -24333,7 +24550,7 @@
           },
           "status": {
             "type": "string",
-            "description": "Current status of the envelope. Note that 'complete', 'declined', and 'canceled' are immutable/permanent end states. Also, 'complete' does NOT mean \"fully signed in all aspects\" (see \"signed\" for that). 'complete' means complete from a user's perspective: all required data has been submitted and workflow steps completed."
+            "description": "Current status of the envelope. Note that 'complete', 'declined', and 'canceled' are immutable/permanent end states, while an 'expired' envelope can be revived with resetEnvelope(). Also, 'complete' does NOT mean \"fully signed in all aspects\" (see \"signed\" for that). 'complete' means complete from a user's perspective: all required data has been submitted and workflow steps completed."
           },
           "template_id": {
             "type": "string",
@@ -26053,13 +26270,14 @@
       },
       "TEnvelopeStatus": {
         "type": "string",
-        "description": "",
+        "description": "An envelope becomes 'expired' when it passes its expires_at before every recipient has acted. Unlike\n'canceled', the sender can bring it back with resetEnvelope().",
         "enum": [
           "complete",
           "pending",
           "in progress",
           "declined",
-          "canceled"
+          "canceled",
+          "expired"
         ]
       },
       "TEnvelopeUpdateResult": {
@@ -26163,6 +26381,7 @@
           "envelope:cc",
           "envelope:canceled",
           "envelope:expired",
+          "envelope:reset",
           "owner:updated_recipient_info",
           "owner:get_in_person_link",
           null
@@ -26282,7 +26501,7 @@
       },
       "TRecipientStatus": {
         "type": "string",
-        "description": "",
+        "description": "A recipient becomes 'failed' after too many wrong passcode, SMS, or email codes, or a failed or timed-out\nKBA check. They cannot continue until the sender resets them with resetEnvelope() or resetRecipient().",
         "enum": [
           "invited",
           "opened",

@@ -18,7 +18,12 @@ internal static class Program
     {
         var csproj = Path.Combine(csharpRoot, "src", "Verdocs.Sdk", "Verdocs.Sdk.csproj");
         var match = Regex.Match(File.ReadAllText(csproj), "<Version>([^<]+)</Version>");
-        return match.Success ? match.Groups[1].Value.Trim() : "0.0.0";
+        if (!match.Success)
+        {
+            throw new InvalidOperationException($"No <Version> found in {csproj}.");
+        }
+
+        return match.Groups[1].Value.Trim();
     }
 
     private static readonly HashSet<string> SdkPages = ["Endpoints", "Helpers"];
@@ -36,12 +41,12 @@ internal static class Program
     public static int Main(string[] args)
     {
         var csharpRoot = FindCsharpRoot();
-        var xmlPath = ResolveXmlPath(csharpRoot, args);
+        var assembly = typeof(VerdocsEndpoint).Assembly;
+        var xmlPath = ResolveXmlPath(assembly, args);
         var outputPath = Path.Combine(csharpRoot, "sdk-docs.json");
 
         var docsByMember = LoadXmlDocs(xmlPath);
         var groups = new Dictionary<string, SdkGroup>(StringComparer.Ordinal);
-        var assembly = typeof(VerdocsEndpoint).Assembly;
 
         var types = assembly.GetTypes()
             .Where(t => t.IsPublic && DocumentedNamespaces.Contains(t.Namespace))
@@ -136,31 +141,24 @@ internal static class Program
         throw new InvalidOperationException("Could not locate the sdks/csharp root (Verdocs.Sdk.sln).");
     }
 
-    private static string ResolveXmlPath(string csharpRoot, string[] args)
+    // The XML doc file we read is the one beside the assembly we reflect over. Both come from the same
+    // build, so methods can't be matched against docs from a stale Debug build or an old target framework.
+    private static string ResolveXmlPath(Assembly assembly, string[] args)
     {
         if (args.Length > 0 && File.Exists(args[0]))
         {
             return args[0];
         }
 
-        var candidates = new[]
+        var xmlPath = Path.ChangeExtension(assembly.Location, ".xml");
+        if (!File.Exists(xmlPath))
         {
-            Path.Combine(csharpRoot, "src", "Verdocs.Sdk", "bin", "Debug", "net10.0", "Verdocs.Sdk.xml"),
-            Path.Combine(csharpRoot, "src", "Verdocs.Sdk", "bin", "Release", "net10.0", "Verdocs.Sdk.xml"),
-            Path.Combine(csharpRoot, "src", "Verdocs.Sdk", "bin", "Debug", "net8.0", "Verdocs.Sdk.xml"),
-            Path.Combine(csharpRoot, "src", "Verdocs.Sdk", "bin", "Release", "net8.0", "Verdocs.Sdk.xml"),
-        };
-
-        foreach (var candidate in candidates)
-        {
-            if (File.Exists(candidate))
-            {
-                return candidate;
-            }
+            throw new FileNotFoundException(
+                $"{xmlPath} not found. Build Verdocs.Sdk with GenerateDocumentationFile enabled, or pass the XML path as an argument.",
+                xmlPath);
         }
 
-        throw new FileNotFoundException(
-            "Verdocs.Sdk.xml not found. Run `dotnet build` first, or pass the XML path as an argument.");
+        return xmlPath;
     }
 
     private static Dictionary<string, XmlMemberDocs> LoadXmlDocs(string xmlPath)

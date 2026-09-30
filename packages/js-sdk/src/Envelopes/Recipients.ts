@@ -97,6 +97,37 @@ export const startSigningSession = async (endpoint: VerdocsEndpoint, envelope_id
 };
 
 /**
+ * Email a signer a new invite link. This is meant for signers who come back with an old or expired
+ * link: any key previously issued for the role works here, expired or not, and no session is needed.
+ * The link always goes to the recipient's address on file. Requests are throttled to one a minute
+ * per recipient, and a throttled call fails with a 429 whose body includes `retry_after` (seconds).
+ * Fails with a 400 if the envelope is no longer active, is no_contact, or the recipient has already
+ * submitted, declined, or failed authentication.
+ *
+ * ```typescript
+ * import {requestFreshInvite, VerdocsEndpoint} from '@verdocs/js-sdk';
+ *
+ * await requestFreshInvite(new VerdocsEndpoint(), envelopeId, roleName, key);
+ * ```
+ *
+ * @group Recipients
+ * @api POST /v2/sign/unauth/:envelope_id/:role_name/:key/fresh-link Request a fresh signing link
+ * @apiParam string(format:uuid) envelope_id The envelope to operate on.
+ * @apiParam string role_name The role to send a new link to.
+ * @apiParam string key Any access key previously issued for this role, expired or not.
+ * @apiDescription Emails a new invite link to the recipient's address on file. Throttled to one request per minute per recipient. A throttled request fails with a 429 whose body includes retry_after, the number of seconds to wait.
+ * @apiSuccess string(enum: 'OK') status Set to "OK" when the invite has been sent.
+ *
+ * @sdkOperation recipient.requestFreshInvite
+ * @sdkGroup Recipient
+ * @sdkPage Endpoints
+ */
+export const requestFreshInvite = (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string, key: string) =>
+  endpoint.api //
+    .post<{ status: 'OK' }>(`/v2/sign/unauth/${envelope_id}/${encodeURIComponent(role_name)}/${key}/fresh-link`)
+    .then((r) => r.data);
+
+/**
  * Get an in-person signing link. Must be called by the owner/creator of the envelope. The response
  * also includes the raw access key that may be used to directly initiate a signing session (see
  * `startSigningSession`) as well as an access token representing a valid signing session for
@@ -250,7 +281,8 @@ export const remindRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, r
 /**
  * Fully reset a recipient. This allows the recipient to restart failed KBA flows, change
  * fields they may have filled in incorrectly while signing, etc. This cannot be used on a
- * canceled or completed envelope, but may be used to restart an envelope marked declined.
+ * canceled, completed, or expired envelope (use resetEnvelope() to revive an expired one), but
+ * may be used to restart an envelope marked declined.
  *
  * @group Recipients
  * @api PATCH /v2/envelopes/:envelope_id/recipients/:role_name Reset recipient

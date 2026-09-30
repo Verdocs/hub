@@ -40,6 +40,8 @@ export interface IUserSession {
   profile_id: string;
   organization_id: string;
   global_admin: boolean;
+  grant?: 'client_credentials'; // Only on sessions minted from an API key
+  client_id?: string; // The API key behind a client_credentials session
   // @deprecated
   ['https://verdocs.com/session_type']: 'user';
   // @deprecated
@@ -59,6 +61,8 @@ export interface IIdToken {
   first_name: string;
   last_name: string;
   phone: string;
+  grant?: 'client_credentials'; // Only on sessions minted from an API key
+  client_id?: string; // The API key behind a client_credentials session
 }
 
 /**

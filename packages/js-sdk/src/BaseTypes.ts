@@ -19,8 +19,16 @@ export type TTemplateAction =
 
 export type TRecipientAction = 'submit' | 'decline' | 'prepare' | 'update';
 
-export type TEnvelopeStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
+/**
+ * An envelope becomes 'expired' when it passes its expires_at before every recipient has acted. Unlike
+ * 'canceled', the sender can bring it back with resetEnvelope().
+ */
+export type TEnvelopeStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled' | 'expired';
 
+/**
+ * A recipient becomes 'failed' after too many wrong passcode, SMS, or email codes, or a failed or timed-out
+ * KBA check. They cannot continue until the sender resets them with resetEnvelope() or resetRecipient().
+ */
 export type TRecipientStatus = 'invited' | 'opened' | 'signed' | 'submitted' | 'canceled' | 'pending' | 'declined' | 'failed';
 
 export type TRecipientType = 'signer' | 'cc' | 'approver';
@@ -59,6 +67,7 @@ export type THistoryEvent =
   | 'envelope:cc'
   | 'envelope:canceled'
   | 'envelope:expired'
+  | 'envelope:reset'
   | 'owner:updated_recipient_info'
   | 'owner:get_in_person_link'
   | TDeprecatedHistoryEvent;
