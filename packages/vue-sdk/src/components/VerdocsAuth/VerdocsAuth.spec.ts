@@ -7,6 +7,29 @@ import { makeTestJwt, TEST_API_BASE } from '../../test/support';
 import { VERDOCS_ENDPOINT_KEY } from '../../provider/keys';
 import VerdocsAuth from './VerdocsAuth.vue';
 
+interface ISocialLoginCall {
+  provider: string;
+  options: { returnUri: string; codeChallenge: string; state: string };
+}
+
+const socialLoginCalls = vi.hoisted(() => [] as ISocialLoginCall[]);
+
+// jsdom has no crypto.subtle for the PKCE helpers and no navigation for the start URL, so the
+// handoff to the provider is stubbed here. The real helpers are covered in the js-sdk's own tests.
+vi.mock('@verdocs/js-sdk', async () => {
+  const actual = await vi.importActual<typeof import('@verdocs/js-sdk')>('@verdocs/js-sdk');
+
+  return {
+    ...actual,
+    createCodeVerifier: () => 'TESTVERIFIER',
+    createCodeChallenge: () => Promise.resolve('TESTCHALLENGE'),
+    getSocialLoginUrl: (_endpoint: unknown, provider: string, options: ISocialLoginCall['options']) => {
+      socialLoginCalls.push({ provider, options });
+      return '#social-start';
+    },
+  };
+});
+
 describe('VerdocsAuth', () => {
   let mock: MockAdapter;
   let providers: ISocialProviders;
@@ -15,6 +38,7 @@ describe('VerdocsAuth', () => {
     localStorage.clear();
     sessionStorage.clear();
     window.history.replaceState({}, '', '/');
+    socialLoginCalls.length = 0;
     providers = { google: false, microsoft: false };
 
     // Endpoints created after this point (the test endpoint and the
@@ -255,7 +279,40 @@ describe('VerdocsAuth', () => {
     await flushPromises();
 
     expect(document.querySelector('.vdocs-toast')?.textContent).toContain('Your sign-in timed out');
+    expect(document.querySelector('.vdocs-toast')?.textContent).not.toContain('invalid_grant');
     expect(wrapper.text()).toContain('Log in to your account');
+  });
+
+  it('shows the lock reason when too many codes lock the account', async () => {
+    mock
+      .onPost('/v2/oauth2/token')
+      .replyOnce(403, { error: 'mfa_required', mfa_token: 'MFATOKEN' })
+      .onPost('/v2/oauth2/token')
+      .reply(401, { error: 'Account locked. Please contact support@verdocs.com for assistance.' });
+
+    const wrapper = mountAuth();
+    await signIn(wrapper);
+
+    await setInput(wrapper, 0, '123456');
+    await flushPromises();
+
+    expect(document.querySelector('.vdocs-toast')?.textContent).toContain('Account locked. Please contact support@verdocs.com for assistance.');
+    expect(wrapper.text()).toContain('Log in to your account');
+  });
+
+  it('sends the current URL with its query and hash as the return URI', async () => {
+    providers = { google: true, microsoft: false };
+    window.history.replaceState({}, '', '/login?tab=2&state=STALE#section');
+
+    const wrapper = mountAuth();
+    await flushPromises();
+
+    await clickButton(wrapper, 'Continue with Google');
+    await flushPromises();
+
+    expect(socialLoginCalls).toHaveLength(1);
+    expect(socialLoginCalls[0]?.provider).toEqual('google');
+    expect(socialLoginCalls[0]?.options.returnUri).toEqual(`${window.location.origin}/login?tab=2#section`);
   });
 
   it('exchanges a returned login_code and cleans the URL', async () => {
@@ -303,12 +360,73 @@ describe('VerdocsAuth', () => {
   });
 
   it('reports a provider error and cleans the URL', async () => {
-    window.history.replaceState({}, '', '/?error=email_unverified');
+    sessionStorage.setItem('vdocs-social-login', JSON.stringify({ verifier: 'VERIFIER', state: 'STATE', provider: 'google' }));
+    window.history.replaceState({}, '', '/?error=email_unverified&state=STATE');
 
     mountAuth();
     await flushPromises();
 
     expect(document.querySelector('.vdocs-toast')?.textContent).toContain('verified email address');
     expect(window.location.search).toEqual('');
+  });
+
+  it('strips state from the URL after a provider error', async () => {
+    sessionStorage.setItem('vdocs-social-login', JSON.stringify({ verifier: 'VERIFIER', state: 'STATE', provider: 'google' }));
+    window.history.replaceState({}, '', '/login?error=email_unverified&state=STATE');
+
+    mountAuth();
+    await flushPromises();
+
+    expect(window.location.pathname).toEqual('/login');
+    expect(window.location.search).toEqual('');
+  });
+
+  it('keeps the host history state while cleaning the URL', async () => {
+    window.history.replaceState({ page: 'login' }, '', '/login?login_code=LOGINCODE&state=TAMPERED');
+
+    mountAuth();
+    await flushPromises();
+
+    expect(window.history.state).toEqual({ page: 'login' });
+    expect(window.location.search).toEqual('');
+  });
+
+  it('explains a corporate email requirement', async () => {
+    sessionStorage.setItem('vdocs-social-login', JSON.stringify({ verifier: 'VERIFIER', state: 'STATE', provider: 'google' }));
+    window.history.replaceState({}, '', '/?error=corporate_email_required&state=STATE');
+
+    mountAuth();
+    await flushPromises();
+
+    expect(document.querySelector('.vdocs-toast')?.textContent).toContain('Please use your corporate email address to create an account.');
+  });
+
+  it('explains a locked account', async () => {
+    sessionStorage.setItem('vdocs-social-login', JSON.stringify({ verifier: 'VERIFIER', state: 'STATE', provider: 'google' }));
+    window.history.replaceState({}, '', '/?error=account_locked&state=STATE');
+
+    mountAuth();
+    await flushPromises();
+
+    expect(document.querySelector('.vdocs-toast')?.textContent).toContain('That account is locked. Please contact support@verdocs.com.');
+  });
+
+  it('leaves a stray error parameter alone when no sign-in was started', async () => {
+    window.history.replaceState({}, '', '/?error=access_denied');
+
+    // Toasts attach to document.body outside the component tree, so an earlier case's toast would
+    // still be there for us to misread as our own.
+    document.querySelectorAll('.vdocs-toast').forEach(toast => toast.remove());
+    const replaceState = vi.spyOn(window.history, 'replaceState');
+
+    mountAuth();
+    await flushPromises();
+
+    expect(mock.history.get.some(request => request.url === '/v2/oauth2/social/providers')).toBe(true);
+    expect(document.querySelector('.vdocs-toast')).toBeNull();
+    expect(replaceState).not.toHaveBeenCalled();
+    expect(window.location.search).toEqual('?error=access_denied');
+
+    replaceState.mockRestore();
   });
 });

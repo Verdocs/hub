@@ -1,4 +1,4 @@
-import {ICreateBrandRequest, IUpdateBrandRequest, IAddBrandEmailDomainRequest} from './Types';
+import {ICreateBrandRequest, IUpdateBrandRequest, IAddBrandAppDomainRequest, IAddBrandEmailDomainRequest} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import {IBrand} from '../Models';
 
@@ -157,6 +157,66 @@ export const updateBrandThumbnail = (
 export const deleteBrand = (endpoint: VerdocsEndpoint, organizationId: string, brandId: string) =>
   endpoint.api //
     .delete(`/v2/organizations/${organizationId}/brands/${brandId}`)
+    .then((r) => r.data);
+
+/**
+ * Custom domains allow you to serve signing links, login pages, and documents for a brand from your own subdomain,
+ * e.g. "sign.mycompany.com" instead of "app.verdocs.com". The returned Brand will include two CNAME records which must
+ * be added to your DNS. The first provides the routing, and the second is used for DCV delegation for certificate renewal.
+ * We will poll periodically for these records to be set, and the custom domain will not activate until this is done.
+ *
+ * ```typescript
+ * import {addBrandAppDomain} from '@verdocs/js-sdk';
+ *
+ * const brand = await addBrandAppDomain(endpoint, organizationId, brandId, {subdomain: 'sign.acme.com'});
+ * ```
+ *
+ * @group Brands
+ * @api POST /v2/organizations/:organizationId/brands/:brandId/app-domain Add app domain
+ * @apiBody string subdomain The subdomain to serve Verdocs from (e.g. sign.acme.com)
+ * @apiSuccess IBrand . The updated brand with app domain configuration.
+ *
+ * @sdkOperation brand.addBrandAppDomain
+ * @sdkGroup Brand
+ * @sdkPage Endpoints
+ */
+export const addBrandAppDomain = (endpoint: VerdocsEndpoint, organizationId: string, brandId: string, params: IAddBrandAppDomainRequest) =>
+  endpoint.api //
+    .post<IBrand>(`/v2/organizations/${organizationId}/brands/${brandId}/app-domain`, params)
+    .then((r) => r.data);
+
+/**
+ * Remove a brand's custom app domain. This change takes effect immediately, and should only be done
+ * if you have no active envelopes with invitations pointing to the custom domain, or you plan to
+ * send recipients fresh invite links.
+ *
+ * @group Brands
+ * @api DELETE /v2/organizations/:organizationId/brands/:brandId/app-domain Remove app domain
+ * @apiSuccess IBrand . The updated brand with app domain removed.
+ *
+ * @sdkOperation brand.removeBrandAppDomain
+ * @sdkGroup Brand
+ * @sdkPage Endpoints
+ */
+export const removeBrandAppDomain = (endpoint: VerdocsEndpoint, organizationId: string, brandId: string) =>
+  endpoint.api //
+    .delete<IBrand>(`/v2/organizations/${organizationId}/brands/${brandId}/app-domain`)
+    .then((r) => r.data);
+
+/**
+ * Request an immediate verification check for a custom domain's registration status.
+ *
+ * @group Brands
+ * @api POST /v2/organizations/:organizationId/brands/:brandId/app-domain/verify Verify app domain
+ * @apiSuccess IBrand . The updated brand with current verification status.
+ *
+ * @sdkOperation brand.verifyBrandAppDomain
+ * @sdkGroup Brand
+ * @sdkPage Endpoints
+ */
+export const verifyBrandAppDomain = (endpoint: VerdocsEndpoint, organizationId: string, brandId: string) =>
+  endpoint.api //
+    .post<IBrand>(`/v2/organizations/${organizationId}/brands/${brandId}/app-domain/verify`)
     .then((r) => r.data);
 
 /**

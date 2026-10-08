@@ -107,3 +107,21 @@ export const MFAChallenge: Story = {
       }} />
   ),
 };
+
+export const MFAAccountLocked: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'What a user sees once too many wrong codes lock the account. Enter any six digits.',
+      },
+    },
+  },
+  render: () => (
+    <MockedAuth
+      initialMode="mfa"
+      configure={mock => {
+        mock.onGet('/v2/oauth2/social/providers').reply(200, { google: false, microsoft: false });
+        mock.onPost('/v2/oauth2/token').reply(401, { status: 'ERROR', error: 'Account locked. Please contact support@verdocs.com for assistance.' });
+      }} />
+  ),
+};

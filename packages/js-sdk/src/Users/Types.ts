@@ -26,10 +26,11 @@ export interface IUpdateProfileRequest {
 export interface IAuthenticateResponse {
   access_token: string;
   id_token: string;
-  refresh_token: string;
   expires_in: number;
   access_token_exp: number;
-  refresh_token_exp: number;
+  /** Only API key (client_credentials) sign-ins and their refreshes return a refresh token. */
+  refresh_token?: string;
+  refresh_token_exp?: number;
 }
 
 export interface IChangePasswordRequest {
@@ -86,6 +87,14 @@ export interface IUserLoginSession {
 export interface IRevokeSessionsResponse {
   /** The number of sessions revoked. The caller's current session is never included. */
   revoked: number;
+}
+
+/**
+ * The result of ending the caller's current session.
+ */
+export interface IEndSessionResponse {
+  /** False if there was no login session to end. */
+  ended: boolean;
 }
 
 /**

@@ -42,6 +42,7 @@ export { VdocsTable, type ITableColumn } from './controls/vdocs-table.js';
 export { VdocsOrganizationCard } from './controls/vdocs-organization-card.js';
 
 export { VdocsAuth, type TAuthMode } from './components/vdocs-auth.js';
+export { VdocsSend, type ISendEventDetail, type ISentEventDetail } from './components/vdocs-send.js';
 export { VdocsTemplatesList, type TAllowedTemplateAction, type TStarredFilter } from './components/vdocs-templates-list.js';
 
 export { fieldValue, signerClassName, type IFieldBaseProperties, type IFieldChangeDetail } from './fields/field-base.js';
@@ -58,6 +59,8 @@ export { VdocsFieldTextbox } from './fields/vdocs-field-textbox.js';
 export { VdocsFieldTimestamp } from './fields/vdocs-field-timestamp.js';
 
 export { showToast, type IToastConfig } from './utils/toast.js';
+export { getWebAppUrl } from './utils/environment.js';
+export { updateScrollFade } from './utils/scroll-fade.js';
 export { SDKError, type IAuthStatus, type ITemplateEvent } from './types.js';
 
 export { VdocsDialog } from './dialogs/vdocs-dialog.js';
@@ -106,7 +109,12 @@ export type {
   ITemplateFieldsEvent, IFieldSettingsChangedDetail, IFieldDeletedDetail,
 } from './components/template-events.js';
 
-export { EnvelopesListController, EnvelopeDetailController, invalidateEnvelopeLists, invalidateEnvelope, envelopesListKey, envelopeDetailKey, type IEnvelopesPage, type IEnvelopesListQuery, type IEnvelopeDetailQuery } from './store/envelopes.js';
+export { EnvelopesListController, EnvelopeDetailController, createEnvelope, invalidateEnvelopeLists, invalidateEnvelope, envelopesListKey, envelopeDetailKey, type IEnvelopesPage, type IEnvelopesListQuery, type IEnvelopeDetailQuery } from './store/envelopes.js';
+export {
+  BrandsController, OrganizationController, OrganizationContactsController, EntitlementsController,
+  invalidateOrganizationQueries, brandsListKey, organizationKey, organizationContactsKey, entitlementsKey,
+  type TActiveEntitlements, type IOrganizationScopedQuery, type ISessionScopedQuery,
+} from './store/organizations.js';
 export { VdocsEnvelopesList, type TEnvelopesListView, type TEnvelopesSortBy, type IEnvelopeEvent } from './components/vdocs-envelopes-list.js';
 export { VdocsStatusIndicator, getStatusColor, getStatusMessage, type TIndicatorStatus, type TStatusIndicatorTheme, type TStatusIndicatorSize } from './components/vdocs-status-indicator.js';
 export { VdocsEnvelopeRecipientLink } from './components/vdocs-envelope-recipient-link.js';

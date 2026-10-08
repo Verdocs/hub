@@ -29,7 +29,8 @@ export interface ISigningSession {
  */
 export interface IUserSession {
   jti: string;
-  sid?: string; // TODO: After all sessions are upgraded, this will no longer be optional
+  /** Session ID for active user logins. Omitted for API-key based sessions. */
+  sid?: string;
   aud: string;
   iss: string;
   sub: string; // Verdocs user_id
@@ -40,6 +41,10 @@ export interface IUserSession {
   profile_id: string;
   organization_id: string;
   global_admin: boolean;
+  /** Grant type for API-key based sessions. Omitted for active user logins. */
+  grant?: 'client_credentials';
+  /** Client ID for API-key based sessions. Omitted for active user logins. */
+  client_id?: string;
   // @deprecated
   ['https://verdocs.com/session_type']: 'user';
   // @deprecated
@@ -59,6 +64,12 @@ export interface IIdToken {
   first_name: string;
   last_name: string;
   phone: string;
+  /** Session ID for active user logins. Omitted for API-key based sessions. */
+  sid?: string;
+  /** Grant type for API-key based sessions. Omitted for active user logins. */
+  grant?: 'client_credentials';
+  /** Client ID for API-key based sessions. Omitted for active user logins. */
+  client_id?: string;
 }
 
 /**

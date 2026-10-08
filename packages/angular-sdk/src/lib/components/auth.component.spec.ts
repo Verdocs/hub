@@ -2,7 +2,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import type { ISocialProviders } from '@verdocs/js-sdk';
 import { TestBed, type ComponentFixture } from '@angular/core/testing';
-import { VerdocsAuthComponent } from './auth.component';
+import { currentReturnUri, VerdocsAuthComponent } from './auth.component';
 import { provideVerdocs } from '../provide-verdocs';
 import { makeTestJwt } from '../test-support';
 import { TEST_API_BASE } from '../session';
@@ -275,6 +275,25 @@ describe('VerdocsAuthComponent', () => {
     await settle(fixture);
 
     expect(document.querySelector('.vdocs-toast')?.textContent).toContain('Your sign-in timed out');
+    expect(document.querySelector('.vdocs-toast')?.textContent).not.toContain('invalid_grant');
+    expect(fixture.nativeElement.textContent).toContain('Log in to your account');
+  });
+
+  it('shows the server message when too many wrong codes lock the account', async () => {
+    mock
+      .onPost('/v2/oauth2/token')
+      .replyOnce(403, { error: 'mfa_required', mfa_token: 'MFATOKEN' })
+      .onPost('/v2/oauth2/token')
+      .reply(401, { status: 'ERROR', error: 'Account locked. Please contact support@verdocs.com for assistance.' });
+
+    const fixture = TestBed.createComponent(VerdocsAuthComponent);
+    fixture.detectChanges();
+    await signIn(fixture);
+
+    setValue(fixture, 'input', '123456');
+    await settle(fixture);
+
+    expect(document.querySelector('.vdocs-toast')?.textContent).toContain('Account locked. Please contact support@verdocs.com for assistance.');
     expect(fixture.nativeElement.textContent).toContain('Log in to your account');
   });
 
@@ -325,8 +344,12 @@ describe('VerdocsAuthComponent', () => {
     expect(window.location.search).toEqual('');
   });
 
+  const storeAttempt = () =>
+    sessionStorage.setItem('vdocs-social-login', JSON.stringify({ verifier: 'VERIFIER', state: 'STATE', provider: 'google' }));
+
   it('reports a provider error and cleans the URL', async () => {
-    window.history.replaceState({}, '', '/?error=email_unverified');
+    storeAttempt();
+    window.history.replaceState({}, '', '/?error=email_unverified&state=STATE');
 
     const fixture = TestBed.createComponent(VerdocsAuthComponent);
     fixture.detectChanges();
@@ -334,5 +357,74 @@ describe('VerdocsAuthComponent', () => {
 
     expect(document.querySelector('.vdocs-toast')?.textContent).toContain('verified email address');
     expect(window.location.search).toEqual('');
+  });
+
+  it('explains a corporate email requirement', async () => {
+    storeAttempt();
+    window.history.replaceState({}, '', '/?error=corporate_email_required&state=STATE');
+
+    const fixture = TestBed.createComponent(VerdocsAuthComponent);
+    fixture.detectChanges();
+    await settle(fixture);
+
+    expect(document.querySelector('.vdocs-toast')?.textContent).toContain('Please use your corporate email address to create an account.');
+  });
+
+  it('explains a locked account', async () => {
+    storeAttempt();
+    window.history.replaceState({}, '', '/?error=account_locked&state=STATE');
+
+    const fixture = TestBed.createComponent(VerdocsAuthComponent);
+    fixture.detectChanges();
+    await settle(fixture);
+
+    expect(document.querySelector('.vdocs-toast')?.textContent).toContain('That account is locked. Please contact support@verdocs.com.');
+  });
+
+  it('leaves a stray error parameter alone when no sign-in was started', async () => {
+    window.history.replaceState({}, '', '/?error=access_denied');
+    document.querySelectorAll('.vdocs-toast').forEach(toast => toast.remove());
+
+    const fixture = TestBed.createComponent(VerdocsAuthComponent);
+    fixture.detectChanges();
+    await settle(fixture);
+
+    expect(document.querySelector('.vdocs-toast')).toBeNull();
+    expect(window.location.search).toEqual('?error=access_denied');
+  });
+
+  it('strips the state alongside the error when a provider rejects the sign-in', async () => {
+    storeAttempt();
+    window.history.replaceState({}, '', '/?tab=2&error=access_denied&state=STATE');
+
+    const fixture = TestBed.createComponent(VerdocsAuthComponent);
+    fixture.detectChanges();
+    await settle(fixture);
+
+    expect(document.querySelector('.vdocs-toast')?.textContent).toContain('Sign-in was canceled');
+    expect(window.location.search).toEqual('?tab=2');
+  });
+
+  it('leaves the host history state alone while cleaning the return parameters', async () => {
+    mock.onPost('/v2/oauth2/token').reply(200, { access_token: makeTestJwt() });
+    mock.onGet('/v2/users/me').reply(200, { email_verified: true });
+
+    sessionStorage.setItem('vdocs-social-login', JSON.stringify({ verifier: 'VERIFIER', state: 'STATE', provider: 'google' }));
+    window.history.replaceState({ hostRoute: 'dashboard' }, '', '/app?tab=2&login_code=LOGINCODE&state=STATE#section');
+
+    const fixture = TestBed.createComponent(VerdocsAuthComponent);
+    fixture.detectChanges();
+    await settle(fixture);
+
+    expect(window.history.state).toEqual({ hostRoute: 'dashboard' });
+    expect(window.location.pathname).toEqual('/app');
+    expect(window.location.search).toEqual('?tab=2');
+    expect(window.location.hash).toEqual('#section');
+  });
+
+  it('sends the current URL with its query and hash as the provider return URI', () => {
+    window.history.replaceState({}, '', '/app?tab=2&login_code=SPENT&state=OLD&error=access_denied#section');
+
+    expect(currentReturnUri()).toEqual(`${window.location.origin}/app?tab=2#section`);
   });
 });

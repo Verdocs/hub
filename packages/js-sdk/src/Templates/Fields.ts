@@ -1,4 +1,5 @@
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {ITemplateFieldRequest} from './Types';
 import {ITemplateField} from '../Models';
 
 /**
@@ -26,14 +27,16 @@ import {ITemplateField} from '../Models';
  * @apiBody string placeholder? Optional placeholder to display in text fields
  * @apiBody string group? For fields that support grouping (radio buttons and check boxes) the value selected will be stored under this name
  * @apiBody array(items:IDropdownOption) options? For dropdown fields, the options to display
- * @apiBody string value? Optional default value to set on the field
+ * @apiBody string default? Default value to pre-fill in the field. For checkboxes and radio buttons, true or "true" starts checked. Numbers are stored as text with thousands separators, e.g. "1,234.50". A date field given an ISO 8601 date starts out showing it as MM/dd/yyyy.
+ * @apiBody boolean(default: false) readonly? Whether recipients are prevented from changing the field. May not be combined with required.
+ * @apiBody string validator? Name of a validator to apply to the field's value (e.g. "email" or "phone")
  * @apiSuccess ITemplateField . Template field
  *
  * @sdkOperation field.createField
  * @sdkGroup Field
  * @sdkPage Endpoints
  */
-export const createField = (endpoint: VerdocsEndpoint, templateId: string, params: ITemplateField) =>
+export const createField = (endpoint: VerdocsEndpoint, templateId: string, params: ITemplateFieldRequest) =>
   endpoint.api //
     .post<ITemplateField>(`/v2/fields/${templateId}`, params)
     .then((r) => r.data);
@@ -49,7 +52,7 @@ export const createField = (endpoint: VerdocsEndpoint, templateId: string, param
  *
  * @group Fields
  * @api PATCH /v2/fields/:template_id/:field_name Update a field
- * @apiBody string name? Rename the field. Note that template field names must be unique within a template.
+ * @apiBody string name? Rename the field. Template field names must be unique within a template.
  * @apiBody string role_name Role to assign to the field.
  * @apiBody string document_id ID of the document upon which to place the field.
  * @apiBody string(enum: 'signature' | 'initial' | 'checkbox' | 'radio' | 'textbox' | 'timestamp' | 'date' | 'dropdown' | 'textarea' | 'attachment' | 'payment') type? Change the field type. Note that while this is technically allowed, fields have different behaviors, validators, default sizes, etc. It is usually easier to add a new field and delete the old one.
@@ -63,14 +66,16 @@ export const createField = (endpoint: VerdocsEndpoint, templateId: string, param
  * @apiBody string placeholder? Optional placeholder to display in text fields
  * @apiBody string group? For fields that support grouping (radio buttons and check boxes) the value selected will be stored under this name
  * @apiBody array(items:IDropdownOption) options? For dropdown fields, the options to display
- * @apiBody string value? Optional default value to set on the field
+ * @apiBody string default? Default value to pre-fill in the field. For checkboxes and radio buttons, true or "true" starts checked. Numbers are stored as text with thousands separators, e.g. "1,234.50". A date field given an ISO 8601 date starts out showing it as MM/dd/yyyy.
+ * @apiBody boolean readonly? Whether recipients are prevented from changing the field
+ * @apiBody string validator? Name of a validator to apply to the field's value (e.g. "email" or "phone")
  * @apiSuccess ITemplateField . Updated template field
  *
  * @sdkOperation field.updateField
  * @sdkGroup Field
  * @sdkPage Endpoints
  */
-export const updateField = (endpoint: VerdocsEndpoint, templateId: string, name: string, params: Partial<ITemplateField>) =>
+export const updateField = (endpoint: VerdocsEndpoint, templateId: string, name: string, params: Partial<ITemplateFieldRequest>) =>
   endpoint.api //
     .patch<ITemplateField>(`/v2/fields/${templateId}/${encodeURIComponent(name)}`, params)
     .then((r) => r.data);

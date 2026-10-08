@@ -22,6 +22,8 @@ const PASSWORD_COMPLEXITY_MESSAGE = 'Password must be at least 8 characters long
 
 const MFA_CODE_ERROR = 'That code did not work. Try the current one from your app.';
 
+const MFA_TIMEOUT_MESSAGE = 'Your sign-in timed out. Enter your password again.';
+
 const SOCIAL_START_ERROR = 'Sign-in could not be started. Try again.';
 
 const SOCIAL_LOGIN_KEY = 'vdocs-social-login';
@@ -36,6 +38,8 @@ interface ISocialLoginAttempt {
 
 const SOCIAL_ERROR_MESSAGES: Record<string, string> = {
   email_unverified: 'That account does not have a verified email address.',
+  corporate_email_required: 'Please use your corporate email address to create an account.',
+  account_locked: 'That account is locked. Please contact support@verdocs.com.',
   provider_error: 'That provider could not sign you in. Try again.',
   access_denied: 'Sign-in was canceled.',
 };
@@ -59,17 +63,25 @@ const clearSocialLoginAttempt = () => {
   }
 };
 
+const SOCIAL_RETURN_PARAMS = [ 'login_code', 'state', 'error' ];
+
 // Our return parameters are not the host app's to route on, and leaving them in place would
-// replay the exchange on a reload with a code that is already spent.
+// replay the exchange on a reload with a code that is already spent. The host's own history
+// state rides along so its router keeps whatever it stashed there.
 const cleanSocialLoginParams = () => {
   const url = new URL(window.location.href);
-  url.searchParams.delete('login_code');
-  url.searchParams.delete('state');
-  url.searchParams.delete('error');
-  window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+  SOCIAL_RETURN_PARAMS.forEach(name => url.searchParams.delete(name));
+  window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
 };
 
-const currentReturnUri = () => `${window.location.origin}${window.location.pathname}`;
+// The api validates return URIs by origin only and preserves the query the URI carries, so we
+// send the whole current URL and a deep link survives the round trip. Leftover return parameters
+// come off first, otherwise the provider would hand us back a spent code alongside the new one.
+export const currentReturnUri = () => {
+  const url = new URL(window.location.href);
+  SOCIAL_RETURN_PARAMS.forEach(name => url.searchParams.delete(name));
+  return url.toString();
+};
 
 const formatRecoveryCode = (value: string) => {
   const cleaned = value.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 8);
@@ -312,8 +324,9 @@ const formatRecoveryCode = (value: string) => {
                 <verdocs-text-input label="Email" type="email" autocomplete="username" [(value)]="email" [disabled]="submitting()" />
                 <verdocs-text-input label="Password" type="password" autocomplete="current-password" [(value)]="password" [disabled]="submitting()" />
 
-                <div class="vdocs:flex vdocs:justify-center vdocs:mt-2.5 vdocs:mb-5">
-                  <verdocs-button label="Forgot Your Password?" variant="text" size="small" [disabled]="submitting()" (click)="mode.set('forgot')" />
+                <!-- The password field carries its own 10px bottom margin, so pull back 6px to sit the link just under it. -->
+                <div class="vdocs:flex vdocs:justify-end vdocs:-mt-1.5 vdocs:mb-5">
+                  <verdocs-button label="Forgot your password?" variant="text" size="small" [disabled]="submitting()" (click)="mode.set('forgot')" />
                 </div>
 
                 <div class="vdocs:flex vdocs:justify-center">
@@ -482,6 +495,13 @@ export class VerdocsAuthComponent {
       }
 
       const attempt = readSocialLoginAttempt();
+
+      // An `error` parameter on its own is just as likely to be the host page's own, so without a
+      // code or a sign-in we started, the URL is not ours to clean up or complain about.
+      if (!loginCode && !attempt) {
+        return;
+      }
+
       clearSocialLoginAttempt();
       cleanSocialLoginParams();
 
@@ -611,7 +631,7 @@ export class VerdocsAuthComponent {
     this.recoveryCode.set('');
 
     // Every wrong attempt spends the token, so the API hands back a fresh one until the attempts
-    // run out. A 401 means the challenge is gone and the password step starts over.
+    // run out.
     const challenge = getMFAChallenge(e);
     if (challenge) {
       this.mfaToken.set(challenge.mfa_token);
@@ -619,9 +639,14 @@ export class VerdocsAuthComponent {
       return;
     }
 
-    if ((e as { response?: { status?: number } })?.response?.status === 401) {
+    const response = (e as { response?: { status?: number; data?: { error?: unknown } } })?.response;
+    if (response?.status === 401) {
+      // The same status carries the account lock we get after too many wrong codes, and that
+      // reason has to reach the user. Any other 401 is an expired challenge, where the body holds
+      // an OAuth error code that would mean nothing to them.
+      const serverMessage = typeof response.data?.error === 'string' ? response.data.error : '';
       this.returnToLogin();
-      showToast('Your sign-in timed out. Enter your password again.', { style: 'error' });
+      showToast(/locked/i.test(serverMessage) ? serverMessage : MFA_TIMEOUT_MESSAGE, { style: 'error' });
       return;
     }
 

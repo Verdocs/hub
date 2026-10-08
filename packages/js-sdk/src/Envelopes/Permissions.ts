@@ -73,7 +73,7 @@ export const useCanAccessEnvelope = (profile: IProfile | null | undefined, envel
  * @sdkPage Helpers
  */
 export const envelopeIsActive = (envelope: IEnvelope) =>
-  envelope.status !== 'complete' && envelope.status !== 'declined' && envelope.status !== 'canceled';
+  envelope.status !== 'complete' && envelope.status !== 'declined' && envelope.status !== 'canceled' && envelope.status !== 'expired';
 
 /**
  * Check to see if the envelope has been completed.
@@ -108,7 +108,24 @@ export const userCanFinishEnvelope = (profile: IProfile | null | undefined, enve
   userIsEnvelopeOwner(profile, envelope) &&
   envelope.status !== 'complete' &&
   envelope.status !== 'declined' &&
-  envelope.status !== 'canceled';
+  envelope.status !== 'canceled' &&
+  envelope.status !== 'expired';
+
+const recipientHasFailedAuth = (recipient: IRecipient) =>
+  recipient.status === 'failed' || Object.values(recipient.auth_method_states || {}).includes('failed');
+
+/**
+ * Check to see if the user can reset the envelope: they own it, and it either expired or has a recipient who failed authentication.
+ * This may be used to pre-determine if the envelope may be reset before calling `resetEnvelope`, e.g. to disable a "Reset" button.
+ *
+ * @sdkOperation envelope.userCanResetEnvelope
+ * @sdkGroup Envelope
+ * @sdkPage Helpers
+ */
+export const userCanResetEnvelope = (profile: IProfile | null | undefined, envelope: IEnvelope) =>
+  userIsEnvelopeOwner(profile, envelope) &&
+  (envelope.status === 'expired' ||
+    ((envelope.status === 'pending' || envelope.status === 'in progress') && (envelope.recipients || []).some(recipientHasFailedAuth)));
 
 /**
  * Returns true if the recipient has a pending action. Note that this does not necessarily mean the recipient can act (yet).
@@ -127,7 +144,7 @@ export const recipientHasAction = (recipient: IRecipient) => !['submitted', 'can
  * @sdkPage Helpers
  */
 export const getRecipientsWithActions = (envelope: IEnvelope) =>
-  ['complete', 'declined', 'canceled'].includes(envelope.status) ? [] : (envelope?.recipients || []).filter(recipientHasAction);
+  ['complete', 'declined', 'canceled', 'expired'].includes(envelope.status) ? [] : (envelope?.recipients || []).filter(recipientHasAction);
 
 /**
  * Returns true if the recipient can act.

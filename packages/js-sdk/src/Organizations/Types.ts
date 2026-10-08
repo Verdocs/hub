@@ -84,6 +84,10 @@ export interface IUpdateBrandRequest {
   locale?: string | null;
 }
 
+export interface IAddBrandAppDomainRequest {
+  subdomain: string;
+}
+
 export interface IAddBrandEmailDomainRequest {
   subdomain: string;
   local_part: string;

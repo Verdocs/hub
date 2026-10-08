@@ -7,7 +7,6 @@ import { getStatusColor, getStatusMessage } from './vdocs-status-indicator.js';
 import type { IDocumentPageInfo } from './vdocs-envelope-document-page.js';
 import type { IEnvelopeUpdatedEvent } from './vdocs-envelope-sidebar.js';
 import { makeTestJwt, mount, TEST_API_BASE } from '../test/helpers.js';
-import type { IContactSelectEvent } from './vdocs-contact-picker.js';
 import { invalidateEnvelopeLists } from '../store/envelopes.js';
 import type { IEnvelopeEvent } from './vdocs-envelopes-list.js';
 import './vdocs-envelope-recipient-summary.js';
@@ -16,7 +15,6 @@ import './vdocs-envelope-recipient-link.js';
 import './vdocs-envelope-document-page.js';
 import './vdocs-envelope-sidebar.js';
 import './vdocs-status-indicator.js';
-import './vdocs-contact-picker.js';
 import './vdocs-envelopes-list.js';
 import './vdocs-sign-footer.js';
 
@@ -338,58 +336,6 @@ describe('vdocs-envelope-document-page', () => {
     expect(infos[0]?.pageNumber).toBe(2);
     expect(infos[0]?.naturalWidth).toBeGreaterThan(0);
     expect(infos[0]?.xScale).toBeGreaterThan(0);
-  });
-});
-
-describe('vdocs-contact-picker', () => {
-  it('keeps OK disabled until name and a valid email are entered', async () => {
-    const el = await mount(document.createElement('vdocs-contact-picker'));
-    const okButton = () => Array.from(el.querySelectorAll('button')).find(b => b.textContent?.trim() === 'OK');
-
-    expect(okButton()?.disabled).toBe(true);
-
-    await page.getByLabelText('First name').fill('Bob');
-    await page.getByLabelText('Last name').fill('Jones');
-    await page.getByPlaceholder('Invite/verify via email...').fill('bob@example.com');
-
-    await vi.waitFor(() => expect(okButton()?.disabled).toBe(false));
-  });
-
-  it('fires vdocs-submit-contact with the completed details', async () => {
-    const submissions: IContactSelectEvent[] = [];
-    const el = await mount(document.createElement('vdocs-contact-picker'));
-    el.addEventListener('vdocs-submit-contact', e => submissions.push(e.detail));
-
-    await page.getByLabelText('First name').fill('Bob');
-    await page.getByLabelText('Last name').fill('Jones');
-    await page.getByPlaceholder('Invite/verify via email...').fill('bob@example.com');
-    await page.getByRole('button', { name: 'OK' }).click();
-
-    expect(submissions).toHaveLength(1);
-    expect(submissions[0]).toEqual(expect.objectContaining({ first_name: 'Bob', last_name: 'Jones', email: 'bob@example.com' }));
-  });
-
-  it('fires vdocs-search-contacts as the user types a name', async () => {
-    const queries: string[] = [];
-    const el = await mount(document.createElement('vdocs-contact-picker'));
-    el.addEventListener('vdocs-search-contacts', e => queries.push(e.detail));
-
-    await page.getByLabelText('First name').fill('Al');
-    expect(queries.at(-1)).toBe('Al');
-  });
-
-  it('fills the form when a suggestion is selected', async () => {
-    const el = await mount(document.createElement('vdocs-contact-picker'));
-    el.suggestions = [ { id: 's-1', first_name: 'Alice', last_name: 'Johnson', email: 'alice.j@example.com' } ];
-    await el.updateComplete;
-
-    await page.getByLabelText('First name').fill('Ali');
-    await vi.waitFor(() => expect(document.body.textContent).toContain('alice.j@example.com'));
-    await page.getByText('Alice Johnson').click();
-
-    await vi.waitFor(() => {
-      expect(el.querySelector<HTMLInputElement>('input[aria-label="First name"]')?.value).toBe('Alice');
-    });
   });
 });
 

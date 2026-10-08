@@ -441,6 +441,30 @@
         },
         {
           "kind": "js",
+          "name": "VdocsSend",
+          "declaration": {
+            "name": "VdocsSend",
+            "module": "./components/vdocs-send.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ISendEventDetail",
+          "declaration": {
+            "name": "ISendEventDetail",
+            "module": "./components/vdocs-send.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ISentEventDetail",
+          "declaration": {
+            "name": "ISentEventDetail",
+            "module": "./components/vdocs-send.js"
+          }
+        },
+        {
+          "kind": "js",
           "name": "VdocsTemplatesList",
           "declaration": {
             "name": "VdocsTemplatesList",
@@ -597,6 +621,22 @@
           "declaration": {
             "name": "IToastConfig",
             "module": "./utils/toast.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "getWebAppUrl",
+          "declaration": {
+            "name": "getWebAppUrl",
+            "module": "./utils/environment.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "updateScrollFade",
+          "declaration": {
+            "name": "updateScrollFade",
+            "module": "./utils/scroll-fade.js"
           }
         },
         {
@@ -1065,6 +1105,14 @@
         },
         {
           "kind": "js",
+          "name": "createEnvelope",
+          "declaration": {
+            "name": "createEnvelope",
+            "module": "./store/envelopes.js"
+          }
+        },
+        {
+          "kind": "js",
           "name": "invalidateEnvelopeLists",
           "declaration": {
             "name": "invalidateEnvelopeLists",
@@ -1117,6 +1165,102 @@
           "declaration": {
             "name": "IEnvelopeDetailQuery",
             "module": "./store/envelopes.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "BrandsController",
+          "declaration": {
+            "name": "BrandsController",
+            "module": "./store/organizations.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "OrganizationController",
+          "declaration": {
+            "name": "OrganizationController",
+            "module": "./store/organizations.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "OrganizationContactsController",
+          "declaration": {
+            "name": "OrganizationContactsController",
+            "module": "./store/organizations.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "EntitlementsController",
+          "declaration": {
+            "name": "EntitlementsController",
+            "module": "./store/organizations.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "invalidateOrganizationQueries",
+          "declaration": {
+            "name": "invalidateOrganizationQueries",
+            "module": "./store/organizations.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "brandsListKey",
+          "declaration": {
+            "name": "brandsListKey",
+            "module": "./store/organizations.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "organizationKey",
+          "declaration": {
+            "name": "organizationKey",
+            "module": "./store/organizations.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "organizationContactsKey",
+          "declaration": {
+            "name": "organizationContactsKey",
+            "module": "./store/organizations.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "entitlementsKey",
+          "declaration": {
+            "name": "entitlementsKey",
+            "module": "./store/organizations.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TActiveEntitlements",
+          "declaration": {
+            "name": "TActiveEntitlements",
+            "module": "./store/organizations.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "IOrganizationScopedQuery",
+          "declaration": {
+            "name": "IOrganizationScopedQuery",
+            "module": "./store/organizations.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ISessionScopedQuery",
+          "declaration": {
+            "name": "ISessionScopedQuery",
+            "module": "./store/organizations.js"
           }
         },
         {
@@ -1532,6 +1676,1846 @@
           "declaration": {
             "name": "VdocsElement",
             "module": "src/base/vdocs-element.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/fields/field-base.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "signerClassName",
+          "return": {
+            "type": {
+              "text": "string"
+            }
+          },
+          "parameters": [
+            {
+              "name": "signerIndex",
+              "default": "0"
+            }
+          ],
+          "description": "The signer-N white-label hook, mirroring the legacy signer classes."
+        },
+        {
+          "kind": "function",
+          "name": "fieldValue",
+          "return": {
+            "type": {
+              "text": "string"
+            }
+          },
+          "parameters": [
+            {
+              "name": "field",
+              "type": {
+                "text": "IEnvelopeField | ITemplateField"
+              }
+            }
+          ],
+          "description": "Resolve the display value for a field, tolerating both field shapes."
+        },
+        {
+          "kind": "function",
+          "name": "syncFieldClasses",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "host",
+              "type": {
+                "text": "Element"
+              }
+            },
+            {
+              "name": "parts",
+              "type": {
+                "text": "Array<string | false | null | undefined>"
+              }
+            }
+          ],
+          "description": "Reconcile a field's host class list. The host element plays the part of the\nReact fields' wrapper div, but consumers may also put their own classes on\nthe tag (the className passthrough there), so we only ever remove classes\nwe added ourselves."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "signerClassName",
+          "declaration": {
+            "name": "signerClassName",
+            "module": "src/fields/field-base.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "fieldValue",
+          "declaration": {
+            "name": "fieldValue",
+            "module": "src/fields/field-base.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "syncFieldClasses",
+          "declaration": {
+            "name": "syncFieldClasses",
+            "module": "src/fields/field-base.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/fields/vdocs-field-attachment.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "An attachment field for signing. The legacy component opened an upload\ndialog; the port goes straight to the platform file picker instead,\nreporting the chosen File through vdocs-select-file (React's onSelectFile\ncallback) and removals through vdocs-delete-file (React's onDeleteFile).\nWhether a file is attached derives from field.value (the stored file name),\nso hosts update the field after handling the upload. The 24px legacy box\nhas no room for a name, so it surfaces as the button tooltip.",
+          "name": "VdocsFieldAttachment",
+          "members": [
+            {
+              "kind": "field",
+              "name": "field",
+              "privacy": "public",
+              "type": {
+                "text": "IEnvelopeField | ITemplateField | undefined"
+              },
+              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "done",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "attribute": "done"
+            },
+            {
+              "kind": "field",
+              "name": "focused",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
+              "default": "false",
+              "attribute": "focused"
+            },
+            {
+              "kind": "field",
+              "name": "signerIndex",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "attribute": "signer-index"
+            },
+            {
+              "kind": "field",
+              "name": "hasFocus",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "hasFocus"
+            },
+            {
+              "kind": "method",
+              "name": "handlePick",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleFile",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleDelete",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleFocus",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleBlur",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired when the signer picks an attachment, with the chosen File in detail.file.",
+              "name": "vdocs-select-file"
+            },
+            {
+              "description": "Fired when the signer removes the current attachment.",
+              "name": "vdocs-delete-file"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "done",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "fieldName": "done"
+            },
+            {
+              "name": "focused",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
+              "default": "false",
+              "fieldName": "focused"
+            },
+            {
+              "name": "signer-index",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "fieldName": "signerIndex"
+            },
+            {
+              "name": "hasFocus",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "hasFocus"
+            }
+          ],
+          "superclass": {
+            "name": "VdocsElement",
+            "module": "/src/base/vdocs-element.js"
+          },
+          "tagName": "vdocs-field-attachment",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "VdocsFieldAttachment",
+          "declaration": {
+            "name": "VdocsFieldAttachment",
+            "module": "src/fields/vdocs-field-attachment.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "vdocs-field-attachment",
+          "declaration": {
+            "name": "VdocsFieldAttachment",
+            "module": "src/fields/vdocs-field-attachment.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/fields/vdocs-field-checkbox.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A checkbox signing field. Renders the field's current value from its\nproperties and reports toggles through vdocs-field-change (React's\nonFieldChange callback). Builder affordances (dragging, the settings\npopover) are not ported; see docs/PORTING.md.\n\nComposes the same design-system checkbox the React field does. The control\nhas no required or aria-label pass-through, so the required treatment lives\nentirely on the host border here.",
+          "name": "VdocsFieldCheckbox",
+          "members": [
+            {
+              "kind": "field",
+              "name": "field",
+              "privacy": "public",
+              "type": {
+                "text": "IEnvelopeField | ITemplateField | undefined"
+              },
+              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "done",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "attribute": "done"
+            },
+            {
+              "kind": "field",
+              "name": "focused",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
+              "default": "false",
+              "attribute": "focused"
+            },
+            {
+              "kind": "field",
+              "name": "signerIndex",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "attribute": "signer-index"
+            },
+            {
+              "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent<{ checked: boolean }>"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired when the signer toggles the box, with the new checked state (boolean) in detail.value.",
+              "name": "vdocs-field-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "done",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "fieldName": "done"
+            },
+            {
+              "name": "focused",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
+              "default": "false",
+              "fieldName": "focused"
+            },
+            {
+              "name": "signer-index",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "fieldName": "signerIndex"
+            }
+          ],
+          "superclass": {
+            "name": "VdocsElement",
+            "module": "/src/base/vdocs-element.js"
+          },
+          "tagName": "vdocs-field-checkbox",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "VdocsFieldCheckbox",
+          "declaration": {
+            "name": "VdocsFieldCheckbox",
+            "module": "src/fields/vdocs-field-checkbox.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "vdocs-field-checkbox",
+          "declaration": {
+            "name": "VdocsFieldCheckbox",
+            "module": "src/fields/vdocs-field-checkbox.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/fields/vdocs-field-date.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A date entry field for signing. The legacy component embedded the\nair-datepicker widget; like the DateInput control, we lean on the platform\npicker (input type=\"date\") instead: no dependency, and a stable yyyy-mm-dd\nvalue format. Native date inputs ignore placeholder text, so the legacy\n\"Date...\" placeholder is dropped. Reports picks through vdocs-field-change\n(React's onFieldChange callback).",
+          "name": "VdocsFieldDate",
+          "members": [
+            {
+              "kind": "field",
+              "name": "field",
+              "privacy": "public",
+              "type": {
+                "text": "IEnvelopeField | ITemplateField | undefined"
+              },
+              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "done",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "attribute": "done"
+            },
+            {
+              "kind": "field",
+              "name": "focused",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
+              "default": "false",
+              "attribute": "focused"
+            },
+            {
+              "kind": "field",
+              "name": "signerIndex",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "attribute": "signer-index"
+            },
+            {
+              "kind": "field",
+              "name": "hasFocus",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "hasFocus"
+            },
+            {
+              "kind": "method",
+              "name": "handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleFocus",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleBlur",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired when the signer picks a date, with the ISO yyyy-mm-dd string (empty when cleared) in detail.value.",
+              "name": "vdocs-field-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "done",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "fieldName": "done"
+            },
+            {
+              "name": "focused",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
+              "default": "false",
+              "fieldName": "focused"
+            },
+            {
+              "name": "signer-index",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "fieldName": "signerIndex"
+            },
+            {
+              "name": "hasFocus",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "hasFocus"
+            }
+          ],
+          "superclass": {
+            "name": "VdocsElement",
+            "module": "/src/base/vdocs-element.js"
+          },
+          "tagName": "vdocs-field-date",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "VdocsFieldDate",
+          "declaration": {
+            "name": "VdocsFieldDate",
+            "module": "src/fields/vdocs-field-date.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "vdocs-field-date",
+          "declaration": {
+            "name": "VdocsFieldDate",
+            "module": "src/fields/vdocs-field-date.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/fields/vdocs-field-dropdown.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A dropdown signing field that lets the signer choose one of the field's\noptions. Renders the field's current value from its properties and reports\nselection through vdocs-field-change (React's onFieldChange callback).\nBuilder affordances (dragging, the settings popover) are not ported; see\ndocs/PORTING.md.",
+          "name": "VdocsFieldDropdown",
+          "members": [
+            {
+              "kind": "field",
+              "name": "field",
+              "privacy": "public",
+              "type": {
+                "text": "IEnvelopeField | ITemplateField | undefined"
+              },
+              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "done",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "attribute": "done"
+            },
+            {
+              "kind": "field",
+              "name": "focused",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner select.",
+              "default": "false",
+              "attribute": "focused"
+            },
+            {
+              "kind": "field",
+              "name": "signerIndex",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "attribute": "signer-index"
+            },
+            {
+              "kind": "method",
+              "name": "handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired when the signer picks an option, with the selected option's id in detail.value.",
+              "name": "vdocs-field-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "done",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "fieldName": "done"
+            },
+            {
+              "name": "focused",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner select.",
+              "default": "false",
+              "fieldName": "focused"
+            },
+            {
+              "name": "signer-index",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "fieldName": "signerIndex"
+            }
+          ],
+          "superclass": {
+            "name": "VdocsElement",
+            "module": "/src/base/vdocs-element.js"
+          },
+          "tagName": "vdocs-field-dropdown",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "VdocsFieldDropdown",
+          "declaration": {
+            "name": "VdocsFieldDropdown",
+            "module": "src/fields/vdocs-field-dropdown.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "vdocs-field-dropdown",
+          "declaration": {
+            "name": "VdocsFieldDropdown",
+            "module": "src/fields/vdocs-field-dropdown.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/fields/vdocs-field-initial.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Displays an initials field. Unsigned, it renders the \"Initial\" affordance\nand reports clicks through vdocs-begin-signing (React's onBeginSigning\ncallback) so the host can run the adopt-initials dialog. Once initialed\n(initial-url set) or done, the adopted image is drawn sized to the field\nbox.\n\nThe legacy component fetched the initials blob by ID itself. Here the host\nresolves the image and passes a URL; the sign embed will own that lookup,\nalong with the legacy Edit/Clear menu on a completed field. Builder-only\naffordances (drag, resize, the settings popover) are omitted per\ndocs/PORTING.md.",
+          "name": "VdocsFieldInitial",
+          "members": [
+            {
+              "kind": "field",
+              "name": "field",
+              "privacy": "public",
+              "type": {
+                "text": "IEnvelopeField | ITemplateField | undefined"
+              },
+              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
+            },
+            {
+              "kind": "field",
+              "name": "initialUrl",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "description": "Resolved URL for the adopted initials image (a data:, blob:, or https: URL).",
+              "default": "''",
+              "attribute": "initial-url"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "done",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "attribute": "done"
+            },
+            {
+              "kind": "field",
+              "name": "focused",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
+              "default": "false",
+              "attribute": "focused"
+            },
+            {
+              "kind": "field",
+              "name": "signerIndex",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "attribute": "signer-index"
+            },
+            {
+              "kind": "method",
+              "name": "handleBegin",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired when the user clicks the unsigned field to start the adopt-initials flow.",
+              "name": "vdocs-begin-signing"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "initial-url",
+              "type": {
+                "text": "string"
+              },
+              "description": "Resolved URL for the adopted initials image (a data:, blob:, or https: URL).",
+              "default": "''",
+              "fieldName": "initialUrl"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "done",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "fieldName": "done"
+            },
+            {
+              "name": "focused",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
+              "default": "false",
+              "fieldName": "focused"
+            },
+            {
+              "name": "signer-index",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "fieldName": "signerIndex"
+            }
+          ],
+          "superclass": {
+            "name": "VdocsElement",
+            "module": "/src/base/vdocs-element.js"
+          },
+          "tagName": "vdocs-field-initial",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "VdocsFieldInitial",
+          "declaration": {
+            "name": "VdocsFieldInitial",
+            "module": "src/fields/vdocs-field-initial.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "vdocs-field-initial",
+          "declaration": {
+            "name": "VdocsFieldInitial",
+            "module": "src/fields/vdocs-field-initial.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/fields/vdocs-field-payment.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Displays a payment field. Unpaid, it renders a dollar-sign affordance and\nreports clicks through vdocs-begin-payment (React's onBeginPayment\ncallback) so the host can run the payment flow; paid or done, it renders a\ndollar-and-check \"collected\" treatment.\n\nThis is a representative display port. The legacy component carried\nvestigial payment plumbing with no provider integration: recipient lists\nfeeding a prepared-by message that never rendered, and a stamp image that\nwas never populated. Collecting a payment belongs to the sign embed era, so\nnone of that is ported. Builder-only affordances (drag, resize, the\nsettings popover) are omitted per docs/PORTING.md.",
+          "name": "VdocsFieldPayment",
+          "members": [
+            {
+              "kind": "field",
+              "name": "field",
+              "privacy": "public",
+              "type": {
+                "text": "IEnvelopeField | ITemplateField | undefined"
+              },
+              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
+            },
+            {
+              "kind": "field",
+              "name": "paid",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the payment-collected treatment instead of the payment affordance.",
+              "default": "false",
+              "attribute": "paid"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "done",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "attribute": "done"
+            },
+            {
+              "kind": "field",
+              "name": "focused",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
+              "default": "false",
+              "attribute": "focused"
+            },
+            {
+              "kind": "field",
+              "name": "signerIndex",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "attribute": "signer-index"
+            },
+            {
+              "kind": "method",
+              "name": "handleBegin",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired when the user clicks the unpaid field to start the payment flow.",
+              "name": "vdocs-begin-payment"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "paid",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the payment-collected treatment instead of the payment affordance.",
+              "default": "false",
+              "fieldName": "paid"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "done",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "fieldName": "done"
+            },
+            {
+              "name": "focused",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
+              "default": "false",
+              "fieldName": "focused"
+            },
+            {
+              "name": "signer-index",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "fieldName": "signerIndex"
+            }
+          ],
+          "superclass": {
+            "name": "VdocsElement",
+            "module": "/src/base/vdocs-element.js"
+          },
+          "tagName": "vdocs-field-payment",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "VdocsFieldPayment",
+          "declaration": {
+            "name": "VdocsFieldPayment",
+            "module": "src/fields/vdocs-field-payment.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "vdocs-field-payment",
+          "declaration": {
+            "name": "VdocsFieldPayment",
+            "module": "src/fields/vdocs-field-payment.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/fields/vdocs-field-radio.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A radio button signing field. Each field is a single button; buttons sharing\nthe same group form an exclusive set. Reports selection through\nvdocs-field-change (React's onFieldChange callback), with this option's id\n(the field name) in detail.value. Builder affordances (dragging, the\nsettings popover, the group tag) are not ported; see docs/PORTING.md.\n\nComposes the same design-system radio button the React field does. The\ncontrol has no required or aria-label pass-through, so the required\ntreatment lives entirely on the host border here.",
+          "name": "VdocsFieldRadio",
+          "members": [
+            {
+              "kind": "field",
+              "name": "field",
+              "privacy": "public",
+              "type": {
+                "text": "IEnvelopeField | ITemplateField | undefined"
+              },
+              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "done",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "attribute": "done"
+            },
+            {
+              "kind": "field",
+              "name": "focused",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
+              "default": "false",
+              "attribute": "focused"
+            },
+            {
+              "kind": "field",
+              "name": "signerIndex",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "attribute": "signer-index"
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "CustomEvent<{ checked: boolean }>"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired when the signer selects the button, with this option's id (the field name) in detail.value.",
+              "name": "vdocs-field-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "done",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "fieldName": "done"
+            },
+            {
+              "name": "focused",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
+              "default": "false",
+              "fieldName": "focused"
+            },
+            {
+              "name": "signer-index",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "fieldName": "signerIndex"
+            }
+          ],
+          "superclass": {
+            "name": "VdocsElement",
+            "module": "/src/base/vdocs-element.js"
+          },
+          "tagName": "vdocs-field-radio",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "VdocsFieldRadio",
+          "declaration": {
+            "name": "VdocsFieldRadio",
+            "module": "src/fields/vdocs-field-radio.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "vdocs-field-radio",
+          "declaration": {
+            "name": "VdocsFieldRadio",
+            "module": "src/fields/vdocs-field-radio.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/fields/vdocs-field-signature.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Displays a signature field. Unsigned, it renders the \"Signature\" affordance\nand reports clicks through vdocs-begin-signing (React's onBeginSigning\ncallback) so the host can run the adopt-a-signature dialog. Once signed\n(signature-url set) or done, the adopted image is drawn sized to the field\nbox.\n\nThe legacy component fetched the signature blob by ID itself. Here the host\nresolves the image and passes a URL; the sign embed will own that lookup,\nalong with the legacy Edit/Clear menu on a signed field. Builder-only\naffordances (drag, resize, the settings popover) are omitted per\ndocs/PORTING.md.",
+          "name": "VdocsFieldSignature",
+          "members": [
+            {
+              "kind": "field",
+              "name": "field",
+              "privacy": "public",
+              "type": {
+                "text": "IEnvelopeField | ITemplateField | undefined"
+              },
+              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
+            },
+            {
+              "kind": "field",
+              "name": "signatureUrl",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "description": "Resolved URL for the adopted signature image (a data:, blob:, or https: URL).",
+              "default": "''",
+              "attribute": "signature-url"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "done",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "attribute": "done"
+            },
+            {
+              "kind": "field",
+              "name": "focused",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
+              "default": "false",
+              "attribute": "focused"
+            },
+            {
+              "kind": "field",
+              "name": "signerIndex",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "attribute": "signer-index"
+            },
+            {
+              "kind": "method",
+              "name": "handleBegin",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired when the user clicks the unsigned field to start the adopt-a-signature flow.",
+              "name": "vdocs-begin-signing"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "signature-url",
+              "type": {
+                "text": "string"
+              },
+              "description": "Resolved URL for the adopted signature image (a data:, blob:, or https: URL).",
+              "default": "''",
+              "fieldName": "signatureUrl"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "done",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "fieldName": "done"
+            },
+            {
+              "name": "focused",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
+              "default": "false",
+              "fieldName": "focused"
+            },
+            {
+              "name": "signer-index",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "fieldName": "signerIndex"
+            }
+          ],
+          "superclass": {
+            "name": "VdocsElement",
+            "module": "/src/base/vdocs-element.js"
+          },
+          "tagName": "vdocs-field-signature",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "VdocsFieldSignature",
+          "declaration": {
+            "name": "VdocsFieldSignature",
+            "module": "src/fields/vdocs-field-signature.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "vdocs-field-signature",
+          "declaration": {
+            "name": "VdocsFieldSignature",
+            "module": "src/fields/vdocs-field-signature.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/fields/vdocs-field-textarea.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A multi-line text entry field for signing. The textarea is uncontrolled:\nfield.value (or the template default) seeds it, and hosts persist edits\nreported through vdocs-field-change (React's onFieldChange callback). Set\ndone to render the final value as text.",
+          "name": "VdocsFieldTextarea",
+          "members": [
+            {
+              "kind": "field",
+              "name": "field",
+              "privacy": "public",
+              "type": {
+                "text": "IEnvelopeField | ITemplateField | undefined"
+              },
+              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "done",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "attribute": "done"
+            },
+            {
+              "kind": "field",
+              "name": "focused",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner textarea.",
+              "default": "false",
+              "attribute": "focused"
+            },
+            {
+              "kind": "field",
+              "name": "signerIndex",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "attribute": "signer-index"
+            },
+            {
+              "kind": "field",
+              "name": "hasFocus",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "hasFocus"
+            },
+            {
+              "kind": "method",
+              "name": "handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleFocus",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleBlur",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired after each edit, with the full text content in detail.value.",
+              "name": "vdocs-field-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "done",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "fieldName": "done"
+            },
+            {
+              "name": "focused",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner textarea.",
+              "default": "false",
+              "fieldName": "focused"
+            },
+            {
+              "name": "signer-index",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "fieldName": "signerIndex"
+            },
+            {
+              "name": "hasFocus",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "hasFocus"
+            }
+          ],
+          "superclass": {
+            "name": "VdocsElement",
+            "module": "/src/base/vdocs-element.js"
+          },
+          "tagName": "vdocs-field-textarea",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "VdocsFieldTextarea",
+          "declaration": {
+            "name": "VdocsFieldTextarea",
+            "module": "src/fields/vdocs-field-textarea.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "vdocs-field-textarea",
+          "declaration": {
+            "name": "VdocsFieldTextarea",
+            "module": "src/fields/vdocs-field-textarea.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/fields/vdocs-field-textbox.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A single-line text signing field. Renders the field's current value from\nits properties and reports edits through vdocs-field-change (React's\nonFieldChange callback), with the full new text in detail.value after every\nkeystroke. The legacy component switched to a textarea for multiline\nfields; that mode is vdocs-field-textarea's job here. Builder affordances\n(dragging, resizing, the settings popover) are not ported; see\ndocs/PORTING.md.",
+          "name": "VdocsFieldTextbox",
+          "members": [
+            {
+              "kind": "field",
+              "name": "field",
+              "privacy": "public",
+              "type": {
+                "text": "IEnvelopeField | ITemplateField | undefined"
+              },
+              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "done",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "attribute": "done"
+            },
+            {
+              "kind": "field",
+              "name": "focused",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
+              "default": "false",
+              "attribute": "focused"
+            },
+            {
+              "kind": "field",
+              "name": "signerIndex",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "attribute": "signer-index"
+            },
+            {
+              "kind": "method",
+              "name": "handleInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired after every keystroke, with the full new text in detail.value.",
+              "name": "vdocs-field-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "done",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "fieldName": "done"
+            },
+            {
+              "name": "focused",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
+              "default": "false",
+              "fieldName": "focused"
+            },
+            {
+              "name": "signer-index",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "fieldName": "signerIndex"
+            }
+          ],
+          "superclass": {
+            "name": "VdocsElement",
+            "module": "/src/base/vdocs-element.js"
+          },
+          "tagName": "vdocs-field-textbox",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "VdocsFieldTextbox",
+          "declaration": {
+            "name": "VdocsFieldTextbox",
+            "module": "src/fields/vdocs-field-textbox.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "vdocs-field-textbox",
+          "declaration": {
+            "name": "VdocsFieldTextbox",
+            "module": "src/fields/vdocs-field-textbox.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/fields/vdocs-field-timestamp.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A display-only timestamp field. Signers never type into these: the platform\nstamps them when the document is submitted, so the field fires no events.\nThe legacy component previewed the current time in a permanently disabled\ninput; a hint reads clearer, so an unfilled field says what will happen\ninstead of showing a time that is not real yet.",
+          "name": "VdocsFieldTimestamp",
+          "members": [
+            {
+              "kind": "field",
+              "name": "field",
+              "privacy": "public",
+              "type": {
+                "text": "IEnvelopeField | ITemplateField | undefined"
+              },
+              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "done",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "attribute": "done"
+            },
+            {
+              "kind": "field",
+              "name": "focused",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment. Timestamps take no input, so nothing receives keyboard focus.",
+              "default": "false",
+              "attribute": "focused"
+            },
+            {
+              "kind": "field",
+              "name": "signerIndex",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "attribute": "signer-index"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disable input regardless of the field's own readonly state (preview modes).",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "done",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render the display-final-value state (signing is complete for this field).",
+              "default": "false",
+              "fieldName": "done"
+            },
+            {
+              "name": "focused",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the focused treatment. Timestamps take no input, so nothing receives keyboard focus.",
+              "default": "false",
+              "fieldName": "focused"
+            },
+            {
+              "name": "signer-index",
+              "type": {
+                "text": "number"
+              },
+              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
+              "default": "0",
+              "fieldName": "signerIndex"
+            }
+          ],
+          "superclass": {
+            "name": "VdocsElement",
+            "module": "/src/base/vdocs-element.js"
+          },
+          "tagName": "vdocs-field-timestamp",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "VdocsFieldTimestamp",
+          "declaration": {
+            "name": "VdocsFieldTimestamp",
+            "module": "src/fields/vdocs-field-timestamp.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "vdocs-field-timestamp",
+          "declaration": {
+            "name": "VdocsFieldTimestamp",
+            "module": "src/fields/vdocs-field-timestamp.ts"
           }
         }
       ]
@@ -2325,7 +4309,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A contact entry form for filling out Recipient objects when sending\nenvelopes. As the user types in the name fields the current text is reported\nvia vdocs-search-contacts, and the caller may update the `suggestions`\nproperty with matching contacts (or pre-seed it). Selecting a suggestion\nfills the form.",
+          "description": "A contact entry form for filling out Recipient objects when sending\nenvelopes.\n\nThe picker carries no card chrome of its own: the host supplies the surface\nand, when it constrains the height, the fields scroll above a pinned Done\nbutton.\n\nAs the user types in the name fields the current text is reported via\nvdocs-search-contacts, and the caller may update the `suggestions` property\nwith matching contacts (or pre-seed it). Selecting a suggestion fills the\nform.",
           "name": "VdocsContactPicker",
           "members": [
             {
@@ -2354,8 +4338,18 @@
               "type": {
                 "text": "TRecipientAuthMethod[]"
               },
-              "description": "The verification methods the sender's account may offer. Property-only. Passcode and email are the defaults.",
+              "description": "The verification methods the sender's account may offer, typically derived from the\norganization's entitlements. All five methods are always listed; the ones missing here\nare shown locked. Include 'sms' to enable SMS verification (that also shows the phone\nfield), and 'kba' or 'id' if the account has those entitlements. Property-only.",
               "default": "[ 'passcode', 'email' ]"
+            },
+            {
+              "kind": "field",
+              "name": "showCancel",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether to show a Cancel button beside Done. Hosts with their own way out turn it off.\nProperty-only, because it defaults to true and a boolean attribute cannot switch that off.",
+              "default": "true"
             },
             {
               "kind": "field",
@@ -2459,7 +4453,17 @@
             },
             {
               "kind": "field",
+              "name": "body",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
               "name": "namesRow",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "suggestionList",
               "privacy": "private"
             },
             {
@@ -2467,6 +4471,11 @@
               "name": "baseId",
               "privacy": "private",
               "default": "`vdocs-picker-${++pickerSeq}`"
+            },
+            {
+              "kind": "field",
+              "name": "handleDocumentClick",
+              "privacy": "private"
             },
             {
               "kind": "field",
@@ -2478,10 +4487,37 @@
               "readonly": true
             },
             {
+              "kind": "method",
+              "name": "methodSatisfied",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "method",
+                  "type": {
+                    "text": "TRecipientAuthMethod"
+                  }
+                }
+              ]
+            },
+            {
               "kind": "field",
               "name": "canSubmit",
               "type": {
                 "text": "boolean"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "signingOption",
+              "type": {
+                "text": "TSigningOption"
               },
               "privacy": "private",
               "readonly": true
@@ -2528,11 +4564,18 @@
                   "type": {
                     "text": "TRecipientAuthMethod"
                   }
-                },
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleSetSigningOption",
+              "privacy": "private",
+              "parameters": [
                 {
-                  "name": "checked",
+                  "name": "option",
                   "type": {
-                    "text": "boolean"
+                    "text": "TSigningOption"
                   }
                 }
               ]
@@ -2541,6 +4584,40 @@
               "kind": "method",
               "name": "handleSubmit",
               "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "renderPill",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "label",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "selected",
+                  "type": {
+                    "text": "boolean"
+                  }
+                },
+                {
+                  "name": "onClick",
+                  "type": {
+                    "text": "() => void"
+                  }
+                },
+                {
+                  "name": "locked",
+                  "default": "false"
+                }
+              ]
             },
             {
               "kind": "method",
@@ -2559,7 +4636,7 @@
               "name": "vdocs-search-contacts"
             },
             {
-              "description": "Fired with an IContactSelectEvent when the user clicks OK.",
+              "description": "Fired with an IContactSelectEvent when the user clicks Done.",
               "name": "vdocs-submit-contact"
             },
             {
@@ -4450,6 +6527,732 @@
           "declaration": {
             "name": "VdocsEnvelopesList",
             "module": "src/components/vdocs-envelopes-list.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/vdocs-send.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Send a template to one or more recipients as an envelope for signing. The\ncard shows a roster of the template's roles plus the delivery settings, and\nevery row slides the card across to a detail view rather than opening a\npopup.\n\nHost applications should ensure the template is sendable before displaying\nthis component. To be sendable a template needs at least one document, at\nleast one participant, and at least one field assigned to every signer. This\ncomponent renders nothing otherwise.\n\n```html\n<vdocs-send template-id=\"TEMPLATEID\"></vdocs-send>\n```",
+          "name": "VdocsSend",
+          "members": [
+            {
+              "kind": "field",
+              "name": "endpoint",
+              "privacy": "public",
+              "type": {
+                "text": "VerdocsEndpoint | undefined"
+              },
+              "description": "Endpoint override for dual-session scenarios. Defaults to the default endpoint."
+            },
+            {
+              "kind": "field",
+              "name": "templateId",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the template to create the envelope from.",
+              "default": "''",
+              "attribute": "template-id"
+            },
+            {
+              "kind": "field",
+              "name": "environment",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "description": "The environment the control is being called from, e.g. 'web'. This changes how\nnotifications are assembled so recipients get invitation URLs that work for them. Leave\nunset unless you know the environment; unknown values produce incorrect behavior.",
+              "default": "''",
+              "attribute": "environment"
+            },
+            {
+              "kind": "field",
+              "name": "showCancel",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether to show the cancel button. Turn it off where the embed sits in a flow that has its\nown navigation for the user to back out. Property-only, because it defaults to true and a\nboolean attribute cannot switch that off.",
+              "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "brandKey",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "description": "Preselect a brand by key. The sender can still change it in the brand chooser. Leave unset\nfor the organization default.",
+              "default": "''",
+              "attribute": "brand-key"
+            },
+            {
+              "kind": "field",
+              "name": "view",
+              "privacy": "private",
+              "type": {
+                "text": "TSendView"
+              },
+              "default": "'main'",
+              "attribute": "view"
+            },
+            {
+              "kind": "field",
+              "name": "editingRoleId",
+              "privacy": "private",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "editingRoleId"
+            },
+            {
+              "kind": "field",
+              "name": "selectedBrandKey",
+              "privacy": "private",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "selectedBrandKey"
+            },
+            {
+              "kind": "field",
+              "name": "expiresInDays",
+              "privacy": "private",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "expiresInDays"
+            },
+            {
+              "kind": "field",
+              "name": "noContact",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "noContact"
+            },
+            {
+              "kind": "field",
+              "name": "recipientEdits",
+              "privacy": "private",
+              "type": {
+                "text": "Record<string, Partial<IRecipient>>"
+              },
+              "default": "{}",
+              "attribute": "recipientEdits"
+            },
+            {
+              "kind": "field",
+              "name": "sending",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "sending"
+            },
+            {
+              "kind": "field",
+              "name": "loadedOrganizationId",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "swipeStart",
+              "type": {
+                "text": "{ x: number; y: number; time: number } | null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "swallowNextClick",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "detailBody",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "session",
+              "privacy": "private",
+              "default": "new SessionController(this, () => this.resolvedEndpoint)"
+            },
+            {
+              "kind": "field",
+              "name": "templateQuery",
+              "privacy": "private",
+              "default": "new TemplateController( this, () => ({ templateId: this.templateId || undefined, endpoint: this.resolvedEndpoint }), error => this.emitSdkError(error), )"
+            },
+            {
+              "kind": "field",
+              "name": "brandsQuery",
+              "privacy": "private",
+              "default": "new BrandsController(this, () => ({ organizationId: this.organizationId || undefined, endpoint: this.resolvedEndpoint }))"
+            },
+            {
+              "kind": "field",
+              "name": "organizationQuery",
+              "privacy": "private",
+              "default": "new OrganizationController(this, () => ({ organizationId: this.organizationId || undefined, endpoint: this.resolvedEndpoint }))"
+            },
+            {
+              "kind": "field",
+              "name": "contactsQuery",
+              "privacy": "private",
+              "default": "new OrganizationContactsController(this, () => ({ endpoint: this.resolvedEndpoint }))"
+            },
+            {
+              "kind": "field",
+              "name": "entitlementsQuery",
+              "privacy": "private",
+              "default": "new EntitlementsController(this, () => ({ endpoint: this.resolvedEndpoint }))"
+            },
+            {
+              "kind": "field",
+              "name": "resolvedEndpoint",
+              "type": {
+                "text": "VerdocsEndpoint"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "template",
+              "type": {
+                "text": "ITemplate | undefined"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "organizationId",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "brands",
+              "type": {
+                "text": "IBrand[]"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "roleRows",
+              "type": {
+                "text": "IRoleRow[]"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "recipients",
+              "type": {
+                "text": "Record<string, Partial<IRecipient>>"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "suggestions",
+              "type": {
+                "text": "Partial<IProfile>[]"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "availableAuthMethods",
+              "type": {
+                "text": "TRecipientAuthMethod[]"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "defaultBrand",
+              "type": {
+                "text": "IBrand | null"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "defaultBrandLabel",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "otherBrands",
+              "type": {
+                "text": "IBrand[]"
+              },
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "emitSdkError",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "error",
+                  "type": {
+                    "text": "unknown"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "setView",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "view",
+                  "type": {
+                    "text": "TSendView"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleSubmitContact",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "row",
+                  "type": {
+                    "text": "IRoleRow"
+                  }
+                },
+                {
+                  "name": "contact",
+                  "type": {
+                    "text": "IContactSelectEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleExpiryInput",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "input",
+                  "type": {
+                    "text": "HTMLInputElement"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleSend",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleSwipeStart",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleSwipeEnd",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "handleClickCapture",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "renderDetailHeader",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "title",
+                  "type": {
+                    "text": "TemplateResult | string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderDetailBody",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "content",
+                  "type": {
+                    "text": "TemplateResult"
+                  }
+                }
+              ],
+              "description": "Scrolling region of a detail view. The fade over its bottom edge appears\nonly while there is more content below, so a view that fits shows no\ndecoration at all."
+            },
+            {
+              "kind": "method",
+              "name": "renderDetailFooter",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "renderBrandSwatch",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "brand",
+                  "type": {
+                    "text": "IBrand | null"
+                  }
+                },
+                {
+                  "name": "fallback",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderBrandOption",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "label",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "sub",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "selected",
+                  "type": {
+                    "text": "boolean"
+                  }
+                },
+                {
+                  "name": "swatch",
+                  "type": {
+                    "text": "TemplateResult"
+                  }
+                },
+                {
+                  "name": "onSelect",
+                  "type": {
+                    "text": "() => void"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderRecipientDetail",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "renderBrandDetail",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "renderExpiresDetail",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "renderNotificationsDetail",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "renderDetail",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult | typeof nothing"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "renderRoleRow",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "row",
+                  "type": {
+                    "text": "IRoleRow"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "renderDeliveryRow",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "TemplateResult"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "label",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "TemplateResult"
+                  }
+                },
+                {
+                  "name": "view",
+                  "type": {
+                    "text": "TSendView"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired with an ISendEventDetail just before the request is posted. Cancelable: call preventDefault() to abort the send.",
+              "name": "vdocs-before-send"
+            },
+            {
+              "description": "Fired with an ISentEventDetail once the envelope has been created.",
+              "name": "vdocs-send"
+            },
+            {
+              "description": "Fired when the user clicks Cancel.",
+              "name": "vdocs-cancel"
+            },
+            {
+              "description": "Fired with an SDKError if the envelope could not be created.",
+              "name": "vdocs-sdk-error"
+            },
+            {
+              "description": "Fired with the current name text as the sender types in the recipient form.",
+              "name": "vdocs-search-contacts"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "template-id",
+              "type": {
+                "text": "string"
+              },
+              "description": "The ID of the template to create the envelope from.",
+              "default": "''",
+              "fieldName": "templateId"
+            },
+            {
+              "name": "environment",
+              "type": {
+                "text": "string"
+              },
+              "description": "The environment the control is being called from, e.g. 'web'. This changes how\nnotifications are assembled so recipients get invitation URLs that work for them. Leave\nunset unless you know the environment; unknown values produce incorrect behavior.",
+              "default": "''",
+              "fieldName": "environment"
+            },
+            {
+              "name": "brand-key",
+              "type": {
+                "text": "string"
+              },
+              "description": "Preselect a brand by key. The sender can still change it in the brand chooser. Leave unset\nfor the organization default.",
+              "default": "''",
+              "fieldName": "brandKey"
+            },
+            {
+              "name": "view",
+              "type": {
+                "text": "TSendView"
+              },
+              "default": "'main'",
+              "fieldName": "view"
+            },
+            {
+              "name": "editingRoleId",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "editingRoleId"
+            },
+            {
+              "name": "selectedBrandKey",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "selectedBrandKey"
+            },
+            {
+              "name": "expiresInDays",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "fieldName": "expiresInDays"
+            },
+            {
+              "name": "noContact",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "noContact"
+            },
+            {
+              "name": "recipientEdits",
+              "type": {
+                "text": "Record<string, Partial<IRecipient>>"
+              },
+              "default": "{}",
+              "fieldName": "recipientEdits"
+            },
+            {
+              "name": "sending",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "fieldName": "sending"
+            }
+          ],
+          "superclass": {
+            "name": "VdocsElement",
+            "module": "/src/base/vdocs-element.js"
+          },
+          "tagName": "vdocs-send",
+          "customElement": true
+        },
+        {
+          "kind": "variable",
+          "name": "template"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "VdocsSend",
+          "declaration": {
+            "name": "VdocsSend",
+            "module": "src/components/vdocs-send.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "vdocs-send",
+          "declaration": {
+            "name": "VdocsSend",
+            "module": "src/components/vdocs-send.ts"
           }
         }
       ]
@@ -11060,1846 +13863,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/fields/field-base.ts",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "signerClassName",
-          "return": {
-            "type": {
-              "text": "string"
-            }
-          },
-          "parameters": [
-            {
-              "name": "signerIndex",
-              "default": "0"
-            }
-          ],
-          "description": "The signer-N white-label hook, mirroring the legacy signer classes."
-        },
-        {
-          "kind": "function",
-          "name": "fieldValue",
-          "return": {
-            "type": {
-              "text": "string"
-            }
-          },
-          "parameters": [
-            {
-              "name": "field",
-              "type": {
-                "text": "IEnvelopeField | ITemplateField"
-              }
-            }
-          ],
-          "description": "Resolve the display value for a field, tolerating both field shapes."
-        },
-        {
-          "kind": "function",
-          "name": "syncFieldClasses",
-          "return": {
-            "type": {
-              "text": "void"
-            }
-          },
-          "parameters": [
-            {
-              "name": "host",
-              "type": {
-                "text": "Element"
-              }
-            },
-            {
-              "name": "parts",
-              "type": {
-                "text": "Array<string | false | null | undefined>"
-              }
-            }
-          ],
-          "description": "Reconcile a field's host class list. The host element plays the part of the\nReact fields' wrapper div, but consumers may also put their own classes on\nthe tag (the className passthrough there), so we only ever remove classes\nwe added ourselves."
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "signerClassName",
-          "declaration": {
-            "name": "signerClassName",
-            "module": "src/fields/field-base.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "fieldValue",
-          "declaration": {
-            "name": "fieldValue",
-            "module": "src/fields/field-base.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "syncFieldClasses",
-          "declaration": {
-            "name": "syncFieldClasses",
-            "module": "src/fields/field-base.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/fields/vdocs-field-attachment.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "An attachment field for signing. The legacy component opened an upload\ndialog; the port goes straight to the platform file picker instead,\nreporting the chosen File through vdocs-select-file (React's onSelectFile\ncallback) and removals through vdocs-delete-file (React's onDeleteFile).\nWhether a file is attached derives from field.value (the stored file name),\nso hosts update the field after handling the upload. The 24px legacy box\nhas no room for a name, so it surfaces as the button tooltip.",
-          "name": "VdocsFieldAttachment",
-          "members": [
-            {
-              "kind": "field",
-              "name": "field",
-              "privacy": "public",
-              "type": {
-                "text": "IEnvelopeField | ITemplateField | undefined"
-              },
-              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "done",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "attribute": "done"
-            },
-            {
-              "kind": "field",
-              "name": "focused",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
-              "default": "false",
-              "attribute": "focused"
-            },
-            {
-              "kind": "field",
-              "name": "signerIndex",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "attribute": "signer-index"
-            },
-            {
-              "kind": "field",
-              "name": "hasFocus",
-              "privacy": "private",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "hasFocus"
-            },
-            {
-              "kind": "method",
-              "name": "handlePick",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleFile",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleDelete",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleFocus",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleBlur",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Fired when the signer picks an attachment, with the chosen File in detail.file.",
-              "name": "vdocs-select-file"
-            },
-            {
-              "description": "Fired when the signer removes the current attachment.",
-              "name": "vdocs-delete-file"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "done",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "fieldName": "done"
-            },
-            {
-              "name": "focused",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
-              "default": "false",
-              "fieldName": "focused"
-            },
-            {
-              "name": "signer-index",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "fieldName": "signerIndex"
-            },
-            {
-              "name": "hasFocus",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "hasFocus"
-            }
-          ],
-          "superclass": {
-            "name": "VdocsElement",
-            "module": "/src/base/vdocs-element.js"
-          },
-          "tagName": "vdocs-field-attachment",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "VdocsFieldAttachment",
-          "declaration": {
-            "name": "VdocsFieldAttachment",
-            "module": "src/fields/vdocs-field-attachment.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "vdocs-field-attachment",
-          "declaration": {
-            "name": "VdocsFieldAttachment",
-            "module": "src/fields/vdocs-field-attachment.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/fields/vdocs-field-checkbox.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A checkbox signing field. Renders the field's current value from its\nproperties and reports toggles through vdocs-field-change (React's\nonFieldChange callback). Builder affordances (dragging, the settings\npopover) are not ported; see docs/PORTING.md.\n\nComposes the same design-system checkbox the React field does. The control\nhas no required or aria-label pass-through, so the required treatment lives\nentirely on the host border here.",
-          "name": "VdocsFieldCheckbox",
-          "members": [
-            {
-              "kind": "field",
-              "name": "field",
-              "privacy": "public",
-              "type": {
-                "text": "IEnvelopeField | ITemplateField | undefined"
-              },
-              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "done",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "attribute": "done"
-            },
-            {
-              "kind": "field",
-              "name": "focused",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
-              "default": "false",
-              "attribute": "focused"
-            },
-            {
-              "kind": "field",
-              "name": "signerIndex",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "attribute": "signer-index"
-            },
-            {
-              "kind": "field",
-              "name": "checked",
-              "type": {
-                "text": "boolean"
-              },
-              "privacy": "private",
-              "readonly": true
-            },
-            {
-              "kind": "method",
-              "name": "handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent<{ checked: boolean }>"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Fired when the signer toggles the box, with the new checked state (boolean) in detail.value.",
-              "name": "vdocs-field-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "done",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "fieldName": "done"
-            },
-            {
-              "name": "focused",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
-              "default": "false",
-              "fieldName": "focused"
-            },
-            {
-              "name": "signer-index",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "fieldName": "signerIndex"
-            }
-          ],
-          "superclass": {
-            "name": "VdocsElement",
-            "module": "/src/base/vdocs-element.js"
-          },
-          "tagName": "vdocs-field-checkbox",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "VdocsFieldCheckbox",
-          "declaration": {
-            "name": "VdocsFieldCheckbox",
-            "module": "src/fields/vdocs-field-checkbox.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "vdocs-field-checkbox",
-          "declaration": {
-            "name": "VdocsFieldCheckbox",
-            "module": "src/fields/vdocs-field-checkbox.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/fields/vdocs-field-date.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A date entry field for signing. The legacy component embedded the\nair-datepicker widget; like the DateInput control, we lean on the platform\npicker (input type=\"date\") instead: no dependency, and a stable yyyy-mm-dd\nvalue format. Native date inputs ignore placeholder text, so the legacy\n\"Date...\" placeholder is dropped. Reports picks through vdocs-field-change\n(React's onFieldChange callback).",
-          "name": "VdocsFieldDate",
-          "members": [
-            {
-              "kind": "field",
-              "name": "field",
-              "privacy": "public",
-              "type": {
-                "text": "IEnvelopeField | ITemplateField | undefined"
-              },
-              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "done",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "attribute": "done"
-            },
-            {
-              "kind": "field",
-              "name": "focused",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
-              "default": "false",
-              "attribute": "focused"
-            },
-            {
-              "kind": "field",
-              "name": "signerIndex",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "attribute": "signer-index"
-            },
-            {
-              "kind": "field",
-              "name": "hasFocus",
-              "privacy": "private",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "hasFocus"
-            },
-            {
-              "kind": "method",
-              "name": "handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleFocus",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleBlur",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Fired when the signer picks a date, with the ISO yyyy-mm-dd string (empty when cleared) in detail.value.",
-              "name": "vdocs-field-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "done",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "fieldName": "done"
-            },
-            {
-              "name": "focused",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
-              "default": "false",
-              "fieldName": "focused"
-            },
-            {
-              "name": "signer-index",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "fieldName": "signerIndex"
-            },
-            {
-              "name": "hasFocus",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "hasFocus"
-            }
-          ],
-          "superclass": {
-            "name": "VdocsElement",
-            "module": "/src/base/vdocs-element.js"
-          },
-          "tagName": "vdocs-field-date",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "VdocsFieldDate",
-          "declaration": {
-            "name": "VdocsFieldDate",
-            "module": "src/fields/vdocs-field-date.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "vdocs-field-date",
-          "declaration": {
-            "name": "VdocsFieldDate",
-            "module": "src/fields/vdocs-field-date.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/fields/vdocs-field-dropdown.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A dropdown signing field that lets the signer choose one of the field's\noptions. Renders the field's current value from its properties and reports\nselection through vdocs-field-change (React's onFieldChange callback).\nBuilder affordances (dragging, the settings popover) are not ported; see\ndocs/PORTING.md.",
-          "name": "VdocsFieldDropdown",
-          "members": [
-            {
-              "kind": "field",
-              "name": "field",
-              "privacy": "public",
-              "type": {
-                "text": "IEnvelopeField | ITemplateField | undefined"
-              },
-              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "done",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "attribute": "done"
-            },
-            {
-              "kind": "field",
-              "name": "focused",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner select.",
-              "default": "false",
-              "attribute": "focused"
-            },
-            {
-              "kind": "field",
-              "name": "signerIndex",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "attribute": "signer-index"
-            },
-            {
-              "kind": "method",
-              "name": "handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Fired when the signer picks an option, with the selected option's id in detail.value.",
-              "name": "vdocs-field-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "done",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "fieldName": "done"
-            },
-            {
-              "name": "focused",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner select.",
-              "default": "false",
-              "fieldName": "focused"
-            },
-            {
-              "name": "signer-index",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "fieldName": "signerIndex"
-            }
-          ],
-          "superclass": {
-            "name": "VdocsElement",
-            "module": "/src/base/vdocs-element.js"
-          },
-          "tagName": "vdocs-field-dropdown",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "VdocsFieldDropdown",
-          "declaration": {
-            "name": "VdocsFieldDropdown",
-            "module": "src/fields/vdocs-field-dropdown.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "vdocs-field-dropdown",
-          "declaration": {
-            "name": "VdocsFieldDropdown",
-            "module": "src/fields/vdocs-field-dropdown.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/fields/vdocs-field-initial.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Displays an initials field. Unsigned, it renders the \"Initial\" affordance\nand reports clicks through vdocs-begin-signing (React's onBeginSigning\ncallback) so the host can run the adopt-initials dialog. Once initialed\n(initial-url set) or done, the adopted image is drawn sized to the field\nbox.\n\nThe legacy component fetched the initials blob by ID itself. Here the host\nresolves the image and passes a URL; the sign embed will own that lookup,\nalong with the legacy Edit/Clear menu on a completed field. Builder-only\naffordances (drag, resize, the settings popover) are omitted per\ndocs/PORTING.md.",
-          "name": "VdocsFieldInitial",
-          "members": [
-            {
-              "kind": "field",
-              "name": "field",
-              "privacy": "public",
-              "type": {
-                "text": "IEnvelopeField | ITemplateField | undefined"
-              },
-              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
-            },
-            {
-              "kind": "field",
-              "name": "initialUrl",
-              "privacy": "public",
-              "type": {
-                "text": "string"
-              },
-              "description": "Resolved URL for the adopted initials image (a data:, blob:, or https: URL).",
-              "default": "''",
-              "attribute": "initial-url"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "done",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "attribute": "done"
-            },
-            {
-              "kind": "field",
-              "name": "focused",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
-              "default": "false",
-              "attribute": "focused"
-            },
-            {
-              "kind": "field",
-              "name": "signerIndex",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "attribute": "signer-index"
-            },
-            {
-              "kind": "method",
-              "name": "handleBegin",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Fired when the user clicks the unsigned field to start the adopt-initials flow.",
-              "name": "vdocs-begin-signing"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "initial-url",
-              "type": {
-                "text": "string"
-              },
-              "description": "Resolved URL for the adopted initials image (a data:, blob:, or https: URL).",
-              "default": "''",
-              "fieldName": "initialUrl"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "done",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "fieldName": "done"
-            },
-            {
-              "name": "focused",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
-              "default": "false",
-              "fieldName": "focused"
-            },
-            {
-              "name": "signer-index",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "fieldName": "signerIndex"
-            }
-          ],
-          "superclass": {
-            "name": "VdocsElement",
-            "module": "/src/base/vdocs-element.js"
-          },
-          "tagName": "vdocs-field-initial",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "VdocsFieldInitial",
-          "declaration": {
-            "name": "VdocsFieldInitial",
-            "module": "src/fields/vdocs-field-initial.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "vdocs-field-initial",
-          "declaration": {
-            "name": "VdocsFieldInitial",
-            "module": "src/fields/vdocs-field-initial.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/fields/vdocs-field-payment.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Displays a payment field. Unpaid, it renders a dollar-sign affordance and\nreports clicks through vdocs-begin-payment (React's onBeginPayment\ncallback) so the host can run the payment flow; paid or done, it renders a\ndollar-and-check \"collected\" treatment.\n\nThis is a representative display port. The legacy component carried\nvestigial payment plumbing with no provider integration: recipient lists\nfeeding a prepared-by message that never rendered, and a stamp image that\nwas never populated. Collecting a payment belongs to the sign embed era, so\nnone of that is ported. Builder-only affordances (drag, resize, the\nsettings popover) are omitted per docs/PORTING.md.",
-          "name": "VdocsFieldPayment",
-          "members": [
-            {
-              "kind": "field",
-              "name": "field",
-              "privacy": "public",
-              "type": {
-                "text": "IEnvelopeField | ITemplateField | undefined"
-              },
-              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
-            },
-            {
-              "kind": "field",
-              "name": "paid",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the payment-collected treatment instead of the payment affordance.",
-              "default": "false",
-              "attribute": "paid"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "done",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "attribute": "done"
-            },
-            {
-              "kind": "field",
-              "name": "focused",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
-              "default": "false",
-              "attribute": "focused"
-            },
-            {
-              "kind": "field",
-              "name": "signerIndex",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "attribute": "signer-index"
-            },
-            {
-              "kind": "method",
-              "name": "handleBegin",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Fired when the user clicks the unpaid field to start the payment flow.",
-              "name": "vdocs-begin-payment"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "paid",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the payment-collected treatment instead of the payment affordance.",
-              "default": "false",
-              "fieldName": "paid"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "done",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "fieldName": "done"
-            },
-            {
-              "name": "focused",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
-              "default": "false",
-              "fieldName": "focused"
-            },
-            {
-              "name": "signer-index",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "fieldName": "signerIndex"
-            }
-          ],
-          "superclass": {
-            "name": "VdocsElement",
-            "module": "/src/base/vdocs-element.js"
-          },
-          "tagName": "vdocs-field-payment",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "VdocsFieldPayment",
-          "declaration": {
-            "name": "VdocsFieldPayment",
-            "module": "src/fields/vdocs-field-payment.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "vdocs-field-payment",
-          "declaration": {
-            "name": "VdocsFieldPayment",
-            "module": "src/fields/vdocs-field-payment.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/fields/vdocs-field-radio.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A radio button signing field. Each field is a single button; buttons sharing\nthe same group form an exclusive set. Reports selection through\nvdocs-field-change (React's onFieldChange callback), with this option's id\n(the field name) in detail.value. Builder affordances (dragging, the\nsettings popover, the group tag) are not ported; see docs/PORTING.md.\n\nComposes the same design-system radio button the React field does. The\ncontrol has no required or aria-label pass-through, so the required\ntreatment lives entirely on the host border here.",
-          "name": "VdocsFieldRadio",
-          "members": [
-            {
-              "kind": "field",
-              "name": "field",
-              "privacy": "public",
-              "type": {
-                "text": "IEnvelopeField | ITemplateField | undefined"
-              },
-              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "done",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "attribute": "done"
-            },
-            {
-              "kind": "field",
-              "name": "focused",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
-              "default": "false",
-              "attribute": "focused"
-            },
-            {
-              "kind": "field",
-              "name": "signerIndex",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "attribute": "signer-index"
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "boolean"
-              },
-              "privacy": "private",
-              "readonly": true
-            },
-            {
-              "kind": "method",
-              "name": "handleChange",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "CustomEvent<{ checked: boolean }>"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Fired when the signer selects the button, with this option's id (the field name) in detail.value.",
-              "name": "vdocs-field-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "done",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "fieldName": "done"
-            },
-            {
-              "name": "focused",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
-              "default": "false",
-              "fieldName": "focused"
-            },
-            {
-              "name": "signer-index",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "fieldName": "signerIndex"
-            }
-          ],
-          "superclass": {
-            "name": "VdocsElement",
-            "module": "/src/base/vdocs-element.js"
-          },
-          "tagName": "vdocs-field-radio",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "VdocsFieldRadio",
-          "declaration": {
-            "name": "VdocsFieldRadio",
-            "module": "src/fields/vdocs-field-radio.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "vdocs-field-radio",
-          "declaration": {
-            "name": "VdocsFieldRadio",
-            "module": "src/fields/vdocs-field-radio.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/fields/vdocs-field-signature.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Displays a signature field. Unsigned, it renders the \"Signature\" affordance\nand reports clicks through vdocs-begin-signing (React's onBeginSigning\ncallback) so the host can run the adopt-a-signature dialog. Once signed\n(signature-url set) or done, the adopted image is drawn sized to the field\nbox.\n\nThe legacy component fetched the signature blob by ID itself. Here the host\nresolves the image and passes a URL; the sign embed will own that lookup,\nalong with the legacy Edit/Clear menu on a signed field. Builder-only\naffordances (drag, resize, the settings popover) are omitted per\ndocs/PORTING.md.",
-          "name": "VdocsFieldSignature",
-          "members": [
-            {
-              "kind": "field",
-              "name": "field",
-              "privacy": "public",
-              "type": {
-                "text": "IEnvelopeField | ITemplateField | undefined"
-              },
-              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
-            },
-            {
-              "kind": "field",
-              "name": "signatureUrl",
-              "privacy": "public",
-              "type": {
-                "text": "string"
-              },
-              "description": "Resolved URL for the adopted signature image (a data:, blob:, or https: URL).",
-              "default": "''",
-              "attribute": "signature-url"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "done",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "attribute": "done"
-            },
-            {
-              "kind": "field",
-              "name": "focused",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
-              "default": "false",
-              "attribute": "focused"
-            },
-            {
-              "kind": "field",
-              "name": "signerIndex",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "attribute": "signer-index"
-            },
-            {
-              "kind": "method",
-              "name": "handleBegin",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Fired when the user clicks the unsigned field to start the adopt-a-signature flow.",
-              "name": "vdocs-begin-signing"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "signature-url",
-              "type": {
-                "text": "string"
-              },
-              "description": "Resolved URL for the adopted signature image (a data:, blob:, or https: URL).",
-              "default": "''",
-              "fieldName": "signatureUrl"
-            },
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "done",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "fieldName": "done"
-            },
-            {
-              "name": "focused",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner button.",
-              "default": "false",
-              "fieldName": "focused"
-            },
-            {
-              "name": "signer-index",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "fieldName": "signerIndex"
-            }
-          ],
-          "superclass": {
-            "name": "VdocsElement",
-            "module": "/src/base/vdocs-element.js"
-          },
-          "tagName": "vdocs-field-signature",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "VdocsFieldSignature",
-          "declaration": {
-            "name": "VdocsFieldSignature",
-            "module": "src/fields/vdocs-field-signature.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "vdocs-field-signature",
-          "declaration": {
-            "name": "VdocsFieldSignature",
-            "module": "src/fields/vdocs-field-signature.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/fields/vdocs-field-textarea.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A multi-line text entry field for signing. The textarea is uncontrolled:\nfield.value (or the template default) seeds it, and hosts persist edits\nreported through vdocs-field-change (React's onFieldChange callback). Set\ndone to render the final value as text.",
-          "name": "VdocsFieldTextarea",
-          "members": [
-            {
-              "kind": "field",
-              "name": "field",
-              "privacy": "public",
-              "type": {
-                "text": "IEnvelopeField | ITemplateField | undefined"
-              },
-              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "done",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "attribute": "done"
-            },
-            {
-              "kind": "field",
-              "name": "focused",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner textarea.",
-              "default": "false",
-              "attribute": "focused"
-            },
-            {
-              "kind": "field",
-              "name": "signerIndex",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "attribute": "signer-index"
-            },
-            {
-              "kind": "field",
-              "name": "hasFocus",
-              "privacy": "private",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "hasFocus"
-            },
-            {
-              "kind": "method",
-              "name": "handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "handleFocus",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "handleBlur",
-              "privacy": "private"
-            }
-          ],
-          "events": [
-            {
-              "description": "Fired after each edit, with the full text content in detail.value.",
-              "name": "vdocs-field-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "done",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "fieldName": "done"
-            },
-            {
-              "name": "focused",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner textarea.",
-              "default": "false",
-              "fieldName": "focused"
-            },
-            {
-              "name": "signer-index",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "fieldName": "signerIndex"
-            },
-            {
-              "name": "hasFocus",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "hasFocus"
-            }
-          ],
-          "superclass": {
-            "name": "VdocsElement",
-            "module": "/src/base/vdocs-element.js"
-          },
-          "tagName": "vdocs-field-textarea",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "VdocsFieldTextarea",
-          "declaration": {
-            "name": "VdocsFieldTextarea",
-            "module": "src/fields/vdocs-field-textarea.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "vdocs-field-textarea",
-          "declaration": {
-            "name": "VdocsFieldTextarea",
-            "module": "src/fields/vdocs-field-textarea.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/fields/vdocs-field-textbox.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A single-line text signing field. Renders the field's current value from\nits properties and reports edits through vdocs-field-change (React's\nonFieldChange callback), with the full new text in detail.value after every\nkeystroke. The legacy component switched to a textarea for multiline\nfields; that mode is vdocs-field-textarea's job here. Builder affordances\n(dragging, resizing, the settings popover) are not ported; see\ndocs/PORTING.md.",
-          "name": "VdocsFieldTextbox",
-          "members": [
-            {
-              "kind": "field",
-              "name": "field",
-              "privacy": "public",
-              "type": {
-                "text": "IEnvelopeField | ITemplateField | undefined"
-              },
-              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "done",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "attribute": "done"
-            },
-            {
-              "kind": "field",
-              "name": "focused",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
-              "default": "false",
-              "attribute": "focused"
-            },
-            {
-              "kind": "field",
-              "name": "signerIndex",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "attribute": "signer-index"
-            },
-            {
-              "kind": "method",
-              "name": "handleInput",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "e",
-                  "type": {
-                    "text": "Event"
-                  }
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "description": "Fired after every keystroke, with the full new text in detail.value.",
-              "name": "vdocs-field-change"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "done",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "fieldName": "done"
-            },
-            {
-              "name": "focused",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment and move keyboard focus onto the inner input.",
-              "default": "false",
-              "fieldName": "focused"
-            },
-            {
-              "name": "signer-index",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "fieldName": "signerIndex"
-            }
-          ],
-          "superclass": {
-            "name": "VdocsElement",
-            "module": "/src/base/vdocs-element.js"
-          },
-          "tagName": "vdocs-field-textbox",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "VdocsFieldTextbox",
-          "declaration": {
-            "name": "VdocsFieldTextbox",
-            "module": "src/fields/vdocs-field-textbox.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "vdocs-field-textbox",
-          "declaration": {
-            "name": "VdocsFieldTextbox",
-            "module": "src/fields/vdocs-field-textbox.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/fields/vdocs-field-timestamp.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "A display-only timestamp field. Signers never type into these: the platform\nstamps them when the document is submitted, so the field fires no events.\nThe legacy component previewed the current time in a permanently disabled\ninput; a hint reads clearer, so an unfilled field says what will happen\ninstead of showing a time that is not real yet.",
-          "name": "VdocsFieldTimestamp",
-          "members": [
-            {
-              "kind": "field",
-              "name": "field",
-              "privacy": "public",
-              "type": {
-                "text": "IEnvelopeField | ITemplateField | undefined"
-              },
-              "description": "The field to render. Template fields render defaults; envelope fields render live values. Property-only."
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "done",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "attribute": "done"
-            },
-            {
-              "kind": "field",
-              "name": "focused",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment. Timestamps take no input, so nothing receives keyboard focus.",
-              "default": "false",
-              "attribute": "focused"
-            },
-            {
-              "kind": "field",
-              "name": "signerIndex",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "attribute": "signer-index"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Disable input regardless of the field's own readonly state (preview modes).",
-              "default": "false",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "done",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Render the display-final-value state (signing is complete for this field).",
-              "default": "false",
-              "fieldName": "done"
-            },
-            {
-              "name": "focused",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Draw the focused treatment. Timestamps take no input, so nothing receives keyboard focus.",
-              "default": "false",
-              "fieldName": "focused"
-            },
-            {
-              "name": "signer-index",
-              "type": {
-                "text": "number"
-              },
-              "description": "Zero-based recipient index, used for the vdocs-signer-N background class.",
-              "default": "0",
-              "fieldName": "signerIndex"
-            }
-          ],
-          "superclass": {
-            "name": "VdocsElement",
-            "module": "/src/base/vdocs-element.js"
-          },
-          "tagName": "vdocs-field-timestamp",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "VdocsFieldTimestamp",
-          "declaration": {
-            "name": "VdocsFieldTimestamp",
-            "module": "src/fields/vdocs-field-timestamp.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "vdocs-field-timestamp",
-          "declaration": {
-            "name": "VdocsFieldTimestamp",
-            "module": "src/fields/vdocs-field-timestamp.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/dialogs/dialog-events.ts",
       "declarations": [],
       "exports": []
@@ -15081,6 +16044,19 @@
             },
             {
               "kind": "method",
+              "name": "applyData",
+              "parameters": [
+                {
+                  "name": "envelope",
+                  "type": {
+                    "text": "IEnvelope"
+                  }
+                }
+              ],
+              "description": "Adopt a server-authoritative envelope without a refetch (setQueryData path)."
+            },
+            {
+              "kind": "method",
               "name": "refresh",
               "return": {
                 "type": {
@@ -15120,6 +16096,30 @@
               ]
             }
           ]
+        },
+        {
+          "kind": "function",
+          "name": "createEnvelope",
+          "return": {
+            "type": {
+              "text": "Promise<IEnvelope>"
+            }
+          },
+          "parameters": [
+            {
+              "name": "endpoint",
+              "type": {
+                "text": "VerdocsEndpoint"
+              }
+            },
+            {
+              "name": "request",
+              "type": {
+                "text": "TCreateEnvelopeRequest"
+              }
+            }
+          ],
+          "description": "Create an envelope, either from a template or with documents supplied\ndirectly. The new envelope primes its detail cache entry and the lists\nrefetch, exactly as react-sdk's useCreateEnvelope does on success."
         },
         {
           "kind": "function",
@@ -15338,6 +16338,14 @@
         },
         {
           "kind": "js",
+          "name": "createEnvelope",
+          "declaration": {
+            "name": "createEnvelope",
+            "module": "src/store/envelopes.ts"
+          }
+        },
+        {
+          "kind": "js",
           "name": "updateRecipient",
           "declaration": {
             "name": "updateRecipient",
@@ -15382,6 +16390,872 @@
           "declaration": {
             "name": "getInPersonLink",
             "module": "src/store/envelopes.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/store/organizations.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "brandsListKey",
+          "parameters": [
+            {
+              "name": "organizationId",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "description": "Cache keys mirror"
+        },
+        {
+          "kind": "function",
+          "name": "organizationKey",
+          "parameters": [
+            {
+              "name": "organizationId",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "organizationContactsKey"
+        },
+        {
+          "kind": "function",
+          "name": "entitlementsKey"
+        },
+        {
+          "kind": "function",
+          "name": "invalidateOrganizationQueries",
+          "description": "Drop every cached brand, organization, contacts, and entitlements result and\nreload whatever is mounted. None of these have mutations in the SDK yet, so\nnothing invalidates them on its own; this exists for hosts (and specs) that\nchange an organization out from under a mounted component."
+        },
+        {
+          "kind": "class",
+          "description": "The brands an organization has defined. The organization id usually comes\nfrom a template or envelope, so the query stays idle until one is known.\nMirrors react-sdk's useBrands.",
+          "name": "BrandsController",
+          "superclass": {
+            "name": "OrganizationQueryController",
+            "module": "src/store/organizations.ts"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "T | undefined"
+              },
+              "description": "The loaded result, retained across background refreshes.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "The error from the most recent failed fetch, cleared by the next success.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "isFetching",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "True whenever a fetch is in flight, including background refreshes.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "host",
+              "type": {
+                "text": "ReactiveControllerHost"
+              },
+              "privacy": "private",
+              "default": "host",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "resolve",
+              "type": {
+                "text": "() => IResolvedQuery<T> | null"
+              },
+              "privacy": "private",
+              "default": "resolve",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "onError",
+              "type": {
+                "text": "(error: unknown) => void | undefined"
+              },
+              "privacy": "private",
+              "default": "onError",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "key",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "default": "''",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "seq",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "0",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "isPending",
+              "description": "True while a fetch is expected but no result has arrived. False for an idle query.",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "hostConnected",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "hostUpdate",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "hostDisconnected",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "refresh",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Force a refetch of the current query, bypassing the freshness window.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "sync",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "load",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "query",
+                  "type": {
+                    "text": "IResolvedQuery<T>"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "description": "One organization's settings, e.g. its default brand. Idle until an id is\nknown. Mirrors react-sdk's useOrganization.",
+          "name": "OrganizationController",
+          "superclass": {
+            "name": "OrganizationQueryController",
+            "module": "src/store/organizations.ts"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "T | undefined"
+              },
+              "description": "The loaded result, retained across background refreshes.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "The error from the most recent failed fetch, cleared by the next success.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "isFetching",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "True whenever a fetch is in flight, including background refreshes.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "host",
+              "type": {
+                "text": "ReactiveControllerHost"
+              },
+              "privacy": "private",
+              "default": "host",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "resolve",
+              "type": {
+                "text": "() => IResolvedQuery<T> | null"
+              },
+              "privacy": "private",
+              "default": "resolve",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "onError",
+              "type": {
+                "text": "(error: unknown) => void | undefined"
+              },
+              "privacy": "private",
+              "default": "onError",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "key",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "default": "''",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "seq",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "0",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "isPending",
+              "description": "True while a fetch is expected but no result has arrived. False for an idle query.",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "hostConnected",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "hostUpdate",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "hostDisconnected",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "refresh",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Force a refetch of the current query, bypassing the freshness window.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "sync",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "load",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "query",
+                  "type": {
+                    "text": "IResolvedQuery<T>"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "description": "The caller's organization contacts, the address book behind recipient\npickers. The server scopes the call to the session's organization, so it\nstays idle without a session because the server has nobody to scope it to.\nMirrors react-sdk's useOrganizationContacts.",
+          "name": "OrganizationContactsController",
+          "superclass": {
+            "name": "OrganizationQueryController",
+            "module": "src/store/organizations.ts"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "T | undefined"
+              },
+              "description": "The loaded result, retained across background refreshes.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "The error from the most recent failed fetch, cleared by the next success.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "isFetching",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "True whenever a fetch is in flight, including background refreshes.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "host",
+              "type": {
+                "text": "ReactiveControllerHost"
+              },
+              "privacy": "private",
+              "default": "host",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "resolve",
+              "type": {
+                "text": "() => IResolvedQuery<T> | null"
+              },
+              "privacy": "private",
+              "default": "resolve",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "onError",
+              "type": {
+                "text": "(error: unknown) => void | undefined"
+              },
+              "privacy": "private",
+              "default": "onError",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "key",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "default": "''",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "seq",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "0",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "isPending",
+              "description": "True while a fetch is expected but no result has arrived. False for an idle query.",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "hostConnected",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "hostUpdate",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "hostDisconnected",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "refresh",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Force a refetch of the current query, bypassing the freshness window.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "sync",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "load",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "query",
+                  "type": {
+                    "text": "IResolvedQuery<T>"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "description": "The organization's currently active entitlements, keyed by feature: an entry\nexists only while that feature is in contract. Components read it to decide\nwhich paid options to offer, e.g. `!!data?.sms_auth` for SMS verification.\nRequires a session, so the query is idle without one. Mirrors react-sdk's\nuseEntitlements.",
+          "name": "EntitlementsController",
+          "superclass": {
+            "name": "OrganizationQueryController",
+            "module": "src/store/organizations.ts"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "T | undefined"
+              },
+              "description": "The loaded result, retained across background refreshes.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "The error from the most recent failed fetch, cleared by the next success.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "isFetching",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "True whenever a fetch is in flight, including background refreshes.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "host",
+              "type": {
+                "text": "ReactiveControllerHost"
+              },
+              "privacy": "private",
+              "default": "host",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "resolve",
+              "type": {
+                "text": "() => IResolvedQuery<T> | null"
+              },
+              "privacy": "private",
+              "default": "resolve",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "onError",
+              "type": {
+                "text": "(error: unknown) => void | undefined"
+              },
+              "privacy": "private",
+              "default": "onError",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "key",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "default": "''",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "seq",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "0",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "isPending",
+              "description": "True while a fetch is expected but no result has arrived. False for an idle query.",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "hostConnected",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "hostUpdate",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "hostDisconnected",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "refresh",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              },
+              "description": "Force a refetch of the current query, bypassing the freshness window.",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "sync",
+              "privacy": "private",
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "load",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "query",
+                  "type": {
+                    "text": "IResolvedQuery<T>"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "OrganizationQueryController",
+                "module": "src/store/organizations.ts"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "brandsListKey",
+          "declaration": {
+            "name": "brandsListKey",
+            "module": "src/store/organizations.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "organizationKey",
+          "declaration": {
+            "name": "organizationKey",
+            "module": "src/store/organizations.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "organizationContactsKey",
+          "declaration": {
+            "name": "organizationContactsKey",
+            "module": "src/store/organizations.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "entitlementsKey",
+          "declaration": {
+            "name": "entitlementsKey",
+            "module": "src/store/organizations.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "invalidateOrganizationQueries",
+          "declaration": {
+            "name": "invalidateOrganizationQueries",
+            "module": "src/store/organizations.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "BrandsController",
+          "declaration": {
+            "name": "BrandsController",
+            "module": "src/store/organizations.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "OrganizationController",
+          "declaration": {
+            "name": "OrganizationController",
+            "module": "src/store/organizations.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "OrganizationContactsController",
+          "declaration": {
+            "name": "OrganizationContactsController",
+            "module": "src/store/organizations.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "EntitlementsController",
+          "declaration": {
+            "name": "EntitlementsController",
+            "module": "src/store/organizations.ts"
           }
         }
       ]
@@ -16151,6 +18025,64 @@
           "declaration": {
             "name": "TemplatesController",
             "module": "src/store/templates.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utils/environment.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "getWebAppUrl",
+          "parameters": [
+            {
+              "name": "endpoint",
+              "type": {
+                "text": "VerdocsEndpoint"
+              }
+            }
+          ],
+          "description": "Base URL of the Verdocs web app that matches an endpoint's environment.\nComponents that link a sender to their settings pages (branding, webhooks)\nuse this, because beta and production do not share a host and a link to the\nwrong one lands on a login screen.\n\n```typescript\nconst brandingUrl = `${getWebAppUrl(endpoint)}/settings/branding`;\n```"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "getWebAppUrl",
+          "declaration": {
+            "name": "getWebAppUrl",
+            "module": "src/utils/environment.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utils/scroll-fade.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "updateScrollFade",
+          "parameters": [
+            {
+              "name": "body",
+              "type": {
+                "text": "HTMLElement | null | undefined"
+              }
+            }
+          ],
+          "description": "Fade the bottom edge of a scrolling region only while there is more content\nbelow the fold, so a view that fits shows no decoration at all.\n\nThe marker class lands on the region's parent, which carries the `group`\nutility, and the fade element reacts to it with\n`vdocs:group-[.vdocs-scroll-more]:opacity-100`. It goes straight onto the DOM\nrather than into reactive state, so calling this after every render and on\nevery scroll event cannot loop."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "updateScrollFade",
+          "declaration": {
+            "name": "updateScrollFade",
+            "module": "src/utils/scroll-fade.ts"
           }
         }
       ]

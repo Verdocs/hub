@@ -4,11 +4,11 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import type { PropertyValues, TemplateResult } from 'lit';
 import { formatFullName, isValidEmail } from '@verdocs/js-sdk';
 import type { IProfile, IRecipient, TRecipientAuthMethod } from '@verdocs/js-sdk';
+import { lockClosedIcon } from '../controls/icons/index.js';
+import { updateScrollFade } from '../utils/scroll-fade.js';
 import { VdocsElement } from '../base/vdocs-element.js';
 import { register } from '../base/register.js';
-import '../controls/vdocs-checkbox.js';
 import '../controls/vdocs-button.js';
-import '../controls/vdocs-portal.js';
 
 /** A contact suggestion, typically a recent recipient or an address-book entry. */
 export type TPickerContact = Partial<IProfile>;
@@ -26,17 +26,28 @@ export interface IContactSelectEvent {
   passcode: string;
 }
 
-const LABEL_CLASSES = 'vdocs:flex vdocs:flex-[0_0_80px] vdocs:pt-1.5 vdocs:text-[13px] vdocs:font-medium vdocs:text-muted';
+type TSigningOption = 'none' | 'delegator' | 'name_locked';
 
-const INPUT_CLASSES = 'vdocs:min-w-0 vdocs:flex-1 vdocs:box-border vdocs:rounded-ctl vdocs:border vdocs:border-solid vdocs:border-edge vdocs:bg-surface ' +
-  'vdocs:p-1.5 vdocs:font-sans vdocs:text-sm vdocs:text-ink vdocs:outline-none vdocs:placeholder:text-edge vdocs:focus:border-accent';
+const FIELD_CLASSES = 'vdocs:mb-2.5 vdocs:flex vdocs:flex-col vdocs:gap-1';
+
+const LABEL_CLASSES = 'vdocs:text-xs vdocs:font-medium vdocs:text-ink';
+
+const INPUT_CLASSES = 'vdocs:box-border vdocs:w-full vdocs:rounded-ctl vdocs:border vdocs:border-solid vdocs:border-edge vdocs:bg-surface vdocs:px-2.5 ' +
+  'vdocs:font-sans vdocs:text-[13px] vdocs:text-ink vdocs:outline-none vdocs:placeholder:text-edge ' +
+  'vdocs:focus:border-accent vdocs:focus:ring-2 vdocs:focus:ring-accent-tint-dark';
+
+const GROUP_LABEL_CLASSES = 'vdocs:mb-1.5 vdocs:text-xs vdocs:font-medium vdocs:text-ink';
+
+const PILL_CLASSES = 'vdocs:inline-flex vdocs:h-[26px] vdocs:items-center vdocs:gap-1 vdocs:whitespace-nowrap vdocs:rounded-full vdocs:border ' +
+  'vdocs:border-solid vdocs:px-2.5 vdocs:font-sans vdocs:text-xs vdocs:font-medium vdocs:outline-none ' +
+  'vdocs:focus-visible:outline-2 vdocs:focus-visible:outline-offset-2 vdocs:focus-visible:outline-accent';
 
 const VERIFICATION_OPTIONS: { value: TRecipientAuthMethod; label: string }[] = [
-  { value: 'passcode', label: 'Passcode' },
   { value: 'email', label: 'Email' },
-  { value: 'sms', label: 'SMS (One-Time Code)' },
-  { value: 'kba', label: 'Knowledge-Based (KBA)' },
-  { value: 'id', label: 'ID Check' },
+  { value: 'passcode', label: 'Passcode' },
+  { value: 'sms', label: 'SMS code' },
+  { value: 'kba', label: 'KBA' },
+  { value: 'id', label: 'ID check' },
 ];
 
 // "(212) 555-1212" => "+12125551212". Users entering international numbers
@@ -68,13 +79,19 @@ let pickerSeq = 0;
 
 /**
  * A contact entry form for filling out Recipient objects when sending
- * envelopes. As the user types in the name fields the current text is reported
- * via vdocs-search-contacts, and the caller may update the `suggestions`
- * property with matching contacts (or pre-seed it). Selecting a suggestion
- * fills the form.
+ * envelopes.
+ *
+ * The picker carries no card chrome of its own: the host supplies the surface
+ * and, when it constrains the height, the fields scroll above a pinned Done
+ * button.
+ *
+ * As the user types in the name fields the current text is reported via
+ * vdocs-search-contacts, and the caller may update the `suggestions` property
+ * with matching contacts (or pre-seed it). Selecting a suggestion fills the
+ * form.
  *
  * @fires vdocs-search-contacts - Fired with the current name text as the user types. Use it to refresh `suggestions`.
- * @fires vdocs-submit-contact - Fired with an IContactSelectEvent when the user clicks OK.
+ * @fires vdocs-submit-contact - Fired with an IContactSelectEvent when the user clicks Done.
  * @fires vdocs-cancel - Fired when the user clicks Cancel.
  */
 export class VdocsContactPicker extends VdocsElement {
@@ -82,6 +99,7 @@ export class VdocsContactPicker extends VdocsElement {
     templateRole: { attribute: false },
     suggestions: { attribute: false },
     availableAuthMethods: { attribute: false },
+    showCancel: { attribute: false },
     firstName: { state: true },
     lastName: { state: true },
     email: { state: true },
@@ -98,8 +116,18 @@ export class VdocsContactPicker extends VdocsElement {
   declare templateRole?: Partial<IRecipient> | null;
   /** Suggestions to display in a drop-down as the user types. Property-only; limit to the 5 best matches. */
   declare suggestions: TPickerContact[];
-  /** The verification methods the sender's account may offer. Property-only. Passcode and email are the defaults. */
+  /**
+   * The verification methods the sender's account may offer, typically derived from the
+   * organization's entitlements. All five methods are always listed; the ones missing here
+   * are shown locked. Include 'sms' to enable SMS verification (that also shows the phone
+   * field), and 'kba' or 'id' if the account has those entitlements. Property-only.
+   */
   declare availableAuthMethods: TRecipientAuthMethod[];
+  /**
+   * Whether to show a Cancel button beside Done. Hosts with their own way out turn it off.
+   * Property-only, because it defaults to true and a boolean attribute cannot switch that off.
+   */
+  declare showCancel: boolean;
 
   private declare firstName: string;
   private declare lastName: string;
@@ -112,13 +140,16 @@ export class VdocsContactPicker extends VdocsElement {
   private declare passcode: string;
   private declare showSuggestions: boolean;
 
+  private body = createRef<HTMLDivElement>();
   private namesRow = createRef<HTMLDivElement>();
+  private suggestionList = createRef<HTMLDivElement>();
   private baseId = `vdocs-picker-${++pickerSeq}`;
 
   constructor() {
     super();
     this.suggestions = [];
     this.availableAuthMethods = [ 'passcode', 'email' ];
+    this.showCancel = true;
     this.firstName = '';
     this.lastName = '';
     this.email = '';
@@ -133,7 +164,15 @@ export class VdocsContactPicker extends VdocsElement {
 
   override connectedCallback() {
     super.connectedCallback();
-    this.classList.add('vdocs:inline-block');
+    // The host adds no box of its own, so the form takes its height straight
+    // from whatever the host page constrains, the way the React root does.
+    this.classList.add('vdocs:contents');
+    document.addEventListener('click', this.handleDocumentClick);
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('click', this.handleDocumentClick);
   }
 
   override willUpdate(changed: PropertyValues<this>) {
@@ -153,18 +192,59 @@ export class VdocsContactPicker extends VdocsElement {
     }
   }
 
+  override updated() {
+    updateScrollFade(this.body.value);
+
+    // The suggestion list floats over the form rather than adding to the
+    // body's scroll height, so we place it under the name row by hand. Both
+    // measurements only exist after layout.
+    const body = this.body.value;
+    const namesRow = this.namesRow.value;
+    const list = this.suggestionList.value;
+    if (body && namesRow && list) {
+      list.style.top = `${namesRow.offsetTop + namesRow.offsetHeight - body.scrollTop + 4}px`;
+    }
+  }
+
+  private handleDocumentClick = (e: MouseEvent) => {
+    if (this.showSuggestions && !this.contains(e.target as Node)) {
+      this.showSuggestions = false;
+    }
+  };
+
   private get matchingSuggestions(): TPickerContact[] {
     return this.suggestions.filter(suggestion => !this.firstName || (suggestion.first_name || '').toLowerCase().includes(this.firstName.toLowerCase()));
   }
 
+  // Every method the sender switched on has to be usable, so each one checks
+  // the field it depends on. The legacy control OR'd these together, which let
+  // an SMS-verified recipient through with no phone number.
+  private methodSatisfied(method: TRecipientAuthMethod): boolean {
+    switch (method) {
+      case 'passcode':
+        return !!this.passcode;
+      case 'sms':
+        return !!this.phone;
+      case 'email':
+        return !!this.email;
+      case 'kba':
+        return !!this.firstName && !!this.lastName;
+      default:
+        return true;
+    }
+  }
+
   private get canSubmit(): boolean {
     const hasBasics = !!this.firstName && !!this.lastName && isValidEmail(this.email);
-    const hasAuthRequirements = !this.authMethods.length ||
-      (this.authMethods.includes('passcode') && !!this.passcode) ||
-      (this.authMethods.includes('kba') && !!this.firstName && !!this.lastName) ||
-      (this.authMethods.includes('email') && !!this.email) ||
-      (this.authMethods.includes('sms') && !!this.phone);
-    return hasBasics && hasAuthRequirements;
+    return hasBasics && this.authMethods.every(method => this.methodSatisfied(method));
+  }
+
+  private get signingOption(): TSigningOption {
+    if (this.delegator) {
+      return 'delegator';
+    }
+
+    return this.nameLocked ? 'name_locked' : 'none';
   }
 
   private handleNameInput(field: 'firstName' | 'lastName', value: string) {
@@ -181,8 +261,15 @@ export class VdocsContactPicker extends VdocsElement {
     this.showSuggestions = false;
   }
 
-  private handleToggleAuthMethod(method: TRecipientAuthMethod, checked: boolean) {
-    this.authMethods = checked ? [ ...this.authMethods, method ] : this.authMethods.filter(selected => selected !== method);
+  private handleToggleAuthMethod(method: TRecipientAuthMethod) {
+    this.authMethods = this.authMethods.includes(method) ?
+        this.authMethods.filter(selected => selected !== method) :
+        [ ...this.authMethods, method ];
+  }
+
+  private handleSetSigningOption(option: TSigningOption) {
+    this.delegator = option === 'delegator';
+    this.nameLocked = option === 'name_locked';
   }
 
   private handleSubmit() {
@@ -200,21 +287,43 @@ export class VdocsContactPicker extends VdocsElement {
     });
   }
 
+  // A locked pill that is already selected stays clickable, otherwise the
+  // sender could never clear a method their plan has since dropped.
+  private renderPill(label: string, selected: boolean, onClick: () => void, locked = false): TemplateResult {
+    const stateClasses = selected ?
+      'vdocs:border-accent vdocs:bg-accent-tint vdocs:text-accent' :
+      'vdocs:border-edge vdocs:bg-surface vdocs:text-muted';
+
+    return html`
+      <button
+        type="button"
+        aria-pressed=${selected}
+        ?disabled=${locked && !selected}
+        title=${locked ? 'Not included in your plan' : nothing}
+        @click=${onClick}
+        class="${PILL_CLASSES} ${stateClasses} ${locked ? 'vdocs:opacity-50' : ''} ${locked && !selected ? 'vdocs:cursor-default' : 'vdocs:cursor-pointer'}">
+        ${locked ? lockClosedIcon({ className: 'vdocs:size-3 vdocs:shrink-0' }) : nothing}
+        ${label}
+      </button>`;
+  }
+
   private renderSuggestions(): TemplateResult {
     return html`
-      <div class="vdocs:max-h-[225px] vdocs:overflow-y-auto vdocs:bg-surface vdocs:font-sans vdocs:shadow-[0_0_15px_0_rgba(0,0,0,0.1)]">
+      <div
+        ${ref(this.suggestionList)}
+        class="vdocs:absolute vdocs:inset-x-0 vdocs:z-20 vdocs:max-h-[225px] vdocs:overflow-y-auto vdocs:rounded-ctl vdocs:border vdocs:border-solid vdocs:border-edge-light vdocs:bg-surface vdocs:font-sans vdocs:shadow-[0_8px_24px_0_rgba(9,44,76,0.14)]">
         ${this.matchingSuggestions.map(suggestion => html`
           <button
             type="button"
             @click=${() => this.handleSelectSuggestion(suggestion)}
-            class="vdocs:flex vdocs:w-full vdocs:cursor-pointer vdocs:flex-row vdocs:items-center vdocs:border-none vdocs:bg-transparent vdocs:px-3 vdocs:py-1.5 vdocs:text-left vdocs:font-sans vdocs:hover:bg-canvas">
+            class="vdocs:flex vdocs:w-full vdocs:cursor-pointer vdocs:flex-row vdocs:items-center vdocs:border-none vdocs:bg-transparent vdocs:px-3 vdocs:py-1.5 vdocs:text-left vdocs:font-sans vdocs:hover:bg-accent-tint">
             ${suggestion.picture ?
-              html`<img alt="" src=${suggestion.picture} class="vdocs:mr-2 vdocs:size-8 vdocs:shrink-0 vdocs:rounded-full" />` :
-                addressBookIcon('vdocs:mr-2 vdocs:size-8 vdocs:shrink-0 vdocs:text-muted')}
-            <span class="vdocs:flex vdocs:flex-col">
-              <span class="vdocs:mb-[3px] vdocs:text-base vdocs:font-medium vdocs:text-ink">${formatFullName(suggestion)}</span>
-              ${suggestion.email ? html`<span class="vdocs:mb-[3px] vdocs:text-sm vdocs:text-muted">${suggestion.email}</span>` : nothing}
-              ${suggestion.phone ? html`<span class="vdocs:mb-[3px] vdocs:text-sm vdocs:text-muted">${suggestion.phone}</span>` : nothing}
+              html`<img alt="" src=${suggestion.picture} class="vdocs:mr-2 vdocs:size-7 vdocs:shrink-0 vdocs:rounded-full" />` :
+                addressBookIcon('vdocs:mr-2 vdocs:size-7 vdocs:shrink-0 vdocs:text-muted')}
+            <span class="vdocs:flex vdocs:min-w-0 vdocs:flex-col">
+              <span class="vdocs:text-[13px] vdocs:font-medium vdocs:text-ink">${formatFullName(suggestion)}</span>
+              ${suggestion.email ? html`<span class="vdocs:truncate vdocs:text-xs vdocs:text-muted">${suggestion.email}</span>` : nothing}
+              ${suggestion.phone ? html`<span class="vdocs:truncate vdocs:text-xs vdocs:text-muted">${suggestion.phone}</span>` : nothing}
             </span>
           </button>`)}
       </div>`;
@@ -222,192 +331,183 @@ export class VdocsContactPicker extends VdocsElement {
 
   override render() {
     const hasSms = this.availableAuthMethods.includes('sms');
-    const verificationOptions = VERIFICATION_OPTIONS.filter(option => this.availableAuthMethods.includes(option.value));
     const suggestionsOpen = this.showSuggestions && this.matchingSuggestions.length > 0;
 
     return html`
       <form
         autocomplete="off"
         @submit=${(e: Event) => e.preventDefault()}
-        class="vdocs:box-border vdocs:flex vdocs:w-[300px] vdocs:flex-col vdocs:gap-3 vdocs:border vdocs:border-solid vdocs:border-edge-light vdocs:bg-canvas vdocs:p-3 vdocs:font-sans vdocs:shadow-[0_0_15px_0_rgba(0,0,0,0.1)]">
-        <div class="vdocs:relative vdocs:flex vdocs:flex-row vdocs:items-start vdocs:gap-2">
-          <label for=${`${this.baseId}-first`} class=${LABEL_CLASSES}>Name:</label>
-          <div ${ref(this.namesRow)} class="vdocs:flex vdocs:min-w-0 vdocs:flex-1 vdocs:flex-row vdocs:gap-2">
-            <input
-              id=${`${this.baseId}-first`}
-              name=${`${this.baseId}-first`}
-              type="text"
-              aria-label="First name"
-              data-lpignore="true"
-              placeholder="First..."
-              class=${INPUT_CLASSES}
-              .value=${live(this.firstName)}
-              @focus=${() => {
-                this.showSuggestions = true;
-              }}
-              @input=${(e: Event) => this.handleNameInput('firstName', (e.target as HTMLInputElement).value)} />
-            <input
-              id=${`${this.baseId}-last`}
-              name=${`${this.baseId}-last`}
-              type="text"
-              aria-label="Last name"
-              data-lpignore="true"
-              placeholder="Last..."
-              class=${INPUT_CLASSES}
-              .value=${live(this.lastName)}
-              @focus=${() => {
-                this.showSuggestions = true;
-              }}
-              @input=${(e: Event) => this.handleNameInput('lastName', (e.target as HTMLInputElement).value)} />
-          </div>
-
-          ${suggestionsOpen ?
-            html`
-              <vdocs-portal .anchor=${this.namesRow.value} @vdocs-click-away=${() => {
-                this.showSuggestions = false;
-              }}>
-                ${this.renderSuggestions()}
-              </vdocs-portal>` :
-            nothing}
-        </div>
-
-        <div class="vdocs:flex vdocs:flex-row vdocs:items-start vdocs:gap-2">
-          <label for=${`${this.baseId}-email`} class=${LABEL_CLASSES}>Email:</label>
-          <input
-            id=${`${this.baseId}-email`}
-            name=${`${this.baseId}-email`}
-            type="text"
-            data-lpignore="true"
-            placeholder="Invite/verify via email..."
-            class=${INPUT_CLASSES}
-            .value=${live(this.email)}
-            @focus=${() => {
+        class="vdocs:box-border vdocs:flex vdocs:min-h-0 vdocs:flex-1 vdocs:flex-col vdocs:font-sans vdocs:text-ink">
+        <div class="vdocs:group vdocs:relative vdocs:flex vdocs:min-h-0 vdocs:flex-1 vdocs:flex-col">
+          <div
+            ${ref(this.body)}
+            class="vdocs:relative vdocs:min-h-0 vdocs:flex-1 vdocs:overflow-y-auto"
+            @scroll=${(e: Event) => {
+              updateScrollFade(e.currentTarget as HTMLElement);
               this.showSuggestions = false;
-            }}
-            @input=${(e: Event) => {
-              this.email = (e.target as HTMLInputElement).value;
-            }} />
-        </div>
-
-        ${hasSms ?
-          html`
-            <div class="vdocs:flex vdocs:flex-row vdocs:items-start vdocs:gap-2">
-              <label for=${`${this.baseId}-phone`} class=${LABEL_CLASSES}>Phone:</label>
-              <input
-                id=${`${this.baseId}-phone`}
-                name=${`${this.baseId}-phone`}
-                type="text"
-                data-lpignore="true"
-                placeholder="Invite/verify via SMS..."
-                class=${INPUT_CLASSES}
-                .value=${live(this.phone)}
-                @focus=${() => {
-                  this.showSuggestions = false;
-                }}
-                @input=${(e: Event) => {
-                  this.phone = convertToE164((e.target as HTMLInputElement).value);
-                }} />
-            </div>` :
-          nothing}
-
-        ${verificationOptions.length > 0 ?
-          html`
-            <div class="vdocs:flex vdocs:flex-row vdocs:items-start vdocs:gap-2">
-              <div class=${LABEL_CLASSES}>Verification Methods:</div>
-              <div class="vdocs:flex vdocs:flex-col">
-                ${verificationOptions.map(option => html`
-                  <div class="vdocs:flex vdocs:flex-row vdocs:items-center vdocs:whitespace-nowrap vdocs:px-2 vdocs:py-[5px]">
-                    <vdocs-checkbox
-                      size="small"
-                      label=${option.label}
-                      ?checked=${this.authMethods.includes(option.value)}
-                      @vdocs-checked-change=${(e: CustomEvent<{ checked: boolean }>) => this.handleToggleAuthMethod(option.value, e.detail.checked)}></vdocs-checkbox>
-                  </div>`)}
+            }}>
+            <div ${ref(this.namesRow)} class="vdocs:relative vdocs:flex vdocs:flex-row vdocs:gap-2">
+              <div class="${FIELD_CLASSES} vdocs:min-w-0 vdocs:flex-1">
+                <label for=${`${this.baseId}-first-name`} class=${LABEL_CLASSES}>First name</label>
+                <input
+                  id=${`${this.baseId}-first-name`}
+                  name=${`${this.baseId}-first-name`}
+                  type="text"
+                  data-lpignore="true"
+                  class="${INPUT_CLASSES} vdocs:h-[34px]"
+                  .value=${live(this.firstName)}
+                  @focus=${() => {
+                    this.showSuggestions = true;
+                  }}
+                  @input=${(e: Event) => this.handleNameInput('firstName', (e.target as HTMLInputElement).value)} />
               </div>
-            </div>` :
-          nothing}
+              <div class="${FIELD_CLASSES} vdocs:min-w-0 vdocs:flex-1">
+                <label for=${`${this.baseId}-last-name`} class=${LABEL_CLASSES}>Last name</label>
+                <input
+                  id=${`${this.baseId}-last-name`}
+                  name=${`${this.baseId}-last-name`}
+                  type="text"
+                  data-lpignore="true"
+                  class="${INPUT_CLASSES} vdocs:h-[34px]"
+                  .value=${live(this.lastName)}
+                  @focus=${() => {
+                    this.showSuggestions = true;
+                  }}
+                  @input=${(e: Event) => this.handleNameInput('lastName', (e.target as HTMLInputElement).value)} />
+              </div>
+            </div>
 
-        ${this.authMethods.includes('passcode') ?
-          html`
-            <div class="vdocs:flex vdocs:flex-row vdocs:items-start vdocs:gap-2">
-              <label for=${`${this.baseId}-passcode`} class=${LABEL_CLASSES}>Passcode:</label>
+            <div class=${FIELD_CLASSES}>
+              <label for=${`${this.baseId}-email`} class=${LABEL_CLASSES}>Email</label>
               <input
-                id=${`${this.baseId}-passcode`}
-                name=${`${this.baseId}-passcode`}
+                id=${`${this.baseId}-email`}
+                name=${`${this.baseId}-email`}
                 type="text"
                 data-lpignore="true"
-                placeholder="4-8 digits recommended..."
-                class=${INPUT_CLASSES}
-                .value=${live(this.passcode)}
+                class="${INPUT_CLASSES} vdocs:h-[34px]"
+                .value=${live(this.email)}
                 @focus=${() => {
                   this.showSuggestions = false;
                 }}
                 @input=${(e: Event) => {
-                  this.passcode = (e.target as HTMLInputElement).value;
+                  this.email = (e.target as HTMLInputElement).value;
                 }} />
-            </div>` :
-          nothing}
-
-        <div class="vdocs:flex vdocs:flex-row vdocs:items-start vdocs:gap-2">
-          <div class=${LABEL_CLASSES}>Options:</div>
-          <div class="vdocs:flex vdocs:flex-col">
-            <div class="vdocs:flex vdocs:flex-row vdocs:items-center vdocs:whitespace-nowrap vdocs:px-2 vdocs:py-[5px]">
-              <vdocs-checkbox
-                size="small"
-                label="May delegate signing"
-                ?checked=${this.delegator}
-                ?disabled=${this.nameLocked}
-                @vdocs-checked-change=${(e: CustomEvent<{ checked: boolean }>) => {
-                  this.delegator = e.detail.checked;
-                  if (e.detail.checked) {
-                    this.nameLocked = false;
-                  }
-                }}></vdocs-checkbox>
             </div>
-            <div class="vdocs:flex vdocs:flex-row vdocs:items-center vdocs:whitespace-nowrap vdocs:px-2 vdocs:py-[5px]">
-              <vdocs-checkbox
-                size="small"
-                label="Name locked"
-                ?checked=${this.nameLocked}
-                ?disabled=${this.delegator}
-                @vdocs-checked-change=${(e: CustomEvent<{ checked: boolean }>) => {
-                  this.nameLocked = e.detail.checked;
-                  if (e.detail.checked) {
-                    this.delegator = false;
-                  }
-                }}></vdocs-checkbox>
+
+            ${hasSms ?
+              html`
+                <div class=${FIELD_CLASSES}>
+                  <label for=${`${this.baseId}-phone`} class=${LABEL_CLASSES}>
+                    Phone <span class="vdocs:font-normal vdocs:text-muted">(optional)</span>
+                  </label>
+                  <input
+                    id=${`${this.baseId}-phone`}
+                    name=${`${this.baseId}-phone`}
+                    type="text"
+                    data-lpignore="true"
+                    placeholder="+1 (555) 000-0000"
+                    class="${INPUT_CLASSES} vdocs:h-[34px]"
+                    .value=${live(this.phone)}
+                    @focus=${() => {
+                      this.showSuggestions = false;
+                    }}
+                    @input=${(e: Event) => {
+                      this.phone = convertToE164((e.target as HTMLInputElement).value);
+                    }} />
+                </div>` :
+              nothing}
+
+            <div class="vdocs:mt-0.5 vdocs:mb-3">
+              <div id=${`${this.baseId}-verification`} class=${GROUP_LABEL_CLASSES}>Verification</div>
+              <div
+                role="group"
+                aria-labelledby=${`${this.baseId}-verification`}
+                class="vdocs:flex vdocs:flex-row vdocs:flex-wrap vdocs:gap-1.5">
+                ${VERIFICATION_OPTIONS.map(option => this.renderPill(
+                  option.label,
+                  this.authMethods.includes(option.value),
+                  () => this.handleToggleAuthMethod(option.value),
+                  !this.availableAuthMethods.includes(option.value),
+                ))}
+              </div>
+
+              ${this.authMethods.includes('passcode') ?
+                html`
+                  <div class="vdocs:mt-2 vdocs:flex vdocs:flex-row vdocs:items-center vdocs:gap-2">
+                    <input
+                      type="text"
+                      aria-label="Passcode"
+                      data-lpignore="true"
+                      placeholder="4-8 digits"
+                      class="${INPUT_CLASSES} vdocs:h-[30px] vdocs:w-[120px] vdocs:shrink-0"
+                      .value=${live(this.passcode)}
+                      @focus=${() => {
+                        this.showSuggestions = false;
+                      }}
+                      @input=${(e: Event) => {
+                        this.passcode = (e.target as HTMLInputElement).value;
+                      }} />
+                    <span class="vdocs:min-w-0 vdocs:flex-1 vdocs:self-center vdocs:text-[11px] vdocs:leading-[1.35] vdocs:text-muted">
+                      PIN or passcode already known by the recipient
+                    </span>
+                  </div>` :
+                nothing}
+            </div>
+
+            <div class="vdocs:mt-0.5 vdocs:mb-3">
+              <div id=${`${this.baseId}-signing`} class=${GROUP_LABEL_CLASSES}>Signing options</div>
+              <div role="group" aria-labelledby=${`${this.baseId}-signing`} class="vdocs:flex vdocs:flex-row vdocs:flex-wrap vdocs:gap-1.5">
+                ${this.renderPill('None', this.signingOption === 'none', () => this.handleSetSigningOption('none'))}
+                ${this.renderPill('May delegate', this.signingOption === 'delegator', () => this.handleSetSigningOption('delegator'))}
+                ${this.renderPill('Name locked', this.signingOption === 'name_locked', () => this.handleSetSigningOption('name_locked'))}
+              </div>
+            </div>
+
+            <div class=${FIELD_CLASSES}>
+              <label for=${`${this.baseId}-message`} class=${LABEL_CLASSES}>
+                Message <span class="vdocs:font-normal vdocs:text-muted">(optional)</span>
+              </label>
+              <textarea
+                id=${`${this.baseId}-message`}
+                name=${`${this.baseId}-message`}
+                data-lpignore="true"
+                placeholder="Add a message to the invitation"
+                class="${INPUT_CLASSES} vdocs:h-14 vdocs:resize-y vdocs:py-2"
+                .value=${live(this.message)}
+                @focus=${() => {
+                  this.showSuggestions = false;
+                }}
+                @input=${(e: Event) => {
+                  this.message = (e.target as HTMLTextAreaElement).value;
+                }}></textarea>
             </div>
           </div>
+
+          <div
+            aria-hidden="true"
+            class="vdocs:pointer-events-none vdocs:absolute vdocs:inset-x-0 vdocs:bottom-0 vdocs:h-9 vdocs:bg-linear-to-b vdocs:from-surface/0 vdocs:to-surface vdocs:opacity-0 vdocs:transition-opacity vdocs:duration-150 vdocs:group-[.vdocs-scroll-more]:opacity-100"></div>
+
+          ${suggestionsOpen ? this.renderSuggestions() : nothing}
         </div>
 
-        <div class="vdocs:flex vdocs:flex-row vdocs:items-start vdocs:gap-2">
-          <label for=${`${this.baseId}-message`} class=${LABEL_CLASSES}>Message:</label>
-          <textarea
-            id=${`${this.baseId}-message`}
-            name=${`${this.baseId}-message`}
-            rows="3"
-            data-lpignore="true"
-            placeholder="Optional message to include in invitation..."
-            class="${INPUT_CLASSES} vdocs:resize-y"
-            .value=${live(this.message)}
-            @focus=${() => {
-              this.showSuggestions = false;
-            }}
-            @input=${(e: Event) => {
-              this.message = (e.target as HTMLTextAreaElement).value;
-            }}></textarea>
-        </div>
-
-        <div class="vdocs:mt-2 vdocs:flex vdocs:flex-row vdocs:justify-end vdocs:gap-1.5">
+        <div class="vdocs:mt-2.5 vdocs:flex vdocs:shrink-0 vdocs:flex-row vdocs:gap-2.5 vdocs:border-0 vdocs:border-t vdocs:border-solid vdocs:border-edge-light vdocs:pt-3">
+          ${this.showCancel ?
+            html`
+              <vdocs-button
+                variant="text"
+                label="Cancel"
+                size="small"
+                @click=${() => {
+                  this.showSuggestions = false;
+                  this.emit('vdocs-cancel');
+                }}></vdocs-button>` :
+            nothing}
           <vdocs-button
-            variant="outline"
-            label="Cancel"
+            label="Done"
             size="small"
-            @click=${() => {
-              this.showSuggestions = false;
-              this.emit('vdocs-cancel');
-            }}></vdocs-button>
-          <vdocs-button label="OK" size="small" ?disabled=${!this.canSubmit} @click=${() => this.handleSubmit()}></vdocs-button>
+            class="vdocs:flex-1"
+            ?disabled=${!this.canSubmit}
+            @click=${() => this.handleSubmit()}></vdocs-button>
         </div>
       </form>`;
   }
