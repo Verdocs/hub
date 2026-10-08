@@ -3,6 +3,11 @@ export { useVerdocs } from './provider/VerdocsContext';
 export { useSession, type ISessionState } from './hooks/useSession';
 export { useTemplates, useTemplate, useCreateTemplate, useUpdateTemplate, useDeleteTemplate, useToggleTemplateStar } from './hooks/useTemplates';
 export { useEnvelopes, useEnvelope } from './hooks/useEnvelopes';
+export { useCreateEnvelope } from './hooks/useCreateEnvelope';
+export { useBrands } from './hooks/useBrands';
+export { useOrganization } from './hooks/useOrganization';
+export { useOrganizationContacts } from './hooks/useOrganizationContacts';
+export { useEntitlements } from './hooks/useEntitlements';
 export {
   useCreateTemplateRole,
   useUpdateTemplateRole,
@@ -13,6 +18,7 @@ export {
 } from './hooks/useTemplateStructure';
 
 export { default as VerdocsAuth, type VerdocsAuthProps, type TAuthMode } from './components/VerdocsAuth/VerdocsAuth';
+export { default as VerdocsSend, type VerdocsSendProps, type ISendEventDetail, type ISentEventDetail } from './components/VerdocsSend/VerdocsSend';
 export {
   default as VerdocsTemplatesList,
   type VerdocsTemplatesListProps,
@@ -105,4 +111,5 @@ export { default as TemplateFields, type TemplateFieldsProps, type ITemplateFiel
 export { default as TemplateFieldProperties, type TemplateFieldPropertiesProps } from './components/templates/TemplateFieldProperties';
 
 export { showToast, type IToastConfig } from './utils/toast';
+export { getWebAppUrl } from './utils/environment';
 export { SDKError, type IAuthStatus, type ITemplateEvent } from './types';

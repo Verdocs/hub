@@ -38,7 +38,7 @@ export const getApiKeys = (endpoint: VerdocsEndpoint) =>
     .then((r) => r.data);
 
 /**
- * Create an API key.
+ * Create an API key. The caller must be an admin or owner, and the key must be set to a role no higher than the caller's own.
  *
  * ```typescript
  * import {createApiKey} from '@verdocs/js-sdk';
@@ -63,7 +63,9 @@ export const createApiKey = (endpoint: VerdocsEndpoint, params: ICreateApiKeyReq
     .then((r) => r.data);
 
 /**
- * Rotate the secret for an API key. The caller must have admin access to the organization.
+ * Rotate the secret for an API key. The caller must have admin access to the organization and may
+ * only rotate keys that act as members of equal or lower role. Refresh tokens issued under the old
+ * secret will be invalidated, but access tokens already issued stay valid until they expire.
  *
  * ```typescript
  * import {rotateApiKey} from '@verdocs/js-sdk';
@@ -86,7 +88,8 @@ export const rotateApiKey = (endpoint: VerdocsEndpoint, clientId: string) =>
     .then((r) => r.data);
 
 /**
- * Update an API key to change its assigned Profile ID or Name.
+ * Update an API key. The caller may only update keys that act as members of equal or lower role. Note that if the profile_id 
+ * is changed, any existing refresh tokens will be invalidated.
  *
  * ```typescript
  * import {updateApiKey} from '@verdocs/js-sdk';
@@ -111,7 +114,8 @@ export const updateApiKey = (endpoint: VerdocsEndpoint, clientId: string, params
     .then((r) => r.data);
 
 /**
- * Delete an API key.
+ * Delete an API key. The caller may only delete keys that act as members of equal or lower role.
+ * Any existing refresh tokens will be invalidated. Access tokens will remain working until they expire.
  *
  * ```typescript
  * import {deleteApiKey} from '@verdocs/js-sdk';

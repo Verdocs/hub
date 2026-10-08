@@ -98,6 +98,8 @@ interface ISocialLoginAttempt {
 
 const SOCIAL_ERROR_MESSAGES: Record<string, string> = {
   email_unverified: 'That account does not have a verified email address.',
+  corporate_email_required: 'Please use your corporate email address to create an account.',
+  account_locked: 'That account is locked. Please contact support@verdocs.com.',
   provider_error: 'That provider could not sign you in. Try again.',
   access_denied: 'Sign-in was canceled.',
 };
@@ -121,17 +123,25 @@ const clearSocialLoginAttempt = () => {
   }
 };
 
+const SOCIAL_RETURN_PARAMS = [ 'login_code', 'state', 'error' ];
+
 // Our return parameters are not the host app's to route on, and leaving them in place would
-// replay the exchange on a reload with a code that is already spent.
+// replay the exchange on a reload with a code that is already spent. We hand back the state the
+// host router put there so its own history entry survives the rewrite.
 const cleanSocialLoginParams = () => {
   const url = new URL(window.location.href);
-  url.searchParams.delete('login_code');
-  url.searchParams.delete('state');
-  url.searchParams.delete('error');
-  window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+  SOCIAL_RETURN_PARAMS.forEach(name => url.searchParams.delete(name));
+  window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
 };
 
-const currentReturnUri = () => `${window.location.origin}${window.location.pathname}`;
+// The api validates return URIs by origin and preserves whatever query the URI carries, so we send
+// the whole current URL and a deep link survives the trip to the provider and back. Any leftover
+// parameters from an earlier attempt go first so they cannot come back a second time.
+const currentReturnUri = () => {
+  const url = new URL(window.location.href);
+  SOCIAL_RETURN_PARAMS.forEach(name => url.searchParams.delete(name));
+  return url.toString();
+};
 
 const formatRecoveryCode = (value: string) => {
   const cleaned = value.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 8);
@@ -288,7 +298,7 @@ const handleMFAFailure = (e: unknown) => {
   recoveryCode.value = '';
 
   // Every wrong attempt spends the token, so the API hands back a fresh one until the attempts
-  // run out. A 401 means the challenge is gone and the password step starts over.
+  // run out.
   const challenge = getMFAChallenge(e);
   if (challenge) {
     mfaToken.value = challenge.mfa_token;
@@ -296,9 +306,14 @@ const handleMFAFailure = (e: unknown) => {
     return;
   }
 
-  if ((e as { response?: { status?: number } })?.response?.status === 401) {
+  // A 401 usually means the challenge expired, but the same status carries the account-lock
+  // response after too many wrong codes, and that reason has to reach the user. Other 401 bodies
+  // are OAuth error codes, so we only pass the server's message through when it is about a lock.
+  const response = (e as { response?: { status?: number; data?: { error?: string } } })?.response;
+  if (response?.status === 401) {
+    const serverMessage = typeof response.data?.error === 'string' ? response.data.error : '';
     returnToLogin();
-    showToast('Your sign-in timed out. Enter your password again.', { style: 'error' });
+    showToast(/locked/i.test(serverMessage) ? serverMessage : 'Your sign-in timed out. Enter your password again.', { style: 'error' });
     return;
   }
 
@@ -405,6 +420,13 @@ onMounted(() => {
   }
 
   const attempt = readSocialLoginAttempt();
+
+  // An `error` parameter on its own is just as likely to be the host page's own, so without a
+  // code or a sign-in we started, the URL is not ours to clean up or complain about.
+  if (!loginCode && !attempt) {
+    return;
+  }
+
   clearSocialLoginAttempt();
   cleanSocialLoginParams();
 
@@ -1070,9 +1092,11 @@ const formClasses =
           :disabled="submitting"
         />
 
-        <div class="vdocs:flex vdocs:justify-center vdocs:mt-2.5 vdocs:mb-5">
+        <!-- The negative margin pulls the link up against the password field, whose own bottom
+             margin would otherwise leave it floating well below. -->
+        <div class="vdocs:flex vdocs:justify-end vdocs:-mt-1.5 vdocs:mb-5">
           <VerdocsButton
-            label="Forgot Your Password?"
+            label="Forgot your password?"
             variant="text"
             size="small"
             :disabled="submitting"

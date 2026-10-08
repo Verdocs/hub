@@ -30,7 +30,7 @@ export const getOrganizationInvitations = (endpoint: VerdocsEndpoint) =>
     .then((r) => r.data);
 
 /**
- * Invite a new user to join the organization.
+ * Invite a new user to join the organization. The caller may only create invitations up to their own role.
  *
  * @group Organization Invitations
  * @api POST /v2/organization-invitations Invite a new user to join the organization
@@ -52,7 +52,7 @@ export const createOrganizationInvitation = (endpoint: VerdocsEndpoint, params: 
 /**
  * Delete an invitation. Note that no cancellation message will be sent. Invitations are also one-time-use.
  * If the invitee attempts to join after the invitation is deleted, accepted, or decline, they will be
- * shown an error.
+ * shown an error. The caller may only delete invitations up to their own role.
  *
  * @group Organization Invitations
  * @api DELETE /v2/organization-invitations/:email Delete a pending invitation
@@ -68,13 +68,17 @@ export const deleteOrganizationInvitation = (endpoint: VerdocsEndpoint, email: s
     .then((r) => r.data);
 
 /**
- * Update an invitation. Note that email may not be changed after the invite is sent. To change
- * an invitee's email, delete the incorrect entry and create one with the correct value.
+ * Change the role on a pending invitation. Currently, only the role may be changed - to change an invitee's name or email,
+ * delete the old invitation and create a new one. The caller may only update invitations up to their own role.
+ *
+ * ```typescript
+ * import {updateOrganizationInvitation} from '@verdocs/js-sdk';
+ *
+ * await updateOrganizationInvitation(VerdocsEndpoint.getDefault(), 'invitee@example.com', {role: 'admin'});
+ * ```
  *
  * @group Organization Invitations
  * @api PATCH /v2/organization-invitations/:email Update a pending invitation
- * @apiBody string first_name First name. The user may override this after accepting the invitation.
- * @apiBody string last_name Last name. The user may override this after accepting the invitation.
  * @apiBody TRole role Initial role to assign to the user once they accept.
  * @apiSuccess IOrganizationInvitation . The updated invitation.
  *
@@ -82,11 +86,7 @@ export const deleteOrganizationInvitation = (endpoint: VerdocsEndpoint, email: s
  * @sdkGroup Invitation
  * @sdkPage Endpoints
  */
-export const updateOrganizationInvitation = (
-  endpoint: VerdocsEndpoint,
-  email: string,
-  params: Pick<ICreateInvitationRequest, 'role' | 'first_name' | 'last_name'>,
-) =>
+export const updateOrganizationInvitation = (endpoint: VerdocsEndpoint, email: string, params: Pick<ICreateInvitationRequest, 'role'>) =>
   endpoint.api //
     .patch<IOrganizationInvitation>(`/v2/organization-invitations/${email}`, params)
     .then((r) => r.data);

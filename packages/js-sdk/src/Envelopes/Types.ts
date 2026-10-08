@@ -1,4 +1,4 @@
-import type {TEnvelopeStatus, TFieldType, TRecipientAuthMethod, TRecipientStatus, TRecipientType} from '../BaseTypes';
+import type {TEnvelopeStatus, TFieldDefault, TFieldType, TRecipientAuthMethod, TRecipientStatus, TRecipientType} from '../BaseTypes';
 import type {IDropdownOption, IEnvelope, IInitial, IRecipient, ISignature, TAccessKey} from '../Models';
 
 export interface IEnvelopesSearchResult {
@@ -296,7 +296,7 @@ export interface ICreateEnvelopeFieldFromTemplate {
   /** Override the "label" setting from the template. */
   label?: string;
   /** Override the "default" setting from the template. If a default is provided, the field will be marked as "prepared". */
-  default?: string;
+  default?: TFieldDefault;
   /** Override the "placeholder" setting from the template. */
   placeholder?: string;
   /** Override the "multiline" setting from the template. */
@@ -333,7 +333,7 @@ export interface ICreateEnvelopeFieldDirectly {
   /** If set, the placeholder/label for the field. */
   label?: string;
   /** The default value for the field. */
-  default?: string;
+  default?: TFieldDefault;
   /** The placeholder to show in the field. */
   placeholder?: string;
   /** For text boxes, allows more than one line of text to be entered. */
@@ -350,9 +350,9 @@ export interface ICreateEnvelopeFromTemplateRequest {
   name?: string;
   /** Override the description of the envelope to create. */
   description?: string;
-  /** Override the sender name of the envelope in email and other notifications. NOTE: To prevent spam filters from blocking messages, only the NAME may be overidden. The "from" email address will be notifications@verdocs.com and cannot be changed. */
+  /** Override the sender name recipients see in the messages Verdocs sends them, such as email template bodies. (NOTE: This does not control the "From" address on emails. Those must be configured via Brands.) */
   sender_name?: string;
-  /** Override the sender email of the envelope in email and other notifications. NOTE: This will change areas that reflect the sender's email in the Web UI and certificate. It cannot change the email address used for notifications. */
+  /** Override the sender email, which controls where notifications (e.g. "completed") and "Ask a Question" requests are delivered. (NOTE: This does not control the "From" address on emails. Those must be configured via Brands.) */
   sender_email?: string;
   /** If set, Verdocs will not attempt to contact the recipient via email or SMS. */
   no_contact?: boolean;
@@ -372,8 +372,8 @@ export interface ICreateEnvelopeFromTemplateRequest {
   recipients: ICreateEnvelopeRecipientFromTemplate[];
   /** Optional metadata to attach to the envelope. This is not used by Verdocs, but may be used for internal tracking purposes by the caller. This is not shown to recipients, but is not private and should not be used to store sensitive data. */
   data?: any;
-  /** Fields to create in the envelope. Note that document_id is a number in this call and should match the index of the document in the documents array. */
-  fields?: ICreateEnvelopeFieldFromTemplate;
+  /** Template fields to override in this envelope, matched by name. */
+  fields?: ICreateEnvelopeFieldFromTemplate[];
   /** The long-form timezone. */
   locale?: string | null;
   /** The locale code */
@@ -387,9 +387,9 @@ export interface ICreateEnvelopeDirectlyRequest {
   name: string;
   /** The description of the envelope to create. */
   description?: string;
-  /** Override the sender name of the envelope in email and other notifications. NOTE: To prevent spam filters from blocking messages, only the NAME may be overidden. The "from" email address will be notifications@verdocs.com and cannot be changed. */
+  /** Override the sender name recipients see in the messages Verdocs sends them, such as email template bodies. (NOTE: This does not control the "From" address on emails. Those must be configured via Brands.) */
   sender_name?: string;
-  /** Override the sender email of the envelope in email and other notifications. NOTE: This will change areas that reflect the sender's email in the Web UI and certificate. It cannot change the email address used for notifications. */
+  /** Override the sender email, which controls where notifications (e.g. "completed") and "Ask a Question" requests are delivered. (NOTE: This does not control the "From" address on emails. Those must be configured via Brands.) */
   sender_email?: string;
   /** If set, Verdocs will not attempt to contact the recipient via email or SMS. */
   no_contact?: boolean;

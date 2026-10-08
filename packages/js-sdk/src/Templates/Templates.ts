@@ -5,8 +5,9 @@
  * @module
  */
 
-import type {TSortTemplateBy, TTemplateSender, TTemplateVisibility} from '../BaseTypes';
+import type {TBasicResponse, TSortTemplateBy, TTemplateSender, TTemplateVisibility} from '../BaseTypes';
 import type {IRole, ITemplate, ITemplateField} from '../Models';
+import type {ITemplateFeedbackRequest} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export type ITemplateSortBy = 'created_at' | 'updated_at' | 'name' | 'last_used_at' | 'counter' | 'star_counter';
@@ -38,10 +39,10 @@ export interface IGetTemplatesParams {
  * ```typescript
  * import {getTemplates} from '@verdocs/js-sdk/Templates';
  *
- * await getTemplates((VerdocsEndpoint.getDefault());
- * await getTemplates((VerdocsEndpoint.getDefault(), { is_starred: true });
- * await getTemplates((VerdocsEndpoint.getDefault(), { is_creator: true });
- * await getTemplates((VerdocsEndpoint.getDefault(), { is_organization: true });
+ * await getTemplates(VerdocsEndpoint.getDefault());
+ * await getTemplates(VerdocsEndpoint.getDefault(), { is_starred: true });
+ * await getTemplates(VerdocsEndpoint.getDefault(), { is_creator: true });
+ * await getTemplates(VerdocsEndpoint.getDefault(), { sort_by: 'star_counter' });
  * ```
  *
  * @group Templates
@@ -52,7 +53,7 @@ export interface IGetTemplatesParams {
  * @apiQuery string(enum: 'private_shared' | 'private' | 'shared' | 'public') visibility? Return only templates with the specified visibility.
  * @apiQuery string(enum: 'created_at' | 'updated_at' | 'name' | 'last_used_at' | 'counter' | 'star_counter') sort_by? Return results sorted by this criteria
  * @apiQuery boolean ascending? Set true/false to override the sort direction. Note that the default depends on `sort_by`. Date-based sorts default to descending, while name defaults to ascending.
- * @apiQuery integer(default: 20) rows? Limit the number of rows returned
+ * @apiQuery integer(default: 10) rows? Limit the number of rows returned (max 100)
  * @apiQuery integer(default: 0) page? Specify which page of results to return
  * @apiSuccess integer(format: int32) count The total number of records matching the query, helpful for pagination
  * @apiSuccess integer(format: int32) rows The number of rows returned in this response page
@@ -260,7 +261,7 @@ export const createTemplate = (
 
 /**
  * Duplicate a template. Creates a complete clone, including all settings (e.g. reminders), fields,
- * roles, and documents.
+ * roles, and documents. The new template will be owned by the caller.
  *
  * ```typescript
  * import {duplicateTemplate} from '@verdocs/js-sdk/Templates';
@@ -381,17 +382,19 @@ export const deleteTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
     .then((r) => r.data);
 
 /**
- * Toggle the template star for a template.
+ * Star a template for the caller, or remove the caller's star if they already starred it. Anyone in
+ * the template's organization who can see it may star it. Starring doesn't count as an "update".
  *
  * ```typescript
  * import {toggleTemplateStar} from '@verdocs/js-sdk/Templates';
  *
- * await toggleTemplateStar((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');
+ * const {star_counter} = await toggleTemplateStar(VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');
  * ```
  *
  * @group Templates
  * @api POST /v2/templates/:template_id/stars/toggle Toggle template star
- * @apiSuccess ITemplate . Success
+ * @apiParam string(format:uuid) template_id The template to star or unstar.
+ * @apiSuccess ITemplate . The template with its updated `star_counter`.
  *
  * @sdkOperation template.toggleTemplateStar
  * @sdkGroup Template
@@ -400,4 +403,40 @@ export const deleteTemplate = (endpoint: VerdocsEndpoint, templateId: string) =>
 export const toggleTemplateStar = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
     .post<ITemplate>(`/v2/templates/${templateId}/stars/toggle`)
+    .then((r) => r.data);
+
+/**
+ * Send feedback about a template to the Verdocs team, with optional details. This endpoint is intended to be
+ * used by template maintainers to report field-auto-detection and formatting issues, not by signers. Verdocs
+ * does not provide a formal response SLA or request routing/handling commitment for submissions via this
+ * endpoint.
+ *
+ * ```typescript
+ * import {sendTemplateFeedback} from '@verdocs/js-sdk/Templates';
+ *
+ * await sendTemplateFeedback(VerdocsEndpoint.getDefault(), templateId, {comments: 'The date fields on page 2 were missed.', page: 2});
+ * ```
+ *
+ * @group Templates
+ * @api POST /v2/templates/:template_id/feedback Send template feedback
+ * @apiParam string(format:uuid) template_id The template ID the feedback refers to.
+ * @apiBody string comments Feedback body, max 4000 chars.
+ * @apiBody string source? The part of the app the feedback came from, e.g. "field-suggestions". Max 64 characters.
+ * @apiBody integer page? The page the sender was viewing (1-based).
+ * @apiBody integer page_count? Total pages in the template's documents.
+ * @apiBody number scroll_percent? How far down the document the sender had scrolled, from 0 to 100.
+ * @apiBody string viewport? Browser viewport size, e.g. "1440x900".
+ * @apiBody string screen? Screen size, e.g. "2560x1440".
+ * @apiBody number zoom? Zoom level of the document view, e.g. 1.25.
+ * @apiBody string language? Browser language, e.g. "en-US".
+ * @apiBody string url? URL of the page the feedback came from.
+ * @apiSuccess string . Success
+ *
+ * @sdkOperation template.sendTemplateFeedback
+ * @sdkGroup Template
+ * @sdkPage Endpoints
+ */
+export const sendTemplateFeedback = (endpoint: VerdocsEndpoint, templateId: string, params: ITemplateFeedbackRequest) =>
+  endpoint.api //
+    .post<TBasicResponse>(`/v2/templates/${templateId}/feedback`, params)
     .then((r) => r.data);

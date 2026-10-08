@@ -3,6 +3,7 @@ export { VerdocsSessionService, createSessionSignals, type ISessionSignals } fro
 export { VerdocsTemplatesService, type ITemplatesPage, type ITemplatesQuery } from './lib/templates';
 
 export { VerdocsAuthComponent, type TAuthMode } from './lib/components/auth.component';
+export { VerdocsSendComponent, type ISendEventDetail, type IBeforeSendEvent, type ISentEventDetail } from './lib/components/send.component';
 export {
   VerdocsTemplatesListComponent,
   type TAllowedTemplateAction,
@@ -53,6 +54,7 @@ export { VerdocsSignatureDialogComponent } from './lib/dialogs/signature-dialog.
 export { VerdocsInitialDialogComponent } from './lib/dialogs/initial-dialog.component';
 
 export { VerdocsEnvelopesService, type TUpdateEnvelopeParams, type IEnvelopesPage, type IEnvelopesQuery, type IEnvelopeQuery } from './lib/envelopes.service';
+export { VerdocsOrganizationsService, type IOrganizationQuery, type TActiveEntitlements } from './lib/organizations.service';
 export {
   VerdocsEnvelopesListComponent,
   type TEnvelopesListView,
@@ -95,4 +97,5 @@ export { VerdocsTemplateFieldsComponent, type ITemplateFieldsEvent } from './lib
 export { VerdocsTemplateFieldPropertiesComponent } from './lib/components/templates/template-field-properties.component';
 
 export { showToast, type IToastConfig } from './lib/toast';
+export { getWebAppUrl } from './lib/environment';
 export { SDKError, type IAuthStatus, type ITemplateEvent } from './lib/types';

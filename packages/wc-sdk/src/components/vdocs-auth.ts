@@ -26,6 +26,8 @@ const PASSWORD_COMPLEXITY_MESSAGE = 'Password must be at least 8 characters long
 
 const MFA_CODE_ERROR = 'That code did not work. Try the current one from your app.';
 
+const MFA_EXPIRED_ERROR = 'Your sign-in timed out. Enter your password again.';
+
 const SOCIAL_START_ERROR = 'Sign-in could not be started. Try again.';
 
 const SOCIAL_LOGIN_KEY = 'vdocs-social-login';
@@ -40,6 +42,8 @@ interface ISocialLoginAttempt {
 
 const SOCIAL_ERROR_MESSAGES: Record<string, string> = {
   email_unverified: 'That account does not have a verified email address.',
+  corporate_email_required: 'Please use your corporate email address to create an account.',
+  account_locked: 'That account is locked. Please contact support@verdocs.com.',
   provider_error: 'That provider could not sign you in. Try again.',
   access_denied: 'Sign-in was canceled.',
 };
@@ -63,22 +67,34 @@ const clearSocialLoginAttempt = () => {
   }
 };
 
+const SOCIAL_RETURN_PARAMS = [ 'login_code', 'state', 'error' ];
+
 // Our return parameters are not the host app's to route on, and leaving them in place would
-// replay the exchange on a reload with a code that is already spent.
+// replay the exchange on a reload with a code that is already spent. The host router owns the
+// history entry's state, so we hand the existing state back rather than blanking it.
 const cleanSocialLoginParams = () => {
   const url = new URL(window.location.href);
-  url.searchParams.delete('login_code');
-  url.searchParams.delete('state');
-  url.searchParams.delete('error');
-  window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+  SOCIAL_RETURN_PARAMS.forEach(name => url.searchParams.delete(name));
+  window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
 };
 
-const currentReturnUri = () => `${window.location.origin}${window.location.pathname}`;
+// The whole current URL goes to the provider so a deep link survives the round trip. The API
+// validates return URIs by origin only and preserves the URI's own query when it appends its
+// parameters, so anything the host had in the URL comes back intact.
+const currentReturnUri = () => {
+  const url = new URL(window.location.href);
+  SOCIAL_RETURN_PARAMS.forEach(name => url.searchParams.delete(name));
+  return url.toString();
+};
 
 const formatRecoveryCode = (value: string) => {
   const cleaned = value.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 8);
   return cleaned.length > 4 ? `${cleaned.slice(0, 4)}-${cleaned.slice(4)}` : cleaned;
 };
+
+// The link belongs to the password field above it, so it sits tight under that field's own bottom
+// margin and keeps the normal gap before the Login button.
+const FORGOT_LINK_CLASSES = 'vdocs:flex vdocs:justify-end vdocs:-mt-1.5 vdocs:mb-5';
 
 const FORM_CLASSES = 'vdocs:w-[350px] vdocs:max-w-[90%] vdocs:box-border vdocs:flex vdocs:flex-col vdocs:items-center vdocs:justify-center vdocs:p-5 vdocs:bg-surface vdocs:font-sans';
 
@@ -259,6 +275,13 @@ export class VdocsAuth extends VdocsElement {
     }
 
     const attempt = readSocialLoginAttempt();
+
+    // An `error` parameter on its own is just as likely to be the host page's own, so without a
+    // code or a sign-in we started, the URL is not ours to clean up or complain about.
+    if (!loginCode && !attempt) {
+      return;
+    }
+
     clearSocialLoginAttempt();
     cleanSocialLoginParams();
 
@@ -408,9 +431,14 @@ export class VdocsAuth extends VdocsElement {
       return;
     }
 
-    if ((e as { response?: { status?: number } })?.response?.status === 401) {
+    // A 401 here is usually an expired challenge, but the same status carries the account-lock
+    // response after too many wrong codes, and that reason has to reach the user. Anything else
+    // a 401 says is an OAuth error code, which means nothing to them.
+    const response = (e as { response?: { status?: number; data?: { error?: string } } })?.response;
+    if (response?.status === 401) {
+      const serverMessage = typeof response.data?.error === 'string' ? response.data.error : '';
       this.returnToLogin();
-      showToast('Your sign-in timed out. Enter your password again.', { style: 'error' });
+      showToast(/locked/i.test(serverMessage) ? serverMessage : MFA_EXPIRED_ERROR, { style: 'error' });
       return;
     }
 
@@ -990,9 +1018,9 @@ export class VdocsAuth extends VdocsElement {
               this.password = e.detail.value;
             }}></vdocs-text-input>
 
-          <div class="vdocs:flex vdocs:justify-center vdocs:mt-2.5 vdocs:mb-5">
+          <div class=${FORGOT_LINK_CLASSES}>
             <vdocs-button
-              label="Forgot Your Password?"
+              label="Forgot your password?"
               variant="text"
               size="small"
               .disabled=${this.submitting}

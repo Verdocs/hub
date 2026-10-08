@@ -19,7 +19,7 @@ export type TTemplateAction =
 
 export type TRecipientAction = 'submit' | 'decline' | 'prepare' | 'update';
 
-export type TEnvelopeStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled';
+export type TEnvelopeStatus = 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled' | 'expired';
 
 export type TRecipientStatus = 'invited' | 'opened' | 'signed' | 'submitted' | 'canceled' | 'pending' | 'declined' | 'failed';
 
@@ -59,6 +59,7 @@ export type THistoryEvent =
   | 'envelope:cc'
   | 'envelope:canceled'
   | 'envelope:expired'
+  | 'envelope:reset'
   | 'owner:updated_recipient_info'
   | 'owner:get_in_person_link'
   | TDeprecatedHistoryEvent;
@@ -93,6 +94,12 @@ export type TFieldType =
   | 'textarea'
   | 'attachment'
   | 'payment';
+
+/**
+ * A field's starting value. The API stores it as text: booleans become "true" or "false", and numbers get thousands
+ * separators ("12,345" or "1,234.50"). A date field given an ISO 8601 date starts out showing it as MM/dd/yyyy.
+ */
+export type TFieldDefault = string | number | boolean;
 
 export type TWebhookEvent =
   | 'envelope_created'

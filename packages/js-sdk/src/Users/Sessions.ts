@@ -1,11 +1,11 @@
-import type {IRevokeSessionsResponse, IUserLoginSession} from './Types';
+import type {IEndSessionResponse, IRevokeSessionsResponse, IUserLoginSession} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 import type {TBasicResponse} from '../BaseTypes';
 
 /**
  * Get the caller's active login sessions, newest first. The session the caller is using to make
  * the request is marked with `current: true`, and should not be offered for revocation in UI
- * (use logout instead).
+ * (use endCurrentSession instead).
  *
  * ```typescript
  * import {getSessions, VerdocsEndpoint} from '@verdocs/js-sdk';
@@ -71,4 +71,28 @@ export const revokeSession = (endpoint: VerdocsEndpoint, sessionId: string) =>
 export const revokeOtherSessions = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
     .delete<IRevokeSessionsResponse>('/v2/users/sessions')
+    .then((r) => r.data);
+
+/**
+ * Sign out of the active user session.
+ *
+ * ```typescript
+ * import {endCurrentSession, VerdocsEndpoint} from '@verdocs/js-sdk';
+ *
+ * const endpoint = VerdocsEndpoint.getDefault();
+ * await endCurrentSession(endpoint);
+ * endpoint.clearSession();
+ * ```
+ *
+ * @group Sessions
+ * @api DELETE /v2/users/sessions/current End the caller's current login session
+ * @apiSuccess IEndSessionResponse . Whether a session was ended
+ *
+ * @sdkOperation session.endCurrentSession
+ * @sdkGroup Session
+ * @sdkPage Endpoints
+ */
+export const endCurrentSession = (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .delete<IEndSessionResponse>('/v2/users/sessions/current')
     .then((r) => r.data);

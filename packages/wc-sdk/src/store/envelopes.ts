@@ -1,7 +1,16 @@
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
-import type { IEnvelope, IInPersonLinkResponse, IListEnvelopesParams, IRecipient, IUpdateRecipientParams, VerdocsEndpoint } from '@verdocs/js-sdk';
+import type {
+  IEnvelope,
+  IInPersonLinkResponse,
+  IListEnvelopesParams,
+  IRecipient,
+  IUpdateRecipientParams,
+  TCreateEnvelopeRequest,
+  VerdocsEndpoint,
+} from '@verdocs/js-sdk';
 import {
   cancelEnvelope as apiCancelEnvelope,
+  createEnvelope as apiCreateEnvelope,
   getEnvelope,
   getEnvelopes,
   getInPersonLink as apiGetInPersonLink,
@@ -249,6 +258,16 @@ export class EnvelopeDetailController implements ReactiveController {
     this.key = '';
   }
 
+  /** Adopt a server-authoritative envelope without a refetch (setQueryData path). */
+  applyData(envelope: IEnvelope) {
+    // Bump the sequence so any load still in flight for this controller is ignored.
+    this.seq++;
+    this.data = envelope;
+    this.error = undefined;
+    this.isFetching = false;
+    this.host.requestUpdate();
+  }
+
   /** Force a refetch of the current envelope, bypassing the freshness window. */
   refresh(): Promise<void> {
     const query = this.getQuery();
@@ -348,6 +367,30 @@ const fetchEnvelope = (envelopeId: string, endpoint: VerdocsEndpoint, key: strin
   }
 
   return promise;
+};
+
+// Seed the cache with a known-good envelope and push it straight into any
+// watching controller, the way react-sdk's setQueryData updates observers
+// without a refetch.
+const primeEnvelopeDetail = (envelope: IEnvelope) => {
+  detailCache.set(envelopeDetailKey(envelope.id), { envelope, updatedAt: Date.now() });
+  activeDetailControllers.forEach(controller => {
+    if (controller.envelopeId === envelope.id) {
+      controller.applyData(envelope);
+    }
+  });
+};
+
+/**
+ * Create an envelope, either from a template or with documents supplied
+ * directly. The new envelope primes its detail cache entry and the lists
+ * refetch, exactly as react-sdk's useCreateEnvelope does on success.
+ */
+export const createEnvelope = async (endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest): Promise<IEnvelope> => {
+  const created = await apiCreateEnvelope(endpoint, request);
+  primeEnvelopeDetail(created);
+  invalidateEnvelopeLists();
+  return created;
 };
 
 /**

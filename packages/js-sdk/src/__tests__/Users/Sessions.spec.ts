@@ -1,6 +1,6 @@
 import {vi} from 'vitest';
 import MockAdapter from 'axios-mock-adapter';
-import {getSessions, revokeOtherSessions, revokeSession} from '../../Users';
+import {endCurrentSession, getSessions, revokeOtherSessions, revokeSession} from '../../Users';
 import {VerdocsEndpoint} from '../../VerdocsEndpoint';
 import type {IUserLoginSession} from '../../Users';
 
@@ -52,5 +52,17 @@ it('revokeOtherSessions should return the number revoked', async () => {
 
   await revokeOtherSessions(endpoint).then(thenFn).catch(catchFn);
   expect(thenFn).toHaveBeenCalledWith({revoked: 3});
+  expect(catchFn).not.toHaveBeenCalled();
+});
+
+it('endCurrentSession should end the session the caller is using', async () => {
+  const catchFn = vi.fn();
+  const thenFn = vi.fn();
+
+  const mock = new MockAdapter(endpoint.api);
+  mock.onDelete('/v2/users/sessions/current').reply(200, {ended: true});
+
+  await endCurrentSession(endpoint).then(thenFn).catch(catchFn);
+  expect(thenFn).toHaveBeenCalledWith({ended: true});
   expect(catchFn).not.toHaveBeenCalled();
 });

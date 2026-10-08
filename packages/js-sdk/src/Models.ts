@@ -233,6 +233,7 @@ export interface IBrand {
   app_domain_dcv_token: string | null;
   email_domain: string | null;
   email_local_part: string | null;
+  /** @deprecated. Use email_sender_name instead. */
   email_display_name: string | null;
   email_reply_to: string | null;
   email_reply_to_verified: boolean;
@@ -466,7 +467,7 @@ export type TAccessKey = IInPersonAccessKey | IInAppAccessKey | IEmailAccessKey 
 export interface IEnvelope {
   /** Unique identifier for the envelope (UUID) */
   id: string;
-  /** Current status of the envelope. Note that 'complete', 'declined', and 'canceled' are immutable/permanent end states. Also, 'complete' does NOT mean "fully signed in all aspects" (see "signed" for that). 'complete' means complete from a user's perspective: all required data has been submitted and workflow steps completed. */
+  /** Current status of the envelope. Note that 'complete', 'declined', and 'canceled' are immutable/permanent end states. 'expired' is set when `expires_at` passes; unlike 'canceled', the owner can reset it (see `resetEnvelope`). Also, 'complete' does NOT mean "fully signed in all aspects" (see "signed" for that). 'complete' means complete from a user's perspective: all required data has been submitted and workflow steps completed. */
   status: TEnvelopeStatus;
   /** ID of the envelope's creator. */
   profile_id: string;
@@ -476,9 +477,9 @@ export interface IEnvelope {
   organization_id: string;
   /** Name of the envelope. By defaut, inherited from the envelope's template, but may be overridden when the envelope is created. */
   name: string;
-  /** Override the sender "name" in places like the Certificate. */
+  /** Sender name recipients see in the messages Verdocs sends them, in place of the owner's name. The email From line comes from the brand, then the organization. */
   sender_name: string;
-  /** Override the sender "email address" in places like the Certificate. */
+  /** Where notifications meant for the sender go (completed, declined, canceled, expired, delegated, failed authentication, and recipient questions), in place of the owner's email. */
   sender_email: string;
   /** If set to true, no email or SMS messages will be sent to any of the envelope's recipients. */
   no_contact?: boolean;

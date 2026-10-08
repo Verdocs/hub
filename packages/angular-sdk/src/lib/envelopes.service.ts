@@ -1,6 +1,7 @@
 import { computed, DestroyRef, inject, Injectable, linkedSignal, resource, type Signal } from '@angular/core';
 import {
   cancelEnvelope,
+  createEnvelope,
   getEnvelope,
   getEnvelopes,
   getInPersonLink,
@@ -15,6 +16,7 @@ import type {
   IListEnvelopesParams,
   IRecipient,
   IUpdateRecipientParams,
+  TCreateEnvelopeRequest,
   TEnvelopeUpdateResult,
   VerdocsEndpoint,
 } from '@verdocs/js-sdk';
@@ -143,6 +145,25 @@ export class VerdocsEnvelopesService {
       error: computed(() => (envelopeResource.status() === 'error' ? envelopeResource.error() : null)),
       reload: registration.reload,
     };
+  }
+
+  /**
+   * Create an envelope, either from a template or with documents supplied
+   * directly. Any active detail query for the new envelope is primed with the
+   * response and list queries reload, the reconciliation React's
+   * useCreateEnvelope gets from setQueryData plus invalidateQueries.
+   */
+  async createEnvelope(request: TCreateEnvelopeRequest, endpointOverride?: VerdocsEndpoint): Promise<IEnvelope> {
+    const created = await createEnvelope(endpointOverride ?? this.defaultEndpoint, request);
+
+    this.activeDetailQueries.forEach(query => {
+      if (query.envelopeId() === created.id) {
+        query.prime(created);
+      }
+    });
+
+    this.invalidateLists();
+    return created;
   }
 
   /**

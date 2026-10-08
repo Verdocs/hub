@@ -31,8 +31,9 @@ export const getOrganizationMembers = (endpoint: VerdocsEndpoint) =>
     .then((r) => r.data);
 
 /**
- * Delete a member from the caller's organization. Note that the caller must be an admin or owner,
- * may not delete him/herself.
+ * Remove a member from the caller's organization. The caller must be an admin or owner, may not remove
+ * themselves, and may only remove members of equal or lower role. The member's templates and envelopes
+ * will be reassigned to the caller; their API keys and OAuth apps will be deleted.
  *
  * ```typescript
  * import {deleteOrganizationMember} from '@verdocs/js-sdk';
@@ -55,7 +56,7 @@ export const deleteOrganizationMember = (endpoint: VerdocsEndpoint, profileId: s
     .then((r) => r.data);
 
 /**
- * Create an organization member directly, bypassing the invite process.
+ * Create an organization member directly, bypassing the invite process. The caller may only create members up to their own role.
  *
  * ```typescript
  * import {createOrganizationMember} from '@verdocs/js-sdk';
@@ -85,7 +86,8 @@ export const createOrganizationMember = (
     .then((r) => r.data);
 
 /**
- * Update an organization member.
+ * Update an organization member's name or roles. The caller may not update themselves, may only
+ * update members of equal or lower role, and may only grant roles up to their own. 
  *
  * ```typescript
  * import {updateOrganizationMember} from '@verdocs/js-sdk';
@@ -117,7 +119,8 @@ export const updateOrganizationMember = (
 /**
  * Lock an organization member's account. The member will be unable to sign in until an admin
  * unlocks them or they complete the password-reset flow. Caller must be an admin or owner,
- * may not lock him/herself, and the target must have a linked user account.
+ * may not lock him/herself, may only lock members of equal or lower role, and the target must
+ * have a linked user account.
  *
  * ```typescript
  * import {lockOrganizationMember} from '@verdocs/js-sdk';
@@ -143,8 +146,8 @@ export const lockOrganizationMember = (endpoint: VerdocsEndpoint, profileId: str
 
 /**
  * Unlock a member whose account has been locked (typically after too many failed sign-in attempts
- * or via an earlier admin lock). Caller must be an admin or owner, may not unlock him/herself, and
- * the target must have a linked user account. Clears `locked`, `lock_reason`, and `login_failures`.
+ * or via an earlier admin lock). Caller must be an admin or owner, may not unlock him/herself, may
+ * only unlock members of equal or lower role, and the target must have a linked user account.
  *
  * ```typescript
  * import {unlockOrganizationMember} from '@verdocs/js-sdk';

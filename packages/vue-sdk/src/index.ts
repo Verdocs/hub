@@ -7,6 +7,8 @@ export { useTemplates } from './composables/useTemplates';
 
 export { default as VerdocsAuth } from './components/VerdocsAuth/VerdocsAuth.vue';
 export type { VerdocsAuthProps, TAuthMode } from './components/VerdocsAuth/VerdocsAuth.vue';
+export { default as VerdocsSend } from './components/VerdocsSend/VerdocsSend.vue';
+export type { VerdocsSendProps, ISendEventDetail, ISentEventDetail } from './components/VerdocsSend/VerdocsSend.vue';
 export { default as VerdocsTemplatesList } from './components/VerdocsTemplatesList/VerdocsTemplatesList.vue';
 export type {
   VerdocsTemplatesListProps,
@@ -92,6 +94,7 @@ export { default as VerdocsFieldPayment } from './fields/VerdocsFieldPayment.vue
 export type { VerdocsFieldPaymentProps } from './fields/VerdocsFieldPayment.vue';
 
 export { showToast, type IToastConfig } from './utils/toast';
+export { getWebAppUrl } from './utils/environment';
 export { SDKError, type IAuthStatus, type ITemplateEvent } from './types';
 
 export { default as VerdocsDialog } from './dialogs/VerdocsDialog.vue';
@@ -128,6 +131,11 @@ export {
   useUpdateEnvelope, useCancelEnvelope, useInPersonLink,
   type TUpdateEnvelopeParams, type IUpdateRecipientVariables,
 } from './composables/useEnvelopes';
+export { useCreateEnvelope } from './composables/useCreateEnvelope';
+export { useBrands } from './composables/useBrands';
+export { useOrganization } from './composables/useOrganization';
+export { useOrganizationContacts } from './composables/useOrganizationContacts';
+export { useEntitlements } from './composables/useEntitlements';
 export { default as VerdocsEnvelopesList } from './components/VerdocsEnvelopesList/VerdocsEnvelopesList.vue';
 export type { VerdocsEnvelopesListProps, TEnvelopesListView, TEnvelopesSortBy, IEnvelopeEvent } from './components/VerdocsEnvelopesList/VerdocsEnvelopesList.vue';
 export { default as VerdocsStatusIndicator, getStatusColor, getStatusMessage } from './components/envelopes/VerdocsStatusIndicator.vue';

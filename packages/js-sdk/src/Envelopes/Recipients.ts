@@ -97,6 +97,29 @@ export const startSigningSession = async (endpoint: VerdocsEndpoint, envelope_id
 };
 
 /**
+ * Request a fresh signing link. If a signing link has expired, `startSigningSession` fails with a 410 with an `error`
+ * of `invite_expired` (to help drive user-facing prompts/dialogs). Calls to this endpoint will issue a new link
+ * provided the recipient is eligible to do so (not declined, envelope is still active, etc). This endpoint is rate-limited
+ * to 1/60s. The 429 response will provide `retry_after` in seconds to help drive visual countdowns on disabled request
+ * buttons. If the caller is not eligible to request a new link, a 400 will be returned.
+ *
+ * @group Recipients
+ * @api POST /v2/sign/unauth/:envelope_id/:role_name/:key/fresh-link Request a fresh signing link
+ * @apiParam string(format:uuid) envelope_id The envelope to operate on.
+ * @apiParam string role_name The role requesting the link.
+ * @apiParam string key The access key from the link the signer followed (it may be expired).
+ * @apiSuccess string . Success
+ *
+ * @sdkOperation recipient.requestFreshSigningLink
+ * @sdkGroup Recipient
+ * @sdkPage Endpoints
+ */
+export const requestFreshSigningLink = async (endpoint: VerdocsEndpoint, envelope_id: string, role_name: string, key: string) =>
+  endpoint.api //
+    .post<{ status: 'OK' }>(`/v2/sign/unauth/${envelope_id}/${encodeURIComponent(role_name)}/${key}/fresh-link`)
+    .then((r) => r.data);
+
+/**
  * Get an in-person signing link. Must be called by the owner/creator of the envelope. The response
  * also includes the raw access key that may be used to directly initiate a signing session (see
  * `startSigningSession`) as well as an access token representing a valid signing session for
@@ -250,7 +273,8 @@ export const remindRecipient = (endpoint: VerdocsEndpoint, envelopeId: string, r
 /**
  * Fully reset a recipient. This allows the recipient to restart failed KBA flows, change
  * fields they may have filled in incorrectly while signing, etc. This cannot be used on a
- * canceled or completed envelope, but may be used to restart an envelope marked declined.
+ * canceled, completed, or expired envelope (resetEnvelope revives an expired one), but may be
+ * used to restart an envelope marked declined.
  *
  * @group Recipients
  * @api PATCH /v2/envelopes/:envelope_id/recipients/:role_name Reset recipient

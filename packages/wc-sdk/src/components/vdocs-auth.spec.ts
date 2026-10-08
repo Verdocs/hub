@@ -2,16 +2,28 @@ import axios from 'axios';
 import { page } from 'vitest/browser';
 import MockAdapter from 'axios-mock-adapter';
 import { VerdocsEndpoint } from '@verdocs/js-sdk';
+import { getSocialLoginUrl } from '@verdocs/js-sdk';
 import type { ISocialProviders } from '@verdocs/js-sdk';
 import { makeTestJwt, mount, TEST_API_BASE } from '../test/helpers.js';
 import type { IAuthStatus } from '../types.js';
 import './vdocs-auth.js';
+
+// Wrapped rather than stubbed: the real builder still runs, we just need to see the return URI the
+// component hands it, which is the only place that value is observable.
+vi.mock('@verdocs/js-sdk', async importOriginal => {
+  const actual = await importOriginal<typeof import('@verdocs/js-sdk')>();
+  return {
+    ...actual,
+    getSocialLoginUrl: vi.fn(actual.getSocialLoginUrl),
+  };
+});
 
 describe('vdocs-auth', () => {
   let mock: MockAdapter;
   let providers: ISocialProviders;
 
   beforeEach(() => {
+    vi.mocked(getSocialLoginUrl).mockClear();
     localStorage.clear();
     sessionStorage.clear();
     window.history.replaceState({}, '', '/');
@@ -276,6 +288,26 @@ describe('vdocs-auth', () => {
       expect(document.querySelector('.vdocs-toast')?.textContent).toContain('Your sign-in timed out');
     });
 
+    expect(document.querySelector('.vdocs-toast')?.textContent).not.toContain('invalid_grant');
+    expect(el.textContent).toContain('Log in to your account');
+  });
+
+  it('shows the lock reason when too many codes lock the account', async () => {
+    mock
+      .onPost('/v2/oauth2/token')
+      .replyOnce(403, { error: 'mfa_required', mfa_token: 'MFATOKEN' })
+      .onPost('/v2/oauth2/token')
+      .reply(401, { status: 'ERROR', error: 'Account locked. Please contact support@verdocs.com for assistance.' });
+
+    const el = await mountAuth();
+    await signIn();
+
+    await page.getByLabelText(/Authentication code/).fill('123456');
+
+    await vi.waitFor(() => {
+      expect(document.querySelector('.vdocs-toast')?.textContent).toContain('Account locked. Please contact support@verdocs.com for assistance.');
+    });
+
     expect(el.textContent).toContain('Log in to your account');
   });
 
@@ -329,7 +361,8 @@ describe('vdocs-auth', () => {
   });
 
   it('reports a provider error and cleans the URL', async () => {
-    window.history.replaceState({}, '', '/?error=email_unverified');
+    sessionStorage.setItem('vdocs-social-login', JSON.stringify({ verifier: 'VERIFIER', state: 'STATE', provider: 'google' }));
+    window.history.replaceState({}, '', '/?error=email_unverified&state=STATE');
 
     await mountAuth();
 
@@ -338,5 +371,96 @@ describe('vdocs-auth', () => {
     });
 
     expect(window.location.search).toEqual('');
+  });
+
+  it('explains a corporate email requirement', async () => {
+    sessionStorage.setItem('vdocs-social-login', JSON.stringify({ verifier: 'VERIFIER', state: 'STATE', provider: 'google' }));
+    window.history.replaceState({}, '', '/?error=corporate_email_required&state=STATE');
+
+    await mountAuth();
+
+    await vi.waitFor(() => {
+      expect(document.querySelector('.vdocs-toast')?.textContent).toContain('Please use your corporate email address to create an account.');
+    });
+  });
+
+  it('explains a locked account', async () => {
+    sessionStorage.setItem('vdocs-social-login', JSON.stringify({ verifier: 'VERIFIER', state: 'STATE', provider: 'google' }));
+    window.history.replaceState({}, '', '/?error=account_locked&state=STATE');
+
+    await mountAuth();
+
+    await vi.waitFor(() => {
+      expect(document.querySelector('.vdocs-toast')?.textContent).toContain('That account is locked. Please contact support@verdocs.com.');
+    });
+  });
+
+  it('leaves a stray error parameter alone when no sign-in was started', async () => {
+    window.history.replaceState({}, '', '/?error=access_denied');
+
+    // Toasts attach to document.body, so an earlier case's toast would still be in place and we
+    // would read it as our own.
+    document.querySelectorAll('.vdocs-toast').forEach(toast => toast.remove());
+    const replaceState = vi.spyOn(window.history, 'replaceState');
+
+    await mountAuth();
+
+    await vi.waitFor(() => {
+      expect(mock.history.get.some(request => request.url === '/v2/oauth2/social/providers')).toBe(true);
+    });
+
+    expect(document.querySelector('.vdocs-toast')).toBeNull();
+    expect(replaceState).not.toHaveBeenCalled();
+    expect(window.location.search).toEqual('?error=access_denied');
+
+    replaceState.mockRestore();
+  });
+
+  it('strips the state parameter after a provider error', async () => {
+    sessionStorage.setItem('vdocs-social-login', JSON.stringify({ verifier: 'VERIFIER', state: 'STATE', provider: 'google' }));
+    window.history.replaceState({}, '', '/?error=access_denied&state=STATE');
+
+    await mountAuth();
+
+    await vi.waitFor(() => {
+      expect(document.querySelector('.vdocs-toast')?.textContent).toContain('Sign-in was canceled');
+    });
+
+    expect(window.location.search).toEqual('');
+  });
+
+  it('keeps the host page URL and its history state when cleaning up', async () => {
+    sessionStorage.setItem('vdocs-social-login', JSON.stringify({ verifier: 'VERIFIER', state: 'STATE', provider: 'google' }));
+    window.history.replaceState({ hostRoute: 'dashboard' }, '', '/?tab=2&error=access_denied&state=STATE#section');
+
+    await mountAuth();
+
+    await vi.waitFor(() => {
+      expect(document.querySelector('.vdocs-toast')?.textContent).toContain('Sign-in was canceled');
+    });
+
+    expect(window.location.search).toEqual('?tab=2');
+    expect(window.location.hash).toEqual('#section');
+    expect(window.history.state).toEqual({ hostRoute: 'dashboard' });
+  });
+
+  it('sends the full deep link as the return URI, minus our own parameters', async () => {
+    providers = { google: true, microsoft: false };
+    window.history.replaceState({}, '', '/?tab=2&state=STALE#section');
+    const { origin, pathname } = window.location;
+
+    // The test page cannot navigate away, so the start URL is swapped for a same-document one.
+    // What we care about is the return URI we handed the builder.
+    vi.mocked(getSocialLoginUrl).mockReturnValueOnce('#social-start');
+
+    await mountAuth();
+
+    await page.getByRole('button', { name: 'Continue with Google' }).click();
+
+    await vi.waitFor(() => {
+      expect(getSocialLoginUrl).toHaveBeenCalled();
+    });
+
+    expect(vi.mocked(getSocialLoginUrl).mock.calls[0]?.[2].returnUri).toEqual(`${origin}${pathname}?tab=2#section`);
   });
 });

@@ -1,5 +1,30 @@
 # @verdocs/js-sdk
 
+## 6.13.0
+
+### Minor Changes
+
+- - `addBrandAppDomain`, `removeBrandAppDomain`, and `verifyBrandAppDomain` allow creation and management of custom domains for hosting signing experiences.
+- - The envelope status enum now provides an `expired` status (previously an expiration showed as `canceled`).
+  - A recipient who fails authentication will have an explicit `failed` status.
+  - `resetEnvelope()` now revives an expired envelope or one held up by a failed recipient.
+  - `userCanResetEnvelope()` mirrors resetEnvelope's server-side checks, to help drive UI functionality like enabling/disabling a "Reset" button.
+  - `requestFreshSigningLink()` allows a signer holding an expired invite to request a new one.
+- - Field defaults accept booleans and numbers as well as strings in `createField`, `updateField`, as well as envelope field overrides. Note that to retain backwards compatibility, the API will still store them as text (e.g. `"true"`, `"10/08/2026"`, or `"1,234.50"`). This change is required to prepare for native type handling in field defaults and values.
+- - Docs have been updated to clarify the role-rules for organization members, invitations, and API keys.
+  - Refresh tokens will now be invalidated when keys are rotated, deleted, or reassigned to a different profile.
+  - Docs have been updated to clarify how `default`, `readonly`, and `validator` work in template fields.
+  - Docs have been updated to clarify that `duplicateTemplate` will assign ownership of the new template to the caller.
+- - Added `endCurrentSession` to sign out of the current login session.
+  - Added `sendTemplateFeedback` to send feedback about a template to the Verdocs team.
+  - Refresh tokens are now only emitted by API-key based authentication flows.
+  - Access tokens now include `grant` and `client_id` claims for API-key based authentication flows.
+  - Docs for `updateOrganizationInvitation` clarified to note that `role` is the only field accepted.
+  - Fixed an issue with `toggleTemplateStar` preventing it from working properly. Note that starring/unstarring a template does not count as an "update" and will not fire a Webhook or set `updated_at`.
+  - `getTemplates` can now sort by `star_counter`.
+  - Docs for `sender_name`, `sender_email`, `refreshToken`, `requestFreshSigningLink`, and `resetRecipient` now match the API.
+  - `IBrand.email_display_name` is deprecated in favor of `email_sender_name`.
+
 ## 6.12.4
 
 ### Patch Changes

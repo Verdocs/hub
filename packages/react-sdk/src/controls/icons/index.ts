@@ -32,3 +32,7 @@ export { default as ZipIcon } from './ZipIcon';
 export { default as RefreshIcon } from './RefreshIcon';
 export { default as CircleCheckIcon } from './CircleCheckIcon';
 export { default as SignatureXIcon } from './SignatureXIcon';
+export { default as ChevronLeftIcon } from './ChevronLeftIcon';
+export { default as ChevronRightIcon } from './ChevronRightIcon';
+export { default as WarningTriangleIcon } from './WarningTriangleIcon';
+export { default as ExternalLinkIcon } from './ExternalLinkIcon';

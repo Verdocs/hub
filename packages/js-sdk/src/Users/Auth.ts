@@ -20,7 +20,7 @@ export interface IClientCredentialsRequest {
   scope?: string;
 }
 
-/** Refresh any existing session. */
+/** Refresh an API key session. Only client_credentials sign-ins are issued refresh tokens. */
 export interface IRefreshTokenRequest {
   grant_type: 'refresh_token';
   refresh_token: string;
@@ -89,11 +89,11 @@ export interface IOAuth2AuthorizeParams {
  *
  * // Client-side call, suitable for Web and mobile apps:
  * const {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { username: 'test@test.com', password: 'PASSWORD', grant_type:'password' });
- * VerdocsEndpoint.getDefault().setAuthToken(access_token);
+ * VerdocsEndpoint.getDefault().setToken(access_token);
  *
  * // Server-side call, suitable for server apps. NEVER EXPOSE client_secret IN FRONT-END CODE:
  * const {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { client_id: '...', client_secret: '...', grant_type:'client_credentials' });
- * VerdocsEndpoint.getDefault().setAuthToken(access_token);
+ * VerdocsEndpoint.getDefault().setToken(access_token);
  *
  * // OAuth2 authorization code exchange (used by third-party integrations like PowerAutomate):
  * const {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { grant_type: 'authorization_code', code: '...', client_id: '...', client_secret: '...', redirect_uri: '...' });
@@ -168,13 +168,15 @@ export const getOAuth2AuthorizeUrl = (endpoint: VerdocsEndpoint, params: IOAuth2
 };
 
 /**
- * If called before the session expires, this will refresh the caller's session and tokens.
+ * Refresh an API-key based session. Note that rotating, deleting, or changing the profile_id on an
+ * API key will invalidate an active refresh token for that key.
  *
  * ```typescript
- * import {Auth, VerdocsEndpoint} from '@verdocs/js-sdk';
+ * import {refreshToken, VerdocsEndpoint} from '@verdocs/js-sdk';
  *
- * const {accessToken} = await Auth.refreshTokens();
- * VerdocsEndpoint.setAuthToken(accessToken);
+ * const endpoint = VerdocsEndpoint.getDefault();
+ * const {access_token, refresh_token} = await refreshToken(endpoint, savedRefreshToken);
+ * endpoint.setToken(access_token);
  * ```
  *
  * @sdkOperation auth.refreshToken
