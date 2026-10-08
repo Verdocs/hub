@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.12.4",
+    "version": "6.13.0",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -326,6 +326,386 @@
             "lang": "java",
             "label": "Java",
             "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/organization-invitations/accept\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
+    "/v2/organizations/{organizationid}/brands/{brandid}/app-domain": {
+      "post": {
+        "operationId": "addBrandAppDomain",
+        "summary": "Add app domain",
+        "tags": [
+          "Brands"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "brandid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IBrand"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Body Parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "subdomain"
+                ],
+                "properties": {
+                  "subdomain": {
+                    "type": "string",
+                    "description": "The subdomain to serve Verdocs from (e.g. sign.acme.com)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X POST \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/brands/BRANDID/app-domain\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/brands/BRANDID/app-domain', {\n  method: 'post',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/brands/BRANDID/app-domain\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"POST\", \"/v2/organizations/{organizationid}/brands/{brandid}/app-domain\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/brands/BRANDID/app-domain\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/brands/BRANDID/app-domain\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "removeBrandAppDomain",
+        "summary": "Remove app domain",
+        "tags": [
+          "Brands"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "brandid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IBrand"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X DELETE \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/brands/BRANDID/app-domain\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/brands/BRANDID/app-domain', {\n  method: 'delete',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/brands/BRANDID/app-domain\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Delete.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"DELETE\", \"/v2/organizations/{organizationid}/brands/{brandid}/app-domain\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/brands/BRANDID/app-domain\");\nvar request = new RestRequest(Method.DELETE);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.delete(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/brands/BRANDID/app-domain\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
           }
         ]
       }
@@ -1353,8 +1733,8 @@
     },
     "/v2/envelopes/{id}": {
       "put": {
-        "operationId": "cancelEnvelope",
-        "summary": "Cancel envelope",
+        "operationId": "resetEnvelope",
+        "summary": "Reset envelope",
         "tags": [
           "Envelopes"
         ],
@@ -1362,7 +1742,7 @@
           {
             "in": "path",
             "name": "id",
-            "description": "The ID of the envelope to cancel.",
+            "description": "The ID of the envelope to reset.",
             "required": true,
             "schema": {
               "type": "string",
@@ -1504,9 +1884,14 @@
                   "action": {
                     "type": "string",
                     "enum": [
-                      "cancel"
+                      "reset"
                     ],
-                    "description": "The action to perform (currently only \"cancel\" is supported)."
+                    "description": "The action to perform."
+                  },
+                  "expires_at": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "New expiration date, which must be in the future. If omitted, the envelope's expiration will be extended by its original lifetime."
                   }
                 }
               }
@@ -1890,7 +2275,7 @@
                   },
                   "expires_at": {
                     "type": "string",
-                    "description": "If set, the envelope will automatically expire (be canceled) at this date and time. Expirations must be at least 1 day in the future."
+                    "description": "When the envelope expires. At that point its status becomes 'expired', and the owner can revive it with resetEnvelope."
                   },
                   "visibility": {
                     "type": "string",
@@ -3054,7 +3439,7 @@
                   },
                   "expires_at": {
                     "type": "string",
-                    "description": "If set, the envelope will automatically expire (be canceled) at this date and time. Expirations must be at least 1 day in the future."
+                    "description": "If set, the envelope expires at this date and time and its status becomes 'expired'. Must be at least 1 day in the future."
                   },
                   "timezone": {
                     "type": "string",
@@ -3145,7 +3530,8 @@
                   "pending",
                   "in progress",
                   "declined",
-                  "canceled"
+                  "canceled",
+                  "expired"
                 ]
               }
             }
@@ -3635,9 +4021,18 @@
                     },
                     "description": "For dropdown fields, the options to display"
                   },
-                  "value": {
+                  "default": {
                     "type": "string",
-                    "description": "Optional default value to set on the field"
+                    "description": "Default value to pre-fill in the field. For checkboxes and radio buttons, true or \"true\" starts checked. Numbers are stored as text with thousands separators, e.g. \"1,234.50\". A date field given an ISO 8601 date starts out showing it as MM/dd/yyyy."
+                  },
+                  "readonly": {
+                    "type": "boolean",
+                    "default": "false",
+                    "description": "Whether recipients are prevented from changing the field. May not be combined with required."
+                  },
+                  "validator": {
+                    "type": "string",
+                    "description": "Name of a validator to apply to the field's value (e.g. \"email\" or \"phone\")"
                   }
                 }
               }
@@ -6809,10 +7204,10 @@
           {
             "in": "query",
             "name": "rows",
-            "description": "Limit the number of rows returned",
+            "description": "Limit the number of rows returned (max 100)",
             "schema": {
               "type": "integer",
-              "default": 20
+              "default": 10
             }
           },
           {
@@ -9511,7 +9906,7 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "description": "Rename the field. Note that template field names must be unique within a template."
+                    "description": "Rename the field. Template field names must be unique within a template."
                   },
                   "role_name": {
                     "type": "string",
@@ -9582,9 +9977,17 @@
                     },
                     "description": "For dropdown fields, the options to display"
                   },
-                  "value": {
+                  "default": {
                     "type": "string",
-                    "description": "Optional default value to set on the field"
+                    "description": "Default value to pre-fill in the field. For checkboxes and radio buttons, true or \"true\" starts checked. Numbers are stored as text with thousands separators, e.g. \"1,234.50\". A date field given an ISO 8601 date starts out showing it as MM/dd/yyyy."
+                  },
+                  "readonly": {
+                    "type": "boolean",
+                    "description": "Whether recipients are prevented from changing the field"
+                  },
+                  "validator": {
+                    "type": "string",
+                    "description": "Name of a validator to apply to the field's value (e.g. \"email\" or \"phone\")"
                   }
                 }
               }
@@ -12109,19 +12512,9 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "first_name",
-                  "last_name",
                   "role"
                 ],
                 "properties": {
-                  "first_name": {
-                    "type": "string",
-                    "description": "First name. The user may override this after accepting the invitation."
-                  },
-                  "last_name": {
-                    "type": "string",
-                    "description": "Last name. The user may override this after accepting the invitation."
-                  },
                   "role": {
                     "$ref": "#/components/schemas/TRole",
                     "description": "Initial role to assign to the user once they accept."
@@ -15162,6 +15555,168 @@
             "lang": "java",
             "label": "Java",
             "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/envelope-documents/DOCUMENT_ID?param=value\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
+    "/v2/users/sessions/current": {
+      "delete": {
+        "operationId": "endCurrentSession",
+        "summary": "End the caller's current login session",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IEndSessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X DELETE \"https://api.verdocs.com/v2/users/sessions/current\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/users/sessions/current', {\n  method: 'delete',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/users/sessions/current\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Delete.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"DELETE\", \"/v2/users/sessions/current\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/users/sessions/current\");\nvar request = new RestRequest(Method.DELETE);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.delete(\"https://api.verdocs.com/v2/users/sessions/current\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
           }
         ]
       }
@@ -20510,6 +21065,197 @@
         ]
       }
     },
+    "/v2/sign/unauth/{envelope_id}/{role_name}/{key}/fresh-link": {
+      "post": {
+        "operationId": "requestFreshSigningLink",
+        "summary": "Request a fresh signing link",
+        "tags": [
+          "Recipients"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "envelope_id",
+            "description": "The envelope to operate on.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "name": "role_name",
+            "description": "The role requesting the link.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "key",
+            "description": "The access key from the link the signer followed (it may be expired).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X POST \"https://api.verdocs.com/v2/sign/unauth/ENVELOPE_ID/ROLE_NAME/KEY/fresh-link\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/sign/unauth/ENVELOPE_ID/ROLE_NAME/KEY/fresh-link', {\n  method: 'post',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/sign/unauth/ENVELOPE_ID/ROLE_NAME/KEY/fresh-link\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"POST\", \"/v2/sign/unauth/{envelope_id}/{role_name}/{key}/fresh-link\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/sign/unauth/ENVELOPE_ID/ROLE_NAME/KEY/fresh-link\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/sign/unauth/ENVELOPE_ID/ROLE_NAME/KEY/fresh-link\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
     "/v2/organization-invitations/resend": {
       "post": {
         "operationId": "resendOrganizationInvitation",
@@ -21552,6 +22298,235 @@
         ]
       }
     },
+    "/v2/templates/{template_id}/feedback": {
+      "post": {
+        "operationId": "sendTemplateFeedback",
+        "summary": "Send template feedback",
+        "tags": [
+          "Templates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "template_id",
+            "description": "The template ID the feedback refers to.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Body Parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "comments"
+                ],
+                "properties": {
+                  "comments": {
+                    "type": "string",
+                    "description": "Feedback body, max 4000 chars."
+                  },
+                  "source": {
+                    "type": "string",
+                    "description": "The part of the app the feedback came from, e.g. \"field-suggestions\". Max 64 characters."
+                  },
+                  "page": {
+                    "type": "integer",
+                    "description": "The page the sender was viewing (1-based)."
+                  },
+                  "page_count": {
+                    "type": "integer",
+                    "description": "Total pages in the template's documents."
+                  },
+                  "scroll_percent": {
+                    "type": "number",
+                    "description": "How far down the document the sender had scrolled, from 0 to 100."
+                  },
+                  "viewport": {
+                    "type": "string",
+                    "description": "Browser viewport size, e.g. \"1440x900\"."
+                  },
+                  "screen": {
+                    "type": "string",
+                    "description": "Screen size, e.g. \"2560x1440\"."
+                  },
+                  "zoom": {
+                    "type": "number",
+                    "description": "Zoom level of the document view, e.g. 1.25."
+                  },
+                  "language": {
+                    "type": "string",
+                    "description": "Browser language, e.g. \"en-US\"."
+                  },
+                  "url": {
+                    "type": "string",
+                    "description": "URL of the page the feedback came from."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X POST \"https://api.verdocs.com/v2/templates/TEMPLATE_ID/feedback\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/templates/TEMPLATE_ID/feedback', {\n  method: 'post',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/feedback\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"POST\", \"/v2/templates/{template_id}/feedback\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/feedback\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/feedback\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
     "/v2/sign/unauth/{envelope_id}/{role_name}/{key}": {
       "post": {
         "operationId": "startSigningSession",
@@ -22508,10 +23483,11 @@
           {
             "in": "path",
             "name": "template_id",
-            "description": "",
+            "description": "The template to star or unstar.",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -22665,6 +23641,187 @@
             "lang": "java",
             "label": "Java",
             "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/stars/toggle\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
+    "/v2/organizations/{organizationid}/brands/{brandid}/app-domain/verify": {
+      "post": {
+        "operationId": "verifyBrandAppDomain",
+        "summary": "Verify app domain",
+        "tags": [
+          "Brands"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "brandid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IBrand"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X POST \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/brands/BRANDID/app-domain/verify\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/brands/BRANDID/app-domain/verify', {\n  method: 'post',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/brands/BRANDID/app-domain/verify\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"POST\", \"/v2/organizations/{organizationid}/brands/{brandid}/app-domain/verify\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/brands/BRANDID/app-domain/verify\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/brands/BRANDID/app-domain/verify\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
           }
         ]
       }
@@ -23482,6 +24639,12 @@
         "required": [],
         "properties": {}
       },
+      "IAddBrandAppDomainRequest": {
+        "type": "object",
+        "description": "",
+        "required": [],
+        "properties": {}
+      },
       "IAddBrandEmailDomainRequest": {
         "type": "object",
         "description": "",
@@ -23563,7 +24726,12 @@
         "type": "object",
         "description": "",
         "required": [],
-        "properties": {}
+        "properties": {
+          "refresh_token": {
+            "type": "string",
+            "description": "Only API key (client_credentials) sign-ins and their refreshes return a refresh token."
+          }
+        }
       },
       "IAuthorizationCodeRequest": {
         "type": "object",
@@ -23574,8 +24742,14 @@
       "IBrand": {
         "type": "object",
         "description": "",
-        "required": [],
+        "required": [
+          "email_display_name"
+        ],
         "properties": {
+          "email_display_name": {
+            "type": "string",
+            "description": "@deprecated. Use email_sender_name instead."
+          },
           "locale": {
             "type": "string",
             "description": "The long-form timezone."
@@ -23698,11 +24872,11 @@
           },
           "sender_email": {
             "type": "string",
-            "description": "Override the sender email of the envelope in email and other notifications. NOTE: This will change areas that reflect the sender's email in the Web UI and certificate. It cannot change the email address used for notifications."
+            "description": "Override the sender email, which controls where notifications (e.g. \"completed\") and \"Ask a Question\" requests are delivered. (NOTE: This does not control the \"From\" address on emails. Those must be configured via Brands.)"
           },
           "sender_name": {
             "type": "string",
-            "description": "Override the sender name of the envelope in email and other notifications. NOTE: To prevent spam filters from blocking messages, only the NAME may be overidden. The \"from\" email address will be notifications@verdocs.com and cannot be changed."
+            "description": "Override the sender name recipients see in the messages Verdocs sends them, such as email template bodies. (NOTE: This does not control the \"From\" address on emails. Those must be configured via Brands.)"
           },
           "timezone": {
             "type": "string",
@@ -23949,7 +25123,7 @@
           },
           "fields": {
             "type": "string",
-            "description": "Fields to create in the envelope. Note that document_id is a number in this call and should match the index of the document in the documents array."
+            "description": "Template fields to override in this envelope, matched by name."
           },
           "followup_reminders": {
             "type": "integer",
@@ -23981,11 +25155,11 @@
           },
           "sender_email": {
             "type": "string",
-            "description": "Override the sender email of the envelope in email and other notifications. NOTE: This will change areas that reflect the sender's email in the Web UI and certificate. It cannot change the email address used for notifications."
+            "description": "Override the sender email, which controls where notifications (e.g. \"completed\") and \"Ask a Question\" requests are delivered. (NOTE: This does not control the \"From\" address on emails. Those must be configured via Brands.)"
           },
           "sender_name": {
             "type": "string",
-            "description": "Override the sender name of the envelope in email and other notifications. NOTE: To prevent spam filters from blocking messages, only the NAME may be overidden. The \"from\" email address will be notifications@verdocs.com and cannot be changed."
+            "description": "Override the sender name recipients see in the messages Verdocs sends them, such as email template bodies. (NOTE: This does not control the \"From\" address on emails. Those must be configured via Brands.)"
           },
           "timezone": {
             "type": "string",
@@ -24234,6 +25408,19 @@
         "required": [],
         "properties": {}
       },
+      "IEndSessionResponse": {
+        "type": "object",
+        "description": "The result of ending the caller's current session.",
+        "required": [
+          "ended"
+        ],
+        "properties": {
+          "ended": {
+            "type": "boolean",
+            "description": "False if there was no login session to end."
+          }
+        }
+      },
       "IEntitlement": {
         "type": "object",
         "description": "",
@@ -24321,11 +25508,11 @@
           },
           "sender_email": {
             "type": "string",
-            "description": "Override the sender \"email address\" in places like the Certificate."
+            "description": "Where notifications meant for the sender go (completed, declined, canceled, expired, delegated, failed authentication, and recipient questions), in place of the owner's email."
           },
           "sender_name": {
             "type": "string",
-            "description": "Override the sender \"name\" in places like the Certificate."
+            "description": "Sender name recipients see in the messages Verdocs sends them, in place of the owner's name. The email From line comes from the brand, then the organization."
           },
           "signed": {
             "type": "boolean",
@@ -24333,7 +25520,7 @@
           },
           "status": {
             "type": "string",
-            "description": "Current status of the envelope. Note that 'complete', 'declined', and 'canceled' are immutable/permanent end states. Also, 'complete' does NOT mean \"fully signed in all aspects\" (see \"signed\" for that). 'complete' means complete from a user's perspective: all required data has been submitted and workflow steps completed."
+            "description": "Current status of the envelope. Note that 'complete', 'declined', and 'canceled' are immutable/permanent end states. 'expired' is set when "
           },
           "template_id": {
             "type": "string",
@@ -24668,7 +25855,20 @@
         "type": "object",
         "description": "",
         "required": [],
-        "properties": {}
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "description": "Client ID for API-key based sessions. Omitted for active user logins."
+          },
+          "grant": {
+            "type": "string",
+            "description": "Grant type for API-key based sessions. Omitted for active user logins."
+          },
+          "sid": {
+            "type": "string",
+            "description": "Session ID for active user logins. Omitted for API-key based sessions."
+          }
+        }
       },
       "IInAppAccessKey": {
         "type": "object",
@@ -25135,7 +26335,7 @@
       },
       "IRefreshTokenRequest": {
         "type": "object",
-        "description": "Refresh any existing session.",
+        "description": "Refresh an API key session. Only client_credentials sign-ins are issued refresh tokens.",
         "required": [],
         "properties": {}
       },
@@ -25470,6 +26670,55 @@
           }
         }
       },
+      "ITemplateFeedbackRequest": {
+        "type": "object",
+        "description": "Send feedback about a template to the Verdocs team, with optional details. This endpoint is intended to be\nused by template maintainers to report field-auto-detection and formatting issues, not by signers. Verdocs\ndoes not provide a formal response SLA or request routing/handling commitment for submissions via this\nendpoint.",
+        "required": [
+          "comments"
+        ],
+        "properties": {
+          "comments": {
+            "type": "string",
+            "description": "Feedback body, max 4000 chars."
+          },
+          "language": {
+            "type": "string",
+            "description": "Browser language, e.g. \"en-US\"."
+          },
+          "page": {
+            "type": "integer",
+            "description": "The page the sender was viewing (1-based)."
+          },
+          "page_count": {
+            "type": "integer",
+            "description": "Total pages in the template's documents."
+          },
+          "screen": {
+            "type": "string",
+            "description": "Screen size, e.g. \"2560x1440\"."
+          },
+          "scroll_percent": {
+            "type": "integer",
+            "description": "How far down the document the sender had scrolled, from 0 to 100."
+          },
+          "source": {
+            "type": "string",
+            "description": "The part of the app the feedback came from, e.g. \"field-suggestions\". Max 64 characters."
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the page the feedback came from."
+          },
+          "viewport": {
+            "type": "string",
+            "description": "Browser viewport size, e.g. \"1440x900\"."
+          },
+          "zoom": {
+            "type": "integer",
+            "description": "Zoom level of the document view, e.g. 1.25."
+          }
+        }
+      },
       "ITemplateField": {
         "type": "object",
         "description": "",
@@ -25495,6 +26744,84 @@
             "type": "string",
             "description": "The default value for the field."
           },
+          "document_id": {
+            "type": "string",
+            "description": "The ID of the document the field is for."
+          },
+          "group": {
+            "type": "string",
+            "description": "For fields that support grouping (radio buttons and check boxes) the value selected will be stored under this name."
+          },
+          "height": {
+            "type": "integer",
+            "description": "The height of the field."
+          },
+          "multiline": {
+            "type": "boolean",
+            "description": "For text boxes, allows more than one line of text to be entered."
+          },
+          "name": {
+            "type": "string",
+            "description": "The machine name of the field, e.g. "
+          },
+          "options": {
+            "type": "string",
+            "description": "For dropdowns, the options that are selectable."
+          },
+          "placeholder": {
+            "type": "string",
+            "description": "The placeholder to show in the field."
+          },
+          "readonly": {
+            "type": "string",
+            "description": "If true, the field will be not be editable by the participant(s). NOTE: Fields may not be both required and readonly."
+          },
+          "role_name": {
+            "type": "string",
+            "description": "The ID of the role in the recipients list, e.g. "
+          },
+          "settings": {
+            "type": "string",
+            "description": "@deprecated. Use top-level fields instead."
+          },
+          "template_id": {
+            "type": "string",
+            "description": "The ID of the template the field is for."
+          },
+          "width": {
+            "type": "integer",
+            "description": "The width of the field."
+          },
+          "x": {
+            "type": "integer",
+            "description": "The X position of the field."
+          },
+          "y": {
+            "type": "integer",
+            "description": "The Y position of the field."
+          }
+        }
+      },
+      "ITemplateFieldRequest": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "document_id",
+          "group",
+          "height",
+          "multiline",
+          "name",
+          "options",
+          "placeholder",
+          "readonly",
+          "role_name",
+          "settings",
+          "template_id",
+          "width",
+          "x",
+          "y"
+        ],
+        "properties": {
           "document_id": {
             "type": "string",
             "description": "The ID of the document the field is for."
@@ -25792,7 +27119,20 @@
         "type": "object",
         "description": "A User Session connects a caller to a Verdocs profile, and can be used for any operations that profile may perform.",
         "required": [],
-        "properties": {}
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "description": "Client ID for API-key based sessions. Omitted for active user logins."
+          },
+          "grant": {
+            "type": "string",
+            "description": "Grant type for API-key based sessions. Omitted for active user logins."
+          },
+          "sid": {
+            "type": "string",
+            "description": "Session ID for active user logins. Omitted for API-key based sessions."
+          }
+        }
       },
       "IValidator": {
         "type": "object",
@@ -26059,7 +27399,8 @@
           "pending",
           "in progress",
           "declined",
-          "canceled"
+          "canceled",
+          "expired"
         ]
       },
       "TEnvelopeUpdateResult": {
@@ -26121,6 +27462,15 @@
           "delegate:send_confirmed"
         ]
       },
+      "TFieldDefault": {
+        "type": "string",
+        "description": "A field's starting value. The API stores it as text: booleans become \"true\" or \"false\", and numbers get thousands\nseparators (\"12,345\" or \"1,234.50\"). A date field given an ISO 8601 date starts out showing it as MM/dd/yyyy.",
+        "enum": [
+          null,
+          null,
+          null
+        ]
+      },
       "TFieldType": {
         "type": "string",
         "description": "",
@@ -26163,6 +27513,7 @@
           "envelope:cc",
           "envelope:canceled",
           "envelope:expired",
+          "envelope:reset",
           "owner:updated_recipient_info",
           "owner:get_in_person_link",
           null
