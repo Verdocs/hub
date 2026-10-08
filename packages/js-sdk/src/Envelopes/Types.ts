@@ -458,6 +458,18 @@ export interface IAuthenticateRecipientViaKBARequest {
   responses?: IKBAResponse[];
 }
 
+export type TScanDocumentType = "driverLicense" | "idCard" | "passport";
+
+export interface IAuthenticateRecipientViaIdRequest {
+  auth_method: "id";
+  country_code: string;
+  document_type: TScanDocumentType;
+  front_image: Blob;
+  back_image?: Blob;
+  face_image: Blob;
+  ip_address?: string;
+}
+
 export type TAuthenticateRecipientRequest =
   | IAuthenticateRecipientViaPasscodeRequest
   | IAuthenticateRecipientViaEmailRequest

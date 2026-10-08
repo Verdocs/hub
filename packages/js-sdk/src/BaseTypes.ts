@@ -108,6 +108,7 @@ export type TWebhookEvent =
   | 'recipient_updated'
   | 'recipient_delegated'
   | 'kba_event'
+  | 'id_event'
   | 'entitlement_used'
   | 'recipient_invited'
   | 'recipient_reminded'
@@ -133,6 +134,7 @@ export const WEBHOOK_EVENTS = [
   'recipient_updated',
   'recipient_delegated',
   'kba_event',
+  'id_event',
   'entitlement_used',
   'recipient_invited',
   'recipient_reminded',

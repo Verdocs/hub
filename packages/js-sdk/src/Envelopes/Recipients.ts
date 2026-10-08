@@ -142,6 +142,12 @@ export const getInPersonLink = (endpoint: VerdocsEndpoint, envelope_id: string, 
  * @apiBody string ssn_last_4? For KBA, the last 4 digits of the recipient's SSN
  * @apiBody string dob? For KBA, the recipient's date of birth
  * @apiBody array(items:IKBAResponse) responses? For KBA, responses to any challenge questions presented
+ * 
+ * @apiBody string country_code For Id Capture, the recipient's country of origin
+ * @apiBody TScanDocumentType document_type The supported documents that recipients can use
+ * @apiBody Blob front_image For Id Capture, required for all document types
+ * @apiBody Blob back_image? For Id Capture, should be included with IDs and Drivers Licenses.
+ * @apiBody Blob face_image For Id Capture, selfie required for all document types
  * @apiSuccess ISignerTokenResponse . Updated signing session.
  *
  * @sdkOperation recipient.verifySigner
