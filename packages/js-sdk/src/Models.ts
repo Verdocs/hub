@@ -268,13 +268,16 @@ export interface IPendingWebhook {
   id: string;
   webhook_id: string;
   organization_id: string;
+  envelope_id: string | null;
   url: string;
+  event: TWebhookEvent;
   body: any;
   created_at: string;
   delivered_at: string | null;
   last_attempt_at: string | null;
   last_status: number | null;
   last_result: string | null;
+  attempts: number;
 
   webhook?: IWebhook;
   organization?: IOrganization;

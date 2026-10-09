@@ -39,6 +39,58 @@ export interface ISetWebhookRequest {
   events: Record<TWebhookEvent, boolean>;
 }
 
+export type TWebhookDeliveryStatus = 'delivered' | 'failed' | 'pending';
+
+export interface IListWebhookDeliveriesParams {
+  event?: TWebhookEvent;
+  envelope_id?: string;
+  status?: TWebhookDeliveryStatus;
+  /** Only deliveries created at or after this date and time (ISO 8601). */
+  created_after?: string;
+  /** Only deliveries created before this date and time (ISO 8601). */
+  created_before?: string;
+  /** Page size, up to 100. Defaults to 25. */
+  rows?: number;
+  /** Page to retrieve (0-based). Defaults to 0. */
+  page?: number;
+}
+
+export interface IWebhookDelivery {
+  id: string;
+  webhook_id: string;
+  event: TWebhookEvent;
+  envelope_id: string | null;
+  url: string;
+  created_at: string;
+  last_attempt_at: string | null;
+  delivered_at: string | null;
+  last_status: number | null;
+  attempts: number;
+  status: TWebhookDeliveryStatus;
+}
+
+export interface IWebhookDeliveryDetail extends IWebhookDelivery {
+  organization_id: string;
+  body: any;
+  last_result: string | null;
+}
+
+export interface IWebhookDeliveriesResponse {
+  count: number;
+  rows: number;
+  page: number;
+  deliveries: IWebhookDelivery[];
+}
+
+/** Delivery counts for one UTC day. */
+export interface IWebhookDeliveryStats {
+  /** In YYYY-MM-DD format. */
+  date: string;
+  delivered: number;
+  failed: number;
+  pending: number;
+}
+
 export interface ICreateBrandRequest {
   key: string;
   name?: string;

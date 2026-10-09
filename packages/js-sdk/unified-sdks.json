@@ -652,7 +652,7 @@
       "group": "Invitation",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Invite a new user to join the organization.",
+      "summary": "Invite a new user to join the organization. The caller may only create invitations up to their own role.",
       "variants": [
         {
           "language": "typescript",
@@ -836,7 +836,7 @@
       "group": "Invitation",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Delete an invitation. Note that no cancellation message will be sent. Invitations are also one-time-use.\nIf the invitee attempts to join after the invitation is deleted, accepted, or decline, they will be\nshown an error.",
+      "summary": "Delete an invitation. Note that no cancellation message will be sent. Invitations are also one-time-use.\nIf the invitee attempts to join after the invitation is deleted, accepted, or decline, they will be\nshown an error. The caller may only delete invitations up to their own role.",
       "variants": [
         {
           "language": "typescript",
@@ -1152,11 +1152,11 @@
       "group": "Invitation",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Update an invitation. Note that email may not be changed after the invite is sent. To change\nan invitee's email, delete the incorrect entry and create one with the correct value.",
+      "summary": "Change the role on a pending invitation. Currently, only the role may be changed - to change an invitee's name or email,\ndelete the old invitation and create a new one. The caller may only update invitations up to their own role.",
       "variants": [
         {
           "language": "typescript",
-          "signature": "updateOrganizationInvitation(endpoint: VerdocsEndpoint, email: string, params: Pick<ICreateInvitationRequest, 'role' | 'first_name' | 'last_name'>): Promise<IOrganizationInvitation>",
+          "signature": "updateOrganizationInvitation(endpoint: VerdocsEndpoint, email: string, params: Pick<ICreateInvitationRequest, 'role'>): Promise<IOrganizationInvitation>",
           "params": [
             {
               "name": "endpoint",
@@ -1174,7 +1174,7 @@
             },
             {
               "name": "params",
-              "type": "Pick<ICreateInvitationRequest, 'role' | 'first_name' | 'last_name'>",
+              "type": "Pick<ICreateInvitationRequest, 'role'>",
               "optional": false,
               "default": null,
               "description": ""
@@ -1183,6 +1183,10 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IOrganizationInvitation>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {updateOrganizationInvitation} from '@verdocs/js-sdk';\n\nawait updateOrganizationInvitation(VerdocsEndpoint.getDefault(), 'invitee@example.com', {role: 'admin'});"
           }
         },
         {
@@ -1244,6 +1248,57 @@
           "returns": {
             "type": "OrganizationInvitation | None",
             "description": "The updated invitation, or None when the wire answers with an"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "brand.addBrandAppDomain",
+      "group": "Brand",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Custom domains allow you to serve signing links, login pages, and documents for a brand from your own subdomain,\ne.g. \"sign.mycompany.com\" instead of \"app.verdocs.com\". The returned Brand will include two CNAME records which must\nbe added to your DNS. The first provides the routing, and the second is used for DCV delegation for certificate renewal.\nWe will poll periodically for these records to be set, and the custom domain will not activate until this is done.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "addBrandAppDomain(endpoint: VerdocsEndpoint, organizationId: string, brandId: string, params: IAddBrandAppDomainRequest): Promise<IBrand>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "brandId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "IAddBrandAppDomainRequest",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IBrand>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {addBrandAppDomain} from '@verdocs/js-sdk';\n\nconst brand = await addBrandAppDomain(endpoint, organizationId, brandId, {subdomain: 'sign.acme.com'});"
           }
         }
       ]
@@ -1765,6 +1820,46 @@
       ]
     },
     {
+      "operationId": "brand.removeBrandAppDomain",
+      "group": "Brand",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Remove a brand's custom app domain. This change takes effect immediately, and should only be done\nif you have no active envelopes with invitations pointing to the custom domain, or you plan to\nsend recipients fresh invite links.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "removeBrandAppDomain(endpoint: VerdocsEndpoint, organizationId: string, brandId: string): Promise<IBrand>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "brandId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IBrand>"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "brand.removeBrandEmailDomain",
       "group": "Brand",
       "page": "Endpoints",
@@ -2273,6 +2368,46 @@
           "returns": {
             "type": "Brand",
             "description": "The updated brand."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "brand.verifyBrandAppDomain",
+      "group": "Brand",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Request an immediate verification check for a custom domain's registration status.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "verifyBrandAppDomain(endpoint: VerdocsEndpoint, organizationId: string, brandId: string): Promise<IBrand>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "brandId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IBrand>"
           }
         }
       ]
@@ -3820,11 +3955,58 @@
       ]
     },
     {
+      "operationId": "recipient.requestFreshSigningLink",
+      "group": "Recipient",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Request a fresh signing link. If a signing link has expired, `startSigningSession` fails with a 410 with an `error`\nof `invite_expired` (to help drive user-facing prompts/dialogs). Calls to this endpoint will issue a new link\nprovided the recipient is eligible to do so (not declined, envelope is still active, etc). This endpoint is rate-limited\nto 1/60s. The 429 response will provide `retry_after` in seconds to help drive visual countdowns on disabled request\nbuttons. If the caller is not eligible to request a new link, a 400 will be returned.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "requestFreshSigningLink(endpoint: VerdocsEndpoint, envelope_id: string, role_name: string, key: string): Promise<object>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "envelope_id",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "role_name",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "key",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<object>"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "recipient.resetRecipient",
       "group": "Recipient",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Fully reset a recipient. This allows the recipient to restart failed KBA flows, change\nfields they may have filled in incorrectly while signing, etc. This cannot be used on a\ncanceled or completed envelope, but may be used to restart an envelope marked declined.",
+      "summary": "Fully reset a recipient. This allows the recipient to restart failed KBA flows, change\nfields they may have filled in incorrectly while signing, etc. This cannot be used on a\ncanceled, completed, or expired envelope (resetEnvelope revives an expired one), but may be\nused to restart an envelope marked declined.",
       "variants": [
         {
           "language": "typescript",
@@ -4450,7 +4632,7 @@
           },
           "example": {
             "language": "typescript",
-            "code": "import {authenticate, VerdocsEndpoint} from '@verdocs/js-sdk';\n\n// Client-side call, suitable for Web and mobile apps:\nconst {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { username: 'test@test.com', password: 'PASSWORD', grant_type:'password' });\nVerdocsEndpoint.getDefault().setAuthToken(access_token);\n\n// Server-side call, suitable for server apps. NEVER EXPOSE client_secret IN FRONT-END CODE:\nconst {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { client_id: '...', client_secret: '...', grant_type:'client_credentials' });\nVerdocsEndpoint.getDefault().setAuthToken(access_token);\n\n// OAuth2 authorization code exchange (used by third-party integrations like PowerAutomate):\nconst {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { grant_type: 'authorization_code', code: '...', client_id: '...', client_secret: '...', redirect_uri: '...' });"
+            "code": "import {authenticate, VerdocsEndpoint} from '@verdocs/js-sdk';\n\n// Client-side call, suitable for Web and mobile apps:\nconst {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { username: 'test@test.com', password: 'PASSWORD', grant_type:'password' });\nVerdocsEndpoint.getDefault().setToken(access_token);\n\n// Server-side call, suitable for server apps. NEVER EXPOSE client_secret IN FRONT-END CODE:\nconst {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { client_id: '...', client_secret: '...', grant_type:'client_credentials' });\nVerdocsEndpoint.getDefault().setToken(access_token);\n\n// OAuth2 authorization code exchange (used by third-party integrations like PowerAutomate):\nconst {access_token} = await authenticate(VerdocsEndpoint.getDefault(), { grant_type: 'authorization_code', code: '...', client_id: '...', client_secret: '...', redirect_uri: '...' });"
           }
         },
         {
@@ -5205,7 +5387,7 @@
       "group": "Auth",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "If called before the session expires, this will refresh the caller's session and tokens.",
+      "summary": "Refresh an API-key based session. Note that rotating, deleting, or changing the profile_id on an\nAPI key will invalidate an active refresh token for that key.",
       "variants": [
         {
           "language": "typescript",
@@ -5232,7 +5414,7 @@
           },
           "example": {
             "language": "typescript",
-            "code": "import {Auth, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {accessToken} = await Auth.refreshTokens();\nVerdocsEndpoint.setAuthToken(accessToken);"
+            "code": "import {refreshToken, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst endpoint = VerdocsEndpoint.getDefault();\nconst {access_token, refresh_token} = await refreshToken(endpoint, savedRefreshToken);\nendpoint.setToken(access_token);"
           }
         },
         {
@@ -5596,7 +5778,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "createField(endpoint: VerdocsEndpoint, templateId: string, params: ITemplateField): Promise<ITemplateField>",
+          "signature": "createField(endpoint: VerdocsEndpoint, templateId: string, params: ITemplateFieldRequest): Promise<ITemplateField>",
           "params": [
             {
               "name": "endpoint",
@@ -5614,7 +5796,7 @@
             },
             {
               "name": "params",
-              "type": "ITemplateField",
+              "type": "ITemplateFieldRequest",
               "optional": false,
               "default": null,
               "description": ""
@@ -5955,7 +6137,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "updateField(endpoint: VerdocsEndpoint, templateId: string, name: string, params: Partial<ITemplateField>): Promise<ITemplateField>",
+          "signature": "updateField(endpoint: VerdocsEndpoint, templateId: string, name: string, params: Partial<ITemplateFieldRequest>): Promise<ITemplateField>",
           "params": [
             {
               "name": "endpoint",
@@ -5980,7 +6162,7 @@
             },
             {
               "name": "params",
-              "type": "Partial<ITemplateField>",
+              "type": "Partial<ITemplateFieldRequest>",
               "optional": false,
               "default": null,
               "description": ""
@@ -8011,6 +8193,46 @@
       ]
     },
     {
+      "operationId": "envelope.resetEnvelope",
+      "group": "Envelope",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Reset an Envelope. This does two things:\n- If an envelope workflow has stopped for a \"soft\" reason (e.g. expiration) it will be reactivated. The expiration date will be extended by its original duration.\n- If a recipient within the envelope has a \"soft\" failure (e.g. too many failed authentication attempts) that condition will be cleared. A new invite will be generated unless no_contact is set on the envelope.\n\nNote that \"hard\" workflow terminators cannot be reset, and will throw an error instead, such as if the envelope was canceled or completed, or if a\nrecipient declined to sign (to comply with CAN-SPAM and other regulations).",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "resetEnvelope(endpoint: VerdocsEndpoint, envelopeId: string, params: object = {}): Promise<IEnvelope>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "envelopeId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "object",
+              "optional": true,
+              "default": "{}",
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IEnvelope>"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "envelope.sortDocuments",
       "group": "Envelope",
       "page": "Helpers",
@@ -8159,7 +8381,7 @@
       "group": "Envelope",
       "page": "Endpoints",
       "gettingStarted": true,
-      "summary": "Update an envelope. Currently, only reminder settings may be changed.",
+      "summary": "Update an envelope's name, sender details, reminders, expiration, visibility, contact setting, or metadata.",
       "variants": [
         {
           "language": "typescript",
@@ -8807,6 +9029,39 @@
       ]
     },
     {
+      "operationId": "envelope.userCanResetEnvelope",
+      "group": "Envelope",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Check to see if the user can reset the envelope: they own it, and it either expired or has a recipient who failed authentication.\nThis may be used to pre-determine if the envelope may be reset before calling `resetEnvelope`, e.g. to disable a \"Reset\" button.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "userCanResetEnvelope(profile: IProfile | null | undefined, envelope: IEnvelope): boolean",
+          "params": [
+            {
+              "name": "profile",
+              "type": "IProfile | null | undefined",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "envelope",
+              "type": "IEnvelope",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "boolean"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "envelope.userCanSignNow",
       "group": "Envelope",
       "page": "Helpers",
@@ -9342,7 +9597,7 @@
       "group": "Template",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Duplicate a template. Creates a complete clone, including all settings (e.g. reminders), fields,\nroles, and documents.",
+      "summary": "Duplicate a template. Creates a complete clone, including all settings (e.g. reminders), fields,\nroles, and documents. The new template will be owned by the caller.",
       "variants": [
         {
           "language": "typescript",
@@ -9620,7 +9875,7 @@
           },
           "example": {
             "language": "typescript",
-            "code": "import {getTemplates} from '@verdocs/js-sdk/Templates';\n\nawait getTemplates((VerdocsEndpoint.getDefault());\nawait getTemplates((VerdocsEndpoint.getDefault(), { is_starred: true });\nawait getTemplates((VerdocsEndpoint.getDefault(), { is_creator: true });\nawait getTemplates((VerdocsEndpoint.getDefault(), { is_organization: true });"
+            "code": "import {getTemplates} from '@verdocs/js-sdk/Templates';\n\nawait getTemplates(VerdocsEndpoint.getDefault());\nawait getTemplates(VerdocsEndpoint.getDefault(), { is_starred: true });\nawait getTemplates(VerdocsEndpoint.getDefault(), { is_creator: true });\nawait getTemplates(VerdocsEndpoint.getDefault(), { sort_by: 'star_counter' });"
           }
         },
         {
@@ -9739,11 +9994,55 @@
       ]
     },
     {
+      "operationId": "template.sendTemplateFeedback",
+      "group": "Template",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Send feedback about a template to the Verdocs team, with optional details. This endpoint is intended to be\nused by template maintainers to report field-auto-detection and formatting issues, not by signers. Verdocs\ndoes not provide a formal response SLA or request routing/handling commitment for submissions via this\nendpoint.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "sendTemplateFeedback(endpoint: VerdocsEndpoint, templateId: string, params: ITemplateFeedbackRequest): Promise<TBasicResponse>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "ITemplateFeedbackRequest",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<TBasicResponse>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {sendTemplateFeedback} from '@verdocs/js-sdk/Templates';\n\nawait sendTemplateFeedback(VerdocsEndpoint.getDefault(), templateId, {comments: 'The date fields on page 2 were missed.', page: 2});"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "template.toggleTemplateStar",
       "group": "Template",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Toggle the template star for a template.",
+      "summary": "Star a template for the caller, or remove the caller's star if they already starred it. Anyone in\nthe template's organization who can see it may star it. Starring doesn't count as an \"update\".",
       "variants": [
         {
           "language": "typescript",
@@ -9770,7 +10069,7 @@
           },
           "example": {
             "language": "typescript",
-            "code": "import {toggleTemplateStar} from '@verdocs/js-sdk/Templates';\n\nawait toggleTemplateStar((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');"
+            "code": "import {toggleTemplateStar} from '@verdocs/js-sdk/Templates';\n\nconst {star_counter} = await toggleTemplateStar(VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');"
           }
         },
         {
@@ -11136,7 +11435,7 @@
       "group": "ApiKey",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Create an API key.",
+      "summary": "Create an API key. The caller must be an admin or owner, and the key must be set to a role no higher than the caller's own.",
       "variants": [
         {
           "language": "typescript",
@@ -11224,7 +11523,7 @@
       "group": "ApiKey",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Delete an API key.",
+      "summary": "Delete an API key. The caller may only delete keys that act as members of equal or lower role.\nAny existing refresh tokens will be invalidated. Access tokens will remain working until they expire.",
       "variants": [
         {
           "language": "typescript",
@@ -11368,7 +11667,7 @@
       "group": "ApiKey",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Rotate the secret for an API key. The caller must have admin access to the organization.",
+      "summary": "Rotate the secret for an API key. The caller must have admin access to the organization and may\nonly rotate keys that act as members of equal or lower role. Refresh tokens issued under the old\nsecret will be invalidated, but access tokens already issued stay valid until they expire.",
       "variants": [
         {
           "language": "typescript",
@@ -11452,7 +11751,7 @@
       "group": "ApiKey",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Update an API key to change its assigned Profile ID or Name.",
+      "summary": "Update an API key. The caller may only update keys that act as members of equal or lower role. Note that if the profile_id \nis changed, any existing refresh tokens will be invalidated.",
       "variants": [
         {
           "language": "typescript",
@@ -13612,7 +13911,7 @@
       "group": "Member",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Create an organization member directly, bypassing the invite process.",
+      "summary": "Create an organization member directly, bypassing the invite process. The caller may only create members up to their own role.",
       "variants": [
         {
           "language": "typescript",
@@ -13700,7 +13999,7 @@
       "group": "Member",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Delete a member from the caller's organization. Note that the caller must be an admin or owner,\nmay not delete him/herself.",
+      "summary": "Remove a member from the caller's organization. The caller must be an admin or owner, may not remove\nthemselves, and may only remove members of equal or lower role. The member's templates and envelopes\nwill be reassigned to the caller; their API keys and OAuth apps will be deleted.",
       "variants": [
         {
           "language": "typescript",
@@ -13844,7 +14143,7 @@
       "group": "Member",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Lock an organization member's account. The member will be unable to sign in until an admin\nunlocks them or they complete the password-reset flow. Caller must be an admin or owner,\nmay not lock him/herself, and the target must have a linked user account.",
+      "summary": "Lock an organization member's account. The member will be unable to sign in until an admin\nunlocks them or they complete the password-reset flow. Caller must be an admin or owner,\nmay not lock him/herself, may only lock members of equal or lower role, and the target must\nhave a linked user account.",
       "variants": [
         {
           "language": "typescript",
@@ -13986,7 +14285,7 @@
       "group": "Member",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Unlock a member whose account has been locked (typically after too many failed sign-in attempts\nor via an earlier admin lock). Caller must be an admin or owner, may not unlock him/herself, and\nthe target must have a linked user account. Clears `locked`, `lock_reason`, and `login_failures`.",
+      "summary": "Unlock a member whose account has been locked (typically after too many failed sign-in attempts\nor via an earlier admin lock). Caller must be an admin or owner, may not unlock him/herself, may\nonly unlock members of equal or lower role, and the target must have a linked user account.",
       "variants": [
         {
           "language": "typescript",
@@ -14070,7 +14369,7 @@
       "group": "Member",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Update an organization member.",
+      "summary": "Update an organization member's name or roles. The caller may not update themselves, may only\nupdate members of equal or lower role, and may only grant roles up to their own.",
       "variants": [
         {
           "language": "typescript",
@@ -16600,6 +16899,249 @@
       ]
     },
     {
+      "operationId": "session.endCurrentSession",
+      "group": "Session",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Sign out of the active user session.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "endCurrentSession(endpoint: VerdocsEndpoint): Promise<IEndSessionResponse>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IEndSessionResponse>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {endCurrentSession, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst endpoint = VerdocsEndpoint.getDefault();\nawait endCurrentSession(endpoint);\nendpoint.clearSession();"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "session.getSessions",
+      "group": "Session",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get the caller's active login sessions, newest first. The session the caller is using to make\nthe request is marked with `current: true`, and should not be offered for revocation in UI\n(use endCurrentSession instead).",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getSessions(endpoint: VerdocsEndpoint): Promise<IUserLoginSession[]>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IUserLoginSession[]>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getSessions, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst sessions = await getSessions(VerdocsEndpoint.getDefault());"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<IReadOnlyList<UserLoginSession>> GetSessionsAsync(CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<IReadOnlyList<UserLoginSession>>",
+            "description": "The caller's active sessions, newest first."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var sessions = await endpoint.Sessions.GetSessionsAsync();"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "list() -> list[UserLoginSession]",
+          "deprecated": false,
+          "returns": {
+            "type": "list[UserLoginSession]",
+            "description": "The caller's active sessions, newest first."
+          },
+          "example": {
+            "language": "python",
+            "code": "for session in endpoint.sessions.list():\n    print(session.id, session.browser, session.location, session.current)"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "session.revokeOtherSessions",
+      "group": "Session",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Revoke every login session for the caller except the one making the request. This is the\n\"sign out everywhere else\" operation.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "revokeOtherSessions(endpoint: VerdocsEndpoint): Promise<IRevokeSessionsResponse>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IRevokeSessionsResponse>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {revokeOtherSessions, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {revoked} = await revokeOtherSessions(VerdocsEndpoint.getDefault());"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<RevokeSessionsResponse> RevokeOtherSessionsAsync(CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<RevokeSessionsResponse>",
+            "description": "The number of sessions revoked."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var result = await endpoint.Sessions.RevokeOtherSessionsAsync();\nConsole.WriteLine($\"Revoked {result.Revoked} sessions\");"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "revoke_others() -> RevokeSessionsResponse",
+          "deprecated": false,
+          "returns": {
+            "type": "RevokeSessionsResponse",
+            "description": "The number of sessions revoked."
+          },
+          "example": {
+            "language": "python",
+            "code": "result = endpoint.sessions.revoke_others()\nprint(f\"Signed out of {result.revoked} other devices\")"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "session.revokeSession",
+      "group": "Session",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Revoke one of the caller's login sessions. Tokens issued for that session stop working\nimmediately. The caller's current session may not be revoked this way.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "revokeSession(endpoint: VerdocsEndpoint, sessionId: string): Promise<TBasicResponse>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "sessionId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<TBasicResponse>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {revokeSession, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nawait revokeSession(VerdocsEndpoint.getDefault(), 'SESSIONID');"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task RevokeSessionAsync(string sessionId, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "sessionId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The ID of the session to revoke. May not be the caller's current session."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task",
+            "description": "A task that completes when the session is revoked."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Sessions.RevokeSessionAsync(\"SESSIONID\");"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "revoke(session_id: str) -> None",
+          "params": [
+            {
+              "name": "session_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The ID of the session to revoke. May not be the caller's current session."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "primitive.formatFullName",
       "group": "Primitive",
       "page": "Helpers",
@@ -17715,219 +18257,6 @@
           "example": {
             "language": "csharp",
             "code": "var color = Colors.NameToRgba(\"Signer 1\");"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "session.getSessions",
-      "group": "Session",
-      "page": "Endpoints",
-      "gettingStarted": false,
-      "summary": "Get the caller's active login sessions, newest first. The session the caller is using to make\nthe request is marked with `current: true`, and should not be offered for revocation in UI\n(use logout instead).",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "getSessions(endpoint: VerdocsEndpoint): Promise<IUserLoginSession[]>",
-          "params": [
-            {
-              "name": "endpoint",
-              "type": "VerdocsEndpoint",
-              "optional": false,
-              "default": null,
-              "description": ""
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Promise<IUserLoginSession[]>"
-          },
-          "example": {
-            "language": "typescript",
-            "code": "import {getSessions, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst sessions = await getSessions(VerdocsEndpoint.getDefault());"
-          }
-        },
-        {
-          "language": "csharp",
-          "signature": "Task<IReadOnlyList<UserLoginSession>> GetSessionsAsync(CancellationToken cancellationToken = default)",
-          "params": [
-            {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task<IReadOnlyList<UserLoginSession>>",
-            "description": "The caller's active sessions, newest first."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var sessions = await endpoint.Sessions.GetSessionsAsync();"
-          }
-        },
-        {
-          "language": "python",
-          "signature": "list() -> list[UserLoginSession]",
-          "deprecated": false,
-          "returns": {
-            "type": "list[UserLoginSession]",
-            "description": "The caller's active sessions, newest first."
-          },
-          "example": {
-            "language": "python",
-            "code": "for session in endpoint.sessions.list():\n    print(session.id, session.browser, session.location, session.current)"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "session.revokeOtherSessions",
-      "group": "Session",
-      "page": "Endpoints",
-      "gettingStarted": false,
-      "summary": "Revoke every login session for the caller except the one making the request. This is the\n\"sign out everywhere else\" operation.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "revokeOtherSessions(endpoint: VerdocsEndpoint): Promise<IRevokeSessionsResponse>",
-          "params": [
-            {
-              "name": "endpoint",
-              "type": "VerdocsEndpoint",
-              "optional": false,
-              "default": null,
-              "description": ""
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Promise<IRevokeSessionsResponse>"
-          },
-          "example": {
-            "language": "typescript",
-            "code": "import {revokeOtherSessions, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nconst {revoked} = await revokeOtherSessions(VerdocsEndpoint.getDefault());"
-          }
-        },
-        {
-          "language": "csharp",
-          "signature": "Task<RevokeSessionsResponse> RevokeOtherSessionsAsync(CancellationToken cancellationToken = default)",
-          "params": [
-            {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task<RevokeSessionsResponse>",
-            "description": "The number of sessions revoked."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var result = await endpoint.Sessions.RevokeOtherSessionsAsync();\nConsole.WriteLine($\"Revoked {result.Revoked} sessions\");"
-          }
-        },
-        {
-          "language": "python",
-          "signature": "revoke_others() -> RevokeSessionsResponse",
-          "deprecated": false,
-          "returns": {
-            "type": "RevokeSessionsResponse",
-            "description": "The number of sessions revoked."
-          },
-          "example": {
-            "language": "python",
-            "code": "result = endpoint.sessions.revoke_others()\nprint(f\"Signed out of {result.revoked} other devices\")"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "session.revokeSession",
-      "group": "Session",
-      "page": "Endpoints",
-      "gettingStarted": false,
-      "summary": "Revoke one of the caller's login sessions. Tokens issued for that session stop working\nimmediately. The caller's current session may not be revoked this way.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "revokeSession(endpoint: VerdocsEndpoint, sessionId: string): Promise<TBasicResponse>",
-          "params": [
-            {
-              "name": "endpoint",
-              "type": "VerdocsEndpoint",
-              "optional": false,
-              "default": null,
-              "description": ""
-            },
-            {
-              "name": "sessionId",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": ""
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Promise<TBasicResponse>"
-          },
-          "example": {
-            "language": "typescript",
-            "code": "import {revokeSession, VerdocsEndpoint} from '@verdocs/js-sdk';\n\nawait revokeSession(VerdocsEndpoint.getDefault(), 'SESSIONID');"
-          }
-        },
-        {
-          "language": "csharp",
-          "signature": "Task RevokeSessionAsync(string sessionId, CancellationToken cancellationToken = default)",
-          "params": [
-            {
-              "name": "sessionId",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The ID of the session to revoke. May not be the caller's current session."
-            },
-            {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task",
-            "description": "A task that completes when the session is revoked."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "await endpoint.Sessions.RevokeSessionAsync(\"SESSIONID\");"
-          }
-        },
-        {
-          "language": "python",
-          "signature": "revoke(session_id: str) -> None",
-          "params": [
-            {
-              "name": "session_id",
-              "type": "str",
-              "optional": false,
-              "default": null,
-              "description": "The ID of the session to revoke. May not be the caller's current session."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "None"
           }
         }
       ]

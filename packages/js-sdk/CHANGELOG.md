@@ -1,5 +1,15 @@
 # @verdocs/js-sdk
 
+## 6.13.1
+
+### Patch Changes
+
+- - Added `getWebhookDeliveries` to list Webhook deliveries with filters for event, envelope, status, and date.
+  - Added `getWebhookDelivery` to retrieve the payload for an individual delivery.
+  - Added `resendWebhookDelivery` to retry a failed delivery.
+  - Added `getWebhookDeliveryStats` to return daily Webhook delivery counts.
+  - Failed deliveries are now retried automatically, and every attempt carries the same payload `id`. The signature docs now hash the payload's `data` field, which is what the API has always signed, and `getWebhooks`/`setWebhooks` note that secrets come back masked.
+
 ## 6.13.0
 
 ### Minor Changes
