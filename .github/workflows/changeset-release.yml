@@ -24,23 +24,23 @@ jobs:
         with:
           fetch-depth: 0
 
-      # - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v4
 
-      # - uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 24
-      #     cache: pnpm
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
 
-      # - run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile
 
-      # # If there multiple PRs are merged into main and they each include changes
-      # # that effect the changeset version, a single PR will be created/updated
-      # # using the branch `changeset-release/main`. 
-      # - name: Open Version Packages PR
-      #   uses: changesets/action@v1
-      #   with:
-      #     version: pnpm changeset:version
-      #     commit: "chore: version packages"
-      #     title: "Version Packages"
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # If there multiple PRs are merged into main and they each include changes
+      # that effect the changeset version, a single PR will be created/updated
+      # using the branch `changeset-release/main`.
+      - name: Open Version Packages PR
+        uses: changesets/action@v1
+        with:
+          version: pnpm changeset:version
+          commit: "chore: version packages"
+          title: "Version Packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

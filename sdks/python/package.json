@@ -6,6 +6,7 @@
   "scripts": {
     "generate-sdk-docs": "./docs/generate-sdk-docs.sh",
     "lint": ".venv/bin/python -m ruff format --check src tests && .venv/bin/python -m ruff check src tests",
+    "typecheck": ".venv/bin/python -m mypy src",
     "test": ".venv/bin/python -m pytest",
     "conformance": ".venv/bin/python -m pytest -m conformance"
   }
