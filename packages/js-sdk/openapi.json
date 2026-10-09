@@ -1744,7 +1744,7 @@
     "/v2/envelopes/{id}": {
       "put": {
         "operationId": "resetEnvelope",
-        "summary": "Reset envelope",
+        "summary": "Cancel or reset envelope",
         "tags": [
           "Envelopes"
         ],
@@ -1752,7 +1752,7 @@
           {
             "in": "path",
             "name": "id",
-            "description": "The ID of the envelope to reset.",
+            "description": "The ID of the envelope to operate on.",
             "required": true,
             "schema": {
               "type": "string",
@@ -1894,14 +1894,15 @@
                   "action": {
                     "type": "string",
                     "enum": [
+                      "cancel",
                       "reset"
                     ],
-                    "description": "The action to perform."
+                    "description": "The action to perform. \"cancel\" ends the envelope permanently. \"reset\" revives an expired envelope, or one stalled on a recipient who failed authentication."
                   },
                   "expires_at": {
                     "type": "string",
                     "format": "date",
-                    "description": "New expiration date, which must be in the future. If omitted, the envelope's expiration will be extended by its original lifetime."
+                    "description": "Only used with \"reset\". New expiration date, which must be in the future. If omitted, the envelope's expiration will be extended by its original lifetime."
                   }
                 }
               }
@@ -3515,7 +3516,7 @@
           {
             "in": "query",
             "name": "view",
-            "description": "Request pre-defined view. `inbox` returns envelopes where action is required by the caller. `sent` returns envelopes created by the caller. `action` returns envelopes where action is required by the caller. `waiting` returns envelopes where action is required by anyone. `completed` returns envelopes where all actions are complete.",
+            "description": "Request pre-defined view. `inbox` returns envelopes the caller has been invited to as a recipient, including ones they have since submitted, declined, or failed authentication on. `sent` returns envelopes created by the caller. `action` returns envelopes where action is required by the caller. `waiting` returns envelopes where action is required by anyone. `completed` returns envelopes where all actions are complete.",
             "schema": {
               "type": "string",
               "enum": [
@@ -26235,7 +26236,7 @@
         "properties": {
           "canceled_at": {
             "type": "string",
-            "description": "Date/time when the envelope was canceled, or null."
+            "description": "Date/time when the envelope was canceled, or null. Expiring does not set this."
           },
           "created_at": {
             "type": "string",
@@ -28230,7 +28231,7 @@
       },
       "TEnvelopeStatus": {
         "type": "string",
-        "description": "",
+        "description": "An envelope becomes 'expired' when it passes its expires_at before every recipient has acted. Unlike\n'canceled', the sender can bring it back with resetEnvelope().",
         "enum": [
           "complete",
           "pending",
@@ -28470,7 +28471,7 @@
       },
       "TRecipientStatus": {
         "type": "string",
-        "description": "",
+        "description": "A recipient becomes 'failed' after too many wrong passcode, SMS, or email codes, or a failed or timed-out\nKBA check. They cannot continue until the sender resets them with resetEnvelope() or resetRecipient().",
         "enum": [
           "invited",
           "opened",

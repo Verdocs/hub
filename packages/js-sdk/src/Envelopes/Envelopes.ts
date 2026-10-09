@@ -190,15 +190,19 @@ export const getEnvelopeDocumentPreviewLink = async (endpoint: VerdocsEndpoint, 
       .then((r) => r.data),
   );
 
+// NOTE: cancelEnvelope and resetEnvelope both call PUT /v2/envelopes/:id. The OpenAPI generator keeps only the last
+// function it sees for a path and method, so both are tagged for the whole operation.
+
 /**
  * Cancel an Envelope.
  *
  * @group Envelopes
- * @api PUT /v2/envelopes/:id Cancel envelope
- * @apiParam string(format: 'uuid') id The ID of the envelope to cancel.
- * @apiBody string(enum: 'cancel') action The action to perform (currently only "cancel" is supported).
+ * @api PUT /v2/envelopes/:id Cancel or reset envelope
+ * @apiParam string(format: 'uuid') id The ID of the envelope to operate on.
+ * @apiBody string(enum: 'cancel'|'reset') action The action to perform. "cancel" ends the envelope permanently. "reset" revives an expired envelope, or one stalled on a recipient who failed authentication.
+ * @apiBody string(format: 'date-time') expires_at? Only used with "reset". New expiration date, which must be in the future. If omitted, the envelope's expiration will be extended by its original lifetime.
  * @apiSuccess IEnvelope . The updated envelope.
- * 
+ *
  * @sdkOperation envelope.cancelEnvelope
  * @sdkGroup Envelope
  * @sdkPage Endpoints
@@ -217,10 +221,10 @@ export const cancelEnvelope = async (endpoint: VerdocsEndpoint, envelopeId: stri
  * recipient declined to sign (to comply with CAN-SPAM and other regulations).
  *
  * @group Envelopes
- * @api PUT /v2/envelopes/:id Reset envelope
- * @apiParam string(format: 'uuid') id The ID of the envelope to reset.
- * @apiBody string(enum: 'reset') action The action to perform.
- * @apiBody string(format: 'date-time') expires_at? New expiration date, which must be in the future. If omitted, the envelope's expiration will be extended by its original lifetime.
+ * @api PUT /v2/envelopes/:id Cancel or reset envelope
+ * @apiParam string(format: 'uuid') id The ID of the envelope to operate on.
+ * @apiBody string(enum: 'cancel'|'reset') action The action to perform. "cancel" ends the envelope permanently. "reset" revives an expired envelope, or one stalled on a recipient who failed authentication.
+ * @apiBody string(format: 'date-time') expires_at? Only used with "reset". New expiration date, which must be in the future. If omitted, the envelope's expiration will be extended by its original lifetime.
  * @apiSuccess IEnvelope . The updated envelope.
  *
  * @sdkOperation envelope.resetEnvelope
@@ -448,7 +452,7 @@ export interface IListEnvelopesParams {
  * @group Envelopes
  * @api GET /v2/envelopes List envelopes
  * @apiQuery string q? Match envelopes whose name contains this string
- * @apiQuery string(enum: 'inbox' | 'sent' | 'action' | 'waiting' | 'completed') view? Request pre-defined view. `inbox` returns envelopes where action is required by the caller. `sent` returns envelopes created by the caller. `action` returns envelopes where action is required by the caller. `waiting` returns envelopes where action is required by anyone. `completed` returns envelopes where all actions are complete.
+ * @apiQuery string(enum: 'inbox' | 'sent' | 'action' | 'waiting' | 'completed') view? Request pre-defined view. `inbox` returns envelopes the caller has been invited to as a recipient, including ones they have since submitted, declined, or failed authentication on. `sent` returns envelopes created by the caller. `action` returns envelopes where action is required by the caller. `waiting` returns envelopes where action is required by anyone. `completed` returns envelopes where all actions are complete.
  * @apiQuery array(items: 'complete' | 'pending' | 'in progress' | 'declined' | 'canceled' | 'expired') status? Match envelopes in one of the specified states.
  * @apiQuery boolean(default: false) include_org? If true, include organizations-shared envelopes
  * @apiQuery string(format: uuid) template_id? Match envelopes created from the specified template ID

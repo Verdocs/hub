@@ -1172,6 +1172,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.TEnvelopeStatus": {
+          "sdkOperation": "ungrouped.TEnvelopeStatus",
+          "kind": "type",
+          "name": "TEnvelopeStatus",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TEnvelopeStatus",
+          "summary": "An envelope becomes 'expired' when it passes its expires_at before every recipient has acted. Unlike\n'canceled', the sender can bring it back with resetEnvelope().",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.TFieldDefault": {
           "sdkOperation": "ungrouped.TFieldDefault",
           "kind": "type",
@@ -1307,6 +1321,20 @@
           "resource": "type",
           "signature": "TRecipientAuthMethod",
           "summary": "The authentication method(s) required for a recipient to access an envelope. \"Passcode\" will require a\nPIN or passcode to be entered, which is intended to be known to the sender and recipient ahead of time\nand communicated by means of their choosing. \"SMS\" and \"Email\" will send a one-time-code via the respective\nchannel for the recipient to enter. \"KBA\" will require the recipient to confirm personal information such\nas prior addresses, phone numbers, etc. \"ID\" will require the recipient to perform full ID-based verification.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TRecipientStatus": {
+          "sdkOperation": "ungrouped.TRecipientStatus",
+          "kind": "type",
+          "name": "TRecipientStatus",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TRecipientStatus",
+          "summary": "A recipient becomes 'failed' after too many wrong passcode, SMS, or email codes, or a failed or timed-out\nKBA check. They cannot continue until the sender resets them with resetEnvelope() or resetRecipient().",
           "params": [],
           "throws": [],
           "examples": [],
@@ -3590,7 +3618,7 @@
           "gettingStarted": true,
           "resource": "function",
           "signature": "authenticate(endpoint: VerdocsEndpoint, params: TAuthenticationRequest): Promise<IAuthenticateResponse>",
-          "summary": "Authenticate to Verdocs.",
+          "summary": "Authenticate to Verdocs. Accounts that only use social sign-in have no password (see\n`IUser.has_password`), so the password grant always fails for them with a 401.",
           "params": [
             {
               "name": "endpoint",
