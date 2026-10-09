@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.13.0",
+  "version": "6.13.1",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -957,6 +957,20 @@
           "resource": "interface",
           "signature": "IUserSession",
           "summary": "A User Session connects a caller to a Verdocs profile, and can be used for any operations that profile may perform.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IWebhookDeliveryStats": {
+          "sdkOperation": "ungrouped.IWebhookDeliveryStats",
+          "kind": "interface",
+          "name": "IWebhookDeliveryStats",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IWebhookDeliveryStats",
+          "summary": "Delivery counts for one UTC day.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -10325,6 +10339,120 @@
       "name": "Webhook",
       "summary": "",
       "symbols": {
+        "webhook.getWebhookDeliveries": {
+          "sdkOperation": "webhook.getWebhookDeliveries",
+          "kind": "function",
+          "name": "getWebhookDeliveries",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getWebhookDeliveries(endpoint: VerdocsEndpoint, params?: IListWebhookDeliveriesParams): Promise<IWebhookDeliveriesResponse>",
+          "summary": "List the organization's webhook deliveries, newest first. Deliveries are (currently) kept for 90 days.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "IListWebhookDeliveriesParams",
+              "description": "",
+              "optional": true,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IWebhookDeliveriesResponse>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getWebhookDeliveries} from '@verdocs/js-sdk';\n\nconst {count, deliveries} = await getWebhookDeliveries(VerdocsEndpoint.getDefault(), {status: 'failed'});"
+            }
+          ],
+          "deprecated": false
+        },
+        "webhook.getWebhookDelivery": {
+          "sdkOperation": "webhook.getWebhookDelivery",
+          "kind": "function",
+          "name": "getWebhookDelivery",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getWebhookDelivery(endpoint: VerdocsEndpoint, deliveryId: string): Promise<IWebhookDeliveryDetail>",
+          "summary": "Get one webhook delivery, including its payload (`data`).",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "deliveryId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IWebhookDeliveryDetail>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getWebhookDelivery} from '@verdocs/js-sdk';\n\nconst delivery = await getWebhookDelivery(VerdocsEndpoint.getDefault(), deliveryId);"
+            }
+          ],
+          "deprecated": false
+        },
+        "webhook.getWebhookDeliveryStats": {
+          "sdkOperation": "webhook.getWebhookDeliveryStats",
+          "kind": "function",
+          "name": "getWebhookDeliveryStats",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getWebhookDeliveryStats(endpoint: VerdocsEndpoint, days?: number): Promise<IWebhookDeliveryStats[]>",
+          "summary": "Get daily delivery counts by status for the last `days` days (UTC), oldest first. Days with no\ndeliveries are included with zero counts.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "days",
+              "type": "number",
+              "description": "",
+              "optional": true,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IWebhookDeliveryStats[]>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getWebhookDeliveryStats} from '@verdocs/js-sdk';\n\nconst days = await getWebhookDeliveryStats(VerdocsEndpoint.getDefault(), 14);"
+            }
+          ],
+          "deprecated": false
+        },
         "webhook.getWebhooks": {
           "sdkOperation": "webhook.getWebhooks",
           "kind": "function",
@@ -10333,7 +10461,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "getWebhooks(endpoint: VerdocsEndpoint): Promise<IWebhook>",
-          "summary": "Get the registered Webhook configuration for the caller's organization. Note that an organization\nmay only have a single Webhook configuration.",
+          "summary": "Get the registered Webhook configuration for the caller's organization. `client_secret` and \n`secret_key` will be masked as \"...\" plus their last 4 characters.",
           "params": [
             {
               "name": "endpoint",
@@ -10351,7 +10479,45 @@
           "examples": [
             {
               "language": "typescript",
-              "code": "import {getWebhooks} from '@verdocs/js-sdk';\n\nawait getWebhooks(ORGID, params);"
+              "code": "import {getWebhooks} from '@verdocs/js-sdk';\n\nconst webhook = await getWebhooks(VerdocsEndpoint.getDefault());"
+            }
+          ],
+          "deprecated": false
+        },
+        "webhook.resendWebhookDelivery": {
+          "sdkOperation": "webhook.resendWebhookDelivery",
+          "kind": "function",
+          "name": "resendWebhookDelivery",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "resendWebhookDelivery(endpoint: VerdocsEndpoint, deliveryId: string): Promise<IWebhookDelivery>",
+          "summary": "Retry a Webhook delivery.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "deliveryId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IWebhookDelivery>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {resendWebhookDelivery} from '@verdocs/js-sdk';\n\nconst {status} = await resendWebhookDelivery(VerdocsEndpoint.getDefault(), deliveryId);"
             }
           ],
           "deprecated": false
@@ -10364,7 +10530,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "rotateWebhookSecret(endpoint: VerdocsEndpoint): Promise<IWebhook>",
-          "summary": "Rotate the secret key used to authenticate Webhooks. If a secret key has not yet been set,\nit will be created. Until this is done, Webhook calls will not have a signature applied to\ntheir headers. Pending Webhook deliveries are not affected until the next event is triggered.\n\n\n\nTo authenticate a Webhook call, compute an HMAC-SHA256 hex digest of the JSON payload `body`\nfield and compare it to the `x-webhook-signature` header:",
+          "summary": "Rotate the secret key used to authenticate Webhooks. If a secret key has not yet been set, it \nwill be created. This is the only call that returns the secret in full.\n\n\n\nTo authenticate a Webhook call, compute an HMAC-SHA256 hex digest of the payload's `data`\nfield, serialized with `JSON.stringify`, and compare it to the `x-webhook-signature` header:",
           "params": [
             {
               "name": "endpoint",
@@ -10386,7 +10552,7 @@
             },
             {
               "language": "typescript",
-              "code": "// Hash the `body` field inside the payload. In many frameworks the payload is also called\n// `body`, which can be confusing.\nconst jsonBody = JSON.stringify(req.body.body);\nconst hash = createHmac('sha256', SECRET_KEY).update(jsonBody).digest('hex');\nif (hash !== req.headers['x-webhook-signature']) {\n  // Handle error here\n}\n\n// Return 200 even on verification failure so the sender does not retry the same delivery.\nres.status(200).send();"
+              "code": "const jsonBody = JSON.stringify(req.body.data);\nconst hash = createHmac('sha256', SECRET_KEY).update(jsonBody).digest('hex');\nif (hash !== req.headers['x-webhook-signature']) {\n  // Handle error here\n}\n\n// Return 200 even on verification failure so the sender does not retry the same delivery.\nres.status(200).send();"
             }
           ],
           "deprecated": false
@@ -10399,7 +10565,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "setWebhooks(endpoint: VerdocsEndpoint, params: ISetWebhookRequest): Promise<IWebhook>",
-          "summary": "Update the registered Webhook configuration for the caller's organization. Note that\nWebhooks cannot currently be deleted, but may be easily disabled by setting `active`\nto `false` and/or setting the `url` to an empty string.",
+          "summary": "Update the registered Webhook configuration for the caller's organization. Note that\nWebhooks cannot currently be deleted, but may be easily disabled by setting `active`\nto `false` and/or setting the `url` to an empty string. Secrets will be masked, and\nto prevent misdtakes, sending a masked `client_secret` to the API will leave the\ncurrent entry unchanged.",
           "params": [
             {
               "name": "endpoint",
@@ -10424,7 +10590,7 @@
           "examples": [
             {
               "language": "typescript",
-              "code": "import {setWebhooks} from '@verdocs/js-sdk';\n\nawait setWebhooks(ORGID, params);"
+              "code": "import {setWebhooks} from '@verdocs/js-sdk';\n\nconst endpoint = VerdocsEndpoint.getDefault();\nconst {events} = await getWebhooks(endpoint);\nawait setWebhooks(endpoint, {url: 'https://example.com/webhooks', active: true, auth_method: 'hmac', events: {...events, envelope_completed: true}});"
             }
           ],
           "deprecated": false
