@@ -4,7 +4,9 @@ import {
   ISignerTokenResponse,
 } from "./Types";
 
-/** */
+/**
+ * Verify recipient authentication via the Id Capture workflow
+ */
 export const verifySignerId = (
   endpoint: VerdocsEndpoint,
   params: IAuthenticateRecipientViaIdRequest,

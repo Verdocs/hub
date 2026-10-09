@@ -460,14 +460,27 @@ export interface IAuthenticateRecipientViaKBARequest {
 
 export type TScanDocumentType = "driverLicense" | "idCard" | "passport";
 
+export type TImageUpload = 'front_image' | 'back_image' | 'face_image';
+
+// The possible errors for our Id Capture workflow
+export type TScanBadImageError =
+  | 'Image Too Small'
+  | 'Document Missing Four Corners'
+  | 'Document Too Small'
+  | 'Document Border Too Small'
+  | 'Face Image Not Detected'
+  | 'Barcode Not Detected'
+  | 'Image Error'
+  | 'Document is Skewed'
+  | 'Image same as Document Image';
+
 export interface IAuthenticateRecipientViaIdRequest {
-  auth_method: "id";
-  country_code: string;
+  auth_method: 'id';
+  country_code: string; // ISO 3166 alpha-3
   document_type: TScanDocumentType;
   front_image: Blob;
   back_image?: Blob;
   face_image: Blob;
-  ip_address?: string;
 }
 
 export type TAuthenticateRecipientRequest =
