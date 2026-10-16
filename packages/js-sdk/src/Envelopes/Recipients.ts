@@ -152,7 +152,7 @@ export const getInPersonLink = (endpoint: VerdocsEndpoint, envelope_id: string, 
  * thrown.
  *
  * @group Recipients
- * @api POST /v2/sign/verify Verify recipient/signer
+ * @api POST /v2/sign/verify signer
  * @apiBody string(enum:'passcode'|'email'|'sms'|'kba'|'id') auth_method The authentication method being completed
  * @apiBody string code? The passcode or OTP entered. Required for passcode, email, and SMS methods.
  * @apiBody boolean resend? For SMS or email methods, set to send a new code.

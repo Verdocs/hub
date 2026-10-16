@@ -498,7 +498,7 @@ export interface IEnvelope {
   created_at: string;
   /** Date/time when the envelope was created. */
   updated_at: string;
-  /** Date/time when the envelope was canceled, or null. */
+  /** Date/time when the envelope was canceled, or null. Expiring does not set this. */
   canceled_at: string;
   /** Date/time when the envelope will automatically expire, or null. */
   expires_at?: string;
