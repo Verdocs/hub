@@ -5649,6 +5649,43 @@
       ]
     },
     {
+      "operationId": "auth.updateMyPreferences",
+      "group": "Auth",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Save preferences for the caller. Any keys sent are merged with the existing preferences - set a key to\nnull to remove it. Keys must be lowercase snake_case up to 64 characters, and the total record must be <8KB.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "updateMyPreferences(endpoint: VerdocsEndpoint, params: IUpdateUserPreferencesRequest): Promise<IUserPreferences>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "IUpdateUserPreferencesRequest",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IUserPreferences>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {updateMyPreferences} from '@verdocs/js-sdk';\n\nawait updateMyPreferences(VerdocsEndpoint.getDefault(), {template_builder: 'builder'});"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "auth.verifyEmail",
       "group": "Auth",
       "page": "Endpoints",

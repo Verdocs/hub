@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.13.1",
+  "version": "6.13.2",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -943,6 +943,20 @@
           "resource": "interface",
           "signature": "IUserLoginSession",
           "summary": "Server-side record of a login session (not to be confused with IUserSession, a client-side tracker for a decoded JWT.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IUserPreferences": {
+          "sdkOperation": "ungrouped.IUserPreferences",
+          "kind": "interface",
+          "name": "IUserPreferences",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IUserPreferences",
+          "summary": "Verdocs apps read the keys listed here. Your own apps may store others.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -4052,6 +4066,44 @@
             {
               "language": "typescript",
               "code": "import {resetPassword} from '@verdocs/js-sdk';\n\nconst {success} = await resetPassword({ email });\nif (status !== 'OK') {\n  window.alert(`Please check your email for instructions on how to reset your password.`);\n}\n\n// Collect code and new password from the user, then call:\n\nconst {success} = await resetPassword({ email, code, new_password });\nif (status !== 'OK') {\n  window.alert(`Please check your verification code and try again.`);\n}"
+            }
+          ],
+          "deprecated": false
+        },
+        "auth.updateMyPreferences": {
+          "sdkOperation": "auth.updateMyPreferences",
+          "kind": "function",
+          "name": "updateMyPreferences",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "updateMyPreferences(endpoint: VerdocsEndpoint, params: IUpdateUserPreferencesRequest): Promise<IUserPreferences>",
+          "summary": "Save preferences for the caller. Any keys sent are merged with the existing preferences - set a key to\nnull to remove it. Keys must be lowercase snake_case up to 64 characters, and the total record must be <8KB.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "IUpdateUserPreferencesRequest",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IUserPreferences>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {updateMyPreferences} from '@verdocs/js-sdk';\n\nawait updateMyPreferences(VerdocsEndpoint.getDefault(), {template_builder: 'builder'});"
             }
           ],
           "deprecated": false
