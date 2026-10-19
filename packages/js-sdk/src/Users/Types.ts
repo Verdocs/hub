@@ -56,6 +56,12 @@ export interface IVerifyEmailRequest {
   token: string;
 }
 
+export interface IUpdateUserPreferencesRequest {
+  /** Send null to go back to the default, `build`. */
+  template_builder?: 'build' | 'builder' | null;
+  [key: string]: unknown;
+}
+
 /**
  * Server-side record of a login session (not to be confused with IUserSession, a client-side tracker for a decoded JWT.
  */

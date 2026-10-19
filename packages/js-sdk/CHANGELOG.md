@@ -1,5 +1,14 @@
 # @verdocs/js-sdk
 
+## 6.13.2
+
+### Patch Changes
+
+- - Clarify the `cancel` and `reset` actions for `PUT /v2/envelopes/:id`.
+  - Clarify the documentation on the `expired` envelope status, the `failed` recipient status, which envelopes the `inbox` view returns, that expiring an envelope doesn't set `canceled_at`, and that password sign-in always fails for accounts that only use social sign-in.
+- - Added `updateMyPreferences` to save settings for the caller, such as which template builder to show.
+  - `getMyUser` now returns the caller's `preferences`.
+
 ## 6.13.1
 
 ### Patch Changes

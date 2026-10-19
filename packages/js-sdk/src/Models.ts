@@ -373,8 +373,19 @@ export interface IUser {
     enrolled_at: string | null;
     backup_codes_remaining: number;
   };
+  /** Present only on the caller's own record from getMyUser, and null until something is set. */
+  preferences?: IUserPreferences | null;
   created_at: string;
   updated_at: string;
+}
+
+/**
+ * Verdocs apps read the keys listed here. Your own apps may store others.
+ */
+export interface IUserPreferences {
+  /** The template builder to show: `build` for verdocs-build (the default) or `builder` for verdocs-builder. */
+  template_builder?: 'build' | 'builder';
+  [key: string]: unknown;
 }
 
 export type IWebhookEvents = Record<TWebhookEvent, boolean>;

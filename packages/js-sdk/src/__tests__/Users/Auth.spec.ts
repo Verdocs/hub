@@ -2,7 +2,7 @@ import {webcrypto} from 'node:crypto';
 import {TextEncoder as NodeTextEncoder} from 'node:util';
 import {vi} from 'vitest';
 import MockAdapter from 'axios-mock-adapter';
-import {createCodeChallenge, createCodeVerifier, getMFAChallenge, getSocialLoginUrl, getSocialProviders, isMFARequired} from '../../Users';
+import {createCodeChallenge, createCodeVerifier, getMFAChallenge, getSocialLoginUrl, getSocialProviders, isMFARequired, updateMyPreferences} from '../../Users';
 import {VerdocsEndpoint} from '../../VerdocsEndpoint';
 
 // jsdom supplies neither crypto.subtle nor TextEncoder, both of which the PKCE helpers use in
@@ -85,4 +85,12 @@ it('createCodeChallenge should produce a URL-safe challenge for a generated veri
 
   expect(challenge).toHaveLength(43);
   expect(challenge).toMatch(/^[A-Za-z0-9\-_]+$/);
+});
+
+it('updateMyPreferences should send the changes and return the stored preferences', async () => {
+  const mock = new MockAdapter(endpoint.api);
+  mock.onPatch('/v2/users/me/preferences', {template_builder: 'builder', panel_open: null}).reply(200, {template_builder: 'builder'});
+
+  const preferences = await updateMyPreferences(endpoint, {template_builder: 'builder', panel_open: null});
+  expect(preferences).toEqual({template_builder: 'builder'});
 });

@@ -1,7 +1,7 @@
 import {IAuthenticateResponse, IChangePasswordRequest, IChangePasswordResponse, ISocialProviders, IVerifyEmailRequest} from './Types';
+import {IUpdateUserPreferencesRequest, TSocialLoginProvider} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
-import {TSocialLoginProvider} from './Types';
-import {IUser} from '../Models';
+import {IUser, IUserPreferences} from '../Models';
 
 /** @deprecated. Use IAuthorizationCodeRequest instead. */ 
 export interface IROPCRequest {
@@ -310,6 +310,30 @@ export const verifyEmail = (endpoint: VerdocsEndpoint, params: IVerifyEmailReque
 export const getMyUser = (endpoint: VerdocsEndpoint) =>
   endpoint.api //
     .get<IUser>('/v2/users/me')
+    .then((r) => r.data);
+
+/**
+ * Save preferences for the caller. Any keys sent are merged with the existing preferences - set a key to
+ * null to remove it. Keys must be lowercase snake_case up to 64 characters, and the total record must be <8KB.
+ *
+ * ```typescript
+ * import {updateMyPreferences} from '@verdocs/js-sdk';
+ *
+ * await updateMyPreferences(VerdocsEndpoint.getDefault(), {template_builder: 'builder'});
+ * ```
+ *
+ * @group Authentication
+ * @api PATCH /v2/users/me/preferences Update the caller's preferences.
+ * @apiBody string(enum:'build'|'builder') template_builder? The template builder to show. Set to null to reset to the default, `verdocs-build`.
+ * @apiSuccess IUserPreferences . The caller's preferences after the update
+ *
+ * @sdkOperation auth.updateMyPreferences
+ * @sdkGroup Auth
+ * @sdkPage Endpoints
+ */
+export const updateMyPreferences = (endpoint: VerdocsEndpoint, params: IUpdateUserPreferencesRequest) =>
+  endpoint.api //
+    .patch<IUserPreferences>('/v2/users/me/preferences', params)
     .then((r) => r.data);
 
 /** NOTE: This is not a "failure" error. MFA flows use a 403 to issue their MFA challenges. */
