@@ -1,5 +1,11 @@
 # @verdocs/js-sdk
 
+## 6.13.3
+
+### Patch Changes
+
+- - Added the `high_contrast` user preference, which turns on the Builder's high contrast mode.
+
 ## 6.13.2
 
 ### Patch Changes

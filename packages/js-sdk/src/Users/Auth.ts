@@ -325,6 +325,7 @@ export const getMyUser = (endpoint: VerdocsEndpoint) =>
  * @group Authentication
  * @api PATCH /v2/users/me/preferences Update the caller's preferences.
  * @apiBody string(enum:'build'|'builder') template_builder? The template builder to show. Set to null to reset to the default, `verdocs-build`.
+ * @apiBody boolean high_contrast? Draw Builder fields in high contrast. Set to null to follow the browser's contrast setting.
  * @apiSuccess IUserPreferences . The caller's preferences after the update
  *
  * @sdkOperation auth.updateMyPreferences

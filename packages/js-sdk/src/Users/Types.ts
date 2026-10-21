@@ -59,6 +59,8 @@ export interface IVerifyEmailRequest {
 export interface IUpdateUserPreferencesRequest {
   /** Send null to go back to the default, `build`. */
   template_builder?: 'build' | 'builder' | null;
+  /** Send null to follow the browser's contrast setting again. */
+  high_contrast?: boolean | null;
   [key: string]: unknown;
 }
 

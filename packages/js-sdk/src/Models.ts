@@ -385,6 +385,8 @@ export interface IUser {
 export interface IUserPreferences {
   /** The template builder to show: `build` for verdocs-build (the default) or `builder` for verdocs-builder. */
   template_builder?: 'build' | 'builder';
+  /** Draw Builder fields in high contrast. Unset follows the browser's own contrast setting. */
+  high_contrast?: boolean;
   [key: string]: unknown;
 }
 
