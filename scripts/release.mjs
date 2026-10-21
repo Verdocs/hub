@@ -7,7 +7,8 @@
 // or under sdks/ (python, csharp). Without --publish this is a dry run: it
 // builds, tests, and shows the artifact it would ship but touches neither a
 // registry, git tags, nor GitHub. Publishing needs the registry's credential
-// in the environment for the run: npm uses your npm login, Python needs
+// in the environment for the run: npm uses your npm login (or trusted
+// publishing when the Publish workflow runs this), Python needs
 // TWINE_PASSWORD (a PyPI API token), C# needs NUGET_API_KEY. Nothing is read
 // from or written to the repo. Tags and releases are named <package>@<version>
 // so a monorepo tag says which package it belongs to.
@@ -20,6 +21,8 @@ const name = args.find((a) => !a.startsWith("--"));
 const publish = args.includes("--publish");
 const skipDocs = args.includes("--skip-docs");
 const allowDirty = args.includes("--allow-dirty");
+// In GitHub Actions npm publishes with trusted publishing, and a rerun finishes what an earlier run left undone.
+const ci = !!process.env.GITHUB_ACTIONS;
 
 const root = resolve(import.meta.dirname, "..");
 const fail = (msg) => {
@@ -130,10 +133,14 @@ if (publish && dirty && !allowDirty)
   fail("working tree is not clean (use --allow-dirty to override)");
 if (!publish && branch !== "main")
   console.log(`note: on ${branch}, a real publish would need main`);
-if (spawnSync("gh", ["auth", "status"], { encoding: "utf8" }).status !== 0)
+if (
+  !ci &&
+  spawnSync("gh", ["auth", "status"], { encoding: "utf8" }).status !== 0
+)
   fail("gh is not authenticated (gh auth login)");
 if (
   target.kind === "npm" &&
+  !ci &&
   !spawnSync("npm", ["whoami"], { encoding: "utf8" }).stdout?.trim()
 )
   fail("not logged in to npm (npm login)");
@@ -143,11 +150,12 @@ if (publish && target.kind === "nuget" && !process.env.NUGET_API_KEY)
   fail("set NUGET_API_KEY for this run");
 
 // Is this version already on the registry?
-let onRegistry = false;
-if (target.kind === "npm")
-  onRegistry = !!spawnSync("npm", ["view", tag, "version"], {
+const onNpm = () =>
+  !!spawnSync("npm", ["view", tag, "version", "--prefer-online"], {
     encoding: "utf8",
   }).stdout?.trim();
+let onRegistry = false;
+if (target.kind === "npm") onRegistry = onNpm();
 if (target.kind === "pypi")
   onRegistry = !!(await fetchJson(
     `https://pypi.org/pypi/${target.id}/${target.version}/json`,
@@ -159,14 +167,20 @@ if (target.kind === "nuget") {
   onRegistry = !!idx?.versions?.includes(target.version);
 }
 if (onRegistry) {
-  if (publish) fail(`${tag} is already published; bump the version first`);
+  if (publish && !ci)
+    fail(`${tag} is already published; bump the version first`);
   console.log(
-    `note: ${tag} is already published, a real publish would stop here`,
+    `note: ${tag} is already published${ci ? "" : ", a real publish would stop here"}`,
   );
 }
-if (sh(`git tag -l "${tag}"`)) {
-  if (publish) fail(`tag ${tag} already exists`);
+const tagged = !!sh(`git tag -l "${tag}"`);
+if (tagged) {
+  if (publish && !ci) fail(`tag ${tag} already exists`);
   console.log(`note: tag ${tag} already exists`);
+}
+if (ci && onRegistry && tagged) {
+  console.log(`\nnothing to do for ${tag}`);
+  process.exit(0);
 }
 
 // Release notes come from the package's CHANGELOG section for this version.
@@ -193,13 +207,26 @@ if (!notes) {
 if (target.kind === "npm") {
   run(`pnpm --filter ${target.filter} build`);
   run(`pnpm --filter ${target.filter} test`);
-  // pnpm has its own clean-tree check on publish; --allow-dirty has to cover that one too.
-  if (publish)
+  if (publish && ci) {
+    if (!onRegistry) {
+      // pnpm 10 can't do the OIDC exchange, so npm publishes the tarball pnpm packs.
+      run("pnpm pack --pack-destination /tmp", target.dir);
+      const packed = `${target.id.replace("@", "").replace("/", "-")}-${target.version}.tgz`;
+      run(`npm publish /tmp/${packed} --access public`, target.dir);
+      // npm scans each new version before it can be installed, so a green run means apps can bump.
+      for (let waited = 0; !onNpm(); waited += 15) {
+        if (waited >= 1800)
+          fail(`${tag} still isn't installable after 30 minutes`);
+        await new Promise((r) => setTimeout(r, 15000));
+      }
+    }
+  } else if (publish) {
+    // pnpm has its own clean-tree check on publish; --allow-dirty has to cover that one too.
     run(
       `pnpm publish --access public${allowDirty ? " --no-git-checks" : ""}`,
       target.dir,
     );
-  else if (onRegistry)
+  } else if (onRegistry)
     run("pnpm pack --pack-destination /tmp", target.dir); // npm refuses even a dry run over a published version
   else
     run("pnpm publish --access public --dry-run --no-git-checks", target.dir);
@@ -235,7 +262,7 @@ if (target.kind === "nuget") {
   else console.log(`would push: ${nupkg}`);
 }
 
-if (publish) {
+if (publish && !tagged) {
   run(`git tag -a "${tag}" -m "${tag}"`);
   run(`git push origin "${tag}"`);
   const r = spawnSync(

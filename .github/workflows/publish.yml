@@ -1,0 +1,50 @@
+name: Publish
+
+# Publishes the committed version of @verdocs/js-sdk with npm trusted publishing (OIDC), then tags it and creates its
+# GitHub release. Versions already published and tagged are skipped, so reruns are safe. The docs step stays local:
+# pnpm --filter @verdocs/js-sdk run docs
+on:
+  push:
+    branches: [main]
+    paths:
+      - packages/js-sdk/package.json
+      - scripts/release.mjs
+      - .github/workflows/publish.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  js-sdk:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: npm
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: "https://registry.npmjs.org"
+          package-manager-cache: false
+
+      - run: pnpm install --frozen-lockfile --filter "@verdocs/js-sdk..."
+
+      - name: Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/release.mjs js-sdk --publish --skip-docs

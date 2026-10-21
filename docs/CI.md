@@ -50,6 +50,7 @@ The root `generate:docs` script and `js-sdk`'s `docs`/`generate-openapi`/`unify-
 
 - [x] PR gate that fails if a PR touching a versioned package has no changeset (common `changeset status` check). Lightweight, and doesn't publish anything (`changeset-check.yml`)
 - [x] Release automation (e.g. `changesets/action` opening a "Version Packages" PR). Per `CLAUDE.md`, actual `npm publish` only happens when instructed, so at most this should stop at opening the version PR, never auto-publish (`changeset-release.yml`)
+- [x] `@verdocs/js-sdk` publishing (`publish.yml`): pushing a committed version bump to `main` publishes it with npm trusted publishing, then tags it and creates its GitHub release. Its docs step stays local (`pnpm --filter @verdocs/js-sdk run docs`), and the other packages still release with `pnpm release <name> --publish`
 
 
 
