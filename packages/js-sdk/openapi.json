@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.13.2",
+    "version": "6.13.3",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -24573,6 +24573,10 @@
                       "builder"
                     ],
                     "description": "The template builder to show. Set to null to reset to the default, `verdocs-build`."
+                  },
+                  "high_contrast": {
+                    "type": "boolean",
+                    "description": "Draw Builder fields in high contrast. Set to null to follow the browser's contrast setting."
                   }
                 }
               }
@@ -27995,6 +27999,10 @@
         "description": "",
         "required": [],
         "properties": {
+          "high_contrast": {
+            "type": "string",
+            "description": "Send null to follow the browser's contrast setting again."
+          },
           "template_builder": {
             "type": "string",
             "description": "Send null to go back to the default, "
@@ -28126,6 +28134,10 @@
         "description": "Verdocs apps read the keys listed here. Your own apps may store others.",
         "required": [],
         "properties": {
+          "high_contrast": {
+            "type": "boolean",
+            "description": "Draw Builder fields in high contrast. Unset follows the browser's own contrast setting."
+          },
           "template_builder": {
             "type": "string",
             "description": "The template builder to show: "
