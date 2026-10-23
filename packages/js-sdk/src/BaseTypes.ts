@@ -162,7 +162,7 @@ export const WEBHOOK_EVENTS = [
 
 export type TTemplateVisibility = 'private' | 'shared' | 'public';
 
-export type TEntitlement = 'envelope' | 'kba_auth' | 'passcode_auth' | 'sms_auth' | 'kba_id_auth' | 'id_auth' | 'custom_disclaimer';
+export type TEntitlement = 'envelope' | 'kba_auth' | 'passcode_auth' | 'sms_auth' | 'kba_id_auth' | 'id_auth' | 'custom_disclaimer' | 'kba_sandbox'
 
 /**
  * The authentication method(s) required for a recipient to access an envelope. "Passcode" will require a
