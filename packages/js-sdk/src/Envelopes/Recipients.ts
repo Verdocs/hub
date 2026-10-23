@@ -163,7 +163,8 @@ export const getInPersonLink = (endpoint: VerdocsEndpoint, envelope_id: string, 
  * @apiBody string state? For KBA, the recipient's state
  * @apiBody string zip? For KBA, the recipient's zip code
  * @apiBody string ssn_last_4? For KBA, the last 4 digits of the recipient's SSN
- * @apiBody string dob? For KBA, the recipient's date of birth
+ * @apiBody string dob? For KBA, the recipient's date of birthx
+ * @apiBody string(enum:'pass'|'fail'|'questions') sandbox? For KBA, must have sandbox functionality unlocked
  * @apiBody array(items:IKBAResponse) responses? For KBA, responses to any challenge questions presented
  * @apiSuccess ISignerTokenResponse . Updated signing session.
  *
