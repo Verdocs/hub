@@ -389,8 +389,11 @@ export interface ICreateEnvelopeFromTemplateRequest {
 
 /** What previewEnvelope returns: the value each field would get, without anything being created. */
 export interface IEnvelopeDryRun {
+  /** Always true, so a preview is easy to tell from an envelope. */
   dry_run: true;
+  /** What happened to prefill_data, when it was sent. */
   prefill_result?: IPrefillResult;
+  /** Every field on the template, with the value it would start with (name, role_name, type, data_key, and value). */
   fields: {name: string; role_name: string; type: TFieldType; data_key: string | null; value: string | null}[];
 }
 
@@ -400,14 +403,18 @@ export interface IPrefillOptions {
 }
 
 export interface IPrefillError {
+  /** The data key whose value didn't fit. */
   key: string;
   /** The field the value didn't fit, when there is one. */
   field?: string;
+  /** What was wrong, such as "Expected an ISO 8601 date". */
   message: string;
 }
 
 export interface IPrefillHint {
+  /** A key you sent that no field uses. */
   key: string;
+  /** The template's key it most likely meant. */
   did_you_mean: string;
 }
 

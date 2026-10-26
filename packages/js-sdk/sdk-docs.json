@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.14.0",
+  "version": "6.15.0",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -598,6 +598,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.IEnvelopeDryRun": {
+          "sdkOperation": "ungrouped.IEnvelopeDryRun",
+          "kind": "interface",
+          "name": "IEnvelopeDryRun",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IEnvelopeDryRun",
+          "summary": "What previewEnvelope returns: the value each field would get, without anything being created.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.ILoginCodeGrantRequest": {
           "sdkOperation": "ungrouped.ILoginCodeGrantRequest",
           "kind": "interface",
@@ -1125,6 +1139,20 @@
           "resource": "type",
           "signature": "TActiveSession",
           "summary": "An active authenticated session within Verdocs, either for signing or regular user-based operations.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TDataKeyType": {
+          "sdkOperation": "ungrouped.TDataKeyType",
+          "kind": "type",
+          "name": "TDataKeyType",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TDataKeyType",
+          "summary": "What a caller sends for a data key: text, an ISO date, true or false, or one of a fixed set of choices. \"mixed\" means its fields disagree.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -5323,6 +5351,44 @@
           "examples": [],
           "deprecated": false
         },
+        "envelope.previewEnvelope": {
+          "sdkOperation": "envelope.previewEnvelope",
+          "kind": "function",
+          "name": "previewEnvelope",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "previewEnvelope(endpoint: VerdocsEndpoint, request: ICreateEnvelopeFromTemplateRequest): Promise<IEnvelopeDryRun>",
+          "summary": "Check a template send without making it: runs every check createEnvelope makes (template access, recipients, brand,\nprefill_data, and strict mode) and returns the value each field would get, without creating an envelope or contacting\nanyone. This is the dry_run option of POST /v2/envelopes.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "request",
+              "type": "ICreateEnvelopeFromTemplateRequest",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IEnvelopeDryRun>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {previewEnvelope} from '@verdocs/js-sdk/Envelopes';\n\nconst {fields, prefill_result} = await previewEnvelope(VerdocsEndpoint.getDefault(), request);"
+            }
+          ],
+          "deprecated": false
+        },
         "envelope.recipientCanAct": {
           "sdkOperation": "envelope.recipientCanAct",
           "kind": "function",
@@ -6206,6 +6272,44 @@
             {
               "language": "typescript",
               "code": "import {getTemplate} from '@verdocs/js-sdk/Templates';\n\nconst template = await getTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');"
+            }
+          ],
+          "deprecated": false
+        },
+        "template.getTemplateDataContract": {
+          "sdkOperation": "template.getTemplateDataContract",
+          "kind": "function",
+          "name": "getTemplateDataContract",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getTemplateDataContract(endpoint: VerdocsEndpoint, templateId: string): Promise<IDataContract>",
+          "summary": "Get the data a template's fields can be filled with: each data key, its type, how many fields use it, whether it's\nneeded, and its options. The JSON Schema describes the prefill_data that createEnvelope accepts for this template,\nand contract_hash changes only when the contract does, so a CI check can store it and fail when it changes.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataContract>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getTemplateDataContract} from '@verdocs/js-sdk/Templates';\n\nconst {keys, contract_hash} = await getTemplateDataContract(VerdocsEndpoint.getDefault(), templateId);"
             }
           ],
           "deprecated": false

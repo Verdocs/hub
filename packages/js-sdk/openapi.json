@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.14.0",
+    "version": "6.15.0",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -3467,6 +3467,10 @@
                   "prefill_options": {
                     "type": "object",
                     "description": "Set \"strict\" to true to reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing."
+                  },
+                  "dry_run": {
+                    "type": "boolean",
+                    "description": "With a template_id, run every check a real send makes and return the value each field would get (and any prefill_result) without creating or sending anything."
                   }
                 }
               }
@@ -19718,6 +19722,178 @@
         ]
       }
     },
+    "/v2/templates/{template_id}/data-contract": {
+      "get": {
+        "operationId": "getTemplateDataContract",
+        "summary": "Get a template's data contract",
+        "tags": [
+          "Templates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "template_id",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDataContract"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X GET \"https://api.verdocs.com/v2/templates/TEMPLATE_ID/data-contract\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/templates/TEMPLATE_ID/data-contract', { \n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  } \n});\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/data-contract\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"GET\", \"/v2/templates/{template_id}/data-contract\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/data-contract\");\nvar request = new RestRequest(Method.GET);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/data-contract\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
     "/v2/template-documents/{id}": {
       "get": {
         "operationId": "getTemplateDocument",
@@ -26344,6 +26520,84 @@
         "required": [],
         "properties": {}
       },
+      "IDataContract": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "contract_hash",
+          "json_schema",
+          "keys",
+          "template_id"
+        ],
+        "properties": {
+          "contract_hash": {
+            "type": "string",
+            "description": "Changes only when the keys, their types, whether they're needed, or their options change."
+          },
+          "json_schema": {
+            "type": "string",
+            "description": "A JSON Schema for the prefill_data this template accepts."
+          },
+          "keys": {
+            "type": "string",
+            "description": "Every data key the template's fields use, sorted by key."
+          },
+          "template_id": {
+            "type": "string",
+            "description": "The template this contract describes."
+          }
+        }
+      },
+      "IDataContractKey": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "key",
+          "needed",
+          "placements",
+          "type"
+        ],
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "The data key, such as \"applicant.full_name\"."
+          },
+          "needed": {
+            "type": "boolean",
+            "description": "True when one of its fields is read-only, so the signer can't supply the value."
+          },
+          "options": {
+            "type": "string",
+            "description": "For choices, the values that are accepted."
+          },
+          "placements": {
+            "type": "integer",
+            "description": "How many fields on the template use this key."
+          },
+          "type": {
+            "type": "string",
+            "description": "What to send for it: text, date (ISO 8601), boolean, choice (one of the options), or mixed when its fields disagree."
+          }
+        }
+      },
+      "IDataContractOption": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "label",
+          "value"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "What the signer sees for this choice."
+          },
+          "value": {
+            "type": "string",
+            "description": "What to send in prefill_data. The label is accepted too."
+          }
+        }
+      },
       "IDisabledChannel": {
         "type": "object",
         "description": "",
@@ -26602,6 +26856,28 @@
           "updated_at": {
             "type": "string",
             "description": "Date/time when the document was created."
+          }
+        }
+      },
+      "IEnvelopeDryRun": {
+        "type": "object",
+        "description": "What previewEnvelope returns: the value each field would get, without anything being created.",
+        "required": [
+          "dry_run",
+          "fields"
+        ],
+        "properties": {
+          "dry_run": {
+            "type": "string",
+            "description": "Always true, so a preview is easy to tell from an envelope."
+          },
+          "fields": {
+            "type": "string",
+            "description": "Every field on the template, with the value it would start with (name, role_name, type, data_key, and value)."
+          },
+          "prefill_result": {
+            "type": "string",
+            "description": "What happened to prefill_data, when it was sent."
           }
         }
       },
@@ -27181,19 +27457,42 @@
       "IPrefillError": {
         "type": "object",
         "description": "",
-        "required": [],
+        "required": [
+          "key",
+          "message"
+        ],
         "properties": {
           "field": {
             "type": "string",
             "description": "The field the value didn't fit, when there is one."
+          },
+          "key": {
+            "type": "string",
+            "description": "The data key whose value didn't fit."
+          },
+          "message": {
+            "type": "string",
+            "description": "What was wrong, such as \"Expected an ISO 8601 date\"."
           }
         }
       },
       "IPrefillHint": {
         "type": "object",
         "description": "",
-        "required": [],
-        "properties": {}
+        "required": [
+          "did_you_mean",
+          "key"
+        ],
+        "properties": {
+          "did_you_mean": {
+            "type": "string",
+            "description": "The template's key it most likely meant."
+          },
+          "key": {
+            "type": "string",
+            "description": "A key you sent that no field uses."
+          }
+        }
       },
       "IPrefillOptions": {
         "type": "object",
@@ -28467,6 +28766,17 @@
         "enum": [
           null,
           null
+        ]
+      },
+      "TDataKeyType": {
+        "type": "string",
+        "description": "What a caller sends for a data key: text, an ISO date, true or false, or one of a fixed set of choices. \"mixed\" means its fields disagree.",
+        "enum": [
+          "text",
+          "date",
+          "boolean",
+          "choice",
+          "mixed"
         ]
       },
       "TDeprecatedHistoryEvent": {

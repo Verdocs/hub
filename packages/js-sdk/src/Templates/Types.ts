@@ -64,23 +64,29 @@ export type TDataKeyType = 'text' | 'date' | 'boolean' | 'choice' | 'mixed';
 export interface IDataContractOption {
   /** What to send in prefill_data. The label is accepted too. */
   value: string;
+  /** What the signer sees for this choice. */
   label: string;
 }
 
 export interface IDataContractKey {
+  /** The data key, such as "applicant.full_name". */
   key: string;
+  /** What to send for it: text, date (ISO 8601), boolean, choice (one of the options), or mixed when its fields disagree. */
   type: TDataKeyType;
   /** How many fields on the template use this key. */
   placements: number;
   /** True when one of its fields is read-only, so the signer can't supply the value. */
   needed: boolean;
+  /** For choices, the values that are accepted. */
   options?: IDataContractOption[];
 }
 
 export interface IDataContract {
+  /** The template this contract describes. */
   template_id: string;
   /** Changes only when the keys, their types, whether they're needed, or their options change. */
   contract_hash: string;
+  /** Every data key the template's fields use, sorted by key. */
   keys: IDataContractKey[];
   /** A JSON Schema for the prefill_data this template accepts. */
   json_schema: Record<string, unknown>;
