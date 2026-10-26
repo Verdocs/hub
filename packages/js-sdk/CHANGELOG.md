@@ -1,5 +1,11 @@
 # @verdocs/js-sdk
 
+## 6.13.4
+
+### Patch Changes
+
+- - Added `data_key` to template and envelope fields, so a field can hold your own key for its value (such as `applicant.full_name`). Set it with `createField`, `updateField`, or on fields in a direct envelope request.
+
 ## 6.13.3
 
 ### Patch Changes

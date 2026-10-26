@@ -618,6 +618,8 @@ export interface IEnvelopeField {
   group: string | null;
   /** For dropdowns, the options that are selectable. */
   options: IDropdownOption[] | null;
+  /** Your key for this field's value, copied from the template field. */
+  data_key?: string | null;
   value: string | null;
   is_valid: boolean;
 }
@@ -992,6 +994,8 @@ export interface ITemplateField {
   group: string | null;
   /** For dropdowns, the options that are selectable. */
   options: IDropdownOption[] | null;
+  /** Your key for this field's value, such as `applicant.full_name`. Fields that show the same value can share a key. */
+  data_key?: string | null;
 
   value?: string | null;
   is_valid?: boolean;
