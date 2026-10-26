@@ -3362,6 +3362,46 @@
       ]
     },
     {
+      "operationId": "dataCatalog.getDataCatalogListing",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Preview one marketplace catalog with the keys of its newest released version, before importing it.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getDataCatalogListing(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string): Promise<IDataCatalogListingPreview>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IDataCatalogListingPreview>"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "dataCatalog.getDataCatalogMarketplace",
       "group": "DataCatalog",
       "page": "Endpoints",

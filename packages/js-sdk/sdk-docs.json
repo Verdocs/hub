@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.16.1",
+  "version": "6.16.2",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -551,6 +551,20 @@
           "resource": "interface",
           "signature": "IDataCatalogEntryFields",
           "summary": "An entry's content, as versions freeze it and update reviews compare it.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IDataCatalogListingPreview": {
+          "sdkOperation": "ungrouped.IDataCatalogListingPreview",
+          "kind": "interface",
+          "name": "IDataCatalogListingPreview",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IDataCatalogListingPreview",
+          "summary": "A marketplace catalog with the keys of its newest released version.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -3290,6 +3304,46 @@
           ],
           "returns": {
             "type": "Promise<IDataCatalog>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "dataCatalog.getDataCatalogListing": {
+          "sdkOperation": "dataCatalog.getDataCatalogListing",
+          "kind": "function",
+          "name": "getDataCatalogListing",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getDataCatalogListing(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string): Promise<IDataCatalogListingPreview>",
+          "summary": "Preview one marketplace catalog with the keys of its newest released version, before importing it.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataCatalogListingPreview>",
             "description": ""
           },
           "throws": [],

@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.16.1",
+    "version": "6.16.2",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -18277,6 +18277,187 @@
         ]
       }
     },
+    "/v2/organizations/{organizationid}/data-catalog-marketplace/{catalogid}": {
+      "get": {
+        "operationId": "getDataCatalogListing",
+        "summary": "Preview a marketplace catalog",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "catalogid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDataCatalogListingPreview"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X GET \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalog-marketplace/CATALOGID\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalog-marketplace/CATALOGID', { \n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  } \n});\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalog-marketplace/CATALOGID\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"GET\", \"/v2/organizations/{organizationid}/data-catalog-marketplace/{catalogid}\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalog-marketplace/CATALOGID\");\nvar request = new RestRequest(Method.GET);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalog-marketplace/CATALOGID\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
     "/v2/organizations/{organizationid}/data-catalog-marketplace": {
       "get": {
         "operationId": "getDataCatalogMarketplace",
@@ -18297,7 +18478,7 @@
           {
             "in": "query",
             "name": "q",
-            "description": "Text to search catalog names and descriptions for.",
+            "description": "Text to search catalog names, descriptions, publishers, and keys for.",
             "schema": {
               "type": "string"
             }
@@ -29368,6 +29549,64 @@
           "description": {
             "type": "string",
             "description": "What the catalog is for."
+          },
+          "id": {
+            "type": "string",
+            "description": "The catalog's ID, for createDataCatalog's from_catalog_id."
+          },
+          "imported": {
+            "type": "boolean",
+            "description": "Whether this organization already imported it."
+          },
+          "key_count": {
+            "type": "integer",
+            "description": "How many keys that version has."
+          },
+          "listing": {
+            "type": "string",
+            "description": "How it's offered: shared by an organization above this one."
+          },
+          "name": {
+            "type": "string",
+            "description": "The catalog's name."
+          },
+          "publisher": {
+            "type": "string",
+            "description": "The organization that publishes it."
+          },
+          "released_at": {
+            "type": "string",
+            "description": "When that version was released."
+          },
+          "version": {
+            "type": "integer",
+            "description": "Its newest released version."
+          }
+        }
+      },
+      "IDataCatalogListingPreview": {
+        "type": "object",
+        "description": "A marketplace catalog with the keys of its newest released version.",
+        "required": [
+          "description",
+          "entries",
+          "id",
+          "imported",
+          "key_count",
+          "listing",
+          "name",
+          "publisher",
+          "released_at",
+          "version"
+        ],
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "What the catalog is for."
+          },
+          "entries": {
+            "type": "string",
+            "description": "The keys an import would copy."
           },
           "id": {
             "type": "string",

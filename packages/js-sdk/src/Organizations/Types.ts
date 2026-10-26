@@ -341,6 +341,12 @@ export interface IDataCatalogListing {
   imported: boolean;
 }
 
+/** A marketplace catalog with the keys of its newest released version. */
+export interface IDataCatalogListingPreview extends IDataCatalogListing {
+  /** The keys an import would copy. */
+  entries: IDataCatalogEntryFields[];
+}
+
 export interface IDataCatalogChange {
   /** The data key. */
   key: string;

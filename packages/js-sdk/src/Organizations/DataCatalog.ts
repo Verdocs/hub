@@ -3,6 +3,7 @@ import {
   IDataCatalog,
   IDataCatalogEntry,
   IDataCatalogListing,
+  IDataCatalogListingPreview,
   IDataCatalogUpdate,
   IDataCatalogVersion,
   ISaveDataCatalogEntry,
@@ -223,7 +224,7 @@ export const getDataCatalogVersions = (endpoint: VerdocsEndpoint, organizationId
  *
  * @group Data Catalogs
  * @api GET /v2/organizations/:organizationId/data-catalog-marketplace Browse the data catalog marketplace
- * @apiQuery string q? Text to search catalog names and descriptions for.
+ * @apiQuery string q? Text to search catalog names, descriptions, publishers, and keys for.
  * @apiSuccess array(items: IDataCatalogListing) . The catalogs available to import.
  *
  * @sdkOperation dataCatalog.getDataCatalogMarketplace
@@ -233,6 +234,23 @@ export const getDataCatalogVersions = (endpoint: VerdocsEndpoint, organizationId
 export const getDataCatalogMarketplace = (endpoint: VerdocsEndpoint, organizationId: string, q?: string) =>
   endpoint.api //
     .get<IDataCatalogListing[]>(`/v2/organizations/${organizationId}/data-catalog-marketplace`, {params: {q}})
+    .then((r) => r.data);
+
+/**
+ * Preview one marketplace catalog with the keys of its newest released version, before importing it.
+ *
+ * @group Data Catalogs
+ * @api GET /v2/organizations/:organizationId/data-catalog-marketplace/:catalogId Preview a marketplace catalog
+ * @apiParam string(format:uuid) catalogId The marketplace catalog's ID.
+ * @apiSuccess IDataCatalogListingPreview . The catalog and its keys.
+ *
+ * @sdkOperation dataCatalog.getDataCatalogListing
+ * @sdkGroup DataCatalog
+ * @sdkPage Endpoints
+ */
+export const getDataCatalogListing = (endpoint: VerdocsEndpoint, organizationId: string, catalogId: string) =>
+  endpoint.api //
+    .get<IDataCatalogListingPreview>(`/v2/organizations/${organizationId}/data-catalog-marketplace/${catalogId}`)
     .then((r) => r.data);
 
 /**

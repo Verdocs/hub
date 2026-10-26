@@ -1,5 +1,11 @@
 # @verdocs/js-sdk
 
+## 6.16.2
+
+### Patch Changes
+
+- - Added `getDataCatalogListing` to preview a marketplace catalog's keys before importing it, and marketplace search now matches publishers and keys too.
+
 ## 6.16.1
 
 ### Patch Changes

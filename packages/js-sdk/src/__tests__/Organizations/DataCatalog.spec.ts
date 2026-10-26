@@ -3,6 +3,7 @@ import {
   applyDataCatalogUpdate,
   createDataCatalog,
   deleteDataCatalogEntry,
+  getDataCatalogListing,
   getDataCatalogMarketplace,
   getDataCatalogs,
   saveDataCatalogEntries,
@@ -41,4 +42,11 @@ it('getDataCatalogMarketplace and applyDataCatalogUpdate should send their param
 
   expect(await getDataCatalogMarketplace(endpoint, 'org_1', 'carrier')).toEqual([{id: 'cat_9'}]);
   expect((await applyDataCatalogUpdate(endpoint, 'org_1', 'cat_1', {b: 'local'})).source_version).toBe(2);
+});
+
+it('getDataCatalogListing should read one marketplace catalog', async () => {
+  const mock = new MockAdapter(endpoint.api);
+  mock.onGet('/v2/organizations/org_1/data-catalog-marketplace/cat_9').reply(200, {id: 'cat_9', entries: [entry]});
+
+  expect((await getDataCatalogListing(endpoint, 'org_1', 'cat_9')).entries).toEqual([entry]);
 });
