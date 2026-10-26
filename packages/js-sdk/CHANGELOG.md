@@ -1,5 +1,12 @@
 # @verdocs/js-sdk
 
+## 6.14.0
+
+### Minor Changes
+
+- - Added `prefill_data` to `createEnvelope`, which fills every field that has a `data_key` from your own data and returns a `prefill_result` with what was filled, what went unused, and what was missing.
+  - Added `prefill_options.strict` to reject a request, creating nothing, when its keys don't line up with the template.
+
 ## 6.13.4
 
 ### Patch Changes

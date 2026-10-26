@@ -382,6 +382,40 @@ export interface ICreateEnvelopeFromTemplateRequest {
   timezone?: string | null;
   /** Set the "Brand" used when the signing experience is rendered. If not set, the Organization's default Brand will be used, if any. */
   brand_key?: string;
+  /** Values for fields that have a data_key, keyed by data_key. Nested objects and dotted keys mean the same key, so {"applicant": {"full_name": "Jordan"}} and {"applicant.full_name": "Jordan"} both fill fields keyed "applicant.full_name". A fields entry for the same field wins. */
+  prefill_data?: Record<string, unknown>;
+  prefill_options?: IPrefillOptions;
+}
+
+export interface IPrefillOptions {
+  /** Reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing. */
+  strict?: boolean;
+}
+
+export interface IPrefillError {
+  key: string;
+  /** The field the value didn't fit, when there is one. */
+  field?: string;
+  message: string;
+}
+
+export interface IPrefillHint {
+  key: string;
+  did_you_mean: string;
+}
+
+/** What happened to a request's prefill_data. Keys are reported by name only. */
+export interface IPrefillResult {
+  /** How many fields got a value. */
+  placements_filled: number;
+  /** Keys you sent that no field uses. */
+  unused_keys: string[];
+  /** Keys on the template's fields that you didn't send. */
+  missing_keys: string[];
+  /** Values that didn't fit their field. Those fields keep the template's default. */
+  errors: IPrefillError[];
+  /** Likely corrections for unused keys. */
+  hints: IPrefillHint[];
 }
 
 export interface ICreateEnvelopeDirectlyRequest {
