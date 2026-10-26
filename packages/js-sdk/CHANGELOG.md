@@ -1,5 +1,11 @@
 # @verdocs/js-sdk
 
+## 6.16.1
+
+### Patch Changes
+
+- - Data catalogs now report `has_unreleased_changes` when a shared or previously released catalog's live entries differ from its latest release.
+
 ## 6.16.0
 
 ### Minor Changes

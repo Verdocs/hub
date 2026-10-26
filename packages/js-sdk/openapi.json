@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.16.0",
+    "version": "6.16.1",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -29126,6 +29126,10 @@
           "entry_count": {
             "type": "integer",
             "description": "How many live entries it has (in lists)."
+          },
+          "has_unreleased_changes": {
+            "type": "boolean",
+            "description": "For a shared or previously released catalog, whether its live entries differ from its latest release."
           },
           "id": {
             "type": "string",

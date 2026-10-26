@@ -228,6 +228,8 @@ export interface IDataCatalog {
   is_default?: boolean;
   /** For an imported catalog, whether its source has released a newer version. */
   update_available?: boolean;
+  /** For a shared or previously released catalog, whether its live entries differ from its latest release. */
+  has_unreleased_changes?: boolean;
   /** How many live entries it has (in lists). */
   entry_count?: number;
   /** The entries (when getting one catalog). Members see live entries and their own proposals; admins see every proposal. */
