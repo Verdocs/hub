@@ -7,6 +7,7 @@ const Tag = {
   API_KEYS: 'API Keys',
   AUTHENTICATION: 'Authentication',
   BRANDS: 'Brands',
+  DATA_CATALOGS: 'Data Catalogs',
   ENVELOPES: 'Envelopes',
   ENVELOPE_DOCUMENTS: 'Envelope Documents',
   FIELDS: 'Fields',
@@ -163,5 +164,11 @@ export const PREAMBLE_TAGS: OpenAITag[] = [
     description:
       'Multi-Factor Authentication (MFA) adds a second layer of security to user accounts by requiring a time-based one-time passcode (TOTP) from an authenticator app in addition to a password. Users enroll by scanning a QR code or entering a secret manually, then confirming with a valid code. On successful enrollment, a set of single-use backup codes is issued for account recovery if the authenticator device is unavailable. A valid code is required to regenerate backup codes or disable MFA, ensuring that a password alone is not enough to remove the second factor.',
     'x-displayName': Tag.MFA,
+  },
+  {
+    name: Tag.DATA_CATALOGS,
+    description:
+      'A data catalog describes the data an organization fills its templates with: each key a field can be bound to, its label, its type, and an example. An organization can keep several catalogs and mark one as its default. A parent organization can share a catalog with the organizations below it, and each of them can import a copy, then review every newer version key by key before applying it.',
+    'x-displayName': Tag.DATA_CATALOGS,
   },
 ];
