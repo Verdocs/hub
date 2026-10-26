@@ -342,7 +342,7 @@ export interface ICreateEnvelopeFieldDirectly {
   group?: string;
   /** For dropdowns, the options that are selectable. */
   options?: IDropdownOption[] | null;
-  /** Your key for this field's value, such as `applicant.full_name`. Text, date, checkbox, radio, and dropdown fields only. */
+  /** Your key for this field's value, such as "applicant.full_name". Text, date, checkbox, radio, and dropdown fields only. */
   data_key?: string;
 }
 

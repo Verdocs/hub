@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.13.3",
+    "version": "6.13.4",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -4044,6 +4044,10 @@
                   "validator": {
                     "type": "string",
                     "description": "Name of a validator to apply to the field's value (e.g. \"email\" or \"phone\")"
+                  },
+                  "data_key": {
+                    "type": "string",
+                    "description": "Your key for the field's value, such as \"applicant.full_name\". Fields that show the same value can share a key. Letters, digits, \"_\", and \"-\", with \".\" between levels. Text, date, checkbox, radio, and dropdown fields only."
                   }
                 }
               }
@@ -9999,6 +10003,10 @@
                   "validator": {
                     "type": "string",
                     "description": "Name of a validator to apply to the field's value (e.g. \"email\" or \"phone\")"
+                  },
+                  "data_key": {
+                    "type": "string",
+                    "description": "Your key for the field's value, such as \"applicant.full_name\". Send null to remove it."
                   }
                 }
               }
@@ -25946,6 +25954,10 @@
           "y"
         ],
         "properties": {
+          "data_key": {
+            "type": "string",
+            "description": "Your key for this field's value, such as \"applicant.full_name\". Text, date, checkbox, radio, and dropdown fields only."
+          },
           "default": {
             "type": "string",
             "description": "The default value for the field."
@@ -26607,6 +26619,10 @@
           "y"
         ],
         "properties": {
+          "data_key": {
+            "type": "string",
+            "description": "Your key for this field's value, copied from the template field."
+          },
           "default": {
             "type": "string",
             "description": "The default value for the field."
@@ -27735,6 +27751,10 @@
           "y"
         ],
         "properties": {
+          "data_key": {
+            "type": "string",
+            "description": "Your key for this field's value, such as \"applicant.full_name\". Fields that show the same value can share a key."
+          },
           "default": {
             "type": "string",
             "description": "The default value for the field."
@@ -27817,6 +27837,10 @@
           "y"
         ],
         "properties": {
+          "data_key": {
+            "type": "string",
+            "description": "Your key for this field's value, such as \"applicant.full_name\". Fields that show the same value can share a key."
+          },
           "document_id": {
             "type": "string",
             "description": "The ID of the document the field is for."
