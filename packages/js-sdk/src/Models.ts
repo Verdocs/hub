@@ -154,6 +154,8 @@ export interface IOrganization {
   /** Org-level document-pipeline automation flags. */
   pipeline_settings?: Partial<IPipelineSettings> | null;
   default_brand_id?: string | null;
+  /** The data catalog templates use when they don't choose one. */
+  default_data_catalog_id?: string | null;
   /** The long-form timezone. */
   locale?: string | null;
   /** The locale code */
@@ -524,6 +526,8 @@ export interface IEnvelope {
    * internal systems/applications.
    */
   data?: Record<string, any> | null;
+  /** The data catalog in effect when the envelope was created. */
+  data_catalog_id?: string | null;
 
   profile?: IProfile;
   template?: ITemplate | null;
@@ -872,6 +876,8 @@ export interface ITemplate {
    * Optional description for the template.
    */
   description?: string;
+  /** The data catalog its fields' data keys come from. When null, the organization's default catalog is used. */
+  data_catalog_id?: string | null;
   /**
    * Number of times the template has been used.
    */

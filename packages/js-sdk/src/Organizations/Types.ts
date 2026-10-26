@@ -159,3 +159,204 @@ export interface IUpdateNotificationTemplateRequest {
   html_template?: string;
   text_template?: string;
 }
+
+/** What a caller sends for a data catalog key: text, an ISO 8601 date, true or false, or one of a fixed set of choices. */
+export type TDataCatalogEntryType = 'text' | 'date' | 'boolean' | 'choice';
+
+export interface IDataCatalogOption {
+  /** What to send in prefill_data. The label is accepted too. */
+  value: string;
+  /** What the signer sees for this choice. */
+  label: string;
+}
+
+/** An entry's content, as versions freeze it and update reviews compare it. */
+export interface IDataCatalogEntryFields {
+  /** Matches the data_key on template and envelope fields, such as "applicant.full_name". */
+  key: string;
+  /** What template owners see for this key, such as "Applicant name". */
+  label: string;
+  /** What a caller sends for this key. */
+  type: TDataCatalogEntryType;
+  /** What the value is. */
+  description: string | null;
+  /** An example value, real or made up, as the organization chose. */
+  example: string | null;
+  /** For a choice, the accepted values. */
+  options: IDataCatalogOption[] | null;
+  /** Keeps the example out of MCP answers and AI prompts. */
+  sensitive: boolean;
+}
+
+export interface IDataCatalogEntry extends IDataCatalogEntryFields {
+  /** The entry's ID. */
+  id: string;
+  /** The catalog the entry belongs to. */
+  catalog_id: string;
+  /** "active" entries can be used; "proposed" entries wait for an admin to approve them. */
+  status: 'active' | 'proposed';
+  /** The profile that proposed the entry, if a member did. */
+  proposed_by: string | null;
+  /** For an entry imported from the marketplace, the source's version of it, used to review updates. */
+  source_entry: IDataCatalogEntryFields | null;
+  /** When the entry was created. */
+  created_at: string;
+  /** When the entry last changed. */
+  updated_at: string;
+}
+
+export interface IDataCatalog {
+  /** The catalog's ID. */
+  id: string;
+  /** The organization that owns it. */
+  organization_id: string;
+  /** The catalog's name. */
+  name: string;
+  /** What the catalog is for. */
+  description: string | null;
+  /** How it started: from scratch, from an import, or from the marketplace. */
+  source: 'scratch' | 'import' | 'marketplace';
+  /** For a catalog imported from the marketplace, the catalog it came from. */
+  source_catalog_id: string | null;
+  /** The source version this catalog was imported or last updated from. */
+  source_version: number | null;
+  /** "shared" makes released versions available to every organization below this one. */
+  sharing: 'private' | 'shared';
+  /** The newest released version, 0 until the first release. */
+  latest_version: number;
+  /** Whether this is the organization's default catalog. */
+  is_default?: boolean;
+  /** For an imported catalog, whether its source has released a newer version. */
+  update_available?: boolean;
+  /** How many live entries it has (in lists). */
+  entry_count?: number;
+  /** The entries (when getting one catalog). Members see live entries and their own proposals; admins see every proposal. */
+  entries?: IDataCatalogEntry[];
+  /** When the catalog was created. */
+  created_at: string;
+  /** When the catalog last changed. */
+  updated_at: string;
+}
+
+export interface ISaveDataCatalogEntry {
+  /** Letters, digits, "_", and "-", with "." between levels. */
+  key: string;
+  /** What template owners see for this key. */
+  label: string;
+  /** Defaults to text. A choice needs options. */
+  type?: TDataCatalogEntryType;
+  /** What the value is. */
+  description?: string | null;
+  /** An example value. */
+  example?: string | null;
+  /** For a choice, the accepted values. */
+  options?: IDataCatalogOption[] | null;
+  /** Keeps the example out of MCP answers and AI prompts. Defaults to false. */
+  sensitive?: boolean;
+}
+
+export interface IUpdateDataCatalogEntryRequest {
+  /** What template owners see for this key. */
+  label?: string;
+  /** What a caller sends for this key. */
+  type?: TDataCatalogEntryType;
+  /** What the value is. */
+  description?: string | null;
+  /** An example value. */
+  example?: string | null;
+  /** For a choice, the accepted values. */
+  options?: IDataCatalogOption[] | null;
+  /** Keeps the example out of MCP answers and AI prompts. */
+  sensitive?: boolean;
+  /** Set to "active" to approve a proposal. */
+  status?: 'active';
+}
+
+export interface IDataCatalogImport {
+  /** A sample payload (nested objects become dotted keys), or a JSON Schema. */
+  format: 'json_sample' | 'json_schema';
+  /** The sample or schema, as an object or a JSON string. */
+  content: Record<string, unknown> | string;
+  /** Use the sample's values (or the schema's examples) as entry examples. Defaults to true. */
+  keep_examples?: boolean;
+}
+
+export interface ICreateDataCatalogRequest {
+  /** Required unless importing from the marketplace, where it defaults to the source's name. */
+  name?: string;
+  /** What the catalog is for. */
+  description?: string | null;
+  /** Create the catalog's entries from a JSON sample or schema. */
+  import?: IDataCatalogImport;
+  /** Import a copy of a marketplace catalog's newest version. */
+  from_catalog_id?: string;
+}
+
+export interface IUpdateDataCatalogRequest {
+  /** The catalog's name. */
+  name?: string;
+  /** What the catalog is for. */
+  description?: string | null;
+  /** "shared" makes released versions available to every organization below this one. */
+  sharing?: 'private' | 'shared';
+}
+
+export interface IDataCatalogVersion {
+  /** The version's ID. */
+  id: string;
+  /** The catalog it belongs to. */
+  catalog_id: string;
+  /** The version number, starting at 1. */
+  version: number;
+  /** The catalog's live entries when the version was released. */
+  entries: IDataCatalogEntryFields[];
+  /** What changed in this version. */
+  notes: string | null;
+  /** The profile that released it. */
+  released_by: string | null;
+  /** When it was released. */
+  created_at: string;
+}
+
+export interface IDataCatalogListing {
+  /** The catalog's ID, for createDataCatalog's from_catalog_id. */
+  id: string;
+  /** The catalog's name. */
+  name: string;
+  /** What the catalog is for. */
+  description: string | null;
+  /** How it's offered: shared by an organization above this one. */
+  listing: 'shared';
+  /** The organization that publishes it. */
+  publisher: {id: string; name: string; logo_url: string | null};
+  /** Its newest released version. */
+  version: number;
+  /** When that version was released. */
+  released_at: string | null;
+  /** How many keys that version has. */
+  key_count: number;
+  /** Whether this organization already imported it. */
+  imported: boolean;
+}
+
+export interface IDataCatalogChange {
+  /** The data key. */
+  key: string;
+  /** added (new upstream), removed (gone upstream), updated (changed upstream, untouched here), or conflict (changed in both). */
+  kind: 'added' | 'removed' | 'updated' | 'conflict';
+  /** This organization's version of the entry. */
+  local?: IDataCatalogEntryFields;
+  /** The source's new version of the entry. */
+  source?: IDataCatalogEntryFields;
+  /** For removed and conflicting keys, the templates that use the key. */
+  templates?: {id: string; name: string}[];
+}
+
+export interface IDataCatalogUpdate {
+  /** The source version this catalog is on. */
+  from_version?: number;
+  /** The source's newest version. */
+  to_version?: number;
+  /** What applying the update would change. Empty when there's nothing to apply. */
+  changes: IDataCatalogChange[];
+}

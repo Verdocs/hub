@@ -382,6 +382,8 @@ export interface ICreateEnvelopeFromTemplateRequest {
   timezone?: string | null;
   /** Set the "Brand" used when the signing experience is rendered. If not set, the Organization's default Brand will be used, if any. */
   brand_key?: string;
+  /** The data catalog the field data_keys come from. Defaults to the template's catalog, then the organization default. */
+  data_catalog_id?: string;
   /** Values for fields that have a data_key, keyed by data_key. Nested objects and dotted keys mean the same key, so {"applicant": {"full_name": "Jordan"}} and {"applicant.full_name": "Jordan"} both fill fields keyed "applicant.full_name". A fields entry for the same field wins. */
   prefill_data?: Record<string, unknown>;
   prefill_options?: IPrefillOptions;
@@ -469,6 +471,8 @@ export interface ICreateEnvelopeDirectlyRequest {
   timezone?: string | null;
   /** Set the "Brand" used when the signing experience is rendered. If not set, the Organization's default Brand will be used, if any. */
   brand_key?: string;
+  /** The data catalog the field data_keys come from. Defaults to the organization default. */
+  data_catalog_id?: string;
 }
 
 export type TCreateEnvelopeRequest = ICreateEnvelopeFromTemplateRequest | ICreateEnvelopeDirectlyRequest;

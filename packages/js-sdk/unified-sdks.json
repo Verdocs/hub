@@ -3144,6 +3144,576 @@
       ]
     },
     {
+      "operationId": "dataCatalog.applyDataCatalogUpdate",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Apply an imported catalog's waiting update. Every conflict needs a resolution, \"source\" or \"local\". Other changes take\nthe source unless resolved \"local\", which keeps your entry, skips an addition, or keeps a removed key as your own.\nAdmins and owners only.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "applyDataCatalogUpdate(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, resolutions: Record<string, 'source' | 'local'> = {}): Promise<IDataCatalog>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "resolutions",
+              "type": "Record<string, 'source' | 'local'>",
+              "optional": true,
+              "default": "{}",
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IDataCatalog>"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "dataCatalog.createDataCatalog",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Create a data catalog from scratch, from a JSON sample or JSON Schema, or as a copy of a marketplace catalog. The\norganization's first catalog becomes its default. Admins and owners only.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "createDataCatalog(endpoint: VerdocsEndpoint, organizationId: string, params: ICreateDataCatalogRequest): Promise<IDataCatalog>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "ICreateDataCatalogRequest",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IDataCatalog>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {createDataCatalog} from '@verdocs/js-sdk';\n\nconst catalog = await createDataCatalog(VerdocsEndpoint.getDefault(), organizationId, {\n  name: 'Applicants',\n  import: {format: 'json_sample', content: {applicant: {full_name: 'Jordan Rivera'}}},\n});"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "dataCatalog.deleteDataCatalog",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Delete a data catalog. The default catalog can't be deleted, and neither can a catalog that templates use; that\nrefusal lists the templates. Admins and owners only.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "deleteDataCatalog(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string): Promise<object>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<object>"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "dataCatalog.deleteDataCatalogEntry",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Remove an entry from a data catalog. Members can only withdraw their own proposals. Fields bound to the key keep it.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "deleteDataCatalogEntry(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, key: string): Promise<object>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "key",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<object>"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "dataCatalog.getDataCatalog",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get one data catalog with its entries. Members see live entries and their own proposals; admins see every proposal.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getDataCatalog(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string): Promise<IDataCatalog>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IDataCatalog>"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "dataCatalog.getDataCatalogMarketplace",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Find catalogs this organization can import: those shared by any organization above it, once released.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getDataCatalogMarketplace(endpoint: VerdocsEndpoint, organizationId: string, q?: string): Promise<IDataCatalogListing[]>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "q",
+              "type": "string",
+              "optional": true,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IDataCatalogListing[]>"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "dataCatalog.getDataCatalogs",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "List an organization's data catalogs. A catalog describes the keys template fields can be bound to with data_key and\nfilled from createEnvelope's prefill_data. Each one shows whether it's the default and whether an imported catalog has\nan update waiting.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getDataCatalogs(endpoint: VerdocsEndpoint, organizationId: string): Promise<IDataCatalog[]>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IDataCatalog[]>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getDataCatalogs} from '@verdocs/js-sdk';\n\nconst catalogs = await getDataCatalogs(VerdocsEndpoint.getDefault(), organizationId);"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "dataCatalog.getDataCatalogUpdate",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "For a catalog imported from the marketplace, what applying its source's newest version would change, key by key.\nRemoved and conflicting keys list the templates that use them.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getDataCatalogUpdate(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string): Promise<IDataCatalogUpdate>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IDataCatalogUpdate>"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "dataCatalog.getDataCatalogVersions",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "List a data catalog's released versions, newest first.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getDataCatalogVersions(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string): Promise<IDataCatalogVersion[]>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IDataCatalogVersion[]>"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "dataCatalog.releaseDataCatalogVersion",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Release a frozen version of a catalog's live entries, so organizations it's shared with can import it or update to\nit. Proposals aren't included. Admins and owners only.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "releaseDataCatalogVersion(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, notes?: string): Promise<IDataCatalogVersion>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "notes",
+              "type": "string",
+              "optional": true,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IDataCatalogVersion>"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "dataCatalog.saveDataCatalogEntries",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Add or change entries in a data catalog, matched by key. Entries saved by an admin or owner go live, and approve a\nmatching proposal. Entries saved by a member become proposals for an admin to approve, and can't change a live entry.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "saveDataCatalogEntries(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, entries: ISaveDataCatalogEntry[]): Promise<IDataCatalogEntry[]>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "entries",
+              "type": "ISaveDataCatalogEntry[]",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IDataCatalogEntry[]>"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "dataCatalog.updateDataCatalog",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Rename a data catalog, change its description, or share it with every organization below this one. To make a\ncatalog the default, set default_data_catalog_id with updateOrganization. Admins and owners only.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "updateDataCatalog(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, params: IUpdateDataCatalogRequest): Promise<IDataCatalog>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "IUpdateDataCatalogRequest",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IDataCatalog>"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "dataCatalog.updateDataCatalogEntry",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Change a data catalog entry, or approve a member's proposal by setting status to \"active\". Admins and owners only.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "updateDataCatalogEntry(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, key: string, params: IUpdateDataCatalogEntryRequest): Promise<IDataCatalogEntry>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "key",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "IUpdateDataCatalogEntryRequest",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IDataCatalogEntry>"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "recipient.askQuestion",
       "group": "Recipient",
       "page": "Endpoints",

@@ -63,6 +63,7 @@ import { ICreateEnvelopeFromTemplateRequest, IEnvelopeDryRun, IPrefillResult, TC
  * @apiBody string locale? Define the locale code.
  * @apiBody object prefill_data? With a template_id, values for fields that have a data_key, keyed by data_key. Nested objects and dotted keys mean the same key. A fields entry for the same field wins. The response then includes prefill_result, with how many fields were filled and any keys that went unused, were missing, or didn't fit their field.
  * @apiBody object prefill_options? Set "strict" to true to reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing.
+ * @apiBody string(format:uuid) data_catalog_id? The data catalog the field data_keys come from, recorded on the envelope. Defaults to the template's catalog, then the organization default.
  * @apiBody boolean dry_run? With a template_id, run every check a real send makes and return the value each field would get (and any prefill_result) without creating or sending anything.
  * @apiSuccess IEnvelope . The newly-created envelope.
  */

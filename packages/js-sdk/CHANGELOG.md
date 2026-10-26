@@ -1,5 +1,16 @@
 # @verdocs/js-sdk
 
+## 6.16.0
+
+### Minor Changes
+
+- - Added data catalogs, which describe the keys an organization's templates are filled from: `getDataCatalogs`, `getDataCatalog`, `createDataCatalog` (from scratch, from a JSON sample or JSON Schema, or from the marketplace), `updateDataCatalog`, and `deleteDataCatalog`.
+  - Added `saveDataCatalogEntries`, `updateDataCatalogEntry`, and `deleteDataCatalogEntry`. Admins' entries go live; members' entries become proposals for an admin to approve.
+  - Added `releaseDataCatalogVersion`, `getDataCatalogVersions`, and `getDataCatalogMarketplace`, so a parent organization can share a catalog with the organizations below it.
+  - Added `getDataCatalogUpdate` and `applyDataCatalogUpdate` for reviewing a newer version of an imported catalog key by key.
+  - Templates and organizations gained `data_catalog_id` and `default_data_catalog_id`, and `getTemplateDataContract` reports whether each key is in the template's catalog.
+  - Envelopes record the data catalog in effect when they're created, and `createEnvelope` accepts `data_catalog_id` to choose one.
+
 ## 6.15.0
 
 ### Minor Changes

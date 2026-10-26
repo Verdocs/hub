@@ -79,6 +79,8 @@ export interface IDataContractKey {
   needed: boolean;
   /** For choices, the values that are accepted. */
   options?: IDataContractOption[];
+  /** Whether the key is a live entry in the template organization's data catalog. */
+  in_catalog?: boolean;
 }
 
 export interface IDataContract {
