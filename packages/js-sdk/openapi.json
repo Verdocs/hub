@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.13.4",
+    "version": "6.14.0",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -3459,6 +3459,14 @@
                   "locale": {
                     "type": "string",
                     "description": "Define the locale code."
+                  },
+                  "prefill_data": {
+                    "type": "object",
+                    "description": "With a template_id, values for fields that have a data_key, keyed by data_key. Nested objects and dotted keys mean the same key. A fields entry for the same field wins. The response then includes prefill_result, with how many fields were filled and any keys that went unused, were missing, or didn't fit their field."
+                  },
+                  "prefill_options": {
+                    "type": "object",
+                    "description": "Set \"strict\" to true to reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing."
                   }
                 }
               }
@@ -26133,6 +26141,10 @@
             "type": "boolean",
             "description": "If set, Verdocs will not attempt to contact the recipient via email or SMS."
           },
+          "prefill_data": {
+            "type": "string",
+            "description": "Values for fields that have a data_key, keyed by data_key. Nested objects and dotted keys mean the same key, so {\"applicant\": {\"full_name\": \"Jordan\"}} and {\"applicant.full_name\": \"Jordan\"} both fill fields keyed \"applicant.full_name\". A fields entry for the same field wins."
+          },
           "recipients": {
             "type": "string",
             "description": "List of recipients to configure."
@@ -27165,6 +27177,67 @@
         "description": "Org-level document-pipeline automation flags. Note that these flags are all \"opt-in\" and default to false if not set.\n\n - process_acroforms:     Auto-detect AcroForm (fillable PDF) fields when a document has no text tags.\n - process_tags:          Process {{...}} text tags in uploaded documents.\n - ignore_invalid_roles:  Skip (vs. reject) document tags whose role name is empty/invalid.\n - ignore_invalid_fields: Skip (vs. reject) document tags that don't form a valid field.",
         "required": [],
         "properties": {}
+      },
+      "IPrefillError": {
+        "type": "object",
+        "description": "",
+        "required": [],
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "The field the value didn't fit, when there is one."
+          }
+        }
+      },
+      "IPrefillHint": {
+        "type": "object",
+        "description": "",
+        "required": [],
+        "properties": {}
+      },
+      "IPrefillOptions": {
+        "type": "object",
+        "description": "",
+        "required": [],
+        "properties": {
+          "strict": {
+            "type": "boolean",
+            "description": "Reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing."
+          }
+        }
+      },
+      "IPrefillResult": {
+        "type": "object",
+        "description": "What happened to a request's prefill_data. Keys are reported by name only.",
+        "required": [
+          "errors",
+          "hints",
+          "missing_keys",
+          "placements_filled",
+          "unused_keys"
+        ],
+        "properties": {
+          "errors": {
+            "type": "string",
+            "description": "Values that didn't fit their field. Those fields keep the template's default."
+          },
+          "hints": {
+            "type": "string",
+            "description": "Likely corrections for unused keys."
+          },
+          "missing_keys": {
+            "type": "string",
+            "description": "Keys on the template's fields that you didn't send."
+          },
+          "placements_filled": {
+            "type": "integer",
+            "description": "How many fields got a value."
+          },
+          "unused_keys": {
+            "type": "string",
+            "description": "Keys you sent that no field uses."
+          }
+        }
       },
       "IProfile": {
         "type": "object",

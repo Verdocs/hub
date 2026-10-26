@@ -6442,7 +6442,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "createEnvelope(endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest): Promise<IEnvelope>",
+          "signature": "createEnvelope(endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest): Promise<IEnvelope & object>",
           "params": [
             {
               "name": "endpoint",
@@ -6461,7 +6461,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "Promise<IEnvelope>"
+            "type": "Promise<IEnvelope & object>"
           },
           "example": {
             "language": "typescript",

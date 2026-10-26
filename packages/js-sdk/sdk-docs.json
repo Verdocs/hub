@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.13.4",
+  "version": "6.14.0",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -719,6 +719,20 @@
           "resource": "interface",
           "signature": "IPipelineSettings",
           "summary": "Org-level document-pipeline automation flags. Note that these flags are all \"opt-in\" and default to false if not set.\n\n - process_acroforms:     Auto-detect AcroForm (fillable PDF) fields when a document has no text tags.\n - process_tags:          Process {{...}} text tags in uploaded documents.\n - ignore_invalid_roles:  Skip (vs. reject) document tags whose role name is empty/invalid.\n - ignore_invalid_fields: Skip (vs. reject) document tags that don't form a valid field.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IPrefillResult": {
+          "sdkOperation": "ungrouped.IPrefillResult",
+          "kind": "interface",
+          "name": "IPrefillResult",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IPrefillResult",
+          "summary": "What happened to a request's prefill_data. Keys are reported by name only.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -4547,7 +4561,7 @@
           "page": "Endpoints",
           "gettingStarted": true,
           "resource": "function",
-          "signature": "createEnvelope(endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest): Promise<IEnvelope>",
+          "signature": "createEnvelope(endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest): Promise<IEnvelope & object>",
           "summary": "Create an envelope",
           "params": [
             {
@@ -4566,7 +4580,7 @@
             }
           ],
           "returns": {
-            "type": "Promise<IEnvelope>",
+            "type": "Promise<IEnvelope & object>",
             "description": ""
           },
           "throws": [],
