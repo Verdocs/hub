@@ -1,4 +1,6 @@
-import {sortFields, sortDocuments, sortRecipients} from '../../Envelopes';
+import MockAdapter from 'axios-mock-adapter';
+import {previewEnvelope, sortFields, sortDocuments, sortRecipients} from '../../Envelopes';
+import {VerdocsEndpoint} from '../../VerdocsEndpoint';
 
 const TestUnorderedDocuments = [
   // Should be second: order 1, but created later
@@ -59,4 +61,12 @@ describe('Envelopes sorting utilities', () => {
     expect(testRecipients[1].id).toBe('B');
     expect(testRecipients[2].id).toBe('C');
   });
+});
+
+it('previewEnvelope should post the request as a dry run', async () => {
+  const endpoint = VerdocsEndpoint.getDefault();
+  const mock = new MockAdapter(endpoint.api);
+  mock.onPost('/v2/envelopes', {template_id: 'tpl_1234', recipients: [], dry_run: true}).reply(200, {dry_run: true, fields: []});
+
+  expect(await previewEnvelope(endpoint, {template_id: 'tpl_1234', recipients: []})).toEqual({dry_run: true, fields: []});
 });

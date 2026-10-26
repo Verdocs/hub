@@ -7,7 +7,7 @@
 
 import type {TBasicResponse, TSortTemplateBy, TTemplateSender, TTemplateVisibility} from '../BaseTypes';
 import type {IRole, ITemplate, ITemplateField} from '../Models';
-import type {ITemplateFeedbackRequest} from './Types';
+import type {IDataContract, ITemplateFeedbackRequest} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export type ITemplateSortBy = 'created_at' | 'updated_at' | 'name' | 'last_used_at' | 'counter' | 'star_counter';
@@ -117,6 +117,30 @@ export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) => {
       return template;
     });
 };
+
+/**
+ * Get the data a template's fields can be filled with: each data key, its type, how many fields use it, whether it's
+ * needed, and its options. The JSON Schema describes the prefill_data that createEnvelope accepts for this template,
+ * and contract_hash changes only when the contract does, so a CI check can store it and fail when it changes.
+ *
+ * ```typescript
+ * import {getTemplateDataContract} from '@verdocs/js-sdk/Templates';
+ *
+ * const {keys, contract_hash} = await getTemplateDataContract(VerdocsEndpoint.getDefault(), templateId);
+ * ```
+ *
+ * @group Templates
+ * @api GET /v2/templates/:template_id/data-contract Get a template's data contract
+ * @apiSuccess IDataContract . The data keys the template reads
+ *
+ * @sdkOperation template.getTemplateDataContract
+ * @sdkGroup Template
+ * @sdkPage Endpoints
+ */
+export const getTemplateDataContract = (endpoint: VerdocsEndpoint, templateId: string) =>
+  endpoint.api //
+    .get<IDataContract>(`/v2/templates/${templateId}/data-contract`)
+    .then((r) => r.data);
 
 /**
  * Represents a document to be attached to a template via an externally-accessible URI. A copy of the document will be

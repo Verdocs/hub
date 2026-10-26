@@ -387,6 +387,13 @@ export interface ICreateEnvelopeFromTemplateRequest {
   prefill_options?: IPrefillOptions;
 }
 
+/** What previewEnvelope returns: the value each field would get, without anything being created. */
+export interface IEnvelopeDryRun {
+  dry_run: true;
+  prefill_result?: IPrefillResult;
+  fields: {name: string; role_name: string; type: TFieldType; data_key: string | null; value: string | null}[];
+}
+
 export interface IPrefillOptions {
   /** Reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing. */
   strict?: boolean;

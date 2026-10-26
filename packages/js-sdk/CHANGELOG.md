@@ -1,5 +1,12 @@
 # @verdocs/js-sdk
 
+## 6.15.0
+
+### Minor Changes
+
+- - Added `getTemplateDataContract`, which lists the data keys a template reads with their types, options, and whether each is needed, plus a JSON Schema for `prefill_data` and a hash that changes when the contract does.
+  - Added `previewEnvelope`, which checks a template send and shows the value each field would get, without creating anything.
+
 ## 6.14.0
 
 ### Minor Changes

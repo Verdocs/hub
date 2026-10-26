@@ -57,3 +57,31 @@ export interface ITemplateFeedbackRequest {
   /** URL of the page the feedback came from. */
   url?: string;
 }
+
+/** What a caller sends for a data key: text, an ISO date, true or false, or one of a fixed set of choices. "mixed" means its fields disagree. */
+export type TDataKeyType = 'text' | 'date' | 'boolean' | 'choice' | 'mixed';
+
+export interface IDataContractOption {
+  /** What to send in prefill_data. The label is accepted too. */
+  value: string;
+  label: string;
+}
+
+export interface IDataContractKey {
+  key: string;
+  type: TDataKeyType;
+  /** How many fields on the template use this key. */
+  placements: number;
+  /** True when one of its fields is read-only, so the signer can't supply the value. */
+  needed: boolean;
+  options?: IDataContractOption[];
+}
+
+export interface IDataContract {
+  template_id: string;
+  /** Changes only when the keys, their types, whether they're needed, or their options change. */
+  contract_hash: string;
+  keys: IDataContractKey[];
+  /** A JSON Schema for the prefill_data this template accepts. */
+  json_schema: Record<string, unknown>;
+}
