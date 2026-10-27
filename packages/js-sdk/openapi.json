@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.16.3",
+    "version": "6.16.4",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -30143,9 +30143,17 @@
             "type": "integer",
             "description": "The height of the field."
           },
+          "input_mask": {
+            "type": "string",
+            "description": "For text fields, an input mask where each \"_\" is a character the signer types, like \"(___) ___-____\"."
+          },
           "label": {
             "type": "string",
             "description": "If set, the placeholder/label for the field."
+          },
+          "max_length": {
+            "type": "string",
+            "description": "For text fields, the most characters a signer may enter. Null fits the box."
           },
           "multiline": {
             "type": "boolean",
@@ -30187,9 +30195,21 @@
             "type": "string",
             "description": "@deprecated. Use top-level fields instead."
           },
+          "text_case": {
+            "type": "string",
+            "description": "For text fields, converts what the signer types to upper or lower case."
+          },
           "type": {
             "type": "string",
             "description": "The type of the field"
+          },
+          "validation_message": {
+            "type": "string",
+            "description": "For text fields, what the signer sees when the value doesn't match the validation pattern."
+          },
+          "validation_pattern": {
+            "type": "string",
+            "description": "For text fields, a regular expression the whole value has to match."
           },
           "width": {
             "type": "integer",
@@ -31405,6 +31425,14 @@
             "type": "integer",
             "description": "The height of the field."
           },
+          "input_mask": {
+            "type": "string",
+            "description": "For text fields, an input mask where each \"_\" is a character the signer types, like \"(___) ___-____\"."
+          },
+          "max_length": {
+            "type": "string",
+            "description": "For text fields, the most characters a signer may enter. Null fits the box."
+          },
           "multiline": {
             "type": "boolean",
             "description": "For text boxes, allows more than one line of text to be entered."
@@ -31436,6 +31464,18 @@
           "template_id": {
             "type": "string",
             "description": "The ID of the template the field is for."
+          },
+          "text_case": {
+            "type": "string",
+            "description": "For text fields, converts what the signer types to upper or lower case."
+          },
+          "validation_message": {
+            "type": "string",
+            "description": "For text fields, what the signer sees when the value doesn't match the validation pattern."
+          },
+          "validation_pattern": {
+            "type": "string",
+            "description": "For text fields, a regular expression the whole value has to match."
           },
           "width": {
             "type": "integer",
@@ -31487,6 +31527,14 @@
             "type": "integer",
             "description": "The height of the field."
           },
+          "input_mask": {
+            "type": "string",
+            "description": "For text fields, an input mask where each \"_\" is a character the signer types, like \"(___) ___-____\"."
+          },
+          "max_length": {
+            "type": "string",
+            "description": "For text fields, the most characters a signer may enter. Null fits the box."
+          },
           "multiline": {
             "type": "boolean",
             "description": "For text boxes, allows more than one line of text to be entered."
@@ -31518,6 +31566,18 @@
           "template_id": {
             "type": "string",
             "description": "The ID of the template the field is for."
+          },
+          "text_case": {
+            "type": "string",
+            "description": "For text fields, converts what the signer types to upper or lower case."
+          },
+          "validation_message": {
+            "type": "string",
+            "description": "For text fields, what the signer sees when the value doesn't match the validation pattern."
+          },
+          "validation_pattern": {
+            "type": "string",
+            "description": "For text fields, a regular expression the whole value has to match."
           },
           "width": {
             "type": "integer",
@@ -32262,6 +32322,24 @@
           null,
           null,
           null
+        ]
+      },
+      "TFieldFormatProblem": {
+        "type": "string",
+        "description": "Which of a text field's checks a value fails.",
+        "enum": [
+          "format",
+          "mask",
+          "pattern",
+          "length"
+        ]
+      },
+      "TFieldTextCase": {
+        "type": "string",
+        "description": "How a text field changes the case of what the signer types.",
+        "enum": [
+          "upper",
+          "lower"
         ]
       },
       "TFieldType": {

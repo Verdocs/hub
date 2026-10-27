@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.16.3",
+  "version": "6.16.4",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -1307,6 +1307,34 @@
           "resource": "type",
           "signature": "TFieldDefault",
           "summary": "A field's starting value. The API stores it as text: booleans become \"true\" or \"false\", and numbers get thousands\nseparators (\"12,345\" or \"1,234.50\"). A date field given an ISO 8601 date starts out showing it as MM/dd/yyyy.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TFieldFormatProblem": {
+          "sdkOperation": "ungrouped.TFieldFormatProblem",
+          "kind": "type",
+          "name": "TFieldFormatProblem",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TFieldFormatProblem",
+          "summary": "Which of a text field's checks a value fails.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TFieldTextCase": {
+          "sdkOperation": "ungrouped.TFieldTextCase",
+          "kind": "type",
+          "name": "TFieldTextCase",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TFieldTextCase",
+          "summary": "How a text field changes the case of what the signer types.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -5743,6 +5771,44 @@
           "examples": [],
           "deprecated": false
         },
+        "envelope.getFieldFormatProblem": {
+          "sdkOperation": "envelope.getFieldFormatProblem",
+          "kind": "function",
+          "name": "getFieldFormatProblem",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getFieldFormatProblem(field: IEnvelopeField, value: string): TFieldFormatProblem | null",
+          "summary": "Check a text field's value against its format (validator), mask, pattern, and character limit, returning the\nfirst check it fails or null. Empty values pass, since isFieldFilled decides whether a field has to be filled in.",
+          "params": [
+            {
+              "name": "field",
+              "type": "IEnvelopeField",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "TFieldFormatProblem | null",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getFieldFormatProblem} from '@verdocs/js-sdk';\n\ngetFieldFormatProblem({...field, validator: 'email'}, 'jordan@example'); // 'format'\ngetFieldFormatProblem({...field, input_mask: '(___) ___-____'}, '(555) 012-3456'); // null"
+            }
+          ],
+          "deprecated": false
+        },
         "envelope.getMyRecipient": {
           "sdkOperation": "envelope.getMyRecipient",
           "kind": "function",
@@ -6001,7 +6067,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "isFieldValid(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean",
-          "summary": "Check whether a field is ready to submit. A required field has to be filled in. An optional field can be\nleft empty, but a text field that has a value still has to match its format.",
+          "summary": "Check whether a field is ready to submit. A required field has to be filled in. An optional field can be\nleft empty, but a text field that has a value still has to pass getFieldFormatProblem. Read-only fields are\nalways ready, since the signer can't change them.",
           "params": [
             {
               "name": "field",
