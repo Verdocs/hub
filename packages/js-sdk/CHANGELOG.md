@@ -1,5 +1,13 @@
 # @verdocs/js-sdk
 
+## 6.16.3
+
+### Patch Changes
+
+- - Added an `ssn` validator, and `isFieldFilled` now enforces every validator from `getValidators` on text fields, not just email and phone. Validators it doesn't recognize are treated as plain text.
+  - `isFieldValid` now checks optional text fields that have a value against their format, so an optional email field can be left empty but not filled with something that isn't an email address.
+  - The `number` validator accepts separators, decimals, and a leading minus sign, and the `date` validator no longer accepts extra text after the date.
+
 ## 6.16.2
 
 ### Patch Changes

@@ -1,5 +1,8 @@
-import {isValidInput} from '../Templates';
+import {getValidators, isValidInput} from '../Templates';
 import {IEnvelopeField} from '../Models';
+
+// Validators API callers set that we don't know are treated as plain text, so they never block a signer.
+const hasFormat = (field: IEnvelopeField) => !!field.validator && getValidators().includes(field.validator);
 
 /**
  * @sdkOperation envelope.isFieldFilled
@@ -11,14 +14,7 @@ export const isFieldFilled = (field: IEnvelopeField, allRecipientFields: IEnvelo
   switch (field.type as any) {
     case 'textarea':
     case 'textbox':
-      switch (field.validator || '') {
-        case 'email':
-          return value && isValidInput(value, 'email');
-        case 'phone':
-          return value && isValidInput(value, 'phone');
-        default:
-          return (value || '').trim() !== '';
-      }
+      return hasFormat(field) ? isValidInput((value || '').trim(), field.validator!) : (value || '').trim() !== '';
 
     case 'signature':
       return value === 'signed';
@@ -54,12 +50,19 @@ export const isFieldFilled = (field: IEnvelopeField, allRecipientFields: IEnvelo
   }
 };
 
-// TODO: Only allow !required to bypass validation if the field is empty.
 /**
+ * Check whether a field is ready to submit. A required field has to be filled in. An optional field can be
+ * left empty, but a text field that has a value still has to match its format.
+ *
  * @sdkOperation envelope.isFieldValid
  * @sdkGroup Envelope
  * @sdkPage Helpers
  */
 export const isFieldValid = (field: IEnvelopeField, allRecipientFields: IEnvelopeField[]) => {
-  return !field.required || isFieldFilled(field, allRecipientFields);
+  if (field.required) {
+    return isFieldFilled(field, allRecipientFields);
+  }
+
+  const value = (field.value || '').trim();
+  return !value || !['textbox', 'textarea'].includes(field.type) || !hasFormat(field) || isValidInput(value, field.validator!);
 };
