@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.16.2",
+  "version": "6.16.3",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -5967,7 +5967,7 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "isFieldFilled(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean | '' | null",
+          "signature": "isFieldFilled(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean",
           "summary": "",
           "params": [
             {
@@ -5986,7 +5986,7 @@
             }
           ],
           "returns": {
-            "type": "boolean | '' | null",
+            "type": "boolean",
             "description": ""
           },
           "throws": [],
@@ -6000,8 +6000,8 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "isFieldValid(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean | '' | null",
-          "summary": "",
+          "signature": "isFieldValid(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean",
+          "summary": "Check whether a field is ready to submit. A required field has to be filled in. An optional field can be\nleft empty, but a text field that has a value still has to match its format.",
           "params": [
             {
               "name": "field",
@@ -6019,7 +6019,7 @@
             }
           ],
           "returns": {
-            "type": "boolean | '' | null",
+            "type": "boolean",
             "description": ""
           },
           "throws": [],
@@ -11039,7 +11039,7 @@
           "examples": [
             {
               "language": "typescript",
-              "code": "import {getValidators} from '@verdocs/js-sdk';\n\nconst available = getValidators(); // ['email', 'phone', 'url', 'postal_code', 'number', 'date']"
+              "code": "import {getValidators} from '@verdocs/js-sdk';\n\nconst available = getValidators(); // ['email', 'phone', 'url', 'postal_code', 'number', 'date', 'ssn']"
             }
           ],
           "deprecated": false

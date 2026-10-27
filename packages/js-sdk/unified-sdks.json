@@ -8614,7 +8614,7 @@
       "variants": [
         {
           "language": "typescript",
-          "signature": "isFieldFilled(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean | '' | null",
+          "signature": "isFieldFilled(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean",
           "params": [
             {
               "name": "field",
@@ -8633,7 +8633,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "boolean | '' | null"
+            "type": "boolean"
           }
         },
         {
@@ -8672,11 +8672,11 @@
       "group": "Envelope",
       "page": "Helpers",
       "gettingStarted": false,
-      "summary": "",
+      "summary": "Check whether a field is ready to submit. A required field has to be filled in. An optional field can be\nleft empty, but a text field that has a value still has to match its format.",
       "variants": [
         {
           "language": "typescript",
-          "signature": "isFieldValid(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean | '' | null",
+          "signature": "isFieldValid(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean",
           "params": [
             {
               "name": "field",
@@ -8695,7 +8695,7 @@
           ],
           "deprecated": false,
           "returns": {
-            "type": "boolean | '' | null"
+            "type": "boolean"
           }
         },
         {
@@ -18998,7 +18998,7 @@
           },
           "example": {
             "language": "typescript",
-            "code": "import {getValidators} from '@verdocs/js-sdk';\n\nconst available = getValidators(); // ['email', 'phone', 'url', 'postal_code', 'number', 'date']"
+            "code": "import {getValidators} from '@verdocs/js-sdk';\n\nconst available = getValidators(); // ['email', 'phone', 'url', 'postal_code', 'number', 'date', 'ssn']"
           }
         },
         {
