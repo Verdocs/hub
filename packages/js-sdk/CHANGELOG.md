@@ -1,5 +1,14 @@
 # @verdocs/js-sdk
 
+## 6.16.4
+
+### Patch Changes
+
+- - Template and envelope fields have `max_length`, `text_case`, `validation_pattern`, `validation_message`, and `input_mask` for text fields.
+  - Added `getFieldFormatProblem` to check a text field's value against its format, mask, pattern, and character limit.
+  - `isFieldFilled` and `isFieldValid` apply those same checks.
+  - `isFieldValid` treats read-only fields as ready, so a prefilled value that doesn't match its format can't stop a signer from finishing.
+
 ## 6.16.3
 
 ### Patch Changes

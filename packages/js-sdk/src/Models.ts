@@ -1,5 +1,5 @@
 import type {TTemplateSender, TTemplateVisibility, TEventName, TNotificationType, TUsageType, TWebhookAuthMethod} from './BaseTypes';
-import type {TEntitlement, TEnvelopeStatus, TEventDetail, TFieldType, THistoryEvent, TRecipientAuthMethod} from './BaseTypes';
+import type {TEntitlement, TEnvelopeStatus, TEventDetail, TFieldTextCase, TFieldType, THistoryEvent, TRecipientAuthMethod} from './BaseTypes';
 import type {TRecipientAuthStep, TRecipientStatus, TRecipientType, TWebhookEvent, TEnvelopeDocumentType} from './BaseTypes';
 import {TPermission, TRole} from './Sessions';
 
@@ -624,6 +624,16 @@ export interface IEnvelopeField {
   options: IDropdownOption[] | null;
   /** Your key for this field's value, copied from the template field. */
   data_key?: string | null;
+  /** For text fields, the most characters a signer may enter. Null fits the box. */
+  max_length?: number | null;
+  /** For text fields, converts what the signer types to upper or lower case. */
+  text_case?: TFieldTextCase | null;
+  /** For text fields, a regular expression the whole value has to match. */
+  validation_pattern?: string | null;
+  /** For text fields, what the signer sees when the value doesn't match the validation pattern. */
+  validation_message?: string | null;
+  /** For text fields, an input mask where each "_" is a character the signer types, like "(___) ___-____". */
+  input_mask?: string | null;
   value: string | null;
   is_valid: boolean;
 }
@@ -1002,6 +1012,16 @@ export interface ITemplateField {
   options: IDropdownOption[] | null;
   /** Your key for this field's value, such as "applicant.full_name". Fields that show the same value can share a key. */
   data_key?: string | null;
+  /** For text fields, the most characters a signer may enter. Null fits the box. */
+  max_length?: number | null;
+  /** For text fields, converts what the signer types to upper or lower case. */
+  text_case?: TFieldTextCase | null;
+  /** For text fields, a regular expression the whole value has to match. */
+  validation_pattern?: string | null;
+  /** For text fields, what the signer sees when the value doesn't match the validation pattern. */
+  validation_message?: string | null;
+  /** For text fields, an input mask where each "_" is a character the signer types, like "(___) ___-____". */
+  input_mask?: string | null;
 
   value?: string | null;
   is_valid?: boolean;

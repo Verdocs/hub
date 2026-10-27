@@ -90,6 +90,9 @@ export type TEnvelopeUpdateResult = Omit<IEnvelope, 'histories' | 'recipients' |
 
 export type TEnvelopeDocumentType = 'attachment' | 'certificate';
 
+/** How a text field changes the case of what the signer types. */
+export type TFieldTextCase = 'upper' | 'lower';
+
 export type TFieldType =
   | 'signature'
   | 'initial'
