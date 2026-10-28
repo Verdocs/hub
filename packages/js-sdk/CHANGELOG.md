@@ -1,5 +1,12 @@
 # @verdocs/js-sdk
 
+## 6.16.6
+
+### Patch Changes
+
+- - `TEntitlement` now includes `custom_branding`, `sms`, and `kba_sandbox`.
+  - KBA verification requests accept `sandbox_test_type`, so organizations in the KBA sandbox can choose whether a test signer passes, fails, or gets the sandbox questions.
+
 ## 6.16.5
 
 ### Patch Changes

@@ -509,6 +509,8 @@ export interface IAuthenticateRecipientViaKBARequest {
   zip?: string;
   ssn_last_4?: string;
   dob?: string;
+  /** For organizations in the KBA sandbox, whether to pass, fail, or ask the sandbox questions (the default). */
+  sandbox_test_type?: 'pass' | 'fail' | 'questions';
   responses?: IKBAResponse[];
 }
 
