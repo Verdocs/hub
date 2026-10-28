@@ -7430,6 +7430,43 @@
       ]
     },
     {
+      "operationId": "envelope.formatFieldNumber",
+      "group": "Envelope",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Show a number field's stored value the way its format writes it, like \"$12,450.50\" for 12450.5 as en-US currency.\nPass a text field's config.number. Values that aren't plain numbers come back unchanged.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "formatFieldNumber(format: IFieldNumberFormat | null | undefined, value: string | null | undefined): string",
+          "params": [
+            {
+              "name": "format",
+              "type": "IFieldNumberFormat | null | undefined",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "value",
+              "type": "string | null | undefined",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "string"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {formatFieldNumber} from '@verdocs/js-sdk';\n\nformatFieldNumber({style: 'number', locale: 'de-DE', decimals: 2}, '12450.5'); // '12.450,50'"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "envelope.getCombinedEnvelopeDocumentDownloadLink",
       "group": "Envelope",
       "page": "Endpoints",
@@ -8204,7 +8241,7 @@
       "group": "Envelope",
       "page": "Helpers",
       "gettingStarted": false,
-      "summary": "Check a text field's value against its format (validator), mask, pattern, and character limit, returning the\nfirst check it fails or null. Empty values pass, since isFieldFilled decides whether a field has to be filled in.",
+      "summary": "Check a text field's value against its format (validator, or number style and range), mask, pattern, and character\nlimit, returning the first check it fails or null. Empty values pass, since isFieldFilled decides whether a field\nhas to be filled in. Number fields accept their stored plain number or the text their locale writes.",
       "variants": [
         {
           "language": "typescript",
@@ -8231,7 +8268,7 @@
           },
           "example": {
             "language": "typescript",
-            "code": "import {getFieldFormatProblem} from '@verdocs/js-sdk';\n\ngetFieldFormatProblem({...field, validator: 'email'}, 'jordan@example'); // 'format'\ngetFieldFormatProblem({...field, input_mask: '(___) ___-____'}, '(555) 012-3456'); // null"
+            "code": "import {getFieldFormatProblem} from '@verdocs/js-sdk';\n\ngetFieldFormatProblem({...field, validator: 'email'}, 'jordan@example'); // 'format'\ngetFieldFormatProblem({...field, config: {type: 'textbox', input_mask: '(___) ___-____'}}, '(555) 012-3456'); // null"
           }
         }
       ]
@@ -8709,7 +8746,7 @@
       "group": "Envelope",
       "page": "Helpers",
       "gettingStarted": false,
-      "summary": "Check whether a field is ready to submit. A required field has to be filled in. An optional field can be\nleft empty, but a text field that has a value still has to pass getFieldFormatProblem. Read-only fields are\nalways ready, since the signer can't change them.",
+      "summary": "Check whether a field is ready to submit. A required field has to be filled in. An optional field can be\nleft empty, but a text field that has a value still has to pass getFieldFormatProblem, and a date has to fall\nwithin its config's allowed range. Read-only fields are always ready, since the signer can't change them.",
       "variants": [
         {
           "language": "typescript",
@@ -8762,6 +8799,43 @@
           "example": {
             "language": "csharp",
             "code": "if (Validators.IsFieldValid(field, allRecipientFields))\n{\n    // ...\n}"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "envelope.parseFieldNumber",
+      "group": "Envelope",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Read a number the way a number format's locale writes it, like \"12.450,50\" for de-DE or \"$12,450.50\" for en-US.\nPass a text field's config.number. Returns null when the text isn't a number. Save the result as a plain string\n(String(number)), since that's how number fields store their values.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "parseFieldNumber(format: IFieldNumberFormat | null | undefined, text: string | null | undefined): number | null",
+          "params": [
+            {
+              "name": "format",
+              "type": "IFieldNumberFormat | null | undefined",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "text",
+              "type": "string | null | undefined",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "number | null"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {parseFieldNumber} from '@verdocs/js-sdk';\n\nparseFieldNumber({style: 'number', locale: 'de-DE'}, '12.450,50'); // 12450.5"
           }
         }
       ]

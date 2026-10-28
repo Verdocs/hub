@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.16.4",
+    "version": "6.16.5",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -28586,6 +28586,31 @@
           }
         }
       },
+      "IAttachmentFieldConfig": {
+        "type": "object",
+        "description": "Settings for attachment fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "accept": {
+            "type": "string",
+            "description": "File extensions like \".pdf\" or types like \"image/*\" the signer may upload."
+          },
+          "max_size_mb": {
+            "type": "integer",
+            "description": "The largest file the signer may upload, in megabytes."
+          },
+          "stamp_card": {
+            "type": "boolean",
+            "description": "Print the attachment's name and size on the document. Defaults to true."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          }
+        }
+      },
       "IAuthenticateRecipientViaEmailRequest": {
         "type": "object",
         "description": "",
@@ -28665,6 +28690,27 @@
         "description": "",
         "required": [],
         "properties": {}
+      },
+      "ICheckboxFieldConfig": {
+        "type": "object",
+        "description": "Settings for checkbox fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "description": "The mark for a checked box. Defaults to check."
+          },
+          "stamp_unchecked": {
+            "type": "boolean",
+            "description": "Print an empty box when unchecked. Defaults to true."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          }
+        }
       },
       "IClientCredentialsRequest": {
         "type": "object",
@@ -29806,6 +29852,35 @@
           }
         }
       },
+      "IDateFieldConfig": {
+        "type": "object",
+        "description": "Settings for date fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "allowed": {
+            "type": "string",
+            "description": "Which dates the signer may choose, relative to today."
+          },
+          "max": {
+            "type": "string",
+            "description": "The latest date the signer may choose, like \"2026-12-31\"."
+          },
+          "min": {
+            "type": "string",
+            "description": "The earliest date the signer may choose, like \"2026-01-01\"."
+          },
+          "starts_today": {
+            "type": "boolean",
+            "description": "Fill in today's date when the signer opens the envelope."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          }
+        }
+      },
       "IDisabledChannel": {
         "type": "object",
         "description": "",
@@ -29853,6 +29928,23 @@
         "description": "",
         "required": [],
         "properties": {}
+      },
+      "IDropdownFieldConfig": {
+        "type": "object",
+        "description": "Settings for dropdown fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "stamp": {
+            "type": "string",
+            "description": "Print the chosen option's ID or its label. Defaults to id."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          }
+        }
       },
       "IDropdownOption": {
         "type": "object",
@@ -30119,6 +30211,10 @@
           "y"
         ],
         "properties": {
+          "config": {
+            "type": "string",
+            "description": "Settings for this field's type. Its type always matches the field's, so checking config.type narrows the rest."
+          },
           "data_key": {
             "type": "string",
             "description": "Your key for this field's value, copied from the template field."
@@ -30143,17 +30239,9 @@
             "type": "integer",
             "description": "The height of the field."
           },
-          "input_mask": {
-            "type": "string",
-            "description": "For text fields, an input mask where each \"_\" is a character the signer types, like \"(___) ___-____\"."
-          },
           "label": {
             "type": "string",
             "description": "If set, the placeholder/label for the field."
-          },
-          "max_length": {
-            "type": "string",
-            "description": "For text fields, the most characters a signer may enter. Null fits the box."
           },
           "multiline": {
             "type": "boolean",
@@ -30195,21 +30283,9 @@
             "type": "string",
             "description": "@deprecated. Use top-level fields instead."
           },
-          "text_case": {
-            "type": "string",
-            "description": "For text fields, converts what the signer types to upper or lower case."
-          },
           "type": {
             "type": "string",
             "description": "The type of the field"
-          },
-          "validation_message": {
-            "type": "string",
-            "description": "For text fields, what the signer sees when the value doesn't match the validation pattern."
-          },
-          "validation_pattern": {
-            "type": "string",
-            "description": "For text fields, a regular expression the whole value has to match."
           },
           "width": {
             "type": "integer",
@@ -30301,6 +30377,75 @@
         "description": "",
         "required": [],
         "properties": {}
+      },
+      "IFieldNumberFormat": {
+        "type": "object",
+        "description": "How a number field shows its value. The stored value is always a plain number like 12450.5.",
+        "required": [
+          "style"
+        ],
+        "properties": {
+          "currency": {
+            "type": "string",
+            "description": "The ISO 4217 code for currency, like \"USD\". Defaults to USD."
+          },
+          "decimals": {
+            "type": "integer",
+            "description": "Decimal places to show."
+          },
+          "locale": {
+            "type": "string",
+            "description": "The locale to format with, like \"de-DE\". Defaults to en-US."
+          },
+          "max": {
+            "type": "integer",
+            "description": "The largest number the signer may enter."
+          },
+          "min": {
+            "type": "integer",
+            "description": "The smallest number the signer may enter."
+          },
+          "style": {
+            "type": "string",
+            "description": "Show the value as a number, currency, or percent."
+          }
+        }
+      },
+      "IFieldTextFit": {
+        "type": "object",
+        "description": "How a text field's value fits its box when stamped. Without it, text prints at 11 points and runs over.",
+        "required": [],
+        "properties": {
+          "max_font_size": {
+            "type": "integer",
+            "description": "The size stamping starts at, in points."
+          },
+          "min_font_size": {
+            "type": "integer",
+            "description": "The smallest size stamping shrinks to, in points."
+          },
+          "overflow": {
+            "type": "string",
+            "description": "What happens to text that still doesn't fit at the smallest size: cut it off, end it with an ellipsis, or let it run over."
+          }
+        }
+      },
+      "IFieldValidation": {
+        "type": "object",
+        "description": "A regular expression a text field's whole value has to match.",
+        "required": [
+          "pattern"
+        ],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "What the signer sees when the value doesn't match."
+          },
+          "pattern": {
+            "type": "string",
+            "description": "The JavaScript regular expression."
+          }
+        }
       },
       "IFileWithData": {
         "type": "object",
@@ -30678,6 +30823,19 @@
         "required": [],
         "properties": {}
       },
+      "IPaymentFieldConfig": {
+        "type": "object",
+        "description": "Settings for payment fields. None yet.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          }
+        }
+      },
       "IPendingWebhook": {
         "type": "object",
         "description": "",
@@ -30807,6 +30965,23 @@
           "user_id": {
             "type": "string",
             "description": "In Verdocs, a user may have multiple profiles. A user represents a single person. A profile\nrepresents that person within an organization. Some profiles may have no user atached, typically\nContacts and Signers. This can change if that person registers for a user later."
+          }
+        }
+      },
+      "IRadioFieldConfig": {
+        "type": "object",
+        "description": "Settings for radio button fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "stamp_unselected": {
+            "type": "boolean",
+            "description": "Print an empty circle for options that weren't chosen. Defaults to false."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
           }
         }
       },
@@ -31065,6 +31240,38 @@
         "description": "",
         "required": [],
         "properties": {}
+      },
+      "ISignatureFieldConfig": {
+        "type": "object",
+        "description": "Settings for signature and initial fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "stamp": {
+            "type": "string",
+            "description": "What prints under the signature."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          }
+        }
+      },
+      "ISignatureStamp": {
+        "type": "object",
+        "description": "What prints under a signature or initials. Both default to true.",
+        "required": [],
+        "properties": {
+          "date": {
+            "type": "boolean",
+            "description": "Print the date and time it was signed."
+          },
+          "hash": {
+            "type": "boolean",
+            "description": "Print the start of the signature's verification hash."
+          }
+        }
       },
       "ISignerTokenResponse": {
         "type": "object",
@@ -31405,6 +31612,10 @@
           "y"
         ],
         "properties": {
+          "config": {
+            "type": "string",
+            "description": "Settings for this field's type. Its type always matches the field's, so checking config.type narrows the rest."
+          },
           "data_key": {
             "type": "string",
             "description": "Your key for this field's value, such as \"applicant.full_name\". Fields that show the same value can share a key."
@@ -31424,14 +31635,6 @@
           "height": {
             "type": "integer",
             "description": "The height of the field."
-          },
-          "input_mask": {
-            "type": "string",
-            "description": "For text fields, an input mask where each \"_\" is a character the signer types, like \"(___) ___-____\"."
-          },
-          "max_length": {
-            "type": "string",
-            "description": "For text fields, the most characters a signer may enter. Null fits the box."
           },
           "multiline": {
             "type": "boolean",
@@ -31464,18 +31667,6 @@
           "template_id": {
             "type": "string",
             "description": "The ID of the template the field is for."
-          },
-          "text_case": {
-            "type": "string",
-            "description": "For text fields, converts what the signer types to upper or lower case."
-          },
-          "validation_message": {
-            "type": "string",
-            "description": "For text fields, what the signer sees when the value doesn't match the validation pattern."
-          },
-          "validation_pattern": {
-            "type": "string",
-            "description": "For text fields, a regular expression the whole value has to match."
           },
           "width": {
             "type": "integer",
@@ -31511,6 +31702,10 @@
           "y"
         ],
         "properties": {
+          "config": {
+            "type": "string",
+            "description": "Settings for this field's type. Its type always matches the field's, so checking config.type narrows the rest."
+          },
           "data_key": {
             "type": "string",
             "description": "Your key for this field's value, such as \"applicant.full_name\". Fields that show the same value can share a key."
@@ -31526,14 +31721,6 @@
           "height": {
             "type": "integer",
             "description": "The height of the field."
-          },
-          "input_mask": {
-            "type": "string",
-            "description": "For text fields, an input mask where each \"_\" is a character the signer types, like \"(___) ___-____\"."
-          },
-          "max_length": {
-            "type": "string",
-            "description": "For text fields, the most characters a signer may enter. Null fits the box."
           },
           "multiline": {
             "type": "boolean",
@@ -31567,18 +31754,6 @@
             "type": "string",
             "description": "The ID of the template the field is for."
           },
-          "text_case": {
-            "type": "string",
-            "description": "For text fields, converts what the signer types to upper or lower case."
-          },
-          "validation_message": {
-            "type": "string",
-            "description": "For text fields, what the signer sees when the value doesn't match the validation pattern."
-          },
-          "validation_pattern": {
-            "type": "string",
-            "description": "For text fields, a regular expression the whole value has to match."
-          },
           "width": {
             "type": "integer",
             "description": "The width of the field."
@@ -31611,6 +31786,43 @@
         "required": [],
         "properties": {}
       },
+      "ITextFieldConfig": {
+        "type": "object",
+        "description": "Settings for text fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "fit": {
+            "type": "string",
+            "description": "How the value fits its box when stamped."
+          },
+          "input_mask": {
+            "type": "string",
+            "description": "An input mask where each \"_\" is a character the signer types, like \"(___) ___-____\"."
+          },
+          "max_length": {
+            "type": "integer",
+            "description": "The most characters a signer may enter. Leave it out to fit the box."
+          },
+          "number": {
+            "type": "string",
+            "description": "Shows the value as a number, currency, or percent."
+          },
+          "text_case": {
+            "type": "string",
+            "description": "Converts what the signer types to upper or lower case."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          },
+          "validation": {
+            "type": "string",
+            "description": "A pattern the value has to match."
+          }
+        }
+      },
       "ITextFieldSetting": {
         "type": "object",
         "description": "",
@@ -31622,6 +31834,23 @@
         "description": "",
         "required": [],
         "properties": {}
+      },
+      "ITimestampFieldConfig": {
+        "type": "object",
+        "description": "Settings for timestamp fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "include_time": {
+            "type": "boolean",
+            "description": "Print the time along with the date. Defaults to true."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          }
+        }
       },
       "IUpdateApiKeyRequest": {
         "type": "object",
@@ -32315,6 +32544,21 @@
           "delegate:send_confirmed"
         ]
       },
+      "TFieldConfig": {
+        "type": "string",
+        "description": "A field's settings, one shape per field type, told apart by type.",
+        "enum": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
       "TFieldDefault": {
         "type": "string",
         "description": "A field's starting value. The API stores it as text: booleans become \"true\" or \"false\", and numbers get thousands\nseparators (\"12,345\" or \"1,234.50\"). A date field given an ISO 8601 date starts out showing it as MM/dd/yyyy.",
@@ -32329,9 +32573,19 @@
         "description": "Which of a text field's checks a value fails.",
         "enum": [
           "format",
+          "range",
           "mask",
           "pattern",
           "length"
+        ]
+      },
+      "TFieldNumberStyle": {
+        "type": "string",
+        "description": "How a text field shows its number. The stored value is always a plain number like 12450.5.",
+        "enum": [
+          "number",
+          "currency",
+          "percent"
         ]
       },
       "TFieldTextCase": {

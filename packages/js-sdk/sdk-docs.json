@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.16.4",
+  "version": "6.16.5",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -500,6 +500,20 @@
       "name": "Ungrouped",
       "summary": "",
       "symbols": {
+        "ungrouped.IAttachmentFieldConfig": {
+          "sdkOperation": "ungrouped.IAttachmentFieldConfig",
+          "kind": "interface",
+          "name": "IAttachmentFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IAttachmentFieldConfig",
+          "summary": "Settings for attachment fields.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.IAuthorizationCodeRequest": {
           "sdkOperation": "ungrouped.IAuthorizationCodeRequest",
           "kind": "interface",
@@ -509,6 +523,20 @@
           "resource": "interface",
           "signature": "IAuthorizationCodeRequest",
           "summary": "Standard PKCE flow.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ICheckboxFieldConfig": {
+          "sdkOperation": "ungrouped.ICheckboxFieldConfig",
+          "kind": "interface",
+          "name": "ICheckboxFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ICheckboxFieldConfig",
+          "summary": "Settings for checkbox fields.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -570,6 +598,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.IDateFieldConfig": {
+          "sdkOperation": "ungrouped.IDateFieldConfig",
+          "kind": "interface",
+          "name": "IDateFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IDateFieldConfig",
+          "summary": "Settings for date fields.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.IDocumentFromData": {
           "sdkOperation": "ungrouped.IDocumentFromData",
           "kind": "interface",
@@ -593,6 +635,20 @@
           "resource": "interface",
           "signature": "IDocumentFromUri",
           "summary": "Represents a document to be attached to a template via an externally-accessible URI. A copy of the document will be\ndownloaded from the specified URI. Note that the URI will be accessed without headers or other authorization methods\nset, so the URI itself must encode any security tokens or keys required to access the file.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IDropdownFieldConfig": {
+          "sdkOperation": "ungrouped.IDropdownFieldConfig",
+          "kind": "interface",
+          "name": "IDropdownFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IDropdownFieldConfig",
+          "summary": "Settings for dropdown fields.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -649,6 +705,48 @@
           "resource": "interface",
           "signature": "IEnvelopeDryRun",
           "summary": "What previewEnvelope returns: the value each field would get, without anything being created.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IFieldNumberFormat": {
+          "sdkOperation": "ungrouped.IFieldNumberFormat",
+          "kind": "interface",
+          "name": "IFieldNumberFormat",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IFieldNumberFormat",
+          "summary": "How a number field shows its value. The stored value is always a plain number like 12450.5.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IFieldTextFit": {
+          "sdkOperation": "ungrouped.IFieldTextFit",
+          "kind": "interface",
+          "name": "IFieldTextFit",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IFieldTextFit",
+          "summary": "How a text field's value fits its box when stamped. Without it, text prints at 11 points and runs over.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IFieldValidation": {
+          "sdkOperation": "ungrouped.IFieldValidation",
+          "kind": "interface",
+          "name": "IFieldValidation",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IFieldValidation",
+          "summary": "A regular expression a text field's whole value has to match.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -766,6 +864,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.IPaymentFieldConfig": {
+          "sdkOperation": "ungrouped.IPaymentFieldConfig",
+          "kind": "interface",
+          "name": "IPaymentFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IPaymentFieldConfig",
+          "summary": "Settings for payment fields. None yet.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.IPipelineSettings": {
           "sdkOperation": "ungrouped.IPipelineSettings",
           "kind": "interface",
@@ -789,6 +901,20 @@
           "resource": "interface",
           "signature": "IPrefillResult",
           "summary": "What happened to a request's prefill_data. Keys are reported by name only.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IRadioFieldConfig": {
+          "sdkOperation": "ungrouped.IRadioFieldConfig",
+          "kind": "interface",
+          "name": "IRadioFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IRadioFieldConfig",
+          "summary": "Settings for radio button fields.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -934,6 +1060,34 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.ISignatureFieldConfig": {
+          "sdkOperation": "ungrouped.ISignatureFieldConfig",
+          "kind": "interface",
+          "name": "ISignatureFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ISignatureFieldConfig",
+          "summary": "Settings for signature and initial fields.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ISignatureStamp": {
+          "sdkOperation": "ungrouped.ISignatureStamp",
+          "kind": "interface",
+          "name": "ISignatureStamp",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ISignatureStamp",
+          "summary": "What prints under a signature or initials. Both default to true.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.ISigningSession": {
           "sdkOperation": "ungrouped.ISigningSession",
           "kind": "interface",
@@ -999,6 +1153,34 @@
           "resource": "interface",
           "signature": "ITemplateFeedbackRequest",
           "summary": "Send feedback about a template to the Verdocs team, with optional details. This endpoint is intended to be\nused by template maintainers to report field-auto-detection and formatting issues, not by signers. Verdocs\ndoes not provide a formal response SLA or request routing/handling commitment for submissions via this\nendpoint.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ITextFieldConfig": {
+          "sdkOperation": "ungrouped.ITextFieldConfig",
+          "kind": "interface",
+          "name": "ITextFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ITextFieldConfig",
+          "summary": "Settings for text fields.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ITimestampFieldConfig": {
+          "sdkOperation": "ungrouped.ITimestampFieldConfig",
+          "kind": "interface",
+          "name": "ITimestampFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ITimestampFieldConfig",
+          "summary": "Settings for timestamp fields.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -1298,6 +1480,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.TFieldConfig": {
+          "sdkOperation": "ungrouped.TFieldConfig",
+          "kind": "type",
+          "name": "TFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TFieldConfig",
+          "summary": "A field's settings, one shape per field type, told apart by type.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.TFieldDefault": {
           "sdkOperation": "ungrouped.TFieldDefault",
           "kind": "type",
@@ -1321,6 +1517,20 @@
           "resource": "type",
           "signature": "TFieldFormatProblem",
           "summary": "Which of a text field's checks a value fails.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TFieldNumberStyle": {
+          "sdkOperation": "ungrouped.TFieldNumberStyle",
+          "kind": "type",
+          "name": "TFieldNumberStyle",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TFieldNumberStyle",
+          "summary": "How a text field shows its number. The stored value is always a plain number like 12450.5.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -5455,6 +5665,44 @@
           "examples": [],
           "deprecated": false
         },
+        "envelope.formatFieldNumber": {
+          "sdkOperation": "envelope.formatFieldNumber",
+          "kind": "function",
+          "name": "formatFieldNumber",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "formatFieldNumber(format: IFieldNumberFormat | null | undefined, value: string | null | undefined): string",
+          "summary": "Show a number field's stored value the way its format writes it, like \"$12,450.50\" for 12450.5 as en-US currency.\nPass a text field's config.number. Values that aren't plain numbers come back unchanged.",
+          "params": [
+            {
+              "name": "format",
+              "type": "IFieldNumberFormat | null | undefined",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "value",
+              "type": "string | null | undefined",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "string",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {formatFieldNumber} from '@verdocs/js-sdk';\n\nformatFieldNumber({style: 'number', locale: 'de-DE', decimals: 2}, '12450.5'); // '12.450,50'"
+            }
+          ],
+          "deprecated": false
+        },
         "envelope.getCombinedEnvelopeDocumentDownloadLink": {
           "sdkOperation": "envelope.getCombinedEnvelopeDocumentDownloadLink",
           "kind": "function",
@@ -5779,7 +6027,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "getFieldFormatProblem(field: IEnvelopeField, value: string): TFieldFormatProblem | null",
-          "summary": "Check a text field's value against its format (validator), mask, pattern, and character limit, returning the\nfirst check it fails or null. Empty values pass, since isFieldFilled decides whether a field has to be filled in.",
+          "summary": "Check a text field's value against its format (validator, or number style and range), mask, pattern, and character\nlimit, returning the first check it fails or null. Empty values pass, since isFieldFilled decides whether a field\nhas to be filled in. Number fields accept their stored plain number or the text their locale writes.",
           "params": [
             {
               "name": "field",
@@ -5804,7 +6052,7 @@
           "examples": [
             {
               "language": "typescript",
-              "code": "import {getFieldFormatProblem} from '@verdocs/js-sdk';\n\ngetFieldFormatProblem({...field, validator: 'email'}, 'jordan@example'); // 'format'\ngetFieldFormatProblem({...field, input_mask: '(___) ___-____'}, '(555) 012-3456'); // null"
+              "code": "import {getFieldFormatProblem} from '@verdocs/js-sdk';\n\ngetFieldFormatProblem({...field, validator: 'email'}, 'jordan@example'); // 'format'\ngetFieldFormatProblem({...field, config: {type: 'textbox', input_mask: '(___) ___-____'}}, '(555) 012-3456'); // null"
             }
           ],
           "deprecated": false
@@ -6067,7 +6315,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "isFieldValid(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean",
-          "summary": "Check whether a field is ready to submit. A required field has to be filled in. An optional field can be\nleft empty, but a text field that has a value still has to pass getFieldFormatProblem. Read-only fields are\nalways ready, since the signer can't change them.",
+          "summary": "Check whether a field is ready to submit. A required field has to be filled in. An optional field can be\nleft empty, but a text field that has a value still has to pass getFieldFormatProblem, and a date has to fall\nwithin its config's allowed range. Read-only fields are always ready, since the signer can't change them.",
           "params": [
             {
               "name": "field",
@@ -6090,6 +6338,44 @@
           },
           "throws": [],
           "examples": [],
+          "deprecated": false
+        },
+        "envelope.parseFieldNumber": {
+          "sdkOperation": "envelope.parseFieldNumber",
+          "kind": "function",
+          "name": "parseFieldNumber",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "parseFieldNumber(format: IFieldNumberFormat | null | undefined, text: string | null | undefined): number | null",
+          "summary": "Read a number the way a number format's locale writes it, like \"12.450,50\" for de-DE or \"$12,450.50\" for en-US.\nPass a text field's config.number. Returns null when the text isn't a number. Save the result as a plain string\n(String(number)), since that's how number fields store their values.",
+          "params": [
+            {
+              "name": "format",
+              "type": "IFieldNumberFormat | null | undefined",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "text",
+              "type": "string | null | undefined",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "number | null",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {parseFieldNumber} from '@verdocs/js-sdk';\n\nparseFieldNumber({style: 'number', locale: 'de-DE'}, '12.450,50'); // 12450.5"
+            }
+          ],
           "deprecated": false
         },
         "envelope.previewEnvelope": {
