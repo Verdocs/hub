@@ -93,6 +93,9 @@ export type TEnvelopeDocumentType = 'attachment' | 'certificate';
 /** How a text field changes the case of what the signer types. */
 export type TFieldTextCase = 'upper' | 'lower';
 
+/** How a text field shows its number. The stored value is always a plain number like 12450.5. */
+export type TFieldNumberStyle = 'number' | 'currency' | 'percent';
+
 export type TFieldType =
   | 'signature'
   | 'initial'

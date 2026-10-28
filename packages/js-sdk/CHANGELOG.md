@@ -1,5 +1,14 @@
 # @verdocs/js-sdk
 
+## 6.16.5
+
+### Patch Changes
+
+- - Template and envelope fields have a `config` object with settings for their type, told apart by a `type` that matches the field's own. Text fields get a character limit, letter case, validation, an input mask, number formatting, and text fit; signatures and initials choose what prints under them; dates get an allowed range and can start on today; timestamps, checkboxes, radio buttons, dropdowns, and attachments get stamping options; and attachments can limit file types and sizes.
+  - `config` replaces the `max_length`, `text_case`, `validation_pattern`, `validation_message`, and `input_mask` field properties from 6.16.3, which nothing used yet.
+  - Added `formatFieldNumber` and `parseFieldNumber` to show and read number values the way their format's locale writes them.
+  - `getFieldFormatProblem` reads `config`, and reports `range` for numbers outside their limits. `isFieldValid` and `isFieldFilled` also hold dates to their allowed range.
+
 ## 6.16.4
 
 ### Patch Changes
