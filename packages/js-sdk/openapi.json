@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.16.5",
+    "version": "6.16.6",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -28621,7 +28621,12 @@
         "type": "object",
         "description": "",
         "required": [],
-        "properties": {}
+        "properties": {
+          "sandbox_test_type": {
+            "type": "string",
+            "description": "For organizations in the KBA sandbox, whether to pass, fail, or ask the sandbox questions (the default)."
+          }
+        }
       },
       "IAuthenticateRecipientViaPasscodeRequest": {
         "type": "object",
@@ -32432,7 +32437,10 @@
           "sms_auth",
           "kba_id_auth",
           "id_auth",
-          "custom_disclaimer"
+          "custom_disclaimer",
+          "custom_branding",
+          "sms",
+          "kba_sandbox"
         ]
       },
       "TEnvelopeDocumentType": {
