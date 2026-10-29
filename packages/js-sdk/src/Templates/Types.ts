@@ -93,3 +93,13 @@ export interface IDataContract {
   /** A JSON Schema for the prefill_data this template accepts. */
   json_schema: Record<string, unknown>;
 }
+
+/** Where one role sits in a template's workflow, for arrangeTemplateRoles. */
+export interface IRolePosition {
+  /** The role's name. */
+  name: string;
+  /** The step the role acts in. Roles that share a step are invited together. */
+  sequence: number;
+  /** The role's place within its step, for display. Leave it out to keep the role's current order. */
+  order?: number;
+}

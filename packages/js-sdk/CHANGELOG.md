@@ -1,5 +1,12 @@
 # @verdocs/js-sdk
 
+## 6.16.7
+
+### Patch Changes
+
+- - Added `arrangeTemplateRoles` to move several roles between steps in one call, such as swapping two steps.
+  - Added `renumberRoles`, which numbers a template's steps and roles the way the api stores them, so editors can show a move before the api replies.
+
 ## 6.16.6
 
 ### Patch Changes

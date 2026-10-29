@@ -15,6 +15,7 @@
  */
 
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
+import {IRolePosition} from './Types';
 import {IRole} from '../Models';
 
 /**
@@ -82,6 +83,65 @@ export const updateTemplateRole = (endpoint: VerdocsEndpoint, template_id: strin
   endpoint.api //
     .patch<IRole>(`/v2/roles/${template_id}/${encodeURIComponent(name)}`, params)
     .then((r) => r.data);
+
+/**
+ * Move several roles between steps in one call, such as when swapping two steps. Roles you leave out keep their places.
+ * The template's roles come back with steps numbered 1..N and each step's roles numbered 1..M.
+ *
+ * ```typescript
+ * import {arrangeTemplateRoles} from '@verdocs/js-sdk';
+ *
+ * const roles = await arrangeTemplateRoles(VerdocsEndpoint.getDefault(), template_id, [
+ *   {name: 'Seller', sequence: 1},
+ *   {name: 'Buyer', sequence: 2},
+ * ]);
+ * ```
+ *
+ * @group Roles
+ * @api PATCH /v2/roles/:template_id Arrange roles
+ * @apiParam string(format:uuid) template_id The template ID.
+ * @apiBody array(items:IRolePosition) roles The roles to move, each with its new step (sequence) and optionally its place within the step (order).
+ * @apiSuccess array(items:IRole) . All of the template's roles, in workflow order
+ *
+ * @sdkOperation role.arrangeTemplateRoles
+ * @sdkGroup Role
+ * @sdkPage Endpoints
+ */
+export const arrangeTemplateRoles = (endpoint: VerdocsEndpoint, template_id: string, roles: IRolePosition[]) =>
+  endpoint.api //
+    .patch<IRole[]>(`/v2/roles/${template_id}`, {roles})
+    .then((r) => r.data);
+
+/**
+ * Number a template's steps 1..N and each step's roles 1..M, the way the api stores them after any role change. Roles named
+ * in `first` win ties for a spot, in that order, so a role just placed at an occupied spot takes it. Use it to show a move
+ * before the api replies.
+ *
+ * ```typescript
+ * import {renumberRoles} from '@verdocs/js-sdk';
+ *
+ * renumberRoles([{name: 'Buyer', sequence: 1, order: 1}, {name: 'Seller', sequence: 3, order: 1}]);
+ * // Seller is now at sequence 2
+ * ```
+ *
+ * @sdkOperation role.renumberRoles
+ * @sdkGroup Role
+ * @sdkPage Helpers
+ */
+export const renumberRoles = <T extends {name: string; sequence: number; order: number}>(roles: T[], first: string[] = []): T[] => {
+  const rank = (name: string) => (first.includes(name) ? first.indexOf(name) : first.length);
+  const sorted = [...roles].sort(
+    (a, b) => a.sequence - b.sequence || a.order - b.order || rank(a.name) - rank(b.name) || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0),
+  );
+
+  const steps = [...new Set(sorted.map((role) => role.sequence))];
+  const counts: number[] = [];
+  return sorted.map((role) => {
+    const sequence = steps.indexOf(role.sequence) + 1;
+    counts[sequence] = (counts[sequence] || 0) + 1;
+    return {...role, sequence, order: counts[sequence]};
+  });
+};
 
 /**
  * Delete a role.
