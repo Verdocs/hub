@@ -1,4 +1,4 @@
-import type {TTemplateSender, TTemplateVisibility, TEventName, TNotificationType, TUsageType, TWebhookAuthMethod} from './BaseTypes';
+import type {TTemplateSender, TTemplateVisibility, TEventName, TNotificationType, TUsageType, TWebhookAuthMethod, TRecipientSignatureLevel} from './BaseTypes';
 import type {TEntitlement, TEnvelopeStatus, TEventDetail, TFieldNumberStyle, TFieldTextCase, TFieldType} from './BaseTypes';
 import type {THistoryEvent, TRecipientAuthMethod, TRecipientAuthStep, TRecipientStatus, TRecipientType} from './BaseTypes';
 import type {TWebhookEvent, TEnvelopeDocumentType} from './BaseTypes';
@@ -903,6 +903,7 @@ export interface IRecipient {
    */
   order: number;
   type: TRecipientType;
+  signature_level: TRecipientSignatureLevel | null
   delegator: boolean;
   delegated_to: string | null;
   message: string | null;
@@ -982,6 +983,8 @@ export interface IRole {
   delegator: boolean | null;
   /** If set, the recipient will not be allowed to change their legal name. */
   name_locked: boolean;
+
+  signature_level: TRecipientSignatureLevel | null
 }
 
 export interface ISignature {
