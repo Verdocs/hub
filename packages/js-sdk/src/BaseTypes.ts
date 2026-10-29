@@ -211,6 +211,8 @@ export type TWebhookAuthMethod = 'none' | 'hmac' | 'client_credentials';
 
 export type TNotificationType = 'sms' | 'email' | 'app';
 
+export type TRecipientSignatureLevel = 'simple' | 'advanced' | 'qualified'
+
 export type TEventName =
   | 'invitation:canceled'
   | 'transaction:completed'
