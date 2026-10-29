@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.16.6",
+    "version": "6.16.7",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -1678,6 +1678,436 @@
             "lang": "java",
             "label": "Java",
             "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/update\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
+    "/v2/roles/{template_id}": {
+      "patch": {
+        "operationId": "arrangeTemplateRoles",
+        "summary": "Arrange roles",
+        "tags": [
+          "Roles"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "template_id",
+            "description": "The template ID.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IRole"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Body Parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "roles"
+                ],
+                "properties": {
+                  "roles": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/IRolePosition"
+                    },
+                    "description": "The roles to move, each with its new step (sequence) and optionally its place within the step (order)."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X PATCH \"https://api.verdocs.com/v2/roles/TEMPLATE_ID\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/roles/TEMPLATE_ID', {\n  method: 'patch',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/roles/TEMPLATE_ID\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Patch.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"PATCH\", \"/v2/roles/{template_id}\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/roles/TEMPLATE_ID\");\nvar request = new RestRequest(Method.PATCH);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.patch(\"https://api.verdocs.com/v2/roles/TEMPLATE_ID\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createTemplateRole",
+        "summary": "Add a role to a template",
+        "tags": [
+          "Roles"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "template_id",
+            "description": "The template ID.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IRole"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Body Parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "type"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name for the new role. Must be unique within the template. May include spaces, but later calls must URL-encode any references to this role, so it is recomended that special characters be avoided."
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "signer",
+                      "cc",
+                      "approver"
+                    ],
+                    "description": "Type of role to create. Signers act on documents by filling and signing fields. CC recipients receive a copy but do not act on the document. Approvers control the final submission of a document, but do not have fields of their own to fill out."
+                  },
+                  "full_name": {
+                    "type": "string",
+                    "description": "Default full name for the role. May be completed/overridden later, when envelopes are made from the template."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Default email address for the role. May be completed/overridden later, when envelopes are made from the template."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "Default (SMS-capable) phone number for the role. May be completed/overridden later, when envelopes are made from the template."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Optional message to include in email and SMS signing invitations."
+                  },
+                  "sequence": {
+                    "type": "integer",
+                    "default": 1,
+                    "description": "Optional 1-based sequence number for the role. Roles that share the same sequence number act in parallel, and will receive invitations at the same time."
+                  },
+                  "order": {
+                    "type": "integer",
+                    "default": 1,
+                    "description": "Optional 1-based order number for the role. Controls the left-to-right display order of roles at the same sequence number in the UI components e.g. `<verdocs-template-roles />`."
+                  },
+                  "delegator": {
+                    "type": "boolean",
+                    "description": "If true, the role may delegate their signing responsibility to another party."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X POST \"https://api.verdocs.com/v2/roles/TEMPLATE_ID\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/roles/TEMPLATE_ID', {\n  method: 'post',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/roles/TEMPLATE_ID\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"POST\", \"/v2/roles/{template_id}\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/roles/TEMPLATE_ID\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/roles/TEMPLATE_ID\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
           }
         ]
       }
@@ -8574,239 +9004,6 @@
             "lang": "java",
             "label": "Java",
             "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/templates/from-sharepoint\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
-          }
-        ]
-      }
-    },
-    "/v2/roles/{template_id}": {
-      "post": {
-        "operationId": "createTemplateRole",
-        "summary": "Add a role to a template",
-        "tags": [
-          "Roles"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "template_id",
-            "description": "The template ID.",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IRole"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Request Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "error"
-                  ],
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "enum": [
-                        "ERROR"
-                      ],
-                      "description": "Always set to \"ERROR\"."
-                    },
-                    "error": {
-                      "type": "string",
-                      "description": "Description of the error that occurred."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Access Denied",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "error"
-                  ],
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "enum": [
-                        "ERROR"
-                      ],
-                      "description": "Always set to \"ERROR\"."
-                    },
-                    "error": {
-                      "type": "string",
-                      "description": "Description of the error that occurred."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "error"
-                  ],
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "enum": [
-                        "ERROR"
-                      ],
-                      "description": "Always set to \"ERROR\"."
-                    },
-                    "error": {
-                      "type": "string",
-                      "description": "Description of the error that occurred."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "406": {
-            "description": "Invalid Parameter",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "error"
-                  ],
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "enum": [
-                        "ERROR"
-                      ],
-                      "description": "Always set to \"ERROR\"."
-                    },
-                    "error": {
-                      "type": "string",
-                      "description": "Description of the error that occurred."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "description": "Body Parameters",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "name",
-                  "type"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Name for the new role. Must be unique within the template. May include spaces, but later calls must URL-encode any references to this role, so it is recomended that special characters be avoided."
-                  },
-                  "type": {
-                    "type": "string",
-                    "enum": [
-                      "signer",
-                      "cc",
-                      "approver"
-                    ],
-                    "description": "Type of role to create. Signers act on documents by filling and signing fields. CC recipients receive a copy but do not act on the document. Approvers control the final submission of a document, but do not have fields of their own to fill out."
-                  },
-                  "full_name": {
-                    "type": "string",
-                    "description": "Default full name for the role. May be completed/overridden later, when envelopes are made from the template."
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "Default email address for the role. May be completed/overridden later, when envelopes are made from the template."
-                  },
-                  "phone": {
-                    "type": "string",
-                    "description": "Default (SMS-capable) phone number for the role. May be completed/overridden later, when envelopes are made from the template."
-                  },
-                  "message": {
-                    "type": "string",
-                    "description": "Optional message to include in email and SMS signing invitations."
-                  },
-                  "sequence": {
-                    "type": "integer",
-                    "default": 1,
-                    "description": "Optional 1-based sequence number for the role. Roles that share the same sequence number act in parallel, and will receive invitations at the same time."
-                  },
-                  "order": {
-                    "type": "integer",
-                    "default": 1,
-                    "description": "Optional 1-based order number for the role. Controls the left-to-right display order of roles at the same sequence number in the UI components e.g. `<verdocs-template-roles />`."
-                  },
-                  "delegator": {
-                    "type": "boolean",
-                    "description": "If true, the role may delegate their signing responsibility to another party."
-                  }
-                }
-              }
-            }
-          }
-        },
-        "x-codeSamples": [
-          {
-            "lang": "bash",
-            "label": "CURL",
-            "source": "curl -X POST \"https://api.verdocs.com/v2/roles/TEMPLATE_ID\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
-          },
-          {
-            "lang": "typescript",
-            "label": "NodeJS",
-            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/roles/TEMPLATE_ID', {\n  method: 'post',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
-          },
-          {
-            "lang": "ruby",
-            "label": "Ruby",
-            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/roles/TEMPLATE_ID\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
-          },
-          {
-            "lang": "python",
-            "label": "Python",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"POST\", \"/v2/roles/{template_id}\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
-          },
-          {
-            "lang": "csharp",
-            "label": "C-Sharp",
-            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/roles/TEMPLATE_ID\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
-          },
-          {
-            "lang": "java",
-            "label": "Java",
-            "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/roles/TEMPLATE_ID\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
           }
         ]
       }
@@ -31196,6 +31393,28 @@
           "sequence": {
             "type": "integer",
             "description": "The sequence number indicates the order in which Roles act. Multiple roles may have the same sequence\nnumber, in which case they may act in parallel. (e.g. all Roles at sequence 2 will receive invites once\nall Recipients at sequence 1 have signed.)"
+          }
+        }
+      },
+      "IRolePosition": {
+        "type": "object",
+        "description": "Where one role sits in a template's workflow, for arrangeTemplateRoles.",
+        "required": [
+          "name",
+          "sequence"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The role's name."
+          },
+          "order": {
+            "type": "integer",
+            "description": "The role's place within its step, for display. Leave it out to keep the role's current order."
+          },
+          "sequence": {
+            "type": "integer",
+            "description": "The step the role acts in. Roles that share a step are invited together."
           }
         }
       },

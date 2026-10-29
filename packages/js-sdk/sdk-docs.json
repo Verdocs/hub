@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.16.6",
+  "version": "6.16.7",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -1041,6 +1041,20 @@
           "resource": "interface",
           "signature": "IRole",
           "summary": "A placeholder for an individual recipient, CC, or other party in a signing flow. Roles may be \"known\" or \"unknown.\"\n\"Known\" roles will have their email address supplied in the template which will get copied to envelopes created from\nit. This is used when a certain party will always be the same, e.g. a leasing agent counter-signing a lease.\n\"Unknown\" roles are dynamic, and will be filled in later when the envelope is created.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IRolePosition": {
+          "sdkOperation": "ungrouped.IRolePosition",
+          "kind": "interface",
+          "name": "IRolePosition",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IRolePosition",
+          "summary": "Where one role sits in a template's workflow, for arrangeTemplateRoles.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -3939,6 +3953,238 @@
           },
           "throws": [],
           "examples": [],
+          "deprecated": false
+        }
+      }
+    },
+    "role": {
+      "id": "role",
+      "name": "Role",
+      "summary": "",
+      "symbols": {
+        "role.arrangeTemplateRoles": {
+          "sdkOperation": "role.arrangeTemplateRoles",
+          "kind": "function",
+          "name": "arrangeTemplateRoles",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "arrangeTemplateRoles(endpoint: VerdocsEndpoint, template_id: string, roles: IRolePosition[]): Promise<IRole[]>",
+          "summary": "Move several roles between steps in one call, such as when swapping two steps. Roles you leave out keep their places.\nThe template's roles come back with steps numbered 1..N and each step's roles numbered 1..M.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "template_id",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "roles",
+              "type": "IRolePosition[]",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IRole[]>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {arrangeTemplateRoles} from '@verdocs/js-sdk';\n\nconst roles = await arrangeTemplateRoles(VerdocsEndpoint.getDefault(), template_id, [\n  {name: 'Seller', sequence: 1},\n  {name: 'Buyer', sequence: 2},\n]);"
+            }
+          ],
+          "deprecated": false
+        },
+        "role.createTemplateRole": {
+          "sdkOperation": "role.createTemplateRole",
+          "kind": "function",
+          "name": "createTemplateRole",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "createTemplateRole(endpoint: VerdocsEndpoint, template_id: string, params: IRole): Promise<IRole>",
+          "summary": "Create a role.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "template_id",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "IRole",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IRole>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {createTemplateRole} from '@verdocs/js-sdk';\n\nconst role = await createTemplateRole(VerdocsEndpoint.getDefault(), template_id, params...);"
+            }
+          ],
+          "deprecated": false
+        },
+        "role.deleteTemplateRole": {
+          "sdkOperation": "role.deleteTemplateRole",
+          "kind": "function",
+          "name": "deleteTemplateRole",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "deleteTemplateRole(endpoint: VerdocsEndpoint, template_id: string, name: string): Promise<any>",
+          "summary": "Delete a role.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "template_id",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<any>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {deleteTemplateRole} from '@verdocs/js-sdk';\n\nconst profiles = await deleteTemplateRole(VerdocsEndpoint.getDefault(), template_id, name);"
+            }
+          ],
+          "deprecated": false
+        },
+        "role.renumberRoles": {
+          "sdkOperation": "role.renumberRoles",
+          "kind": "function",
+          "name": "renumberRoles",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "renumberRoles(roles: T[], first: string[] = []): T[]",
+          "summary": "Number a template's steps 1..N and each step's roles 1..M, the way the api stores them after any role change. Roles named\nin `first` win ties for a spot, in that order, so a role just placed at an occupied spot takes it. Use it to show a move\nbefore the api replies.",
+          "params": [
+            {
+              "name": "roles",
+              "type": "T[]",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "first",
+              "type": "string[]",
+              "description": "",
+              "optional": true,
+              "default": "[]"
+            }
+          ],
+          "returns": {
+            "type": "T[]",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {renumberRoles} from '@verdocs/js-sdk';\n\nrenumberRoles([{name: 'Buyer', sequence: 1, order: 1}, {name: 'Seller', sequence: 3, order: 1}]);\n// Seller is now at sequence 2"
+            }
+          ],
+          "deprecated": false
+        },
+        "role.updateTemplateRole": {
+          "sdkOperation": "role.updateTemplateRole",
+          "kind": "function",
+          "name": "updateTemplateRole",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "updateTemplateRole(endpoint: VerdocsEndpoint, template_id: string, name: string, params: Partial<IRole>): Promise<IRole>",
+          "summary": "Update a role.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "template_id",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "Partial<IRole>",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IRole>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {updateTemplateRole} from '@verdocs/js-sdk';\n\nconst role = await updateTemplateRole(VerdocsEndpoint.getDefault(), template_id, name, params...);"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -10252,155 +10498,6 @@
           },
           "throws": [],
           "examples": [],
-          "deprecated": false
-        }
-      }
-    },
-    "role": {
-      "id": "role",
-      "name": "Role",
-      "summary": "",
-      "symbols": {
-        "role.createTemplateRole": {
-          "sdkOperation": "role.createTemplateRole",
-          "kind": "function",
-          "name": "createTemplateRole",
-          "page": "Endpoints",
-          "gettingStarted": false,
-          "resource": "function",
-          "signature": "createTemplateRole(endpoint: VerdocsEndpoint, template_id: string, params: IRole): Promise<IRole>",
-          "summary": "Create a role.",
-          "params": [
-            {
-              "name": "endpoint",
-              "type": "VerdocsEndpoint",
-              "description": "",
-              "optional": false,
-              "default": null
-            },
-            {
-              "name": "template_id",
-              "type": "string",
-              "description": "",
-              "optional": false,
-              "default": null
-            },
-            {
-              "name": "params",
-              "type": "IRole",
-              "description": "",
-              "optional": false,
-              "default": null
-            }
-          ],
-          "returns": {
-            "type": "Promise<IRole>",
-            "description": ""
-          },
-          "throws": [],
-          "examples": [
-            {
-              "language": "typescript",
-              "code": "import {createTemplateRole} from '@verdocs/js-sdk';\n\nconst role = await createTemplateRole(VerdocsEndpoint.getDefault(), template_id, params...);"
-            }
-          ],
-          "deprecated": false
-        },
-        "role.deleteTemplateRole": {
-          "sdkOperation": "role.deleteTemplateRole",
-          "kind": "function",
-          "name": "deleteTemplateRole",
-          "page": "Endpoints",
-          "gettingStarted": false,
-          "resource": "function",
-          "signature": "deleteTemplateRole(endpoint: VerdocsEndpoint, template_id: string, name: string): Promise<any>",
-          "summary": "Delete a role.",
-          "params": [
-            {
-              "name": "endpoint",
-              "type": "VerdocsEndpoint",
-              "description": "",
-              "optional": false,
-              "default": null
-            },
-            {
-              "name": "template_id",
-              "type": "string",
-              "description": "",
-              "optional": false,
-              "default": null
-            },
-            {
-              "name": "name",
-              "type": "string",
-              "description": "",
-              "optional": false,
-              "default": null
-            }
-          ],
-          "returns": {
-            "type": "Promise<any>",
-            "description": ""
-          },
-          "throws": [],
-          "examples": [
-            {
-              "language": "typescript",
-              "code": "import {deleteTemplateRole} from '@verdocs/js-sdk';\n\nconst profiles = await deleteTemplateRole(VerdocsEndpoint.getDefault(), template_id, name);"
-            }
-          ],
-          "deprecated": false
-        },
-        "role.updateTemplateRole": {
-          "sdkOperation": "role.updateTemplateRole",
-          "kind": "function",
-          "name": "updateTemplateRole",
-          "page": "Endpoints",
-          "gettingStarted": false,
-          "resource": "function",
-          "signature": "updateTemplateRole(endpoint: VerdocsEndpoint, template_id: string, name: string, params: Partial<IRole>): Promise<IRole>",
-          "summary": "Update a role.",
-          "params": [
-            {
-              "name": "endpoint",
-              "type": "VerdocsEndpoint",
-              "description": "",
-              "optional": false,
-              "default": null
-            },
-            {
-              "name": "template_id",
-              "type": "string",
-              "description": "",
-              "optional": false,
-              "default": null
-            },
-            {
-              "name": "name",
-              "type": "string",
-              "description": "",
-              "optional": false,
-              "default": null
-            },
-            {
-              "name": "params",
-              "type": "Partial<IRole>",
-              "description": "",
-              "optional": false,
-              "default": null
-            }
-          ],
-          "returns": {
-            "type": "Promise<IRole>",
-            "description": ""
-          },
-          "throws": [],
-          "examples": [
-            {
-              "language": "typescript",
-              "code": "import {updateTemplateRole} from '@verdocs/js-sdk';\n\nconst role = await updateTemplateRole(VerdocsEndpoint.getDefault(), template_id, name, params...);"
-            }
-          ],
           "deprecated": false
         }
       }

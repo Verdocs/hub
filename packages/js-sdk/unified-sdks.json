@@ -3754,6 +3754,426 @@
       ]
     },
     {
+      "operationId": "role.arrangeTemplateRoles",
+      "group": "Role",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Move several roles between steps in one call, such as when swapping two steps. Roles you leave out keep their places.\nThe template's roles come back with steps numbered 1..N and each step's roles numbered 1..M.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "arrangeTemplateRoles(endpoint: VerdocsEndpoint, template_id: string, roles: IRolePosition[]): Promise<IRole[]>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "template_id",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "roles",
+              "type": "IRolePosition[]",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IRole[]>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {arrangeTemplateRoles} from '@verdocs/js-sdk';\n\nconst roles = await arrangeTemplateRoles(VerdocsEndpoint.getDefault(), template_id, [\n  {name: 'Seller', sequence: 1},\n  {name: 'Buyer', sequence: 2},\n]);"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "role.createTemplateRole",
+      "group": "Role",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Create a role.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "createTemplateRole(endpoint: VerdocsEndpoint, template_id: string, params: IRole): Promise<IRole>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "template_id",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "IRole",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IRole>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {createTemplateRole} from '@verdocs/js-sdk';\n\nconst role = await createTemplateRole(VerdocsEndpoint.getDefault(), template_id, params...);"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<Role> CreateAsync(string templateId, CreateRoleRequest request, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The template to add the role to."
+            },
+            {
+              "name": "request",
+              "type": "CreateRoleRequest",
+              "optional": false,
+              "default": null,
+              "description": "The role to create."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<Role>",
+            "description": "The new role."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var role = await endpoint.TemplateRoles.CreateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new CreateRoleRequest { Name = \"Recipient 1\", Type = RecipientType.Signer });"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create(template_id: str, params: RoleCreateParams) -> Role",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template to add the role to."
+            },
+            {
+              "name": "params",
+              "type": "RoleCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "The role definition; only name is required."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Role",
+            "description": "The newly created role."
+          },
+          "example": {
+            "language": "python",
+            "code": "role = template_roles.create(template.id, RoleCreateParams(name=\"Tenant 1\", type=\"signer\"))"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "role.deleteTemplateRole",
+      "group": "Role",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Delete a role.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "deleteTemplateRole(endpoint: VerdocsEndpoint, template_id: string, name: string): Promise<any>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "template_id",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<any>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {deleteTemplateRole} from '@verdocs/js-sdk';\n\nconst profiles = await deleteTemplateRole(VerdocsEndpoint.getDefault(), template_id, name);"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task DeleteAsync(string templateId, string roleName, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The template the role belongs to."
+            },
+            {
+              "name": "roleName",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The role's name."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task",
+            "description": "A task that completes when the role has been deleted."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.TemplateRoles.DeleteAsync(\"d2338742-f3a1-465b-8592-806587413cc1\", \"Recipient 1\");"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "delete(template_id: str, name: str) -> None",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template the role belongs to."
+            },
+            {
+              "name": "name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "Name of the role to delete."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "role.renumberRoles",
+      "group": "Role",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Number a template's steps 1..N and each step's roles 1..M, the way the api stores them after any role change. Roles named\nin `first` win ties for a spot, in that order, so a role just placed at an occupied spot takes it. Use it to show a move\nbefore the api replies.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "renumberRoles(roles: T[], first: string[] = []): T[]",
+          "params": [
+            {
+              "name": "roles",
+              "type": "T[]",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "first",
+              "type": "string[]",
+              "optional": true,
+              "default": "[]",
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "T[]"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {renumberRoles} from '@verdocs/js-sdk';\n\nrenumberRoles([{name: 'Buyer', sequence: 1, order: 1}, {name: 'Seller', sequence: 3, order: 1}]);\n// Seller is now at sequence 2"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "role.updateTemplateRole",
+      "group": "Role",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Update a role.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "updateTemplateRole(endpoint: VerdocsEndpoint, template_id: string, name: string, params: Partial<IRole>): Promise<IRole>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "template_id",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "Partial<IRole>",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IRole>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {updateTemplateRole} from '@verdocs/js-sdk';\n\nconst role = await updateTemplateRole(VerdocsEndpoint.getDefault(), template_id, name, params...);"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<Role> UpdateAsync(string templateId, string roleName, UpdateRoleRequest request, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The template the role belongs to."
+            },
+            {
+              "name": "roleName",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The role's current name."
+            },
+            {
+              "name": "request",
+              "type": "UpdateRoleRequest",
+              "optional": false,
+              "default": null,
+              "description": "The properties to change."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<Role>",
+            "description": "The updated role."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var role = await endpoint.TemplateRoles.UpdateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"Recipient 1\",\n    new UpdateRoleRequest { Email = \"recipient1@example.com\" });"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "update(template_id: str, name: str, params: RoleUpdateParams) -> Role",
+          "params": [
+            {
+              "name": "template_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "ID of the template the role belongs to."
+            },
+            {
+              "name": "name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The role's current name."
+            },
+            {
+              "name": "params",
+              "type": "RoleUpdateParams",
+              "optional": false,
+              "default": null,
+              "description": "The fields to change; unset fields are left alone."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Role",
+            "description": "The updated role."
+          }
+        }
+      ]
+    },
+    {
       "operationId": "recipient.askQuestion",
       "group": "Recipient",
       "page": "Endpoints",
@@ -16877,345 +17297,6 @@
           "returns": {
             "type": "bytes",
             "description": "The thumbnail content, if the API ever ships the route."
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "role.createTemplateRole",
-      "group": "Role",
-      "page": "Endpoints",
-      "gettingStarted": false,
-      "summary": "Create a role.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "createTemplateRole(endpoint: VerdocsEndpoint, template_id: string, params: IRole): Promise<IRole>",
-          "params": [
-            {
-              "name": "endpoint",
-              "type": "VerdocsEndpoint",
-              "optional": false,
-              "default": null,
-              "description": ""
-            },
-            {
-              "name": "template_id",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": ""
-            },
-            {
-              "name": "params",
-              "type": "IRole",
-              "optional": false,
-              "default": null,
-              "description": ""
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Promise<IRole>"
-          },
-          "example": {
-            "language": "typescript",
-            "code": "import {createTemplateRole} from '@verdocs/js-sdk';\n\nconst role = await createTemplateRole(VerdocsEndpoint.getDefault(), template_id, params...);"
-          }
-        },
-        {
-          "language": "csharp",
-          "signature": "Task<Role> CreateAsync(string templateId, CreateRoleRequest request, CancellationToken cancellationToken = default)",
-          "params": [
-            {
-              "name": "templateId",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The template to add the role to."
-            },
-            {
-              "name": "request",
-              "type": "CreateRoleRequest",
-              "optional": false,
-              "default": null,
-              "description": "The role to create."
-            },
-            {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task<Role>",
-            "description": "The new role."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var role = await endpoint.TemplateRoles.CreateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    new CreateRoleRequest { Name = \"Recipient 1\", Type = RecipientType.Signer });"
-          }
-        },
-        {
-          "language": "python",
-          "signature": "create(template_id: str, params: RoleCreateParams) -> Role",
-          "params": [
-            {
-              "name": "template_id",
-              "type": "str",
-              "optional": false,
-              "default": null,
-              "description": "ID of the template to add the role to."
-            },
-            {
-              "name": "params",
-              "type": "RoleCreateParams",
-              "optional": false,
-              "default": null,
-              "description": "The role definition; only name is required."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Role",
-            "description": "The newly created role."
-          },
-          "example": {
-            "language": "python",
-            "code": "role = template_roles.create(template.id, RoleCreateParams(name=\"Tenant 1\", type=\"signer\"))"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "role.deleteTemplateRole",
-      "group": "Role",
-      "page": "Endpoints",
-      "gettingStarted": false,
-      "summary": "Delete a role.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "deleteTemplateRole(endpoint: VerdocsEndpoint, template_id: string, name: string): Promise<any>",
-          "params": [
-            {
-              "name": "endpoint",
-              "type": "VerdocsEndpoint",
-              "optional": false,
-              "default": null,
-              "description": ""
-            },
-            {
-              "name": "template_id",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": ""
-            },
-            {
-              "name": "name",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": ""
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Promise<any>"
-          },
-          "example": {
-            "language": "typescript",
-            "code": "import {deleteTemplateRole} from '@verdocs/js-sdk';\n\nconst profiles = await deleteTemplateRole(VerdocsEndpoint.getDefault(), template_id, name);"
-          }
-        },
-        {
-          "language": "csharp",
-          "signature": "Task DeleteAsync(string templateId, string roleName, CancellationToken cancellationToken = default)",
-          "params": [
-            {
-              "name": "templateId",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The template the role belongs to."
-            },
-            {
-              "name": "roleName",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The role's name."
-            },
-            {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task",
-            "description": "A task that completes when the role has been deleted."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "await endpoint.TemplateRoles.DeleteAsync(\"d2338742-f3a1-465b-8592-806587413cc1\", \"Recipient 1\");"
-          }
-        },
-        {
-          "language": "python",
-          "signature": "delete(template_id: str, name: str) -> None",
-          "params": [
-            {
-              "name": "template_id",
-              "type": "str",
-              "optional": false,
-              "default": null,
-              "description": "ID of the template the role belongs to."
-            },
-            {
-              "name": "name",
-              "type": "str",
-              "optional": false,
-              "default": null,
-              "description": "Name of the role to delete."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "None"
-          }
-        }
-      ]
-    },
-    {
-      "operationId": "role.updateTemplateRole",
-      "group": "Role",
-      "page": "Endpoints",
-      "gettingStarted": false,
-      "summary": "Update a role.",
-      "variants": [
-        {
-          "language": "typescript",
-          "signature": "updateTemplateRole(endpoint: VerdocsEndpoint, template_id: string, name: string, params: Partial<IRole>): Promise<IRole>",
-          "params": [
-            {
-              "name": "endpoint",
-              "type": "VerdocsEndpoint",
-              "optional": false,
-              "default": null,
-              "description": ""
-            },
-            {
-              "name": "template_id",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": ""
-            },
-            {
-              "name": "name",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": ""
-            },
-            {
-              "name": "params",
-              "type": "Partial<IRole>",
-              "optional": false,
-              "default": null,
-              "description": ""
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Promise<IRole>"
-          },
-          "example": {
-            "language": "typescript",
-            "code": "import {updateTemplateRole} from '@verdocs/js-sdk';\n\nconst role = await updateTemplateRole(VerdocsEndpoint.getDefault(), template_id, name, params...);"
-          }
-        },
-        {
-          "language": "csharp",
-          "signature": "Task<Role> UpdateAsync(string templateId, string roleName, UpdateRoleRequest request, CancellationToken cancellationToken = default)",
-          "params": [
-            {
-              "name": "templateId",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The template the role belongs to."
-            },
-            {
-              "name": "roleName",
-              "type": "string",
-              "optional": false,
-              "default": null,
-              "description": "The role's current name."
-            },
-            {
-              "name": "request",
-              "type": "UpdateRoleRequest",
-              "optional": false,
-              "default": null,
-              "description": "The properties to change."
-            },
-            {
-              "name": "cancellationToken",
-              "type": "CancellationToken",
-              "optional": true,
-              "default": "default",
-              "description": "Token to cancel the operation."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Task<Role>",
-            "description": "The updated role."
-          },
-          "example": {
-            "language": "csharp",
-            "code": "var role = await endpoint.TemplateRoles.UpdateAsync(\n    \"d2338742-f3a1-465b-8592-806587413cc1\",\n    \"Recipient 1\",\n    new UpdateRoleRequest { Email = \"recipient1@example.com\" });"
-          }
-        },
-        {
-          "language": "python",
-          "signature": "update(template_id: str, name: str, params: RoleUpdateParams) -> Role",
-          "params": [
-            {
-              "name": "template_id",
-              "type": "str",
-              "optional": false,
-              "default": null,
-              "description": "ID of the template the role belongs to."
-            },
-            {
-              "name": "name",
-              "type": "str",
-              "optional": false,
-              "default": null,
-              "description": "The role's current name."
-            },
-            {
-              "name": "params",
-              "type": "RoleUpdateParams",
-              "optional": false,
-              "default": null,
-              "description": "The fields to change; unset fields are left alone."
-            }
-          ],
-          "deprecated": false,
-          "returns": {
-            "type": "Role",
-            "description": "The updated role."
           }
         }
       ]
