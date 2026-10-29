@@ -28428,7 +28428,16 @@
                   },
                   "dob": {
                     "type": "string",
-                    "description": "For KBA, the recipient's date of birth"
+                    "description": "For KBA, the recipient's date of birthx"
+                  },
+                  "sandbox": {
+                    "type": "string",
+                    "enum": [
+                      "pass",
+                      "fail",
+                      "questions"
+                    ],
+                    "description": "For KBA, must have sandbox functionality unlocked"
                   },
                   "responses": {
                     "type": "array",
