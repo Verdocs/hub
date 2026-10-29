@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.13.3",
+    "version": "6.16.6",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -135,6 +135,11 @@
       "name": "MFA",
       "description": "Multi-Factor Authentication (MFA) adds a second layer of security to user accounts by requiring a time-based one-time passcode (TOTP) from an authenticator app in addition to a password. Users enroll by scanning a QR code or entering a secret manually, then confirming with a valid code. On successful enrollment, a set of single-use backup codes is issued for account recovery if the authenticator device is unavailable. A valid code is required to regenerate backup codes or disable MFA, ensuring that a password alone is not enough to remove the second factor.",
       "x-displayName": "MFA"
+    },
+    {
+      "name": "Data Catalogs",
+      "description": "A data catalog describes the data an organization fills its templates with: each key a field can be bound to, its label, its type, and an example. An organization can keep several catalogs and mark one as its default. A parent organization can share a catalog with the organizations below it, and each of them can import a copy, then review every newer version key by key before applying it.",
+      "x-displayName": "Data Catalogs"
     }
   ],
   "paths": {
@@ -1295,6 +1300,384 @@
             "lang": "java",
             "label": "Java",
             "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/organization-groups/GROUP_ID/members\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
+    "/v2/organizations/{organizationid}/data-catalogs/{catalogid}/update": {
+      "post": {
+        "operationId": "applyDataCatalogUpdate",
+        "summary": "Apply a data catalog update",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "catalogid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDataCatalog"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Body Parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "resolutions": {
+                    "type": "object",
+                    "description": "By key, \"source\" or \"local\"."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X POST \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/update\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/update', {\n  method: 'post',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/update\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"POST\", \"/v2/organizations/{organizationid}/data-catalogs/{catalogid}/update\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/update\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/update\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      },
+      "get": {
+        "operationId": "getDataCatalogUpdate",
+        "summary": "Review a data catalog update",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "catalogid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDataCatalogUpdate"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X GET \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/update\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/update', { \n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  } \n});\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/update\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"GET\", \"/v2/organizations/{organizationid}/data-catalogs/{catalogid}/update\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/update\");\nvar request = new RestRequest(Method.GET);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/update\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
           }
         ]
       }
@@ -3258,6 +3641,381 @@
         ]
       }
     },
+    "/v2/organizations/{organizationid}/data-catalogs": {
+      "post": {
+        "operationId": "createDataCatalog",
+        "summary": "Create a data catalog",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDataCatalog"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Body Parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Required unless importing from the marketplace, where it defaults to the source's name."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "What the catalog is for."
+                  },
+                  "import": {
+                    "$ref": "#/components/schemas/IDataCatalogImport",
+                    "description": "Create the entries from a JSON sample or JSON Schema."
+                  },
+                  "from_catalog_id": {
+                    "type": "string",
+                    "description": "Import a copy of a marketplace catalog's newest version."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X POST \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs', {\n  method: 'post',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"POST\", \"/v2/organizations/{organizationid}/data-catalogs\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      },
+      "get": {
+        "operationId": "getDataCatalogs",
+        "summary": "List data catalogs",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IDataCatalog"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X GET \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs', { \n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  } \n});\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"GET\", \"/v2/organizations/{organizationid}/data-catalogs\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs\");\nvar request = new RestRequest(Method.GET);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
     "/v2/envelopes": {
       "post": {
         "operationId": "createEnvelope",
@@ -3459,6 +4217,23 @@
                   "locale": {
                     "type": "string",
                     "description": "Define the locale code."
+                  },
+                  "prefill_data": {
+                    "type": "object",
+                    "description": "With a template_id, values for fields that have a data_key, keyed by data_key. Nested objects and dotted keys mean the same key. A fields entry for the same field wins. The response then includes prefill_result, with how many fields were filled and any keys that went unused, were missing, or didn't fit their field."
+                  },
+                  "prefill_options": {
+                    "type": "object",
+                    "description": "Set \"strict\" to true to reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing."
+                  },
+                  "data_catalog_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The data catalog the field data_keys come from, recorded on the envelope. Defaults to the template's catalog, then the organization default."
+                  },
+                  "dry_run": {
+                    "type": "boolean",
+                    "description": "With a template_id, run every check a real send makes and return the value each field would get (and any prefill_result) without creating or sending anything."
                   }
                 }
               }
@@ -4044,6 +4819,10 @@
                   "validator": {
                     "type": "string",
                     "description": "Name of a validator to apply to the field's value (e.g. \"email\" or \"phone\")"
+                  },
+                  "data_key": {
+                    "type": "string",
+                    "description": "Your key for the field's value, such as \"applicant.full_name\". Fields that show the same value can share a key. Letters, digits, \"_\", and \"-\", with \".\" between levels. Text, date, checkbox, radio, and dropdown fields only."
                   }
                 }
               }
@@ -7075,6 +7854,10 @@
                     "$ref": "#/components/schemas/TTemplateSender",
                     "description": "Who may send envelopes using this template"
                   },
+                  "data_catalog_id": {
+                    "type": "string",
+                    "description": "The data catalog its fields' data keys come from. When null, the organization's default catalog is used."
+                  },
                   "initial_reminder": {
                     "type": "number",
                     "description": "Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable."
@@ -9365,6 +10148,1007 @@
         ]
       }
     },
+    "/v2/organizations/{organizationid}/data-catalogs/{catalogid}": {
+      "delete": {
+        "operationId": "deleteDataCatalog",
+        "summary": "Delete a data catalog",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "catalogid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X DELETE \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID', {\n  method: 'delete',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Delete.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"DELETE\", \"/v2/organizations/{organizationid}/data-catalogs/{catalogid}\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID\");\nvar request = new RestRequest(Method.DELETE);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.delete(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      },
+      "get": {
+        "operationId": "getDataCatalog",
+        "summary": "Get a data catalog",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "catalogid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDataCatalog"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X GET \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID', { \n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  } \n});\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"GET\", \"/v2/organizations/{organizationid}/data-catalogs/{catalogid}\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID\");\nvar request = new RestRequest(Method.GET);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateDataCatalog",
+        "summary": "Update a data catalog",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "catalogid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDataCatalog"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Body Parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The catalog's name."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "What the catalog is for."
+                  },
+                  "sharing": {
+                    "type": "string",
+                    "enum": [
+                      "private",
+                      "shared"
+                    ],
+                    "description": "\"shared\" makes released versions available to every organization below this one."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X PATCH \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID', {\n  method: 'patch',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Patch.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"PATCH\", \"/v2/organizations/{organizationid}/data-catalogs/{catalogid}\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID\");\nvar request = new RestRequest(Method.PATCH);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.patch(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
+    "/v2/organizations/{organizationid}/data-catalogs/{catalogid}/entries/{key}": {
+      "delete": {
+        "operationId": "deleteDataCatalogEntry",
+        "summary": "Delete a data catalog entry",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "catalogid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "key",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X DELETE \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/entries/KEY\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/entries/KEY', {\n  method: 'delete',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/entries/KEY\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Delete.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"DELETE\", \"/v2/organizations/{organizationid}/data-catalogs/{catalogid}/entries/{key}\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/entries/KEY\");\nvar request = new RestRequest(Method.DELETE);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.delete(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/entries/KEY\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateDataCatalogEntry",
+        "summary": "Update a data catalog entry",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "catalogid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "key",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDataCatalogEntry"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Body Parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "label": {
+                    "type": "string",
+                    "description": "What template owners see for this key."
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "text",
+                      "date",
+                      "boolean",
+                      "choice"
+                    ],
+                    "description": "What a caller sends for this key."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "What the value is."
+                  },
+                  "example": {
+                    "type": "string",
+                    "description": "An example value."
+                  },
+                  "options": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/IDataCatalogOption"
+                    },
+                    "description": "For a choice, the accepted values."
+                  },
+                  "sensitive": {
+                    "type": "boolean",
+                    "description": "Keeps the example out of MCP answers and AI prompts."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "active"
+                    ],
+                    "description": "Set to \"active\" to approve a proposal."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X PATCH \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/entries/KEY\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/entries/KEY', {\n  method: 'patch',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/entries/KEY\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Patch.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"PATCH\", \"/v2/organizations/{organizationid}/data-catalogs/{catalogid}/entries/{key}\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/entries/KEY\");\nvar request = new RestRequest(Method.PATCH);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.patch(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/entries/KEY\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
     "/v2/envelopes/{envelope_id}/recipients/{role_name}/fields/{field_name}": {
       "put": {
         "operationId": "uploadEnvelopeFieldAttachment",
@@ -9999,6 +11783,10 @@
                   "validator": {
                     "type": "string",
                     "description": "Name of a validator to apply to the field's value (e.g. \"email\" or \"phone\")"
+                  },
+                  "data_key": {
+                    "type": "string",
+                    "description": "Your key for the field's value, such as \"applicant.full_name\". Send null to remove it."
                   }
                 }
               }
@@ -14208,6 +15996,10 @@
                     "$ref": "#/components/schemas/TTemplateSender",
                     "description": "Who may send envelopes using this template"
                   },
+                  "data_catalog_id": {
+                    "type": "string",
+                    "description": "The data catalog its fields' data keys come from. When null, the organization's default catalog is used."
+                  },
                   "initial_reminder": {
                     "type": "number",
                     "description": "Delay in ms before the first reminder is sent (min: 4hrs). Set to 0 or null to disable."
@@ -16481,6 +18273,751 @@
             "lang": "java",
             "label": "Java",
             "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/envelopes/ENVELOPE_ID/recipients/ROLE_NAME/submit\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
+    "/v2/organizations/{organizationid}/data-catalog-marketplace/{catalogid}": {
+      "get": {
+        "operationId": "getDataCatalogListing",
+        "summary": "Preview a marketplace catalog",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "catalogid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDataCatalogListingPreview"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X GET \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalog-marketplace/CATALOGID\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalog-marketplace/CATALOGID', { \n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  } \n});\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalog-marketplace/CATALOGID\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"GET\", \"/v2/organizations/{organizationid}/data-catalog-marketplace/{catalogid}\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalog-marketplace/CATALOGID\");\nvar request = new RestRequest(Method.GET);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalog-marketplace/CATALOGID\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
+    "/v2/organizations/{organizationid}/data-catalog-marketplace": {
+      "get": {
+        "operationId": "getDataCatalogMarketplace",
+        "summary": "Browse the data catalog marketplace",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "description": "Text to search catalog names, descriptions, publishers, and keys for.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IDataCatalogListing"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X GET \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalog-marketplace?param=value\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalog-marketplace?param=value', { \n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  } \n});\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalog-marketplace?param=value\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"GET\", \"/v2/organizations/{organizationid}/data-catalog-marketplace\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalog-marketplace?param=value\");\nvar request = new RestRequest(Method.GET);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalog-marketplace?param=value\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
+    "/v2/organizations/{organizationid}/data-catalogs/{catalogid}/versions": {
+      "get": {
+        "operationId": "getDataCatalogVersions",
+        "summary": "List data catalog versions",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "catalogid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IDataCatalogVersion"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X GET \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/versions\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/versions', { \n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  } \n});\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/versions\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"GET\", \"/v2/organizations/{organizationid}/data-catalogs/{catalogid}/versions\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/versions\");\nvar request = new RestRequest(Method.GET);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/versions\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      },
+      "post": {
+        "operationId": "releaseDataCatalogVersion",
+        "summary": "Release a data catalog version",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "catalogid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDataCatalogVersion"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Body Parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "notes": {
+                    "type": "string",
+                    "description": "What changed in this version."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X POST \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/versions\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/versions', {\n  method: 'post',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/versions\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"POST\", \"/v2/organizations/{organizationid}/data-catalogs/{catalogid}/versions\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/versions\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/versions\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
           }
         ]
       }
@@ -19698,6 +22235,178 @@
             "lang": "java",
             "label": "Java",
             "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/oauth2/social/providers\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
+    "/v2/templates/{template_id}/data-contract": {
+      "get": {
+        "operationId": "getTemplateDataContract",
+        "summary": "Get a template's data contract",
+        "tags": [
+          "Templates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "template_id",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDataContract"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X GET \"https://api.verdocs.com/v2/templates/TEMPLATE_ID/data-contract\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/templates/TEMPLATE_ID/data-contract', { \n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  } \n});\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/data-contract\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"GET\", \"/v2/templates/{template_id}/data-contract\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/data-contract\");\nvar request = new RestRequest(Method.GET);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/data-contract\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
           }
         ]
       }
@@ -23082,6 +25791,213 @@
         ]
       }
     },
+    "/v2/organizations/{organizationid}/data-catalogs/{catalogid}/entries": {
+      "post": {
+        "operationId": "saveDataCatalogEntries",
+        "summary": "Save data catalog entries",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "catalogid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IDataCatalogEntry"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Body Parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "entries"
+                ],
+                "properties": {
+                  "entries": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ISaveDataCatalogEntry"
+                    },
+                    "description": "Up to 500 entries. Each key may appear only once."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X POST \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/entries\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/entries', {\n  method: 'post',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/entries\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"POST\", \"/v2/organizations/{organizationid}/data-catalogs/{catalogid}/entries\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/entries\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/entries\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
     "/v2/templates/{template_id}/feedback": {
       "post": {
         "operationId": "sendTemplateFeedback",
@@ -25679,6 +28595,31 @@
           }
         }
       },
+      "IAttachmentFieldConfig": {
+        "type": "object",
+        "description": "Settings for attachment fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "accept": {
+            "type": "string",
+            "description": "File extensions like \".pdf\" or types like \"image/*\" the signer may upload."
+          },
+          "max_size_mb": {
+            "type": "integer",
+            "description": "The largest file the signer may upload, in megabytes."
+          },
+          "stamp_card": {
+            "type": "boolean",
+            "description": "Print the attachment's name and size on the document. Defaults to true."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          }
+        }
+      },
       "IAuthenticateRecipientViaEmailRequest": {
         "type": "object",
         "description": "",
@@ -25689,7 +28630,12 @@
         "type": "object",
         "description": "",
         "required": [],
-        "properties": {}
+        "properties": {
+          "sandbox_test_type": {
+            "type": "string",
+            "description": "For organizations in the KBA sandbox, whether to pass, fail, or ask the sandbox questions (the default)."
+          }
+        }
       },
       "IAuthenticateRecipientViaPasscodeRequest": {
         "type": "object",
@@ -25759,6 +28705,27 @@
         "required": [],
         "properties": {}
       },
+      "ICheckboxFieldConfig": {
+        "type": "object",
+        "description": "Settings for checkbox fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "description": "The mark for a checked box. Defaults to check."
+          },
+          "stamp_unchecked": {
+            "type": "boolean",
+            "description": "Print an empty box when unchecked. Defaults to true."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          }
+        }
+      },
       "IClientCredentialsRequest": {
         "type": "object",
         "description": "NOTE: This should _only_ be used for _server-to-server_ requests.",
@@ -25783,6 +28750,29 @@
         "required": [],
         "properties": {}
       },
+      "ICreateDataCatalogRequest": {
+        "type": "object",
+        "description": "",
+        "required": [],
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "What the catalog is for."
+          },
+          "from_catalog_id": {
+            "type": "string",
+            "description": "Import a copy of a marketplace catalog's newest version."
+          },
+          "import": {
+            "type": "string",
+            "description": "Create the catalog's entries from a JSON sample or schema."
+          },
+          "name": {
+            "type": "string",
+            "description": "Required unless importing from the marketplace, where it defaults to the source's name."
+          }
+        }
+      },
       "ICreateEnvelopeDirectlyRequest": {
         "type": "object",
         "description": "",
@@ -25802,6 +28792,10 @@
           "data": {
             "type": "string",
             "description": "Optional metadata to attach to the envelope. This is not used by Verdocs, but may be used for internal tracking purposes by the caller. This is not shown to recipients, but is not private and should not be used to store sensitive data."
+          },
+          "data_catalog_id": {
+            "type": "string",
+            "description": "The data catalog the field data_keys come from. Defaults to the organization default."
           },
           "description": {
             "type": "string",
@@ -25955,6 +28949,10 @@
           "y"
         ],
         "properties": {
+          "data_key": {
+            "type": "string",
+            "description": "Your key for this field's value, such as \"applicant.full_name\". Text, date, checkbox, radio, and dropdown fields only."
+          },
           "default": {
             "type": "string",
             "description": "The default value for the field."
@@ -26090,6 +29088,10 @@
             "type": "string",
             "description": "Optional metadata to attach to the envelope. This is not used by Verdocs, but may be used for internal tracking purposes by the caller. This is not shown to recipients, but is not private and should not be used to store sensitive data."
           },
+          "data_catalog_id": {
+            "type": "string",
+            "description": "The data catalog the field data_keys come from. Defaults to the template's catalog, then the organization default."
+          },
           "description": {
             "type": "string",
             "description": "Override the description of the envelope to create."
@@ -26129,6 +29131,10 @@
           "no_contact": {
             "type": "boolean",
             "description": "If set, Verdocs will not attempt to contact the recipient via email or SMS."
+          },
+          "prefill_data": {
+            "type": "string",
+            "description": "Values for fields that have a data_key, keyed by data_key. Nested objects and dotted keys mean the same key, so {\"applicant\": {\"full_name\": \"Jordan\"}} and {\"applicant.full_name\": \"Jordan\"} both fill fields keyed \"applicant.full_name\". A fields entry for the same field wins."
           },
           "recipients": {
             "type": "string",
@@ -26329,6 +29335,566 @@
         "required": [],
         "properties": {}
       },
+      "IDataCatalog": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "created_at",
+          "description",
+          "id",
+          "latest_version",
+          "name",
+          "organization_id",
+          "sharing",
+          "source",
+          "source_catalog_id",
+          "source_version",
+          "updated_at"
+        ],
+        "properties": {
+          "created_at": {
+            "type": "string",
+            "description": "When the catalog was created."
+          },
+          "description": {
+            "type": "string",
+            "description": "What the catalog is for."
+          },
+          "entries": {
+            "type": "string",
+            "description": "The entries (when getting one catalog). Members see live entries and their own proposals; admins see every proposal."
+          },
+          "entry_count": {
+            "type": "integer",
+            "description": "How many live entries it has (in lists)."
+          },
+          "has_unreleased_changes": {
+            "type": "boolean",
+            "description": "For a shared or previously released catalog, whether its live entries differ from its latest release."
+          },
+          "id": {
+            "type": "string",
+            "description": "The catalog's ID."
+          },
+          "is_default": {
+            "type": "boolean",
+            "description": "Whether this is the organization's default catalog."
+          },
+          "latest_version": {
+            "type": "integer",
+            "description": "The newest released version, 0 until the first release."
+          },
+          "name": {
+            "type": "string",
+            "description": "The catalog's name."
+          },
+          "organization_id": {
+            "type": "string",
+            "description": "The organization that owns it."
+          },
+          "sharing": {
+            "type": "string",
+            "description": "\"shared\" makes released versions available to every organization below this one."
+          },
+          "source": {
+            "type": "string",
+            "description": "How it started: from scratch, from an import, or from the marketplace."
+          },
+          "source_catalog_id": {
+            "type": "string",
+            "description": "For a catalog imported from the marketplace, the catalog it came from."
+          },
+          "source_version": {
+            "type": "string",
+            "description": "The source version this catalog was imported or last updated from."
+          },
+          "update_available": {
+            "type": "boolean",
+            "description": "For an imported catalog, whether its source has released a newer version."
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "When the catalog last changed."
+          }
+        }
+      },
+      "IDataCatalogChange": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "key",
+          "kind"
+        ],
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "The data key."
+          },
+          "kind": {
+            "type": "string",
+            "description": "added (new upstream), removed (gone upstream), updated (changed upstream, untouched here), or conflict (changed in both)."
+          },
+          "local": {
+            "type": "string",
+            "description": "This organization's version of the entry."
+          },
+          "source": {
+            "type": "string",
+            "description": "The source's new version of the entry."
+          },
+          "templates": {
+            "type": "string",
+            "description": "For removed and conflicting keys, the templates that use the key."
+          }
+        }
+      },
+      "IDataCatalogEntry": {
+        "type": "object",
+        "description": "An entry's content, as versions freeze it and update reviews compare it.",
+        "required": [
+          "catalog_id",
+          "created_at",
+          "description",
+          "example",
+          "id",
+          "key",
+          "label",
+          "options",
+          "proposed_by",
+          "sensitive",
+          "source_entry",
+          "status",
+          "type",
+          "updated_at"
+        ],
+        "properties": {
+          "catalog_id": {
+            "type": "string",
+            "description": "The catalog the entry belongs to."
+          },
+          "created_at": {
+            "type": "string",
+            "description": "When the entry was created."
+          },
+          "description": {
+            "type": "string",
+            "description": "What the value is."
+          },
+          "example": {
+            "type": "string",
+            "description": "An example value, real or made up, as the organization chose."
+          },
+          "id": {
+            "type": "string",
+            "description": "The entry's ID."
+          },
+          "key": {
+            "type": "string",
+            "description": "Matches the data_key on template and envelope fields, such as \"applicant.full_name\"."
+          },
+          "label": {
+            "type": "string",
+            "description": "What template owners see for this key, such as \"Applicant name\"."
+          },
+          "options": {
+            "type": "string",
+            "description": "For a choice, the accepted values."
+          },
+          "proposed_by": {
+            "type": "string",
+            "description": "The profile that proposed the entry, if a member did."
+          },
+          "sensitive": {
+            "type": "boolean",
+            "description": "Keeps the example out of MCP answers and AI prompts."
+          },
+          "source_entry": {
+            "type": "string",
+            "description": "For an entry imported from the marketplace, the source's version of it, used to review updates."
+          },
+          "status": {
+            "type": "string",
+            "description": "\"active\" entries can be used; \"proposed\" entries wait for an admin to approve them."
+          },
+          "type": {
+            "type": "string",
+            "description": "What a caller sends for this key."
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "When the entry last changed."
+          }
+        }
+      },
+      "IDataCatalogEntryFields": {
+        "type": "object",
+        "description": "An entry's content, as versions freeze it and update reviews compare it.",
+        "required": [
+          "description",
+          "example",
+          "key",
+          "label",
+          "options",
+          "sensitive",
+          "type"
+        ],
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "What the value is."
+          },
+          "example": {
+            "type": "string",
+            "description": "An example value, real or made up, as the organization chose."
+          },
+          "key": {
+            "type": "string",
+            "description": "Matches the data_key on template and envelope fields, such as \"applicant.full_name\"."
+          },
+          "label": {
+            "type": "string",
+            "description": "What template owners see for this key, such as \"Applicant name\"."
+          },
+          "options": {
+            "type": "string",
+            "description": "For a choice, the accepted values."
+          },
+          "sensitive": {
+            "type": "boolean",
+            "description": "Keeps the example out of MCP answers and AI prompts."
+          },
+          "type": {
+            "type": "string",
+            "description": "What a caller sends for this key."
+          }
+        }
+      },
+      "IDataCatalogImport": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "content",
+          "format"
+        ],
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "The sample or schema, as an object or a JSON string."
+          },
+          "format": {
+            "type": "string",
+            "description": "A sample payload (nested objects become dotted keys), or a JSON Schema."
+          },
+          "keep_examples": {
+            "type": "boolean",
+            "description": "Use the sample's values (or the schema's examples) as entry examples. Defaults to true."
+          }
+        }
+      },
+      "IDataCatalogListing": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "description",
+          "id",
+          "imported",
+          "key_count",
+          "listing",
+          "name",
+          "publisher",
+          "released_at",
+          "version"
+        ],
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "What the catalog is for."
+          },
+          "id": {
+            "type": "string",
+            "description": "The catalog's ID, for createDataCatalog's from_catalog_id."
+          },
+          "imported": {
+            "type": "boolean",
+            "description": "Whether this organization already imported it."
+          },
+          "key_count": {
+            "type": "integer",
+            "description": "How many keys that version has."
+          },
+          "listing": {
+            "type": "string",
+            "description": "How it's offered: shared by an organization above this one."
+          },
+          "name": {
+            "type": "string",
+            "description": "The catalog's name."
+          },
+          "publisher": {
+            "type": "string",
+            "description": "The organization that publishes it."
+          },
+          "released_at": {
+            "type": "string",
+            "description": "When that version was released."
+          },
+          "version": {
+            "type": "integer",
+            "description": "Its newest released version."
+          }
+        }
+      },
+      "IDataCatalogListingPreview": {
+        "type": "object",
+        "description": "A marketplace catalog with the keys of its newest released version.",
+        "required": [
+          "description",
+          "entries",
+          "id",
+          "imported",
+          "key_count",
+          "listing",
+          "name",
+          "publisher",
+          "released_at",
+          "version"
+        ],
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "What the catalog is for."
+          },
+          "entries": {
+            "type": "string",
+            "description": "The keys an import would copy."
+          },
+          "id": {
+            "type": "string",
+            "description": "The catalog's ID, for createDataCatalog's from_catalog_id."
+          },
+          "imported": {
+            "type": "boolean",
+            "description": "Whether this organization already imported it."
+          },
+          "key_count": {
+            "type": "integer",
+            "description": "How many keys that version has."
+          },
+          "listing": {
+            "type": "string",
+            "description": "How it's offered: shared by an organization above this one."
+          },
+          "name": {
+            "type": "string",
+            "description": "The catalog's name."
+          },
+          "publisher": {
+            "type": "string",
+            "description": "The organization that publishes it."
+          },
+          "released_at": {
+            "type": "string",
+            "description": "When that version was released."
+          },
+          "version": {
+            "type": "integer",
+            "description": "Its newest released version."
+          }
+        }
+      },
+      "IDataCatalogOption": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "label",
+          "value"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "What the signer sees for this choice."
+          },
+          "value": {
+            "type": "string",
+            "description": "What to send in prefill_data. The label is accepted too."
+          }
+        }
+      },
+      "IDataCatalogUpdate": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "changes"
+        ],
+        "properties": {
+          "changes": {
+            "type": "string",
+            "description": "What applying the update would change. Empty when there's nothing to apply."
+          },
+          "from_version": {
+            "type": "integer",
+            "description": "The source version this catalog is on."
+          },
+          "to_version": {
+            "type": "integer",
+            "description": "The source's newest version."
+          }
+        }
+      },
+      "IDataCatalogVersion": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "catalog_id",
+          "created_at",
+          "entries",
+          "id",
+          "notes",
+          "released_by",
+          "version"
+        ],
+        "properties": {
+          "catalog_id": {
+            "type": "string",
+            "description": "The catalog it belongs to."
+          },
+          "created_at": {
+            "type": "string",
+            "description": "When it was released."
+          },
+          "entries": {
+            "type": "string",
+            "description": "The catalog's live entries when the version was released."
+          },
+          "id": {
+            "type": "string",
+            "description": "The version's ID."
+          },
+          "notes": {
+            "type": "string",
+            "description": "What changed in this version."
+          },
+          "released_by": {
+            "type": "string",
+            "description": "The profile that released it."
+          },
+          "version": {
+            "type": "integer",
+            "description": "The version number, starting at 1."
+          }
+        }
+      },
+      "IDataContract": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "contract_hash",
+          "json_schema",
+          "keys",
+          "template_id"
+        ],
+        "properties": {
+          "contract_hash": {
+            "type": "string",
+            "description": "Changes only when the keys, their types, whether they're needed, or their options change."
+          },
+          "json_schema": {
+            "type": "string",
+            "description": "A JSON Schema for the prefill_data this template accepts."
+          },
+          "keys": {
+            "type": "string",
+            "description": "Every data key the template's fields use, sorted by key."
+          },
+          "template_id": {
+            "type": "string",
+            "description": "The template this contract describes."
+          }
+        }
+      },
+      "IDataContractKey": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "key",
+          "needed",
+          "placements",
+          "type"
+        ],
+        "properties": {
+          "in_catalog": {
+            "type": "boolean",
+            "description": "Whether the key is a live entry in the template organization's data catalog."
+          },
+          "key": {
+            "type": "string",
+            "description": "The data key, such as \"applicant.full_name\"."
+          },
+          "needed": {
+            "type": "boolean",
+            "description": "True when one of its fields is read-only, so the signer can't supply the value."
+          },
+          "options": {
+            "type": "string",
+            "description": "For choices, the values that are accepted."
+          },
+          "placements": {
+            "type": "integer",
+            "description": "How many fields on the template use this key."
+          },
+          "type": {
+            "type": "string",
+            "description": "What to send for it: text, date (ISO 8601), boolean, choice (one of the options), or mixed when its fields disagree."
+          }
+        }
+      },
+      "IDataContractOption": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "label",
+          "value"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "What the signer sees for this choice."
+          },
+          "value": {
+            "type": "string",
+            "description": "What to send in prefill_data. The label is accepted too."
+          }
+        }
+      },
+      "IDateFieldConfig": {
+        "type": "object",
+        "description": "Settings for date fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "allowed": {
+            "type": "string",
+            "description": "Which dates the signer may choose, relative to today."
+          },
+          "max": {
+            "type": "string",
+            "description": "The latest date the signer may choose, like \"2026-12-31\"."
+          },
+          "min": {
+            "type": "string",
+            "description": "The earliest date the signer may choose, like \"2026-01-01\"."
+          },
+          "starts_today": {
+            "type": "boolean",
+            "description": "Fill in today's date when the signer opens the envelope."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          }
+        }
+      },
       "IDisabledChannel": {
         "type": "object",
         "description": "",
@@ -26376,6 +29942,23 @@
         "description": "",
         "required": [],
         "properties": {}
+      },
+      "IDropdownFieldConfig": {
+        "type": "object",
+        "description": "Settings for dropdown fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "stamp": {
+            "type": "string",
+            "description": "Print the chosen option's ID or its label. Defaults to id."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          }
+        }
       },
       "IDropdownOption": {
         "type": "object",
@@ -26442,6 +30025,10 @@
           "data": {
             "type": "string",
             "description": "Storage for arbitrary data that may be used e.g. to track source database/record IDs to relate Envelopes back to\ninternal systems/applications."
+          },
+          "data_catalog_id": {
+            "type": "string",
+            "description": "The data catalog in effect when the envelope was created."
           },
           "documents": {
             "type": "string",
@@ -26590,6 +30177,28 @@
           }
         }
       },
+      "IEnvelopeDryRun": {
+        "type": "object",
+        "description": "What previewEnvelope returns: the value each field would get, without anything being created.",
+        "required": [
+          "dry_run",
+          "fields"
+        ],
+        "properties": {
+          "dry_run": {
+            "type": "string",
+            "description": "Always true, so a preview is easy to tell from an envelope."
+          },
+          "fields": {
+            "type": "string",
+            "description": "Every field on the template, with the value it would start with (name, role_name, type, data_key, and value)."
+          },
+          "prefill_result": {
+            "type": "string",
+            "description": "What happened to prefill_data, when it was sent."
+          }
+        }
+      },
       "IEnvelopeField": {
         "type": "object",
         "description": "",
@@ -26616,6 +30225,14 @@
           "y"
         ],
         "properties": {
+          "config": {
+            "type": "string",
+            "description": "Settings for this field's type. Its type always matches the field's, so checking config.type narrows the rest."
+          },
+          "data_key": {
+            "type": "string",
+            "description": "Your key for this field's value, copied from the template field."
+          },
           "default": {
             "type": "string",
             "description": "The default value for the field."
@@ -26774,6 +30391,75 @@
         "description": "",
         "required": [],
         "properties": {}
+      },
+      "IFieldNumberFormat": {
+        "type": "object",
+        "description": "How a number field shows its value. The stored value is always a plain number like 12450.5.",
+        "required": [
+          "style"
+        ],
+        "properties": {
+          "currency": {
+            "type": "string",
+            "description": "The ISO 4217 code for currency, like \"USD\". Defaults to USD."
+          },
+          "decimals": {
+            "type": "integer",
+            "description": "Decimal places to show."
+          },
+          "locale": {
+            "type": "string",
+            "description": "The locale to format with, like \"de-DE\". Defaults to en-US."
+          },
+          "max": {
+            "type": "integer",
+            "description": "The largest number the signer may enter."
+          },
+          "min": {
+            "type": "integer",
+            "description": "The smallest number the signer may enter."
+          },
+          "style": {
+            "type": "string",
+            "description": "Show the value as a number, currency, or percent."
+          }
+        }
+      },
+      "IFieldTextFit": {
+        "type": "object",
+        "description": "How a text field's value fits its box when stamped. Without it, text prints at 11 points and runs over.",
+        "required": [],
+        "properties": {
+          "max_font_size": {
+            "type": "integer",
+            "description": "The size stamping starts at, in points."
+          },
+          "min_font_size": {
+            "type": "integer",
+            "description": "The smallest size stamping shrinks to, in points."
+          },
+          "overflow": {
+            "type": "string",
+            "description": "What happens to text that still doesn't fit at the smallest size: cut it off, end it with an ellipsis, or let it run over."
+          }
+        }
+      },
+      "IFieldValidation": {
+        "type": "object",
+        "description": "A regular expression a text field's whole value has to match.",
+        "required": [
+          "pattern"
+        ],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "What the signer sees when the value doesn't match."
+          },
+          "pattern": {
+            "type": "string",
+            "description": "The JavaScript regular expression."
+          }
+        }
       },
       "IFileWithData": {
         "type": "object",
@@ -27111,6 +30797,10 @@
             "type": "string",
             "description": "If the organization is a business, its name. Note that a business name can be different from an organization name."
           },
+          "default_data_catalog_id": {
+            "type": "string",
+            "description": "The data catalog templates use when they don't choose one."
+          },
           "deletion_protected": {
             "type": "boolean",
             "description": "If set, the organization may not be deleted. Must be set to false before calling DELETE. Defaults to true (protected)."
@@ -27147,6 +30837,19 @@
         "required": [],
         "properties": {}
       },
+      "IPaymentFieldConfig": {
+        "type": "object",
+        "description": "Settings for payment fields. None yet.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          }
+        }
+      },
       "IPendingWebhook": {
         "type": "object",
         "description": "",
@@ -27158,6 +30861,90 @@
         "description": "Org-level document-pipeline automation flags. Note that these flags are all \"opt-in\" and default to false if not set.\n\n - process_acroforms:     Auto-detect AcroForm (fillable PDF) fields when a document has no text tags.\n - process_tags:          Process {{...}} text tags in uploaded documents.\n - ignore_invalid_roles:  Skip (vs. reject) document tags whose role name is empty/invalid.\n - ignore_invalid_fields: Skip (vs. reject) document tags that don't form a valid field.",
         "required": [],
         "properties": {}
+      },
+      "IPrefillError": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "key",
+          "message"
+        ],
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "The field the value didn't fit, when there is one."
+          },
+          "key": {
+            "type": "string",
+            "description": "The data key whose value didn't fit."
+          },
+          "message": {
+            "type": "string",
+            "description": "What was wrong, such as \"Expected an ISO 8601 date\"."
+          }
+        }
+      },
+      "IPrefillHint": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "did_you_mean",
+          "key"
+        ],
+        "properties": {
+          "did_you_mean": {
+            "type": "string",
+            "description": "The template's key it most likely meant."
+          },
+          "key": {
+            "type": "string",
+            "description": "A key you sent that no field uses."
+          }
+        }
+      },
+      "IPrefillOptions": {
+        "type": "object",
+        "description": "",
+        "required": [],
+        "properties": {
+          "strict": {
+            "type": "boolean",
+            "description": "Reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing."
+          }
+        }
+      },
+      "IPrefillResult": {
+        "type": "object",
+        "description": "What happened to a request's prefill_data. Keys are reported by name only.",
+        "required": [
+          "errors",
+          "hints",
+          "missing_keys",
+          "placements_filled",
+          "unused_keys"
+        ],
+        "properties": {
+          "errors": {
+            "type": "string",
+            "description": "Values that didn't fit their field. Those fields keep the template's default."
+          },
+          "hints": {
+            "type": "string",
+            "description": "Likely corrections for unused keys."
+          },
+          "missing_keys": {
+            "type": "string",
+            "description": "Keys on the template's fields that you didn't send."
+          },
+          "placements_filled": {
+            "type": "integer",
+            "description": "How many fields got a value."
+          },
+          "unused_keys": {
+            "type": "string",
+            "description": "Keys you sent that no field uses."
+          }
+        }
       },
       "IProfile": {
         "type": "object",
@@ -27192,6 +30979,23 @@
           "user_id": {
             "type": "string",
             "description": "In Verdocs, a user may have multiple profiles. A user represents a single person. A profile\nrepresents that person within an organization. Some profiles may have no user atached, typically\nContacts and Signers. This can change if that person registers for a user later."
+          }
+        }
+      },
+      "IRadioFieldConfig": {
+        "type": "object",
+        "description": "Settings for radio button fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "stamp_unselected": {
+            "type": "boolean",
+            "description": "Print an empty circle for options that weren't chosen. Defaults to false."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
           }
         }
       },
@@ -27401,6 +31205,44 @@
         "required": [],
         "properties": {}
       },
+      "ISaveDataCatalogEntry": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "key",
+          "label"
+        ],
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "What the value is."
+          },
+          "example": {
+            "type": "string",
+            "description": "An example value."
+          },
+          "key": {
+            "type": "string",
+            "description": "Letters, digits, \"_\", and \"-\", with \".\" between levels."
+          },
+          "label": {
+            "type": "string",
+            "description": "What template owners see for this key."
+          },
+          "options": {
+            "type": "string",
+            "description": "For a choice, the accepted values."
+          },
+          "sensitive": {
+            "type": "boolean",
+            "description": "Keeps the example out of MCP answers and AI prompts. Defaults to false."
+          },
+          "type": {
+            "type": "string",
+            "description": "Defaults to text. A choice needs options."
+          }
+        }
+      },
       "ISetWebhookRequest": {
         "type": "object",
         "description": "",
@@ -27412,6 +31254,38 @@
         "description": "",
         "required": [],
         "properties": {}
+      },
+      "ISignatureFieldConfig": {
+        "type": "object",
+        "description": "Settings for signature and initial fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "stamp": {
+            "type": "string",
+            "description": "What prints under the signature."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          }
+        }
+      },
+      "ISignatureStamp": {
+        "type": "object",
+        "description": "What prints under a signature or initials. Both default to true.",
+        "required": [],
+        "properties": {
+          "date": {
+            "type": "boolean",
+            "description": "Print the date and time it was signed."
+          },
+          "hash": {
+            "type": "boolean",
+            "description": "Print the start of the signature's verification hash."
+          }
+        }
       },
       "ISignerTokenResponse": {
         "type": "object",
@@ -27511,6 +31385,10 @@
           "data": {
             "type": "string",
             "description": "Storage for arbitrary data that may be used e.g. to track source database/record IDs to relate Templates back to\ninternal systems/applications."
+          },
+          "data_catalog_id": {
+            "type": "string",
+            "description": "The data catalog its fields' data keys come from. When null, the organization's default catalog is used."
           },
           "description": {
             "type": "string",
@@ -27613,6 +31491,10 @@
           "name"
         ],
         "properties": {
+          "data_catalog_id": {
+            "type": "string",
+            "description": "The data catalog its fields' data keys come from. When null, the organization's default catalog is used."
+          },
           "description": {
             "type": "string",
             "description": "Optional description for the template to help identify it."
@@ -27744,6 +31626,14 @@
           "y"
         ],
         "properties": {
+          "config": {
+            "type": "string",
+            "description": "Settings for this field's type. Its type always matches the field's, so checking config.type narrows the rest."
+          },
+          "data_key": {
+            "type": "string",
+            "description": "Your key for this field's value, such as \"applicant.full_name\". Fields that show the same value can share a key."
+          },
           "default": {
             "type": "string",
             "description": "The default value for the field."
@@ -27826,6 +31716,14 @@
           "y"
         ],
         "properties": {
+          "config": {
+            "type": "string",
+            "description": "Settings for this field's type. Its type always matches the field's, so checking config.type narrows the rest."
+          },
+          "data_key": {
+            "type": "string",
+            "description": "Your key for this field's value, such as \"applicant.full_name\". Fields that show the same value can share a key."
+          },
           "document_id": {
             "type": "string",
             "description": "The ID of the document the field is for."
@@ -27902,6 +31800,43 @@
         "required": [],
         "properties": {}
       },
+      "ITextFieldConfig": {
+        "type": "object",
+        "description": "Settings for text fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "fit": {
+            "type": "string",
+            "description": "How the value fits its box when stamped."
+          },
+          "input_mask": {
+            "type": "string",
+            "description": "An input mask where each \"_\" is a character the signer types, like \"(___) ___-____\"."
+          },
+          "max_length": {
+            "type": "integer",
+            "description": "The most characters a signer may enter. Leave it out to fit the box."
+          },
+          "number": {
+            "type": "string",
+            "description": "Shows the value as a number, currency, or percent."
+          },
+          "text_case": {
+            "type": "string",
+            "description": "Converts what the signer types to upper or lower case."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          },
+          "validation": {
+            "type": "string",
+            "description": "A pattern the value has to match."
+          }
+        }
+      },
       "ITextFieldSetting": {
         "type": "object",
         "description": "",
@@ -27914,6 +31849,23 @@
         "required": [],
         "properties": {}
       },
+      "ITimestampFieldConfig": {
+        "type": "object",
+        "description": "Settings for timestamp fields.",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "include_time": {
+            "type": "boolean",
+            "description": "Print the time along with the date. Defaults to true."
+          },
+          "type": {
+            "type": "string",
+            "description": "Matches the field's type."
+          }
+        }
+      },
       "IUpdateApiKeyRequest": {
         "type": "object",
         "description": "",
@@ -27925,6 +31877,60 @@
         "description": "",
         "required": [],
         "properties": {}
+      },
+      "IUpdateDataCatalogEntryRequest": {
+        "type": "object",
+        "description": "",
+        "required": [],
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "What the value is."
+          },
+          "example": {
+            "type": "string",
+            "description": "An example value."
+          },
+          "label": {
+            "type": "string",
+            "description": "What template owners see for this key."
+          },
+          "options": {
+            "type": "string",
+            "description": "For a choice, the accepted values."
+          },
+          "sensitive": {
+            "type": "boolean",
+            "description": "Keeps the example out of MCP answers and AI prompts."
+          },
+          "status": {
+            "type": "string",
+            "description": "Set to \"active\" to approve a proposal."
+          },
+          "type": {
+            "type": "string",
+            "description": "What a caller sends for this key."
+          }
+        }
+      },
+      "IUpdateDataCatalogRequest": {
+        "type": "object",
+        "description": "",
+        "required": [],
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "What the catalog is for."
+          },
+          "name": {
+            "type": "string",
+            "description": "The catalog's name."
+          },
+          "sharing": {
+            "type": "string",
+            "description": "\"shared\" makes released versions available to every organization below this one."
+          }
+        }
       },
       "IUpdateNotificationTemplateRequest": {
         "type": "object",
@@ -28381,6 +32387,27 @@
           null
         ]
       },
+      "TDataCatalogEntryType": {
+        "type": "string",
+        "description": "What a caller sends for a data catalog key: text, an ISO 8601 date, true or false, or one of a fixed set of choices.",
+        "enum": [
+          "text",
+          "date",
+          "boolean",
+          "choice"
+        ]
+      },
+      "TDataKeyType": {
+        "type": "string",
+        "description": "What a caller sends for a data key: text, an ISO date, true or false, or one of a fixed set of choices. \"mixed\" means its fields disagree.",
+        "enum": [
+          "text",
+          "date",
+          "boolean",
+          "choice",
+          "mixed"
+        ]
+      },
       "TDeprecatedHistoryEvent": {
         "type": "string",
         "description": "@deprecated. See envelope.created_at, .updated_at, and .canceled_at.",
@@ -28420,6 +32447,8 @@
           "kba_id_auth",
           "id_auth",
           "custom_disclaimer",
+          "custom_branding",
+          "sms",
           "kba_sandbox"
         ]
       },
@@ -28532,6 +32561,21 @@
           "delegate:send_confirmed"
         ]
       },
+      "TFieldConfig": {
+        "type": "string",
+        "description": "A field's settings, one shape per field type, told apart by type.",
+        "enum": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
       "TFieldDefault": {
         "type": "string",
         "description": "A field's starting value. The API stores it as text: booleans become \"true\" or \"false\", and numbers get thousands\nseparators (\"12,345\" or \"1,234.50\"). A date field given an ISO 8601 date starts out showing it as MM/dd/yyyy.",
@@ -28539,6 +32583,34 @@
           null,
           null,
           null
+        ]
+      },
+      "TFieldFormatProblem": {
+        "type": "string",
+        "description": "Which of a text field's checks a value fails.",
+        "enum": [
+          "format",
+          "range",
+          "mask",
+          "pattern",
+          "length"
+        ]
+      },
+      "TFieldNumberStyle": {
+        "type": "string",
+        "description": "How a text field shows its number. The stored value is always a plain number like 12450.5.",
+        "enum": [
+          "number",
+          "currency",
+          "percent"
+        ]
+      },
+      "TFieldTextCase": {
+        "type": "string",
+        "description": "How a text field changes the case of what the signer types.",
+        "enum": [
+          "upper",
+          "lower"
         ]
       },
       "TFieldType": {

@@ -342,6 +342,8 @@ export interface ICreateEnvelopeFieldDirectly {
   group?: string;
   /** For dropdowns, the options that are selectable. */
   options?: IDropdownOption[] | null;
+  /** Your key for this field's value, such as "applicant.full_name". Text, date, checkbox, radio, and dropdown fields only. */
+  data_key?: string;
 }
 
 export interface ICreateEnvelopeFromTemplateRequest {
@@ -380,6 +382,56 @@ export interface ICreateEnvelopeFromTemplateRequest {
   timezone?: string | null;
   /** Set the "Brand" used when the signing experience is rendered. If not set, the Organization's default Brand will be used, if any. */
   brand_key?: string;
+  /** The data catalog the field data_keys come from. Defaults to the template's catalog, then the organization default. */
+  data_catalog_id?: string;
+  /** Values for fields that have a data_key, keyed by data_key. Nested objects and dotted keys mean the same key, so {"applicant": {"full_name": "Jordan"}} and {"applicant.full_name": "Jordan"} both fill fields keyed "applicant.full_name". A fields entry for the same field wins. */
+  prefill_data?: Record<string, unknown>;
+  prefill_options?: IPrefillOptions;
+}
+
+/** What previewEnvelope returns: the value each field would get, without anything being created. */
+export interface IEnvelopeDryRun {
+  /** Always true, so a preview is easy to tell from an envelope. */
+  dry_run: true;
+  /** What happened to prefill_data, when it was sent. */
+  prefill_result?: IPrefillResult;
+  /** Every field on the template, with the value it would start with (name, role_name, type, data_key, and value). */
+  fields: {name: string; role_name: string; type: TFieldType; data_key: string | null; value: string | null}[];
+}
+
+export interface IPrefillOptions {
+  /** Reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing. */
+  strict?: boolean;
+}
+
+export interface IPrefillError {
+  /** The data key whose value didn't fit. */
+  key: string;
+  /** The field the value didn't fit, when there is one. */
+  field?: string;
+  /** What was wrong, such as "Expected an ISO 8601 date". */
+  message: string;
+}
+
+export interface IPrefillHint {
+  /** A key you sent that no field uses. */
+  key: string;
+  /** The template's key it most likely meant. */
+  did_you_mean: string;
+}
+
+/** What happened to a request's prefill_data. Keys are reported by name only. */
+export interface IPrefillResult {
+  /** How many fields got a value. */
+  placements_filled: number;
+  /** Keys you sent that no field uses. */
+  unused_keys: string[];
+  /** Keys on the template's fields that you didn't send. */
+  missing_keys: string[];
+  /** Values that didn't fit their field. Those fields keep the template's default. */
+  errors: IPrefillError[];
+  /** Likely corrections for unused keys. */
+  hints: IPrefillHint[];
 }
 
 export interface ICreateEnvelopeDirectlyRequest {
@@ -419,6 +471,8 @@ export interface ICreateEnvelopeDirectlyRequest {
   timezone?: string | null;
   /** Set the "Brand" used when the signing experience is rendered. If not set, the Organization's default Brand will be used, if any. */
   brand_key?: string;
+  /** The data catalog the field data_keys come from. Defaults to the organization default. */
+  data_catalog_id?: string;
 }
 
 export type TCreateEnvelopeRequest = ICreateEnvelopeFromTemplateRequest | ICreateEnvelopeDirectlyRequest;
@@ -455,6 +509,8 @@ export interface IAuthenticateRecipientViaKBARequest {
   zip?: string;
   ssn_last_4?: string;
   dob?: string;
+  /** For organizations in the KBA sandbox, whether to pass, fail, or ask the sandbox questions (the default). */
+  sandbox_test_type?: 'pass' | 'fail' | 'questions';
   responses?: IKBAResponse[];
 }
 

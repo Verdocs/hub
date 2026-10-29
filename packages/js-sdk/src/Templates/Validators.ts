@@ -16,9 +16,11 @@ const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9(
 
 const POSTAL_CODE_REGEX = /^[A-Za-z0-9-\s]{3,10}$/;
 
-const NUMBER_REGEX = /^\d+$/;
+const NUMBER_REGEX = /^-?(\d+|\d{1,3}(,\d{3})+)(\.\d+)?$/;
 
-const DATE_REGEX = /^(\d{4}[-\/]\d{2}[-\/]\d{2})|(\d{2}[-\/]\d{2}[-\/]\d{4})$/;
+const DATE_REGEX = /^(\d{4}[-\/]\d{2}[-\/]\d{2}|\d{2}[-\/]\d{2}[-\/]\d{4})$/;
+
+const SSN_REGEX = /^\d{3}-?\d{2}-?\d{4}$/;
 
 const VALIDATORS = {
   email: {regex: EMAIL_REGEX, label: 'Email Address'},
@@ -27,6 +29,7 @@ const VALIDATORS = {
   postal_code: {regex: POSTAL_CODE_REGEX, label: 'Zip/Postal Code'},
   number: {regex: NUMBER_REGEX, label: 'Number'},
   date: {regex: DATE_REGEX, label: 'Date'},
+  ssn: {regex: SSN_REGEX, label: 'Social Security Number'},
 };
 
 /**
@@ -46,7 +49,7 @@ export const isValidInput = (value: string, validator: string) =>
  * ```typescript
  * import {getValidators} from '@verdocs/js-sdk';
  *
- * const available = getValidators(); // ['email', 'phone', 'url', 'postal_code', 'number', 'date']
+ * const available = getValidators(); // ['email', 'phone', 'url', 'postal_code', 'number', 'date', 'ssn']
  * ```
  *
  * @sdkOperation validator.getValidators

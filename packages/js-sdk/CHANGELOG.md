@@ -1,5 +1,81 @@
 # @verdocs/js-sdk
 
+## 6.16.6
+
+### Patch Changes
+
+- - `TEntitlement` now includes `custom_branding`, `sms`, and `kba_sandbox`.
+  - KBA verification requests accept `sandbox_test_type`, so organizations in the KBA sandbox can choose whether a test signer passes, fails, or gets the sandbox questions.
+
+## 6.16.5
+
+### Patch Changes
+
+- - Template and envelope fields have a `config` object with settings for their type, told apart by a `type` that matches the field's own. Text fields get a character limit, letter case, validation, an input mask, number formatting, and text fit; signatures and initials choose what prints under them; dates get an allowed range and can start on today; timestamps, checkboxes, radio buttons, dropdowns, and attachments get stamping options; and attachments can limit file types and sizes.
+  - `config` replaces the `max_length`, `text_case`, `validation_pattern`, `validation_message`, and `input_mask` field properties from 6.16.3, which nothing used yet.
+  - Added `formatFieldNumber` and `parseFieldNumber` to show and read number values the way their format's locale writes them.
+  - `getFieldFormatProblem` reads `config`, and reports `range` for numbers outside their limits. `isFieldValid` and `isFieldFilled` also hold dates to their allowed range.
+
+## 6.16.4
+
+### Patch Changes
+
+- - Template and envelope fields have `max_length`, `text_case`, `validation_pattern`, `validation_message`, and `input_mask` for text fields.
+  - Added `getFieldFormatProblem` to check a text field's value against its format, mask, pattern, and character limit.
+  - `isFieldFilled` and `isFieldValid` apply those same checks.
+  - `isFieldValid` treats read-only fields as ready, so a prefilled value that doesn't match its format can't stop a signer from finishing.
+
+## 6.16.3
+
+### Patch Changes
+
+- - Added an `ssn` validator, and `isFieldFilled` now enforces every validator from `getValidators` on text fields, not just email and phone. Validators it doesn't recognize are treated as plain text.
+  - `isFieldValid` now checks optional text fields that have a value against their format, so an optional email field can be left empty but not filled with something that isn't an email address.
+  - The `number` validator accepts separators, decimals, and a leading minus sign, and the `date` validator no longer accepts extra text after the date.
+
+## 6.16.2
+
+### Patch Changes
+
+- - Added `getDataCatalogListing` to preview a marketplace catalog's keys before importing it, and marketplace search now matches publishers and keys too.
+
+## 6.16.1
+
+### Patch Changes
+
+- - Data catalogs now report `has_unreleased_changes` when a shared or previously released catalog's live entries differ from its latest release.
+
+## 6.16.0
+
+### Minor Changes
+
+- - Added data catalogs, which describe the keys an organization's templates are filled from: `getDataCatalogs`, `getDataCatalog`, `createDataCatalog` (from scratch, from a JSON sample or JSON Schema, or from the marketplace), `updateDataCatalog`, and `deleteDataCatalog`.
+  - Added `saveDataCatalogEntries`, `updateDataCatalogEntry`, and `deleteDataCatalogEntry`. Admins' entries go live; members' entries become proposals for an admin to approve.
+  - Added `releaseDataCatalogVersion`, `getDataCatalogVersions`, and `getDataCatalogMarketplace`, so a parent organization can share a catalog with the organizations below it.
+  - Added `getDataCatalogUpdate` and `applyDataCatalogUpdate` for reviewing a newer version of an imported catalog key by key.
+  - Templates and organizations gained `data_catalog_id` and `default_data_catalog_id`, and `getTemplateDataContract` reports whether each key is in the template's catalog.
+  - Envelopes record the data catalog in effect when they're created, and `createEnvelope` accepts `data_catalog_id` to choose one.
+
+## 6.15.0
+
+### Minor Changes
+
+- - Added `getTemplateDataContract`, which lists the data keys a template reads with their types, options, and whether each is needed, plus a JSON Schema for `prefill_data` and a hash that changes when the contract does.
+  - Added `previewEnvelope`, which checks a template send and shows the value each field would get, without creating anything.
+
+## 6.14.0
+
+### Minor Changes
+
+- - Added `prefill_data` to `createEnvelope`, which fills every field that has a `data_key` from your own data and returns a `prefill_result` with what was filled, what went unused, and what was missing.
+  - Added `prefill_options.strict` to reject a request, creating nothing, when its keys don't line up with the template.
+
+## 6.13.4
+
+### Patch Changes
+
+- - Added `data_key` to template and envelope fields, so a field can hold your own key for its value (such as `applicant.full_name`). Set it with `createField`, `updateField`, or on fields in a direct envelope request.
+
 ## 6.13.3
 
 ### Patch Changes

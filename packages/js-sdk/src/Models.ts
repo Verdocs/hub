@@ -1,6 +1,7 @@
 import type {TTemplateSender, TTemplateVisibility, TEventName, TNotificationType, TUsageType, TWebhookAuthMethod} from './BaseTypes';
-import type {TEntitlement, TEnvelopeStatus, TEventDetail, TFieldType, THistoryEvent, TRecipientAuthMethod} from './BaseTypes';
-import type {TRecipientAuthStep, TRecipientStatus, TRecipientType, TWebhookEvent, TEnvelopeDocumentType} from './BaseTypes';
+import type {TEntitlement, TEnvelopeStatus, TEventDetail, TFieldNumberStyle, TFieldTextCase, TFieldType} from './BaseTypes';
+import type {THistoryEvent, TRecipientAuthMethod, TRecipientAuthStep, TRecipientStatus, TRecipientType} from './BaseTypes';
+import type {TWebhookEvent, TEnvelopeDocumentType} from './BaseTypes';
 import {TPermission, TRole} from './Sessions';
 
 /////////////////////////////// NOTIFICATIONS /////////////////////////////
@@ -154,6 +155,8 @@ export interface IOrganization {
   /** Org-level document-pipeline automation flags. */
   pipeline_settings?: Partial<IPipelineSettings> | null;
   default_brand_id?: string | null;
+  /** The data catalog templates use when they don't choose one. */
+  default_data_catalog_id?: string | null;
   /** The long-form timezone. */
   locale?: string | null;
   /** The locale code */
@@ -524,6 +527,8 @@ export interface IEnvelope {
    * internal systems/applications.
    */
   data?: Record<string, any> | null;
+  /** The data catalog in effect when the envelope was created. */
+  data_catalog_id?: string | null;
 
   profile?: IProfile;
   template?: ITemplate | null;
@@ -575,6 +580,152 @@ export interface IDropdownOption {
   label: string;
 }
 
+/** How a number field shows its value. The stored value is always a plain number like 12450.5. */
+export interface IFieldNumberFormat {
+  /** Show the value as a number, currency, or percent. */
+  style: TFieldNumberStyle;
+  /** The locale to format with, like "de-DE". Defaults to en-US. */
+  locale?: string;
+  /** The ISO 4217 code for currency, like "USD". Defaults to USD. */
+  currency?: string;
+  /** Decimal places to show. */
+  decimals?: number;
+  /** The smallest number the signer may enter. */
+  min?: number;
+  /** The largest number the signer may enter. */
+  max?: number;
+}
+
+/** A regular expression a text field's whole value has to match. */
+export interface IFieldValidation {
+  /** The JavaScript regular expression. */
+  pattern: string;
+  /** What the signer sees when the value doesn't match. */
+  message?: string;
+}
+
+/** How a text field's value fits its box when stamped. Without it, text prints at 11 points and runs over. */
+export interface IFieldTextFit {
+  /** The size stamping starts at, in points. */
+  max_font_size?: number;
+  /** The smallest size stamping shrinks to, in points. */
+  min_font_size?: number;
+  /** What happens to text that still doesn't fit at the smallest size: cut it off, end it with an ellipsis, or let it run over. */
+  overflow?: 'truncate' | 'ellipsize' | 'overflow';
+}
+
+/** Settings for text fields. */
+export interface ITextFieldConfig {
+  /** Matches the field's type. */
+  type: 'textbox' | 'textarea';
+  /** The most characters a signer may enter. Leave it out to fit the box. */
+  max_length?: number;
+  /** Converts what the signer types to upper or lower case. */
+  text_case?: TFieldTextCase;
+  /** A pattern the value has to match. */
+  validation?: IFieldValidation;
+  /** An input mask where each "_" is a character the signer types, like "(___) ___-____". */
+  input_mask?: string;
+  /** Shows the value as a number, currency, or percent. */
+  number?: IFieldNumberFormat;
+  /** How the value fits its box when stamped. */
+  fit?: IFieldTextFit;
+}
+
+/** What prints under a signature or initials. Both default to true. */
+export interface ISignatureStamp {
+  /** Print the start of the signature's verification hash. */
+  hash?: boolean;
+  /** Print the date and time it was signed. */
+  date?: boolean;
+}
+
+/** Settings for signature and initial fields. */
+export interface ISignatureFieldConfig {
+  /** Matches the field's type. */
+  type: 'signature' | 'initial';
+  /** What prints under the signature. */
+  stamp?: ISignatureStamp;
+}
+
+/** Settings for date fields. */
+export interface IDateFieldConfig {
+  /** Matches the field's type. */
+  type: 'date';
+  /** Which dates the signer may choose, relative to today. */
+  allowed?: 'any' | 'past' | 'future';
+  /** The earliest date the signer may choose, like "2026-01-01". */
+  min?: string;
+  /** The latest date the signer may choose, like "2026-12-31". */
+  max?: string;
+  /** Fill in today's date when the signer opens the envelope. */
+  starts_today?: boolean;
+}
+
+/** Settings for timestamp fields. */
+export interface ITimestampFieldConfig {
+  /** Matches the field's type. */
+  type: 'timestamp';
+  /** Print the time along with the date. Defaults to true. */
+  include_time?: boolean;
+}
+
+/** Settings for checkbox fields. */
+export interface ICheckboxFieldConfig {
+  /** Matches the field's type. */
+  type: 'checkbox';
+  /** The mark for a checked box. Defaults to check. */
+  image?: 'check' | 'x';
+  /** Print an empty box when unchecked. Defaults to true. */
+  stamp_unchecked?: boolean;
+}
+
+/** Settings for radio button fields. */
+export interface IRadioFieldConfig {
+  /** Matches the field's type. */
+  type: 'radio';
+  /** Print an empty circle for options that weren't chosen. Defaults to false. */
+  stamp_unselected?: boolean;
+}
+
+/** Settings for dropdown fields. */
+export interface IDropdownFieldConfig {
+  /** Matches the field's type. */
+  type: 'dropdown';
+  /** Print the chosen option's ID or its label. Defaults to id. */
+  stamp?: 'id' | 'label';
+}
+
+/** Settings for attachment fields. */
+export interface IAttachmentFieldConfig {
+  /** Matches the field's type. */
+  type: 'attachment';
+  /** File extensions like ".pdf" or types like "image/*" the signer may upload. */
+  accept?: string[];
+  /** The largest file the signer may upload, in megabytes. */
+  max_size_mb?: number;
+  /** Print the attachment's name and size on the document. Defaults to true. */
+  stamp_card?: boolean;
+}
+
+/** Settings for payment fields. None yet. */
+export interface IPaymentFieldConfig {
+  /** Matches the field's type. */
+  type: 'payment';
+}
+
+/** A field's settings, one shape per field type, told apart by type. */
+export type TFieldConfig =
+  | ITextFieldConfig
+  | ISignatureFieldConfig
+  | IDateFieldConfig
+  | ITimestampFieldConfig
+  | ICheckboxFieldConfig
+  | IRadioFieldConfig
+  | IDropdownFieldConfig
+  | IAttachmentFieldConfig
+  | IPaymentFieldConfig;
+
 export interface IEnvelopeField {
   /** The ID of the envelope the field is for. */
   envelope_id: string;
@@ -618,6 +769,10 @@ export interface IEnvelopeField {
   group: string | null;
   /** For dropdowns, the options that are selectable. */
   options: IDropdownOption[] | null;
+  /** Your key for this field's value, copied from the template field. */
+  data_key?: string | null;
+  /** Settings for this field's type. Its type always matches the field's, so checking config.type narrows the rest. */
+  config?: TFieldConfig | null;
   value: string | null;
   is_valid: boolean;
 }
@@ -870,6 +1025,8 @@ export interface ITemplate {
    * Optional description for the template.
    */
   description?: string;
+  /** The data catalog its fields' data keys come from. When null, the organization's default catalog is used. */
+  data_catalog_id?: string | null;
   /**
    * Number of times the template has been used.
    */
@@ -992,6 +1149,10 @@ export interface ITemplateField {
   group: string | null;
   /** For dropdowns, the options that are selectable. */
   options: IDropdownOption[] | null;
+  /** Your key for this field's value, such as "applicant.full_name". Fields that show the same value can share a key. */
+  data_key?: string | null;
+  /** Settings for this field's type. Its type always matches the field's, so checking config.type narrows the rest. */
+  config?: TFieldConfig | null;
 
   value?: string | null;
   is_valid?: boolean;

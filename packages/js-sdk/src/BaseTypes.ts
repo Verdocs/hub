@@ -90,6 +90,12 @@ export type TEnvelopeUpdateResult = Omit<IEnvelope, 'histories' | 'recipients' |
 
 export type TEnvelopeDocumentType = 'attachment' | 'certificate';
 
+/** How a text field changes the case of what the signer types. */
+export type TFieldTextCase = 'upper' | 'lower';
+
+/** How a text field shows its number. The stored value is always a plain number like 12450.5. */
+export type TFieldNumberStyle = 'number' | 'currency' | 'percent';
+
 export type TFieldType =
   | 'signature'
   | 'initial'
@@ -162,7 +168,17 @@ export const WEBHOOK_EVENTS = [
 
 export type TTemplateVisibility = 'private' | 'shared' | 'public';
 
-export type TEntitlement = 'envelope' | 'kba_auth' | 'passcode_auth' | 'sms_auth' | 'kba_id_auth' | 'id_auth' | 'custom_disclaimer' | 'kba_sandbox'
+export type TEntitlement =
+  | 'envelope'
+  | 'kba_auth'
+  | 'passcode_auth'
+  | 'sms_auth'
+  | 'kba_id_auth'
+  | 'id_auth'
+  | 'custom_disclaimer'
+  | 'custom_branding'
+  | 'sms'
+  | 'kba_sandbox';
 
 /**
  * The authentication method(s) required for a recipient to access an envelope. "Passcode" will require a

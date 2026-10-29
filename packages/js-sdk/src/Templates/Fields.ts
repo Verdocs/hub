@@ -30,6 +30,7 @@ import {ITemplateField} from '../Models';
  * @apiBody string default? Default value to pre-fill in the field. For checkboxes and radio buttons, true or "true" starts checked. Numbers are stored as text with thousands separators, e.g. "1,234.50". A date field given an ISO 8601 date starts out showing it as MM/dd/yyyy.
  * @apiBody boolean(default: false) readonly? Whether recipients are prevented from changing the field. May not be combined with required.
  * @apiBody string validator? Name of a validator to apply to the field's value (e.g. "email" or "phone")
+ * @apiBody string data_key? Your key for the field's value, such as "applicant.full_name". Fields that show the same value can share a key. Letters, digits, "_", and "-", with "." between levels. Text, date, checkbox, radio, and dropdown fields only.
  * @apiSuccess ITemplateField . Template field
  *
  * @sdkOperation field.createField
@@ -69,6 +70,7 @@ export const createField = (endpoint: VerdocsEndpoint, templateId: string, param
  * @apiBody string default? Default value to pre-fill in the field. For checkboxes and radio buttons, true or "true" starts checked. Numbers are stored as text with thousands separators, e.g. "1,234.50". A date field given an ISO 8601 date starts out showing it as MM/dd/yyyy.
  * @apiBody boolean readonly? Whether recipients are prevented from changing the field
  * @apiBody string validator? Name of a validator to apply to the field's value (e.g. "email" or "phone")
+ * @apiBody string data_key? Your key for the field's value, such as "applicant.full_name". Send null to remove it.
  * @apiSuccess ITemplateField . Updated template field
  *
  * @sdkOperation field.updateField

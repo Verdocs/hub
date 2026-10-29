@@ -10,6 +10,7 @@
 export * from './ApiKeys';
 export * from './Brands';
 export * from './Contacts';
+export * from './DataCatalog';
 export * from './Groups';
 export * from './Invitations';
 export * from './Members';

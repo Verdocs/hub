@@ -1,5 +1,65 @@
 # @verdocs/conformance
 
+## 6.16.6
+
+### Patch Changes
+
+- Updated dependencies: @verdocs/js-sdk@6.16.6
+
+## 6.16.5
+
+### Patch Changes
+
+- Updated dependencies: @verdocs/js-sdk@6.16.5
+
+## 6.16.4
+
+### Patch Changes
+
+- Updated dependencies: @verdocs/js-sdk@6.16.4
+
+## 6.16.3
+
+### Patch Changes
+
+- Updated dependencies: @verdocs/js-sdk@6.16.3
+
+## 6.16.2
+
+### Patch Changes
+
+- Updated dependencies: @verdocs/js-sdk@6.16.2
+
+## 6.16.1
+
+### Patch Changes
+
+- Updated dependencies: @verdocs/js-sdk@6.16.1
+
+## 6.16.0
+
+### Patch Changes
+
+- Updated dependencies: @verdocs/js-sdk@6.16.0
+
+## 6.15.0
+
+### Patch Changes
+
+- Updated dependencies: @verdocs/js-sdk@6.15.0
+
+## 6.14.0
+
+### Patch Changes
+
+- Updated dependencies: @verdocs/js-sdk@6.14.0
+
+## 6.13.4
+
+### Patch Changes
+
+- Updated dependencies: @verdocs/js-sdk@6.13.4
+
 ## 6.13.3
 
 ### Patch Changes

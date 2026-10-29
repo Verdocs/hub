@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.13.3",
+  "version": "6.16.6",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -500,6 +500,20 @@
       "name": "Ungrouped",
       "summary": "",
       "symbols": {
+        "ungrouped.IAttachmentFieldConfig": {
+          "sdkOperation": "ungrouped.IAttachmentFieldConfig",
+          "kind": "interface",
+          "name": "IAttachmentFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IAttachmentFieldConfig",
+          "summary": "Settings for attachment fields.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.IAuthorizationCodeRequest": {
           "sdkOperation": "ungrouped.IAuthorizationCodeRequest",
           "kind": "interface",
@@ -514,6 +528,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.ICheckboxFieldConfig": {
+          "sdkOperation": "ungrouped.ICheckboxFieldConfig",
+          "kind": "interface",
+          "name": "ICheckboxFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ICheckboxFieldConfig",
+          "summary": "Settings for checkbox fields.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.IClientCredentialsRequest": {
           "sdkOperation": "ungrouped.IClientCredentialsRequest",
           "kind": "interface",
@@ -523,6 +551,62 @@
           "resource": "interface",
           "signature": "IClientCredentialsRequest",
           "summary": "NOTE: This should _only_ be used for _server-to-server_ requests.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IDataCatalogEntry": {
+          "sdkOperation": "ungrouped.IDataCatalogEntry",
+          "kind": "interface",
+          "name": "IDataCatalogEntry",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IDataCatalogEntry",
+          "summary": "An entry's content, as versions freeze it and update reviews compare it.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IDataCatalogEntryFields": {
+          "sdkOperation": "ungrouped.IDataCatalogEntryFields",
+          "kind": "interface",
+          "name": "IDataCatalogEntryFields",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IDataCatalogEntryFields",
+          "summary": "An entry's content, as versions freeze it and update reviews compare it.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IDataCatalogListingPreview": {
+          "sdkOperation": "ungrouped.IDataCatalogListingPreview",
+          "kind": "interface",
+          "name": "IDataCatalogListingPreview",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IDataCatalogListingPreview",
+          "summary": "A marketplace catalog with the keys of its newest released version.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IDateFieldConfig": {
+          "sdkOperation": "ungrouped.IDateFieldConfig",
+          "kind": "interface",
+          "name": "IDateFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IDateFieldConfig",
+          "summary": "Settings for date fields.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -551,6 +635,20 @@
           "resource": "interface",
           "signature": "IDocumentFromUri",
           "summary": "Represents a document to be attached to a template via an externally-accessible URI. A copy of the document will be\ndownloaded from the specified URI. Note that the URI will be accessed without headers or other authorization methods\nset, so the URI itself must encode any security tokens or keys required to access the file.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IDropdownFieldConfig": {
+          "sdkOperation": "ungrouped.IDropdownFieldConfig",
+          "kind": "interface",
+          "name": "IDropdownFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IDropdownFieldConfig",
+          "summary": "Settings for dropdown fields.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -593,6 +691,62 @@
           "resource": "interface",
           "signature": "IEnvelopeDocument",
           "summary": "An EnvelopeDocument is an individual document inside an Envelope package.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IEnvelopeDryRun": {
+          "sdkOperation": "ungrouped.IEnvelopeDryRun",
+          "kind": "interface",
+          "name": "IEnvelopeDryRun",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IEnvelopeDryRun",
+          "summary": "What previewEnvelope returns: the value each field would get, without anything being created.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IFieldNumberFormat": {
+          "sdkOperation": "ungrouped.IFieldNumberFormat",
+          "kind": "interface",
+          "name": "IFieldNumberFormat",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IFieldNumberFormat",
+          "summary": "How a number field shows its value. The stored value is always a plain number like 12450.5.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IFieldTextFit": {
+          "sdkOperation": "ungrouped.IFieldTextFit",
+          "kind": "interface",
+          "name": "IFieldTextFit",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IFieldTextFit",
+          "summary": "How a text field's value fits its box when stamped. Without it, text prints at 11 points and runs over.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IFieldValidation": {
+          "sdkOperation": "ungrouped.IFieldValidation",
+          "kind": "interface",
+          "name": "IFieldValidation",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IFieldValidation",
+          "summary": "A regular expression a text field's whole value has to match.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -710,6 +864,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.IPaymentFieldConfig": {
+          "sdkOperation": "ungrouped.IPaymentFieldConfig",
+          "kind": "interface",
+          "name": "IPaymentFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IPaymentFieldConfig",
+          "summary": "Settings for payment fields. None yet.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.IPipelineSettings": {
           "sdkOperation": "ungrouped.IPipelineSettings",
           "kind": "interface",
@@ -719,6 +887,34 @@
           "resource": "interface",
           "signature": "IPipelineSettings",
           "summary": "Org-level document-pipeline automation flags. Note that these flags are all \"opt-in\" and default to false if not set.\n\n - process_acroforms:     Auto-detect AcroForm (fillable PDF) fields when a document has no text tags.\n - process_tags:          Process {{...}} text tags in uploaded documents.\n - ignore_invalid_roles:  Skip (vs. reject) document tags whose role name is empty/invalid.\n - ignore_invalid_fields: Skip (vs. reject) document tags that don't form a valid field.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IPrefillResult": {
+          "sdkOperation": "ungrouped.IPrefillResult",
+          "kind": "interface",
+          "name": "IPrefillResult",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IPrefillResult",
+          "summary": "What happened to a request's prefill_data. Keys are reported by name only.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IRadioFieldConfig": {
+          "sdkOperation": "ungrouped.IRadioFieldConfig",
+          "kind": "interface",
+          "name": "IRadioFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IRadioFieldConfig",
+          "summary": "Settings for radio button fields.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -864,6 +1060,34 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.ISignatureFieldConfig": {
+          "sdkOperation": "ungrouped.ISignatureFieldConfig",
+          "kind": "interface",
+          "name": "ISignatureFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ISignatureFieldConfig",
+          "summary": "Settings for signature and initial fields.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ISignatureStamp": {
+          "sdkOperation": "ungrouped.ISignatureStamp",
+          "kind": "interface",
+          "name": "ISignatureStamp",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ISignatureStamp",
+          "summary": "What prints under a signature or initials. Both default to true.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.ISigningSession": {
           "sdkOperation": "ungrouped.ISigningSession",
           "kind": "interface",
@@ -929,6 +1153,34 @@
           "resource": "interface",
           "signature": "ITemplateFeedbackRequest",
           "summary": "Send feedback about a template to the Verdocs team, with optional details. This endpoint is intended to be\nused by template maintainers to report field-auto-detection and formatting issues, not by signers. Verdocs\ndoes not provide a formal response SLA or request routing/handling commitment for submissions via this\nendpoint.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ITextFieldConfig": {
+          "sdkOperation": "ungrouped.ITextFieldConfig",
+          "kind": "interface",
+          "name": "ITextFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ITextFieldConfig",
+          "summary": "Settings for text fields.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ITimestampFieldConfig": {
+          "sdkOperation": "ungrouped.ITimestampFieldConfig",
+          "kind": "interface",
+          "name": "ITimestampFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ITimestampFieldConfig",
+          "summary": "Settings for timestamp fields.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -1116,6 +1368,34 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.TDataCatalogEntryType": {
+          "sdkOperation": "ungrouped.TDataCatalogEntryType",
+          "kind": "type",
+          "name": "TDataCatalogEntryType",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TDataCatalogEntryType",
+          "summary": "What a caller sends for a data catalog key: text, an ISO 8601 date, true or false, or one of a fixed set of choices.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TDataKeyType": {
+          "sdkOperation": "ungrouped.TDataKeyType",
+          "kind": "type",
+          "name": "TDataKeyType",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TDataKeyType",
+          "summary": "What a caller sends for a data key: text, an ISO date, true or false, or one of a fixed set of choices. \"mixed\" means its fields disagree.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.TDeprecatedHistoryEvent": {
           "sdkOperation": "ungrouped.TDeprecatedHistoryEvent",
           "kind": "type",
@@ -1200,6 +1480,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.TFieldConfig": {
+          "sdkOperation": "ungrouped.TFieldConfig",
+          "kind": "type",
+          "name": "TFieldConfig",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TFieldConfig",
+          "summary": "A field's settings, one shape per field type, told apart by type.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.TFieldDefault": {
           "sdkOperation": "ungrouped.TFieldDefault",
           "kind": "type",
@@ -1209,6 +1503,48 @@
           "resource": "type",
           "signature": "TFieldDefault",
           "summary": "A field's starting value. The API stores it as text: booleans become \"true\" or \"false\", and numbers get thousands\nseparators (\"12,345\" or \"1,234.50\"). A date field given an ISO 8601 date starts out showing it as MM/dd/yyyy.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TFieldFormatProblem": {
+          "sdkOperation": "ungrouped.TFieldFormatProblem",
+          "kind": "type",
+          "name": "TFieldFormatProblem",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TFieldFormatProblem",
+          "summary": "Which of a text field's checks a value fails.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TFieldNumberStyle": {
+          "sdkOperation": "ungrouped.TFieldNumberStyle",
+          "kind": "type",
+          "name": "TFieldNumberStyle",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TFieldNumberStyle",
+          "summary": "How a text field shows its number. The stored value is always a plain number like 12450.5.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TFieldTextCase": {
+          "sdkOperation": "ungrouped.TFieldTextCase",
+          "kind": "type",
+          "name": "TFieldTextCase",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TFieldTextCase",
+          "summary": "How a text field changes the case of what the signer types.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -2988,6 +3324,625 @@
         }
       }
     },
+    "datacatalog": {
+      "id": "datacatalog",
+      "name": "DataCatalog",
+      "summary": "",
+      "symbols": {
+        "dataCatalog.applyDataCatalogUpdate": {
+          "sdkOperation": "dataCatalog.applyDataCatalogUpdate",
+          "kind": "function",
+          "name": "applyDataCatalogUpdate",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "applyDataCatalogUpdate(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, resolutions: Record<string, 'source' | 'local'> = {}): Promise<IDataCatalog>",
+          "summary": "Apply an imported catalog's waiting update. Every conflict needs a resolution, \"source\" or \"local\". Other changes take\nthe source unless resolved \"local\", which keeps your entry, skips an addition, or keeps a removed key as your own.\nAdmins and owners only.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "resolutions",
+              "type": "Record<string, 'source' | 'local'>",
+              "description": "",
+              "optional": true,
+              "default": "{}"
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataCatalog>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "dataCatalog.createDataCatalog": {
+          "sdkOperation": "dataCatalog.createDataCatalog",
+          "kind": "function",
+          "name": "createDataCatalog",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "createDataCatalog(endpoint: VerdocsEndpoint, organizationId: string, params: ICreateDataCatalogRequest): Promise<IDataCatalog>",
+          "summary": "Create a data catalog from scratch, from a JSON sample or JSON Schema, or as a copy of a marketplace catalog. The\norganization's first catalog becomes its default. Admins and owners only.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "ICreateDataCatalogRequest",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataCatalog>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {createDataCatalog} from '@verdocs/js-sdk';\n\nconst catalog = await createDataCatalog(VerdocsEndpoint.getDefault(), organizationId, {\n  name: 'Applicants',\n  import: {format: 'json_sample', content: {applicant: {full_name: 'Jordan Rivera'}}},\n});"
+            }
+          ],
+          "deprecated": false
+        },
+        "dataCatalog.deleteDataCatalog": {
+          "sdkOperation": "dataCatalog.deleteDataCatalog",
+          "kind": "function",
+          "name": "deleteDataCatalog",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "deleteDataCatalog(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string): Promise<object>",
+          "summary": "Delete a data catalog. The default catalog can't be deleted, and neither can a catalog that templates use; that\nrefusal lists the templates. Admins and owners only.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<object>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "dataCatalog.deleteDataCatalogEntry": {
+          "sdkOperation": "dataCatalog.deleteDataCatalogEntry",
+          "kind": "function",
+          "name": "deleteDataCatalogEntry",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "deleteDataCatalogEntry(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, key: string): Promise<object>",
+          "summary": "Remove an entry from a data catalog. Members can only withdraw their own proposals. Fields bound to the key keep it.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "key",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<object>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "dataCatalog.getDataCatalog": {
+          "sdkOperation": "dataCatalog.getDataCatalog",
+          "kind": "function",
+          "name": "getDataCatalog",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getDataCatalog(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string): Promise<IDataCatalog>",
+          "summary": "Get one data catalog with its entries. Members see live entries and their own proposals; admins see every proposal.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataCatalog>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "dataCatalog.getDataCatalogListing": {
+          "sdkOperation": "dataCatalog.getDataCatalogListing",
+          "kind": "function",
+          "name": "getDataCatalogListing",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getDataCatalogListing(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string): Promise<IDataCatalogListingPreview>",
+          "summary": "Preview one marketplace catalog with the keys of its newest released version, before importing it.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataCatalogListingPreview>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "dataCatalog.getDataCatalogMarketplace": {
+          "sdkOperation": "dataCatalog.getDataCatalogMarketplace",
+          "kind": "function",
+          "name": "getDataCatalogMarketplace",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getDataCatalogMarketplace(endpoint: VerdocsEndpoint, organizationId: string, q?: string): Promise<IDataCatalogListing[]>",
+          "summary": "Find catalogs this organization can import: those shared by any organization above it, once released.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "q",
+              "type": "string",
+              "description": "",
+              "optional": true,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataCatalogListing[]>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "dataCatalog.getDataCatalogs": {
+          "sdkOperation": "dataCatalog.getDataCatalogs",
+          "kind": "function",
+          "name": "getDataCatalogs",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getDataCatalogs(endpoint: VerdocsEndpoint, organizationId: string): Promise<IDataCatalog[]>",
+          "summary": "List an organization's data catalogs. A catalog describes the keys template fields can be bound to with data_key and\nfilled from createEnvelope's prefill_data. Each one shows whether it's the default and whether an imported catalog has\nan update waiting.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataCatalog[]>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getDataCatalogs} from '@verdocs/js-sdk';\n\nconst catalogs = await getDataCatalogs(VerdocsEndpoint.getDefault(), organizationId);"
+            }
+          ],
+          "deprecated": false
+        },
+        "dataCatalog.getDataCatalogUpdate": {
+          "sdkOperation": "dataCatalog.getDataCatalogUpdate",
+          "kind": "function",
+          "name": "getDataCatalogUpdate",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getDataCatalogUpdate(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string): Promise<IDataCatalogUpdate>",
+          "summary": "For a catalog imported from the marketplace, what applying its source's newest version would change, key by key.\nRemoved and conflicting keys list the templates that use them.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataCatalogUpdate>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "dataCatalog.getDataCatalogVersions": {
+          "sdkOperation": "dataCatalog.getDataCatalogVersions",
+          "kind": "function",
+          "name": "getDataCatalogVersions",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getDataCatalogVersions(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string): Promise<IDataCatalogVersion[]>",
+          "summary": "List a data catalog's released versions, newest first.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataCatalogVersion[]>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "dataCatalog.releaseDataCatalogVersion": {
+          "sdkOperation": "dataCatalog.releaseDataCatalogVersion",
+          "kind": "function",
+          "name": "releaseDataCatalogVersion",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "releaseDataCatalogVersion(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, notes?: string): Promise<IDataCatalogVersion>",
+          "summary": "Release a frozen version of a catalog's live entries, so organizations it's shared with can import it or update to\nit. Proposals aren't included. Admins and owners only.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "notes",
+              "type": "string",
+              "description": "",
+              "optional": true,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataCatalogVersion>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "dataCatalog.saveDataCatalogEntries": {
+          "sdkOperation": "dataCatalog.saveDataCatalogEntries",
+          "kind": "function",
+          "name": "saveDataCatalogEntries",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "saveDataCatalogEntries(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, entries: ISaveDataCatalogEntry[]): Promise<IDataCatalogEntry[]>",
+          "summary": "Add or change entries in a data catalog, matched by key. Entries saved by an admin or owner go live, and approve a\nmatching proposal. Entries saved by a member become proposals for an admin to approve, and can't change a live entry.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "entries",
+              "type": "ISaveDataCatalogEntry[]",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataCatalogEntry[]>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "dataCatalog.updateDataCatalog": {
+          "sdkOperation": "dataCatalog.updateDataCatalog",
+          "kind": "function",
+          "name": "updateDataCatalog",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "updateDataCatalog(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, params: IUpdateDataCatalogRequest): Promise<IDataCatalog>",
+          "summary": "Rename a data catalog, change its description, or share it with every organization below this one. To make a\ncatalog the default, set default_data_catalog_id with updateOrganization. Admins and owners only.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "IUpdateDataCatalogRequest",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataCatalog>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "dataCatalog.updateDataCatalogEntry": {
+          "sdkOperation": "dataCatalog.updateDataCatalogEntry",
+          "kind": "function",
+          "name": "updateDataCatalogEntry",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "updateDataCatalogEntry(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, key: string, params: IUpdateDataCatalogEntryRequest): Promise<IDataCatalogEntry>",
+          "summary": "Change a data catalog entry, or approve a member's proposal by setting status to \"active\". Admins and owners only.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "key",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "IUpdateDataCatalogEntryRequest",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataCatalogEntry>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        }
+      }
+    },
     "recipient": {
       "id": "recipient",
       "name": "Recipient",
@@ -4547,7 +5502,7 @@
           "page": "Endpoints",
           "gettingStarted": true,
           "resource": "function",
-          "signature": "createEnvelope(endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest): Promise<IEnvelope>",
+          "signature": "createEnvelope(endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest): Promise<IEnvelope & object>",
           "summary": "Create an envelope",
           "params": [
             {
@@ -4566,7 +5521,7 @@
             }
           ],
           "returns": {
-            "type": "Promise<IEnvelope>",
+            "type": "Promise<IEnvelope & object>",
             "description": ""
           },
           "throws": [],
@@ -4708,6 +5663,44 @@
           },
           "throws": [],
           "examples": [],
+          "deprecated": false
+        },
+        "envelope.formatFieldNumber": {
+          "sdkOperation": "envelope.formatFieldNumber",
+          "kind": "function",
+          "name": "formatFieldNumber",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "formatFieldNumber(format: IFieldNumberFormat | null | undefined, value: string | null | undefined): string",
+          "summary": "Show a number field's stored value the way its format writes it, like \"$12,450.50\" for 12450.5 as en-US currency.\nPass a text field's config.number. Values that aren't plain numbers come back unchanged.",
+          "params": [
+            {
+              "name": "format",
+              "type": "IFieldNumberFormat | null | undefined",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "value",
+              "type": "string | null | undefined",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "string",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {formatFieldNumber} from '@verdocs/js-sdk';\n\nformatFieldNumber({style: 'number', locale: 'de-DE', decimals: 2}, '12450.5'); // '12.450,50'"
+            }
+          ],
           "deprecated": false
         },
         "envelope.getCombinedEnvelopeDocumentDownloadLink": {
@@ -5026,6 +6019,44 @@
           "examples": [],
           "deprecated": false
         },
+        "envelope.getFieldFormatProblem": {
+          "sdkOperation": "envelope.getFieldFormatProblem",
+          "kind": "function",
+          "name": "getFieldFormatProblem",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getFieldFormatProblem(field: IEnvelopeField, value: string): TFieldFormatProblem | null",
+          "summary": "Check a text field's value against its format (validator, or number style and range), mask, pattern, and character\nlimit, returning the first check it fails or null. Empty values pass, since isFieldFilled decides whether a field\nhas to be filled in. Number fields accept their stored plain number or the text their locale writes.",
+          "params": [
+            {
+              "name": "field",
+              "type": "IEnvelopeField",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "TFieldFormatProblem | null",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getFieldFormatProblem} from '@verdocs/js-sdk';\n\ngetFieldFormatProblem({...field, validator: 'email'}, 'jordan@example'); // 'format'\ngetFieldFormatProblem({...field, config: {type: 'textbox', input_mask: '(___) ___-____'}}, '(555) 012-3456'); // null"
+            }
+          ],
+          "deprecated": false
+        },
         "envelope.getMyRecipient": {
           "sdkOperation": "envelope.getMyRecipient",
           "kind": "function",
@@ -5250,7 +6281,7 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "isFieldFilled(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean | '' | null",
+          "signature": "isFieldFilled(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean",
           "summary": "",
           "params": [
             {
@@ -5269,7 +6300,7 @@
             }
           ],
           "returns": {
-            "type": "boolean | '' | null",
+            "type": "boolean",
             "description": ""
           },
           "throws": [],
@@ -5283,8 +6314,8 @@
           "page": "Helpers",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "isFieldValid(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean | '' | null",
-          "summary": "",
+          "signature": "isFieldValid(field: IEnvelopeField, allRecipientFields: IEnvelopeField[]): boolean",
+          "summary": "Check whether a field is ready to submit. A required field has to be filled in. An optional field can be\nleft empty, but a text field that has a value still has to pass getFieldFormatProblem, and a date has to fall\nwithin its config's allowed range. Read-only fields are always ready, since the signer can't change them.",
           "params": [
             {
               "name": "field",
@@ -5302,11 +6333,87 @@
             }
           ],
           "returns": {
-            "type": "boolean | '' | null",
+            "type": "boolean",
             "description": ""
           },
           "throws": [],
           "examples": [],
+          "deprecated": false
+        },
+        "envelope.parseFieldNumber": {
+          "sdkOperation": "envelope.parseFieldNumber",
+          "kind": "function",
+          "name": "parseFieldNumber",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "parseFieldNumber(format: IFieldNumberFormat | null | undefined, text: string | null | undefined): number | null",
+          "summary": "Read a number the way a number format's locale writes it, like \"12.450,50\" for de-DE or \"$12,450.50\" for en-US.\nPass a text field's config.number. Returns null when the text isn't a number. Save the result as a plain string\n(String(number)), since that's how number fields store their values.",
+          "params": [
+            {
+              "name": "format",
+              "type": "IFieldNumberFormat | null | undefined",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "text",
+              "type": "string | null | undefined",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "number | null",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {parseFieldNumber} from '@verdocs/js-sdk';\n\nparseFieldNumber({style: 'number', locale: 'de-DE'}, '12.450,50'); // 12450.5"
+            }
+          ],
+          "deprecated": false
+        },
+        "envelope.previewEnvelope": {
+          "sdkOperation": "envelope.previewEnvelope",
+          "kind": "function",
+          "name": "previewEnvelope",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "previewEnvelope(endpoint: VerdocsEndpoint, request: ICreateEnvelopeFromTemplateRequest): Promise<IEnvelopeDryRun>",
+          "summary": "Check a template send without making it: runs every check createEnvelope makes (template access, recipients, brand,\nprefill_data, and strict mode) and returns the value each field would get, without creating an envelope or contacting\nanyone. This is the dry_run option of POST /v2/envelopes.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "request",
+              "type": "ICreateEnvelopeFromTemplateRequest",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IEnvelopeDryRun>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {previewEnvelope} from '@verdocs/js-sdk/Envelopes';\n\nconst {fields, prefill_result} = await previewEnvelope(VerdocsEndpoint.getDefault(), request);"
+            }
+          ],
           "deprecated": false
         },
         "envelope.recipientCanAct": {
@@ -6192,6 +7299,44 @@
             {
               "language": "typescript",
               "code": "import {getTemplate} from '@verdocs/js-sdk/Templates';\n\nconst template = await getTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');"
+            }
+          ],
+          "deprecated": false
+        },
+        "template.getTemplateDataContract": {
+          "sdkOperation": "template.getTemplateDataContract",
+          "kind": "function",
+          "name": "getTemplateDataContract",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getTemplateDataContract(endpoint: VerdocsEndpoint, templateId: string): Promise<IDataContract>",
+          "summary": "Get the data a template's fields can be filled with: each data key, its type, how many fields use it, whether it's\nneeded, and its options. The JSON Schema describes the prefill_data that createEnvelope accepts for this template,\nand contract_hash changes only when the contract does, so a CI check can store it and fail when it changes.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataContract>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getTemplateDataContract} from '@verdocs/js-sdk/Templates';\n\nconst {keys, contract_hash} = await getTemplateDataContract(VerdocsEndpoint.getDefault(), templateId);"
             }
           ],
           "deprecated": false
@@ -10246,7 +11391,7 @@
           "examples": [
             {
               "language": "typescript",
-              "code": "import {getValidators} from '@verdocs/js-sdk';\n\nconst available = getValidators(); // ['email', 'phone', 'url', 'postal_code', 'number', 'date']"
+              "code": "import {getValidators} from '@verdocs/js-sdk';\n\nconst available = getValidators(); // ['email', 'phone', 'url', 'postal_code', 'number', 'date', 'ssn']"
             }
           ],
           "deprecated": false

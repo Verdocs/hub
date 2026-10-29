@@ -2,7 +2,7 @@ import { IEnvelope, IEnvelopeDocument, IEnvelopeField, IEnvelopeFieldSettings } 
 import { TEnvelopeUpdateResult } from '../BaseTypes';
 import { VerdocsEndpoint } from '../VerdocsEndpoint';
 import { retryOnceOnTimeout } from '../Utils/Retry';
-import { TCreateEnvelopeRequest } from './Types';
+import { ICreateEnvelopeFromTemplateRequest, IEnvelopeDryRun, IPrefillResult, TCreateEnvelopeRequest } from './Types';
 
 // TODO: We need to re-review all of the models and input types/docs to be sure they match the latest
 //  API work.
@@ -61,11 +61,36 @@ import { TCreateEnvelopeRequest } from './Types';
  * @apiBody string expires_at? If set, the envelope expires at this date and time and its status becomes 'expired'. Must be at least 1 day in the future.
  * @apiBody string timezone? Define the long-form timezone.
  * @apiBody string locale? Define the locale code.
+ * @apiBody object prefill_data? With a template_id, values for fields that have a data_key, keyed by data_key. Nested objects and dotted keys mean the same key. A fields entry for the same field wins. The response then includes prefill_result, with how many fields were filled and any keys that went unused, were missing, or didn't fit their field.
+ * @apiBody object prefill_options? Set "strict" to true to reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing.
+ * @apiBody string(format:uuid) data_catalog_id? The data catalog the field data_keys come from, recorded on the envelope. Defaults to the template's catalog, then the organization default.
+ * @apiBody boolean dry_run? With a template_id, run every check a real send makes and return the value each field would get (and any prefill_result) without creating or sending anything.
  * @apiSuccess IEnvelope . The newly-created envelope.
  */
 export const createEnvelope = async (endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest) =>
   endpoint.api //
-    .post<IEnvelope>('/v2/envelopes', request)
+    .post<IEnvelope & { prefill_result?: IPrefillResult }>('/v2/envelopes', request)
+    .then((r) => r.data);
+
+/**
+ * Check a template send without making it: runs every check createEnvelope makes (template access, recipients, brand,
+ * prefill_data, and strict mode) and returns the value each field would get, without creating an envelope or contacting
+ * anyone. This is the dry_run option of POST /v2/envelopes.
+ *
+ * ```typescript
+ * import {previewEnvelope} from '@verdocs/js-sdk/Envelopes';
+ *
+ * const {fields, prefill_result} = await previewEnvelope(VerdocsEndpoint.getDefault(), request);
+ * ```
+ *
+ * @group Envelopes
+ * @sdkOperation envelope.previewEnvelope
+ * @sdkGroup Envelope
+ * @sdkPage Endpoints
+ */
+export const previewEnvelope = async (endpoint: VerdocsEndpoint, request: ICreateEnvelopeFromTemplateRequest) =>
+  endpoint.api //
+    .post<IEnvelopeDryRun>('/v2/envelopes', { ...request, dry_run: true })
     .then((r) => r.data);
 
 /**
