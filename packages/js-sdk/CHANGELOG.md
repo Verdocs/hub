@@ -1,5 +1,15 @@
 # @verdocs/js-sdk
 
+## 6.16.8
+
+### Patch Changes
+
+- - `IPrefillResult` now includes `format_problems`, listing prefilled values that went in their field but don't fit its format, range, mask, pattern, or character limit.
+  - `ICreateEnvelopeDirectlyRequest` now accepts `prefill_data` and `prefill_options`, so envelopes sent without a template can be filled from your data too.
+  - Docs have been updated to describe prefill on envelopes sent without a template and the format checks strict mode now includes.
+  - `IPrefillOptions` now includes `ignore_unused`, so strict mode can still list keys no field uses without rejecting the request for them.
+  - `previewEnvelope` now accepts envelopes sent without a template.
+
 ## 6.16.7
 
 ### Patch Changes
