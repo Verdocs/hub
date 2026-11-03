@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.16.7",
+  "version": "6.16.8",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -6631,8 +6631,8 @@
           "page": "Endpoints",
           "gettingStarted": false,
           "resource": "function",
-          "signature": "previewEnvelope(endpoint: VerdocsEndpoint, request: ICreateEnvelopeFromTemplateRequest): Promise<IEnvelopeDryRun>",
-          "summary": "Check a template send without making it: runs every check createEnvelope makes (template access, recipients, brand,\nprefill_data, and strict mode) and returns the value each field would get, without creating an envelope or contacting\nanyone. This is the dry_run option of POST /v2/envelopes.",
+          "signature": "previewEnvelope(endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest): Promise<IEnvelopeDryRun>",
+          "summary": "Check a send without making it: runs every check createEnvelope makes (template access or the documents' text\ntags, recipients, brand, prefill_data, and strict mode) and returns the value each field would get, without creating\nan envelope or contacting anyone. This is the dry_run option of POST /v2/envelopes.",
           "params": [
             {
               "name": "endpoint",
@@ -6643,7 +6643,7 @@
             },
             {
               "name": "request",
-              "type": "ICreateEnvelopeFromTemplateRequest",
+              "type": "TCreateEnvelopeRequest",
               "description": "",
               "optional": false,
               "default": null

@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.16.7",
+    "version": "6.16.8",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -4650,11 +4650,11 @@
                   },
                   "prefill_data": {
                     "type": "object",
-                    "description": "With a template_id, values for fields that have a data_key, keyed by data_key. Nested objects and dotted keys mean the same key. A fields entry for the same field wins. The response then includes prefill_result, with how many fields were filled and any keys that went unused, were missing, or didn't fit their field."
+                    "description": "Values for fields that have a data_key, keyed by data_key. Nested objects and dotted keys mean the same key. With a template_id, a fields entry for the same field wins; without one, a field that already has a default keeps it. The response then includes prefill_result, with how many fields were filled and any keys that went unused, were missing, or didn't fit their field or its format."
                   },
                   "prefill_options": {
                     "type": "object",
-                    "description": "Set \"strict\" to true to reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing."
+                    "description": "Set \"strict\" to true to reject the request, creating nothing, when a key goes unused, a value doesn't fit its field or its format, or the key for a read-only field is missing. Add \"ignore_unused\": true to still list unused keys without rejecting the request for them."
                   },
                   "data_catalog_id": {
                     "type": "string",
@@ -4663,7 +4663,7 @@
                   },
                   "dry_run": {
                     "type": "boolean",
-                    "description": "With a template_id, run every check a real send makes and return the value each field would get (and any prefill_result) without creating or sending anything."
+                    "description": "Run every check a real send makes and return the value each field would get (and any prefill_result) without creating or sending anything."
                   }
                 }
               }
@@ -29038,6 +29038,10 @@
             "type": "boolean",
             "description": "If set, Verdocs will not attempt to contact the recipient via email or SMS."
           },
+          "prefill_data": {
+            "type": "string",
+            "description": "Values for fields that have a data_key, set in fields or in the documents' text tags, keyed by data_key. A field that already has a default keeps it."
+          },
           "recipients": {
             "type": "string",
             "description": "List of recipients to configure."
@@ -31104,9 +31108,13 @@
         "description": "",
         "required": [],
         "properties": {
+          "ignore_unused": {
+            "type": "boolean",
+            "description": "With strict, keys that no field uses are still listed in unused_keys but don't reject the request. Useful when prefill_data is a larger record than the template needs."
+          },
           "strict": {
             "type": "boolean",
-            "description": "Reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing."
+            "description": "Reject the request, creating nothing, when a key goes unused, a value doesn't fit its field or its field's format, or the key for a read-only field is missing."
           }
         }
       },
@@ -31115,6 +31123,7 @@
         "description": "What happened to a request's prefill_data. Keys are reported by name only.",
         "required": [
           "errors",
+          "format_problems",
           "hints",
           "missing_keys",
           "placements_filled",
@@ -31123,7 +31132,11 @@
         "properties": {
           "errors": {
             "type": "string",
-            "description": "Values that didn't fit their field. Those fields keep the template's default."
+            "description": "Values that couldn't go in their field, such as \"maybe\" for a checkbox. Those fields keep their default."
+          },
+          "format_problems": {
+            "type": "string",
+            "description": "Values that went in their field but don't fit its format, range, mask, pattern, or character limit."
           },
           "hints": {
             "type": "string",
@@ -31131,7 +31144,7 @@
           },
           "missing_keys": {
             "type": "string",
-            "description": "Keys on the template's fields that you didn't send."
+            "description": "Keys on the fields that you didn't send."
           },
           "placements_filled": {
             "type": "integer",
