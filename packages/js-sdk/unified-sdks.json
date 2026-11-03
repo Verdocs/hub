@@ -3195,7 +3195,7 @@
       "group": "DataCatalog",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Create a data catalog from scratch, from a JSON sample or JSON Schema, or as a copy of a marketplace catalog. The\norganization's first catalog becomes its default. Admins and owners only.",
+      "summary": "Create a data catalog from scratch, from a JSON sample, JSON Schema, or CSV header row, from a list of entries, or as\na copy of a marketplace catalog. The organization's first catalog becomes its default. Admins and owners only.",
       "variants": [
         {
           "language": "typescript",

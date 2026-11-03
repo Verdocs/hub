@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.16.8",
+    "version": "6.16.9",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -4228,7 +4228,14 @@
                   },
                   "import": {
                     "$ref": "#/components/schemas/IDataCatalogImport",
-                    "description": "Create the entries from a JSON sample or JSON Schema."
+                    "description": "Create the entries from a JSON sample, JSON Schema, or CSV header row."
+                  },
+                  "entries": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ISaveDataCatalogEntry"
+                    },
+                    "description": "The entries to start with. Send one of import, entries, or from_catalog_id."
                   },
                   "from_catalog_id": {
                     "type": "string",
@@ -28956,13 +28963,17 @@
             "type": "string",
             "description": "What the catalog is for."
           },
+          "entries": {
+            "type": "string",
+            "description": "The entries to start with, such as keys reviewed after parsing an import yourself."
+          },
           "from_catalog_id": {
             "type": "string",
             "description": "Import a copy of a marketplace catalog's newest version."
           },
           "import": {
             "type": "string",
-            "description": "Create the catalog's entries from a JSON sample or schema."
+            "description": "Create the catalog's entries from a JSON sample, schema, or CSV header row."
           },
           "name": {
             "type": "string",
@@ -29780,11 +29791,11 @@
         "properties": {
           "content": {
             "type": "string",
-            "description": "The sample or schema, as an object or a JSON string."
+            "description": "The sample or schema, as an object or a JSON string. A CSV header row is a string, and only its first line is read."
           },
           "format": {
             "type": "string",
-            "description": "A sample payload (nested objects become dotted keys), or a JSON Schema."
+            "description": "A sample payload (nested objects become dotted keys), a JSON Schema, or a CSV header row (each column becomes a text key)."
           },
           "keep_examples": {
             "type": "boolean",

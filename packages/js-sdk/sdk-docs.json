@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.16.8",
+  "version": "6.16.9",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -3398,7 +3398,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "createDataCatalog(endpoint: VerdocsEndpoint, organizationId: string, params: ICreateDataCatalogRequest): Promise<IDataCatalog>",
-          "summary": "Create a data catalog from scratch, from a JSON sample or JSON Schema, or as a copy of a marketplace catalog. The\norganization's first catalog becomes its default. Admins and owners only.",
+          "summary": "Create a data catalog from scratch, from a JSON sample, JSON Schema, or CSV header row, from a list of entries, or as\na copy of a marketplace catalog. The organization's first catalog becomes its default. Admins and owners only.",
           "params": [
             {
               "name": "endpoint",
