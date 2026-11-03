@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.16.9",
+  "version": "6.16.10",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -593,6 +593,20 @@
           "resource": "interface",
           "signature": "IDataCatalogListingPreview",
           "summary": "A marketplace catalog with the keys of its newest released version.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IDataCatalogSubmission": {
+          "sdkOperation": "ungrouped.IDataCatalogSubmission",
+          "kind": "interface",
+          "name": "IDataCatalogSubmission",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IDataCatalogSubmission",
+          "summary": "A request to list one released version of a catalog in the public marketplace, and Verdocs' decision on it.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -3854,6 +3868,53 @@
           "examples": [],
           "deprecated": false
         },
+        "dataCatalog.submitDataCatalog": {
+          "sdkOperation": "dataCatalog.submitDataCatalog",
+          "kind": "function",
+          "name": "submitDataCatalog",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "submitDataCatalog(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, notes?: string): Promise<IDataCatalogSubmission>",
+          "summary": "Ask Verdocs to list a catalog's newest released version in the public marketplace, where every organization can\nimport it. Nothing goes public until Verdocs approves it, and later releases stay private until they're submitted and\napproved too. getDataCatalog shows the submission's status and any reason for a rejection. Admins and owners only.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "notes",
+              "type": "string",
+              "description": "",
+              "optional": true,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataCatalogSubmission>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "dataCatalog.updateDataCatalog": {
           "sdkOperation": "dataCatalog.updateDataCatalog",
           "kind": "function",
@@ -3949,6 +4010,46 @@
           ],
           "returns": {
             "type": "Promise<IDataCatalogEntry>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "dataCatalog.withdrawDataCatalogSubmission": {
+          "sdkOperation": "dataCatalog.withdrawDataCatalogSubmission",
+          "kind": "function",
+          "name": "withdrawDataCatalogSubmission",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "withdrawDataCatalogSubmission(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string): Promise<IDataCatalogSubmission>",
+          "summary": "Withdraw a catalog's public marketplace submission while it's still in review. Admins and owners only.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IDataCatalogSubmission>",
             "description": ""
           },
           "throws": [],
