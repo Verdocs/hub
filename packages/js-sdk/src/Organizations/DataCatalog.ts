@@ -4,6 +4,7 @@ import {
   IDataCatalogEntry,
   IDataCatalogListing,
   IDataCatalogListingPreview,
+  IDataCatalogSubmission,
   IDataCatalogUpdate,
   IDataCatalogVersion,
   ISaveDataCatalogEntry,
@@ -202,6 +203,41 @@ export const deleteDataCatalogEntry = (endpoint: VerdocsEndpoint, organizationId
 export const releaseDataCatalogVersion = (endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, notes?: string) =>
   endpoint.api //
     .post<IDataCatalogVersion>(`${catalogPath(organizationId, catalogId)}/versions`, {notes})
+    .then((r) => r.data);
+
+/**
+ * Ask Verdocs to list a catalog's newest released version in the public marketplace, where every organization can
+ * import it. Nothing goes public until Verdocs approves it, and later releases stay private until they're submitted and
+ * approved too. getDataCatalog shows the submission's status and any reason for a rejection. Admins and owners only.
+ *
+ * @group Data Catalogs
+ * @api POST /v2/organizations/:organizationId/data-catalogs/:catalogId/submissions Submit a data catalog to the public marketplace
+ * @apiBody string notes? What reviewers should know about this catalog.
+ * @apiSuccess IDataCatalogSubmission . The submission, in review.
+ *
+ * @sdkOperation dataCatalog.submitDataCatalog
+ * @sdkGroup DataCatalog
+ * @sdkPage Endpoints
+ */
+export const submitDataCatalog = (endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, notes?: string) =>
+  endpoint.api //
+    .post<IDataCatalogSubmission>(`${catalogPath(organizationId, catalogId)}/submissions`, {notes})
+    .then((r) => r.data);
+
+/**
+ * Withdraw a catalog's public marketplace submission while it's still in review. Admins and owners only.
+ *
+ * @group Data Catalogs
+ * @api DELETE /v2/organizations/:organizationId/data-catalogs/:catalogId/submission Withdraw a data catalog submission
+ * @apiSuccess IDataCatalogSubmission . The withdrawn submission.
+ *
+ * @sdkOperation dataCatalog.withdrawDataCatalogSubmission
+ * @sdkGroup DataCatalog
+ * @sdkPage Endpoints
+ */
+export const withdrawDataCatalogSubmission = (endpoint: VerdocsEndpoint, organizationId: string, catalogId: string) =>
+  endpoint.api //
+    .delete<IDataCatalogSubmission>(`${catalogPath(organizationId, catalogId)}/submission`)
     .then((r) => r.data);
 
 /**

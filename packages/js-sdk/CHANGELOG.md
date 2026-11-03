@@ -1,5 +1,13 @@
 # @verdocs/js-sdk
 
+## 6.16.10
+
+### Patch Changes
+
+- - Added `submitDataCatalog` to ask Verdocs to list a catalog's newest release in the public marketplace, and `withdrawDataCatalogSubmission` to withdraw it while it's in review.
+  - `IDataCatalog` now includes `public_version` and, when getting one catalog, its newest `submission`.
+  - Marketplace listings can now be `public` as well as `shared`, and a listing's `version` is the one your organization can import.
+
 ## 6.16.9
 
 ### Patch Changes
