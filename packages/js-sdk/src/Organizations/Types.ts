@@ -275,9 +275,9 @@ export interface IUpdateDataCatalogEntryRequest {
 }
 
 export interface IDataCatalogImport {
-  /** A sample payload (nested objects become dotted keys), or a JSON Schema. */
-  format: 'json_sample' | 'json_schema';
-  /** The sample or schema, as an object or a JSON string. */
+  /** A sample payload (nested objects become dotted keys), a JSON Schema, or a CSV header row (each column becomes a text key). */
+  format: 'json_sample' | 'json_schema' | 'csv_header';
+  /** The sample or schema, as an object or a JSON string. A CSV header row is a string, and only its first line is read. */
   content: Record<string, unknown> | string;
   /** Use the sample's values (or the schema's examples) as entry examples. Defaults to true. */
   keep_examples?: boolean;
@@ -288,8 +288,10 @@ export interface ICreateDataCatalogRequest {
   name?: string;
   /** What the catalog is for. */
   description?: string | null;
-  /** Create the catalog's entries from a JSON sample or schema. */
+  /** Create the catalog's entries from a JSON sample, schema, or CSV header row. */
   import?: IDataCatalogImport;
+  /** The entries to start with, such as keys reviewed after parsing an import yourself. */
+  entries?: ISaveDataCatalogEntry[];
   /** Import a copy of a marketplace catalog's newest version. */
   from_catalog_id?: string;
 }

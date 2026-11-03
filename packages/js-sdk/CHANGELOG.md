@@ -1,5 +1,12 @@
 # @verdocs/js-sdk
 
+## 6.16.9
+
+### Patch Changes
+
+- - Data catalog imports now accept a CSV header row (`format: 'csv_header'`), with each column becoming a text key.
+  - `createDataCatalog` now accepts `entries`, so a catalog can start from keys you've already reviewed.
+
 ## 6.16.8
 
 ### Patch Changes

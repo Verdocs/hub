@@ -56,8 +56,8 @@ export const getDataCatalog = (endpoint: VerdocsEndpoint, organizationId: string
     .then((r) => r.data);
 
 /**
- * Create a data catalog from scratch, from a JSON sample or JSON Schema, or as a copy of a marketplace catalog. The
- * organization's first catalog becomes its default. Admins and owners only.
+ * Create a data catalog from scratch, from a JSON sample, JSON Schema, or CSV header row, from a list of entries, or as
+ * a copy of a marketplace catalog. The organization's first catalog becomes its default. Admins and owners only.
  *
  * ```typescript
  * import {createDataCatalog} from '@verdocs/js-sdk';
@@ -72,7 +72,8 @@ export const getDataCatalog = (endpoint: VerdocsEndpoint, organizationId: string
  * @api POST /v2/organizations/:organizationId/data-catalogs Create a data catalog
  * @apiBody string name? Required unless importing from the marketplace, where it defaults to the source's name.
  * @apiBody string description? What the catalog is for.
- * @apiBody IDataCatalogImport import? Create the entries from a JSON sample or JSON Schema.
+ * @apiBody IDataCatalogImport import? Create the entries from a JSON sample, JSON Schema, or CSV header row.
+ * @apiBody array(items:ISaveDataCatalogEntry) entries? The entries to start with. Send one of import, entries, or from_catalog_id.
  * @apiBody string from_catalog_id? Import a copy of a marketplace catalog's newest version.
  * @apiSuccess IDataCatalog . The new catalog.
  *
