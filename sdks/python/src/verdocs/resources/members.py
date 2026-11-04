@@ -88,8 +88,8 @@ class Members:
         """Update a member's roles via PATCH /v2/organization-members/{profile_id}.
 
         Callers may not update themselves, and only an owner may grant the
-        owner role. Mirrors js-sdk updateOrganizationMember; note the
-        deployed schema accepts roles only (see MemberUpdateParams).
+        owner role. Mirrors js-sdk updateOrganizationMember; this SDK sends
+        roles only (see MemberUpdateParams).
 
         Args:
             profile_id: The profile to update.
@@ -249,8 +249,8 @@ class AsyncMembers:
         """Update a member's roles via PATCH /v2/organization-members/{profile_id}.
 
         Callers may not update themselves, and only an owner may grant the
-        owner role. Mirrors js-sdk updateOrganizationMember; note the
-        deployed schema accepts roles only (see MemberUpdateParams).
+        owner role. Mirrors js-sdk updateOrganizationMember; this SDK sends
+        roles only (see MemberUpdateParams).
 
         Args:
             profile_id: The profile to update.

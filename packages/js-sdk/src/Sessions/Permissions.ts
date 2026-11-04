@@ -187,6 +187,7 @@ export type TPermission = TTemplatePermission | TOrgPermission | TAccountPermiss
 /**
  * Roles provide access to groups of permissions. Note that for historical reasons there is some overlap in the
  * use of the term "role". TRole refers to a user type. A "Role" (IRole) is a Template participant placeholder.
+ * basic_user is deprecated: use member, which the API treats the same.
  *
  * @sdkGroup Permissions
  */
@@ -265,6 +266,7 @@ export const RolePermissions: Record<TRole, TPermission[]> = {
     'envelope:cancel',
     'envelope:view',
   ],
+  /** @deprecated Use member, which the API treats the same. */
   basic_user: ['template:member:read', 'member:view', 'org:view', 'org:list'],
   contact: ['org:view', 'org:list', 'org:create'],
 };

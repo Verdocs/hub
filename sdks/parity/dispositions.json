@@ -940,8 +940,8 @@
     "csharp": "ported: endpoint.Members.CreateAsync (returns CreateMemberResponse {profile, user, password?} per handler; js-sdk's bare-IProfile typing was wrong)"
   },
   "Organizations/Members.ts#updateOrganizationMember": {
-    "python": "ported: endpoint.members.update (adapted: MemberUpdateParams carries roles only per the strict handler schema; the js first_name/last_name fields would 400. Handler role enum currently omits 'member', likely a server oversight, encoded as-is)",
-    "csharp": "ported: endpoint.Members.UpdateAsync (UpdateMemberRequest carries roles only; the strict handler schema rejects the first/last name the js-sdk sends, and rejects role \"member\" on update)"
+    "python": "ported: endpoint.members.update (MemberUpdateParams carries roles only; the deployed schema has also accepted 'member' and first_name/last_name since api e2337e0b, and the name fields aren't exposed yet)",
+    "csharp": "ported: endpoint.Members.UpdateAsync (UpdateMemberRequest carries roles only; the deployed schema has also accepted role \"member\" and first/last name since api e2337e0b, and the name fields aren't exposed yet)"
   },
   "Organizations/Members.ts#lockOrganizationMember": {
     "python": "ported: endpoint.members.lock",

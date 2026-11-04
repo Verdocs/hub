@@ -86,6 +86,7 @@ ROLE_PERMISSIONS: dict[ProfileRole, tuple[Permission, ...]] = {
         "envelope:cancel",
         "envelope:view",
     ),
+    # Deprecated: use "member", which the API treats the same.
     "basic_user": ("template:member:read", "member:view", "org:view", "org:list"),
     "contact": ("org:view", "org:list", "org:create"),
 }

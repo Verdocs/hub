@@ -23,10 +23,8 @@ from .users import AuthenticateResponse
 # "contact" profiles are created through the contacts namespace instead.
 MemberCreateRole = Literal["basic_user", "member", "admin", "owner"]
 
-# Roles assignable when updating a member (UpdateOrganizationMemberSchema). The
-# deployed schema omits "member", so a member demotion currently draws a 400;
-# the js-sdk's TRole suggests that is a server oversight, but the wire rejects it today.
-MemberUpdateRole = Literal["contact", "basic_user", "admin", "owner"]
+# Roles assignable when updating a member (UpdateOrganizationMemberSchema).
+MemberUpdateRole = Literal["contact", "basic_user", "member", "admin", "owner"]
 
 # Roles assignable through an invitation (CreateOrganizationInvitationSchema).
 InvitationRole = Literal["contact", "basic_user", "member", "admin", "owner"]
@@ -175,9 +173,8 @@ class MemberCreateResponse(VerdocsModel):
 class MemberUpdateParams(VerdocsModel):
     """Fields for updating a member (UpdateOrganizationMemberSchema; unknown keys are a 400).
 
-    The deployed schema accepts roles only. The js-sdk also offers first_name
-    and last_name, but the strict server schema rejects them; update names
-    through the profile endpoints instead.
+    The deployed schema also accepts first_name and last_name, which this SDK
+    doesn't send yet; update names through the profile endpoints for now.
     """
 
     roles: list[MemberUpdateRole] | None = None
