@@ -1,5 +1,13 @@
 # @verdocs/js-sdk
 
+## 6.16.12
+
+### Patch Changes
+
+- - `RolePermissions` now gives the deprecated `basic_user` role the same permissions as `member`, matching the API.
+- - Added `createTemplateAnalysis`, `getTemplateAnalyses`, and `getTemplateAnalysis`, so template editors can ask a model to suggest field names, labels, types, formats, radio groups, conditional rules, and signers.
+  - `IPipelineSettings` now includes `ai_field_suggestions`, which an admin turns on before anyone in the organization can ask for suggestions.
+
 ## 6.16.11
 
 ### Patch Changes

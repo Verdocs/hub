@@ -103,3 +103,101 @@ export interface IRolePosition {
   /** The role's place within its step, for display. Leave it out to keep the role's current order. */
   order?: number;
 }
+
+export type TTemplateAnalysisStatus = 'queued' | 'running' | 'complete' | 'failed';
+
+/** A suggested cleanup of one template field. */
+export interface ITemplateAnalysisField {
+  /** The template field this suggestion describes. */
+  name: string;
+  /** A snake_case name suited to prefill data and webhook payloads. */
+  api_name: string;
+  /** What the person filling the form would call it, in sentence case. */
+  label: string;
+  /** The field type that best fits what the form asks for. */
+  type: 'textbox' | 'textarea' | 'date' | 'checkbox' | 'radio' | 'dropdown' | 'signature' | 'initial';
+  /** A validator that clearly applies, or "none". */
+  format: 'none' | 'email' | 'phone' | 'url' | 'postal_code' | 'number' | 'ssn';
+}
+
+/** Fields that answer one question. */
+export interface ITemplateAnalysisGroup {
+  /** A snake_case name for the question. */
+  api_name: string;
+  /** The question, as the form asks it. */
+  label: string;
+  /** "radio" when one answer applies, "checkbox_set" for "check all that apply". */
+  kind: 'radio' | 'checkbox_set';
+  /** The fields that answer it, each with the value it stands for. */
+  members: {name: string; value: string}[];
+  /** Why the model grouped them, in a few words. */
+  reason: string;
+}
+
+/** Fields the form only wants filled depending on another answer. */
+export interface ITemplateAnalysisRule {
+  /** The fields that depend on the answer. */
+  target_names: string[];
+  /** The api_name of the controlling group, or of a single controlling checkbox. */
+  when_group: string;
+  /** The member value that turns the fields on, or "checked". */
+  when_value: string;
+  /** The form wording behind the rule, in a few words. */
+  reason: string;
+}
+
+/** Suggestions for one page of a template document. */
+export interface ITemplateAnalysisPage {
+  /** The template document the page belongs to. */
+  document_id: string;
+  /** The page number, starting at 1. */
+  page: number;
+  /** "failed" when the model couldn't analyze this page. */
+  status: 'complete' | 'failed';
+  /** Who fills this page, as a short role name such as "Applicant". */
+  signer?: string;
+  /** One suggestion per field on the page. */
+  fields?: ITemplateAnalysisField[];
+  /** Radio groups and check-all-that-apply sets. */
+  groups?: ITemplateAnalysisGroup[];
+  /** Conditional fields. */
+  rules?: ITemplateAnalysisRule[];
+  /** Fields on the page that have no suggestion. */
+  missing?: string[];
+  /** What went wrong, when the page failed. */
+  error?: string;
+}
+
+/** A model's suggested cleanup of a template's fields. */
+export interface ITemplateAnalysis {
+  /** The analysis ID. */
+  id: string;
+  /** The template analyzed. */
+  template_id: string;
+  /** The organization that owns the template. */
+  organization_id: string;
+  /** Who asked for the analysis. */
+  profile_id: string | null;
+  /** Poll until this is "complete" or "failed". */
+  status: TTemplateAnalysisStatus;
+  /** The Bedrock model that ran it. */
+  model: string;
+  /** The effort level it ran at. */
+  effort: string;
+  /** Pages with fields to analyze. */
+  pages_total: number;
+  /** Pages finished so far, including any that failed. */
+  pages_done: number;
+  /** The suggestions per page, once complete. Only getTemplateAnalysis includes them. */
+  result?: {pages: ITemplateAnalysisPage[]} | null;
+  /** Token totals across every page. */
+  usage: {input_tokens: number; output_tokens: number; cache_read_input_tokens: number; cache_creation_input_tokens: number} | null;
+  /** What went wrong, when any page failed. */
+  error: string | null;
+  /** When the analysis finished. */
+  completed_at: string | null;
+  /** When the analysis was requested. */
+  created_at: string;
+  /** When the analysis last changed. */
+  updated_at: string;
+}

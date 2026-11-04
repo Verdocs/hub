@@ -7,7 +7,7 @@
 
 import type {TBasicResponse, TSortTemplateBy, TTemplateSender, TTemplateVisibility} from '../BaseTypes';
 import type {IRole, ITemplate, ITemplateField} from '../Models';
-import type {IDataContract, ITemplateFeedbackRequest} from './Types';
+import type {IDataContract, ITemplateAnalysis, ITemplateFeedbackRequest} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export type ITemplateSortBy = 'created_at' | 'updated_at' | 'name' | 'last_used_at' | 'counter' | 'star_counter';
@@ -140,6 +140,76 @@ export const getTemplate = (endpoint: VerdocsEndpoint, templateId: string) => {
 export const getTemplateDataContract = (endpoint: VerdocsEndpoint, templateId: string) =>
   endpoint.api //
     .get<IDataContract>(`/v2/templates/${templateId}/data-contract`)
+    .then((r) => r.data);
+
+/**
+ * Ask a model to suggest cleaner field names, labels, types, and formats, radio groups, conditional rules, and each
+ * page's signer. It runs in the background, about a minute for every five pages, and changes nothing on the template;
+ * poll getTemplateAnalysis until its status is complete or failed. The organization's ai_field_suggestions pipeline
+ * setting must be on, and only people who can edit the template can ask. While one analysis is running, asking again
+ * returns it.
+ *
+ * ```typescript
+ * import {createTemplateAnalysis} from '@verdocs/js-sdk/Templates';
+ *
+ * const {id} = await createTemplateAnalysis(VerdocsEndpoint.getDefault(), templateId);
+ * ```
+ *
+ * @group Templates
+ * @api POST /v2/templates/:template_id/analyses Suggest field cleanup for a template
+ * @apiSuccess ITemplateAnalysis . The new analysis, queued
+ *
+ * @sdkOperation template.createTemplateAnalysis
+ * @sdkGroup Template
+ * @sdkPage Endpoints
+ */
+export const createTemplateAnalysis = (endpoint: VerdocsEndpoint, templateId: string) =>
+  endpoint.api //
+    .post<ITemplateAnalysis>(`/v2/templates/${templateId}/analyses`)
+    .then((r) => r.data);
+
+/**
+ * List a template's ten newest analyses, newest first, without their suggestions.
+ *
+ * ```typescript
+ * import {getTemplateAnalyses} from '@verdocs/js-sdk/Templates';
+ *
+ * const [latest] = await getTemplateAnalyses(VerdocsEndpoint.getDefault(), templateId);
+ * ```
+ *
+ * @group Templates
+ * @api GET /v2/templates/:template_id/analyses List a template's analyses
+ * @apiSuccess array(items: ITemplateAnalysis) . The newest analyses first
+ *
+ * @sdkOperation template.getTemplateAnalyses
+ * @sdkGroup Template
+ * @sdkPage Endpoints
+ */
+export const getTemplateAnalyses = (endpoint: VerdocsEndpoint, templateId: string) =>
+  endpoint.api //
+    .get<ITemplateAnalysis[]>(`/v2/templates/${templateId}/analyses`)
+    .then((r) => r.data);
+
+/**
+ * Get one analysis, with its suggestions per page once it's complete.
+ *
+ * ```typescript
+ * import {getTemplateAnalysis} from '@verdocs/js-sdk/Templates';
+ *
+ * const analysis = await getTemplateAnalysis(VerdocsEndpoint.getDefault(), templateId, analysisId);
+ * ```
+ *
+ * @group Templates
+ * @api GET /v2/templates/:template_id/analyses/:analysis_id Get a template analysis
+ * @apiSuccess ITemplateAnalysis . The analysis and its suggestions
+ *
+ * @sdkOperation template.getTemplateAnalysis
+ * @sdkGroup Template
+ * @sdkPage Endpoints
+ */
+export const getTemplateAnalysis = (endpoint: VerdocsEndpoint, templateId: string, analysisId: string) =>
+  endpoint.api //
+    .get<ITemplateAnalysis>(`/v2/templates/${templateId}/analyses/${analysisId}`)
     .then((r) => r.data);
 
 /**

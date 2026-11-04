@@ -197,12 +197,14 @@ export interface IOrganization {
  *  - process_tags:          Process {{...}} text tags in uploaded documents.
  *  - ignore_invalid_roles:  Skip (vs. reject) document tags whose role name is empty/invalid.
  *  - ignore_invalid_fields: Skip (vs. reject) document tags that don't form a valid field.
+ *  - ai_field_suggestions:  Let template editors ask a model on Amazon Bedrock to suggest field names, groups, and rules.
  */
 export interface IPipelineSettings {
   process_acroforms: boolean;
   process_tags: boolean;
   ignore_invalid_roles: boolean;
   ignore_invalid_fields: boolean;
+  ai_field_suggestions: boolean;
 }
 
 export type TDomainStatus = 'pending' | 'active' | 'failed' | 'suspended';
