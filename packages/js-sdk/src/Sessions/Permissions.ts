@@ -193,6 +193,24 @@ export type TPermission = TTemplatePermission | TOrgPermission | TAccountPermiss
  */
 export type TRole = 'contact' | 'basic_user' | 'member' | 'admin' | 'owner';
 
+const MemberPermissions: TPermission[] = [
+  'template:creator:create:public',
+  'template:creator:create:org',
+  'template:creator:create:personal',
+  'template:creator:delete',
+  'template:creator:visibility',
+  'template:member:read',
+  'template:member:write',
+  'template:member:delete',
+  'member:view',
+  'org:create',
+  'org:view',
+  'org:list',
+  'envelope:create',
+  'envelope:cancel',
+  'envelope:view',
+];
+
 /**
  * A map of the permissions each role confers.
  *
@@ -249,25 +267,9 @@ export const RolePermissions: Record<TRole, TPermission[]> = {
     'envelope:cancel',
     'envelope:view',
   ],
-  member: [
-    'template:creator:create:public',
-    'template:creator:create:org',
-    'template:creator:create:personal',
-    'template:creator:delete',
-    'template:creator:visibility',
-    'template:member:read',
-    'template:member:write',
-    'template:member:delete',
-    'member:view',
-    'org:create',
-    'org:view',
-    'org:list',
-    'envelope:create',
-    'envelope:cancel',
-    'envelope:view',
-  ],
+  member: MemberPermissions,
   /** @deprecated Use member, which the API treats the same. */
-  basic_user: ['template:member:read', 'member:view', 'org:view', 'org:list'],
+  basic_user: MemberPermissions,
   contact: ['org:view', 'org:list', 'org:create'],
 };
 

@@ -267,7 +267,7 @@ def test_role_permission_grants_narrow_with_each_step_down():
     assert "admin:add" in ROLE_PERMISSIONS["admin"]
     assert "admin:add" not in ROLE_PERMISSIONS["member"]
     assert "template:member:write" in ROLE_PERMISSIONS["member"]
-    assert "template:member:write" not in ROLE_PERMISSIONS["basic_user"]
+    assert ROLE_PERMISSIONS["basic_user"] == ROLE_PERMISSIONS["member"]
     assert ROLE_PERMISSIONS["contact"] == ("org:view", "org:list", "org:create")
 
 

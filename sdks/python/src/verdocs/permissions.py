@@ -17,6 +17,24 @@ from .models.sessions import Permission, ProfileRole, TemplatePermission
 
 # Sessions/Permissions.ts
 
+_MEMBER_PERMISSIONS: tuple[Permission, ...] = (
+    "template:creator:create:public",
+    "template:creator:create:org",
+    "template:creator:create:personal",
+    "template:creator:delete",
+    "template:creator:visibility",
+    "template:member:read",
+    "template:member:write",
+    "template:member:delete",
+    "member:view",
+    "org:create",
+    "org:view",
+    "org:list",
+    "envelope:create",
+    "envelope:cancel",
+    "envelope:view",
+)
+
 # A map of the permissions each account role confers (js-sdk Sessions/Permissions.ts RolePermissions).
 ROLE_PERMISSIONS: dict[ProfileRole, tuple[Permission, ...]] = {
     "owner": (
@@ -69,25 +87,9 @@ ROLE_PERMISSIONS: dict[ProfileRole, tuple[Permission, ...]] = {
         "envelope:cancel",
         "envelope:view",
     ),
-    "member": (
-        "template:creator:create:public",
-        "template:creator:create:org",
-        "template:creator:create:personal",
-        "template:creator:delete",
-        "template:creator:visibility",
-        "template:member:read",
-        "template:member:write",
-        "template:member:delete",
-        "member:view",
-        "org:create",
-        "org:view",
-        "org:list",
-        "envelope:create",
-        "envelope:cancel",
-        "envelope:view",
-    ),
+    "member": _MEMBER_PERMISSIONS,
     # Deprecated: use "member", which the API treats the same.
-    "basic_user": ("template:member:read", "member:view", "org:view", "org:list"),
+    "basic_user": _MEMBER_PERMISSIONS,
     "contact": ("org:view", "org:list", "org:create"),
 }
 
