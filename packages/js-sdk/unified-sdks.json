@@ -3239,7 +3239,7 @@
       "group": "DataCatalog",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Delete a data catalog. The default catalog can't be deleted, and neither can a catalog that templates use; that\nrefusal lists the templates. Admins and owners only.",
+      "summary": "Delete a data catalog. A catalog that templates use can't be deleted; that refusal lists the templates. Deleting\nthe default leaves the organization without one until an admin picks another. Admins and owners only.",
       "variants": [
         {
           "language": "typescript",

@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.16.10",
+  "version": "6.16.11",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -2150,7 +2150,7 @@
           "gettingStarted": false,
           "resource": "type",
           "signature": "TRole",
-          "summary": "Roles provide access to groups of permissions. Note that for historical reasons there is some overlap in the\nuse of the term \"role\". TRole refers to a user type. A \"Role\" (IRole) is a Template participant placeholder.",
+          "summary": "Roles provide access to groups of permissions. Note that for historical reasons there is some overlap in the\nuse of the term \"role\". TRole refers to a user type. A \"Role\" (IRole) is a Template participant placeholder.\nbasic_user is deprecated: use member, which the API treats the same.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -3457,7 +3457,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "deleteDataCatalog(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string): Promise<object>",
-          "summary": "Delete a data catalog. The default catalog can't be deleted, and neither can a catalog that templates use; that\nrefusal lists the templates. Admins and owners only.",
+          "summary": "Delete a data catalog. A catalog that templates use can't be deleted; that refusal lists the templates. Deleting\nthe default leaves the organization without one until an admin picks another. Admins and owners only.",
           "params": [
             {
               "name": "endpoint",

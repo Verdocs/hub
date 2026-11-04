@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.16.10",
+    "version": "6.16.11",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -8293,7 +8293,7 @@
                   },
                   "data_catalog_id": {
                     "type": "string",
-                    "description": "The data catalog its fields' data keys come from. When null, the organization's default catalog is used."
+                    "description": "The data catalog its fields' data keys come from. Defaults to the organization's current default, which the template keeps if the default changes."
                   },
                   "initial_reminder": {
                     "type": "number",
@@ -16202,7 +16202,7 @@
                   },
                   "data_catalog_id": {
                     "type": "string",
-                    "description": "The data catalog its fields' data keys come from. When null, the organization's default catalog is used."
+                    "description": "The data catalog its fields' data keys come from. Null switches it to the organization's current default."
                   },
                   "initial_reminder": {
                     "type": "number",
@@ -31433,7 +31433,7 @@
           },
           "default_data_catalog_id": {
             "type": "string",
-            "description": "The data catalog templates use when they don't choose one."
+            "description": "The data catalog new templates start with."
           },
           "deletion_protected": {
             "type": "boolean",
@@ -32053,7 +32053,7 @@
           },
           "data_catalog_id": {
             "type": "string",
-            "description": "The data catalog its fields' data keys come from. When null, the organization's default catalog is used."
+            "description": "The data catalog its fields' data keys come from. Templates start with the organization's default and keep it if the default changes."
           },
           "description": {
             "type": "string",
@@ -32158,7 +32158,7 @@
         "properties": {
           "data_catalog_id": {
             "type": "string",
-            "description": "The data catalog its fields' data keys come from. When null, the organization's default catalog is used."
+            "description": "The data catalog its fields' data keys come from. Defaults to the organization's current default, which the template keeps if the default changes."
           },
           "description": {
             "type": "string",
@@ -33481,7 +33481,7 @@
       },
       "TRole": {
         "type": "string",
-        "description": "Roles provide access to groups of permissions. Note that for historical reasons there is some overlap in the\nuse of the term \"role\". TRole refers to a user type. A \"Role\" (IRole) is a Template participant placeholder.",
+        "description": "Roles provide access to groups of permissions. Note that for historical reasons there is some overlap in the\nuse of the term \"role\". TRole refers to a user type. A \"Role\" (IRole) is a Template participant placeholder.\nbasic_user is deprecated: use member, which the API treats the same.",
         "enum": [
           "contact",
           "basic_user",
