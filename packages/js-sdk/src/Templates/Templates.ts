@@ -194,7 +194,7 @@ export interface ITemplateCreateParams {
   max_reminder_days?: number;
   /** Optional description for the template to help identify it. */
   description?: string;
-  /** The data catalog its fields' data keys come from. When null, the organization's default catalog is used. */
+  /** The data catalog its fields' data keys come from. Defaults to the organization's current default, which the template keeps if the default changes. */
   data_catalog_id?: string | null;
   /**
    * Optional list of roles to create. Documents are required if roles or fields will also be specified. Files may
@@ -241,7 +241,7 @@ const ALLOWED_CREATE_FIELDS: (keyof ITemplateCreateParams)[] = [
  * @apiBody boolean is_personal? Deprecated. If true, the template is personal and can only be seen by the caller. (Use "visibility" for new calls.)
  * @apiBody boolean is_public? Deprecated. If true, the template is public and can be seen by anybody. (Use "visibility" for new calls.)
  * @apiBody TTemplateSender sender? Who may send envelopes using this template
- * @apiBody string data_catalog_id? The data catalog its fields' data keys come from. When null, the organization's default catalog is used.
+ * @apiBody string data_catalog_id? The data catalog its fields' data keys come from. Defaults to the organization's current default, which the template keeps if the default changes.
  * @apiBody number initial_reminder? Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable.
  * @apiBody number followup_reminders? Delay (in seconds) before the subsequent reminders are sent (min: 12hrs). Set to 0 or null to disable.
  * @apiBody number max_reminder_days? Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14.
@@ -373,7 +373,7 @@ export const createTemplateFromSharepoint = (endpoint: VerdocsEndpoint, params: 
  * @apiBody boolean is_personal? Deprecated. If true, the template is personal and can only be seen by the caller. (Use "visibility" for new calls.)
  * @apiBody boolean is_public? Deprecated. If true, the template is public and can be seen by anybody. (Use "visibility" for new calls.)
  * @apiBody TTemplateSender sender? Who may send envelopes using this template
- * @apiBody string data_catalog_id? The data catalog its fields' data keys come from. When null, the organization's default catalog is used.
+ * @apiBody string data_catalog_id? The data catalog its fields' data keys come from. Null switches it to the organization's current default.
  * @apiBody number initial_reminder? Delay in ms before the first reminder is sent (min: 4hrs). Set to 0 or null to disable.
  * @apiBody number followup_reminders? Delay in ms before the subsequent reminders are sent (min: 12hrs). Set to 0 or null to disable.
  * @apiBody number max_reminder_days? Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14.

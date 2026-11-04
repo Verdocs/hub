@@ -108,8 +108,8 @@ export const updateDataCatalog = (endpoint: VerdocsEndpoint, organizationId: str
     .then((r) => r.data);
 
 /**
- * Delete a data catalog. The default catalog can't be deleted, and neither can a catalog that templates use; that
- * refusal lists the templates. Admins and owners only.
+ * Delete a data catalog. A catalog that templates use can't be deleted; that refusal lists the templates. Deleting
+ * the default leaves the organization without one until an admin picks another. Admins and owners only.
  *
  * @group Data Catalogs
  * @api DELETE /v2/organizations/:organizationId/data-catalogs/:catalogId Delete a data catalog

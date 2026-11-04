@@ -1,5 +1,13 @@
 # @verdocs/js-sdk
 
+## 6.16.11
+
+### Patch Changes
+
+- - The `basic_user` role is now marked deprecated. Use `member`, which the API treats the same.
+- - Docs have been updated to explain that deleting the default data catalog leaves the organization without one until an admin picks another.
+  - Docs have been updated to explain that new templates start with the organization's default data catalog and keep it when the default changes.
+
 ## 6.16.10
 
 ### Patch Changes
