@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.16.11",
+  "version": "6.16.12",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -900,7 +900,7 @@
           "gettingStarted": false,
           "resource": "interface",
           "signature": "IPipelineSettings",
-          "summary": "Org-level document-pipeline automation flags. Note that these flags are all \"opt-in\" and default to false if not set.\n\n - process_acroforms:     Auto-detect AcroForm (fillable PDF) fields when a document has no text tags.\n - process_tags:          Process {{...}} text tags in uploaded documents.\n - ignore_invalid_roles:  Skip (vs. reject) document tags whose role name is empty/invalid.\n - ignore_invalid_fields: Skip (vs. reject) document tags that don't form a valid field.",
+          "summary": "Org-level document-pipeline automation flags. Note that these flags are all \"opt-in\" and default to false if not set.\n\n - process_acroforms:     Auto-detect AcroForm (fillable PDF) fields when a document has no text tags.\n - process_tags:          Process {{...}} text tags in uploaded documents.\n - ignore_invalid_roles:  Skip (vs. reject) document tags whose role name is empty/invalid.\n - ignore_invalid_fields: Skip (vs. reject) document tags that don't form a valid field.\n - ai_field_suggestions:  Let template editors ask a model on Amazon Bedrock to suggest field names, groups, and rules.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -1153,6 +1153,76 @@
           "resource": "interface",
           "signature": "ITemplate",
           "summary": "A reusable template for creating signable instruments. Templates are used to create Envelopes which contain\nDocuments to sign.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ITemplateAnalysis": {
+          "sdkOperation": "ungrouped.ITemplateAnalysis",
+          "kind": "interface",
+          "name": "ITemplateAnalysis",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ITemplateAnalysis",
+          "summary": "A model's suggested cleanup of a template's fields.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ITemplateAnalysisField": {
+          "sdkOperation": "ungrouped.ITemplateAnalysisField",
+          "kind": "interface",
+          "name": "ITemplateAnalysisField",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ITemplateAnalysisField",
+          "summary": "A suggested cleanup of one template field.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ITemplateAnalysisGroup": {
+          "sdkOperation": "ungrouped.ITemplateAnalysisGroup",
+          "kind": "interface",
+          "name": "ITemplateAnalysisGroup",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ITemplateAnalysisGroup",
+          "summary": "Fields that answer one question.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ITemplateAnalysisPage": {
+          "sdkOperation": "ungrouped.ITemplateAnalysisPage",
+          "kind": "interface",
+          "name": "ITemplateAnalysisPage",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ITemplateAnalysisPage",
+          "summary": "Suggestions for one page of a template document.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ITemplateAnalysisRule": {
+          "sdkOperation": "ungrouped.ITemplateAnalysisRule",
+          "kind": "interface",
+          "name": "ITemplateAnalysisRule",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ITemplateAnalysisRule",
+          "summary": "Fields the form only wants filled depending on another answer.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -7458,6 +7528,44 @@
           ],
           "deprecated": false
         },
+        "template.createTemplateAnalysis": {
+          "sdkOperation": "template.createTemplateAnalysis",
+          "kind": "function",
+          "name": "createTemplateAnalysis",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "createTemplateAnalysis(endpoint: VerdocsEndpoint, templateId: string): Promise<ITemplateAnalysis>",
+          "summary": "Ask a model to suggest cleaner field names, labels, types, and formats, radio groups, conditional rules, and each\npage's signer. It runs in the background, about a minute for every five pages, and changes nothing on the template;\npoll getTemplateAnalysis until its status is complete or failed. The organization's ai_field_suggestions pipeline\nsetting must be on, and only people who can edit the template can ask. While one analysis is running, asking again\nreturns it.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<ITemplateAnalysis>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {createTemplateAnalysis} from '@verdocs/js-sdk/Templates';\n\nconst {id} = await createTemplateAnalysis(VerdocsEndpoint.getDefault(), templateId);"
+            }
+          ],
+          "deprecated": false
+        },
         "template.createTemplateFromSharepoint": {
           "sdkOperation": "template.createTemplateFromSharepoint",
           "kind": "function",
@@ -7646,6 +7754,89 @@
             {
               "language": "typescript",
               "code": "import {getTemplate} from '@verdocs/js-sdk/Templates';\n\nconst template = await getTemplate((VerdocsEndpoint.getDefault(), '83da3d70-7857-4392-b876-c4592a304bc9');"
+            }
+          ],
+          "deprecated": false
+        },
+        "template.getTemplateAnalyses": {
+          "sdkOperation": "template.getTemplateAnalyses",
+          "kind": "function",
+          "name": "getTemplateAnalyses",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getTemplateAnalyses(endpoint: VerdocsEndpoint, templateId: string): Promise<ITemplateAnalysis[]>",
+          "summary": "List a template's ten newest analyses, newest first, without their suggestions.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<ITemplateAnalysis[]>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getTemplateAnalyses} from '@verdocs/js-sdk/Templates';\n\nconst [latest] = await getTemplateAnalyses(VerdocsEndpoint.getDefault(), templateId);"
+            }
+          ],
+          "deprecated": false
+        },
+        "template.getTemplateAnalysis": {
+          "sdkOperation": "template.getTemplateAnalysis",
+          "kind": "function",
+          "name": "getTemplateAnalysis",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getTemplateAnalysis(endpoint: VerdocsEndpoint, templateId: string, analysisId: string): Promise<ITemplateAnalysis>",
+          "summary": "Get one analysis, with its suggestions per page once it's complete.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "analysisId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<ITemplateAnalysis>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getTemplateAnalysis} from '@verdocs/js-sdk/Templates';\n\nconst analysis = await getTemplateAnalysis(VerdocsEndpoint.getDefault(), templateId, analysisId);"
             }
           ],
           "deprecated": false

@@ -10728,6 +10728,43 @@
       ]
     },
     {
+      "operationId": "template.createTemplateAnalysis",
+      "group": "Template",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Ask a model to suggest cleaner field names, labels, types, and formats, radio groups, conditional rules, and each\npage's signer. It runs in the background, about a minute for every five pages, and changes nothing on the template;\npoll getTemplateAnalysis until its status is complete or failed. The organization's ai_field_suggestions pipeline\nsetting must be on, and only people who can edit the template can ask. While one analysis is running, asking again\nreturns it.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "createTemplateAnalysis(endpoint: VerdocsEndpoint, templateId: string): Promise<ITemplateAnalysis>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<ITemplateAnalysis>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {createTemplateAnalysis} from '@verdocs/js-sdk/Templates';\n\nconst {id} = await createTemplateAnalysis(VerdocsEndpoint.getDefault(), templateId);"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "template.createTemplateFromSharepoint",
       "group": "Template",
       "page": "Endpoints",
@@ -11141,6 +11178,87 @@
           "returns": {
             "type": "Template",
             "description": "The requested template."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "template.getTemplateAnalyses",
+      "group": "Template",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "List a template's ten newest analyses, newest first, without their suggestions.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getTemplateAnalyses(endpoint: VerdocsEndpoint, templateId: string): Promise<ITemplateAnalysis[]>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<ITemplateAnalysis[]>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getTemplateAnalyses} from '@verdocs/js-sdk/Templates';\n\nconst [latest] = await getTemplateAnalyses(VerdocsEndpoint.getDefault(), templateId);"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "template.getTemplateAnalysis",
+      "group": "Template",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get one analysis, with its suggestions per page once it's complete.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getTemplateAnalysis(endpoint: VerdocsEndpoint, templateId: string, analysisId: string): Promise<ITemplateAnalysis>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "analysisId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<ITemplateAnalysis>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getTemplateAnalysis} from '@verdocs/js-sdk/Templates';\n\nconst analysis = await getTemplateAnalysis(VerdocsEndpoint.getDefault(), templateId, analysisId);"
           }
         }
       ]
