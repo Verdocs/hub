@@ -1,4 +1,4 @@
-import type {TTemplateSender, TTemplateVisibility, TEventName, TNotificationType, TUsageType, TWebhookAuthMethod} from './BaseTypes';
+import type {TTemplateSender, TTemplateVisibility, TEventName, TNotificationType, TUsageType, TWebhookAuthMethod, TRecipientSignatureLevel, TCertificateSignatureStatus} from './BaseTypes';
 import type {TEntitlement, TEnvelopeStatus, TEventDetail, TFieldNumberStyle, TFieldTextCase, TFieldType} from './BaseTypes';
 import type {THistoryEvent, TRecipientAuthMethod, TRecipientAuthStep, TRecipientStatus, TRecipientType} from './BaseTypes';
 import type {TWebhookEvent, TEnvelopeDocumentType} from './BaseTypes';
@@ -908,6 +908,11 @@ export interface IRecipient {
    */
   order: number;
   type: TRecipientType;
+  /**
+   * 'qualified' recipients finish by signing every document with their eID (a QES) once all recipients have submitted.
+   * Optional because API versions before QES support don't return it.
+   */
+  signature_level?: TRecipientSignatureLevel;
   delegator: boolean;
   delegated_to: string | null;
   message: string | null;
@@ -952,6 +957,35 @@ export interface IRecipient {
 }
 
 /**
+ * One QES attempt by a 'qualified' recipient on one envelope document. Every document in the same eID Easy session shares
+ * a provider_doc_id.
+ */
+export interface ICertificateSignature {
+  id: string;
+  envelope_id: string;
+  role_name: string;
+  document_id: string;
+  file_name: string;
+  provider: string;
+  provider_doc_id: string;
+  status: TCertificateSignatureStatus;
+  input_sha256: string;
+  output_sha256: string | null;
+  /** e.g. 'mid-signature' (Mobile-ID) or 'smart-id-signature' */
+  signing_method: string | null;
+  /** The level eID Easy reports for the signature it produced: 'qualified' for every QES */
+  signature_level: TRecipientSignatureLevel | null;
+  baseline_verified: string | null;
+  signer_country: string | null;
+  signer_name: string | null;
+  error: string | null;
+  expires_at: string;
+  signed_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
  * A placeholder for an individual recipient, CC, or other party in a signing flow. Roles may be "known" or "unknown."
  * "Known" roles will have their email address supplied in the template which will get copied to envelopes created from
  * it. This is used when a certain party will always be the same, e.g. a leasing agent counter-signing a lease.
@@ -987,6 +1021,13 @@ export interface IRole {
   delegator: boolean | null;
   /** If set, the recipient will not be allowed to change their legal name. */
   name_locked: boolean;
+
+  /**
+   * The default signature level for recipients created from this role. 'qualified' recipients finish by signing every
+   * document with their eID (a QES), which needs the organization's 'qes' or 'qes_sandbox' entitlement. The sender may
+   * override it per recipient when creating an envelope. Optional because API versions before QES support don't return it.
+   */
+  signature_level?: TRecipientSignatureLevel;
 }
 
 export interface ISignature {
