@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.16.12",
+  "version": "6.17.0",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -900,7 +900,7 @@
           "gettingStarted": false,
           "resource": "interface",
           "signature": "IPipelineSettings",
-          "summary": "Org-level document-pipeline automation flags. Note that these flags are all \"opt-in\" and default to false if not set.\n\n - process_acroforms:     Auto-detect AcroForm (fillable PDF) fields when a document has no text tags.\n - process_tags:          Process {{...}} text tags in uploaded documents.\n - ignore_invalid_roles:  Skip (vs. reject) document tags whose role name is empty/invalid.\n - ignore_invalid_fields: Skip (vs. reject) document tags that don't form a valid field.\n - ai_field_suggestions:  Let template editors ask a model on Amazon Bedrock to suggest field names, groups, and rules.",
+          "summary": "Org-level document-pipeline automation flags. Note that these flags are all \"opt-in\" and default to false if not set.\n\n - process_acroforms:     Auto-detect AcroForm (fillable PDF) fields when a document has no text tags.\n - process_tags:          Process {{...}} text tags in uploaded documents.\n - ignore_invalid_roles:  Skip (vs. reject) document tags whose role name is empty/invalid.\n - ignore_invalid_fields: Skip (vs. reject) document tags that don't form a valid field.\n - ai_field_suggestions:  Let template editors ask a model on Amazon Bedrock to suggest field names, groups, and rules.\n                          Needs an active envelope plan.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -7536,7 +7536,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "createTemplateAnalysis(endpoint: VerdocsEndpoint, templateId: string): Promise<ITemplateAnalysis>",
-          "summary": "Ask a model to suggest cleaner field names, labels, types, and formats, radio groups, conditional rules, and each\npage's signer. It runs in the background, about a minute for every five pages, and changes nothing on the template;\npoll getTemplateAnalysis until its status is complete or failed. The organization's ai_field_suggestions pipeline\nsetting must be on, and only people who can edit the template can ask. While one analysis is running, asking again\nreturns it.",
+          "summary": "Ask a model to suggest cleaner field names, labels, types, and formats, radio groups, conditional rules, and each\npage's signer. It runs in the background, about a minute for every five pages, and changes nothing on the template;\npoll getTemplateAnalysis until its status is complete or failed. The organization needs an active envelope plan and\nits ai_field_suggestions pipeline setting turned on, and only people who can edit the template can ask. While one analysis is running, asking again\nreturns it.",
           "params": [
             {
               "name": "endpoint",

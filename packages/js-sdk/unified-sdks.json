@@ -10732,7 +10732,7 @@
       "group": "Template",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Ask a model to suggest cleaner field names, labels, types, and formats, radio groups, conditional rules, and each\npage's signer. It runs in the background, about a minute for every five pages, and changes nothing on the template;\npoll getTemplateAnalysis until its status is complete or failed. The organization's ai_field_suggestions pipeline\nsetting must be on, and only people who can edit the template can ask. While one analysis is running, asking again\nreturns it.",
+      "summary": "Ask a model to suggest cleaner field names, labels, types, and formats, radio groups, conditional rules, and each\npage's signer. It runs in the background, about a minute for every five pages, and changes nothing on the template;\npoll getTemplateAnalysis until its status is complete or failed. The organization needs an active envelope plan and\nits ai_field_suggestions pipeline setting turned on, and only people who can edit the template can ask. While one analysis is running, asking again\nreturns it.",
       "variants": [
         {
           "language": "typescript",
