@@ -1,5 +1,15 @@
 # @verdocs/js-sdk
 
+## 6.17.0
+
+### Minor Changes
+
+- - Added `align` to text field settings, to line a value up with the left, center, or right of its box.
+
+### Patch Changes
+
+- - Docs have been updated to explain that AI field suggestions are for organizations with an active envelope plan.
+
 ## 6.16.12
 
 ### Patch Changes
