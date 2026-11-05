@@ -198,6 +198,7 @@ export interface IOrganization {
  *  - ignore_invalid_roles:  Skip (vs. reject) document tags whose role name is empty/invalid.
  *  - ignore_invalid_fields: Skip (vs. reject) document tags that don't form a valid field.
  *  - ai_field_suggestions:  Let template editors ask a model on Amazon Bedrock to suggest field names, groups, and rules.
+ *                           Needs an active envelope plan.
  */
 export interface IPipelineSettings {
   process_acroforms: boolean;

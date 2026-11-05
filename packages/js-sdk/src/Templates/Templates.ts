@@ -145,8 +145,8 @@ export const getTemplateDataContract = (endpoint: VerdocsEndpoint, templateId: s
 /**
  * Ask a model to suggest cleaner field names, labels, types, and formats, radio groups, conditional rules, and each
  * page's signer. It runs in the background, about a minute for every five pages, and changes nothing on the template;
- * poll getTemplateAnalysis until its status is complete or failed. The organization's ai_field_suggestions pipeline
- * setting must be on, and only people who can edit the template can ask. While one analysis is running, asking again
+ * poll getTemplateAnalysis until its status is complete or failed. The organization needs an active envelope plan and
+ * its ai_field_suggestions pipeline setting turned on, and only people who can edit the template can ask. While one analysis is running, asking again
  * returns it.
  *
  * ```typescript
