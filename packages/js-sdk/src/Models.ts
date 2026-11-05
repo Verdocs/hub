@@ -633,6 +633,8 @@ export interface ITextFieldConfig {
   number?: IFieldNumberFormat;
   /** How the value fits its box when stamped. */
   fit?: IFieldTextFit;
+  /** Lines the value up with the left, center, or right of its box. Without it, values line up on the left. */
+  align?: 'left' | 'center' | 'right';
 }
 
 /** What prints under a signature or initials. Both default to true. */
