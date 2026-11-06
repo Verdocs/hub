@@ -839,6 +839,12 @@ export interface IEnvelopeHistory {
   role_name: string;
   event: THistoryEvent;
   event_detail: TEventDetail;
+  /** The signing session a recipient's step happened in. */
+  session_id?: string | null;
+  /** The IP address a recipient's step came from. */
+  ip_address?: string | null;
+  /** Details of a verification step, such as which attempt it was and whether too many wrong tries locked the recipient out. */
+  data?: Record<string, unknown> | null;
   created_at: string;
 
   envelope?: IEnvelope;
