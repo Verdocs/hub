@@ -1,5 +1,11 @@
 # @verdocs/conformance
 
+## 6.18.0
+
+### Patch Changes
+
+- Updated dependencies: @verdocs/js-sdk@6.18.0
+
 ## 6.17.0
 
 ### Patch Changes

@@ -146,6 +146,32 @@ export interface ITemplateAnalysisRule {
   reason: string;
 }
 
+/** A field the model suggests placing on a page that has none. Coordinates match createField's. */
+export interface ITemplateAnalysisPlacement {
+  /** The field type. */
+  type: 'signature' | 'initial' | 'textbox' | 'date' | 'checkbox' | 'radio';
+  /** Left edge in PDF points from the left of the page. */
+  x: number;
+  /** Bottom edge in PDF points from the bottom of the page. */
+  y: number;
+  /** Width in PDF points. */
+  width: number;
+  /** Height in PDF points. */
+  height: number;
+  /** What the person filling the form would call it, in sentence case. */
+  label: string;
+  /** A snake_case name suited to prefill data and webhook payloads. */
+  api_name: string;
+  /** For radio buttons, the name shared by every option of the same question. */
+  group: string | null;
+  /** Who fills it: one of the template's roles when one fits, otherwise a name read from the page. */
+  role: string;
+  /** How sure the model is that this is a real field, from 0 to 1. */
+  confidence: number;
+  /** What on the page suggested the field, in a few words. */
+  reason: string;
+}
+
 /** Suggestions for one page of a template document. */
 export interface ITemplateAnalysisPage {
   /** The template document the page belongs to. */
@@ -164,6 +190,8 @@ export interface ITemplateAnalysisPage {
   rules?: ITemplateAnalysisRule[];
   /** Fields on the page that have no suggestion. */
   missing?: string[];
+  /** Fields to place, when the template had none. */
+  placements?: ITemplateAnalysisPlacement[];
   /** What went wrong, when the page failed. */
   error?: string;
 }
@@ -184,7 +212,7 @@ export interface ITemplateAnalysis {
   model: string;
   /** The effort level it ran at. */
   effort: string;
-  /** Pages with fields to analyze. */
+  /** Pages to analyze: those with fields, or every page when the template has none. */
   pages_total: number;
   /** Pages finished so far, including any that failed. */
   pages_done: number;

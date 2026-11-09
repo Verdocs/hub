@@ -1,5 +1,15 @@
 # @verdocs/js-sdk
 
+## 6.18.0
+
+### Minor Changes
+
+- - Template analyses now suggest fields to place on templates that have none yet, such as a flat PDF. Each page's `placements` list the type, position, size, label, API name, and role of every suggested field.
+
+### Patch Changes
+
+- - Envelope history now records each step of a signing session: when a session starts, when a one-time code is sent, and each correct or incorrect entry, with the session ID, IP address, and attempt details.
+
 ## 6.17.0
 
 ### Minor Changes
