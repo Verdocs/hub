@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.17.0",
+    "version": "6.18.0",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -31544,7 +31544,20 @@
         "type": "object",
         "description": "",
         "required": [],
-        "properties": {}
+        "properties": {
+          "data": {
+            "type": "string",
+            "description": "Details of a verification step, such as which attempt it was and whether too many wrong tries locked the recipient out."
+          },
+          "ip_address": {
+            "type": "string",
+            "description": "The IP address a recipient's step came from."
+          },
+          "session_id": {
+            "type": "string",
+            "description": "The signing session a recipient's step happened in."
+          }
+        }
       },
       "IEnvelopesSearchResult": {
         "type": "object",
@@ -32701,7 +32714,7 @@
           },
           "pages_total": {
             "type": "integer",
-            "description": "Pages with fields to analyze."
+            "description": "Pages to analyze: those with fields, or every page when the template has none."
           },
           "profile_id": {
             "type": "string",
@@ -32828,6 +32841,10 @@
             "type": "integer",
             "description": "The page number, starting at 1."
           },
+          "placements": {
+            "type": "string",
+            "description": "Fields to place, when the template had none."
+          },
           "rules": {
             "type": "string",
             "description": "Conditional fields."
@@ -32839,6 +32856,69 @@
           "status": {
             "type": "string",
             "description": "\"failed\" when the model couldn't analyze this page."
+          }
+        }
+      },
+      "ITemplateAnalysisPlacement": {
+        "type": "object",
+        "description": "A field the model suggests placing on a page that has none. Coordinates match createField's.",
+        "required": [
+          "api_name",
+          "confidence",
+          "group",
+          "height",
+          "label",
+          "reason",
+          "role",
+          "type",
+          "width",
+          "x",
+          "y"
+        ],
+        "properties": {
+          "api_name": {
+            "type": "string",
+            "description": "A snake_case name suited to prefill data and webhook payloads."
+          },
+          "confidence": {
+            "type": "integer",
+            "description": "How sure the model is that this is a real field, from 0 to 1."
+          },
+          "group": {
+            "type": "string",
+            "description": "For radio buttons, the name shared by every option of the same question."
+          },
+          "height": {
+            "type": "integer",
+            "description": "Height in PDF points."
+          },
+          "label": {
+            "type": "string",
+            "description": "What the person filling the form would call it, in sentence case."
+          },
+          "reason": {
+            "type": "string",
+            "description": "What on the page suggested the field, in a few words."
+          },
+          "role": {
+            "type": "string",
+            "description": "Who fills it: one of the template's roles when one fits, otherwise a name read from the page."
+          },
+          "type": {
+            "type": "string",
+            "description": "The field type."
+          },
+          "width": {
+            "type": "integer",
+            "description": "Width in PDF points."
+          },
+          "x": {
+            "type": "integer",
+            "description": "Left edge in PDF points from the left of the page."
+          },
+          "y": {
+            "type": "integer",
+            "description": "Bottom edge in PDF points from the bottom of the page."
           }
         }
       },
@@ -34079,6 +34159,10 @@
           "recipient:id_failed",
           "recipient:pin_verified",
           "recipient:pin_failed",
+          "recipient:session_started",
+          "recipient:otp_sent",
+          "recipient:otp_verified",
+          "recipient:otp_failed",
           "invitation:resent",
           "envelope:cc",
           "envelope:canceled",
