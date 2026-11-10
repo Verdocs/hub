@@ -49,7 +49,7 @@ import { IEnvelopeDryRun, IPrefillResult, TCreateEnvelopeRequest } from './Types
  * @sdkGettingStarted
  * @api POST /v2/envelopes Create Envelope
  * @apiBody string(format:uuid) template_id If using a template, the ID of the template to copy
- * @apiBody array(items:ICreateEnvelopeRecipientDirectly) recipients A list of recipients to include in the workflow. Must specify one recipient to match each template Role.
+ * @apiBody array(items:ICreateEnvelopeRecipientDirectly) recipients A list of recipients to include in the workflow. Must specify one recipient to match each template Role, except optional roles (required false), which may be left out. An optional role left out is dropped from the envelope along with its fields.
  * @apiBody array(items:IEnvelopeDocument) documents? If not using a template, a list of documents to include in the envelope.
  * @apiBody array(items:IEnvelopeField) fields? If not using a template, a list of fields to include in the envelope.
  * @apiBody string name? Override the name of the envelope (defaults to the template name).

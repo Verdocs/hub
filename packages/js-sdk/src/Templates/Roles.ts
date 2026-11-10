@@ -39,6 +39,7 @@ import {IRole} from '../Models';
  * @apiBody integer(min: 1, default: 1) sequence? Optional 1-based sequence number for the role. Roles that share the same sequence number act in parallel, and will receive invitations at the same time.
  * @apiBody integer(min: 1, default: 1) order? Optional 1-based order number for the role. Controls the left-to-right display order of roles at the same sequence number in the UI components e.g. `<verdocs-template-roles />`.
  * @apiBody boolean delegator? If true, the role may delegate their signing responsibility to another party.
+ * @apiBody boolean required? False makes the role optional, so a send from the template may leave it out. Defaults to true.
  * @apiSuccess IRole . The newly-created role
  *
  * @sdkOperation role.createTemplateRole
@@ -73,6 +74,7 @@ export const createTemplateRole = (endpoint: VerdocsEndpoint, template_id: strin
  * @apiBody integer(min: 1, default: 1) order? Optional 1-based order number for the role.
  * @apiBody boolean delegator? If true, the role may delegate their signing responsibility to another party.
  * @apiBody string(enum:'pin'|'identity'|'') kba_method? Active PIN- or Identity-based KBA for the role.
+ * @apiBody boolean required? False makes the role optional, so a send from the template may leave it out.
  * @apiSuccess IRole . The newly-created role
  *
  * @sdkOperation role.updateTemplateRole

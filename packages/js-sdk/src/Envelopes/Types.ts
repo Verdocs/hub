@@ -395,7 +395,9 @@ export interface IEnvelopeDryRun {
   dry_run: true;
   /** What happened to prefill_data, when it was sent. */
   prefill_result?: IPrefillResult;
-  /** Every field on the template, with the value it would start with (name, role_name, type, data_key, and value). */
+  /** Optional roles the request left out, which the envelope would not include. */
+  omitted_roles: string[];
+  /** Every field the envelope would include, with the value it would start with (name, role_name, type, data_key, and value). */
   fields: {name: string; role_name: string; type: TFieldType; data_key: string | null; value: string | null}[];
 }
 

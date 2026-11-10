@@ -993,6 +993,8 @@ export interface IRole {
   delegator: boolean | null;
   /** If set, the recipient will not be allowed to change their legal name. */
   name_locked: boolean;
+  /** False makes the role optional. A send from the template that leaves it out (no recipient for the role) drops the role and its fields. Defaults to true. */
+  required?: boolean;
 }
 
 export interface ISignature {

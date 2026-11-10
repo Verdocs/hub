@@ -1,5 +1,12 @@
 # @verdocs/js-sdk
 
+## 6.19.0
+
+### Minor Changes
+
+- - Template roles can be optional. Set `required` to false on a role, and a send from the template that leaves it out drops that role and its fields.
+  - Dry runs list the optional roles a send would leave out in `omitted_roles`.
+
 ## 6.18.0
 
 ### Minor Changes
