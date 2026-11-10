@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.18.0",
+    "version": "6.19.0",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -2072,6 +2072,10 @@
                   "delegator": {
                     "type": "boolean",
                     "description": "If true, the role may delegate their signing responsibility to another party."
+                  },
+                  "required": {
+                    "type": "boolean",
+                    "description": "False makes the role optional, so a send from the template may leave it out. Defaults to true."
                   }
                 }
               }
@@ -4603,7 +4607,7 @@
                     "items": {
                       "$ref": "#/components/schemas/ICreateEnvelopeRecipientDirectly"
                     },
-                    "description": "A list of recipients to include in the workflow. Must specify one recipient to match each template Role."
+                    "description": "A list of recipients to include in the workflow. Must specify one recipient to match each template Role, except optional roles (required false), which may be left out. An optional role left out is dropped from the envelope along with its fields."
                   },
                   "documents": {
                     "type": "array",
@@ -17343,6 +17347,10 @@
                       0
                     ],
                     "description": "Active PIN- or Identity-based KBA for the role."
+                  },
+                  "required": {
+                    "type": "boolean",
+                    "description": "False makes the role optional, so a send from the template may leave it out."
                   }
                 }
               }
@@ -31342,7 +31350,8 @@
         "description": "What previewEnvelope returns: the value each field would get, without anything being created.",
         "required": [
           "dry_run",
-          "fields"
+          "fields",
+          "omitted_roles"
         ],
         "properties": {
           "dry_run": {
@@ -31351,7 +31360,11 @@
           },
           "fields": {
             "type": "string",
-            "description": "Every field on the template, with the value it would start with (name, role_name, type, data_key, and value)."
+            "description": "Every field the envelope would include, with the value it would start with (name, role_name, type, data_key, and value)."
+          },
+          "omitted_roles": {
+            "type": "string",
+            "description": "Optional roles the request left out, which the envelope would not include."
           },
           "prefill_result": {
             "type": "string",
@@ -32374,6 +32387,10 @@
           "order": {
             "type": "integer",
             "description": "The order indicates the order in which recipients are listed in a single \"level\" of the workflow. Note that\nrecipients at the same level may act in parallel despite this value. However, it can often be useful to visually\narrange recipients to match related business processes so this field allows for that."
+          },
+          "required": {
+            "type": "boolean",
+            "description": "False makes the role optional. A send from the template that leaves it out (no recipient for the role) drops the role and its fields. Defaults to true."
           },
           "sequence": {
             "type": "integer",
