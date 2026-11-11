@@ -172,5 +172,6 @@ Permission = TemplatePermission | OrgPermission | AccountPermission | EnvelopePe
 # Account-level user types, each conferring a set of permissions. The js-sdk
 # calls this TRole; we rename it because Role is already the template
 # participant placeholder model (the js-sdk itself notes the historical
-# overlap between the two uses of "role").
+# overlap between the two uses of "role"). basic_user is deprecated: use
+# member, which the API treats the same.
 ProfileRole = Literal["contact", "basic_user", "member", "admin", "owner"]

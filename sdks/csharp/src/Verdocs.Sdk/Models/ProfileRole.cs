@@ -12,7 +12,7 @@ public static class ProfileRole
     /// <summary>A contact with no organization membership beyond basic visibility.</summary>
     public const string Contact = "contact";
 
-    /// <summary>A user with read-only access to shared resources.</summary>
+    /// <summary>Deprecated: use <see cref="Member"/>, which the API treats the same.</summary>
     public const string BasicUser = "basic_user";
 
     /// <summary>A regular organization member.</summary>

@@ -1,5 +1,73 @@
 # @verdocs/js-sdk
 
+## 6.19.0
+
+### Minor Changes
+
+- - Template roles can be optional. Set `required` to false on a role, and a send from the template that leaves it out drops that role and its fields.
+  - Dry runs list the optional roles a send would leave out in `omitted_roles`.
+
+## 6.18.0
+
+### Minor Changes
+
+- - Template analyses now suggest fields to place on templates that have none yet, such as a flat PDF. Each page's `placements` list the type, position, size, label, API name, and role of every suggested field.
+
+### Patch Changes
+
+- - Envelope history now records each step of a signing session: when a session starts, when a one-time code is sent, and each correct or incorrect entry, with the session ID, IP address, and attempt details.
+
+## 6.17.0
+
+### Minor Changes
+
+- - Added `align` to text field settings, to line a value up with the left, center, or right of its box.
+
+### Patch Changes
+
+- - Docs have been updated to explain that AI field suggestions are for organizations with an active envelope plan.
+
+## 6.16.12
+
+### Patch Changes
+
+- - `RolePermissions` now gives the deprecated `basic_user` role the same permissions as `member`, matching the API.
+- - Added `createTemplateAnalysis`, `getTemplateAnalyses`, and `getTemplateAnalysis`, so template editors can ask a model to suggest field names, labels, types, formats, radio groups, conditional rules, and signers.
+  - `IPipelineSettings` now includes `ai_field_suggestions`, which an admin turns on before anyone in the organization can ask for suggestions.
+
+## 6.16.11
+
+### Patch Changes
+
+- - The `basic_user` role is now marked deprecated. Use `member`, which the API treats the same.
+- - Docs have been updated to explain that deleting the default data catalog leaves the organization without one until an admin picks another.
+  - Docs have been updated to explain that new templates start with the organization's default data catalog and keep it when the default changes.
+
+## 6.16.10
+
+### Patch Changes
+
+- - Added `submitDataCatalog` to ask Verdocs to list a catalog's newest release in the public marketplace, and `withdrawDataCatalogSubmission` to withdraw it while it's in review.
+  - `IDataCatalog` now includes `public_version` and, when getting one catalog, its newest `submission`.
+  - Marketplace listings can now be `public` as well as `shared`, and a listing's `version` is the one your organization can import.
+
+## 6.16.9
+
+### Patch Changes
+
+- - Data catalog imports now accept a CSV header row (`format: 'csv_header'`), with each column becoming a text key.
+  - `createDataCatalog` now accepts `entries`, so a catalog can start from keys you've already reviewed.
+
+## 6.16.8
+
+### Patch Changes
+
+- - `IPrefillResult` now includes `format_problems`, listing prefilled values that went in their field but don't fit its format, range, mask, pattern, or character limit.
+  - `ICreateEnvelopeDirectlyRequest` now accepts `prefill_data` and `prefill_options`, so envelopes sent without a template can be filled from your data too.
+  - Docs have been updated to describe prefill on envelopes sent without a template and the format checks strict mode now includes.
+  - `IPrefillOptions` now includes `ignore_unused`, so strict mode can still list keys no field uses without rejecting the request for them.
+  - `previewEnvelope` now accepts envelopes sent without a template.
+
 ## 6.16.7
 
 ### Patch Changes

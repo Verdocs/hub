@@ -187,10 +187,29 @@ export type TPermission = TTemplatePermission | TOrgPermission | TAccountPermiss
 /**
  * Roles provide access to groups of permissions. Note that for historical reasons there is some overlap in the
  * use of the term "role". TRole refers to a user type. A "Role" (IRole) is a Template participant placeholder.
+ * basic_user is deprecated: use member, which the API treats the same.
  *
  * @sdkGroup Permissions
  */
 export type TRole = 'contact' | 'basic_user' | 'member' | 'admin' | 'owner';
+
+const MemberPermissions: TPermission[] = [
+  'template:creator:create:public',
+  'template:creator:create:org',
+  'template:creator:create:personal',
+  'template:creator:delete',
+  'template:creator:visibility',
+  'template:member:read',
+  'template:member:write',
+  'template:member:delete',
+  'member:view',
+  'org:create',
+  'org:view',
+  'org:list',
+  'envelope:create',
+  'envelope:cancel',
+  'envelope:view',
+];
 
 /**
  * A map of the permissions each role confers.
@@ -248,24 +267,9 @@ export const RolePermissions: Record<TRole, TPermission[]> = {
     'envelope:cancel',
     'envelope:view',
   ],
-  member: [
-    'template:creator:create:public',
-    'template:creator:create:org',
-    'template:creator:create:personal',
-    'template:creator:delete',
-    'template:creator:visibility',
-    'template:member:read',
-    'template:member:write',
-    'template:member:delete',
-    'member:view',
-    'org:create',
-    'org:view',
-    'org:list',
-    'envelope:create',
-    'envelope:cancel',
-    'envelope:view',
-  ],
-  basic_user: ['template:member:read', 'member:view', 'org:view', 'org:list'],
+  member: MemberPermissions,
+  /** @deprecated Use member, which the API treats the same. */
+  basic_user: MemberPermissions,
   contact: ['org:view', 'org:list', 'org:create'],
 };
 

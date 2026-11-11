@@ -224,6 +224,10 @@ export interface IDataCatalog {
   sharing: 'private' | 'shared';
   /** The newest released version, 0 until the first release. */
   latest_version: number;
+  /** The version Verdocs approved for the public marketplace, null when it isn't listed there. */
+  public_version: number | null;
+  /** The newest public marketplace submission (when getting one catalog), null if there's never been one. */
+  submission?: IDataCatalogSubmission | null;
   /** Whether this is the organization's default catalog. */
   is_default?: boolean;
   /** For an imported catalog, whether its source has released a newer version. */
@@ -275,9 +279,9 @@ export interface IUpdateDataCatalogEntryRequest {
 }
 
 export interface IDataCatalogImport {
-  /** A sample payload (nested objects become dotted keys), or a JSON Schema. */
-  format: 'json_sample' | 'json_schema';
-  /** The sample or schema, as an object or a JSON string. */
+  /** A sample payload (nested objects become dotted keys), a JSON Schema, or a CSV header row (each column becomes a text key). */
+  format: 'json_sample' | 'json_schema' | 'csv_header';
+  /** The sample or schema, as an object or a JSON string. A CSV header row is a string, and only its first line is read. */
   content: Record<string, unknown> | string;
   /** Use the sample's values (or the schema's examples) as entry examples. Defaults to true. */
   keep_examples?: boolean;
@@ -288,8 +292,10 @@ export interface ICreateDataCatalogRequest {
   name?: string;
   /** What the catalog is for. */
   description?: string | null;
-  /** Create the catalog's entries from a JSON sample or schema. */
+  /** Create the catalog's entries from a JSON sample, schema, or CSV header row. */
   import?: IDataCatalogImport;
+  /** The entries to start with, such as keys reviewed after parsing an import yourself. */
+  entries?: ISaveDataCatalogEntry[];
   /** Import a copy of a marketplace catalog's newest version. */
   from_catalog_id?: string;
 }
@@ -320,6 +326,27 @@ export interface IDataCatalogVersion {
   created_at: string;
 }
 
+export type TDataCatalogSubmissionStatus = 'submitted' | 'approved' | 'rejected' | 'withdrawn';
+
+/** A request to list one released version of a catalog in the public marketplace, and Verdocs' decision on it. */
+export interface IDataCatalogSubmission {
+  id: string;
+  catalog_id: string;
+  /** The released version under review. */
+  version: number;
+  status: TDataCatalogSubmissionStatus;
+  /** What the submitter wanted reviewers to know. */
+  notes: string | null;
+  /** The profile that submitted it. */
+  submitted_by: string | null;
+  /** When Verdocs decided. */
+  reviewed_at: string | null;
+  /** The reason for a rejection. */
+  review_notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface IDataCatalogListing {
   /** The catalog's ID, for createDataCatalog's from_catalog_id. */
   id: string;
@@ -327,11 +354,11 @@ export interface IDataCatalogListing {
   name: string;
   /** What the catalog is for. */
   description: string | null;
-  /** How it's offered: shared by an organization above this one. */
-  listing: 'shared';
+  /** How it's offered: "shared" by an organization above this one, or "public" in the marketplace Verdocs reviews. */
+  listing: 'shared' | 'public';
   /** The organization that publishes it. */
   publisher: {id: string; name: string; logo_url: string | null};
-  /** Its newest released version. */
+  /** The version this organization can import: the newest release when shared, the approved version when public. */
   version: number;
   /** When that version was released. */
   released_at: string | null;

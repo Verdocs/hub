@@ -7,7 +7,7 @@
 
 import type {TBasicResponse, TSortTemplateBy, TTemplateSender, TTemplateVisibility} from '../BaseTypes';
 import type {IRole, ITemplate, ITemplateField} from '../Models';
-import type {IDataContract, ITemplateFeedbackRequest} from './Types';
+import type {IDataContract, ITemplateAnalysis, ITemplateFeedbackRequest} from './Types';
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 export type ITemplateSortBy = 'created_at' | 'updated_at' | 'name' | 'last_used_at' | 'counter' | 'star_counter';
@@ -143,6 +143,77 @@ export const getTemplateDataContract = (endpoint: VerdocsEndpoint, templateId: s
     .then((r) => r.data);
 
 /**
+ * Ask a model to suggest cleaner field names, labels, types, and formats, radio groups, conditional rules, and each
+ * page's signer. On a template with no fields yet, it suggests fields to place on each page instead. It runs in the
+ * background, about a minute for every five pages, and changes nothing on the template; poll getTemplateAnalysis until
+ * its status is complete or failed. The organization needs an active envelope plan and its ai_field_suggestions
+ * pipeline setting turned on, and only people who can edit the template can ask. While one analysis is running, asking
+ * again returns it.
+ *
+ * ```typescript
+ * import {createTemplateAnalysis} from '@verdocs/js-sdk/Templates';
+ *
+ * const {id} = await createTemplateAnalysis(VerdocsEndpoint.getDefault(), templateId);
+ * ```
+ *
+ * @group Templates
+ * @api POST /v2/templates/:template_id/analyses Suggest field cleanup for a template
+ * @apiSuccess ITemplateAnalysis . The new analysis, queued
+ *
+ * @sdkOperation template.createTemplateAnalysis
+ * @sdkGroup Template
+ * @sdkPage Endpoints
+ */
+export const createTemplateAnalysis = (endpoint: VerdocsEndpoint, templateId: string) =>
+  endpoint.api //
+    .post<ITemplateAnalysis>(`/v2/templates/${templateId}/analyses`)
+    .then((r) => r.data);
+
+/**
+ * List a template's ten newest analyses, newest first, without their suggestions.
+ *
+ * ```typescript
+ * import {getTemplateAnalyses} from '@verdocs/js-sdk/Templates';
+ *
+ * const [latest] = await getTemplateAnalyses(VerdocsEndpoint.getDefault(), templateId);
+ * ```
+ *
+ * @group Templates
+ * @api GET /v2/templates/:template_id/analyses List a template's analyses
+ * @apiSuccess array(items: ITemplateAnalysis) . The newest analyses first
+ *
+ * @sdkOperation template.getTemplateAnalyses
+ * @sdkGroup Template
+ * @sdkPage Endpoints
+ */
+export const getTemplateAnalyses = (endpoint: VerdocsEndpoint, templateId: string) =>
+  endpoint.api //
+    .get<ITemplateAnalysis[]>(`/v2/templates/${templateId}/analyses`)
+    .then((r) => r.data);
+
+/**
+ * Get one analysis, with its suggestions per page once it's complete.
+ *
+ * ```typescript
+ * import {getTemplateAnalysis} from '@verdocs/js-sdk/Templates';
+ *
+ * const analysis = await getTemplateAnalysis(VerdocsEndpoint.getDefault(), templateId, analysisId);
+ * ```
+ *
+ * @group Templates
+ * @api GET /v2/templates/:template_id/analyses/:analysis_id Get a template analysis
+ * @apiSuccess ITemplateAnalysis . The analysis and its suggestions
+ *
+ * @sdkOperation template.getTemplateAnalysis
+ * @sdkGroup Template
+ * @sdkPage Endpoints
+ */
+export const getTemplateAnalysis = (endpoint: VerdocsEndpoint, templateId: string, analysisId: string) =>
+  endpoint.api //
+    .get<ITemplateAnalysis>(`/v2/templates/${templateId}/analyses/${analysisId}`)
+    .then((r) => r.data);
+
+/**
  * Represents a document to be attached to a template via an externally-accessible URI. A copy of the document will be
  * downloaded from the specified URI. Note that the URI will be accessed without headers or other authorization methods
  * set, so the URI itself must encode any security tokens or keys required to access the file.
@@ -194,7 +265,7 @@ export interface ITemplateCreateParams {
   max_reminder_days?: number;
   /** Optional description for the template to help identify it. */
   description?: string;
-  /** The data catalog its fields' data keys come from. When null, the organization's default catalog is used. */
+  /** The data catalog its fields' data keys come from. Defaults to the organization's current default, which the template keeps if the default changes. */
   data_catalog_id?: string | null;
   /**
    * Optional list of roles to create. Documents are required if roles or fields will also be specified. Files may
@@ -241,7 +312,7 @@ const ALLOWED_CREATE_FIELDS: (keyof ITemplateCreateParams)[] = [
  * @apiBody boolean is_personal? Deprecated. If true, the template is personal and can only be seen by the caller. (Use "visibility" for new calls.)
  * @apiBody boolean is_public? Deprecated. If true, the template is public and can be seen by anybody. (Use "visibility" for new calls.)
  * @apiBody TTemplateSender sender? Who may send envelopes using this template
- * @apiBody string data_catalog_id? The data catalog its fields' data keys come from. When null, the organization's default catalog is used.
+ * @apiBody string data_catalog_id? The data catalog its fields' data keys come from. Defaults to the organization's current default, which the template keeps if the default changes.
  * @apiBody number initial_reminder? Delay (in seconds) before the first reminder is sent (min: 4hrs). Set to 0 or null to disable.
  * @apiBody number followup_reminders? Delay (in seconds) before the subsequent reminders are sent (min: 12hrs). Set to 0 or null to disable.
  * @apiBody number max_reminder_days? Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14.
@@ -373,7 +444,7 @@ export const createTemplateFromSharepoint = (endpoint: VerdocsEndpoint, params: 
  * @apiBody boolean is_personal? Deprecated. If true, the template is personal and can only be seen by the caller. (Use "visibility" for new calls.)
  * @apiBody boolean is_public? Deprecated. If true, the template is public and can be seen by anybody. (Use "visibility" for new calls.)
  * @apiBody TTemplateSender sender? Who may send envelopes using this template
- * @apiBody string data_catalog_id? The data catalog its fields' data keys come from. When null, the organization's default catalog is used.
+ * @apiBody string data_catalog_id? The data catalog its fields' data keys come from. Null switches it to the organization's current default.
  * @apiBody number initial_reminder? Delay in ms before the first reminder is sent (min: 4hrs). Set to 0 or null to disable.
  * @apiBody number followup_reminders? Delay in ms before the subsequent reminders are sent (min: 12hrs). Set to 0 or null to disable.
  * @apiBody number max_reminder_days? Maximum number of days (after envelope creation) for which reminders will be sent. Defaults to 14.

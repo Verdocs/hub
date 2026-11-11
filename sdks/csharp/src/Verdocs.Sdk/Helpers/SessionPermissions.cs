@@ -9,6 +9,25 @@ namespace Verdocs.Helpers;
 /// </summary>
 public static class SessionPermissions
 {
+    private static readonly IReadOnlyList<string> MemberPermissions =
+    [
+        TemplatePermission.CreatePublic,
+        TemplatePermission.CreateOrg,
+        TemplatePermission.CreatePersonal,
+        TemplatePermission.Delete,
+        TemplatePermission.Visibility,
+        TemplatePermission.MemberRead,
+        TemplatePermission.MemberWrite,
+        TemplatePermission.MemberDelete,
+        AccountPermission.MemberView,
+        OrganizationPermission.Create,
+        OrganizationPermission.View,
+        OrganizationPermission.List,
+        EnvelopePermission.Create,
+        EnvelopePermission.Cancel,
+        EnvelopePermission.View,
+    ];
+
     /// <summary>
     /// The permissions each user role confers, ported from the js-sdk's RolePermissions map.
     /// Keys are the <see cref="ProfileRole"/> values.
@@ -68,31 +87,8 @@ public static class SessionPermissions
                 EnvelopePermission.Cancel,
                 EnvelopePermission.View,
             ],
-            [ProfileRole.Member] =
-            [
-                TemplatePermission.CreatePublic,
-                TemplatePermission.CreateOrg,
-                TemplatePermission.CreatePersonal,
-                TemplatePermission.Delete,
-                TemplatePermission.Visibility,
-                TemplatePermission.MemberRead,
-                TemplatePermission.MemberWrite,
-                TemplatePermission.MemberDelete,
-                AccountPermission.MemberView,
-                OrganizationPermission.Create,
-                OrganizationPermission.View,
-                OrganizationPermission.List,
-                EnvelopePermission.Create,
-                EnvelopePermission.Cancel,
-                EnvelopePermission.View,
-            ],
-            [ProfileRole.BasicUser] =
-            [
-                TemplatePermission.MemberRead,
-                AccountPermission.MemberView,
-                OrganizationPermission.View,
-                OrganizationPermission.List,
-            ],
+            [ProfileRole.Member] = MemberPermissions,
+            [ProfileRole.BasicUser] = MemberPermissions,
             [ProfileRole.Contact] =
             [
                 OrganizationPermission.View,

@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Verdocs Platform API",
-    "version": "6.16.7",
+    "version": "6.19.0",
     "description": "The Verdocs Platform API provides endpoints for performing all common operations in the Verdocs Platform. API endpoints follow REST conventions and use standard HTTP methods for most operations. All calls are made via a common endpoint [https://api.verdocs.com](https://api.verdocs.com) and use JSON formatting for both request and response bodies.",
     "termsOfService": "https://verdocs.com/en/eula/",
     "license": {
@@ -2072,6 +2072,10 @@
                   "delegator": {
                     "type": "boolean",
                     "description": "If true, the role may delegate their signing responsibility to another party."
+                  },
+                  "required": {
+                    "type": "boolean",
+                    "description": "False makes the role optional, so a send from the template may leave it out. Defaults to true."
                   }
                 }
               }
@@ -4228,7 +4232,14 @@
                   },
                   "import": {
                     "$ref": "#/components/schemas/IDataCatalogImport",
-                    "description": "Create the entries from a JSON sample or JSON Schema."
+                    "description": "Create the entries from a JSON sample, JSON Schema, or CSV header row."
+                  },
+                  "entries": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ISaveDataCatalogEntry"
+                    },
+                    "description": "The entries to start with. Send one of import, entries, or from_catalog_id."
                   },
                   "from_catalog_id": {
                     "type": "string",
@@ -4596,7 +4607,7 @@
                     "items": {
                       "$ref": "#/components/schemas/ICreateEnvelopeRecipientDirectly"
                     },
-                    "description": "A list of recipients to include in the workflow. Must specify one recipient to match each template Role."
+                    "description": "A list of recipients to include in the workflow. Must specify one recipient to match each template Role, except optional roles (required false), which may be left out. An optional role left out is dropped from the envelope along with its fields."
                   },
                   "documents": {
                     "type": "array",
@@ -4650,11 +4661,11 @@
                   },
                   "prefill_data": {
                     "type": "object",
-                    "description": "With a template_id, values for fields that have a data_key, keyed by data_key. Nested objects and dotted keys mean the same key. A fields entry for the same field wins. The response then includes prefill_result, with how many fields were filled and any keys that went unused, were missing, or didn't fit their field."
+                    "description": "Values for fields that have a data_key, keyed by data_key. Nested objects and dotted keys mean the same key. With a template_id, a fields entry for the same field wins; without one, a field that already has a default keeps it. The response then includes prefill_result, with how many fields were filled and any keys that went unused, were missing, or didn't fit their field or its format."
                   },
                   "prefill_options": {
                     "type": "object",
-                    "description": "Set \"strict\" to true to reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing."
+                    "description": "Set \"strict\" to true to reject the request, creating nothing, when a key goes unused, a value doesn't fit its field or its format, or the key for a read-only field is missing. Add \"ignore_unused\": true to still list unused keys without rejecting the request for them."
                   },
                   "data_catalog_id": {
                     "type": "string",
@@ -4663,7 +4674,7 @@
                   },
                   "dry_run": {
                     "type": "boolean",
-                    "description": "With a template_id, run every check a real send makes and return the value each field would get (and any prefill_result) without creating or sending anything."
+                    "description": "Run every check a real send makes and return the value each field would get (and any prefill_result) without creating or sending anything."
                   }
                 }
               }
@@ -8286,7 +8297,7 @@
                   },
                   "data_catalog_id": {
                     "type": "string",
-                    "description": "The data catalog its fields' data keys come from. When null, the organization's default catalog is used."
+                    "description": "The data catalog its fields' data keys come from. Defaults to the organization's current default, which the template keeps if the default changes."
                   },
                   "initial_reminder": {
                     "type": "number",
@@ -8618,6 +8629,351 @@
             "lang": "java",
             "label": "Java",
             "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/templates?param=value\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
+    "/v2/templates/{template_id}/analyses": {
+      "post": {
+        "operationId": "createTemplateAnalysis",
+        "summary": "Suggest field cleanup for a template",
+        "tags": [
+          "Templates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "template_id",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ITemplateAnalysis"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X POST \"https://api.verdocs.com/v2/templates/TEMPLATE_ID/analyses\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/templates/TEMPLATE_ID/analyses', {\n  method: 'post',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/analyses\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"POST\", \"/v2/templates/{template_id}/analyses\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/analyses\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/analyses\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      },
+      "get": {
+        "operationId": "getTemplateAnalyses",
+        "summary": "List a template's analyses",
+        "tags": [
+          "Templates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "template_id",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ITemplateAnalysis"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X GET \"https://api.verdocs.com/v2/templates/TEMPLATE_ID/analyses\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/templates/TEMPLATE_ID/analyses', { \n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  } \n});\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/analyses\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"GET\", \"/v2/templates/{template_id}/analyses\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/analyses\");\nvar request = new RestRequest(Method.GET);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/analyses\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
           }
         ]
       }
@@ -16195,7 +16551,7 @@
                   },
                   "data_catalog_id": {
                     "type": "string",
-                    "description": "The data catalog its fields' data keys come from. When null, the organization's default catalog is used."
+                    "description": "The data catalog its fields' data keys come from. Null switches it to the organization's current default."
                   },
                   "initial_reminder": {
                     "type": "number",
@@ -16991,6 +17347,10 @@
                       0
                     ],
                     "description": "Active PIN- or Identity-based KBA for the role."
+                  },
+                  "required": {
+                    "type": "boolean",
+                    "description": "False makes the role optional, so a send from the template may leave it out."
                   }
                 }
               }
@@ -22436,6 +22796,187 @@
         ]
       }
     },
+    "/v2/templates/{template_id}/analyses/{analysis_id}": {
+      "get": {
+        "operationId": "getTemplateAnalysis",
+        "summary": "Get a template analysis",
+        "tags": [
+          "Templates"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "template_id",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "analysis_id",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ITemplateAnalysis"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X GET \"https://api.verdocs.com/v2/templates/TEMPLATE_ID/analyses/ANALYSIS_ID\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/templates/TEMPLATE_ID/analyses/ANALYSIS_ID', { \n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  } \n});\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/analyses/ANALYSIS_ID\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"GET\", \"/v2/templates/{template_id}/analyses/{analysis_id}\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/analyses/ANALYSIS_ID\");\nvar request = new RestRequest(Method.GET);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/templates/TEMPLATE_ID/analyses/ANALYSIS_ID\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
     "/v2/templates/{template_id}/data-contract": {
       "get": {
         "operationId": "getTemplateDataContract",
@@ -26615,6 +27156,205 @@
         ]
       }
     },
+    "/v2/organizations/{organizationid}/data-catalogs/{catalogid}/submissions": {
+      "post": {
+        "operationId": "submitDataCatalog",
+        "summary": "Submit a data catalog to the public marketplace",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "catalogid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDataCatalogSubmission"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Body Parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "notes": {
+                    "type": "string",
+                    "description": "What reviewers should know about this catalog."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X POST \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/submissions\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/submissions', {\n  method: 'post',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/submissions\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"POST\", \"/v2/organizations/{organizationid}/data-catalogs/{catalogid}/submissions\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/submissions\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/submissions\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
     "/v2/kba/response": {
       "post": {
         "operationId": "submitKbaChallengeResponse",
@@ -28681,6 +29421,187 @@
           }
         ]
       }
+    },
+    "/v2/organizations/{organizationid}/data-catalogs/{catalogid}/submission": {
+      "delete": {
+        "operationId": "withdrawDataCatalogSubmission",
+        "summary": "Withdraw a data catalog submission",
+        "tags": [
+          "Data Catalogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "catalogid",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDataCatalogSubmission"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X DELETE \"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/submission\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/submission', {\n  method: 'delete',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/submission\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Delete.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"DELETE\", \"/v2/organizations/{organizationid}/data-catalogs/{catalogid}/submission\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/submission\");\nvar request = new RestRequest(Method.DELETE);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.delete(\"https://api.verdocs.com/v2/organizations/ORGANIZATIONID/data-catalogs/CATALOGID/submission\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -28956,13 +29877,17 @@
             "type": "string",
             "description": "What the catalog is for."
           },
+          "entries": {
+            "type": "string",
+            "description": "The entries to start with, such as keys reviewed after parsing an import yourself."
+          },
           "from_catalog_id": {
             "type": "string",
             "description": "Import a copy of a marketplace catalog's newest version."
           },
           "import": {
             "type": "string",
-            "description": "Create the catalog's entries from a JSON sample or schema."
+            "description": "Create the catalog's entries from a JSON sample, schema, or CSV header row."
           },
           "name": {
             "type": "string",
@@ -29037,6 +29962,10 @@
           "no_contact": {
             "type": "boolean",
             "description": "If set, Verdocs will not attempt to contact the recipient via email or SMS."
+          },
+          "prefill_data": {
+            "type": "string",
+            "description": "Values for fields that have a data_key, set in fields or in the documents' text tags, keyed by data_key. A field that already has a default keeps it."
           },
           "recipients": {
             "type": "string",
@@ -29542,6 +30471,7 @@
           "latest_version",
           "name",
           "organization_id",
+          "public_version",
           "sharing",
           "source",
           "source_catalog_id",
@@ -29589,6 +30519,10 @@
             "type": "string",
             "description": "The organization that owns it."
           },
+          "public_version": {
+            "type": "string",
+            "description": "The version Verdocs approved for the public marketplace, null when it isn't listed there."
+          },
           "sharing": {
             "type": "string",
             "description": "\"shared\" makes released versions available to every organization below this one."
@@ -29604,6 +30538,10 @@
           "source_version": {
             "type": "string",
             "description": "The source version this catalog was imported or last updated from."
+          },
+          "submission": {
+            "type": "string",
+            "description": "The newest public marketplace submission (when getting one catalog), null if there's never been one."
           },
           "update_available": {
             "type": "boolean",
@@ -29776,11 +30714,11 @@
         "properties": {
           "content": {
             "type": "string",
-            "description": "The sample or schema, as an object or a JSON string."
+            "description": "The sample or schema, as an object or a JSON string. A CSV header row is a string, and only its first line is read."
           },
           "format": {
             "type": "string",
-            "description": "A sample payload (nested objects become dotted keys), or a JSON Schema."
+            "description": "A sample payload (nested objects become dotted keys), a JSON Schema, or a CSV header row (each column becomes a text key)."
           },
           "keep_examples": {
             "type": "boolean",
@@ -29821,7 +30759,7 @@
           },
           "listing": {
             "type": "string",
-            "description": "How it's offered: shared by an organization above this one."
+            "description": "How it's offered: \"shared\" by an organization above this one, or \"public\" in the marketplace Verdocs reviews."
           },
           "name": {
             "type": "string",
@@ -29837,7 +30775,7 @@
           },
           "version": {
             "type": "integer",
-            "description": "Its newest released version."
+            "description": "The version this organization can import: the newest release when shared, the approved version when public."
           }
         }
       },
@@ -29879,7 +30817,7 @@
           },
           "listing": {
             "type": "string",
-            "description": "How it's offered: shared by an organization above this one."
+            "description": "How it's offered: \"shared\" by an organization above this one, or \"public\" in the marketplace Verdocs reviews."
           },
           "name": {
             "type": "string",
@@ -29895,7 +30833,7 @@
           },
           "version": {
             "type": "integer",
-            "description": "Its newest released version."
+            "description": "The version this organization can import: the newest release when shared, the approved version when public."
           }
         }
       },
@@ -29914,6 +30852,39 @@
           "value": {
             "type": "string",
             "description": "What to send in prefill_data. The label is accepted too."
+          }
+        }
+      },
+      "IDataCatalogSubmission": {
+        "type": "object",
+        "description": "A request to list one released version of a catalog in the public marketplace, and Verdocs' decision on it.",
+        "required": [
+          "notes",
+          "review_notes",
+          "reviewed_at",
+          "submitted_by",
+          "version"
+        ],
+        "properties": {
+          "notes": {
+            "type": "string",
+            "description": "What the submitter wanted reviewers to know."
+          },
+          "review_notes": {
+            "type": "string",
+            "description": "The reason for a rejection."
+          },
+          "reviewed_at": {
+            "type": "string",
+            "description": "When Verdocs decided."
+          },
+          "submitted_by": {
+            "type": "string",
+            "description": "The profile that submitted it."
+          },
+          "version": {
+            "type": "integer",
+            "description": "The released version under review."
           }
         }
       },
@@ -30379,7 +31350,8 @@
         "description": "What previewEnvelope returns: the value each field would get, without anything being created.",
         "required": [
           "dry_run",
-          "fields"
+          "fields",
+          "omitted_roles"
         ],
         "properties": {
           "dry_run": {
@@ -30388,7 +31360,11 @@
           },
           "fields": {
             "type": "string",
-            "description": "Every field on the template, with the value it would start with (name, role_name, type, data_key, and value)."
+            "description": "Every field the envelope would include, with the value it would start with (name, role_name, type, data_key, and value)."
+          },
+          "omitted_roles": {
+            "type": "string",
+            "description": "Optional roles the request left out, which the envelope would not include."
           },
           "prefill_result": {
             "type": "string",
@@ -30581,7 +31557,20 @@
         "type": "object",
         "description": "",
         "required": [],
-        "properties": {}
+        "properties": {
+          "data": {
+            "type": "string",
+            "description": "Details of a verification step, such as which attempt it was and whether too many wrong tries locked the recipient out."
+          },
+          "ip_address": {
+            "type": "string",
+            "description": "The IP address a recipient's step came from."
+          },
+          "session_id": {
+            "type": "string",
+            "description": "The signing session a recipient's step happened in."
+          }
+        }
       },
       "IEnvelopesSearchResult": {
         "type": "object",
@@ -30996,7 +31985,7 @@
           },
           "default_data_catalog_id": {
             "type": "string",
-            "description": "The data catalog templates use when they don't choose one."
+            "description": "The data catalog new templates start with."
           },
           "deletion_protected": {
             "type": "boolean",
@@ -31055,7 +32044,7 @@
       },
       "IPipelineSettings": {
         "type": "object",
-        "description": "Org-level document-pipeline automation flags. Note that these flags are all \"opt-in\" and default to false if not set.\n\n - process_acroforms:     Auto-detect AcroForm (fillable PDF) fields when a document has no text tags.\n - process_tags:          Process {{...}} text tags in uploaded documents.\n - ignore_invalid_roles:  Skip (vs. reject) document tags whose role name is empty/invalid.\n - ignore_invalid_fields: Skip (vs. reject) document tags that don't form a valid field.",
+        "description": "Org-level document-pipeline automation flags. Note that these flags are all \"opt-in\" and default to false if not set.\n\n - process_acroforms:     Auto-detect AcroForm (fillable PDF) fields when a document has no text tags.\n - process_tags:          Process {{...}} text tags in uploaded documents.\n - ignore_invalid_roles:  Skip (vs. reject) document tags whose role name is empty/invalid.\n - ignore_invalid_fields: Skip (vs. reject) document tags that don't form a valid field.\n - ai_field_suggestions:  Let template editors ask a model on Amazon Bedrock to suggest field names, groups, and rules.\n                          Needs an active envelope plan.",
         "required": [],
         "properties": {}
       },
@@ -31104,9 +32093,13 @@
         "description": "",
         "required": [],
         "properties": {
+          "ignore_unused": {
+            "type": "boolean",
+            "description": "With strict, keys that no field uses are still listed in unused_keys but don't reject the request. Useful when prefill_data is a larger record than the template needs."
+          },
           "strict": {
             "type": "boolean",
-            "description": "Reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing."
+            "description": "Reject the request, creating nothing, when a key goes unused, a value doesn't fit its field or its field's format, or the key for a read-only field is missing."
           }
         }
       },
@@ -31115,6 +32108,7 @@
         "description": "What happened to a request's prefill_data. Keys are reported by name only.",
         "required": [
           "errors",
+          "format_problems",
           "hints",
           "missing_keys",
           "placements_filled",
@@ -31123,7 +32117,11 @@
         "properties": {
           "errors": {
             "type": "string",
-            "description": "Values that didn't fit their field. Those fields keep the template's default."
+            "description": "Values that couldn't go in their field, such as \"maybe\" for a checkbox. Those fields keep their default."
+          },
+          "format_problems": {
+            "type": "string",
+            "description": "Values that went in their field but don't fit its format, range, mask, pattern, or character limit."
           },
           "hints": {
             "type": "string",
@@ -31131,7 +32129,7 @@
           },
           "missing_keys": {
             "type": "string",
-            "description": "Keys on the template's fields that you didn't send."
+            "description": "Keys on the fields that you didn't send."
           },
           "placements_filled": {
             "type": "integer",
@@ -31390,6 +32388,10 @@
             "type": "integer",
             "description": "The order indicates the order in which recipients are listed in a single \"level\" of the workflow. Note that\nrecipients at the same level may act in parallel despite this value. However, it can often be useful to visually\narrange recipients to match related business processes so this field allows for that."
           },
+          "required": {
+            "type": "boolean",
+            "description": "False makes the role optional. A send from the template that leaves it out (no recipient for the role) drops the role and its fields. Defaults to true."
+          },
           "sequence": {
             "type": "integer",
             "description": "The sequence number indicates the order in which Roles act. Multiple roles may have the same sequence\nnumber, in which case they may act in parallel. (e.g. all Roles at sequence 2 will receive invites once\nall Recipients at sequence 1 have signed.)"
@@ -31607,7 +32609,7 @@
           },
           "data_catalog_id": {
             "type": "string",
-            "description": "The data catalog its fields' data keys come from. When null, the organization's default catalog is used."
+            "description": "The data catalog its fields' data keys come from. Templates start with the organization's default and keep it if the default changes."
           },
           "description": {
             "type": "string",
@@ -31675,6 +32677,296 @@
           }
         }
       },
+      "ITemplateAnalysis": {
+        "type": "object",
+        "description": "A model's suggested cleanup of a template's fields.",
+        "required": [
+          "completed_at",
+          "created_at",
+          "effort",
+          "error",
+          "id",
+          "model",
+          "organization_id",
+          "pages_done",
+          "pages_total",
+          "profile_id",
+          "status",
+          "template_id",
+          "updated_at",
+          "usage"
+        ],
+        "properties": {
+          "completed_at": {
+            "type": "string",
+            "description": "When the analysis finished."
+          },
+          "created_at": {
+            "type": "string",
+            "description": "When the analysis was requested."
+          },
+          "effort": {
+            "type": "string",
+            "description": "The effort level it ran at."
+          },
+          "error": {
+            "type": "string",
+            "description": "What went wrong, when any page failed."
+          },
+          "id": {
+            "type": "string",
+            "description": "The analysis ID."
+          },
+          "model": {
+            "type": "string",
+            "description": "The Bedrock model that ran it."
+          },
+          "organization_id": {
+            "type": "string",
+            "description": "The organization that owns the template."
+          },
+          "pages_done": {
+            "type": "integer",
+            "description": "Pages finished so far, including any that failed."
+          },
+          "pages_total": {
+            "type": "integer",
+            "description": "Pages to analyze: those with fields, or every page when the template has none."
+          },
+          "profile_id": {
+            "type": "string",
+            "description": "Who asked for the analysis."
+          },
+          "result": {
+            "type": "string",
+            "description": "The suggestions per page, once complete. Only getTemplateAnalysis includes them."
+          },
+          "status": {
+            "type": "string",
+            "description": "Poll until this is \"complete\" or \"failed\"."
+          },
+          "template_id": {
+            "type": "string",
+            "description": "The template analyzed."
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "When the analysis last changed."
+          },
+          "usage": {
+            "type": "string",
+            "description": "Token totals across every page."
+          }
+        }
+      },
+      "ITemplateAnalysisField": {
+        "type": "object",
+        "description": "A suggested cleanup of one template field.",
+        "required": [
+          "api_name",
+          "format",
+          "label",
+          "name",
+          "type"
+        ],
+        "properties": {
+          "api_name": {
+            "type": "string",
+            "description": "A snake_case name suited to prefill data and webhook payloads."
+          },
+          "format": {
+            "type": "string",
+            "description": "A validator that clearly applies, or \"none\"."
+          },
+          "label": {
+            "type": "string",
+            "description": "What the person filling the form would call it, in sentence case."
+          },
+          "name": {
+            "type": "string",
+            "description": "The template field this suggestion describes."
+          },
+          "type": {
+            "type": "string",
+            "description": "The field type that best fits what the form asks for."
+          }
+        }
+      },
+      "ITemplateAnalysisGroup": {
+        "type": "object",
+        "description": "Fields that answer one question.",
+        "required": [
+          "api_name",
+          "kind",
+          "label",
+          "members",
+          "reason"
+        ],
+        "properties": {
+          "api_name": {
+            "type": "string",
+            "description": "A snake_case name for the question."
+          },
+          "kind": {
+            "type": "string",
+            "description": "\"radio\" when one answer applies, \"checkbox_set\" for \"check all that apply\"."
+          },
+          "label": {
+            "type": "string",
+            "description": "The question, as the form asks it."
+          },
+          "members": {
+            "type": "string",
+            "description": "The fields that answer it, each with the value it stands for."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Why the model grouped them, in a few words."
+          }
+        }
+      },
+      "ITemplateAnalysisPage": {
+        "type": "object",
+        "description": "Suggestions for one page of a template document.",
+        "required": [
+          "document_id",
+          "page",
+          "status"
+        ],
+        "properties": {
+          "document_id": {
+            "type": "string",
+            "description": "The template document the page belongs to."
+          },
+          "error": {
+            "type": "string",
+            "description": "What went wrong, when the page failed."
+          },
+          "fields": {
+            "type": "string",
+            "description": "One suggestion per field on the page."
+          },
+          "groups": {
+            "type": "string",
+            "description": "Radio groups and check-all-that-apply sets."
+          },
+          "missing": {
+            "type": "string",
+            "description": "Fields on the page that have no suggestion."
+          },
+          "page": {
+            "type": "integer",
+            "description": "The page number, starting at 1."
+          },
+          "placements": {
+            "type": "string",
+            "description": "Fields to place, when the template had none."
+          },
+          "rules": {
+            "type": "string",
+            "description": "Conditional fields."
+          },
+          "signer": {
+            "type": "string",
+            "description": "Who fills this page, as a short role name such as \"Applicant\"."
+          },
+          "status": {
+            "type": "string",
+            "description": "\"failed\" when the model couldn't analyze this page."
+          }
+        }
+      },
+      "ITemplateAnalysisPlacement": {
+        "type": "object",
+        "description": "A field the model suggests placing on a page that has none. Coordinates match createField's.",
+        "required": [
+          "api_name",
+          "confidence",
+          "group",
+          "height",
+          "label",
+          "reason",
+          "role",
+          "type",
+          "width",
+          "x",
+          "y"
+        ],
+        "properties": {
+          "api_name": {
+            "type": "string",
+            "description": "A snake_case name suited to prefill data and webhook payloads."
+          },
+          "confidence": {
+            "type": "integer",
+            "description": "How sure the model is that this is a real field, from 0 to 1."
+          },
+          "group": {
+            "type": "string",
+            "description": "For radio buttons, the name shared by every option of the same question."
+          },
+          "height": {
+            "type": "integer",
+            "description": "Height in PDF points."
+          },
+          "label": {
+            "type": "string",
+            "description": "What the person filling the form would call it, in sentence case."
+          },
+          "reason": {
+            "type": "string",
+            "description": "What on the page suggested the field, in a few words."
+          },
+          "role": {
+            "type": "string",
+            "description": "Who fills it: one of the template's roles when one fits, otherwise a name read from the page."
+          },
+          "type": {
+            "type": "string",
+            "description": "The field type."
+          },
+          "width": {
+            "type": "integer",
+            "description": "Width in PDF points."
+          },
+          "x": {
+            "type": "integer",
+            "description": "Left edge in PDF points from the left of the page."
+          },
+          "y": {
+            "type": "integer",
+            "description": "Bottom edge in PDF points from the bottom of the page."
+          }
+        }
+      },
+      "ITemplateAnalysisRule": {
+        "type": "object",
+        "description": "Fields the form only wants filled depending on another answer.",
+        "required": [
+          "reason",
+          "target_names",
+          "when_group",
+          "when_value"
+        ],
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "The form wording behind the rule, in a few words."
+          },
+          "target_names": {
+            "type": "string",
+            "description": "The fields that depend on the answer."
+          },
+          "when_group": {
+            "type": "string",
+            "description": "The api_name of the controlling group, or of a single controlling checkbox."
+          },
+          "when_value": {
+            "type": "string",
+            "description": "The member value that turns the fields on, or \"checked\"."
+          }
+        }
+      },
       "ITemplateCreateFromSharepointParams": {
         "type": "object",
         "description": "",
@@ -31712,7 +33004,7 @@
         "properties": {
           "data_catalog_id": {
             "type": "string",
-            "description": "The data catalog its fields' data keys come from. When null, the organization's default catalog is used."
+            "description": "The data catalog its fields' data keys come from. Defaults to the organization's current default, which the template keeps if the default changes."
           },
           "description": {
             "type": "string",
@@ -32026,6 +33318,10 @@
           "type"
         ],
         "properties": {
+          "align": {
+            "type": "string",
+            "description": "Lines the value up with the left, center, or right of its box. Without it, values line up on the left."
+          },
           "fit": {
             "type": "string",
             "description": "How the value fits its box when stamped."
@@ -32616,6 +33912,16 @@
           "choice"
         ]
       },
+      "TDataCatalogSubmissionStatus": {
+        "type": "string",
+        "description": "",
+        "enum": [
+          "submitted",
+          "approved",
+          "rejected",
+          "withdrawn"
+        ]
+      },
       "TDataKeyType": {
         "type": "string",
         "description": "What a caller sends for a data key: text, an ISO date, true or false, or one of a fixed set of choices. \"mixed\" means its fields disagree.",
@@ -32870,6 +34176,10 @@
           "recipient:id_failed",
           "recipient:pin_verified",
           "recipient:pin_failed",
+          "recipient:session_started",
+          "recipient:otp_sent",
+          "recipient:otp_verified",
+          "recipient:otp_failed",
           "invitation:resent",
           "envelope:cc",
           "envelope:canceled",
@@ -33025,7 +34335,7 @@
       },
       "TRole": {
         "type": "string",
-        "description": "Roles provide access to groups of permissions. Note that for historical reasons there is some overlap in the\nuse of the term \"role\". TRole refers to a user type. A \"Role\" (IRole) is a Template participant placeholder.",
+        "description": "Roles provide access to groups of permissions. Note that for historical reasons there is some overlap in the\nuse of the term \"role\". TRole refers to a user type. A \"Role\" (IRole) is a Template participant placeholder.\nbasic_user is deprecated: use member, which the API treats the same.",
         "enum": [
           "contact",
           "basic_user",
@@ -33099,6 +34409,16 @@
           "change_visibility_personal",
           "change_visibility_org",
           "change_visibility_public"
+        ]
+      },
+      "TTemplateAnalysisStatus": {
+        "type": "string",
+        "description": "",
+        "enum": [
+          "queued",
+          "running",
+          "complete",
+          "failed"
         ]
       },
       "TTemplateMemberDelete": {

@@ -2,7 +2,7 @@ import { IEnvelope, IEnvelopeDocument, IEnvelopeField, IEnvelopeFieldSettings } 
 import { TEnvelopeUpdateResult } from '../BaseTypes';
 import { VerdocsEndpoint } from '../VerdocsEndpoint';
 import { retryOnceOnTimeout } from '../Utils/Retry';
-import { ICreateEnvelopeFromTemplateRequest, IEnvelopeDryRun, IPrefillResult, TCreateEnvelopeRequest } from './Types';
+import { IEnvelopeDryRun, IPrefillResult, TCreateEnvelopeRequest } from './Types';
 
 // TODO: We need to re-review all of the models and input types/docs to be sure they match the latest
 //  API work.
@@ -49,7 +49,7 @@ import { ICreateEnvelopeFromTemplateRequest, IEnvelopeDryRun, IPrefillResult, TC
  * @sdkGettingStarted
  * @api POST /v2/envelopes Create Envelope
  * @apiBody string(format:uuid) template_id If using a template, the ID of the template to copy
- * @apiBody array(items:ICreateEnvelopeRecipientDirectly) recipients A list of recipients to include in the workflow. Must specify one recipient to match each template Role.
+ * @apiBody array(items:ICreateEnvelopeRecipientDirectly) recipients A list of recipients to include in the workflow. Must specify one recipient to match each template Role, except optional roles (required false), which may be left out. An optional role left out is dropped from the envelope along with its fields.
  * @apiBody array(items:IEnvelopeDocument) documents? If not using a template, a list of documents to include in the envelope.
  * @apiBody array(items:IEnvelopeField) fields? If not using a template, a list of fields to include in the envelope.
  * @apiBody string name? Override the name of the envelope (defaults to the template name).
@@ -61,10 +61,10 @@ import { ICreateEnvelopeFromTemplateRequest, IEnvelopeDryRun, IPrefillResult, TC
  * @apiBody string expires_at? If set, the envelope expires at this date and time and its status becomes 'expired'. Must be at least 1 day in the future.
  * @apiBody string timezone? Define the long-form timezone.
  * @apiBody string locale? Define the locale code.
- * @apiBody object prefill_data? With a template_id, values for fields that have a data_key, keyed by data_key. Nested objects and dotted keys mean the same key. A fields entry for the same field wins. The response then includes prefill_result, with how many fields were filled and any keys that went unused, were missing, or didn't fit their field.
- * @apiBody object prefill_options? Set "strict" to true to reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing.
+ * @apiBody object prefill_data? Values for fields that have a data_key, keyed by data_key. Nested objects and dotted keys mean the same key. With a template_id, a fields entry for the same field wins; without one, a field that already has a default keeps it. The response then includes prefill_result, with how many fields were filled and any keys that went unused, were missing, or didn't fit their field or its format.
+ * @apiBody object prefill_options? Set "strict" to true to reject the request, creating nothing, when a key goes unused, a value doesn't fit its field or its format, or the key for a read-only field is missing. Add "ignore_unused": true to still list unused keys without rejecting the request for them.
  * @apiBody string(format:uuid) data_catalog_id? The data catalog the field data_keys come from, recorded on the envelope. Defaults to the template's catalog, then the organization default.
- * @apiBody boolean dry_run? With a template_id, run every check a real send makes and return the value each field would get (and any prefill_result) without creating or sending anything.
+ * @apiBody boolean dry_run? Run every check a real send makes and return the value each field would get (and any prefill_result) without creating or sending anything.
  * @apiSuccess IEnvelope . The newly-created envelope.
  */
 export const createEnvelope = async (endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest) =>
@@ -73,9 +73,9 @@ export const createEnvelope = async (endpoint: VerdocsEndpoint, request: TCreate
     .then((r) => r.data);
 
 /**
- * Check a template send without making it: runs every check createEnvelope makes (template access, recipients, brand,
- * prefill_data, and strict mode) and returns the value each field would get, without creating an envelope or contacting
- * anyone. This is the dry_run option of POST /v2/envelopes.
+ * Check a send without making it: runs every check createEnvelope makes (template access or the documents' text
+ * tags, recipients, brand, prefill_data, and strict mode) and returns the value each field would get, without creating
+ * an envelope or contacting anyone. This is the dry_run option of POST /v2/envelopes.
  *
  * ```typescript
  * import {previewEnvelope} from '@verdocs/js-sdk/Envelopes';
@@ -88,7 +88,7 @@ export const createEnvelope = async (endpoint: VerdocsEndpoint, request: TCreate
  * @sdkGroup Envelope
  * @sdkPage Endpoints
  */
-export const previewEnvelope = async (endpoint: VerdocsEndpoint, request: ICreateEnvelopeFromTemplateRequest) =>
+export const previewEnvelope = async (endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest) =>
   endpoint.api //
     .post<IEnvelopeDryRun>('/v2/envelopes', { ...request, dry_run: true })
     .then((r) => r.data);

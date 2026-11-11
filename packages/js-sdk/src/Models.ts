@@ -155,7 +155,7 @@ export interface IOrganization {
   /** Org-level document-pipeline automation flags. */
   pipeline_settings?: Partial<IPipelineSettings> | null;
   default_brand_id?: string | null;
-  /** The data catalog templates use when they don't choose one. */
+  /** The data catalog new templates start with. */
   default_data_catalog_id?: string | null;
   /** The long-form timezone. */
   locale?: string | null;
@@ -197,12 +197,15 @@ export interface IOrganization {
  *  - process_tags:          Process {{...}} text tags in uploaded documents.
  *  - ignore_invalid_roles:  Skip (vs. reject) document tags whose role name is empty/invalid.
  *  - ignore_invalid_fields: Skip (vs. reject) document tags that don't form a valid field.
+ *  - ai_field_suggestions:  Let template editors ask a model on Amazon Bedrock to suggest field names, groups, and rules.
+ *                           Needs an active envelope plan.
  */
 export interface IPipelineSettings {
   process_acroforms: boolean;
   process_tags: boolean;
   ignore_invalid_roles: boolean;
   ignore_invalid_fields: boolean;
+  ai_field_suggestions: boolean;
 }
 
 export type TDomainStatus = 'pending' | 'active' | 'failed' | 'suspended';
@@ -630,6 +633,8 @@ export interface ITextFieldConfig {
   number?: IFieldNumberFormat;
   /** How the value fits its box when stamped. */
   fit?: IFieldTextFit;
+  /** Lines the value up with the left, center, or right of its box. Without it, values line up on the left. */
+  align?: 'left' | 'center' | 'right';
 }
 
 /** What prints under a signature or initials. Both default to true. */
@@ -834,6 +839,12 @@ export interface IEnvelopeHistory {
   role_name: string;
   event: THistoryEvent;
   event_detail: TEventDetail;
+  /** The signing session a recipient's step happened in. */
+  session_id?: string | null;
+  /** The IP address a recipient's step came from. */
+  ip_address?: string | null;
+  /** Details of a verification step, such as which attempt it was and whether too many wrong tries locked the recipient out. */
+  data?: Record<string, unknown> | null;
   created_at: string;
 
   envelope?: IEnvelope;
@@ -1023,6 +1034,8 @@ export interface IRole {
    * override it per recipient when creating an envelope. Optional because API versions before QES support don't return it.
    */
   signature_level?: TRecipientSignatureLevel;
+  /** False makes the role optional. A send from the template that leaves it out (no recipient for the role) drops the role and its fields. Defaults to true. */
+  required?: boolean;
 }
 
 export interface ISignature {
@@ -1066,7 +1079,7 @@ export interface ITemplate {
    * Optional description for the template.
    */
   description?: string;
-  /** The data catalog its fields' data keys come from. When null, the organization's default catalog is used. */
+  /** The data catalog its fields' data keys come from. Templates start with the organization's default and keep it if the default changes. */
   data_catalog_id?: string | null;
   /**
    * Number of times the template has been used.

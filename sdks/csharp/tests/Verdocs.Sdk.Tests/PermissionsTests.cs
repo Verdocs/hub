@@ -175,7 +175,7 @@ public sealed class PermissionsTests
         Assert.Equal(25, SessionPermissions.RolePermissions[ProfileRole.Owner].Count);
         Assert.Equal(21, SessionPermissions.RolePermissions[ProfileRole.Admin].Count);
         Assert.Equal(15, SessionPermissions.RolePermissions[ProfileRole.Member].Count);
-        Assert.Equal(4, SessionPermissions.RolePermissions[ProfileRole.BasicUser].Count);
+        Assert.Equal(SessionPermissions.RolePermissions[ProfileRole.Member], SessionPermissions.RolePermissions[ProfileRole.BasicUser]);
         Assert.Equal(3, SessionPermissions.RolePermissions[ProfileRole.Contact].Count);
     }
 

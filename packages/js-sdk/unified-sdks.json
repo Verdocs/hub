@@ -3195,7 +3195,7 @@
       "group": "DataCatalog",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Create a data catalog from scratch, from a JSON sample or JSON Schema, or as a copy of a marketplace catalog. The\norganization's first catalog becomes its default. Admins and owners only.",
+      "summary": "Create a data catalog from scratch, from a JSON sample, JSON Schema, or CSV header row, from a list of entries, or as\na copy of a marketplace catalog. The organization's first catalog becomes its default. Admins and owners only.",
       "variants": [
         {
           "language": "typescript",
@@ -3239,7 +3239,7 @@
       "group": "DataCatalog",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Delete a data catalog. The default catalog can't be deleted, and neither can a catalog that templates use; that\nrefusal lists the templates. Admins and owners only.",
+      "summary": "Delete a data catalog. A catalog that templates use can't be deleted; that refusal lists the templates. Deleting\nthe default leaves the organization without one until an admin picks another. Admins and owners only.",
       "variants": [
         {
           "language": "typescript",
@@ -3653,6 +3653,53 @@
       ]
     },
     {
+      "operationId": "dataCatalog.submitDataCatalog",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Ask Verdocs to list a catalog's newest released version in the public marketplace, where every organization can\nimport it. Nothing goes public until Verdocs approves it, and later releases stay private until they're submitted and\napproved too. getDataCatalog shows the submission's status and any reason for a rejection. Admins and owners only.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "submitDataCatalog(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string, notes?: string): Promise<IDataCatalogSubmission>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "notes",
+              "type": "string",
+              "optional": true,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IDataCatalogSubmission>"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "dataCatalog.updateDataCatalog",
       "group": "DataCatalog",
       "page": "Endpoints",
@@ -3749,6 +3796,46 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<IDataCatalogEntry>"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "dataCatalog.withdrawDataCatalogSubmission",
+      "group": "DataCatalog",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Withdraw a catalog's public marketplace submission while it's still in review. Admins and owners only.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "withdrawDataCatalogSubmission(endpoint: VerdocsEndpoint, organizationId: string, catalogId: string): Promise<IDataCatalogSubmission>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "organizationId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "catalogId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IDataCatalogSubmission>"
           }
         }
       ]
@@ -9265,11 +9352,11 @@
       "group": "Envelope",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Check a template send without making it: runs every check createEnvelope makes (template access, recipients, brand,\nprefill_data, and strict mode) and returns the value each field would get, without creating an envelope or contacting\nanyone. This is the dry_run option of POST /v2/envelopes.",
+      "summary": "Check a send without making it: runs every check createEnvelope makes (template access or the documents' text\ntags, recipients, brand, prefill_data, and strict mode) and returns the value each field would get, without creating\nan envelope or contacting anyone. This is the dry_run option of POST /v2/envelopes.",
       "variants": [
         {
           "language": "typescript",
-          "signature": "previewEnvelope(endpoint: VerdocsEndpoint, request: ICreateEnvelopeFromTemplateRequest): Promise<IEnvelopeDryRun>",
+          "signature": "previewEnvelope(endpoint: VerdocsEndpoint, request: TCreateEnvelopeRequest): Promise<IEnvelopeDryRun>",
           "params": [
             {
               "name": "endpoint",
@@ -9280,7 +9367,7 @@
             },
             {
               "name": "request",
-              "type": "ICreateEnvelopeFromTemplateRequest",
+              "type": "TCreateEnvelopeRequest",
               "optional": false,
               "default": null,
               "description": ""
@@ -10641,6 +10728,43 @@
       ]
     },
     {
+      "operationId": "template.createTemplateAnalysis",
+      "group": "Template",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Ask a model to suggest cleaner field names, labels, types, and formats, radio groups, conditional rules, and each\npage's signer. On a template with no fields yet, it suggests fields to place on each page instead. It runs in the\nbackground, about a minute for every five pages, and changes nothing on the template; poll getTemplateAnalysis until\nits status is complete or failed. The organization needs an active envelope plan and its ai_field_suggestions\npipeline setting turned on, and only people who can edit the template can ask. While one analysis is running, asking\nagain returns it.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "createTemplateAnalysis(endpoint: VerdocsEndpoint, templateId: string): Promise<ITemplateAnalysis>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<ITemplateAnalysis>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {createTemplateAnalysis} from '@verdocs/js-sdk/Templates';\n\nconst {id} = await createTemplateAnalysis(VerdocsEndpoint.getDefault(), templateId);"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "template.createTemplateFromSharepoint",
       "group": "Template",
       "page": "Endpoints",
@@ -11054,6 +11178,87 @@
           "returns": {
             "type": "Template",
             "description": "The requested template."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "template.getTemplateAnalyses",
+      "group": "Template",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "List a template's ten newest analyses, newest first, without their suggestions.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getTemplateAnalyses(endpoint: VerdocsEndpoint, templateId: string): Promise<ITemplateAnalysis[]>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<ITemplateAnalysis[]>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getTemplateAnalyses} from '@verdocs/js-sdk/Templates';\n\nconst [latest] = await getTemplateAnalyses(VerdocsEndpoint.getDefault(), templateId);"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "template.getTemplateAnalysis",
+      "group": "Template",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get one analysis, with its suggestions per page once it's complete.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getTemplateAnalysis(endpoint: VerdocsEndpoint, templateId: string, analysisId: string): Promise<ITemplateAnalysis>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "templateId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "analysisId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<ITemplateAnalysis>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getTemplateAnalysis} from '@verdocs/js-sdk/Templates';\n\nconst analysis = await getTemplateAnalysis(VerdocsEndpoint.getDefault(), templateId, analysisId);"
           }
         }
       ]

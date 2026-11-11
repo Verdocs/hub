@@ -443,13 +443,17 @@ export interface IEnvelopeDryRun {
   dry_run: true;
   /** What happened to prefill_data, when it was sent. */
   prefill_result?: IPrefillResult;
-  /** Every field on the template, with the value it would start with (name, role_name, type, data_key, and value). */
+  /** Optional roles the request left out, which the envelope would not include. */
+  omitted_roles: string[];
+  /** Every field the envelope would include, with the value it would start with (name, role_name, type, data_key, and value). */
   fields: {name: string; role_name: string; type: TFieldType; data_key: string | null; value: string | null}[];
 }
 
 export interface IPrefillOptions {
-  /** Reject the request, creating nothing, when a key goes unused, a value doesn't fit its field, or the key for a read-only field is missing. */
+  /** Reject the request, creating nothing, when a key goes unused, a value doesn't fit its field or its field's format, or the key for a read-only field is missing. */
   strict?: boolean;
+  /** With strict, keys that no field uses are still listed in unused_keys but don't reject the request. Useful when prefill_data is a larger record than the template needs. */
+  ignore_unused?: boolean;
 }
 
 export interface IPrefillError {
@@ -474,10 +478,12 @@ export interface IPrefillResult {
   placements_filled: number;
   /** Keys you sent that no field uses. */
   unused_keys: string[];
-  /** Keys on the template's fields that you didn't send. */
+  /** Keys on the fields that you didn't send. */
   missing_keys: string[];
-  /** Values that didn't fit their field. Those fields keep the template's default. */
+  /** Values that couldn't go in their field, such as "maybe" for a checkbox. Those fields keep their default. */
   errors: IPrefillError[];
+  /** Values that went in their field but don't fit its format, range, mask, pattern, or character limit. */
+  format_problems: IPrefillError[];
   /** Likely corrections for unused keys. */
   hints: IPrefillHint[];
 }
@@ -521,6 +527,9 @@ export interface ICreateEnvelopeDirectlyRequest {
   brand_key?: string;
   /** The data catalog the field data_keys come from. Defaults to the organization default. */
   data_catalog_id?: string;
+  /** Values for fields that have a data_key, set in fields or in the documents' text tags, keyed by data_key. A field that already has a default keeps it. */
+  prefill_data?: Record<string, unknown>;
+  prefill_options?: IPrefillOptions;
 }
 
 export type TCreateEnvelopeRequest = ICreateEnvelopeFromTemplateRequest | ICreateEnvelopeDirectlyRequest;
