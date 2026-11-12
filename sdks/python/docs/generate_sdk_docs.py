@@ -25,6 +25,7 @@ _RESOURCE_CLASSES: list[tuple[str, str]] = [
     ("verdocs.resources.api_keys", "ApiKeys"),
     ("verdocs.resources.auth", "Auth"),
     ("verdocs.resources.brands", "Brands"),
+    ("verdocs.resources.clickwrap", "Clickwrap"),
     ("verdocs.resources.contacts", "Contacts"),
     ("verdocs.resources.envelopes", "Envelopes"),
     ("verdocs.resources.groups", "Groups"),

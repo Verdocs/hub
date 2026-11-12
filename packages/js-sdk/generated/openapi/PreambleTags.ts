@@ -7,6 +7,7 @@ const Tag = {
   API_KEYS: 'API Keys',
   AUTHENTICATION: 'Authentication',
   BRANDS: 'Brands',
+  CLICKWRAP: 'Clickwrap',
   DATA_CATALOGS: 'Data Catalogs',
   ENVELOPES: 'Envelopes',
   ENVELOPE_DOCUMENTS: 'Envelope Documents',
@@ -83,6 +84,12 @@ export const PREAMBLE_TAGS: OpenAITag[] = [
     name: Tag.ORGANIZATION_MEMBERS,
     description: 'Endpoints for managing organization members',
     'x-displayName': Tag.ORGANIZATION_MEMBERS,
+  },
+  {
+    name: Tag.CLICKWRAP,
+    description:
+      'Clickwrap agreements are terms people accept with a checkbox, such as a Terms of Service or Privacy Policy. Admins write and publish versions, your server checks whether a person is current and starts an acceptance session, and the embedded component or the hosted page shows the terms and records the outcome. Every acceptance and decline is kept as a record in a per-organization hash chain, with a signed certificate, a replay of what was on screen, and an evidence package available as download links.',
+    'x-displayName': Tag.CLICKWRAP,
   },
   {
     name: Tag.WEBHOOKS,

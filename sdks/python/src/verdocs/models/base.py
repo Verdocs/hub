@@ -133,7 +133,7 @@ WebhookEvent = Literal[
     "recipient_declined",
     "organization_deleted",
     "clickwrap_accepted",
-    "clickwrap_declined"
+    "clickwrap_declined",
 ]
 
 # Every webhook event the API can deliver, in the js-sdk's order. Useful for
@@ -163,7 +163,7 @@ WEBHOOK_EVENTS: tuple[WebhookEvent, ...] = (
     "recipient_declined",
     "organization_deleted",
     "clickwrap_accepted",
-    "clickwrap_declined"
+    "clickwrap_declined",
 )
 
 TemplateVisibility = Literal["private", "shared", "public"]
