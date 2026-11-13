@@ -34569,7 +34569,9 @@
           "recipient_docs_downloaded",
           "recipient_invite_failed",
           "recipient_declined",
-          "organization_deleted"
+          "organization_deleted",
+          "clickwrap_accepted",
+          "clickwrap_declined"
         ]
       }
     },

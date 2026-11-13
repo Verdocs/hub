@@ -35,6 +35,7 @@ from .resources import (
     AsyncApiKeys,
     AsyncAuth,
     AsyncBrands,
+    AsyncClickwrap,
     AsyncContacts,
     AsyncEnvelopes,
     AsyncGroups,
@@ -57,6 +58,7 @@ from .resources import (
     AsyncWebhooks,
     Auth,
     Brands,
+    Clickwrap,
     Contacts,
     Envelopes,
     Groups,
@@ -260,6 +262,7 @@ class VerdocsEndpoint(_EndpointState):
         self.contacts = Contacts(self)
         self.api_keys = ApiKeys(self)
         self.brands = Brands(self)
+        self.clickwrap = Clickwrap(self)
         self.webhooks = Webhooks(self)
         self.notification_templates = NotificationTemplates(self)
 
@@ -352,6 +355,7 @@ class AsyncVerdocsEndpoint(_EndpointState):
         self.contacts = AsyncContacts(self)
         self.api_keys = AsyncApiKeys(self)
         self.brands = AsyncBrands(self)
+        self.clickwrap = AsyncClickwrap(self)
         self.webhooks = AsyncWebhooks(self)
         self.notification_templates = AsyncNotificationTemplates(self)
 

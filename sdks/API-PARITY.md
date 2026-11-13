@@ -7,7 +7,78 @@ ported (with the target-language name), adapted (with a note), skipped (with a r
 or frozen. Files not reachable from the barrel graph (Utils/Retry.ts, Utils/globalThis.js)
 are internal, not public surface, and are listed at the bottom for completeness.
 
-Total public symbols: 531
+Total public symbols: 607
+
+## Clickwrap (66 symbols)
+
+| Symbol | Kind | File | C# | Python |
+| --- | --- | --- | --- | --- |
+| createClickwrapSession | const | Clickwrap/Acceptances.ts | ported: endpoint.Clickwrap.CreateSessionAsync (returns the abstract ClickwrapSessionResult, a ClickwrapSessionCurrent or ClickwrapSessionCreated chosen by the current flag, because the two answers reuse agreements for different shapes) | ported: endpoint.clickwrap.create_session (returns ClickwrapSessionCurrent | ClickwrapSessionCreated, chosen by the current flag) |
+| getClickwrapAcceptance | const | Clickwrap/Acceptances.ts | ported: endpoint.Clickwrap.GetAcceptanceAsync | ported: endpoint.clickwrap.get_acceptance |
+| getClickwrapAcceptances | const | Clickwrap/Acceptances.ts | ported: endpoint.Clickwrap.ListAcceptancesAsync | ported: endpoint.clickwrap.list_acceptances |
+| getClickwrapDownloadLink | const | Clickwrap/Acceptances.ts | ported: endpoint.Clickwrap.GetDownloadLinkAsync | ported: endpoint.clickwrap.get_download_link |
+| getClickwrapStatus | const | Clickwrap/Acceptances.ts | ported: endpoint.Clickwrap.GetStatusAsync | ported: endpoint.clickwrap.get_status |
+| recordClickwrapOutcome | const | Clickwrap/Acceptances.ts | ported: endpoint.Clickwrap.RecordOutcomeAsync | ported: endpoint.clickwrap.record_outcome |
+| createClickwrapAgreement | const | Clickwrap/Agreements.ts | ported: endpoint.Clickwrap.CreateAgreementAsync | ported: endpoint.clickwrap.create_agreement |
+| createClickwrapDraft | const | Clickwrap/Agreements.ts | ported: endpoint.Clickwrap.CreateDraftAsync | ported: endpoint.clickwrap.create_draft |
+| deleteClickwrapDraft | const | Clickwrap/Agreements.ts | ported: endpoint.Clickwrap.DeleteDraftAsync | ported: endpoint.clickwrap.delete_draft |
+| getClickwrapAgreement | const | Clickwrap/Agreements.ts | ported: endpoint.Clickwrap.GetAgreementAsync | ported: endpoint.clickwrap.get_agreement |
+| getClickwrapAgreements | const | Clickwrap/Agreements.ts | ported: endpoint.Clickwrap.ListAgreementsAsync | ported: endpoint.clickwrap.list_agreements |
+| getClickwrapCoverage | const | Clickwrap/Agreements.ts | ported: endpoint.Clickwrap.GetCoverageAsync | ported: endpoint.clickwrap.get_coverage |
+| publishClickwrapVersion | const | Clickwrap/Agreements.ts | ported: endpoint.Clickwrap.PublishVersionAsync | ported: endpoint.clickwrap.publish_version |
+| renameClickwrapAgreement | const | Clickwrap/Agreements.ts | ported: endpoint.Clickwrap.RenameAgreementAsync | ported: endpoint.clickwrap.rename_agreement |
+| updateClickwrapDraft | const | Clickwrap/Agreements.ts | ported: endpoint.Clickwrap.UpdateDraftAsync | ported: endpoint.clickwrap.update_draft |
+| acceptClickwrap | const | Clickwrap/Sessions.ts | ported: endpoint.Clickwrap.AcceptAsync (the session token is a per-call argument sent as Authorization, never set on the endpoint) | ported: endpoint.clickwrap.accept (the session token is a per-call argument sent as Authorization, never set on the endpoint) |
+| declineClickwrap | const | Clickwrap/Sessions.ts | ported: endpoint.Clickwrap.DeclineAsync (the session token is a per-call argument sent as Authorization, never set on the endpoint) | ported: endpoint.clickwrap.decline (the session token is a per-call argument sent as Authorization, never set on the endpoint) |
+| getClickwrapSession | const | Clickwrap/Sessions.ts | ported: endpoint.Clickwrap.GetSessionAsync (the session token is a per-call argument sent as Authorization, never set on the endpoint) | ported: endpoint.clickwrap.get_session (the session token is a per-call argument sent as Authorization, never set on the endpoint) |
+| sendClickwrapEvent | const | Clickwrap/Sessions.ts | ported: endpoint.Clickwrap.SendEventAsync (the session token is a per-call argument sent as Authorization, never set on the endpoint) | ported: endpoint.clickwrap.send_event (the session token is a per-call argument sent as Authorization, never set on the endpoint) |
+| IClickwrapAcceptance | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapAcceptance | ported: verdocs.models.clickwrap.ClickwrapAcceptance |
+| IClickwrapAcceptanceEvent | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapAcceptanceEvent | ported: verdocs.models.clickwrap.ClickwrapAcceptanceEvent |
+| IClickwrapAcceptanceItem | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapAcceptanceItem | ported: verdocs.models.clickwrap.ClickwrapAcceptanceItem |
+| IClickwrapAcceptanceItemAgreement | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapAcceptanceItemAgreement | ported: verdocs.models.clickwrap.ClickwrapAcceptanceItemAgreement |
+| IClickwrapAcceptanceItemVersion | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapAcceptanceItemVersion | ported: verdocs.models.clickwrap.ClickwrapAcceptanceItemVersion |
+| IClickwrapAcceptancesResponse | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapAcceptanceList | ported: verdocs.models.clickwrap.ClickwrapAcceptanceList |
+| IClickwrapAcceptanceSummary | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapAcceptanceSummary | ported: verdocs.models.clickwrap.ClickwrapAcceptanceSummary |
+| IClickwrapAcceptanceSummaryAgreement | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapAcceptanceSummaryAgreement | ported: verdocs.models.clickwrap.ClickwrapAcceptanceSummaryAgreement |
+| IClickwrapAgreement | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapAgreement | ported: verdocs.models.clickwrap.ClickwrapAgreement |
+| IClickwrapAgreementDetail | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapAgreementDetail | ported: verdocs.models.clickwrap.ClickwrapAgreementDetail |
+| IClickwrapAgreementLabel | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapAgreementLabel | ported: verdocs.models.clickwrap.ClickwrapAgreementLabel |
+| IClickwrapAgreementSummary | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapAgreementSummary | ported: verdocs.models.clickwrap.ClickwrapAgreementSummary |
+| IClickwrapCoverage | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapCoverage | ported: verdocs.models.clickwrap.ClickwrapCoverage |
+| IClickwrapCoverageVersion | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapCoverageVersion | ported: verdocs.models.clickwrap.ClickwrapCoverageVersion |
+| IClickwrapCustomerPresentation | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapCustomerPresentation | ported: verdocs.models.clickwrap.ClickwrapCustomerPresentation |
+| IClickwrapDownloadLink | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapDownloadLink | ported: verdocs.models.clickwrap.ClickwrapDownloadLink |
+| IClickwrapLabels | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapLabels | ported: verdocs.models.clickwrap.ClickwrapLabels |
+| IClickwrapOutcomeAgreement | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapOutcomeAgreement | ported: verdocs.models.clickwrap.ClickwrapOutcomeAgreement |
+| IClickwrapOutcomeResult | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapOutcomeResult | ported: verdocs.models.clickwrap.ClickwrapOutcomeResult |
+| IClickwrapPendingVersion | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapPendingVersion | ported: verdocs.models.clickwrap.ClickwrapPendingVersion |
+| IClickwrapPublicSession | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapPublicSession | ported: verdocs.models.clickwrap.ClickwrapPublicSession |
+| IClickwrapSessionAgreement | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapSessionAgreement | ported: verdocs.models.clickwrap.ClickwrapSessionAgreement |
+| IClickwrapSessionBrand | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapSessionBrand | ported: verdocs.models.clickwrap.ClickwrapSessionBrand |
+| IClickwrapSessionCreated | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapSessionCreated | ported: verdocs.models.clickwrap.ClickwrapSessionCreated |
+| IClickwrapSessionCurrent | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapSessionCurrent | ported: verdocs.models.clickwrap.ClickwrapSessionCurrent |
+| IClickwrapSessionOutcomeRequest | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapSessionOutcomeRequest | ported: verdocs.models.clickwrap.ClickwrapSessionOutcomeParams |
+| IClickwrapStatus | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapStatus | ported: verdocs.models.clickwrap.ClickwrapStatus |
+| IClickwrapVersion | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapVersion | ported: verdocs.models.clickwrap.ClickwrapVersion |
+| IClickwrapVersionRef | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapVersionRef | ported: verdocs.models.clickwrap.ClickwrapVersionRef |
+| IClickwrapViewport | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ClickwrapViewport | ported: verdocs.models.clickwrap.ClickwrapViewport |
+| ICreateClickwrapAgreementRequest | interface | Clickwrap/Types.ts | ported: Verdocs.Models.CreateClickwrapAgreementRequest | ported: verdocs.models.clickwrap.ClickwrapAgreementCreateParams |
+| ICreateClickwrapDraftRequest | interface | Clickwrap/Types.ts | ported: Verdocs.Models.CreateClickwrapDraftRequest | ported: verdocs.models.clickwrap.ClickwrapDraftCreateParams |
+| ICreateClickwrapSessionRequest | interface | Clickwrap/Types.ts | ported: Verdocs.Models.CreateClickwrapSessionRequest | ported: verdocs.models.clickwrap.ClickwrapSessionCreateParams |
+| IListClickwrapAcceptancesParams | interface | Clickwrap/Types.ts | ported: Verdocs.Models.ListClickwrapAcceptancesOptions | ported: verdocs.models.clickwrap.ClickwrapAcceptanceListParams |
+| IPublishClickwrapVersionRequest | interface | Clickwrap/Types.ts | ported: Verdocs.Models.PublishClickwrapVersionRequest | ported: verdocs.models.clickwrap.ClickwrapPublishParams |
+| IRecordClickwrapOutcomeRequest | interface | Clickwrap/Types.ts | ported: Verdocs.Models.RecordClickwrapOutcomeRequest | ported: verdocs.models.clickwrap.ClickwrapOutcomeRecordParams |
+| ISendClickwrapEventRequest | interface | Clickwrap/Types.ts | ported: Verdocs.Models.SendClickwrapEventRequest | ported: verdocs.models.clickwrap.ClickwrapEventParams |
+| TClickwrapDownloadType | type | Clickwrap/Types.ts | adapted: string + Verdocs.Models.ClickwrapDownloadType constants | ported: verdocs.models.clickwrap.ClickwrapDownloadType (Literal) |
+| TClickwrapEventType | type | Clickwrap/Types.ts | adapted: string + Verdocs.Models.ClickwrapEventType constants | ported: verdocs.models.clickwrap.ClickwrapEventType (Literal) |
+| TClickwrapMode | type | Clickwrap/Types.ts | adapted: string + Verdocs.Models.ClickwrapMode constants | ported: verdocs.models.clickwrap.ClickwrapMode (Literal) |
+| TClickwrapOutcome | type | Clickwrap/Types.ts | adapted: string + Verdocs.Models.ClickwrapOutcome constants | ported: verdocs.models.clickwrap.ClickwrapOutcome (Literal) |
+| TClickwrapPresentationSource | type | Clickwrap/Types.ts | adapted: string + Verdocs.Models.ClickwrapPresentationSource constants | ported: verdocs.models.clickwrap.ClickwrapPresentationSource (Literal) |
+| TClickwrapReporter | type | Clickwrap/Types.ts | adapted: string + Verdocs.Models.ClickwrapReporter constants | ported: verdocs.models.clickwrap.ClickwrapReporter (Literal) |
+| TClickwrapSessionEventType | type | Clickwrap/Types.ts | adapted: string + the first four Verdocs.Models.ClickwrapEventType constants (Shown, ScrolledToEnd, Checked, Unchecked) | ported: verdocs.models.clickwrap.ClickwrapSessionEventType (Literal) |
+| TClickwrapSurface | type | Clickwrap/Types.ts | adapted: string + Verdocs.Models.ClickwrapSurface constants | ported: verdocs.models.clickwrap.ClickwrapSurface (Literal) |
+| TClickwrapVersionStatus | type | Clickwrap/Types.ts | adapted: string + Verdocs.Models.ClickwrapVersionStatus constants | ported: verdocs.models.clickwrap.ClickwrapVersionStatus (Literal) |
+| TCreateClickwrapSessionResponse | type | Clickwrap/Types.ts | adapted: Verdocs.Models.ClickwrapSessionResult, an abstract base of ClickwrapSessionCurrent and ClickwrapSessionCreated | adapted: ClickwrapSessionCurrent | ClickwrapSessionCreated, the return type of endpoint.clickwrap.create_session |
 
 ## Envelopes (107 symbols)
 
@@ -391,7 +462,7 @@ Total public symbols: 531
 | TSession | type | Sessions/Types.ts | adapted: VerdocsEndpoint.Session, typed VerdocsSession? with null meaning unauthenticated (alias carries no vocabulary) | adapted: the null arm is Python None; endpoint.session is typed Session | None in _endpoint.py (Session = UserSession | SigningSession), so no separate models alias exists |
 | TSessionType | type | Sessions/Types.ts | adapted: Verdocs.SessionType (existing enum; request-side state the caller sets, so an enum rather than a string-plus-values-class) | ported: SessionType Literal in _endpoint.py, already exported from the package root; not redefined in models.sessions to avoid a duplicate name (models cannot import from _endpoint without a cycle) |
 
-## Templates (71 symbols)
+## Templates (81 symbols)
 
 | Symbol | Kind | File | C# | Python |
 | --- | --- | --- | --- | --- |
@@ -432,10 +503,13 @@ Total public symbols: 531
 | getTemplateDocumentPreviewLink | const | Templates/TemplateDocuments.ts | adapted: endpoint.TemplateDocuments.GetPreviewLinkAsync (unused envelopeId parameter dropped; still fetches /v2/envelope-documents as the js-sdk code does, wrong route family for a template document, anomaly doc-commented and reported) | ported: endpoint.template_documents.get_preview_link (mirrors the js-sdk's envelope-documents path for a template document, wire truth is code; anomaly doc-commented; unused envelope_id parameter dropped) |
 | getTemplateDocumentThumbnail | const | Templates/TemplateDocuments.ts | ported: endpoint.TemplateDocuments.GetThumbnailAsync (dead on deployed API, the legacy route does not exist and 404s, doc-commented; the page-image route with page thumb is the working equivalent, not wrapped yet to keep js-sdk parity) | ported: endpoint.template_documents.get_thumbnail (dead on deployed API, no such route, doc-commented; get_page_display_uri(id, "thumb") is the working call) |
 | createTemplate | const | Templates/Templates.ts | ported: endpoint.Templates.CreateAsync (JSON overload plus a multipart overload taking TemplateFileUpload parts, all file parts named documents with string text parts name/description/visibility/sender per WIRE-NOTES; the js-sdk multipart encoding of roles/fields is broken on the wire and was not mirrored, the multipart overload rejects requests carrying roles/documents/reminders; onUploadProgress callback dropped, HttpClient exposes no equivalent) | ported: endpoint.templates.create (multipart rebuilt per WIRE-NOTES: repeatable file parts named documents, string text parts only (name/description/visibility/sender), ValueError on fields that cannot ride; the js-sdk's broken roles/fields form encoding is not mirrored; onUploadProgress and the per-call 120s timeout skipped: httpx has no sync upload-progress hook and timeouts are endpoint-level) |
+| createTemplateAnalysis | const | Templates/Templates.ts | pending | pending |
 | createTemplateFromSharepoint | const | Templates/Templates.ts | ported: endpoint.Templates.CreateFromSharepointAsync (dead on deployed API, no handler exists, doc-commented) | ported: endpoint.templates.create_from_sharepoint (dead on deployed API, no handler, doc-commented; kept out of examples) |
 | deleteTemplate | const | Templates/Templates.ts | ported: endpoint.Templates.DeleteAsync (returns void; the bare success string has no consumer) | ported: endpoint.templates.delete (returns None; the server sends a success string nothing consumes) |
 | duplicateTemplate | const | Templates/Templates.ts | ported: endpoint.Templates.DuplicateAsync | ported: endpoint.templates.duplicate |
 | getTemplate | const | Templates/Templates.ts | ported: endpoint.Templates.GetAsync | ported: endpoint.templates.get (adapted: the js-sdk's client-side legacy upgrade shims are dropped; responses are returned exactly as the API sends them) |
+| getTemplateAnalyses | const | Templates/Templates.ts | pending | pending |
+| getTemplateAnalysis | const | Templates/Templates.ts | pending | pending |
 | getTemplateDataContract | const | Templates/Templates.ts | pending | pending |
 | getTemplates | const | Templates/Templates.ts | ported: endpoint.Templates.ListAsync | ported: endpoint.templates.list |
 | IDocumentFromData | interface | Templates/Templates.ts | adapted: Verdocs.Models.TemplateDocumentSource (merged with IDocumentFromUri; see that row) | ported: verdocs.models.templates.DocumentFromData (adds optional mime, which the server schema accepts) |
@@ -454,11 +528,18 @@ Total public symbols: 531
 | IRolePosition | interface | Templates/Types.ts | pending | pending |
 | IStar | interface | Templates/Types.ts | ported: Verdocs.Models.Star | ported: verdocs.models.templates.Star |
 | ITag | interface | Templates/Types.ts | ported: Verdocs.Models.Tag | ported: verdocs.models.templates.Tag |
+| ITemplateAnalysis | interface | Templates/Types.ts | pending | pending |
+| ITemplateAnalysisField | interface | Templates/Types.ts | pending | pending |
+| ITemplateAnalysisGroup | interface | Templates/Types.ts | pending | pending |
+| ITemplateAnalysisPage | interface | Templates/Types.ts | pending | pending |
+| ITemplateAnalysisPlacement | interface | Templates/Types.ts | pending | pending |
+| ITemplateAnalysisRule | interface | Templates/Types.ts | pending | pending |
 | ITemplateFeedbackRequest | interface | Templates/Types.ts | pending | pending |
 | ITemplateFieldRequest | interface | Templates/Types.ts | pending | pending |
 | ITemplateSearchResult | interface | Templates/Types.ts | ported: Verdocs.Models.TemplateSearchResult | ported: verdocs.models.templates.TemplateSearchResult |
 | ITemplateTag | interface | Templates/Types.ts | ported: Verdocs.Models.TemplateTag | ported: verdocs.models.templates.TemplateTag |
 | TDataKeyType | type | Templates/Types.ts | pending | pending |
+| TTemplateAnalysisStatus | type | Templates/Types.ts | pending | pending |
 | getValidators | const | Templates/Validators.ts | ported: Verdocs.Helpers.Validators.GetValidators | ported: verdocs.validators.get_validators |
 | isValidEmail | const | Templates/Validators.ts | ported: Verdocs.Helpers.Validators.IsValidEmail | ported: verdocs.validators.is_valid_email |
 | isValidInput | const | Templates/Validators.ts | ported: Verdocs.Helpers.Validators.IsValidInput (patterns ported verbatim, compiled with RegexOptions.ECMAScript so \d and \b keep their ASCII JavaScript semantics) | ported: verdocs.validators.is_valid_input |

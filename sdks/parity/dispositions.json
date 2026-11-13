@@ -1746,5 +1746,269 @@
   "BaseTypes.ts#TBasicResponse": {
     "csharp": "adapted: calls whose only response is a status body return Task (SendVoidAsync discards the body after the status check)",
     "python": "adapted: calls whose only response is a status body return None (the status check is the transport's)"
+  },
+  "Clickwrap/Acceptances.ts#createClickwrapSession": {
+    "python": "ported: endpoint.clickwrap.create_session (returns ClickwrapSessionCurrent | ClickwrapSessionCreated, chosen by the current flag)",
+    "csharp": "ported: endpoint.Clickwrap.CreateSessionAsync (returns the abstract ClickwrapSessionResult, a ClickwrapSessionCurrent or ClickwrapSessionCreated chosen by the current flag, because the two answers reuse agreements for different shapes)"
+  },
+  "Clickwrap/Acceptances.ts#getClickwrapAcceptance": {
+    "python": "ported: endpoint.clickwrap.get_acceptance",
+    "csharp": "ported: endpoint.Clickwrap.GetAcceptanceAsync"
+  },
+  "Clickwrap/Acceptances.ts#getClickwrapAcceptances": {
+    "python": "ported: endpoint.clickwrap.list_acceptances",
+    "csharp": "ported: endpoint.Clickwrap.ListAcceptancesAsync"
+  },
+  "Clickwrap/Acceptances.ts#getClickwrapDownloadLink": {
+    "python": "ported: endpoint.clickwrap.get_download_link",
+    "csharp": "ported: endpoint.Clickwrap.GetDownloadLinkAsync"
+  },
+  "Clickwrap/Acceptances.ts#getClickwrapStatus": {
+    "python": "ported: endpoint.clickwrap.get_status",
+    "csharp": "ported: endpoint.Clickwrap.GetStatusAsync"
+  },
+  "Clickwrap/Acceptances.ts#recordClickwrapOutcome": {
+    "python": "ported: endpoint.clickwrap.record_outcome",
+    "csharp": "ported: endpoint.Clickwrap.RecordOutcomeAsync"
+  },
+  "Clickwrap/Agreements.ts#createClickwrapAgreement": {
+    "python": "ported: endpoint.clickwrap.create_agreement",
+    "csharp": "ported: endpoint.Clickwrap.CreateAgreementAsync"
+  },
+  "Clickwrap/Agreements.ts#createClickwrapDraft": {
+    "python": "ported: endpoint.clickwrap.create_draft",
+    "csharp": "ported: endpoint.Clickwrap.CreateDraftAsync"
+  },
+  "Clickwrap/Agreements.ts#deleteClickwrapDraft": {
+    "python": "ported: endpoint.clickwrap.delete_draft",
+    "csharp": "ported: endpoint.Clickwrap.DeleteDraftAsync"
+  },
+  "Clickwrap/Agreements.ts#getClickwrapAgreement": {
+    "python": "ported: endpoint.clickwrap.get_agreement",
+    "csharp": "ported: endpoint.Clickwrap.GetAgreementAsync"
+  },
+  "Clickwrap/Agreements.ts#getClickwrapAgreements": {
+    "python": "ported: endpoint.clickwrap.list_agreements",
+    "csharp": "ported: endpoint.Clickwrap.ListAgreementsAsync"
+  },
+  "Clickwrap/Agreements.ts#getClickwrapCoverage": {
+    "python": "ported: endpoint.clickwrap.get_coverage",
+    "csharp": "ported: endpoint.Clickwrap.GetCoverageAsync"
+  },
+  "Clickwrap/Agreements.ts#publishClickwrapVersion": {
+    "python": "ported: endpoint.clickwrap.publish_version",
+    "csharp": "ported: endpoint.Clickwrap.PublishVersionAsync"
+  },
+  "Clickwrap/Agreements.ts#renameClickwrapAgreement": {
+    "python": "ported: endpoint.clickwrap.rename_agreement",
+    "csharp": "ported: endpoint.Clickwrap.RenameAgreementAsync"
+  },
+  "Clickwrap/Agreements.ts#updateClickwrapDraft": {
+    "python": "ported: endpoint.clickwrap.update_draft",
+    "csharp": "ported: endpoint.Clickwrap.UpdateDraftAsync"
+  },
+  "Clickwrap/Sessions.ts#acceptClickwrap": {
+    "python": "ported: endpoint.clickwrap.accept (the session token is a per-call argument sent as Authorization, never set on the endpoint)",
+    "csharp": "ported: endpoint.Clickwrap.AcceptAsync (the session token is a per-call argument sent as Authorization, never set on the endpoint)"
+  },
+  "Clickwrap/Sessions.ts#declineClickwrap": {
+    "python": "ported: endpoint.clickwrap.decline (the session token is a per-call argument sent as Authorization, never set on the endpoint)",
+    "csharp": "ported: endpoint.Clickwrap.DeclineAsync (the session token is a per-call argument sent as Authorization, never set on the endpoint)"
+  },
+  "Clickwrap/Sessions.ts#getClickwrapSession": {
+    "python": "ported: endpoint.clickwrap.get_session (the session token is a per-call argument sent as Authorization, never set on the endpoint)",
+    "csharp": "ported: endpoint.Clickwrap.GetSessionAsync (the session token is a per-call argument sent as Authorization, never set on the endpoint)"
+  },
+  "Clickwrap/Sessions.ts#sendClickwrapEvent": {
+    "python": "ported: endpoint.clickwrap.send_event (the session token is a per-call argument sent as Authorization, never set on the endpoint)",
+    "csharp": "ported: endpoint.Clickwrap.SendEventAsync (the session token is a per-call argument sent as Authorization, never set on the endpoint)"
+  },
+  "Clickwrap/Types.ts#IClickwrapAcceptance": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapAcceptance",
+    "csharp": "ported: Verdocs.Models.ClickwrapAcceptance"
+  },
+  "Clickwrap/Types.ts#IClickwrapAcceptanceEvent": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapAcceptanceEvent",
+    "csharp": "ported: Verdocs.Models.ClickwrapAcceptanceEvent"
+  },
+  "Clickwrap/Types.ts#IClickwrapAcceptanceItem": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapAcceptanceItem",
+    "csharp": "ported: Verdocs.Models.ClickwrapAcceptanceItem"
+  },
+  "Clickwrap/Types.ts#IClickwrapAcceptanceItemAgreement": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapAcceptanceItemAgreement",
+    "csharp": "ported: Verdocs.Models.ClickwrapAcceptanceItemAgreement"
+  },
+  "Clickwrap/Types.ts#IClickwrapAcceptanceItemVersion": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapAcceptanceItemVersion",
+    "csharp": "ported: Verdocs.Models.ClickwrapAcceptanceItemVersion"
+  },
+  "Clickwrap/Types.ts#IClickwrapAcceptancesResponse": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapAcceptanceList",
+    "csharp": "ported: Verdocs.Models.ClickwrapAcceptanceList"
+  },
+  "Clickwrap/Types.ts#IClickwrapAcceptanceSummary": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapAcceptanceSummary",
+    "csharp": "ported: Verdocs.Models.ClickwrapAcceptanceSummary"
+  },
+  "Clickwrap/Types.ts#IClickwrapAcceptanceSummaryAgreement": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapAcceptanceSummaryAgreement",
+    "csharp": "ported: Verdocs.Models.ClickwrapAcceptanceSummaryAgreement"
+  },
+  "Clickwrap/Types.ts#IClickwrapAgreement": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapAgreement",
+    "csharp": "ported: Verdocs.Models.ClickwrapAgreement"
+  },
+  "Clickwrap/Types.ts#IClickwrapAgreementDetail": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapAgreementDetail",
+    "csharp": "ported: Verdocs.Models.ClickwrapAgreementDetail"
+  },
+  "Clickwrap/Types.ts#IClickwrapAgreementLabel": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapAgreementLabel",
+    "csharp": "ported: Verdocs.Models.ClickwrapAgreementLabel"
+  },
+  "Clickwrap/Types.ts#IClickwrapAgreementSummary": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapAgreementSummary",
+    "csharp": "ported: Verdocs.Models.ClickwrapAgreementSummary"
+  },
+  "Clickwrap/Types.ts#IClickwrapCoverage": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapCoverage",
+    "csharp": "ported: Verdocs.Models.ClickwrapCoverage"
+  },
+  "Clickwrap/Types.ts#IClickwrapCoverageVersion": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapCoverageVersion",
+    "csharp": "ported: Verdocs.Models.ClickwrapCoverageVersion"
+  },
+  "Clickwrap/Types.ts#IClickwrapCustomerPresentation": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapCustomerPresentation",
+    "csharp": "ported: Verdocs.Models.ClickwrapCustomerPresentation"
+  },
+  "Clickwrap/Types.ts#IClickwrapDownloadLink": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapDownloadLink",
+    "csharp": "ported: Verdocs.Models.ClickwrapDownloadLink"
+  },
+  "Clickwrap/Types.ts#IClickwrapLabels": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapLabels",
+    "csharp": "ported: Verdocs.Models.ClickwrapLabels"
+  },
+  "Clickwrap/Types.ts#IClickwrapOutcomeAgreement": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapOutcomeAgreement",
+    "csharp": "ported: Verdocs.Models.ClickwrapOutcomeAgreement"
+  },
+  "Clickwrap/Types.ts#IClickwrapOutcomeResult": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapOutcomeResult",
+    "csharp": "ported: Verdocs.Models.ClickwrapOutcomeResult"
+  },
+  "Clickwrap/Types.ts#IClickwrapPendingVersion": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapPendingVersion",
+    "csharp": "ported: Verdocs.Models.ClickwrapPendingVersion"
+  },
+  "Clickwrap/Types.ts#IClickwrapPublicSession": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapPublicSession",
+    "csharp": "ported: Verdocs.Models.ClickwrapPublicSession"
+  },
+  "Clickwrap/Types.ts#IClickwrapSessionAgreement": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapSessionAgreement",
+    "csharp": "ported: Verdocs.Models.ClickwrapSessionAgreement"
+  },
+  "Clickwrap/Types.ts#IClickwrapSessionBrand": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapSessionBrand",
+    "csharp": "ported: Verdocs.Models.ClickwrapSessionBrand"
+  },
+  "Clickwrap/Types.ts#IClickwrapSessionCreated": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapSessionCreated",
+    "csharp": "ported: Verdocs.Models.ClickwrapSessionCreated"
+  },
+  "Clickwrap/Types.ts#IClickwrapSessionCurrent": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapSessionCurrent",
+    "csharp": "ported: Verdocs.Models.ClickwrapSessionCurrent"
+  },
+  "Clickwrap/Types.ts#IClickwrapSessionOutcomeRequest": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapSessionOutcomeParams",
+    "csharp": "ported: Verdocs.Models.ClickwrapSessionOutcomeRequest"
+  },
+  "Clickwrap/Types.ts#IClickwrapStatus": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapStatus",
+    "csharp": "ported: Verdocs.Models.ClickwrapStatus"
+  },
+  "Clickwrap/Types.ts#IClickwrapVersion": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapVersion",
+    "csharp": "ported: Verdocs.Models.ClickwrapVersion"
+  },
+  "Clickwrap/Types.ts#IClickwrapVersionRef": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapVersionRef",
+    "csharp": "ported: Verdocs.Models.ClickwrapVersionRef"
+  },
+  "Clickwrap/Types.ts#IClickwrapViewport": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapViewport",
+    "csharp": "ported: Verdocs.Models.ClickwrapViewport"
+  },
+  "Clickwrap/Types.ts#ICreateClickwrapAgreementRequest": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapAgreementCreateParams",
+    "csharp": "ported: Verdocs.Models.CreateClickwrapAgreementRequest"
+  },
+  "Clickwrap/Types.ts#ICreateClickwrapDraftRequest": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapDraftCreateParams",
+    "csharp": "ported: Verdocs.Models.CreateClickwrapDraftRequest"
+  },
+  "Clickwrap/Types.ts#ICreateClickwrapSessionRequest": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapSessionCreateParams",
+    "csharp": "ported: Verdocs.Models.CreateClickwrapSessionRequest"
+  },
+  "Clickwrap/Types.ts#IListClickwrapAcceptancesParams": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapAcceptanceListParams",
+    "csharp": "ported: Verdocs.Models.ListClickwrapAcceptancesOptions"
+  },
+  "Clickwrap/Types.ts#IPublishClickwrapVersionRequest": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapPublishParams",
+    "csharp": "ported: Verdocs.Models.PublishClickwrapVersionRequest"
+  },
+  "Clickwrap/Types.ts#IRecordClickwrapOutcomeRequest": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapOutcomeRecordParams",
+    "csharp": "ported: Verdocs.Models.RecordClickwrapOutcomeRequest"
+  },
+  "Clickwrap/Types.ts#ISendClickwrapEventRequest": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapEventParams",
+    "csharp": "ported: Verdocs.Models.SendClickwrapEventRequest"
+  },
+  "Clickwrap/Types.ts#TClickwrapDownloadType": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapDownloadType (Literal)",
+    "csharp": "adapted: string + Verdocs.Models.ClickwrapDownloadType constants"
+  },
+  "Clickwrap/Types.ts#TClickwrapEventType": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapEventType (Literal)",
+    "csharp": "adapted: string + Verdocs.Models.ClickwrapEventType constants"
+  },
+  "Clickwrap/Types.ts#TClickwrapMode": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapMode (Literal)",
+    "csharp": "adapted: string + Verdocs.Models.ClickwrapMode constants"
+  },
+  "Clickwrap/Types.ts#TClickwrapOutcome": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapOutcome (Literal)",
+    "csharp": "adapted: string + Verdocs.Models.ClickwrapOutcome constants"
+  },
+  "Clickwrap/Types.ts#TClickwrapPresentationSource": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapPresentationSource (Literal)",
+    "csharp": "adapted: string + Verdocs.Models.ClickwrapPresentationSource constants"
+  },
+  "Clickwrap/Types.ts#TClickwrapReporter": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapReporter (Literal)",
+    "csharp": "adapted: string + Verdocs.Models.ClickwrapReporter constants"
+  },
+  "Clickwrap/Types.ts#TClickwrapSurface": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapSurface (Literal)",
+    "csharp": "adapted: string + Verdocs.Models.ClickwrapSurface constants"
+  },
+  "Clickwrap/Types.ts#TClickwrapVersionStatus": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapVersionStatus (Literal)",
+    "csharp": "adapted: string + Verdocs.Models.ClickwrapVersionStatus constants"
+  },
+  "Clickwrap/Types.ts#TClickwrapSessionEventType": {
+    "python": "ported: verdocs.models.clickwrap.ClickwrapSessionEventType (Literal)",
+    "csharp": "adapted: string + the first four Verdocs.Models.ClickwrapEventType constants (Shown, ScrolledToEnd, Checked, Unchecked)"
+  },
+  "Clickwrap/Types.ts#TCreateClickwrapSessionResponse": {
+    "python": "adapted: ClickwrapSessionCurrent | ClickwrapSessionCreated, the return type of endpoint.clickwrap.create_session",
+    "csharp": "adapted: Verdocs.Models.ClickwrapSessionResult, an abstract base of ClickwrapSessionCurrent and ClickwrapSessionCreated"
   }
 }
