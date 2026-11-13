@@ -1,7 +1,7 @@
 {
   "language": "typescript",
   "package": "@verdocs/js-sdk",
-  "version": "6.19.0",
+  "version": "6.19.1",
   "groups": {
     "endpoint": {
       "id": "endpoint",
@@ -2583,7 +2583,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "addBrandAppDomain(endpoint: VerdocsEndpoint, organizationId: string, brandId: string, params: IAddBrandAppDomainRequest): Promise<IBrand>",
-          "summary": "Custom domains allow you to serve signing links, login pages, and documents for a brand from your own subdomain,\ne.g. \"sign.mycompany.com\" instead of \"app.verdocs.com\". The returned Brand will include two CNAME records which must\nbe added to your DNS. The first provides the routing, and the second is used for DCV delegation for certificate renewal.\nWe will poll periodically for these records to be set, and the custom domain will not activate until this is done.",
+          "summary": "Custom domains let a brand's signing links open on your own subdomain, e.g. \"sign.mycompany.com\" instead of\n\"app.verdocs.com\". After adding one, create a CNAME record that points the subdomain at custom.verdocs.com. We check\nfor the record periodically, and the domain becomes active once it resolves and its certificate is issued.",
           "params": [
             {
               "name": "endpoint",
@@ -10804,6 +10804,51 @@
           },
           "throws": [],
           "examples": [],
+          "deprecated": false
+        },
+        "templateDocument.updateTemplateDocument": {
+          "sdkOperation": "templateDocument.updateTemplateDocument",
+          "kind": "function",
+          "name": "updateTemplateDocument",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "updateTemplateDocument(endpoint: VerdocsEndpoint, documentId: string, params: object): Promise<ITemplate>",
+          "summary": "Rename a template document, move it to a new position, or both. Signers see a template's documents in this order,\nand moving one renumbers the rest.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "documentId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "object",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<ITemplate>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {updateTemplateDocument} from '@verdocs/js-sdk/Templates';\n\nawait updateTemplateDocument(VerdocsEndpoint.getDefault(), documentID, {order: 1});"
+            }
+          ],
           "deprecated": false
         }
       }

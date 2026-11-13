@@ -1257,7 +1257,7 @@
       "group": "Brand",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Custom domains allow you to serve signing links, login pages, and documents for a brand from your own subdomain,\ne.g. \"sign.mycompany.com\" instead of \"app.verdocs.com\". The returned Brand will include two CNAME records which must\nbe added to your DNS. The first provides the routing, and the second is used for DCV delegation for certificate renewal.\nWe will poll periodically for these records to be set, and the custom domain will not activate until this is done.",
+      "summary": "Custom domains let a brand's signing links open on your own subdomain, e.g. \"sign.mycompany.com\" instead of\n\"app.verdocs.com\". After adding one, create a CNAME record that points the subdomain at custom.verdocs.com. We check\nfor the record periodically, and the domain becomes active once it resolves and its certificate is issued.",
       "variants": [
         {
           "language": "typescript",
@@ -17502,6 +17502,50 @@
           "returns": {
             "type": "bytes",
             "description": "The thumbnail content, if the API ever ships the route."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "templateDocument.updateTemplateDocument",
+      "group": "TemplateDocument",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Rename a template document, move it to a new position, or both. Signers see a template's documents in this order,\nand moving one renumbers the rest.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "updateTemplateDocument(endpoint: VerdocsEndpoint, documentId: string, params: object): Promise<ITemplate>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "documentId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "object",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<ITemplate>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {updateTemplateDocument} from '@verdocs/js-sdk/Templates';\n\nawait updateTemplateDocument(VerdocsEndpoint.getDefault(), documentID, {order: 1});"
           }
         }
       ]
