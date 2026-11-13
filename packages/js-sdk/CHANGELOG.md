@@ -4,8 +4,6 @@
 
 ### Patch Changes
 
-- - Added `startQesSession`, `getQesState`, `getQesReturnUrl`, and `consumeQesResult` for recipients who sign with a qualified electronic signature (QES).
-  - Recipients and roles accept an optional `signature_level`, and the QES history events, entitlements, and types have been added to match.
 - - Added `updateTemplateDocument` to rename a template document or change its position.
   - Docs for `deleteTemplateDocument` now describe its actual response, the updated template.
   - Docs for `addBrandAppDomain` now describe the single CNAME record a custom signing domain needs.
