@@ -63,6 +63,10 @@ export type THistoryEvent =
   | 'recipient:id_failed'
   | 'recipient:pin_verified'
   | 'recipient:pin_failed'
+  | 'recipient:qes_invited'
+  | 'recipient:qes_started'
+  | 'recipient:qes_signed'
+  | 'recipient:qes_error'
   | 'recipient:session_started'
   | 'recipient:otp_sent'
   | 'recipient:otp_verified'
@@ -182,7 +186,9 @@ export type TEntitlement =
   | 'custom_disclaimer'
   | 'custom_branding'
   | 'sms'
-  | 'kba_sandbox';
+  | 'kba_sandbox'
+  | 'qes'
+  | 'qes_sandbox';
 
 /**
  * The authentication method(s) required for a recipient to access an envelope. "Passcode" will require a
@@ -206,7 +212,8 @@ export type TUsageType =
   | 'auth_sms'
   | 'auth_kba'
   | 'auth_id'
-  | 'auth_passcode';
+  | 'auth_passcode'
+  | 'qes_used';
 
 /**
  * Methods for authenticating webhook requests.
@@ -214,6 +221,37 @@ export type TUsageType =
 export type TWebhookAuthMethod = 'none' | 'hmac' | 'client_credentials';
 
 export type TNotificationType = 'sms' | 'email' | 'app';
+
+export type TRecipientSignatureLevel = 'simple' | 'advanced' | 'qualified';
+
+/**
+ * The signature levels a recipient or role can be created with. 'advanced' only appears in eID Easy's reports of the
+ * signature a signer actually produced.
+ */
+export type TRequestableSignatureLevel = Exclude<TRecipientSignatureLevel, 'advanced'>;
+
+export type TCertificateSignatureStatus = 'prepared' | 'signed' | 'failed' | 'canceled' | 'expired';
+
+/**
+ * Where a 'qualified' recipient stands in an envelope's QES phase, which starts once every recipient has submitted:
+ * waiting for their turn, ready to sign with their eID, mid-session on eID Easy, or signed.
+ */
+export type TQesState = 'waiting' | 'ready' | 'in_progress' | 'signed';
+
+/**
+ * How a signer came back from eID Easy's page. The API adds it to the return_url passed to startQesSession as the
+ * qes_result query parameter. 'signed' means eID Easy finished, not that the signature is confirmed: poll getQesState
+ * for that.
+ */
+export type TQesResult = 'signed' | 'fail' | 'cancel';
+
+/**
+ * Why a QES attempt failed, in a 'recipient:qes_error' history entry:
+ *   - prepare_failed: eID Easy rejected the documents, so the signer never reached its page.
+ *   - not_qualified: The signer signed, but at a lower level than 'qualified'.
+ *   - download_failed: The signed documents couldn't be retrieved after every retry.
+ */
+export type TQesErrorReason = 'prepare_failed' | 'not_qualified' | 'download_failed';
 
 export type TEventName =
   | 'invitation:canceled'
@@ -228,6 +266,7 @@ export type TEventName =
   | 'transaction:canceled'
   | 'user:invited'
   | 'recipient:invited'
+  | 'recipient:qes_invited'
   | 'envelope:canceled'
   | 'transaction:sent'
   | 'envelope:signed'
