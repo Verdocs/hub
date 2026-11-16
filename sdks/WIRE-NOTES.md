@@ -175,10 +175,14 @@ Request schema (CreateEnvelopeRequestSchema, validations/Envelopes.ts:9-41):
 - recipients: required array, see below.
 - documents: optional array of {data | uri, name?, mime?} entries, required when template_id is
   absent (refine). Same base64/URI semantics as template documents, same 15 MB body cap.
-- fields: optional array (CreateEnvelopeFieldSchema, validations/Fields.ts:45-73). Each entry
+- fields: optional array (CreateEnvelopeFieldSchema, validations/Fields.ts:67-95). Each entry
   needs role_name plus exactly one of name or alias; document_id here is a numeric index and
   drags type/page/x/y along as required when present. In the template path these act as
-  prepared-field overrides matched by name (modules/Envelopes.ts:242-276).
+  prepared-field overrides matched by name (modules/Envelopes.ts:242-276). `default` takes a
+  string, number, or boolean and is stored as text ("true"/"false", 12,345 or 1,234.50); strings
+  are stored as sent. Template field create and update work the same way. On date fields, an ISO
+  8601 date default gives the envelope field a value of MM/dd/yyyy for the day as written while
+  `default` keeps what was sent (valueFromDefault, modules/EnvelopeFields.ts:17).
 - timezone, locale: optional strings.
 
 Recipient entries (CreateRecipientSchema, validations/Recipients.ts:15-43):

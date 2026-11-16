@@ -120,11 +120,11 @@ Star status: the legacy star component and the react/angular star shims exist an
 | verdocs-auth | Embeds/Auth | done | done | done | done |
 | verdocs-build | Embeds/Build | - | - | - | - |
 | verdocs-preview | Embeds/Preview | - | - | - | - |
-| verdocs-send | Embeds/Send | - | - | - | - |
+| verdocs-send | Embeds/Send | done | done | done | done |
 | verdocs-sign | Embeds/Sign | - | - | - | - |
 | verdocs-view | Embeds/View | - | - | - | - |
 
-Auth was ported during the POC (it behaves more like a component than an embed in the new SDKs). The remaining embeds are explicitly out of scope this weekend; styled-builder and styled-signer ship representative stubs instead.
+Auth was ported during the POC (it behaves more like a component than an embed in the new SDKs). Send was built natively from the redesigned Stencil 6.13 version (roster rows, sliding detail views, brand chooser, expiration, notifications) with its own data hooks; the mirrors follow the React contract. The remaining embeds are out of scope for now; styled-builder and styled-signer ship representative stubs instead.
 
 ## Elements (legacy internal, no stories)
 
