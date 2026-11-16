@@ -59,7 +59,7 @@ export const createTemplateDocument = (
  *
  * @group Template Documents
  * @api DELETE /v2/template-documents/:document_id Delete a template document
- * @apiSuccess string . Success
+ * @apiSuccess ITemplate . The template, without the document and the fields placed on it
  *
  * @sdkOperation templateDocument.deleteTemplateDocument
  * @sdkGroup TemplateDocument
@@ -68,6 +68,32 @@ export const createTemplateDocument = (
 export const deleteTemplateDocument = (endpoint: VerdocsEndpoint, documentId: string) =>
   endpoint.api //
     .delete<ITemplate>(`/v2/template-documents/${documentId}`)
+    .then((r) => r.data);
+
+/**
+ * Rename a template document, move it to a new position, or both. Signers see a template's documents in this order,
+ * and moving one renumbers the rest.
+ *
+ * ```typescript
+ * import {updateTemplateDocument} from '@verdocs/js-sdk/Templates';
+ *
+ * await updateTemplateDocument(VerdocsEndpoint.getDefault(), documentID, {order: 1});
+ * ```
+ *
+ * @group Template Documents
+ * @api PATCH /v2/template-documents/:document_id Update a template document
+ * @apiParam string(format:uuid) document_id The ID of the document to update.
+ * @apiBody string name? New name for the document.
+ * @apiBody integer(min: 1) order? New 1-based position for the document. A position past the end moves it last.
+ * @apiSuccess ITemplate . The template, with its documents in their new order
+ *
+ * @sdkOperation templateDocument.updateTemplateDocument
+ * @sdkGroup TemplateDocument
+ * @sdkPage Endpoints
+ */
+export const updateTemplateDocument = (endpoint: VerdocsEndpoint, documentId: string, params: {name?: string; order?: number}) =>
+  endpoint.api //
+    .patch<ITemplate>(`/v2/template-documents/${documentId}`, params)
     .then((r) => r.data);
 
 /**

@@ -137,6 +137,13 @@ export const userCanResetEnvelope = (profile: IProfile | null | undefined, envel
 export const recipientHasAction = (recipient: IRecipient) => !['submitted', 'canceled', 'declined'].includes(recipient.status);
 
 /**
+ * Check whether a recipient must finish by signing with their eID (a QES), once every recipient has submitted.
+ *
+ * @group Envelopes
+ */
+export const isQualifiedRecipient = (recipient: IRecipient | null | undefined) => recipient?.signature_level === 'qualified';
+
+/**
  * Returns the recipients who still have a pending action. Note that not all of these recipients may be able to act (yet).
  *
  * @sdkOperation envelope.getRecipientsWithActions

@@ -1,7 +1,8 @@
-import type { IInPersonLinkResponse, ISignerTokenResponse, TAuthenticateRecipientRequest, IUpdateRecipientParams } from './Types';
+import type { IInPersonLinkResponse, ISignerTokenResponse, TAuthenticateRecipientRequest, IUpdateRecipientParams, IStartQesSessionRequest, IStartQesSessionResponse, IQesStateResponse } from './Types';
 import { IRecipientSubmitBody, IRecipientDisclosureAgreeBody } from './Types';
 import { VerdocsEndpoint } from '../VerdocsEndpoint';
 import type { IRecipient } from '../Models';
+import type { TQesResult } from '../BaseTypes';
 
 /**
  * Agree to electronic signing dislosures.
@@ -176,6 +177,90 @@ export const verifySigner = (endpoint: VerdocsEndpoint, params: TAuthenticateRec
   endpoint.api //
     .post<ISignerTokenResponse>(`/v2/sign/verify`, params)
     .then((r) => r.data);
+
+/**
+ * Start a QES signing session for a 'qualified' recipient. This session should only be used after the
+ * "fill" phase of the envelope-document lifecycle. In other words, after all recipients ('qualified'|'advanced'|'simple')
+ * have signed the document in the typical Verdocs envelope workflow. A QES Certificate would not be valid if
+ * "Recipient A" signed + submitted their Verdocs signature, then "Recipient A" signed + submitted their QES signature, then
+ * "Recipient B" signed + submitted their Verdocs signature. The QES Certificate is only valid after all Verdocs fields are
+ * completed. Check getQesState first: this is rejected unless the signer's qes_state is 'ready' or 'in_progress'.
+ *
+ * eID Easy sends the signer back to params.return_url (or their signing link) with qes_result set to 'signed', 'fail' or
+ * 'cancel'. A 'signed' return still needs getQesState to confirm the signature.
+ *
+ * @group Recipients
+ * @api POST /v2/sign/qes/start Start QES Session
+ * @apiBody string return_url? Where eID Easy sends the signer back to. Must be http or https.
+ * @apiSuccess IStartQesSessionResponse . Link recipient to QES session.
+ *
+ * @sdkOperation recipient.startQesSession
+ * @sdkGroup Recipient
+ * @sdkPage Endpoints
+ */
+export const startQesSession = (endpoint: VerdocsEndpoint, params: IStartQesSessionRequest = {}) =>
+  endpoint.api //
+    .post<IStartQesSessionResponse>('/v2/sign/qes/start', params)
+    .then((r) => r.data);
+
+/**
+ * Get where the signer stands in the envelope's QES phase. Returns null for recipients who aren't 'qualified'. Poll this
+ * after the signer submits (to see 'waiting' become 'ready') and after they return from eID Easy (to see 'in_progress'
+ * become 'signed' once the signature is processed).
+ *
+ * @group Recipients
+ * @api GET /v2/sign/qes/state Get QES State
+ * @apiSuccess IQesStateResponse . The signer's QES state.
+ *
+ * @sdkOperation recipient.getQesState
+ * @sdkGroup Recipient
+ * @sdkPage Endpoints
+ */
+export const getQesState = (endpoint: VerdocsEndpoint) =>
+  endpoint.api //
+    .get<IQesStateResponse>('/v2/sign/qes/state')
+    .then((r) => r.data);
+
+const QES_RESULTS: TQesResult[] = ['signed', 'fail', 'cancel'];
+
+/**
+ * Browser only. The return_url to pass to startQesSession: the current page, without the qes_result from an earlier
+ * attempt, so the signer lands back in the same session. Returns undefined outside a browser.
+ *
+ * @group Recipients
+ */
+export const getQesReturnUrl = () => {
+  if (typeof globalThis.window === 'undefined') {
+    return undefined;
+  }
+
+  const url = new URL(globalThis.window.location.href);
+  url.searchParams.delete('qes_result');
+  return url.href;
+};
+
+/**
+ * Browser only. Read the qes_result the signer came back from eID Easy with, and remove it from the address bar so a
+ * reload doesn't act on it again. Returns null when there isn't one, or outside a browser. A 'signed' result still needs
+ * getQesState to confirm the signature.
+ *
+ * @group Recipients
+ */
+export const consumeQesResult = (): TQesResult | null => {
+  if (typeof globalThis.window === 'undefined') {
+    return null;
+  }
+
+  const url = new URL(globalThis.window.location.href);
+  const result = url.searchParams.get('qes_result');
+  if (!result) {
+    return null;
+  }
+
+  url.searchParams.delete('qes_result');
+  globalThis.window.history.replaceState(globalThis.window.history.state, '', url.href);
+  return QES_RESULTS.includes(result as TQesResult) ? (result as TQesResult) : null;
+};
 
 /**
  * Delegate a recipient's signing responsibility. The envelope sender must enable this before the

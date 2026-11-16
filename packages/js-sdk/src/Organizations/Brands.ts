@@ -160,10 +160,9 @@ export const deleteBrand = (endpoint: VerdocsEndpoint, organizationId: string, b
     .then((r) => r.data);
 
 /**
- * Custom domains allow you to serve signing links, login pages, and documents for a brand from your own subdomain,
- * e.g. "sign.mycompany.com" instead of "app.verdocs.com". The returned Brand will include two CNAME records which must
- * be added to your DNS. The first provides the routing, and the second is used for DCV delegation for certificate renewal.
- * We will poll periodically for these records to be set, and the custom domain will not activate until this is done.
+ * Custom domains let a brand's signing links open on your own subdomain, e.g. "sign.mycompany.com" instead of
+ * "app.verdocs.com". After adding one, create a CNAME record that points the subdomain at custom.verdocs.com. We check
+ * for the record periodically, and the domain becomes active once it resolves and its certificate is issued.
  *
  * ```typescript
  * import {addBrandAppDomain} from '@verdocs/js-sdk';

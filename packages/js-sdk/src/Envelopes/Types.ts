@@ -1,4 +1,5 @@
-import type {TEnvelopeStatus, TFieldDefault, TFieldType, TRecipientAuthMethod, TRecipientStatus, TRecipientType} from '../BaseTypes';
+import type {TEnvelopeStatus, TFieldDefault, TFieldType, TQesErrorReason, TQesState, TRecipientAuthMethod, TRecipientStatus, TRecipientType} from '../BaseTypes';
+import type {TRequestableSignatureLevel} from '../BaseTypes';
 import type {IDropdownOption, IEnvelope, IInitial, IRecipient, ISignature, TAccessKey} from '../Models';
 
 export interface IEnvelopesSearchResult {
@@ -39,6 +40,12 @@ export interface ICreateEnvelopeRecipientFromTemplate {
 
   /** Whether the recipient may delegate their tasks to others. Should be false for most standard workflows. */
   delegator?: boolean;
+
+  /**
+   * 'qualified' recipients finish by signing every document with their eID (a QES), once all recipients have submitted.
+   * Requires the organization's 'qes' or 'qes_sandbox' entitlement. Can't be changed after the envelope is created.
+   */
+  signature_level?: TRequestableSignatureLevel;
 
   /** A custom message to include in the email or SMS invitation. May be left blank for a default message. */
   message?: string;
@@ -111,6 +118,12 @@ export interface ICreateEnvelopeRecipientDirectly {
   /** Whether the recipient may delegate their tasks to others. Should be false for most standard workflows. */
   delegator?: boolean;
 
+  /**
+   * 'qualified' recipients finish by signing every document with their eID (a QES), once all recipients have submitted.
+   * Requires the organization's 'qes' or 'qes_sandbox' entitlement. Can't be changed after the envelope is created.
+   */
+  signature_level?: TRequestableSignatureLevel;
+
   /** A custom message to include in the email or SMS invitation. May be left blank for a default message. */
   message?: string;
 
@@ -180,6 +193,41 @@ export interface ISignerTokenResponse {
   initials?: IInitial[];
   /** The org's default brand, if one is set. Contains style_overrides CSS and other branding fields. */
   brand?: Record<string, any> | null;
+}
+
+export interface IStartQesSessionRequest {
+  /**
+   * Where eID Easy sends the signer back to, with qes_result ('signed', 'fail' or 'cancel') added. Usually the signing
+   * page itself, so the signer lands back in the same session. Must be http or https. Defaults to the signer's signing link.
+   */
+  return_url?: string;
+}
+
+export interface IStartQesSessionResponse {
+  /** eID Easy's hosted signing page. Send the signer's whole window there: it hands off to Mobile-ID, Smart-ID and card readers. */
+  signing_page_url: string;
+}
+
+export interface IQesStateResponse {
+  /** Where the signer stands in the envelope's QES phase, or null if they aren't a 'qualified' recipient. */
+  qes_state: TQesState | null;
+}
+
+/** The event_detail of a 'recipient:qes_signed' history entry, as JSON. */
+export interface IQesSignedHistoryDetail {
+  signer_name?: string | null;
+  signer_country?: string | null;
+  /** e.g. 'mid-signature' (Mobile-ID) or 'smart-id-signature' */
+  signing_method?: string | null;
+  /** Whether eID Easy validated the signature's long-term baseline for every document */
+  baseline_verified?: boolean;
+}
+
+/** The event_detail of a 'recipient:qes_error' history entry, as JSON. */
+export interface IQesErrorHistoryDetail {
+  reason: TQesErrorReason;
+  /** For 'not_qualified': the level eID Easy reported instead */
+  signature_level?: string | null;
 }
 
 export interface IInPersonLinkResponse {
