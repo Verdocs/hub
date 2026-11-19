@@ -112,6 +112,7 @@ public sealed class VerdocsEndpoint : IDisposable
         ApiKeys = new ApiKeys(this);
         Brands = new Brands(this);
         Webhooks = new Webhooks(this);
+        Clickwrap = new Clickwrap(this);
         NotificationTemplates = new NotificationTemplates(this);
     }
 
@@ -209,6 +210,9 @@ public sealed class VerdocsEndpoint : IDisposable
     /// <summary>Webhook calls for this endpoint.</summary>
     public Webhooks Webhooks { get; }
 
+    /// <summary>Clickwrap agreement, session, and record calls for this endpoint.</summary>
+    public Clickwrap Clickwrap { get; }
+
     /// <summary>Notification template calls for this endpoint.</summary>
     public NotificationTemplates NotificationTemplates { get; }
 
@@ -290,11 +294,19 @@ public sealed class VerdocsEndpoint : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    private void ApplyHeaders(HttpRequestMessage request)
+    private void ApplyHeaders(HttpRequestMessage request, string? bearerToken)
     {
         if (ClientId is not null)
         {
             request.Headers.TryAddWithoutValidation("X-Client-ID", ClientId);
+        }
+
+        // A per-call token (clickwrap session tokens) wins over the endpoint's own session for
+        // that one request, and never replaces it.
+        if (bearerToken is not null)
+        {
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+            return;
         }
 
         if (Token is null)
@@ -328,9 +340,32 @@ public sealed class VerdocsEndpoint : IDisposable
     /// Sends one API request with prebuilt content (multipart uploads, mainly) and returns
     /// the parsed response.
     /// </summary>
-    internal async Task<TResponse> SendAsync<TResponse>(HttpMethod method, string pathAndQuery, HttpContent? content, CancellationToken cancellationToken)
+    internal Task<TResponse> SendAsync<TResponse>(HttpMethod method, string pathAndQuery, HttpContent? content, CancellationToken cancellationToken)
     {
-        var (statusCode, bytes) = await SendCoreWithStatusAsync(method, pathAndQuery, content, cancellationToken).ConfigureAwait(false);
+        return SendAsync<TResponse>(method, pathAndQuery, content, null, cancellationToken);
+    }
+
+    /// <summary>
+    /// Sends one API request authorized by the given bearer token instead of the endpoint's
+    /// session, and returns the parsed response. Clickwrap session tokens go through here.
+    /// </summary>
+    internal Task<TResponse> SendWithTokenAsync<TResponse>(HttpMethod method, string pathAndQuery, object? body, string bearerToken, CancellationToken cancellationToken)
+    {
+        return SendAsync<TResponse>(method, pathAndQuery, ToJsonContent(body), bearerToken, cancellationToken);
+    }
+
+    /// <summary>
+    /// Sends one API request authorized by the given bearer token instead of the endpoint's
+    /// session, and discards the response body.
+    /// </summary>
+    internal async Task SendVoidWithTokenAsync(HttpMethod method, string pathAndQuery, object? body, string bearerToken, CancellationToken cancellationToken)
+    {
+        await SendCoreWithStatusAsync(method, pathAndQuery, ToJsonContent(body), bearerToken, cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task<TResponse> SendAsync<TResponse>(HttpMethod method, string pathAndQuery, HttpContent? content, string? bearerToken, CancellationToken cancellationToken)
+    {
+        var (statusCode, bytes) = await SendCoreWithStatusAsync(method, pathAndQuery, content, bearerToken, cancellationToken).ConfigureAwait(false);
         var responseBody = Encoding.UTF8.GetString(bytes);
 
         try
@@ -385,7 +420,7 @@ public sealed class VerdocsEndpoint : IDisposable
 
     private async Task<byte[]> SendCoreAsync(HttpMethod method, string pathAndQuery, HttpContent? content, CancellationToken cancellationToken)
     {
-        var (_, bytes) = await SendCoreWithStatusAsync(method, pathAndQuery, content, cancellationToken).ConfigureAwait(false);
+        var (_, bytes) = await SendCoreWithStatusAsync(method, pathAndQuery, content, null, cancellationToken).ConfigureAwait(false);
         return bytes;
     }
 
@@ -394,10 +429,10 @@ public sealed class VerdocsEndpoint : IDisposable
     /// mapping all live here. Reads the body as bytes so binary downloads and text/JSON
     /// responses share the same path; the API speaks UTF-8 for everything textual.
     /// </summary>
-    private async Task<(HttpStatusCode StatusCode, byte[] Body)> SendCoreWithStatusAsync(HttpMethod method, string pathAndQuery, HttpContent? content, CancellationToken cancellationToken)
+    private async Task<(HttpStatusCode StatusCode, byte[] Body)> SendCoreWithStatusAsync(HttpMethod method, string pathAndQuery, HttpContent? content, string? bearerToken, CancellationToken cancellationToken)
     {
         using var request = new HttpRequestMessage(method, new Uri(BaseUrl, pathAndQuery));
-        ApplyHeaders(request);
+        ApplyHeaders(request, bearerToken);
 
         if (content is not null)
         {

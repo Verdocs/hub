@@ -146,7 +146,9 @@ export type TWebhookEvent =
   | 'recipient_docs_downloaded'
   | 'recipient_invite_failed'
   | 'recipient_declined'
-  | 'organization_deleted';
+  | 'organization_deleted'
+  | 'clickwrap_accepted'
+  | 'clickwrap_declined'
 
 export const WEBHOOK_EVENTS = [
   'envelope_created',
@@ -172,6 +174,8 @@ export const WEBHOOK_EVENTS = [
   'recipient_invite_failed',
   'recipient_declined',
   'organization_deleted',
+  'clickwrap_accepted',
+  'clickwrap_declined'
 ] as const;
 
 export type TTemplateVisibility = 'private' | 'shared' | 'public';
@@ -188,7 +192,8 @@ export type TEntitlement =
   | 'sms'
   | 'kba_sandbox'
   | 'qes'
-  | 'qes_sandbox';
+  | 'qes_sandbox'
+  | 'clickwrap';
 
 /**
  * The authentication method(s) required for a recipient to access an envelope. "Passcode" will require a

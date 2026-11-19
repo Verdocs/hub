@@ -4201,6 +4201,831 @@
         }
       }
     },
+    "clickwrap": {
+      "id": "clickwrap",
+      "name": "Clickwrap",
+      "summary": "",
+      "symbols": {
+        "clickwrap.getClickwrapAgreements": {
+          "sdkOperation": "clickwrap.getClickwrapAgreements",
+          "kind": "function",
+          "name": "ListAgreementsAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CIReadOnlyList\u003CClickwrapAgreementSummary\u003E\u003E ListAgreementsAsync(CancellationToken cancellationToken = default)",
+          "summary": "Lists the organization\u0027s agreements, each with its current (latest published) version and its open draft.",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CIReadOnlyList\u003CClickwrapAgreementSummary\u003E\u003E",
+            "description": "The agreements, oldest first."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var agreements = await endpoint.Clickwrap.ListAgreementsAsync();"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapAgreement": {
+          "sdkOperation": "clickwrap.getClickwrapAgreement",
+          "kind": "function",
+          "name": "GetAgreementAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CClickwrapAgreementDetail\u003E GetAgreementAsync(string agreementId, CancellationToken cancellationToken = default)",
+          "summary": "Gets one agreement with every version, newest first, including each version\u0027s text.",
+          "params": [
+            {
+              "name": "agreementId",
+              "type": "string",
+              "description": "The agreement to get.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CClickwrapAgreementDetail\u003E",
+            "description": "The agreement with its versions."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because no such agreement exists."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.createClickwrapAgreement": {
+          "sdkOperation": "clickwrap.createClickwrapAgreement",
+          "kind": "function",
+          "name": "CreateAgreementAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CClickwrapAgreement\u003E CreateAgreementAsync(CreateClickwrapAgreementRequest request, CancellationToken cancellationToken = default)",
+          "summary": "Creates an agreement. It starts with no versions. The key can never change, because developers put it in their code.",
+          "params": [
+            {
+              "name": "request",
+              "type": "CreateClickwrapAgreementRequest",
+              "description": "The agreement\u0027s key and name.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CClickwrapAgreement\u003E",
+            "description": "The new agreement."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because the key is taken."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var agreement = await endpoint.Clickwrap.CreateAgreementAsync(new CreateClickwrapAgreementRequest\n{\n    Key = \u0022terms-of-service\u0022,\n    Name = \u0022Terms of Service\u0022,\n});"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.renameClickwrapAgreement": {
+          "sdkOperation": "clickwrap.renameClickwrapAgreement",
+          "kind": "function",
+          "name": "RenameAgreementAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CClickwrapAgreement\u003E RenameAgreementAsync(string agreementId, string name, CancellationToken cancellationToken = default)",
+          "summary": "Renames an agreement. Its key never changes.",
+          "params": [
+            {
+              "name": "agreementId",
+              "type": "string",
+              "description": "The agreement to rename.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "The new name.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CClickwrapAgreement\u003E",
+            "description": "The renamed agreement."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.createClickwrapDraft": {
+          "sdkOperation": "clickwrap.createClickwrapDraft",
+          "kind": "function",
+          "name": "CreateDraftAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CClickwrapVersion\u003E CreateDraftAsync(string agreementId, CreateClickwrapDraftRequest? request = null, CancellationToken cancellationToken = default)",
+          "summary": "Starts a draft version: empty, with the given text, or copied from the current version. An agreement has at most one draft, and nobody sees it until it\u0027s published.",
+          "params": [
+            {
+              "name": "agreementId",
+              "type": "string",
+              "description": "The agreement to add the draft to.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "request",
+              "type": "CreateClickwrapDraftRequest?",
+              "description": "The text or CopyCurrent. Null for an empty draft.",
+              "optional": true,
+              "default": "null"
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CClickwrapVersion\u003E",
+            "description": "The new draft."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because a draft already exists."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var draft = await endpoint.Clickwrap.CreateDraftAsync(agreementId, new CreateClickwrapDraftRequest { CopyCurrent = true });"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.updateClickwrapDraft": {
+          "sdkOperation": "clickwrap.updateClickwrapDraft",
+          "kind": "function",
+          "name": "UpdateDraftAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CClickwrapVersion\u003E UpdateDraftAsync(string versionId, string content, CancellationToken cancellationToken = default)",
+          "summary": "Replaces a draft\u0027s text. Only drafts can be edited; published versions never change.",
+          "params": [
+            {
+              "name": "versionId",
+              "type": "string",
+              "description": "The draft to edit.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "content",
+              "type": "string",
+              "description": "The agreement text as HTML, sanitized on save.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CClickwrapVersion\u003E",
+            "description": "The updated draft."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because the version is published."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.deleteClickwrapDraft": {
+          "sdkOperation": "clickwrap.deleteClickwrapDraft",
+          "kind": "function",
+          "name": "DeleteDraftAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task DeleteDraftAsync(string versionId, CancellationToken cancellationToken = default)",
+          "summary": "Deletes a draft version. Published versions can never be deleted.",
+          "params": [
+            {
+              "name": "versionId",
+              "type": "string",
+              "description": "The draft to delete.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task",
+            "description": "A task that completes when the draft is deleted."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because the version is published."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.publishClickwrapVersion": {
+          "sdkOperation": "clickwrap.publishClickwrapVersion",
+          "kind": "function",
+          "name": "PublishVersionAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CClickwrapVersion\u003E PublishVersionAsync(string versionId, PublishClickwrapVersionRequest request, CancellationToken cancellationToken = default)",
+          "summary": "Publishes a draft. This can\u0027t be undone: the text is hashed and frozen, and it becomes what people are shown. With RequiresReacceptance, everyone who accepted an earlier version must accept again.",
+          "params": [
+            {
+              "name": "versionId",
+              "type": "string",
+              "description": "The draft to publish.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "request",
+              "type": "PublishClickwrapVersionRequest",
+              "description": "Whether re-acceptance is required, and an optional change summary.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CClickwrapVersion\u003E",
+            "description": "The published version."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because the draft is empty."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "await endpoint.Clickwrap.PublishVersionAsync(versionId, new PublishClickwrapVersionRequest { RequiresReacceptance = true });"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapCoverage": {
+          "sdkOperation": "clickwrap.getClickwrapCoverage",
+          "kind": "function",
+          "name": "GetCoverageAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CClickwrapCoverage\u003E GetCoverageAsync(string agreementId, CancellationToken cancellationToken = default)",
+          "summary": "Counts who has accepted an agreement: everyone who accepted any version, how many are current, and the count for each published version. Counts distinct people, not clicks.",
+          "params": [
+            {
+              "name": "agreementId",
+              "type": "string",
+              "description": "The agreement to count.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CClickwrapCoverage\u003E",
+            "description": "The counts."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapStatus": {
+          "sdkOperation": "clickwrap.getClickwrapStatus",
+          "kind": "function",
+          "name": "GetStatusAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CIReadOnlyList\u003CClickwrapStatus\u003E\u003E GetStatusAsync(string userId, IReadOnlyList\u003Cstring\u003E agreements, CancellationToken cancellationToken = default)",
+          "summary": "Checks whether one person is current on each named agreement. Current means they accepted a published version at or after the newest one that requires re-acceptance. Declines never make anyone current.",
+          "params": [
+            {
+              "name": "userId",
+              "type": "string",
+              "description": "The person\u0027s ID in your own system.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "agreements",
+              "type": "IReadOnlyList\u003Cstring\u003E",
+              "description": "The agreement keys to check, up to 20.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CIReadOnlyList\u003CClickwrapStatus\u003E\u003E",
+            "description": "One entry per agreement."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because a key is unknown."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var status = await endpoint.Clickwrap.GetStatusAsync(\u0022user-123\u0022, [\u0022terms-of-service\u0022]);\nvar needsTerms = status.Any(entry =\u003E !entry.Current);"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.createClickwrapSession": {
+          "sdkOperation": "clickwrap.createClickwrapSession",
+          "kind": "function",
+          "name": "CreateSessionAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CClickwrapSessionResult\u003E CreateSessionAsync(CreateClickwrapSessionRequest request, CancellationToken cancellationToken = default)",
+          "summary": "Starts an acceptance session for one person, from your server. When they\u0027re already current, the answer is a ClickwrapSessionCurrent with nothing to show. Otherwise it\u0027s a ClickwrapSessionCreated carrying a session token for the component (or a hosted URL) that expires in an hour.",
+          "params": [
+            {
+              "name": "request",
+              "type": "CreateClickwrapSessionRequest",
+              "description": "The person, the agreement keys, and how to show them.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CClickwrapSessionResult\u003E",
+            "description": "The session, or the person\u0027s status when there\u0027s nothing to accept."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because a key is unknown."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var result = await endpoint.Clickwrap.CreateSessionAsync(new CreateClickwrapSessionRequest\n{\n    UserId = \u0022user-123\u0022,\n    Agreements = [\u0022terms-of-service\u0022],\n});\nif (result is ClickwrapSessionCreated session)\n{\n    // Hand session.Token to the browser\n}"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.recordClickwrapOutcome": {
+          "sdkOperation": "clickwrap.recordClickwrapOutcome",
+          "kind": "function",
+          "name": "RecordOutcomeAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CClickwrapOutcomeResult\u003E RecordOutcomeAsync(RecordClickwrapOutcomeRequest request, CancellationToken cancellationToken = default)",
+          "summary": "Records an acceptance or decline that happened in your own interface (headless). The IP address and user agent are kept as your report, and a presentation is stored as sent.",
+          "params": [
+            {
+              "name": "request",
+              "type": "RecordClickwrapOutcomeRequest",
+              "description": "Who, what they did, and which versions they saw.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CClickwrapOutcomeResult\u003E",
+            "description": "The new record."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because a version isn\u0027t published."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var result = await endpoint.Clickwrap.RecordOutcomeAsync(new RecordClickwrapOutcomeRequest\n{\n    UserId = \u0022user-123\u0022,\n    Outcome = ClickwrapOutcome.Accepted,\n    Agreements = [new ClickwrapOutcomeAgreement { Key = \u0022terms-of-service\u0022, VersionId = versionId }],\n});"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapAcceptances": {
+          "sdkOperation": "clickwrap.getClickwrapAcceptances",
+          "kind": "function",
+          "name": "ListAcceptancesAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CClickwrapAcceptanceList\u003E ListAcceptancesAsync(ListClickwrapAcceptancesOptions options, CancellationToken cancellationToken = default)",
+          "summary": "Finds recorded acceptances and declines, newest first. Search by UserId, or by one metadata key and value.",
+          "params": [
+            {
+              "name": "options",
+              "type": "ListClickwrapAcceptancesOptions",
+              "description": "The search and paging.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CClickwrapAcceptanceList\u003E",
+            "description": "One page of record summaries."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because no search was given."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapAcceptance": {
+          "sdkOperation": "clickwrap.getClickwrapAcceptance",
+          "kind": "function",
+          "name": "GetAcceptanceAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CClickwrapAcceptance\u003E GetAcceptanceAsync(string acceptanceId, CancellationToken cancellationToken = default)",
+          "summary": "Gets one recorded acceptance or decline: who, which agreement versions, where and how it happened, the labels shown, and the event trail. Records never change.",
+          "params": [
+            {
+              "name": "acceptanceId",
+              "type": "string",
+              "description": "The record to get.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CClickwrapAcceptance\u003E",
+            "description": "The record."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because no such record exists."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapDownloadLink": {
+          "sdkOperation": "clickwrap.getClickwrapDownloadLink",
+          "kind": "function",
+          "name": "GetDownloadLinkAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CClickwrapDownloadLink\u003E GetDownloadLinkAsync(string acceptanceId, string type, CancellationToken cancellationToken = default)",
+          "summary": "Gets a 15-minute download link for one of a record\u0027s files: the signed certificate, the replay (only when the record has a presentation), or the evidence package. The first request for a file can take several seconds while it\u0027s made.",
+          "params": [
+            {
+              "name": "acceptanceId",
+              "type": "string",
+              "description": "The record to download from.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "description": "Which file to link to; see ClickwrapDownloadType.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CClickwrapDownloadLink\u003E",
+            "description": "The link and how long it works."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because a replay has no presentation."
+            }
+          ],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var link = await endpoint.Clickwrap.GetDownloadLinkAsync(acceptanceId, ClickwrapDownloadType.Evidence);"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapSession": {
+          "sdkOperation": "clickwrap.getClickwrapSession",
+          "kind": "function",
+          "name": "GetSessionAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CClickwrapPublicSession\u003E GetSessionAsync(string token, CancellationToken cancellationToken = default)",
+          "summary": "Gets what an acceptance session shows: each agreement version\u0027s text, the display mode, and the brand. Authorized by the session token, not the endpoint\u0027s session.",
+          "params": [
+            {
+              "name": "token",
+              "type": "string",
+              "description": "The session token from CreateSessionAsync.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CClickwrapPublicSession\u003E",
+            "description": "The session\u0027s agreements, mode, and brand."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed, for example because the token expired."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.sendClickwrapEvent": {
+          "sdkOperation": "clickwrap.sendClickwrapEvent",
+          "kind": "function",
+          "name": "SendEventAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task SendEventAsync(string token, SendClickwrapEventRequest request, CancellationToken cancellationToken = default)",
+          "summary": "Reports what the person did while reading: the terms were shown, they scrolled to the end, or they checked or unchecked a box. The events become the record\u0027s trail.",
+          "params": [
+            {
+              "name": "token",
+              "type": "string",
+              "description": "The session token from CreateSessionAsync.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "request",
+              "type": "SendClickwrapEventRequest",
+              "description": "The event, and the checkbox\u0027s version ID for checked and unchecked.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task",
+            "description": "A task that completes when the event is recorded."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.acceptClickwrap": {
+          "sdkOperation": "clickwrap.acceptClickwrap",
+          "kind": "function",
+          "name": "AcceptAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CClickwrapOutcomeResult\u003E AcceptAsync(string token, ClickwrapSessionOutcomeRequest request, CancellationToken cancellationToken = default)",
+          "summary": "Records that the person accepted every agreement in the session. The presentation\u0027s text must contain each version\u0027s text and every label, or the call is refused.",
+          "params": [
+            {
+              "name": "token",
+              "type": "string",
+              "description": "The session token from CreateSessionAsync.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "request",
+              "type": "ClickwrapSessionOutcomeRequest",
+              "description": "The surface, labels, and rendered presentation.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CClickwrapOutcomeResult\u003E",
+            "description": "The new record."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.declineClickwrap": {
+          "sdkOperation": "clickwrap.declineClickwrap",
+          "kind": "function",
+          "name": "DeclineAsync",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "Task\u003CClickwrapOutcomeResult\u003E DeclineAsync(string token, ClickwrapSessionOutcomeRequest request, CancellationToken cancellationToken = default)",
+          "summary": "Records that the person declined the session\u0027s agreements. Takes the same fields as AcceptAsync.",
+          "params": [
+            {
+              "name": "token",
+              "type": "string",
+              "description": "The session token from CreateSessionAsync.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "request",
+              "type": "ClickwrapSessionOutcomeRequest",
+              "description": "The surface, labels, and rendered presentation.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "description": "Token to cancel the operation.",
+              "optional": true,
+              "default": "default"
+            }
+          ],
+          "returns": {
+            "type": "Task\u003CClickwrapOutcomeResult\u003E",
+            "description": "The new record."
+          },
+          "throws": [
+            {
+              "type": "VerdocsApiException",
+              "description": "The call failed."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        }
+      }
+    },
     "contact": {
       "id": "contact",
       "name": "Contact",

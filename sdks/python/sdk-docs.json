@@ -1258,6 +1258,792 @@
         }
       }
     },
+    "clickwrap": {
+      "id": "clickwrap",
+      "name": "Clickwrap",
+      "summary": "",
+      "symbols": {
+        "clickwrap.getClickwrapAgreements": {
+          "sdkOperation": "clickwrap.getClickwrapAgreements",
+          "kind": "function",
+          "name": "list_agreements",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "list_agreements() -> list[ClickwrapAgreementSummary]",
+          "summary": "List the organization's agreements via GET /v2/clickwraps/agreements.",
+          "params": [],
+          "returns": {
+            "type": "list[ClickwrapAgreementSummary]",
+            "description": "The agreements, oldest first."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned a non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapAgreement": {
+          "sdkOperation": "clickwrap.getClickwrapAgreement",
+          "kind": "function",
+          "name": "get_agreement",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "get_agreement(agreement_id: str) -> ClickwrapAgreementDetail",
+          "summary": "Get one agreement with every version via GET /v2/clickwraps/agreements/{agreement_id}.",
+          "params": [
+            {
+              "name": "agreement_id",
+              "type": "str",
+              "description": "The agreement to get.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ClickwrapAgreementDetail",
+            "description": "The agreement with its versions."
+          },
+          "throws": [
+            {
+              "type": "NotFoundError",
+              "description": "No such agreement in the organization."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.createClickwrapAgreement": {
+          "sdkOperation": "clickwrap.createClickwrapAgreement",
+          "kind": "function",
+          "name": "create_agreement",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "create_agreement(params: ClickwrapAgreementCreateParams) -> ClickwrapAgreement",
+          "summary": "Create an agreement via POST /v2/clickwraps/agreements.",
+          "params": [
+            {
+              "name": "params",
+              "type": "ClickwrapAgreementCreateParams",
+              "description": "The agreement's key and name.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ClickwrapAgreement",
+            "description": "The new agreement."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the request, for example a duplicate key."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "agreement = endpoint.clickwrap.create_agreement(\n    ClickwrapAgreementCreateParams(key=\"terms-of-service\", name=\"Terms of Service\")\n)"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.renameClickwrapAgreement": {
+          "sdkOperation": "clickwrap.renameClickwrapAgreement",
+          "kind": "function",
+          "name": "rename_agreement",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "rename_agreement(agreement_id: str, name: str) -> ClickwrapAgreement",
+          "summary": "Rename an agreement via PATCH /v2/clickwraps/agreements/{agreement_id}.",
+          "params": [
+            {
+              "name": "agreement_id",
+              "type": "str",
+              "description": "The agreement to rename.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "name",
+              "type": "str",
+              "description": "The new name.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ClickwrapAgreement",
+            "description": "The renamed agreement."
+          },
+          "throws": [
+            {
+              "type": "NotFoundError",
+              "description": "No such agreement in the organization."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.createClickwrapDraft": {
+          "sdkOperation": "clickwrap.createClickwrapDraft",
+          "kind": "function",
+          "name": "create_draft",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "create_draft(agreement_id: str, params: ClickwrapDraftCreateParams | None = None) -> ClickwrapVersion",
+          "summary": "Start a draft version via POST /v2/clickwraps/agreements/{agreement_id}/versions.",
+          "params": [
+            {
+              "name": "agreement_id",
+              "type": "str",
+              "description": "The agreement to add the draft to.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "ClickwrapDraftCreateParams | None",
+              "description": "The text or copy_current. Omit for an empty draft.",
+              "optional": true,
+              "default": "None"
+            }
+          ],
+          "returns": {
+            "type": "ClickwrapVersion",
+            "description": "The new draft."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the request, for example an existing draft."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "draft = endpoint.clickwrap.create_draft(agreement_id, ClickwrapDraftCreateParams(copy_current=True))"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.updateClickwrapDraft": {
+          "sdkOperation": "clickwrap.updateClickwrapDraft",
+          "kind": "function",
+          "name": "update_draft",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "update_draft(version_id: str, content: str) -> ClickwrapVersion",
+          "summary": "Replace a draft's text via PATCH /v2/clickwraps/versions/{version_id}.",
+          "params": [
+            {
+              "name": "version_id",
+              "type": "str",
+              "description": "The draft to edit.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "content",
+              "type": "str",
+              "description": "The agreement text as HTML, sanitized on save.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ClickwrapVersion",
+            "description": "The updated draft."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the request, for example a published version."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.deleteClickwrapDraft": {
+          "sdkOperation": "clickwrap.deleteClickwrapDraft",
+          "kind": "function",
+          "name": "delete_draft",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "delete_draft(version_id: str) -> None",
+          "summary": "Delete a draft via DELETE /v2/clickwraps/versions/{version_id}.",
+          "params": [
+            {
+              "name": "version_id",
+              "type": "str",
+              "description": "The draft to delete.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "None",
+            "description": ""
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the request, for example a published version."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.publishClickwrapVersion": {
+          "sdkOperation": "clickwrap.publishClickwrapVersion",
+          "kind": "function",
+          "name": "publish_version",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "publish_version(version_id: str, params: ClickwrapPublishParams) -> ClickwrapVersion",
+          "summary": "Publish a draft via POST /v2/clickwraps/versions/{version_id}/publish.",
+          "params": [
+            {
+              "name": "version_id",
+              "type": "str",
+              "description": "The draft to publish.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "ClickwrapPublishParams",
+              "description": "Whether re-acceptance is required, and an optional change summary.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ClickwrapVersion",
+            "description": "The published version."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the request, for example an empty draft."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "endpoint.clickwrap.publish_version(version_id, ClickwrapPublishParams(requires_reacceptance=True))"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapCoverage": {
+          "sdkOperation": "clickwrap.getClickwrapCoverage",
+          "kind": "function",
+          "name": "get_coverage",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "get_coverage(agreement_id: str) -> ClickwrapCoverage",
+          "summary": "Count who has accepted an agreement via GET /v2/clickwraps/agreements/{agreement_id}/coverage.",
+          "params": [
+            {
+              "name": "agreement_id",
+              "type": "str",
+              "description": "The agreement to count.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ClickwrapCoverage",
+            "description": "The counts overall and per published version."
+          },
+          "throws": [
+            {
+              "type": "NotFoundError",
+              "description": "No such agreement in the organization."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapStatus": {
+          "sdkOperation": "clickwrap.getClickwrapStatus",
+          "kind": "function",
+          "name": "get_status",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "get_status(user_id: str, agreements: list[str]) -> list[ClickwrapStatus]",
+          "summary": "Check whether one person is current on each agreement via GET /v2/clickwraps/status.",
+          "params": [
+            {
+              "name": "user_id",
+              "type": "str",
+              "description": "The person's ID in your own system.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "agreements",
+              "type": "list[str]",
+              "description": "The agreement keys to check, up to 20.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "list[ClickwrapStatus]",
+            "description": "One entry per agreement."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the request, for example an unknown key."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "status = endpoint.clickwrap.get_status(\"user-123\", [\"terms-of-service\"])\nneeds_terms = any(not entry.current for entry in status)"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.createClickwrapSession": {
+          "sdkOperation": "clickwrap.createClickwrapSession",
+          "kind": "function",
+          "name": "create_session",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "create_session(params: ClickwrapSessionCreateParams) -> ClickwrapSessionCurrent | ClickwrapSessionCreated",
+          "summary": "Start an acceptance session for one person via POST /v2/clickwraps/session.",
+          "params": [
+            {
+              "name": "params",
+              "type": "ClickwrapSessionCreateParams",
+              "description": "The person, the agreement keys, and how to show them.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ClickwrapSessionCurrent | ClickwrapSessionCreated",
+            "description": "The session, or the person's status when there's nothing to accept."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the request, for example an unknown key."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "session = endpoint.clickwrap.create_session(\n    ClickwrapSessionCreateParams(user_id=\"user-123\", agreements=[\"terms-of-service\"])\n)\nif not session.current:\n    token = session.token  # hand it to the browser"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.recordClickwrapOutcome": {
+          "sdkOperation": "clickwrap.recordClickwrapOutcome",
+          "kind": "function",
+          "name": "record_outcome",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "record_outcome(params: ClickwrapOutcomeRecordParams) -> ClickwrapOutcomeResult",
+          "summary": "Record an outcome from your own interface via POST /v2/clickwraps/acceptances.",
+          "params": [
+            {
+              "name": "params",
+              "type": "ClickwrapOutcomeRecordParams",
+              "description": "Who, what they did, and which versions they saw.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ClickwrapOutcomeResult",
+            "description": "The new record."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the request, for example an unpublished version."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "result = endpoint.clickwrap.record_outcome(\n    ClickwrapOutcomeRecordParams(\n        user_id=\"user-123\",\n        outcome=\"accepted\",\n        agreements=[ClickwrapOutcomeAgreement(key=\"terms-of-service\", version_id=version_id)],\n    )\n)"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapAcceptances": {
+          "sdkOperation": "clickwrap.getClickwrapAcceptances",
+          "kind": "function",
+          "name": "list_acceptances",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "list_acceptances(params: ClickwrapAcceptanceListParams) -> ClickwrapAcceptanceList",
+          "summary": "Find records, newest first, via GET /v2/clickwraps/acceptances.",
+          "params": [
+            {
+              "name": "params",
+              "type": "ClickwrapAcceptanceListParams",
+              "description": "The search and paging.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ClickwrapAcceptanceList",
+            "description": "One page of record summaries."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the request, for example no search given."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapAcceptance": {
+          "sdkOperation": "clickwrap.getClickwrapAcceptance",
+          "kind": "function",
+          "name": "get_acceptance",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "get_acceptance(acceptance_id: str) -> ClickwrapAcceptance",
+          "summary": "Get one record via GET /v2/clickwraps/acceptances/{acceptance_id}.",
+          "params": [
+            {
+              "name": "acceptance_id",
+              "type": "str",
+              "description": "The record to get.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ClickwrapAcceptance",
+            "description": "The record."
+          },
+          "throws": [
+            {
+              "type": "NotFoundError",
+              "description": "No such record in the organization."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapDownloadLink": {
+          "sdkOperation": "clickwrap.getClickwrapDownloadLink",
+          "kind": "function",
+          "name": "get_download_link",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "get_download_link(acceptance_id: str, type: ClickwrapDownloadType) -> ClickwrapDownloadLink",
+          "summary": "Get a 15-minute link to one of a record's files via GET /v2/clickwraps/acceptances/{acceptance_id}/download.",
+          "params": [
+            {
+              "name": "acceptance_id",
+              "type": "str",
+              "description": "The record to download from.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "type",
+              "type": "ClickwrapDownloadType",
+              "description": "Which file to link to.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ClickwrapDownloadLink",
+            "description": "The link and how long it works."
+          },
+          "throws": [
+            {
+              "type": "NotFoundError",
+              "description": "No such record, or no presentation for a replay."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [
+            {
+              "language": "python",
+              "code": "link = endpoint.clickwrap.get_download_link(acceptance_id, \"evidence\")"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapSession": {
+          "sdkOperation": "clickwrap.getClickwrapSession",
+          "kind": "function",
+          "name": "get_session",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "get_session(token: str) -> ClickwrapPublicSession",
+          "summary": "Get what a session shows via GET /v2/clickwraps/session, using its session token.",
+          "params": [
+            {
+              "name": "token",
+              "type": "str",
+              "description": "The session token from create_session.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ClickwrapPublicSession",
+            "description": "The session's agreements, mode, and brand."
+          },
+          "throws": [
+            {
+              "type": "AuthenticationError",
+              "description": "The token is invalid, expired, or already used."
+            },
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API returned another non-2xx status."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.sendClickwrapEvent": {
+          "sdkOperation": "clickwrap.sendClickwrapEvent",
+          "kind": "function",
+          "name": "send_event",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "send_event(token: str, params: ClickwrapEventParams) -> None",
+          "summary": "Report what the person did while reading via POST /v2/clickwraps/session/events.",
+          "params": [
+            {
+              "name": "token",
+              "type": "str",
+              "description": "The session token from create_session.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "ClickwrapEventParams",
+              "description": "The event, and the checkbox's version_id for checked and unchecked.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "None",
+            "description": ""
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the event."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.acceptClickwrap": {
+          "sdkOperation": "clickwrap.acceptClickwrap",
+          "kind": "function",
+          "name": "accept",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "accept(token: str, params: ClickwrapSessionOutcomeParams) -> ClickwrapOutcomeResult",
+          "summary": "Record that the person accepted the session's agreements via POST /v2/clickwraps/session/accept.",
+          "params": [
+            {
+              "name": "token",
+              "type": "str",
+              "description": "The session token from create_session.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "ClickwrapSessionOutcomeParams",
+              "description": "The surface, labels, and rendered presentation.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ClickwrapOutcomeResult",
+            "description": "The new record."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the request."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        },
+        "clickwrap.declineClickwrap": {
+          "sdkOperation": "clickwrap.declineClickwrap",
+          "kind": "function",
+          "name": "decline",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "decline(token: str, params: ClickwrapSessionOutcomeParams) -> ClickwrapOutcomeResult",
+          "summary": "Record that the person declined the session's agreements via POST /v2/clickwraps/session/decline.",
+          "params": [
+            {
+              "name": "token",
+              "type": "str",
+              "description": "The session token from create_session.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "ClickwrapSessionOutcomeParams",
+              "description": "The surface, labels, and rendered presentation.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "ClickwrapOutcomeResult",
+            "description": "The new record."
+          },
+          "throws": [
+            {
+              "type": "VerdocsAPIError",
+              "description": "The API rejected the request."
+            },
+            {
+              "type": "VerdocsConnectionError",
+              "description": "The request never reached the API."
+            }
+          ],
+          "examples": [],
+          "deprecated": false
+        }
+      }
+    },
     "contact": {
       "id": "contact",
       "name": "Contact",

@@ -2,6 +2,66 @@
   "$schema": "./sdk-unified.schema.json",
   "operations": [
     {
+      "operationId": "ungrouped.consumeQesResult",
+      "group": "Ungrouped",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Browser only. Read the qes_result the signer came back from eID Easy with, and remove it from the address bar so a\nreload doesn't act on it again. Returns null when there isn't one, or outside a browser. A 'signed' result still needs\ngetQesState to confirm the signature.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "consumeQesResult(): TQesResult | null",
+          "deprecated": false,
+          "returns": {
+            "type": "TQesResult | null"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "ungrouped.getQesReturnUrl",
+      "group": "Ungrouped",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Browser only. The return_url to pass to startQesSession: the current page, without the qes_result from an earlier\nattempt, so the signer lands back in the same session. Returns undefined outside a browser.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getQesReturnUrl(): string | undefined",
+          "deprecated": false,
+          "returns": {
+            "type": "string | undefined"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "ungrouped.isQualifiedRecipient",
+      "group": "Ungrouped",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Check whether a recipient must finish by signing with their eID (a QES), once every recipient has submitted.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "isQualifiedRecipient(recipient: IRecipient | null | undefined): boolean",
+          "params": [
+            {
+              "name": "recipient",
+              "type": "IRecipient | null | undefined",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "boolean"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "kba.getKbaStep",
       "group": "KBA",
       "page": "Endpoints",
@@ -559,6 +619,1750 @@
           "returns": {
             "type": "bool",
             "description": "True when every requested permission is held."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.acceptClickwrap",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Record that the person accepted every agreement in the session. The presentation is the rendered terms as one HTML\ndocument; its text must contain each version's text and every label, or the call is refused.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "acceptClickwrap(endpoint: VerdocsEndpoint, token: string, params: IClickwrapSessionOutcomeRequest): Promise<IClickwrapOutcomeResult>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "token",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "IClickwrapSessionOutcomeRequest",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapOutcomeResult>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {acceptClickwrap} from '@verdocs/js-sdk';\n\nconst {acceptance_id} = await acceptClickwrap(VerdocsEndpoint.getDefault(), token, {\n  surface: 'component',\n  labels: {agreements: [{version_id: versionId, label: 'I agree to the Terms of Service'}], button: 'Continue'},\n  presentation: html,\n});"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ClickwrapOutcomeResult> AcceptAsync(string token, ClickwrapSessionOutcomeRequest request, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "token",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The session token from CreateSessionAsync."
+            },
+            {
+              "name": "request",
+              "type": "ClickwrapSessionOutcomeRequest",
+              "optional": false,
+              "default": null,
+              "description": "The surface, labels, and rendered presentation."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ClickwrapOutcomeResult>",
+            "description": "The new record."
+          }
+        },
+        {
+          "language": "python",
+          "signature": "accept(token: str, params: ClickwrapSessionOutcomeParams) -> ClickwrapOutcomeResult",
+          "params": [
+            {
+              "name": "token",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The session token from create_session."
+            },
+            {
+              "name": "params",
+              "type": "ClickwrapSessionOutcomeParams",
+              "optional": false,
+              "default": null,
+              "description": "The surface, labels, and rendered presentation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ClickwrapOutcomeResult",
+            "description": "The new record."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.createClickwrapAgreement",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Create a Verdocs Accept agreement. It starts with no versions: add one with createClickwrapDraft, then publish it.\nThe key can never change, because developers put it in their code.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "createClickwrapAgreement(endpoint: VerdocsEndpoint, params: ICreateClickwrapAgreementRequest): Promise<IClickwrapAgreement>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "ICreateClickwrapAgreementRequest",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapAgreement>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {createClickwrapAgreement} from '@verdocs/js-sdk';\n\nconst agreement = await createClickwrapAgreement(VerdocsEndpoint.getDefault(), {key: 'terms-of-service', name: 'Terms of Service'});"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ClickwrapAgreement> CreateAgreementAsync(CreateClickwrapAgreementRequest request, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "request",
+              "type": "CreateClickwrapAgreementRequest",
+              "optional": false,
+              "default": null,
+              "description": "The agreement's key and name."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ClickwrapAgreement>",
+            "description": "The new agreement."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var agreement = await endpoint.Clickwrap.CreateAgreementAsync(new CreateClickwrapAgreementRequest\n{\n    Key = \"terms-of-service\",\n    Name = \"Terms of Service\",\n});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create_agreement(params: ClickwrapAgreementCreateParams) -> ClickwrapAgreement",
+          "params": [
+            {
+              "name": "params",
+              "type": "ClickwrapAgreementCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "The agreement's key and name."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ClickwrapAgreement",
+            "description": "The new agreement."
+          },
+          "example": {
+            "language": "python",
+            "code": "agreement = endpoint.clickwrap.create_agreement(\n    ClickwrapAgreementCreateParams(key=\"terms-of-service\", name=\"Terms of Service\")\n)"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.createClickwrapDraft",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Start a new draft version of an agreement: empty, with the given text, or copied from the current version. An\nagreement has at most one draft, and nobody sees it until it's published.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "createClickwrapDraft(endpoint: VerdocsEndpoint, agreementId: string, params: ICreateClickwrapDraftRequest = {}): Promise<IClickwrapVersion>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "agreementId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "ICreateClickwrapDraftRequest",
+              "optional": true,
+              "default": "{}",
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapVersion>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {createClickwrapDraft} from '@verdocs/js-sdk';\n\nconst draft = await createClickwrapDraft(VerdocsEndpoint.getDefault(), agreementId, {copy_current: true});"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ClickwrapVersion> CreateDraftAsync(string agreementId, CreateClickwrapDraftRequest? request = null, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "agreementId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The agreement to add the draft to."
+            },
+            {
+              "name": "request",
+              "type": "CreateClickwrapDraftRequest?",
+              "optional": true,
+              "default": "null",
+              "description": "The text or CopyCurrent. Null for an empty draft."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ClickwrapVersion>",
+            "description": "The new draft."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var draft = await endpoint.Clickwrap.CreateDraftAsync(agreementId, new CreateClickwrapDraftRequest { CopyCurrent = true });"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create_draft(agreement_id: str, params: ClickwrapDraftCreateParams | None = None) -> ClickwrapVersion",
+          "params": [
+            {
+              "name": "agreement_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The agreement to add the draft to."
+            },
+            {
+              "name": "params",
+              "type": "ClickwrapDraftCreateParams | None",
+              "optional": true,
+              "default": "None",
+              "description": "The text or copy_current. Omit for an empty draft."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ClickwrapVersion",
+            "description": "The new draft."
+          },
+          "example": {
+            "language": "python",
+            "code": "draft = endpoint.clickwrap.create_draft(agreement_id, ClickwrapDraftCreateParams(copy_current=True))"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.createClickwrapSession",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Start an acceptance session for one person, from your server. If they're already current on every agreement, the\nanswer has current: true and no token, and there's nothing to show. Otherwise it carries a session token for the\ncomponent (or a hosted_url to redirect to) that expires in an hour.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "createClickwrapSession(endpoint: VerdocsEndpoint, params: ICreateClickwrapSessionRequest): Promise<IClickwrapSessionCurrent | IClickwrapSessionCreated>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "ICreateClickwrapSessionRequest",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapSessionCurrent | IClickwrapSessionCreated>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {createClickwrapSession} from '@verdocs/js-sdk';\n\nconst session = await createClickwrapSession(VerdocsEndpoint.getDefault(), {user_id: 'user-123', agreements: ['terms-of-service']});\nif (!session.current) {\n  // Hand session.token to the browser\n}"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ClickwrapSessionResult> CreateSessionAsync(CreateClickwrapSessionRequest request, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "request",
+              "type": "CreateClickwrapSessionRequest",
+              "optional": false,
+              "default": null,
+              "description": "The person, the agreement keys, and how to show them."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ClickwrapSessionResult>",
+            "description": "The session, or the person's status when there's nothing to accept."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var result = await endpoint.Clickwrap.CreateSessionAsync(new CreateClickwrapSessionRequest\n{\n    UserId = \"user-123\",\n    Agreements = [\"terms-of-service\"],\n});\nif (result is ClickwrapSessionCreated session)\n{\n    // Hand session.Token to the browser\n}"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "create_session(params: ClickwrapSessionCreateParams) -> ClickwrapSessionCurrent | ClickwrapSessionCreated",
+          "params": [
+            {
+              "name": "params",
+              "type": "ClickwrapSessionCreateParams",
+              "optional": false,
+              "default": null,
+              "description": "The person, the agreement keys, and how to show them."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ClickwrapSessionCurrent | ClickwrapSessionCreated",
+            "description": "The session, or the person's status when there's nothing to accept."
+          },
+          "example": {
+            "language": "python",
+            "code": "session = endpoint.clickwrap.create_session(\n    ClickwrapSessionCreateParams(user_id=\"user-123\", agreements=[\"terms-of-service\"])\n)\nif not session.current:\n    token = session.token  # hand it to the browser"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.declineClickwrap",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Record that the person declined the session's agreements. Takes the same fields as acceptClickwrap, and the record\nis kept the same way.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "declineClickwrap(endpoint: VerdocsEndpoint, token: string, params: IClickwrapSessionOutcomeRequest): Promise<IClickwrapOutcomeResult>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "token",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "IClickwrapSessionOutcomeRequest",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapOutcomeResult>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {declineClickwrap} from '@verdocs/js-sdk';\n\nawait declineClickwrap(VerdocsEndpoint.getDefault(), token, {surface: 'component', labels, presentation: html});"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ClickwrapOutcomeResult> DeclineAsync(string token, ClickwrapSessionOutcomeRequest request, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "token",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The session token from CreateSessionAsync."
+            },
+            {
+              "name": "request",
+              "type": "ClickwrapSessionOutcomeRequest",
+              "optional": false,
+              "default": null,
+              "description": "The surface, labels, and rendered presentation."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ClickwrapOutcomeResult>",
+            "description": "The new record."
+          }
+        },
+        {
+          "language": "python",
+          "signature": "decline(token: str, params: ClickwrapSessionOutcomeParams) -> ClickwrapOutcomeResult",
+          "params": [
+            {
+              "name": "token",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The session token from create_session."
+            },
+            {
+              "name": "params",
+              "type": "ClickwrapSessionOutcomeParams",
+              "optional": false,
+              "default": null,
+              "description": "The surface, labels, and rendered presentation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ClickwrapOutcomeResult",
+            "description": "The new record."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.deleteClickwrapDraft",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Delete a draft version, which frees its number for the next draft. Published versions can never be deleted.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "deleteClickwrapDraft(endpoint: VerdocsEndpoint, versionId: string): Promise<undefined>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "versionId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<undefined>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {deleteClickwrapDraft} from '@verdocs/js-sdk';\n\nawait deleteClickwrapDraft(VerdocsEndpoint.getDefault(), versionId);"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task DeleteDraftAsync(string versionId, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "versionId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The draft to delete."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task",
+            "description": "A task that completes when the draft is deleted."
+          }
+        },
+        {
+          "language": "python",
+          "signature": "delete_draft(version_id: str) -> None",
+          "params": [
+            {
+              "name": "version_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The draft to delete."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.getClickwrapAcceptance",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get one recorded acceptance or decline: who, which agreement versions, where and how it happened, the labels the\nperson saw, and the event trail. Records never change.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getClickwrapAcceptance(endpoint: VerdocsEndpoint, acceptanceId: string): Promise<IClickwrapAcceptance>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "acceptanceId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapAcceptance>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getClickwrapAcceptance} from '@verdocs/js-sdk';\n\nconst record = await getClickwrapAcceptance(VerdocsEndpoint.getDefault(), acceptanceId);"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ClickwrapAcceptance> GetAcceptanceAsync(string acceptanceId, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "acceptanceId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The record to get."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ClickwrapAcceptance>",
+            "description": "The record."
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_acceptance(acceptance_id: str) -> ClickwrapAcceptance",
+          "params": [
+            {
+              "name": "acceptance_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The record to get."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ClickwrapAcceptance",
+            "description": "The record."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.getClickwrapAcceptances",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Find recorded acceptances and declines, newest first. Search by user_id, or by one metadata key and value.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getClickwrapAcceptances(endpoint: VerdocsEndpoint, params: IListClickwrapAcceptancesParams): Promise<IClickwrapAcceptancesResponse>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "IListClickwrapAcceptancesParams",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapAcceptancesResponse>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getClickwrapAcceptances} from '@verdocs/js-sdk';\n\nconst {count, acceptances} = await getClickwrapAcceptances(VerdocsEndpoint.getDefault(), {metadata_key: 'email', metadata_value: 'pat@example.com'});"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ClickwrapAcceptanceList> ListAcceptancesAsync(ListClickwrapAcceptancesOptions options, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "options",
+              "type": "ListClickwrapAcceptancesOptions",
+              "optional": false,
+              "default": null,
+              "description": "The search and paging."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ClickwrapAcceptanceList>",
+            "description": "One page of record summaries."
+          }
+        },
+        {
+          "language": "python",
+          "signature": "list_acceptances(params: ClickwrapAcceptanceListParams) -> ClickwrapAcceptanceList",
+          "params": [
+            {
+              "name": "params",
+              "type": "ClickwrapAcceptanceListParams",
+              "optional": false,
+              "default": null,
+              "description": "The search and paging."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ClickwrapAcceptanceList",
+            "description": "One page of record summaries."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.getClickwrapAgreement",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get one Verdocs Accept agreement with every version, newest first, including each version's text.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getClickwrapAgreement(endpoint: VerdocsEndpoint, agreementId: string): Promise<IClickwrapAgreementDetail>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "agreementId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapAgreementDetail>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getClickwrapAgreement} from '@verdocs/js-sdk';\n\nconst {versions} = await getClickwrapAgreement(VerdocsEndpoint.getDefault(), agreementId);"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ClickwrapAgreementDetail> GetAgreementAsync(string agreementId, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "agreementId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The agreement to get."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ClickwrapAgreementDetail>",
+            "description": "The agreement with its versions."
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_agreement(agreement_id: str) -> ClickwrapAgreementDetail",
+          "params": [
+            {
+              "name": "agreement_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The agreement to get."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ClickwrapAgreementDetail",
+            "description": "The agreement with its versions."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.getClickwrapAgreements",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get the organization's Verdocs Accept agreements, each with its current (latest published) version and its open\ndraft. Requires an admin profile and the `clickwrap` entitlement.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getClickwrapAgreements(endpoint: VerdocsEndpoint): Promise<IClickwrapAgreementSummary[]>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapAgreementSummary[]>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getClickwrapAgreements} from '@verdocs/js-sdk';\n\nconst agreements = await getClickwrapAgreements(VerdocsEndpoint.getDefault());"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<IReadOnlyList<ClickwrapAgreementSummary>> ListAgreementsAsync(CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<IReadOnlyList<ClickwrapAgreementSummary>>",
+            "description": "The agreements, oldest first."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var agreements = await endpoint.Clickwrap.ListAgreementsAsync();"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "list_agreements() -> list[ClickwrapAgreementSummary]",
+          "deprecated": false,
+          "returns": {
+            "type": "list[ClickwrapAgreementSummary]",
+            "description": "The agreements, oldest first."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.getClickwrapCoverage",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get how many people have accepted an agreement: everyone who accepted any version, how many are current, and the\ncount for each published version. Counts distinct people, not clicks.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getClickwrapCoverage(endpoint: VerdocsEndpoint, agreementId: string): Promise<IClickwrapCoverage>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "agreementId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapCoverage>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getClickwrapCoverage} from '@verdocs/js-sdk';\n\nconst {accepted_any, current} = await getClickwrapCoverage(VerdocsEndpoint.getDefault(), agreementId);"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ClickwrapCoverage> GetCoverageAsync(string agreementId, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "agreementId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The agreement to count."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ClickwrapCoverage>",
+            "description": "The counts."
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_coverage(agreement_id: str) -> ClickwrapCoverage",
+          "params": [
+            {
+              "name": "agreement_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The agreement to count."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ClickwrapCoverage",
+            "description": "The counts overall and per published version."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.getClickwrapDownloadLink",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get a 15-minute download link for one of a record's files: the signed certificate, the replay (a picture of what\nwas on screen, only when has_presentation is true), or the evidence package (a ZIP with everything needed to check\nthe record). The first request for a file can take several seconds while it's made.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getClickwrapDownloadLink(endpoint: VerdocsEndpoint, acceptanceId: string, type: TClickwrapDownloadType): Promise<IClickwrapDownloadLink>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "acceptanceId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "type",
+              "type": "TClickwrapDownloadType",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapDownloadLink>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getClickwrapDownloadLink} from '@verdocs/js-sdk';\n\nconst {url} = await getClickwrapDownloadLink(VerdocsEndpoint.getDefault(), acceptanceId, 'evidence');"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ClickwrapDownloadLink> GetDownloadLinkAsync(string acceptanceId, string type, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "acceptanceId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The record to download from."
+            },
+            {
+              "name": "type",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "Which file to link to; see ClickwrapDownloadType."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ClickwrapDownloadLink>",
+            "description": "The link and how long it works."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var link = await endpoint.Clickwrap.GetDownloadLinkAsync(acceptanceId, ClickwrapDownloadType.Evidence);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_download_link(acceptance_id: str, type: ClickwrapDownloadType) -> ClickwrapDownloadLink",
+          "params": [
+            {
+              "name": "acceptance_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The record to download from."
+            },
+            {
+              "name": "type",
+              "type": "ClickwrapDownloadType",
+              "optional": false,
+              "default": null,
+              "description": "Which file to link to."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ClickwrapDownloadLink",
+            "description": "The link and how long it works."
+          },
+          "example": {
+            "language": "python",
+            "code": "link = endpoint.clickwrap.get_download_link(acceptance_id, \"evidence\")"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.getClickwrapSession",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get what an acceptance session shows: each agreement version's text, the display mode, and the brand. Called in the\nperson's browser with the session token from createClickwrapSession, so it needs no Verdocs login.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getClickwrapSession(endpoint: VerdocsEndpoint, token: string): Promise<IClickwrapPublicSession>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "token",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapPublicSession>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getClickwrapSession} from '@verdocs/js-sdk';\n\nconst session = await getClickwrapSession(VerdocsEndpoint.getDefault(), token);"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ClickwrapPublicSession> GetSessionAsync(string token, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "token",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The session token from CreateSessionAsync."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ClickwrapPublicSession>",
+            "description": "The session's agreements, mode, and brand."
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_session(token: str) -> ClickwrapPublicSession",
+          "params": [
+            {
+              "name": "token",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The session token from create_session."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ClickwrapPublicSession",
+            "description": "The session's agreements, mode, and brand."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.getClickwrapStatus",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Check whether one person is current on each named agreement. Current means they accepted a published version at or\nafter the newest one that requires re-acceptance. When they aren't, pending_version is the version they'd be shown.\nDeclines never make anyone current.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getClickwrapStatus(endpoint: VerdocsEndpoint, userId: string, agreements: string[]): Promise<IClickwrapStatus[]>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "userId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "agreements",
+              "type": "string[]",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapStatus[]>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {getClickwrapStatus} from '@verdocs/js-sdk';\n\nconst status = await getClickwrapStatus(VerdocsEndpoint.getDefault(), 'user-123', ['terms-of-service', 'privacy-policy']);\nconst needsTerms = status.some((entry) => !entry.current);"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<IReadOnlyList<ClickwrapStatus>> GetStatusAsync(string userId, IReadOnlyList<string> agreements, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "userId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The person's ID in your own system."
+            },
+            {
+              "name": "agreements",
+              "type": "IReadOnlyList<string>",
+              "optional": false,
+              "default": null,
+              "description": "The agreement keys to check, up to 20."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<IReadOnlyList<ClickwrapStatus>>",
+            "description": "One entry per agreement."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var status = await endpoint.Clickwrap.GetStatusAsync(\"user-123\", [\"terms-of-service\"]);\nvar needsTerms = status.Any(entry => !entry.Current);"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "get_status(user_id: str, agreements: list[str]) -> list[ClickwrapStatus]",
+          "params": [
+            {
+              "name": "user_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The person's ID in your own system."
+            },
+            {
+              "name": "agreements",
+              "type": "list[str]",
+              "optional": false,
+              "default": null,
+              "description": "The agreement keys to check, up to 20."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "list[ClickwrapStatus]",
+            "description": "One entry per agreement."
+          },
+          "example": {
+            "language": "python",
+            "code": "status = endpoint.clickwrap.get_status(\"user-123\", [\"terms-of-service\"])\nneeds_terms = any(not entry.current for entry in status)"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.publishClickwrapVersion",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Publish a draft. This can't be undone: the version's text is hashed and frozen, and it becomes what people are shown.\nWith requires_reacceptance, everyone who accepted an earlier version must accept again.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "publishClickwrapVersion(endpoint: VerdocsEndpoint, versionId: string, params: IPublishClickwrapVersionRequest): Promise<IClickwrapVersion>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "versionId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "IPublishClickwrapVersionRequest",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapVersion>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {publishClickwrapVersion} from '@verdocs/js-sdk';\n\nawait publishClickwrapVersion(VerdocsEndpoint.getDefault(), versionId, {requires_reacceptance: true, change_summary: 'New arbitration terms'});"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ClickwrapVersion> PublishVersionAsync(string versionId, PublishClickwrapVersionRequest request, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "versionId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The draft to publish."
+            },
+            {
+              "name": "request",
+              "type": "PublishClickwrapVersionRequest",
+              "optional": false,
+              "default": null,
+              "description": "Whether re-acceptance is required, and an optional change summary."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ClickwrapVersion>",
+            "description": "The published version."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "await endpoint.Clickwrap.PublishVersionAsync(versionId, new PublishClickwrapVersionRequest { RequiresReacceptance = true });"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "publish_version(version_id: str, params: ClickwrapPublishParams) -> ClickwrapVersion",
+          "params": [
+            {
+              "name": "version_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The draft to publish."
+            },
+            {
+              "name": "params",
+              "type": "ClickwrapPublishParams",
+              "optional": false,
+              "default": null,
+              "description": "Whether re-acceptance is required, and an optional change summary."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ClickwrapVersion",
+            "description": "The published version."
+          },
+          "example": {
+            "language": "python",
+            "code": "endpoint.clickwrap.publish_version(version_id, ClickwrapPublishParams(requires_reacceptance=True))"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.recordClickwrapOutcome",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Record an acceptance or decline that happened in your own interface (headless). The IP address and user agent are\nkept as your report, and anything you send as presentation is stored as it is.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "recordClickwrapOutcome(endpoint: VerdocsEndpoint, params: IRecordClickwrapOutcomeRequest): Promise<IClickwrapOutcomeResult>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "IRecordClickwrapOutcomeRequest",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapOutcomeResult>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {recordClickwrapOutcome} from '@verdocs/js-sdk';\n\nconst {acceptance_id} = await recordClickwrapOutcome(VerdocsEndpoint.getDefault(), {\n  user_id: 'user-123',\n  outcome: 'accepted',\n  agreements: [{key: 'terms-of-service', version_id: versionId}],\n});"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ClickwrapOutcomeResult> RecordOutcomeAsync(RecordClickwrapOutcomeRequest request, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "request",
+              "type": "RecordClickwrapOutcomeRequest",
+              "optional": false,
+              "default": null,
+              "description": "Who, what they did, and which versions they saw."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ClickwrapOutcomeResult>",
+            "description": "The new record."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var result = await endpoint.Clickwrap.RecordOutcomeAsync(new RecordClickwrapOutcomeRequest\n{\n    UserId = \"user-123\",\n    Outcome = ClickwrapOutcome.Accepted,\n    Agreements = [new ClickwrapOutcomeAgreement { Key = \"terms-of-service\", VersionId = versionId }],\n});"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "record_outcome(params: ClickwrapOutcomeRecordParams) -> ClickwrapOutcomeResult",
+          "params": [
+            {
+              "name": "params",
+              "type": "ClickwrapOutcomeRecordParams",
+              "optional": false,
+              "default": null,
+              "description": "Who, what they did, and which versions they saw."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ClickwrapOutcomeResult",
+            "description": "The new record."
+          },
+          "example": {
+            "language": "python",
+            "code": "result = endpoint.clickwrap.record_outcome(\n    ClickwrapOutcomeRecordParams(\n        user_id=\"user-123\",\n        outcome=\"accepted\",\n        agreements=[ClickwrapOutcomeAgreement(key=\"terms-of-service\", version_id=version_id)],\n    )\n)"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.renameClickwrapAgreement",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Change a Verdocs Accept agreement's name. Its key never changes.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "renameClickwrapAgreement(endpoint: VerdocsEndpoint, agreementId: string, name: string): Promise<IClickwrapAgreement>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "agreementId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapAgreement>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {renameClickwrapAgreement} from '@verdocs/js-sdk';\n\nawait renameClickwrapAgreement(VerdocsEndpoint.getDefault(), agreementId, 'Terms of Use');"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ClickwrapAgreement> RenameAgreementAsync(string agreementId, string name, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "agreementId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The agreement to rename."
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The new name."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ClickwrapAgreement>",
+            "description": "The renamed agreement."
+          }
+        },
+        {
+          "language": "python",
+          "signature": "rename_agreement(agreement_id: str, name: str) -> ClickwrapAgreement",
+          "params": [
+            {
+              "name": "agreement_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The agreement to rename."
+            },
+            {
+              "name": "name",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The new name."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ClickwrapAgreement",
+            "description": "The renamed agreement."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.sendClickwrapEvent",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Report what the person did while reading: the terms were shown, they scrolled to the end, or they checked or\nunchecked a box. The events become the record's trail when the person accepts or declines.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "sendClickwrapEvent(endpoint: VerdocsEndpoint, token: string, params: ISendClickwrapEventRequest): Promise<undefined>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "token",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "ISendClickwrapEventRequest",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<undefined>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {sendClickwrapEvent} from '@verdocs/js-sdk';\n\nawait sendClickwrapEvent(VerdocsEndpoint.getDefault(), token, {event: 'checked', version_id: versionId, client_at: new Date().toISOString()});"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task SendEventAsync(string token, SendClickwrapEventRequest request, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "token",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The session token from CreateSessionAsync."
+            },
+            {
+              "name": "request",
+              "type": "SendClickwrapEventRequest",
+              "optional": false,
+              "default": null,
+              "description": "The event, and the checkbox's version ID for checked and unchecked."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task",
+            "description": "A task that completes when the event is recorded."
+          }
+        },
+        {
+          "language": "python",
+          "signature": "send_event(token: str, params: ClickwrapEventParams) -> None",
+          "params": [
+            {
+              "name": "token",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The session token from create_session."
+            },
+            {
+              "name": "params",
+              "type": "ClickwrapEventParams",
+              "optional": false,
+              "default": null,
+              "description": "The event, and the checkbox's version_id for checked and unchecked."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "None"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "clickwrap.updateClickwrapDraft",
+      "group": "Clickwrap",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Replace a draft's text. Only drafts can be edited; published versions never change.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "updateClickwrapDraft(endpoint: VerdocsEndpoint, versionId: string, content: string): Promise<IClickwrapVersion>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "versionId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "content",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IClickwrapVersion>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {updateClickwrapDraft} from '@verdocs/js-sdk';\n\nawait updateClickwrapDraft(VerdocsEndpoint.getDefault(), versionId, '<p>Be nice.</p>');"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "Task<ClickwrapVersion> UpdateDraftAsync(string versionId, string content, CancellationToken cancellationToken = default)",
+          "params": [
+            {
+              "name": "versionId",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The draft to edit."
+            },
+            {
+              "name": "content",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The agreement text as HTML, sanitized on save."
+            },
+            {
+              "name": "cancellationToken",
+              "type": "CancellationToken",
+              "optional": true,
+              "default": "default",
+              "description": "Token to cancel the operation."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Task<ClickwrapVersion>",
+            "description": "The updated draft."
+          }
+        },
+        {
+          "language": "python",
+          "signature": "update_draft(version_id: str, content: str) -> ClickwrapVersion",
+          "params": [
+            {
+              "name": "version_id",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The draft to edit."
+            },
+            {
+              "name": "content",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The agreement text as HTML, sanitized on save."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "ClickwrapVersion",
+            "description": "The updated draft."
           }
         }
       ]
@@ -4971,6 +6775,32 @@
       ]
     },
     {
+      "operationId": "recipient.getQesState",
+      "group": "Recipient",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get where the signer stands in the envelope's QES phase. Returns null for recipients who aren't 'qualified'. Poll this\nafter the signer submits (to see 'waiting' become 'ready') and after they return from eID Easy (to see 'in_progress'\nbecome 'signed' once the signature is processed).",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getQesState(endpoint: VerdocsEndpoint): Promise<IQesStateResponse>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IQesStateResponse>"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "recipient.remindRecipient",
       "group": "Recipient",
       "page": "Endpoints",
@@ -5215,6 +7045,39 @@
           "returns": {
             "type": "Recipient",
             "description": "The reset recipient."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "recipient.startQesSession",
+      "group": "Recipient",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Start a QES signing session for a 'qualified' recipient. This session should only be used after the\n\"fill\" phase of the envelope-document lifecycle. In other words, after all recipients ('qualified'|'advanced'|'simple')\nhave signed the document in the typical Verdocs envelope workflow. A QES Certificate would not be valid if\n\"Recipient A\" signed + submitted their Verdocs signature, then \"Recipient A\" signed + submitted their QES signature, then\n\"Recipient B\" signed + submitted their Verdocs signature. The QES Certificate is only valid after all Verdocs fields are\ncompleted. Check getQesState first: this is rejected unless the signer's qes_state is 'ready' or 'in_progress'.\n\neID Easy sends the signer back to params.return_url (or their signing link) with qes_result set to 'signed', 'fail' or\n'cancel'. A 'signed' return still needs getQesState to confirm the signature.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "startQesSession(endpoint: VerdocsEndpoint, params: IStartQesSessionRequest = {}): Promise<IStartQesSessionResponse>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "IStartQesSessionRequest",
+              "optional": true,
+              "default": "{}",
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IStartQesSessionResponse>"
           }
         }
       ]

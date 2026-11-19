@@ -3,6 +3,7 @@
 from .api_keys import ApiKeys, AsyncApiKeys
 from .auth import AsyncAuth, Auth
 from .brands import AsyncBrands, Brands
+from .clickwrap import AsyncClickwrap, Clickwrap
 from .contacts import AsyncContacts, Contacts
 from .envelopes import AsyncEnvelopes, Envelopes, sort_documents, sort_fields, sort_recipients
 from .groups import AsyncGroups, Groups
@@ -31,6 +32,7 @@ __all__ = [
     "AsyncApiKeys",
     "AsyncAuth",
     "AsyncBrands",
+    "AsyncClickwrap",
     "AsyncContacts",
     "AsyncEnvelopes",
     "AsyncGroups",
@@ -53,6 +55,7 @@ __all__ = [
     "AsyncWebhooks",
     "Auth",
     "Brands",
+    "Clickwrap",
     "Contacts",
     "Envelopes",
     "Groups",

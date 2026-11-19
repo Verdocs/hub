@@ -75,6 +75,12 @@ public static class WebhookEvent
     /// <summary>An organization was deleted.</summary>
     public const string OrganizationDeleted = "organization_deleted";
 
+     /// <summary>A person accepted one or more clickwrap agreements.</summary>
+    public const string ClickwrapAccepted = "clickwrap_accepted";
+
+    /// <summary>A person declined one or more clickwrap agreements.</summary>
+    public const string ClickwrapDeclined = "clickwrap_declined";
+
     /// <summary>Every known webhook event name, mirroring the js-sdk WEBHOOK_EVENTS list.</summary>
     public static IReadOnlyList<string> All { get; } =
     [

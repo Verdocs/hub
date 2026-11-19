@@ -177,10 +177,10 @@ def test_moved_models_keep_working():
 
 
 def test_webhook_events_constant_matches_the_js_sdk_list():
-    assert len(WEBHOOK_EVENTS) == 23
-    assert len(set(WEBHOOK_EVENTS)) == 23
+    assert len(WEBHOOK_EVENTS) == 25
+    assert len(set(WEBHOOK_EVENTS)) == 25
     assert WEBHOOK_EVENTS[0] == "envelope_created"
-    assert WEBHOOK_EVENTS[-1] == "organization_deleted"
+    assert WEBHOOK_EVENTS[-1] == "clickwrap_declined"
 
 
 def test_field_lists_are_consistent():
