@@ -528,6 +528,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.ICertificateSignature": {
+          "sdkOperation": "ungrouped.ICertificateSignature",
+          "kind": "interface",
+          "name": "ICertificateSignature",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ICertificateSignature",
+          "summary": "One QES attempt by a 'qualified' recipient on one envelope document. Every document in the same eID Easy session shares\na provider_doc_id.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.ICheckboxFieldConfig": {
           "sdkOperation": "ungrouped.ICheckboxFieldConfig",
           "kind": "interface",
@@ -542,6 +556,426 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.IClickwrapAcceptance": {
+          "sdkOperation": "ungrouped.IClickwrapAcceptance",
+          "kind": "interface",
+          "name": "IClickwrapAcceptance",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapAcceptance",
+          "summary": "One recorded acceptance or decline, as getClickwrapAcceptance returns it. Records never change.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapAcceptanceEvent": {
+          "sdkOperation": "ungrouped.IClickwrapAcceptanceEvent",
+          "kind": "interface",
+          "name": "IClickwrapAcceptanceEvent",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapAcceptanceEvent",
+          "summary": "One event in a record's trail, oldest first.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapAcceptanceItem": {
+          "sdkOperation": "ungrouped.IClickwrapAcceptanceItem",
+          "kind": "interface",
+          "name": "IClickwrapAcceptanceItem",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapAcceptanceItem",
+          "summary": "One agreement version in a full record.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapAcceptanceItemAgreement": {
+          "sdkOperation": "ungrouped.IClickwrapAcceptanceItemAgreement",
+          "kind": "interface",
+          "name": "IClickwrapAcceptanceItemAgreement",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapAcceptanceItemAgreement",
+          "summary": "The agreement a record item points to.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapAcceptanceItemVersion": {
+          "sdkOperation": "ungrouped.IClickwrapAcceptanceItemVersion",
+          "kind": "interface",
+          "name": "IClickwrapAcceptanceItemVersion",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapAcceptanceItemVersion",
+          "summary": "The version a record item points to.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapAcceptancesResponse": {
+          "sdkOperation": "ungrouped.IClickwrapAcceptancesResponse",
+          "kind": "interface",
+          "name": "IClickwrapAcceptancesResponse",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapAcceptancesResponse",
+          "summary": "One page of records, newest first.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapAcceptanceSummary": {
+          "sdkOperation": "ungrouped.IClickwrapAcceptanceSummary",
+          "kind": "interface",
+          "name": "IClickwrapAcceptanceSummary",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapAcceptanceSummary",
+          "summary": "A short form of one record, as getClickwrapAcceptances and webhooks return it.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapAcceptanceSummaryAgreement": {
+          "sdkOperation": "ungrouped.IClickwrapAcceptanceSummaryAgreement",
+          "kind": "interface",
+          "name": "IClickwrapAcceptanceSummaryAgreement",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapAcceptanceSummaryAgreement",
+          "summary": "One agreement version in a record summary.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapAgreement": {
+          "sdkOperation": "ungrouped.IClickwrapAgreement",
+          "kind": "interface",
+          "name": "IClickwrapAgreement",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapAgreement",
+          "summary": "A clickwrap agreement: terms people accept with a checkbox, such as a Terms of Service.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapAgreementDetail": {
+          "sdkOperation": "ungrouped.IClickwrapAgreementDetail",
+          "kind": "interface",
+          "name": "IClickwrapAgreementDetail",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapAgreementDetail",
+          "summary": "An agreement with every version, newest first, as getClickwrapAgreement returns it.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapAgreementLabel": {
+          "sdkOperation": "ungrouped.IClickwrapAgreementLabel",
+          "kind": "interface",
+          "name": "IClickwrapAgreementLabel",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapAgreementLabel",
+          "summary": "One checkbox label as it was shown.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapAgreementSummary": {
+          "sdkOperation": "ungrouped.IClickwrapAgreementSummary",
+          "kind": "interface",
+          "name": "IClickwrapAgreementSummary",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapAgreementSummary",
+          "summary": "An agreement with its current version and open draft, as getClickwrapAgreements returns it.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapCoverage": {
+          "sdkOperation": "ungrouped.IClickwrapCoverage",
+          "kind": "interface",
+          "name": "IClickwrapCoverage",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapCoverage",
+          "summary": "How many people have accepted an agreement, as getClickwrapCoverage returns it.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapCoverageVersion": {
+          "sdkOperation": "ungrouped.IClickwrapCoverageVersion",
+          "kind": "interface",
+          "name": "IClickwrapCoverageVersion",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapCoverageVersion",
+          "summary": "How many people accepted one published version.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapCustomerPresentation": {
+          "sdkOperation": "ungrouped.IClickwrapCustomerPresentation",
+          "kind": "interface",
+          "name": "IClickwrapCustomerPresentation",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapCustomerPresentation",
+          "summary": "What was on screen, sent with a headless outcome. Up to 2 MB.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapDownloadLink": {
+          "sdkOperation": "ungrouped.IClickwrapDownloadLink",
+          "kind": "interface",
+          "name": "IClickwrapDownloadLink",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapDownloadLink",
+          "summary": "A short-lived download link.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapLabels": {
+          "sdkOperation": "ungrouped.IClickwrapLabels",
+          "kind": "interface",
+          "name": "IClickwrapLabels",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapLabels",
+          "summary": "Each checkbox label and the button label, as they were shown.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapOutcomeAgreement": {
+          "sdkOperation": "ungrouped.IClickwrapOutcomeAgreement",
+          "kind": "interface",
+          "name": "IClickwrapOutcomeAgreement",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapOutcomeAgreement",
+          "summary": "One agreement version in a headless outcome.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapOutcomeResult": {
+          "sdkOperation": "ungrouped.IClickwrapOutcomeResult",
+          "kind": "interface",
+          "name": "IClickwrapOutcomeResult",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapOutcomeResult",
+          "summary": "The new record, as every call that records an outcome returns it.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapPendingVersion": {
+          "sdkOperation": "ungrouped.IClickwrapPendingVersion",
+          "kind": "interface",
+          "name": "IClickwrapPendingVersion",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapPendingVersion",
+          "summary": "The version a person would be shown next.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapPublicSession": {
+          "sdkOperation": "ungrouped.IClickwrapPublicSession",
+          "kind": "interface",
+          "name": "IClickwrapPublicSession",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapPublicSession",
+          "summary": "What the component needs to show a session, as getClickwrapSession returns it.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapSessionAgreement": {
+          "sdkOperation": "ungrouped.IClickwrapSessionAgreement",
+          "kind": "interface",
+          "name": "IClickwrapSessionAgreement",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapSessionAgreement",
+          "summary": "One agreement version a session shows.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapSessionBrand": {
+          "sdkOperation": "ungrouped.IClickwrapSessionBrand",
+          "kind": "interface",
+          "name": "IClickwrapSessionBrand",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapSessionBrand",
+          "summary": "The brand a session is themed with.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapSessionCreated": {
+          "sdkOperation": "ungrouped.IClickwrapSessionCreated",
+          "kind": "interface",
+          "name": "IClickwrapSessionCreated",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapSessionCreated",
+          "summary": "createClickwrapSession's answer when the person has something to accept.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapSessionCurrent": {
+          "sdkOperation": "ungrouped.IClickwrapSessionCurrent",
+          "kind": "interface",
+          "name": "IClickwrapSessionCurrent",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapSessionCurrent",
+          "summary": "createClickwrapSession's answer when the person is already current: there's nothing to show and no session.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapSessionOutcomeRequest": {
+          "sdkOperation": "ungrouped.IClickwrapSessionOutcomeRequest",
+          "kind": "interface",
+          "name": "IClickwrapSessionOutcomeRequest",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapSessionOutcomeRequest",
+          "summary": "The fields for acceptClickwrap and declineClickwrap.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapStatus": {
+          "sdkOperation": "ungrouped.IClickwrapStatus",
+          "kind": "interface",
+          "name": "IClickwrapStatus",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapStatus",
+          "summary": "Whether one person is current on one agreement.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapVersion": {
+          "sdkOperation": "ungrouped.IClickwrapVersion",
+          "kind": "interface",
+          "name": "IClickwrapVersion",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapVersion",
+          "summary": "One version of an agreement's text.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapVersionRef": {
+          "sdkOperation": "ungrouped.IClickwrapVersionRef",
+          "kind": "interface",
+          "name": "IClickwrapVersionRef",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapVersionRef",
+          "summary": "A short reference to one version, as getClickwrapAgreements lists it.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IClickwrapViewport": {
+          "sdkOperation": "ungrouped.IClickwrapViewport",
+          "kind": "interface",
+          "name": "IClickwrapViewport",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IClickwrapViewport",
+          "summary": "The browser window the terms were shown in.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.IClientCredentialsRequest": {
           "sdkOperation": "ungrouped.IClientCredentialsRequest",
           "kind": "interface",
@@ -551,6 +985,48 @@
           "resource": "interface",
           "signature": "IClientCredentialsRequest",
           "summary": "NOTE: This should _only_ be used for _server-to-server_ requests.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ICreateClickwrapAgreementRequest": {
+          "sdkOperation": "ungrouped.ICreateClickwrapAgreementRequest",
+          "kind": "interface",
+          "name": "ICreateClickwrapAgreementRequest",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ICreateClickwrapAgreementRequest",
+          "summary": "The fields for createClickwrapAgreement.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ICreateClickwrapDraftRequest": {
+          "sdkOperation": "ungrouped.ICreateClickwrapDraftRequest",
+          "kind": "interface",
+          "name": "ICreateClickwrapDraftRequest",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ICreateClickwrapDraftRequest",
+          "summary": "The fields for createClickwrapDraft. Send content, copy_current, or neither (an empty draft), not both.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ICreateClickwrapSessionRequest": {
+          "sdkOperation": "ungrouped.ICreateClickwrapSessionRequest",
+          "kind": "interface",
+          "name": "ICreateClickwrapSessionRequest",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ICreateClickwrapSessionRequest",
+          "summary": "The fields for createClickwrapSession.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -766,6 +1242,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.IListClickwrapAcceptancesParams": {
+          "sdkOperation": "ungrouped.IListClickwrapAcceptancesParams",
+          "kind": "interface",
+          "name": "IListClickwrapAcceptancesParams",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IListClickwrapAcceptancesParams",
+          "summary": "Filters for getClickwrapAcceptances. Search by user_id, or by metadata_key and metadata_value.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.ILoginCodeGrantRequest": {
           "sdkOperation": "ungrouped.ILoginCodeGrantRequest",
           "kind": "interface",
@@ -920,6 +1410,48 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.IPublishClickwrapVersionRequest": {
+          "sdkOperation": "ungrouped.IPublishClickwrapVersionRequest",
+          "kind": "interface",
+          "name": "IPublishClickwrapVersionRequest",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IPublishClickwrapVersionRequest",
+          "summary": "The fields for publishClickwrapVersion.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IQesErrorHistoryDetail": {
+          "sdkOperation": "ungrouped.IQesErrorHistoryDetail",
+          "kind": "interface",
+          "name": "IQesErrorHistoryDetail",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IQesErrorHistoryDetail",
+          "summary": "The event_detail of a 'recipient:qes_error' history entry, as JSON.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IQesSignedHistoryDetail": {
+          "sdkOperation": "ungrouped.IQesSignedHistoryDetail",
+          "kind": "interface",
+          "name": "IQesSignedHistoryDetail",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IQesSignedHistoryDetail",
+          "summary": "The event_detail of a 'recipient:qes_signed' history entry, as JSON.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.IRadioFieldConfig": {
           "sdkOperation": "ungrouped.IRadioFieldConfig",
           "kind": "interface",
@@ -1018,6 +1550,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.IRecordClickwrapOutcomeRequest": {
+          "sdkOperation": "ungrouped.IRecordClickwrapOutcomeRequest",
+          "kind": "interface",
+          "name": "IRecordClickwrapOutcomeRequest",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IRecordClickwrapOutcomeRequest",
+          "summary": "The fields for recordClickwrapOutcome, which records an outcome from your own interface.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.IRefreshTokenRequest": {
           "sdkOperation": "ungrouped.IRefreshTokenRequest",
           "kind": "interface",
@@ -1083,6 +1629,20 @@
           "resource": "interface",
           "signature": "IROPCRequest",
           "summary": "@deprecated. Use IAuthorizationCodeRequest instead.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.ISendClickwrapEventRequest": {
+          "sdkOperation": "ungrouped.ISendClickwrapEventRequest",
+          "kind": "interface",
+          "name": "ISendClickwrapEventRequest",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ISendClickwrapEventRequest",
+          "summary": "The fields for sendClickwrapEvent.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -1480,6 +2040,146 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.TClickwrapDownloadType": {
+          "sdkOperation": "ungrouped.TClickwrapDownloadType",
+          "kind": "type",
+          "name": "TClickwrapDownloadType",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TClickwrapDownloadType",
+          "summary": "The files a record can be downloaded as.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TClickwrapEventType": {
+          "sdkOperation": "ungrouped.TClickwrapEventType",
+          "kind": "type",
+          "name": "TClickwrapEventType",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TClickwrapEventType",
+          "summary": "Every event in a record's trail. accepted and declined are recorded by Verdocs with the outcome.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TClickwrapMode": {
+          "sdkOperation": "ungrouped.TClickwrapMode",
+          "kind": "type",
+          "name": "TClickwrapMode",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TClickwrapMode",
+          "summary": "How the component shows the terms: in a modal, or inline in your page.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TClickwrapOutcome": {
+          "sdkOperation": "ungrouped.TClickwrapOutcome",
+          "kind": "type",
+          "name": "TClickwrapOutcome",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TClickwrapOutcome",
+          "summary": "What the person did.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TClickwrapPresentationSource": {
+          "sdkOperation": "ungrouped.TClickwrapPresentationSource",
+          "kind": "type",
+          "name": "TClickwrapPresentationSource",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TClickwrapPresentationSource",
+          "summary": "Where a record's presentation came from: captured by the component, sent by you (headless), or none.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TClickwrapReporter": {
+          "sdkOperation": "ungrouped.TClickwrapReporter",
+          "kind": "type",
+          "name": "TClickwrapReporter",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TClickwrapReporter",
+          "summary": "Who reported the browser details. For headless records, the IP address and user agent are your own report.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TClickwrapSessionEventType": {
+          "sdkOperation": "ungrouped.TClickwrapSessionEventType",
+          "kind": "type",
+          "name": "TClickwrapSessionEventType",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TClickwrapSessionEventType",
+          "summary": "The events a session can report while the person reads. checked and unchecked need the checkbox's version_id.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TClickwrapSurface": {
+          "sdkOperation": "ungrouped.TClickwrapSurface",
+          "kind": "type",
+          "name": "TClickwrapSurface",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TClickwrapSurface",
+          "summary": "Where an outcome was recorded: the embedded component, the Verdocs hosted page, or your own interface (headless).",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TClickwrapVersionStatus": {
+          "sdkOperation": "ungrouped.TClickwrapVersionStatus",
+          "kind": "type",
+          "name": "TClickwrapVersionStatus",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TClickwrapVersionStatus",
+          "summary": "A version's lifecycle. Drafts can be edited or deleted; published versions never change.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TCreateClickwrapSessionResponse": {
+          "sdkOperation": "ungrouped.TCreateClickwrapSessionResponse",
+          "kind": "type",
+          "name": "TCreateClickwrapSessionResponse",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TCreateClickwrapSessionResponse",
+          "summary": "createClickwrapSession's answer. Check `current` to see which one you got.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.TDataCatalogEntryType": {
           "sdkOperation": "ungrouped.TDataCatalogEntryType",
           "kind": "type",
@@ -1774,6 +2474,48 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.TQesErrorReason": {
+          "sdkOperation": "ungrouped.TQesErrorReason",
+          "kind": "type",
+          "name": "TQesErrorReason",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TQesErrorReason",
+          "summary": "Why a QES attempt failed, in a 'recipient:qes_error' history entry:\n  - prepare_failed: eID Easy rejected the documents, so the signer never reached its page.\n  - not_qualified: The signer signed, but at a lower level than 'qualified'.\n  - download_failed: The signed documents couldn't be retrieved after every retry.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TQesResult": {
+          "sdkOperation": "ungrouped.TQesResult",
+          "kind": "type",
+          "name": "TQesResult",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TQesResult",
+          "summary": "How a signer came back from eID Easy's page. The API adds it to the return_url passed to startQesSession as the\nqes_result query parameter. 'signed' means eID Easy finished, not that the signature is confirmed: poll getQesState\nfor that.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TQesState": {
+          "sdkOperation": "ungrouped.TQesState",
+          "kind": "type",
+          "name": "TQesState",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TQesState",
+          "summary": "Where a 'qualified' recipient stands in an envelope's QES phase, which starts once every recipient has submitted:\nwaiting for their turn, ready to sign with their eID, mid-session on eID Easy, or signed.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.TRecipientAuthMethod": {
           "sdkOperation": "ungrouped.TRecipientAuthMethod",
           "kind": "type",
@@ -1797,6 +2539,20 @@
           "resource": "type",
           "signature": "TRecipientStatus",
           "summary": "A recipient becomes 'failed' after too many wrong passcode, SMS, or email codes, or a failed or timed-out\nKBA check. They cannot continue until the sender resets them with resetEnvelope() or resetRecipient().",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TRequestableSignatureLevel": {
+          "sdkOperation": "ungrouped.TRequestableSignatureLevel",
+          "kind": "type",
+          "name": "TRequestableSignatureLevel",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TRequestableSignatureLevel",
+          "summary": "The signature levels a recipient or role can be created with. 'advanced' only appears in eID Easy's reports of the\nsignature a signer actually produced.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -2008,6 +2764,68 @@
           "signature": "TWebhookAuthMethod",
           "summary": "Methods for authenticating webhook requests.",
           "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.consumeQesResult": {
+          "sdkOperation": "ungrouped.consumeQesResult",
+          "kind": "function",
+          "name": "consumeQesResult",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "consumeQesResult(): TQesResult | null",
+          "summary": "Browser only. Read the qes_result the signer came back from eID Easy with, and remove it from the address bar so a\nreload doesn't act on it again. Returns null when there isn't one, or outside a browser. A 'signed' result still needs\ngetQesState to confirm the signature.",
+          "params": [],
+          "returns": {
+            "type": "TQesResult | null",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.getQesReturnUrl": {
+          "sdkOperation": "ungrouped.getQesReturnUrl",
+          "kind": "function",
+          "name": "getQesReturnUrl",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getQesReturnUrl(): string | undefined",
+          "summary": "Browser only. The return_url to pass to startQesSession: the current page, without the qes_result from an earlier\nattempt, so the signer lands back in the same session. Returns undefined outside a browser.",
+          "params": [],
+          "returns": {
+            "type": "string | undefined",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.isQualifiedRecipient": {
+          "sdkOperation": "ungrouped.isQualifiedRecipient",
+          "kind": "function",
+          "name": "isQualifiedRecipient",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "isQualifiedRecipient(recipient: IRecipient | null | undefined): boolean",
+          "summary": "Check whether a recipient must finish by signing with their eID (a QES), once every recipient has submitted.",
+          "params": [
+            {
+              "name": "recipient",
+              "type": "IRecipient | null | undefined",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "boolean",
+            "description": ""
+          },
           "throws": [],
           "examples": [],
           "deprecated": false
@@ -2274,6 +3092,791 @@
             {
               "language": "typescript",
               "code": "import {userHasPermissions} from '@verdocs/js-sdk';\n\nif (userHasPermissions(endpoint.profile, ['envelope:create'])) {\n  // show the \"New Envelope\" button\n}"
+            }
+          ],
+          "deprecated": false
+        }
+      }
+    },
+    "clickwrap": {
+      "id": "clickwrap",
+      "name": "Clickwrap",
+      "summary": "",
+      "symbols": {
+        "clickwrap.acceptClickwrap": {
+          "sdkOperation": "clickwrap.acceptClickwrap",
+          "kind": "function",
+          "name": "acceptClickwrap",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "acceptClickwrap(endpoint: VerdocsEndpoint, token: string, params: IClickwrapSessionOutcomeRequest): Promise<IClickwrapOutcomeResult>",
+          "summary": "Record that the person accepted every agreement in the session. The presentation is the rendered terms as one HTML\ndocument; its text must contain each version's text and every label, or the call is refused.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "token",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "IClickwrapSessionOutcomeRequest",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapOutcomeResult>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {acceptClickwrap} from '@verdocs/js-sdk';\n\nconst {acceptance_id} = await acceptClickwrap(VerdocsEndpoint.getDefault(), token, {\n  surface: 'component',\n  labels: {agreements: [{version_id: versionId, label: 'I agree to the Terms of Service'}], button: 'Continue'},\n  presentation: html,\n});"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.createClickwrapAgreement": {
+          "sdkOperation": "clickwrap.createClickwrapAgreement",
+          "kind": "function",
+          "name": "createClickwrapAgreement",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "createClickwrapAgreement(endpoint: VerdocsEndpoint, params: ICreateClickwrapAgreementRequest): Promise<IClickwrapAgreement>",
+          "summary": "Create a clickwrap agreement. It starts with no versions: add one with createClickwrapDraft, then publish it. The\nkey can never change, because developers put it in their code.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "ICreateClickwrapAgreementRequest",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapAgreement>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {createClickwrapAgreement} from '@verdocs/js-sdk';\n\nconst agreement = await createClickwrapAgreement(VerdocsEndpoint.getDefault(), {key: 'terms-of-service', name: 'Terms of Service'});"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.createClickwrapDraft": {
+          "sdkOperation": "clickwrap.createClickwrapDraft",
+          "kind": "function",
+          "name": "createClickwrapDraft",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "createClickwrapDraft(endpoint: VerdocsEndpoint, agreementId: string, params: ICreateClickwrapDraftRequest = {}): Promise<IClickwrapVersion>",
+          "summary": "Start a new draft version of an agreement: empty, with the given text, or copied from the current version. An\nagreement has at most one draft, and nobody sees it until it's published.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "agreementId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "ICreateClickwrapDraftRequest",
+              "description": "",
+              "optional": true,
+              "default": "{}"
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapVersion>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {createClickwrapDraft} from '@verdocs/js-sdk';\n\nconst draft = await createClickwrapDraft(VerdocsEndpoint.getDefault(), agreementId, {copy_current: true});"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.createClickwrapSession": {
+          "sdkOperation": "clickwrap.createClickwrapSession",
+          "kind": "function",
+          "name": "createClickwrapSession",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "createClickwrapSession(endpoint: VerdocsEndpoint, params: ICreateClickwrapSessionRequest): Promise<IClickwrapSessionCurrent | IClickwrapSessionCreated>",
+          "summary": "Start an acceptance session for one person, from your server. If they're already current on every agreement, the\nanswer has current: true and no token, and there's nothing to show. Otherwise it carries a session token for the\ncomponent (or a hosted_url to redirect to) that expires in an hour.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "ICreateClickwrapSessionRequest",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapSessionCurrent | IClickwrapSessionCreated>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {createClickwrapSession} from '@verdocs/js-sdk';\n\nconst session = await createClickwrapSession(VerdocsEndpoint.getDefault(), {user_id: 'user-123', agreements: ['terms-of-service']});\nif (!session.current) {\n  // Hand session.token to the browser\n}"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.declineClickwrap": {
+          "sdkOperation": "clickwrap.declineClickwrap",
+          "kind": "function",
+          "name": "declineClickwrap",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "declineClickwrap(endpoint: VerdocsEndpoint, token: string, params: IClickwrapSessionOutcomeRequest): Promise<IClickwrapOutcomeResult>",
+          "summary": "Record that the person declined the session's agreements. Takes the same fields as acceptClickwrap, and the record\nis kept the same way.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "token",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "IClickwrapSessionOutcomeRequest",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapOutcomeResult>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {declineClickwrap} from '@verdocs/js-sdk';\n\nawait declineClickwrap(VerdocsEndpoint.getDefault(), token, {surface: 'component', labels, presentation: html});"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.deleteClickwrapDraft": {
+          "sdkOperation": "clickwrap.deleteClickwrapDraft",
+          "kind": "function",
+          "name": "deleteClickwrapDraft",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "deleteClickwrapDraft(endpoint: VerdocsEndpoint, versionId: string): Promise<undefined>",
+          "summary": "Delete a draft version, which frees its number for the next draft. Published versions can never be deleted.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "versionId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<undefined>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {deleteClickwrapDraft} from '@verdocs/js-sdk';\n\nawait deleteClickwrapDraft(VerdocsEndpoint.getDefault(), versionId);"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapAcceptance": {
+          "sdkOperation": "clickwrap.getClickwrapAcceptance",
+          "kind": "function",
+          "name": "getClickwrapAcceptance",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getClickwrapAcceptance(endpoint: VerdocsEndpoint, acceptanceId: string): Promise<IClickwrapAcceptance>",
+          "summary": "Get one recorded acceptance or decline: who, which agreement versions, where and how it happened, the labels the\nperson saw, and the event trail. Records never change.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "acceptanceId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapAcceptance>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getClickwrapAcceptance} from '@verdocs/js-sdk';\n\nconst record = await getClickwrapAcceptance(VerdocsEndpoint.getDefault(), acceptanceId);"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapAcceptances": {
+          "sdkOperation": "clickwrap.getClickwrapAcceptances",
+          "kind": "function",
+          "name": "getClickwrapAcceptances",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getClickwrapAcceptances(endpoint: VerdocsEndpoint, params: IListClickwrapAcceptancesParams): Promise<IClickwrapAcceptancesResponse>",
+          "summary": "Find recorded acceptances and declines, newest first. Search by user_id, or by one metadata key and value.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "IListClickwrapAcceptancesParams",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapAcceptancesResponse>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getClickwrapAcceptances} from '@verdocs/js-sdk';\n\nconst {count, acceptances} = await getClickwrapAcceptances(VerdocsEndpoint.getDefault(), {metadata_key: 'email', metadata_value: 'pat@example.com'});"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapAgreement": {
+          "sdkOperation": "clickwrap.getClickwrapAgreement",
+          "kind": "function",
+          "name": "getClickwrapAgreement",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getClickwrapAgreement(endpoint: VerdocsEndpoint, agreementId: string): Promise<IClickwrapAgreementDetail>",
+          "summary": "Get one clickwrap agreement with every version, newest first, including each version's text.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "agreementId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapAgreementDetail>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getClickwrapAgreement} from '@verdocs/js-sdk';\n\nconst {versions} = await getClickwrapAgreement(VerdocsEndpoint.getDefault(), agreementId);"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapAgreements": {
+          "sdkOperation": "clickwrap.getClickwrapAgreements",
+          "kind": "function",
+          "name": "getClickwrapAgreements",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getClickwrapAgreements(endpoint: VerdocsEndpoint): Promise<IClickwrapAgreementSummary[]>",
+          "summary": "Get the organization's clickwrap agreements, each with its current (latest published) version and its open draft.\nRequires an admin profile and the clickwrap entitlement.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapAgreementSummary[]>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getClickwrapAgreements} from '@verdocs/js-sdk';\n\nconst agreements = await getClickwrapAgreements(VerdocsEndpoint.getDefault());"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapCoverage": {
+          "sdkOperation": "clickwrap.getClickwrapCoverage",
+          "kind": "function",
+          "name": "getClickwrapCoverage",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getClickwrapCoverage(endpoint: VerdocsEndpoint, agreementId: string): Promise<IClickwrapCoverage>",
+          "summary": "Get how many people have accepted an agreement: everyone who accepted any version, how many are current, and the\ncount for each published version. Counts distinct people, not clicks.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "agreementId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapCoverage>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getClickwrapCoverage} from '@verdocs/js-sdk';\n\nconst {accepted_any, current} = await getClickwrapCoverage(VerdocsEndpoint.getDefault(), agreementId);"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapDownloadLink": {
+          "sdkOperation": "clickwrap.getClickwrapDownloadLink",
+          "kind": "function",
+          "name": "getClickwrapDownloadLink",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getClickwrapDownloadLink(endpoint: VerdocsEndpoint, acceptanceId: string, type: TClickwrapDownloadType): Promise<IClickwrapDownloadLink>",
+          "summary": "Get a 15-minute download link for one of a record's files: the signed certificate, the replay (a picture of what\nwas on screen, only when has_presentation is true), or the evidence package (a ZIP with everything needed to check\nthe record). The first request for a file can take several seconds while it's made.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "acceptanceId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "type",
+              "type": "TClickwrapDownloadType",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapDownloadLink>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getClickwrapDownloadLink} from '@verdocs/js-sdk';\n\nconst {url} = await getClickwrapDownloadLink(VerdocsEndpoint.getDefault(), acceptanceId, 'evidence');"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapSession": {
+          "sdkOperation": "clickwrap.getClickwrapSession",
+          "kind": "function",
+          "name": "getClickwrapSession",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getClickwrapSession(endpoint: VerdocsEndpoint, token: string): Promise<IClickwrapPublicSession>",
+          "summary": "Get what an acceptance session shows: each agreement version's text, the display mode, and the brand. Called in the\nperson's browser with the session token from createClickwrapSession, so it needs no Verdocs login.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "token",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapPublicSession>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getClickwrapSession} from '@verdocs/js-sdk';\n\nconst session = await getClickwrapSession(VerdocsEndpoint.getDefault(), token);"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.getClickwrapStatus": {
+          "sdkOperation": "clickwrap.getClickwrapStatus",
+          "kind": "function",
+          "name": "getClickwrapStatus",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getClickwrapStatus(endpoint: VerdocsEndpoint, userId: string, agreements: string[]): Promise<IClickwrapStatus[]>",
+          "summary": "Check whether one person is current on each named agreement. Current means they accepted a published version at or\nafter the newest one that requires re-acceptance. When they aren't, pending_version is the version they'd be shown.\nDeclines never make anyone current.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "userId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "agreements",
+              "type": "string[]",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapStatus[]>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {getClickwrapStatus} from '@verdocs/js-sdk';\n\nconst status = await getClickwrapStatus(VerdocsEndpoint.getDefault(), 'user-123', ['terms-of-service', 'privacy-policy']);\nconst needsTerms = status.some((entry) => !entry.current);"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.publishClickwrapVersion": {
+          "sdkOperation": "clickwrap.publishClickwrapVersion",
+          "kind": "function",
+          "name": "publishClickwrapVersion",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "publishClickwrapVersion(endpoint: VerdocsEndpoint, versionId: string, params: IPublishClickwrapVersionRequest): Promise<IClickwrapVersion>",
+          "summary": "Publish a draft. This can't be undone: the version's text is hashed and frozen, and it becomes what people are shown.\nWith requires_reacceptance, everyone who accepted an earlier version must accept again.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "versionId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "IPublishClickwrapVersionRequest",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapVersion>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {publishClickwrapVersion} from '@verdocs/js-sdk';\n\nawait publishClickwrapVersion(VerdocsEndpoint.getDefault(), versionId, {requires_reacceptance: true, change_summary: 'New arbitration terms'});"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.recordClickwrapOutcome": {
+          "sdkOperation": "clickwrap.recordClickwrapOutcome",
+          "kind": "function",
+          "name": "recordClickwrapOutcome",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "recordClickwrapOutcome(endpoint: VerdocsEndpoint, params: IRecordClickwrapOutcomeRequest): Promise<IClickwrapOutcomeResult>",
+          "summary": "Record an acceptance or decline that happened in your own interface (headless). The IP address and user agent are\nkept as your report, and anything you send as presentation is stored as it is.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "IRecordClickwrapOutcomeRequest",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapOutcomeResult>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {recordClickwrapOutcome} from '@verdocs/js-sdk';\n\nconst {acceptance_id} = await recordClickwrapOutcome(VerdocsEndpoint.getDefault(), {\n  user_id: 'user-123',\n  outcome: 'accepted',\n  agreements: [{key: 'terms-of-service', version_id: versionId}],\n});"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.renameClickwrapAgreement": {
+          "sdkOperation": "clickwrap.renameClickwrapAgreement",
+          "kind": "function",
+          "name": "renameClickwrapAgreement",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "renameClickwrapAgreement(endpoint: VerdocsEndpoint, agreementId: string, name: string): Promise<IClickwrapAgreement>",
+          "summary": "Change a clickwrap agreement's name. Its key never changes.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "agreementId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapAgreement>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {renameClickwrapAgreement} from '@verdocs/js-sdk';\n\nawait renameClickwrapAgreement(VerdocsEndpoint.getDefault(), agreementId, 'Terms of Use');"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.sendClickwrapEvent": {
+          "sdkOperation": "clickwrap.sendClickwrapEvent",
+          "kind": "function",
+          "name": "sendClickwrapEvent",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "sendClickwrapEvent(endpoint: VerdocsEndpoint, token: string, params: ISendClickwrapEventRequest): Promise<undefined>",
+          "summary": "Report what the person did while reading: the terms were shown, they scrolled to the end, or they checked or\nunchecked a box. The events become the record's trail when the person accepts or declines.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "token",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "ISendClickwrapEventRequest",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<undefined>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {sendClickwrapEvent} from '@verdocs/js-sdk';\n\nawait sendClickwrapEvent(VerdocsEndpoint.getDefault(), token, {event: 'checked', version_id: versionId, client_at: new Date().toISOString()});"
+            }
+          ],
+          "deprecated": false
+        },
+        "clickwrap.updateClickwrapDraft": {
+          "sdkOperation": "clickwrap.updateClickwrapDraft",
+          "kind": "function",
+          "name": "updateClickwrapDraft",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "updateClickwrapDraft(endpoint: VerdocsEndpoint, versionId: string, content: string): Promise<IClickwrapVersion>",
+          "summary": "Replace a draft's text. Only drafts can be edited; published versions never change.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "versionId",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "content",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IClickwrapVersion>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {updateClickwrapDraft} from '@verdocs/js-sdk';\n\nawait updateClickwrapDraft(VerdocsEndpoint.getDefault(), versionId, '<p>Be nice.</p>');"
             }
           ],
           "deprecated": false
@@ -4654,6 +6257,32 @@
           "examples": [],
           "deprecated": false
         },
+        "recipient.getQesState": {
+          "sdkOperation": "recipient.getQesState",
+          "kind": "function",
+          "name": "getQesState",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getQesState(endpoint: VerdocsEndpoint): Promise<IQesStateResponse>",
+          "summary": "Get where the signer stands in the envelope's QES phase. Returns null for recipients who aren't 'qualified'. Poll this\nafter the signer submits (to see 'waiting' become 'ready') and after they return from eID Easy (to see 'in_progress'\nbecome 'signed' once the signature is processed).",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IQesStateResponse>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "recipient.remindRecipient": {
           "sdkOperation": "recipient.remindRecipient",
           "kind": "function",
@@ -4775,6 +6404,39 @@
           ],
           "returns": {
             "type": "Promise<object>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "recipient.startQesSession": {
+          "sdkOperation": "recipient.startQesSession",
+          "kind": "function",
+          "name": "startQesSession",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "startQesSession(endpoint: VerdocsEndpoint, params: IStartQesSessionRequest = {}): Promise<IStartQesSessionResponse>",
+          "summary": "Start a QES signing session for a 'qualified' recipient. This session should only be used after the\n\"fill\" phase of the envelope-document lifecycle. In other words, after all recipients ('qualified'|'advanced'|'simple')\nhave signed the document in the typical Verdocs envelope workflow. A QES Certificate would not be valid if\n\"Recipient A\" signed + submitted their Verdocs signature, then \"Recipient A\" signed + submitted their QES signature, then\n\"Recipient B\" signed + submitted their Verdocs signature. The QES Certificate is only valid after all Verdocs fields are\ncompleted. Check getQesState first: this is rejected unless the signer's qes_state is 'ready' or 'in_progress'.\n\neID Easy sends the signer back to params.return_url (or their signing link) with qes_result set to 'signed', 'fail' or\n'cancel'. A 'signed' return still needs getQesState to confirm the signature.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "IStartQesSessionRequest",
+              "description": "",
+              "optional": true,
+              "default": "{}"
+            }
+          ],
+          "returns": {
+            "type": "Promise<IStartQesSessionResponse>",
             "description": ""
           },
           "throws": [],

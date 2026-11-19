@@ -372,6 +372,8 @@ export interface IClickwrapAcceptanceItemVersion {
 
 /** One agreement version in a full record. */
 export interface IClickwrapAcceptanceItem {
+  /** The agreement's ID, which checkbox events in the trail point to. */
+  agreement_id: string;
   /** SHA-256 hex of the version's text, as recorded. */
   content_hash: string;
   /** The version. */
@@ -498,6 +500,10 @@ export interface IClickwrapPublicSession {
   mode: TClickwrapMode;
   /** Whether the person must scroll to the end before accepting. */
   require_scroll: boolean;
+  /** Where the hosted page sends the person after they accept, if the session set one. */
+  return_url?: string | null;
+  /** Where the hosted page sends the person after they decline, if the session set one. */
+  cancel_url?: string | null;
   /** The agreement versions to show, in order. */
   agreements: IClickwrapSessionAgreement[];
   /** The brand to theme with, or null for Verdocs defaults. */

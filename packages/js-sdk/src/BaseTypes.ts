@@ -192,7 +192,8 @@ export type TEntitlement =
   | 'sms'
   | 'kba_sandbox'
   | 'qes'
-  | 'qes_sandbox';
+  | 'qes_sandbox'
+  | 'clickwrap';
 
 /**
  * The authentication method(s) required for a recipient to access an envelope. "Passcode" will require a
