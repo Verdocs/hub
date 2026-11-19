@@ -67,9 +67,9 @@
       "x-displayName": "Organization Members"
     },
     {
-      "name": "Clickwrap",
-      "description": "Clickwrap agreements are terms people accept with a checkbox, such as a Terms of Service or Privacy Policy. Admins write and publish versions, your server checks whether a person is current and starts an acceptance session, and the embedded component or the hosted page shows the terms and records the outcome. Every acceptance and decline is kept as a record in a per-organization hash chain, with a signed certificate, a replay of what was on screen, and an evidence package available as download links.",
-      "x-displayName": "Clickwrap"
+      "name": "Verdocs Accept",
+      "description": "Verdocs Accept records the terms people accept with a checkbox (a clickwrap), such as a Terms of Service or Privacy Policy. Admins write and publish versions of each agreement, your server checks whether a person is current and starts an acceptance session, and the embedded component or the hosted page shows the terms and records the outcome. Every acceptance and decline is kept as a record in a per-organization hash chain, with a signed certificate, a replay of what was on screen, and an evidence package available as download links.",
+      "x-displayName": "Verdocs Accept"
     },
     {
       "name": "Webhooks",
@@ -153,7 +153,7 @@
         "operationId": "acceptClickwrap",
         "summary": "Accept a session's agreements",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [],
         "responses": {
@@ -4296,9 +4296,9 @@
     "/v2/clickwraps/agreements": {
       "post": {
         "operationId": "createClickwrapAgreement",
-        "summary": "Create a clickwrap agreement",
+        "summary": "Create a Verdocs Accept agreement",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [],
         "responses": {
@@ -4481,9 +4481,9 @@
       },
       "get": {
         "operationId": "getClickwrapAgreements",
-        "summary": "List clickwrap agreements",
+        "summary": "List Verdocs Accept agreements",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [],
         "responses": {
@@ -4648,7 +4648,7 @@
         "operationId": "createClickwrapDraft",
         "summary": "Create a draft version",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [
           {
@@ -4843,7 +4843,7 @@
         "operationId": "createClickwrapSession",
         "summary": "Create an acceptance session",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [],
         "responses": {
@@ -5059,7 +5059,7 @@
         "operationId": "getClickwrapSession",
         "summary": "Get an acceptance session",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [],
         "responses": {
@@ -10511,7 +10511,7 @@
         "operationId": "declineClickwrap",
         "summary": "Decline a session's agreements",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [],
         "responses": {
@@ -12061,7 +12061,7 @@
         "operationId": "deleteClickwrapDraft",
         "summary": "Delete a draft version",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [
           {
@@ -12232,7 +12232,7 @@
         "operationId": "updateClickwrapDraft",
         "summary": "Update a draft version",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [
           {
@@ -20749,9 +20749,9 @@
     "/v2/clickwraps/acceptances/{acceptance_id}": {
       "get": {
         "operationId": "getClickwrapAcceptance",
-        "summary": "Get a clickwrap record",
+        "summary": "Get a Verdocs Accept record",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [
           {
@@ -20922,9 +20922,9 @@
     "/v2/clickwraps/acceptances": {
       "get": {
         "operationId": "getClickwrapAcceptances",
-        "summary": "List clickwrap records",
+        "summary": "List Verdocs Accept records",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [
           {
@@ -21151,7 +21151,7 @@
         "operationId": "recordClickwrapOutcome",
         "summary": "Record a headless outcome",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [],
         "responses": {
@@ -21376,9 +21376,9 @@
     "/v2/clickwraps/agreements/{agreement_id}": {
       "get": {
         "operationId": "getClickwrapAgreement",
-        "summary": "Get a clickwrap agreement",
+        "summary": "Get a Verdocs Accept agreement",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [
           {
@@ -21547,9 +21547,9 @@
       },
       "patch": {
         "operationId": "renameClickwrapAgreement",
-        "summary": "Rename a clickwrap agreement",
+        "summary": "Rename a Verdocs Accept agreement",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [
           {
@@ -21740,9 +21740,9 @@
     "/v2/clickwraps/agreements/{agreement_id}/coverage": {
       "get": {
         "operationId": "getClickwrapCoverage",
-        "summary": "Get clickwrap coverage",
+        "summary": "Get Verdocs Accept coverage",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [
           {
@@ -21913,9 +21913,9 @@
     "/v2/clickwraps/acceptances/{acceptance_id}/download": {
       "get": {
         "operationId": "getClickwrapDownloadLink",
-        "summary": "Get a clickwrap download link",
+        "summary": "Get a Verdocs Accept download link",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [
           {
@@ -22100,9 +22100,9 @@
     "/v2/clickwraps/status": {
       "get": {
         "operationId": "getClickwrapStatus",
-        "summary": "Get a person's clickwrap status",
+        "summary": "Get a person's Verdocs Accept status",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [
           {
@@ -28303,7 +28303,7 @@
         "operationId": "publishClickwrapVersion",
         "summary": "Publish a draft version",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [
           {
@@ -30547,7 +30547,7 @@
         "operationId": "sendClickwrapEvent",
         "summary": "Report a session event",
         "tags": [
-          "Clickwrap"
+          "Verdocs Accept"
         ],
         "parameters": [],
         "responses": {

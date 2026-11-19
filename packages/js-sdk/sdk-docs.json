@@ -3156,7 +3156,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "createClickwrapAgreement(endpoint: VerdocsEndpoint, params: ICreateClickwrapAgreementRequest): Promise<IClickwrapAgreement>",
-          "summary": "Create a clickwrap agreement. It starts with no versions: add one with createClickwrapDraft, then publish it. The\nkey can never change, because developers put it in their code.",
+          "summary": "Create a Verdocs Accept agreement. It starts with no versions: add one with createClickwrapDraft, then publish it.\nThe key can never change, because developers put it in their code.",
           "params": [
             {
               "name": "endpoint",
@@ -3436,7 +3436,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "getClickwrapAgreement(endpoint: VerdocsEndpoint, agreementId: string): Promise<IClickwrapAgreementDetail>",
-          "summary": "Get one clickwrap agreement with every version, newest first, including each version's text.",
+          "summary": "Get one Verdocs Accept agreement with every version, newest first, including each version's text.",
           "params": [
             {
               "name": "endpoint",
@@ -3474,7 +3474,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "getClickwrapAgreements(endpoint: VerdocsEndpoint): Promise<IClickwrapAgreementSummary[]>",
-          "summary": "Get the organization's clickwrap agreements, each with its current (latest published) version and its open draft.\nRequires an admin profile and the clickwrap entitlement.",
+          "summary": "Get the organization's Verdocs Accept agreements, each with its current (latest published) version and its open\ndraft. Requires an admin profile and the `clickwrap` entitlement.",
           "params": [
             {
               "name": "endpoint",
@@ -3754,7 +3754,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "renameClickwrapAgreement(endpoint: VerdocsEndpoint, agreementId: string, name: string): Promise<IClickwrapAgreement>",
-          "summary": "Change a clickwrap agreement's name. Its key never changes.",
+          "summary": "Change a Verdocs Accept agreement's name. Its key never changes.",
           "params": [
             {
               "name": "endpoint",

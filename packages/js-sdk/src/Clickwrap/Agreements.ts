@@ -11,8 +11,8 @@ import {
 import {VerdocsEndpoint} from '../VerdocsEndpoint';
 
 /**
- * Get the organization's clickwrap agreements, each with its current (latest published) version and its open draft.
- * Requires an admin profile and the clickwrap entitlement.
+ * Get the organization's Verdocs Accept agreements, each with its current (latest published) version and its open
+ * draft. Requires an admin profile and the `clickwrap` entitlement.
  *
  * ```typescript
  * import {getClickwrapAgreements} from '@verdocs/js-sdk';
@@ -20,8 +20,8 @@ import {VerdocsEndpoint} from '../VerdocsEndpoint';
  * const agreements = await getClickwrapAgreements(VerdocsEndpoint.getDefault());
  * ```
  *
- * @group Clickwrap
- * @api GET /v2/clickwraps/agreements List clickwrap agreements
+ * @group Verdocs Accept
+ * @api GET /v2/clickwraps/agreements List Verdocs Accept agreements
  * @apiSuccess array(items: IClickwrapAgreementSummary) . The organization's agreements, oldest first
  *
  * @sdkOperation clickwrap.getClickwrapAgreements
@@ -34,7 +34,7 @@ export const getClickwrapAgreements = (endpoint: VerdocsEndpoint) =>
     .then((r) => r.data.agreements);
 
 /**
- * Get one clickwrap agreement with every version, newest first, including each version's text.
+ * Get one Verdocs Accept agreement with every version, newest first, including each version's text.
  *
  * ```typescript
  * import {getClickwrapAgreement} from '@verdocs/js-sdk';
@@ -42,8 +42,8 @@ export const getClickwrapAgreements = (endpoint: VerdocsEndpoint) =>
  * const {versions} = await getClickwrapAgreement(VerdocsEndpoint.getDefault(), agreementId);
  * ```
  *
- * @group Clickwrap
- * @api GET /v2/clickwraps/agreements/:agreement_id Get a clickwrap agreement
+ * @group Verdocs Accept
+ * @api GET /v2/clickwraps/agreements/:agreement_id Get a Verdocs Accept agreement
  * @apiParam string(format:uuid) agreement_id The agreement to get
  * @apiSuccess IClickwrapAgreementDetail . The agreement with its versions
  *
@@ -57,8 +57,8 @@ export const getClickwrapAgreement = (endpoint: VerdocsEndpoint, agreementId: st
     .then((r) => r.data.agreement);
 
 /**
- * Create a clickwrap agreement. It starts with no versions: add one with createClickwrapDraft, then publish it. The
- * key can never change, because developers put it in their code.
+ * Create a Verdocs Accept agreement. It starts with no versions: add one with createClickwrapDraft, then publish it.
+ * The key can never change, because developers put it in their code.
  *
  * ```typescript
  * import {createClickwrapAgreement} from '@verdocs/js-sdk';
@@ -66,8 +66,8 @@ export const getClickwrapAgreement = (endpoint: VerdocsEndpoint, agreementId: st
  * const agreement = await createClickwrapAgreement(VerdocsEndpoint.getDefault(), {key: 'terms-of-service', name: 'Terms of Service'});
  * ```
  *
- * @group Clickwrap
- * @api POST /v2/clickwraps/agreements Create a clickwrap agreement
+ * @group Verdocs Accept
+ * @api POST /v2/clickwraps/agreements Create a Verdocs Accept agreement
  * @apiBody string key Unique in the organization: lowercase letters and digits separated by single hyphens, such as "terms-of-service"
  * @apiBody string name What admins see, such as "Terms of Service"
  * @apiSuccess IClickwrapAgreement . The new agreement
@@ -82,7 +82,7 @@ export const createClickwrapAgreement = (endpoint: VerdocsEndpoint, params: ICre
     .then((r) => r.data.agreement);
 
 /**
- * Change a clickwrap agreement's name. Its key never changes.
+ * Change a Verdocs Accept agreement's name. Its key never changes.
  *
  * ```typescript
  * import {renameClickwrapAgreement} from '@verdocs/js-sdk';
@@ -90,8 +90,8 @@ export const createClickwrapAgreement = (endpoint: VerdocsEndpoint, params: ICre
  * await renameClickwrapAgreement(VerdocsEndpoint.getDefault(), agreementId, 'Terms of Use');
  * ```
  *
- * @group Clickwrap
- * @api PATCH /v2/clickwraps/agreements/:agreement_id Rename a clickwrap agreement
+ * @group Verdocs Accept
+ * @api PATCH /v2/clickwraps/agreements/:agreement_id Rename a Verdocs Accept agreement
  * @apiParam string(format:uuid) agreement_id The agreement to rename
  * @apiBody string name The new name
  * @apiSuccess IClickwrapAgreement . The renamed agreement
@@ -115,7 +115,7 @@ export const renameClickwrapAgreement = (endpoint: VerdocsEndpoint, agreementId:
  * const draft = await createClickwrapDraft(VerdocsEndpoint.getDefault(), agreementId, {copy_current: true});
  * ```
  *
- * @group Clickwrap
+ * @group Verdocs Accept
  * @api POST /v2/clickwraps/agreements/:agreement_id/versions Create a draft version
  * @apiParam string(format:uuid) agreement_id The agreement to add the draft to
  * @apiBody string content? The agreement text as HTML. Only headings, paragraphs, lists, links, bold, italic, underline, and line breaks are kept.
@@ -140,7 +140,7 @@ export const createClickwrapDraft = (endpoint: VerdocsEndpoint, agreementId: str
  * await updateClickwrapDraft(VerdocsEndpoint.getDefault(), versionId, '<p>Be nice.</p>');
  * ```
  *
- * @group Clickwrap
+ * @group Verdocs Accept
  * @api PATCH /v2/clickwraps/versions/:version_id Update a draft version
  * @apiParam string(format:uuid) version_id The draft to edit
  * @apiBody string content The agreement text as HTML, sanitized on save
@@ -164,7 +164,7 @@ export const updateClickwrapDraft = (endpoint: VerdocsEndpoint, versionId: strin
  * await deleteClickwrapDraft(VerdocsEndpoint.getDefault(), versionId);
  * ```
  *
- * @group Clickwrap
+ * @group Verdocs Accept
  * @api DELETE /v2/clickwraps/versions/:version_id Delete a draft version
  * @apiParam string(format:uuid) version_id The draft to delete
  * @apiSuccess string . No content
@@ -188,7 +188,7 @@ export const deleteClickwrapDraft = (endpoint: VerdocsEndpoint, versionId: strin
  * await publishClickwrapVersion(VerdocsEndpoint.getDefault(), versionId, {requires_reacceptance: true, change_summary: 'New arbitration terms'});
  * ```
  *
- * @group Clickwrap
+ * @group Verdocs Accept
  * @api POST /v2/clickwraps/versions/:version_id/publish Publish a draft version
  * @apiParam string(format:uuid) version_id The draft to publish
  * @apiBody boolean requires_reacceptance Whether everyone must accept this version again
@@ -214,8 +214,8 @@ export const publishClickwrapVersion = (endpoint: VerdocsEndpoint, versionId: st
  * const {accepted_any, current} = await getClickwrapCoverage(VerdocsEndpoint.getDefault(), agreementId);
  * ```
  *
- * @group Clickwrap
- * @api GET /v2/clickwraps/agreements/:agreement_id/coverage Get clickwrap coverage
+ * @group Verdocs Accept
+ * @api GET /v2/clickwraps/agreements/:agreement_id/coverage Get Verdocs Accept coverage
  * @apiParam string(format:uuid) agreement_id The agreement to count
  * @apiSuccess IClickwrapCoverage . The counts
  *

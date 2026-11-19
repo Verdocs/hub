@@ -15,7 +15,7 @@ const withSessionToken = (token: string) => ({headers: {Authorization: `Bearer $
  * const session = await getClickwrapSession(VerdocsEndpoint.getDefault(), token);
  * ```
  *
- * @group Clickwrap
+ * @group Verdocs Accept
  * @api GET /v2/clickwraps/session Get an acceptance session
  * @apiDescription Authenticated by the session token from createClickwrapSession, sent as a Bearer token.
  * @apiSuccess IClickwrapPublicSession . The session's agreements, mode, and brand
@@ -39,7 +39,7 @@ export const getClickwrapSession = (endpoint: VerdocsEndpoint, token: string) =>
  * await sendClickwrapEvent(VerdocsEndpoint.getDefault(), token, {event: 'checked', version_id: versionId, client_at: new Date().toISOString()});
  * ```
  *
- * @group Clickwrap
+ * @group Verdocs Accept
  * @api POST /v2/clickwraps/session/events Report a session event
  * @apiDescription Authenticated by the session token from createClickwrapSession, sent as a Bearer token.
  * @apiBody string(enum:'shown'|'scrolled_to_end'|'checked'|'unchecked') event What happened
@@ -70,7 +70,7 @@ export const sendClickwrapEvent = (endpoint: VerdocsEndpoint, token: string, par
  * });
  * ```
  *
- * @group Clickwrap
+ * @group Verdocs Accept
  * @api POST /v2/clickwraps/session/accept Accept a session's agreements
  * @apiDescription Authenticated by the session token from createClickwrapSession, sent as a Bearer token.
  * @apiBody string(enum:'component'|'hosted') surface Where the person accepted
@@ -101,7 +101,7 @@ export const acceptClickwrap = (endpoint: VerdocsEndpoint, token: string, params
  * await declineClickwrap(VerdocsEndpoint.getDefault(), token, {surface: 'component', labels, presentation: html});
  * ```
  *
- * @group Clickwrap
+ * @group Verdocs Accept
  * @api POST /v2/clickwraps/session/decline Decline a session's agreements
  * @apiDescription Authenticated by the session token from createClickwrapSession, sent as a Bearer token.
  * @apiBody string(enum:'component'|'hosted') surface Where the person declined

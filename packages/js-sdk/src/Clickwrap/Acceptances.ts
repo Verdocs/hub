@@ -24,8 +24,8 @@ import {VerdocsEndpoint} from '../VerdocsEndpoint';
  * const needsTerms = status.some((entry) => !entry.current);
  * ```
  *
- * @group Clickwrap
- * @api GET /v2/clickwraps/status Get a person's clickwrap status
+ * @group Verdocs Accept
+ * @api GET /v2/clickwraps/status Get a person's Verdocs Accept status
  * @apiQuery string user_id The person's ID in your own system
  * @apiQuery string agreements Comma-separated agreement keys, up to 20
  * @apiSuccess array(items: IClickwrapStatus) . One entry per agreement
@@ -53,7 +53,7 @@ export const getClickwrapStatus = (endpoint: VerdocsEndpoint, userId: string, ag
  * }
  * ```
  *
- * @group Clickwrap
+ * @group Verdocs Accept
  * @api POST /v2/clickwraps/session Create an acceptance session
  * @apiBody string user_id The person's ID in your own system
  * @apiBody array(items:string) agreements The agreement keys to check, in the order to show them. Up to 20.
@@ -88,7 +88,7 @@ export const createClickwrapSession = (endpoint: VerdocsEndpoint, params: ICreat
  * });
  * ```
  *
- * @group Clickwrap
+ * @group Verdocs Accept
  * @api POST /v2/clickwraps/acceptances Record a headless outcome
  * @apiBody string user_id The person's ID in your own system
  * @apiBody string(enum:'accepted'|'declined') outcome What the person did
@@ -120,8 +120,8 @@ export const recordClickwrapOutcome = (endpoint: VerdocsEndpoint, params: IRecor
  * const {count, acceptances} = await getClickwrapAcceptances(VerdocsEndpoint.getDefault(), {metadata_key: 'email', metadata_value: 'pat@example.com'});
  * ```
  *
- * @group Clickwrap
- * @api GET /v2/clickwraps/acceptances List clickwrap records
+ * @group Verdocs Accept
+ * @api GET /v2/clickwraps/acceptances List Verdocs Accept records
  * @apiQuery string user_id? The person's ID in your own system. Use this or metadata_key, not both.
  * @apiQuery string metadata_key? A metadata field you attached, such as email
  * @apiQuery string metadata_value? The exact value to match. Required with metadata_key.
@@ -151,8 +151,8 @@ export const getClickwrapAcceptances = (endpoint: VerdocsEndpoint, params: IList
  * const record = await getClickwrapAcceptance(VerdocsEndpoint.getDefault(), acceptanceId);
  * ```
  *
- * @group Clickwrap
- * @api GET /v2/clickwraps/acceptances/:acceptance_id Get a clickwrap record
+ * @group Verdocs Accept
+ * @api GET /v2/clickwraps/acceptances/:acceptance_id Get a Verdocs Accept record
  * @apiParam string(format:uuid) acceptance_id The record to get
  * @apiSuccess IClickwrapAcceptance . The record with its items and events
  *
@@ -176,8 +176,8 @@ export const getClickwrapAcceptance = (endpoint: VerdocsEndpoint, acceptanceId: 
  * const {url} = await getClickwrapDownloadLink(VerdocsEndpoint.getDefault(), acceptanceId, 'evidence');
  * ```
  *
- * @group Clickwrap
- * @api GET /v2/clickwraps/acceptances/:acceptance_id/download Get a clickwrap download link
+ * @group Verdocs Accept
+ * @api GET /v2/clickwraps/acceptances/:acceptance_id/download Get a Verdocs Accept download link
  * @apiParam string(format:uuid) acceptance_id The record to download from
  * @apiQuery string(enum:'certificate'|'replay'|'evidence') type Which file to link to
  * @apiSuccess IClickwrapDownloadLink . The link and how long it works
