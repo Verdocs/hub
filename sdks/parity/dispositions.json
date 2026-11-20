@@ -251,6 +251,10 @@
     "python": "ported: verdocs.models.Recipient",
     "csharp": "ported: Verdocs.Models.Recipient"
   },
+  "Models.ts#IRecipientInformation": {
+    "python": "ported: verdocs.models.RecipientInformation",
+    "csharp": "ported: Verdocs.Models.RecipientInformation"
+  },
   "Models.ts#IRole": {
     "python": "ported: verdocs.models.Role",
     "csharp": "ported: Verdocs.Models.Role"

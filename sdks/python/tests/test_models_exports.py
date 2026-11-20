@@ -85,6 +85,7 @@ CORE_MODEL_EXPORTS = [
     "PipelineSettings",
     "Profile",
     "Recipient",
+    "RecipientInformation",
     "Role",
     "SMSAccessKey",
     "SignInProvider",

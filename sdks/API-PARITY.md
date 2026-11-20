@@ -7,9 +7,9 @@ ported (with the target-language name), adapted (with a note), skipped (with a r
 or frozen. Files not reachable from the barrel graph (Utils/Retry.ts, Utils/globalThis.js)
 are internal, not public surface, and are listed at the bottom for completeness.
 
-Total public symbols: 531
+Total public symbols: 560
 
-## Envelopes (107 symbols)
+## Envelopes (117 symbols)
 
 | Symbol | Kind | File | C# | Python |
 | --- | --- | --- | --- | --- |
@@ -66,6 +66,7 @@ Total public symbols: 531
 | getRecipientWithActions | const | Envelopes/Permissions.ts | ported: Verdocs.Helpers.EnvelopePermissions.GetRecipientWithActions (returns the can-act bool like the js-sdk code, not the recipient the name suggests) | ported: verdocs.permissions.get_recipient_with_actions (returns the can-act bool like the js-sdk code, not the recipient the name suggests) |
 | isEnvelopeOwner | const | Envelopes/Permissions.ts | ported: Verdocs.Helpers.EnvelopePermissions.IsEnvelopeOwner | ported: verdocs.permissions.is_envelope_owner |
 | isEnvelopeRecipient | const | Envelopes/Permissions.ts | ported: Verdocs.Helpers.EnvelopePermissions.IsEnvelopeRecipient | ported: verdocs.permissions.is_envelope_recipient |
+| isQualifiedRecipient | const | Envelopes/Permissions.ts | pending | pending |
 | recipientCanAct | const | Envelopes/Permissions.ts | ported: Verdocs.Helpers.EnvelopePermissions.RecipientCanAct | ported: verdocs.permissions.recipient_can_act |
 | recipientHasAction | const | Envelopes/Permissions.ts | ported: Verdocs.Helpers.EnvelopePermissions.RecipientHasAction | ported: verdocs.permissions.recipient_has_action |
 | useCanAccessEnvelope | const | Envelopes/Permissions.ts | skipped: React hook | skipped: React hook |
@@ -77,14 +78,18 @@ Total public symbols: 531
 | userIsEnvelopeOwner | const | Envelopes/Permissions.ts | ported: Verdocs.Helpers.EnvelopePermissions.UserIsEnvelopeOwner | ported: verdocs.permissions.user_is_envelope_owner |
 | userIsEnvelopeRecipient | const | Envelopes/Permissions.ts | ported: Verdocs.Helpers.EnvelopePermissions.UserIsEnvelopeRecipient | ported: verdocs.permissions.user_is_envelope_recipient |
 | askQuestion | const | Envelopes/Recipients.ts | ported: endpoint.Recipients.AskQuestionAsync (question passed as a plain string; the js-sdk wraps it in an inline params object) | adapted: endpoint.recipients.ask_question returns None; the server answers {status:'OK'} with no other data, so the js-sdk's IRecipient response type would fail to parse |
+| consumeQesResult | const | Envelopes/Recipients.ts | pending | pending |
 | delegateRecipient | const | Envelopes/Recipients.ts | adapted: endpoint.Recipients.DelegateAsync returns Task; the {status: OK} body carries nothing. Params record Verdocs.Models.DelegateRecipientRequest | ported: endpoint.recipients.delegate (params: verdocs.models.envelopes.RecipientDelegateParams); returns the new recipient row the server actually sends (js-sdk types {status:'OK'}, a drift) |
 | envelopeRecipientAgree | const | Envelopes/Recipients.ts | ported: endpoint.Recipients.AgreeAsync | ported: endpoint.recipients.agree (disclosures arg plus verdocs.models.envelopes.RecipientAgreeParams) |
 | envelopeRecipientDecline | const | Envelopes/Recipients.ts | ported: endpoint.Recipients.DeclineAsync | ported: endpoint.recipients.decline |
 | envelopeRecipientSubmit | const | Envelopes/Recipients.ts | ported: endpoint.Recipients.SubmitAsync | ported: endpoint.recipients.submit (params: verdocs.models.envelopes.RecipientSubmitParams) |
 | getInPersonLink | const | Envelopes/Recipients.ts | ported: endpoint.Recipients.GetInPersonLinkAsync | ported: endpoint.recipients.get_in_person_link |
+| getQesReturnUrl | const | Envelopes/Recipients.ts | pending | pending |
+| getQesState | const | Envelopes/Recipients.ts | pending | pending |
 | remindRecipient | const | Envelopes/Recipients.ts | adapted: endpoint.Recipients.RemindAsync returns Task; the {status: OK} body carries nothing | ported: endpoint.recipients.remind; returns the recipient row the server actually sends (js-sdk types {status:'OK'}, a drift) |
 | requestFreshSigningLink | const | Envelopes/Recipients.ts | pending | pending |
 | resetRecipient | const | Envelopes/Recipients.ts | adapted: endpoint.Recipients.ResetAsync returns Task; the {status: OK} body carries nothing | ported: endpoint.recipients.reset; same response note as remindRecipient |
+| startQesSession | const | Envelopes/Recipients.ts | pending | pending |
 | startSigningSession | const | Envelopes/Recipients.ts | ported: endpoint.Recipients.StartSigningSessionAsync (stores the signing token on the endpoint like the js-sdk) | ported: endpoint.recipients.start_signing_session; applies the returned signing token to the endpoint like the js-sdk |
 | updateRecipient | const | Envelopes/Recipients.ts | ported: endpoint.Recipients.UpdateAsync (params record Verdocs.Models.UpdateRecipientParams; name_locked sent as a real boolean, the js-sdk's string typing looks like a typo) | ported: endpoint.recipients.update (params: verdocs.models.envelopes.RecipientUpdateParams) |
 | verifySigner | const | Envelopes/Recipients.ts | ported: endpoint.Recipients.VerifySignerAsync (this is the deployed KBA path) | ported: endpoint.recipients.verify_signer (params: verdocs.models.envelopes.RecipientVerifyParams); this is the real KBA path |
@@ -113,9 +118,14 @@ Total public symbols: 531
 | IPrefillHint | interface | Envelopes/Types.ts | pending | pending |
 | IPrefillOptions | interface | Envelopes/Types.ts | pending | pending |
 | IPrefillResult | interface | Envelopes/Types.ts | pending | pending |
+| IQesErrorHistoryDetail | interface | Envelopes/Types.ts | pending | pending |
+| IQesSignedHistoryDetail | interface | Envelopes/Types.ts | pending | pending |
+| IQesStateResponse | interface | Envelopes/Types.ts | pending | pending |
 | IRecipientDisclosureAgreeBody | interface | Envelopes/Types.ts | ported: Verdocs.Models.RecipientDisclosureAgreeBody | ported: verdocs.models.envelopes.RecipientAgreeParams |
 | IRecipientSubmitBody | interface | Envelopes/Types.ts | ported: Verdocs.Models.RecipientSubmitBody | ported: verdocs.models.envelopes.RecipientSubmitParams |
 | ISignerTokenResponse | interface | Envelopes/Types.ts | ported: Verdocs.Models.SignerTokenResponse (brand kept raw JsonElement; the js-sdk types it loosely) | ported: verdocs.models.envelopes.SignerTokenResponse |
+| IStartQesSessionRequest | interface | Envelopes/Types.ts | pending | pending |
+| IStartQesSessionResponse | interface | Envelopes/Types.ts | pending | pending |
 | IUpdateRecipientParams | interface | Envelopes/Types.ts | ported: Verdocs.Models.UpdateRecipientParams (NameLocked is bool?; the js-sdk's string typing looks like a typo against the boolean create schema) | ported: verdocs.models.envelopes.RecipientUpdateParams; name_locked typed bool (the js-sdk's string type is a typo; the server's update schema currently strips the key entirely) |
 | IUpdateRecipientStatus | interface | Envelopes/Types.ts | ported: Verdocs.Models.UpdateRecipientStatus (orphan type; nothing in the js-sdk references it) | ported: verdocs.models.envelopes.RecipientUpdateStatus (legacy shape, nothing calls with it) |
 | TAuthenticateRecipientRequest | type | Envelopes/Types.ts | adapted: Verdocs.Models.AuthenticateRecipientRequest (four-variant union merged; AuthMethod discriminates) | ported: verdocs.models.envelopes.RecipientVerifyParams (union alias) |
@@ -244,12 +254,13 @@ Total public symbols: 531
 | rotateWebhookSecret | const | Organizations/Webhooks.ts | ported: endpoint.Webhooks.RotateSecretAsync (response carries the unmasked secret) | ported: endpoint.webhooks.rotate_secret |
 | setWebhooks | const | Organizations/Webhooks.ts | ported: endpoint.Webhooks.SetAsync (SetWebhookRequest; URL must be HTTPS or empty per handler) | ported: endpoint.webhooks.set |
 
-## Root (97 symbols)
+## Root (105 symbols)
 
 | Symbol | Kind | File | C# | Python |
 | --- | --- | --- | --- | --- |
 | TAccessKeyType | type | BaseTypes.ts | adapted: string + Verdocs.Models.AccessKeyType constants | ported: verdocs.models.AccessKeyType (Literal) |
 | TBasicResponse | type | BaseTypes.ts | adapted: calls whose only response is a status body return Task (SendVoidAsync discards the body after the status check) | adapted: calls whose only response is a status body return None (the status check is the transport's) |
+| TCertificateSignatureStatus | type | BaseTypes.ts | pending | pending |
 | TDeprecatedHistoryEvent | type | BaseTypes.ts | adapted: folded into Verdocs.Models.HistoryEvent (EnvelopeCreated, EnvelopeCompleted), deprecation noted in doc comments | ported: verdocs.models.DeprecatedHistoryEvent (Literal; deprecated upstream) |
 | TEntitlement | type | BaseTypes.ts | adapted: string + Verdocs.Models.EntitlementFeature constants (renamed to avoid clashing with the Entitlement record) | ported: verdocs.models.EntitlementFeature (Literal; renamed because Entitlement is the wire model) |
 | TEnvelopeDocumentType | type | BaseTypes.ts | adapted: string + Verdocs.Models.EnvelopeDocumentType constants | ported: verdocs.models.EnvelopeDocumentType (Literal) |
@@ -263,11 +274,16 @@ Total public symbols: 531
 | TFieldType | type | BaseTypes.ts | adapted: string + Verdocs.Models.FieldType constants | ported: verdocs.models.FieldType (Literal) |
 | THistoryEvent | type | BaseTypes.ts | adapted: string + Verdocs.Models.HistoryEvent constants | ported: verdocs.models.HistoryEvent (Literal) |
 | TNotificationType | type | BaseTypes.ts | adapted: string + Verdocs.Models.NotificationType constants | ported: verdocs.models.NotificationType (Literal) |
+| TQesErrorReason | type | BaseTypes.ts | pending | pending |
+| TQesResult | type | BaseTypes.ts | pending | pending |
+| TQesState | type | BaseTypes.ts | pending | pending |
 | TRecipientAction | type | BaseTypes.ts | adapted: string + Verdocs.Models.RecipientAction constants | ported: verdocs.models.RecipientAction (Literal) |
 | TRecipientAuthMethod | type | BaseTypes.ts | adapted: string + Verdocs.Models.RecipientAuthMethod constants | ported: verdocs.models.RecipientAuthMethod (Literal) |
 | TRecipientAuthStep | type | BaseTypes.ts | adapted: nullable string (Recipient.AuthStep); values are the RecipientAuthMethod constants | ported: verdocs.models.RecipientAuthStep (RecipientAuthMethod | None) |
+| TRecipientSignatureLevel | type | BaseTypes.ts | pending | pending |
 | TRecipientStatus | type | BaseTypes.ts | adapted: string + Verdocs.Models.RecipientStatus constants | ported: verdocs.models.RecipientStatus (Literal) |
 | TRecipientType | type | BaseTypes.ts | adapted: string + Verdocs.Models.RecipientType constants | ported: verdocs.models.RecipientType (Literal) |
+| TRequestableSignatureLevel | type | BaseTypes.ts | pending | pending |
 | TRequestStatus | type | BaseTypes.ts | adapted: string + Verdocs.Models.RequestStatus constants | ported: verdocs.models.RequestStatus (Literal) |
 | TSortTemplateBy | type | BaseTypes.ts | adapted: Verdocs.Models.TemplateSortBy request-side enum (seed, unchanged) | ported: verdocs.models.TemplateSortBy (Literal; seed's established name kept) |
 | TTemplateAction | type | BaseTypes.ts | adapted: string + Verdocs.Models.TemplateAction constants | ported: verdocs.models.TemplateAction (Literal) |
@@ -284,6 +300,7 @@ Total public symbols: 531
 | IApiKey | interface | Models.ts | ported: Verdocs.Models.ApiKey (name, organization_id, profile_id, global_admin, client_id, client_secret on create/rotate only, created_at, last_used_at; keyed on client_id with no id field; the deployed API has no permission field and the ApiKeyPermission constants were removed) | ported: verdocs.models.ApiKey; no permission field (removed from both SDKs; global_admin is the only access control), keyed on client_id like the js-sdk and the deployed table, with created_at as datetime and last_used_at as datetime | None |
 | IAttachmentFieldConfig | interface | Models.ts | pending | pending |
 | IBrand | interface | Models.ts | ported: Verdocs.Models.Brand | ported: verdocs.models.Brand |
+| ICertificateSignature | interface | Models.ts | pending | pending |
 | IChannel | interface | Models.ts | ported: Verdocs.Models.Channel | ported: verdocs.models.Channel |
 | ICheckboxFieldConfig | interface | Models.ts | pending | pending |
 | IDateFieldConfig | interface | Models.ts | pending | pending |
@@ -319,6 +336,7 @@ Total public symbols: 531
 | IProfile | interface | Models.ts | ported: Verdocs.Models.Profile | ported: verdocs.models.Profile |
 | IRadioFieldConfig | interface | Models.ts | pending | pending |
 | IRecipient | interface | Models.ts | ported: Verdocs.Models.Recipient | ported: verdocs.models.Recipient |
+| IRecipientInformation | interface | Models.ts | ported: Verdocs.Models.RecipientInformation | ported: verdocs.models.RecipientInformation |
 | IRole | interface | Models.ts | ported: Verdocs.Models.Role | ported: verdocs.models.Role |
 | ISignature | interface | Models.ts | ported: Verdocs.Models.Signature | ported: verdocs.models.Signature |
 | ISignatureFieldConfig | interface | Models.ts | pending | pending |
@@ -391,7 +409,7 @@ Total public symbols: 531
 | TSession | type | Sessions/Types.ts | adapted: VerdocsEndpoint.Session, typed VerdocsSession? with null meaning unauthenticated (alias carries no vocabulary) | adapted: the null arm is Python None; endpoint.session is typed Session | None in _endpoint.py (Session = UserSession | SigningSession), so no separate models alias exists |
 | TSessionType | type | Sessions/Types.ts | adapted: Verdocs.SessionType (existing enum; request-side state the caller sets, so an enum rather than a string-plus-values-class) | ported: SessionType Literal in _endpoint.py, already exported from the package root; not redefined in models.sessions to avoid a duplicate name (models cannot import from _endpoint without a cycle) |
 
-## Templates (71 symbols)
+## Templates (82 symbols)
 
 | Symbol | Kind | File | C# | Python |
 | --- | --- | --- | --- | --- |
@@ -431,11 +449,15 @@ Total public symbols: 531
 | getTemplateDocumentPageDisplayUri | const | Templates/TemplateDocuments.ts | ported: endpoint.TemplateDocuments.GetPageDisplayUriAsync (variant stays a string parameter, original or tagged; returns the bare URL string) | ported: endpoint.template_documents.get_page_display_uri (page also accepts the literal "thumb" per the server schema; per-call 20s timeout skipped) |
 | getTemplateDocumentPreviewLink | const | Templates/TemplateDocuments.ts | adapted: endpoint.TemplateDocuments.GetPreviewLinkAsync (unused envelopeId parameter dropped; still fetches /v2/envelope-documents as the js-sdk code does, wrong route family for a template document, anomaly doc-commented and reported) | ported: endpoint.template_documents.get_preview_link (mirrors the js-sdk's envelope-documents path for a template document, wire truth is code; anomaly doc-commented; unused envelope_id parameter dropped) |
 | getTemplateDocumentThumbnail | const | Templates/TemplateDocuments.ts | ported: endpoint.TemplateDocuments.GetThumbnailAsync (dead on deployed API, the legacy route does not exist and 404s, doc-commented; the page-image route with page thumb is the working equivalent, not wrapped yet to keep js-sdk parity) | ported: endpoint.template_documents.get_thumbnail (dead on deployed API, no such route, doc-commented; get_page_display_uri(id, "thumb") is the working call) |
+| updateTemplateDocument | const | Templates/TemplateDocuments.ts | pending | pending |
 | createTemplate | const | Templates/Templates.ts | ported: endpoint.Templates.CreateAsync (JSON overload plus a multipart overload taking TemplateFileUpload parts, all file parts named documents with string text parts name/description/visibility/sender per WIRE-NOTES; the js-sdk multipart encoding of roles/fields is broken on the wire and was not mirrored, the multipart overload rejects requests carrying roles/documents/reminders; onUploadProgress callback dropped, HttpClient exposes no equivalent) | ported: endpoint.templates.create (multipart rebuilt per WIRE-NOTES: repeatable file parts named documents, string text parts only (name/description/visibility/sender), ValueError on fields that cannot ride; the js-sdk's broken roles/fields form encoding is not mirrored; onUploadProgress and the per-call 120s timeout skipped: httpx has no sync upload-progress hook and timeouts are endpoint-level) |
+| createTemplateAnalysis | const | Templates/Templates.ts | pending | pending |
 | createTemplateFromSharepoint | const | Templates/Templates.ts | ported: endpoint.Templates.CreateFromSharepointAsync (dead on deployed API, no handler exists, doc-commented) | ported: endpoint.templates.create_from_sharepoint (dead on deployed API, no handler, doc-commented; kept out of examples) |
 | deleteTemplate | const | Templates/Templates.ts | ported: endpoint.Templates.DeleteAsync (returns void; the bare success string has no consumer) | ported: endpoint.templates.delete (returns None; the server sends a success string nothing consumes) |
 | duplicateTemplate | const | Templates/Templates.ts | ported: endpoint.Templates.DuplicateAsync | ported: endpoint.templates.duplicate |
 | getTemplate | const | Templates/Templates.ts | ported: endpoint.Templates.GetAsync | ported: endpoint.templates.get (adapted: the js-sdk's client-side legacy upgrade shims are dropped; responses are returned exactly as the API sends them) |
+| getTemplateAnalyses | const | Templates/Templates.ts | pending | pending |
+| getTemplateAnalysis | const | Templates/Templates.ts | pending | pending |
 | getTemplateDataContract | const | Templates/Templates.ts | pending | pending |
 | getTemplates | const | Templates/Templates.ts | ported: endpoint.Templates.ListAsync | ported: endpoint.templates.list |
 | IDocumentFromData | interface | Templates/Templates.ts | adapted: Verdocs.Models.TemplateDocumentSource (merged with IDocumentFromUri; see that row) | ported: verdocs.models.templates.DocumentFromData (adds optional mime, which the server schema accepts) |
@@ -454,11 +476,18 @@ Total public symbols: 531
 | IRolePosition | interface | Templates/Types.ts | pending | pending |
 | IStar | interface | Templates/Types.ts | ported: Verdocs.Models.Star | ported: verdocs.models.templates.Star |
 | ITag | interface | Templates/Types.ts | ported: Verdocs.Models.Tag | ported: verdocs.models.templates.Tag |
+| ITemplateAnalysis | interface | Templates/Types.ts | pending | pending |
+| ITemplateAnalysisField | interface | Templates/Types.ts | pending | pending |
+| ITemplateAnalysisGroup | interface | Templates/Types.ts | pending | pending |
+| ITemplateAnalysisPage | interface | Templates/Types.ts | pending | pending |
+| ITemplateAnalysisPlacement | interface | Templates/Types.ts | pending | pending |
+| ITemplateAnalysisRule | interface | Templates/Types.ts | pending | pending |
 | ITemplateFeedbackRequest | interface | Templates/Types.ts | pending | pending |
 | ITemplateFieldRequest | interface | Templates/Types.ts | pending | pending |
 | ITemplateSearchResult | interface | Templates/Types.ts | ported: Verdocs.Models.TemplateSearchResult | ported: verdocs.models.templates.TemplateSearchResult |
 | ITemplateTag | interface | Templates/Types.ts | ported: Verdocs.Models.TemplateTag | ported: verdocs.models.templates.TemplateTag |
 | TDataKeyType | type | Templates/Types.ts | pending | pending |
+| TTemplateAnalysisStatus | type | Templates/Types.ts | pending | pending |
 | getValidators | const | Templates/Validators.ts | ported: Verdocs.Helpers.Validators.GetValidators | ported: verdocs.validators.get_validators |
 | isValidEmail | const | Templates/Validators.ts | ported: Verdocs.Helpers.Validators.IsValidEmail | ported: verdocs.validators.is_valid_email |
 | isValidInput | const | Templates/Validators.ts | ported: Verdocs.Helpers.Validators.IsValidInput (patterns ported verbatim, compiled with RegexOptions.ECMAScript so \d and \b keep their ASCII JavaScript semantics) | ported: verdocs.validators.is_valid_input |

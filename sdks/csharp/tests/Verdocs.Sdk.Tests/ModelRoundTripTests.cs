@@ -302,4 +302,41 @@ public sealed class ModelRoundTripTests
 
         Assert.Equal(VolatileJson.NormalizeText(SamplePayloads.PendingWebhook), VolatileJson.NormalizeValue(model));
     }
+
+    [Fact]
+    public void RoundTrip_RecipientInformation_PreservesPayload()
+    {
+        var model = Deserialize<RecipientInformation>(SamplePayloads.RecipientInformation);
+
+        Assert.Equal("Apt 2", model.Address2);
+        Assert.Equal("1234", model.SsnLast4);
+        Assert.NotNull(model.IdCaptureResult);
+        Assert.Equal("passed", model.IdCaptureResult.Value.GetProperty("status").GetString());
+        Assert.NotNull(model.KbaQuestions);
+        Assert.Equal("Which address have you lived at?", Assert.Single(model.KbaQuestions).Prompt);
+        Assert.Equal(new DateTimeOffset(2026, 3, 1, 0, 0, 0, TimeSpan.Zero), model.PurgeAt);
+        Assert.Null(model.PurgedAt);
+
+        Assert.Equal(VolatileJson.NormalizeText(SamplePayloads.RecipientInformation), VolatileJson.NormalizeValue(model));
+    }
+
+    [Fact]
+    public void Deserialize_Recipient_ReadsCamelCaseRecipientInformation()
+    {
+        var json = $$"""{"envelope_id": "9c2f8d3e-5b6a-4c7d-8e9f-0a1b2c3d4e5f", "role_name": "Tenant", "recipientInformation": {{SamplePayloads.RecipientInformation}}}""";
+
+        var model = Deserialize<Recipient>(json);
+
+        Assert.NotNull(model.RecipientInformation);
+        Assert.Equal("62701", model.RecipientInformation.Zip);
+        Assert.Null(model.AdditionalData);
+    }
+
+    [Fact]
+    public void Serialize_Recipient_WithoutRecipientInformation_OmitsIt()
+    {
+        var json = JsonSerializer.Serialize(new Recipient { EnvelopeId = "env-1", RoleName = "Tenant" }, VerdocsJson.Options);
+
+        Assert.DoesNotContain("recipientInformation", json);
+    }
 }

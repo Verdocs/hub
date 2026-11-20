@@ -301,6 +301,44 @@ def test_recipient_kba_and_auth_fields():
     assert dumped["kba_questions"][0]["prompt"] == "Which address have you lived at?"
 
 
+def test_recipient_information_parses_and_round_trips():
+    recipient = Recipient.model_validate(
+        recipient_payload(
+            recipientInformation={
+                "envelope_id": "envelope-1234",
+                "role_name": "Recipient 1",
+                "phone": "+15555550100",
+                "address": "10 Main St",
+                "address_2": None,
+                "city": "Springfield",
+                "state": "IL",
+                "zip": "62701",
+                "country": "US",
+                "ssn_last_4": "1234",
+                "dob": "1990-01-01",
+                "id_capture_ref": None,
+                "id_capture_result": {"status": "passed"},
+                "kba_session_id": None,
+                "kba_questions": None,
+                "purge_at": None,
+                "purged_at": None,
+                "encryption_key_version": "v1",
+                "created_at": CREATED,
+                "updated_at": UPDATED,
+            }
+        )
+    )
+
+    information = recipient.recipientInformation
+    assert information is not None
+    assert information.zip == "62701"
+    assert information.id_capture_result == {"status": "passed"}
+    assert recipient.model_dump(mode="json")["recipientInformation"]["ssn_last_4"] == "1234"
+
+    # Most responses don't include it.
+    assert Recipient.model_validate(recipient_payload()).recipientInformation is None
+
+
 def test_webhook_events_keep_unknown_event_keys():
     webhook = Webhook.model_validate(
         {

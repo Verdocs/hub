@@ -612,4 +612,30 @@ public static class SamplePayloads
           "last_result": "Service Unavailable"
         }
         """;
+
+    /// <summary>A recipient's identity details, as the API would embed them on a recipient.</summary>
+    public const string RecipientInformation = """
+        {
+          "envelope_id": "9c2f8d3e-5b6a-4c7d-8e9f-0a1b2c3d4e5f",
+          "role_name": "Tenant",
+          "phone": "+15555550100",
+          "address": "10 Main St",
+          "address_2": "Apt 2",
+          "city": "Springfield",
+          "state": "IL",
+          "zip": "62701",
+          "country": "US",
+          "ssn_last_4": "1234",
+          "dob": "1990-01-01",
+          "id_capture_ref": "idcap-1234",
+          "id_capture_result": {"status": "passed"},
+          "kba_session_id": null,
+          "kba_questions": [{"type": "multiple_choice", "answer": ["10 Main St", "20 Oak Ave"], "prompt": "Which address have you lived at?"}],
+          "purge_at": "2026-03-01T00:00:00.000Z",
+          "purged_at": null,
+          "encryption_key_version": "v1",
+          "created_at": "2026-02-01T10:00:00.000Z",
+          "updated_at": "2026-02-01T10:00:00.000Z"
+        }
+        """;
 }

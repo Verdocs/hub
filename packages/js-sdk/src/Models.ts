@@ -883,23 +883,23 @@ export interface IRecipient {
   /** @deprecated. Use first_name/last_name instead. */
   full_name?: string | null;
   email: string;
-  /** Phone number for SMS invites */
+  /** @deprecated Moving to recipientInformation.phone. Phone number for SMS invites. */
   phone?: string | null;
-  /** Street address. Only used in KBA workflows. Combine two-line addresses into a single string. */
+  /** @deprecated Moving to recipientInformation.address. Street address, only used in KBA workflows. */
   address?: string | null;
-  /** Zip code. Only used in KBA workflows. */
+  /** @deprecated Moving to recipientInformation.city. City, only used in KBA workflows. */
   city?: string | null;
-  /** Zip code. Only used in KBA workflows. */
+  /** @deprecated Moving to recipientInformation.state. State, only used in KBA workflows. */
   state?: string | null;
-  /** Zip code. Only used in KBA workflows. */
+  /** @deprecated Moving to recipientInformation.zip. Zip code, only used in KBA workflows. */
   zip?: string | null;
-  /** Last 4 digits of SSN. Only used in KBA workflows. */
+  /** @deprecated Moving to recipientInformation.ssn_last_4. Last 4 digits of SSN, only used in KBA workflows. */
   ssn_last_4?: string | null;
   /** The disclosure text the recipient accepted. */
   disclosures?: string | null;
   /** Date/time the recipient agreed to their e-signing disclosures. */
   disclosures_accepted_at?: string | null;
-  /** Date of birth. Only used in KBA workflows. */
+  /** @deprecated Moving to recipientInformation.dob. Date of birth, only used in KBA workflows. */
   dob?: string | null;
   /**
    * The sequence number indicates the order in which Recipients act. Multiple recipients may have the same sequence
@@ -956,10 +956,55 @@ export interface IRecipient {
   /**
    * If a KBA step requires the user to answer a challenge/differentiator question, the
    * question(s) to ask.
+   *
+   * @deprecated Moving to recipientInformation.kba_questions.
    */
   kba_questions?: IKBAQuestion[] | null;
   envelope?: IEnvelope;
   profile?: IProfile;
+  /** The recipient's identity details, when the API includes them. */
+  recipientInformation?: IRecipientInformation | null;
+}
+
+/**
+ * Identity details a recipient supplies for SMS, KBA, and ID verification. We keep them apart from the recipient so
+ * they can be purged once they're no longer needed.
+ */
+export interface IRecipientInformation {
+  envelope_id: string;
+  role_name: string;
+  /** Phone number for SMS invites. */
+  phone: string | null;
+  /** Street address, only used in KBA workflows. */
+  address: string | null;
+  /** Second address line, only used in KBA workflows. */
+  address_2: string | null;
+  city: string | null;
+  state: string | null;
+  zip: string | null;
+  country: string;
+  /** Last 4 digits of SSN, only used in KBA workflows. */
+  ssn_last_4: string | null;
+  /** Date of birth, only used in KBA workflows. */
+  dob: string | null;
+  /** The ID capture provider's reference for the recipient's verification. */
+  id_capture_ref: string | null;
+  /** The ID capture provider's verification result. */
+  id_capture_result: Record<string, unknown> | null;
+  /** The KBA provider's session for the recipient's verification. */
+  kba_session_id: string | null;
+  /** Challenge/differentiator questions from the recipient's KBA step. */
+  kba_questions: IKBAQuestion[] | null;
+  /** When the sensitive values are due to be cleared. */
+  purge_at: string | null;
+  /** When the sensitive values were cleared. The record itself stays. */
+  purged_at: string | null;
+  /** Encryption key version, for key rotation. */
+  encryption_key_version: string;
+  created_at: string;
+  updated_at: string;
+
+  recipient?: IRecipient;
 }
 
 /**

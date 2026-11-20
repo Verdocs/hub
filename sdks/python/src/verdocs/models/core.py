@@ -749,6 +749,8 @@ class Recipient(VerdocsModel):
     # Deprecated on the wire; use first_name/last_name instead.
     full_name: str | None = None
     email: str
+    # Deprecated: phone, address, city, state, zip, ssn_last_4, dob, and
+    # kba_questions are moving to recipientInformation.
     # Phone number for SMS invites.
     phone: str | None = None
     # Address, city, state, zip, SSN last-4, and date of birth are only used
@@ -800,6 +802,46 @@ class Recipient(VerdocsModel):
     kba_questions: list[KBAQuestion] | None = None
     envelope: Envelope | None = None
     profile: Profile | None = None
+    # camelCase on the wire; we match the wire rather than alias.
+    recipientInformation: RecipientInformation | None = None
+
+
+class RecipientInformation(VerdocsModel):
+    """Identity details a recipient supplies for SMS, KBA, and ID verification.
+
+    We keep them apart from the recipient so they can be purged once they're no
+    longer needed.
+    """
+
+    envelope_id: str
+    role_name: str
+    # Phone number for SMS invites.
+    phone: str | None = None
+    # The address fields, SSN last-4, and date of birth are only used in KBA
+    # workflows.
+    address: str | None = None
+    address_2: str | None = None
+    city: str | None = None
+    state: str | None = None
+    zip: str | None = None
+    country: str
+    ssn_last_4: str | None = None
+    # Date of birth; the wire format is not ISO 8601 datetime, so it stays str.
+    dob: str | None = None
+    # The ID capture and KBA providers' references and results.
+    id_capture_ref: str | None = None
+    id_capture_result: dict[str, Any] | None = None
+    kba_session_id: str | None = None
+    kba_questions: list[KBAQuestion] | None = None
+    # When the sensitive values are due to be cleared, and when they were. The
+    # record itself stays.
+    purge_at: datetime | None = None
+    purged_at: datetime | None = None
+    # Encryption key version, for key rotation.
+    encryption_key_version: str
+    created_at: datetime
+    updated_at: datetime
+    recipient: Recipient | None = None
 
 
 class Role(VerdocsModel):

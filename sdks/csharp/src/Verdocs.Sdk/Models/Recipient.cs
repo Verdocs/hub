@@ -37,22 +37,22 @@ public sealed record Recipient
     /// <summary>Email address.</summary>
     public string Email { get; init; } = null!;
 
-    /// <summary>Phone number for SMS invites.</summary>
+    /// <summary>Phone number for SMS invites. Deprecated: moving to <see cref="Models.RecipientInformation.Phone"/>.</summary>
     public string? Phone { get; init; }
 
-    /// <summary>Street address, single string. Only used in KBA workflows.</summary>
+    /// <summary>Street address, single string. Only used in KBA workflows. Deprecated: moving to <see cref="Models.RecipientInformation.Address"/>.</summary>
     public string? Address { get; init; }
 
-    /// <summary>City. Only used in KBA workflows.</summary>
+    /// <summary>City. Only used in KBA workflows. Deprecated: moving to <see cref="Models.RecipientInformation.City"/>.</summary>
     public string? City { get; init; }
 
-    /// <summary>State. Only used in KBA workflows.</summary>
+    /// <summary>State. Only used in KBA workflows. Deprecated: moving to <see cref="Models.RecipientInformation.State"/>.</summary>
     public string? State { get; init; }
 
-    /// <summary>Zip code. Only used in KBA workflows.</summary>
+    /// <summary>Zip code. Only used in KBA workflows. Deprecated: moving to <see cref="Models.RecipientInformation.Zip"/>.</summary>
     public string? Zip { get; init; }
 
-    /// <summary>Last four digits of the SSN. Only used in KBA workflows.</summary>
+    /// <summary>Last four digits of the SSN. Only used in KBA workflows. Deprecated: moving to <see cref="Models.RecipientInformation.SsnLast4"/>.</summary>
     [JsonPropertyName("ssn_last_4")]
     public string? SsnLast4 { get; init; }
 
@@ -62,7 +62,7 @@ public sealed record Recipient
     /// <summary>When the recipient agreed to their e-signing disclosures.</summary>
     public DateTimeOffset? DisclosuresAcceptedAt { get; init; }
 
-    /// <summary>Date of birth. Only used in KBA workflows.</summary>
+    /// <summary>Date of birth. Only used in KBA workflows. Deprecated: moving to <see cref="Models.RecipientInformation.Dob"/>.</summary>
     public string? Dob { get; init; }
 
     /// <summary>The order in which recipients act. Recipients sharing a sequence number act in parallel.</summary>
@@ -135,7 +135,7 @@ public sealed record Recipient
     /// <summary>The required passcode when the passcode auth method is enabled. Visible only to the envelope creator.</summary>
     public string? Passcode { get; init; }
 
-    /// <summary>Challenge or differentiator questions the recipient must answer in a KBA step.</summary>
+    /// <summary>Challenge or differentiator questions the recipient must answer in a KBA step. Deprecated: moving to <see cref="Models.RecipientInformation.KbaQuestions"/>.</summary>
     public IReadOnlyList<KbaQuestion>? KbaQuestions { get; init; }
 
     /// <summary>The envelope, when the API includes it.</summary>
@@ -145,6 +145,11 @@ public sealed record Recipient
     /// <summary>The recipient's profile, when the API includes it.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Profile? Profile { get; init; }
+
+    /// <summary>The recipient's identity details, when the API includes them.</summary>
+    [JsonPropertyName("recipientInformation")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public RecipientInformation? RecipientInformation { get; init; }
 
     /// <summary>Wire fields the model does not declare, preserved so responses round-trip losslessly.</summary>
     [JsonExtensionData]
