@@ -78,6 +78,28 @@ public static class Strings
     }
 
     /// <summary>
+    /// Turns a word into its proper noun form by uppercasing the first character and leaving
+    /// the rest as is. It behaves exactly like <see cref="Capitalize"/>; the js-sdk exports
+    /// both names, so we do too.
+    ///
+    /// <example>
+    /// <code>
+    /// var label = Strings.ProperNounify("plus"); // "Plus"
+    /// </code>
+    /// </example>
+    /// </summary>
+    /// <param name="word">The word to transform. May be empty.</param>
+    /// <returns>The input with the first character uppercased, other characters untouched.</returns>
+    /// <sdkOperation>string.properNounify</sdkOperation>
+    /// <sdkGroup>String</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
+    public static string ProperNounify(string word)
+    {
+        ArgumentNullException.ThrowIfNull(word);
+        return Capitalize(word);
+    }
+
+    /// <summary>
     /// Generates a random lowercase-alphanumeric string of the given length. Adapted from
     /// the js-sdk, which slices Math.random().toString(36) and, due to an off-by-one in its
     /// substring bounds, actually returns length + 1 characters. We draw exactly

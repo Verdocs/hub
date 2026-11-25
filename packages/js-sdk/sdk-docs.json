@@ -528,6 +528,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.ICertificateSignature": {
+          "sdkOperation": "ungrouped.ICertificateSignature",
+          "kind": "interface",
+          "name": "ICertificateSignature",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "ICertificateSignature",
+          "summary": "One QES attempt by a 'qualified' recipient on one envelope document. Every document in the same eID Easy session shares\na provider_doc_id.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.ICheckboxFieldConfig": {
           "sdkOperation": "ungrouped.ICheckboxFieldConfig",
           "kind": "interface",
@@ -766,6 +780,20 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.IIdRetakeResponse": {
+          "sdkOperation": "ungrouped.IIdRetakeResponse",
+          "kind": "interface",
+          "name": "IIdRetakeResponse",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IIdRetakeResponse",
+          "summary": "The 400 body returned by `verifySigner` when the signer needs to retake one or more ID photos.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.ILoginCodeGrantRequest": {
           "sdkOperation": "ungrouped.ILoginCodeGrantRequest",
           "kind": "interface",
@@ -915,6 +943,34 @@
           "resource": "interface",
           "signature": "IPrefillResult",
           "summary": "What happened to a request's prefill_data. Keys are reported by name only.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IQesErrorHistoryDetail": {
+          "sdkOperation": "ungrouped.IQesErrorHistoryDetail",
+          "kind": "interface",
+          "name": "IQesErrorHistoryDetail",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IQesErrorHistoryDetail",
+          "summary": "The event_detail of a 'recipient:qes_error' history entry, as JSON.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.IQesSignedHistoryDetail": {
+          "sdkOperation": "ungrouped.IQesSignedHistoryDetail",
+          "kind": "interface",
+          "name": "IQesSignedHistoryDetail",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "interface",
+          "signature": "IQesSignedHistoryDetail",
+          "summary": "The event_detail of a 'recipient:qes_signed' history entry, as JSON.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -1662,6 +1718,48 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.TIdDocumentType": {
+          "sdkOperation": "ungrouped.TIdDocumentType",
+          "kind": "type",
+          "name": "TIdDocumentType",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TIdDocumentType",
+          "summary": "The kinds of government ID a signer can photograph for ID verification.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TIdImageError": {
+          "sdkOperation": "ungrouped.TIdImageError",
+          "kind": "type",
+          "name": "TIdImageError",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TIdImageError",
+          "summary": "Why a photo needs to be retaken. Most come straight from GBG's image checks.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TIdImageField": {
+          "sdkOperation": "ungrouped.TIdImageField",
+          "kind": "type",
+          "name": "TIdImageField",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TIdImageField",
+          "summary": "The photos sent for ID verification.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.TMFAType": {
           "sdkOperation": "ungrouped.TMFAType",
           "kind": "type",
@@ -1774,6 +1872,48 @@
           "examples": [],
           "deprecated": false
         },
+        "ungrouped.TQesErrorReason": {
+          "sdkOperation": "ungrouped.TQesErrorReason",
+          "kind": "type",
+          "name": "TQesErrorReason",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TQesErrorReason",
+          "summary": "Why a QES attempt failed, in a 'recipient:qes_error' history entry:\n  - prepare_failed: eID Easy rejected the documents, so the signer never reached its page.\n  - not_qualified: The signer signed, but at a lower level than 'qualified'.\n  - download_failed: The signed documents couldn't be retrieved after every retry.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TQesResult": {
+          "sdkOperation": "ungrouped.TQesResult",
+          "kind": "type",
+          "name": "TQesResult",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TQesResult",
+          "summary": "How a signer came back from eID Easy's page. The API adds it to the return_url passed to startQesSession as the\nqes_result query parameter. 'signed' means eID Easy finished, not that the signature is confirmed: poll getQesState\nfor that.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TQesState": {
+          "sdkOperation": "ungrouped.TQesState",
+          "kind": "type",
+          "name": "TQesState",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TQesState",
+          "summary": "Where a 'qualified' recipient stands in an envelope's QES phase, which starts once every recipient has submitted:\nwaiting for their turn, ready to sign with their eID, mid-session on eID Easy, or signed.",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "ungrouped.TRecipientAuthMethod": {
           "sdkOperation": "ungrouped.TRecipientAuthMethod",
           "kind": "type",
@@ -1797,6 +1937,20 @@
           "resource": "type",
           "signature": "TRecipientStatus",
           "summary": "A recipient becomes 'failed' after too many wrong passcode, SMS, or email codes, or a failed or timed-out\nKBA check. They cannot continue until the sender resets them with resetEnvelope() or resetRecipient().",
+          "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.TRequestableSignatureLevel": {
+          "sdkOperation": "ungrouped.TRequestableSignatureLevel",
+          "kind": "type",
+          "name": "TRequestableSignatureLevel",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "type",
+          "signature": "TRequestableSignatureLevel",
+          "summary": "The signature levels a recipient or role can be created with. 'advanced' only appears in eID Easy's reports of the\nsignature a signer actually produced.",
           "params": [],
           "throws": [],
           "examples": [],
@@ -2008,6 +2162,68 @@
           "signature": "TWebhookAuthMethod",
           "summary": "Methods for authenticating webhook requests.",
           "params": [],
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.consumeQesResult": {
+          "sdkOperation": "ungrouped.consumeQesResult",
+          "kind": "function",
+          "name": "consumeQesResult",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "consumeQesResult(): TQesResult | null",
+          "summary": "Browser only. Read the qes_result the signer came back from eID Easy with, and remove it from the address bar so a\nreload doesn't act on it again. Returns null when there isn't one, or outside a browser. A 'signed' result still needs\ngetQesState to confirm the signature.",
+          "params": [],
+          "returns": {
+            "type": "TQesResult | null",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.getQesReturnUrl": {
+          "sdkOperation": "ungrouped.getQesReturnUrl",
+          "kind": "function",
+          "name": "getQesReturnUrl",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getQesReturnUrl(): string | undefined",
+          "summary": "Browser only. The return_url to pass to startQesSession: the current page, without the qes_result from an earlier\nattempt, so the signer lands back in the same session. Returns undefined outside a browser.",
+          "params": [],
+          "returns": {
+            "type": "string | undefined",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "ungrouped.isQualifiedRecipient": {
+          "sdkOperation": "ungrouped.isQualifiedRecipient",
+          "kind": "function",
+          "name": "isQualifiedRecipient",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "isQualifiedRecipient(recipient: IRecipient | null | undefined): boolean",
+          "summary": "Check whether a recipient must finish by signing with their eID (a QES), once every recipient has submitted.",
+          "params": [
+            {
+              "name": "recipient",
+              "type": "IRecipient | null | undefined",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "boolean",
+            "description": ""
+          },
           "throws": [],
           "examples": [],
           "deprecated": false
@@ -4654,6 +4870,58 @@
           "examples": [],
           "deprecated": false
         },
+        "recipient.getQesState": {
+          "sdkOperation": "recipient.getQesState",
+          "kind": "function",
+          "name": "getQesState",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "getQesState(endpoint: VerdocsEndpoint): Promise<IQesStateResponse>",
+          "summary": "Get where the signer stands in the envelope's QES phase. Returns null for recipients who aren't 'qualified'. Poll this\nafter the signer submits (to see 'waiting' become 'ready') and after they return from eID Easy (to see 'in_progress'\nbecome 'signed' once the signature is processed).",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "Promise<IQesStateResponse>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "recipient.isIdRetakeRequired": {
+          "sdkOperation": "recipient.isIdRetakeRequired",
+          "kind": "function",
+          "name": "isIdRetakeRequired",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "isIdRetakeRequired(e: unknown): boolean",
+          "summary": "Type guard for an ID verification attempt whose photos need retaking. The body lists each photo to retake and why, so\nthe signer can be shown exactly what to fix.",
+          "params": [
+            {
+              "name": "e",
+              "type": "unknown",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "boolean",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "recipient.remindRecipient": {
           "sdkOperation": "recipient.remindRecipient",
           "kind": "function",
@@ -4781,6 +5049,39 @@
           "examples": [],
           "deprecated": false
         },
+        "recipient.startQesSession": {
+          "sdkOperation": "recipient.startQesSession",
+          "kind": "function",
+          "name": "startQesSession",
+          "page": "Endpoints",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "startQesSession(endpoint: VerdocsEndpoint, params: IStartQesSessionRequest = {}): Promise<IStartQesSessionResponse>",
+          "summary": "Start a QES signing session for a 'qualified' recipient. This session should only be used after the\n\"fill\" phase of the envelope-document lifecycle. In other words, after all recipients ('qualified'|'advanced'|'simple')\nhave signed the document in the typical Verdocs envelope workflow. A QES Certificate would not be valid if\n\"Recipient A\" signed + submitted their Verdocs signature, then \"Recipient A\" signed + submitted their QES signature, then\n\"Recipient B\" signed + submitted their Verdocs signature. The QES Certificate is only valid after all Verdocs fields are\ncompleted. Check getQesState first: this is rejected unless the signer's qes_state is 'ready' or 'in_progress'.\n\neID Easy sends the signer back to params.return_url (or their signing link) with qes_result set to 'signed', 'fail' or\n'cancel'. A 'signed' return still needs getQesState to confirm the signature.",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "description": "",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "params",
+              "type": "IStartQesSessionRequest",
+              "description": "",
+              "optional": true,
+              "default": "{}"
+            }
+          ],
+          "returns": {
+            "type": "Promise<IStartQesSessionResponse>",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
         "recipient.startSigningSession": {
           "sdkOperation": "recipient.startSigningSession",
           "kind": "function",
@@ -4883,7 +5184,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "verifySigner(endpoint: VerdocsEndpoint, params: TAuthenticateRecipientRequest): Promise<ISignerTokenResponse>",
-          "summary": "Verify a recipient within a signing session. All signing sessions use an invite code at a minimum,\nbut many scenarios require more robust verification of recipients, so one or more verification\nmethods may be attached to each recipient. If an authentication method is enabled, the\nsigner must first accept the e-signature disclosures, then complete each verification step\nbefore attempting to view/display documents, complete any fields, or submit the envelope.\nThis endpoint should be called to complete each step. If the call fails an error will be\nthrown.",
+          "summary": "Verify a recipient within a signing session. All signing sessions use an invite code at a minimum,\nbut many scenarios require more robust verification of recipients, so one or more verification\nmethods may be attached to each recipient. If an authentication method is enabled, the\nsigner must first accept the e-signature disclosures, then complete each verification step\nbefore attempting to view/display documents, complete any fields, or submit the envelope.\nThis endpoint should be called to complete each step. If the call fails an error will be\nthrown.\n\nID verification sends the photos as a multipart upload and can take up to a minute while GBG checks them, so this call\nallows up to three minutes for it. When a photo can't be used, the call fails with a 400 that `isIdRetakeRequired()`\nrecognizes, listing which photos to retake and why.",
           "params": [
             {
               "name": "endpoint",
@@ -4905,7 +5206,12 @@
             "description": ""
           },
           "throws": [],
-          "examples": [],
+          "examples": [
+            {
+              "language": "typescript",
+              "code": "import {verifySigner, isIdRetakeRequired, VerdocsEndpoint} from '@verdocs/js-sdk';\n\ntry {\n  await verifySigner(VerdocsEndpoint.getDefault(), {\n    auth_method: 'id',\n    country_code: 'USA',\n    document_type: 'driverLicense',\n    front_image: frontFile,\n    back_image: backFile,\n    face_image: selfieFile,\n  });\n} catch (e) {\n  if (isIdRetakeRequired(e)) {\n    // e.g. [{image: 'face_image', errors: ['Poor Quality Selfie']}]\n    showRetakePrompts(e.response.data.images);\n  }\n}"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -8637,6 +8943,32 @@
           "params": [
             {
               "name": "input",
+              "type": "string",
+              "description": "",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "string",
+            "description": ""
+          },
+          "throws": [],
+          "examples": [],
+          "deprecated": false
+        },
+        "string.properNounify": {
+          "sdkOperation": "string.properNounify",
+          "kind": "function",
+          "name": "properNounify",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "properNounify(word: string): string",
+          "summary": "TODO: I just noticed that we already had a function called `capitalize`, above.\n      I'll delete this one once we're back from Thanksgiving.\nTransform a word into its proper noun counterpart.",
+          "params": [
+            {
+              "name": "word",
               "type": "string",
               "description": "",
               "optional": false,

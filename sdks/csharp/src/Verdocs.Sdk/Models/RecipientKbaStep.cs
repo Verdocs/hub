@@ -9,7 +9,7 @@ namespace Verdocs.Models;
 /// C# has no union types, so one record covers all six: <see cref="Questions"/> is set only
 /// for "challenge" and <see cref="Message"/> only for "failed". NOTE: the /v2/kba routes that
 /// return this shape do not exist in the deployed API; real KBA runs through
-/// <see cref="Resources.Recipients.VerifySignerAsync"/>.
+/// <see cref="Resources.Recipients.VerifySignerAsync(AuthenticateRecipientRequest, CancellationToken)"/>.
 /// </summary>
 public sealed record RecipientKbaStep
 {

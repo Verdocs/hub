@@ -1,4 +1,5 @@
-import type { IInPersonLinkResponse, ISignerTokenResponse, TAuthenticateRecipientRequest, IUpdateRecipientParams, IStartQesSessionRequest, IStartQesSessionResponse, IQesStateResponse } from './Types';
+import type {
+  IInPersonLinkResponse,  ISignerTokenResponse,  TAuthenticateRecipientRequest,  IUpdateRecipientParams,  IStartQesSessionRequest,  IStartQesSessionResponse,  IQesStateResponse,IIdRetakeAxiosError,} from './Types';
 import { IRecipientSubmitBody, IRecipientDisclosureAgreeBody } from './Types';
 import { VerdocsEndpoint } from '../VerdocsEndpoint';
 import type { IRecipient } from '../Models';
@@ -152,6 +153,30 @@ export const getInPersonLink = (endpoint: VerdocsEndpoint, envelope_id: string, 
  * This endpoint should be called to complete each step. If the call fails an error will be
  * thrown.
  *
+ * ID verification sends the photos as a multipart upload and can take up to a minute while GBG checks them, so this call
+ * allows up to three minutes for it. When a photo can't be used, the call fails with a 400 that `isIdRetakeRequired()`
+ * recognizes, listing which photos to retake and why.
+ *
+ * ```typescript
+ * import {verifySigner, isIdRetakeRequired, VerdocsEndpoint} from '@verdocs/js-sdk';
+ *
+ * try {
+ *   await verifySigner(VerdocsEndpoint.getDefault(), {
+ *     auth_method: 'id',
+ *     country_code: 'USA',
+ *     document_type: 'driverLicense',
+ *     front_image: frontFile,
+ *     back_image: backFile,
+ *     face_image: selfieFile,
+ *   });
+ * } catch (e) {
+ *   if (isIdRetakeRequired(e)) {
+ *     // e.g. [{image: 'face_image', errors: ['Poor Quality Selfie']}]
+ *     showRetakePrompts(e.response.data.images);
+ *   }
+ * }
+ * ```
+ *
  * @group Recipients
  * @api POST /v2/sign/verify signer
  * @apiBody string(enum:'passcode'|'email'|'sms'|'kba'|'id') auth_method The authentication method being completed
@@ -167,16 +192,53 @@ export const getInPersonLink = (endpoint: VerdocsEndpoint, envelope_id: string, 
  * @apiBody string dob? For KBA, the recipient's date of birthx
  * @apiBody string(enum:'pass'|'fail'|'questions') sandbox? For KBA, must have sandbox functionality unlocked
  * @apiBody array(items:IKBAResponse) responses? For KBA, responses to any challenge questions presented
+ * @apiBody string country_code? For ID, the ISO 3166-1 alpha-3 code of the country that issued the ID, e.g. "USA"
+ * @apiBody string(enum:'driverLicense'|'idCard'|'passport') document_type? For ID, the kind of ID photographed
+ * @apiBody image/jpeg front_image? For ID, a photo of the front of the ID or the passport photo page
+ * @apiBody image/jpeg back_image? For ID, a photo of the back of the ID. Required for driver's licenses.
+ * @apiBody image/jpeg face_image? For ID, a selfie of the signer
  * @apiSuccess ISignerTokenResponse . Updated signing session.
  *
  * @sdkOperation recipient.verifySigner
  * @sdkGroup Recipient
  * @sdkPage Endpoints
  */
-export const verifySigner = (endpoint: VerdocsEndpoint, params: TAuthenticateRecipientRequest) =>
-  endpoint.api //
-    .post<ISignerTokenResponse>(`/v2/sign/verify`, params)
+export const verifySigner = (endpoint: VerdocsEndpoint, params: TAuthenticateRecipientRequest) => {
+  if (params.auth_method !== 'id') {
+    return endpoint.api //
+      .post<ISignerTokenResponse>(`/v2/sign/verify`, params)
+      .then((r) => r.data);
+  }
+
+  const formData = new FormData();
+  formData.append('auth_method', 'id');
+  formData.append('country_code', params.country_code);
+  formData.append('document_type', params.document_type);
+  formData.append('front_image', params.front_image);
+  if (params.back_image) {
+    formData.append('back_image', params.back_image);
+  }
+  formData.append('face_image', params.face_image);
+
+  // GBG checks the photos while the request waits, which regularly takes close to the default 60 second timeout
+  return endpoint.api //
+    .post<ISignerTokenResponse>(`/v2/sign/verify`, formData, {timeout: 180000})
     .then((r) => r.data);
+};
+
+/**
+ * Type guard for an ID verification attempt whose photos need retaking. The body lists each photo to retake and why, so
+ * the signer can be shown exactly what to fix.
+ *
+ * @group Recipients
+ * @sdkOperation recipient.isIdRetakeRequired
+ * @sdkGroup Recipient
+ * @sdkPage Helpers
+ */
+export const isIdRetakeRequired = (e: unknown): e is IIdRetakeAxiosError => {
+  const response = (e as IIdRetakeAxiosError)?.response;
+  return response?.status === 400 && response?.data?.code === 'id_retake' && Array.isArray(response?.data?.images);
+};
 
 /**
  * Start a QES signing session for a 'qualified' recipient. This session should only be used after the

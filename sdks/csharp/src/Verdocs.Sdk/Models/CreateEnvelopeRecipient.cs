@@ -5,8 +5,8 @@ namespace Verdocs.Models;
 /// <summary>
 /// One recipient in a <see cref="CreateEnvelopeRequest"/>. The js-sdk splits this into template
 /// and direct variants (ICreateEnvelopeRecipientFromTemplate and ICreateEnvelopeRecipientDirectly)
-/// that differ only in whether <see cref="Type"/>, <see cref="Sequence"/>, and <see cref="Order"/>
-/// are declared; one record covers both. Two server rules worth knowing: duplicate recipient
+/// that differ only in whether <see cref="Type"/>, <see cref="Sequence"/>, <see cref="Order"/>,
+/// and <see cref="IdVerificationLevel"/> are declared; one record covers both. Two server rules worth knowing: duplicate recipient
 /// emails within one envelope are rejected, and a recipient with all of <see cref="Address"/>,
 /// <see cref="City"/>, <see cref="State"/>, <see cref="Zip"/>, and <see cref="Dob"/> populated
 /// is rejected ("At least one KBA-related field must be left blank").
@@ -56,6 +56,14 @@ public sealed record CreateEnvelopeRecipient
     /// <summary>Authentication methods to require; see <see cref="RecipientAuthMethod"/> for known values.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IReadOnlyList<string>? AuthMethods { get; init; }
+
+    /// <summary>
+    /// When <see cref="AuthMethods"/> includes "id", which tier of ID verification to run; see
+    /// <see cref="RecipientIdVerificationLevel"/> for known values. The js-sdk declares this
+    /// only for template-based recipients (ICreateEnvelopeRecipientFromTemplate).
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? IdVerificationLevel { get; init; }
 
     /// <summary>If passcode authentication is used, the passcode to challenge the recipient with. The server requires at least 4 characters.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

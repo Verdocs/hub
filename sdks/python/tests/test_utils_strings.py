@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import pytest
 
-from verdocs.utils import capitalize, convert_to_e164, random_string
+from verdocs.utils import capitalize, convert_to_e164, proper_nounify, random_string
 
 _BASE36 = set("0123456789abcdefghijklmnopqrstuvwxyz")
 
@@ -18,6 +18,13 @@ def test_capitalize():
     assert capitalize("hello world") == "Hello world"
     assert capitalize("a") == "A"
     assert capitalize("") == ""
+
+
+def test_proper_nounify():
+    assert proper_nounify("plus") == "Plus"
+    assert proper_nounify("base") == "Base"
+    assert proper_nounify("mcDonald") == "McDonald"
+    assert proper_nounify("") == ""
 
 
 @pytest.mark.parametrize(

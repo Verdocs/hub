@@ -9,9 +9,10 @@ get_in_person_link) expect a user session.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, TypeGuard
 from urllib.parse import quote
 
+from ..errors import VerdocsAPIError
 from ..models.core import Recipient
 from ..models.envelopes import (
     InPersonLinkResponse,
@@ -19,9 +20,11 @@ from ..models.envelopes import (
     RecipientDelegateParams,
     RecipientSubmitParams,
     RecipientUpdateParams,
+    RecipientVerifyIdParams,
     RecipientVerifyParams,
     SignerTokenResponse,
 )
+from .envelopes import _async_multipart_request, _file_part, _multipart_request
 
 if TYPE_CHECKING:
     from .._endpoint import AsyncVerdocsEndpoint, VerdocsEndpoint
@@ -46,6 +49,64 @@ def _verify_body(params: RecipientVerifyParams) -> dict[str, Any]:
     # exclude_none rather than exclude_unset: the auth_method tag has a
     # default, and dropping unset fields would drop the tag with them.
     return params.model_dump(mode="json", exclude_none=True)
+
+
+# GBG checks the photos while the request waits, which regularly takes close
+# to a minute, so ID verification gets at least three minutes like the js-sdk
+# gives it. An endpoint already configured for longer keeps its own timeout.
+_ID_VERIFY_TIMEOUT = 180.0
+
+
+def _id_verify_parts(params: RecipientVerifyIdParams) -> tuple[dict[str, Any], list[tuple[str, Any]]]:
+    data = {"auth_method": "id", "country_code": params.country_code, "document_type": params.document_type}
+    files = [("front_image", _file_part(params.front_image))]
+    if params.back_image is not None:
+        files.append(("back_image", _file_part(params.back_image)))
+    files.append(("face_image", _file_part(params.face_image)))
+    return data, files
+
+
+def is_id_retake_required(error: object) -> TypeGuard[VerdocsAPIError]:
+    """Check whether an exception is an ID verification attempt whose photos need retaking.
+
+    verify_signer raises a 400 VerdocsAPIError whose body lists each photo to
+    retake and why, so the signer can be shown exactly what to fix. Parse the
+    body with IdRetakeResponse to read it.
+
+    Example:
+        from verdocs import IdRetakeResponse, RecipientVerifyIdParams, VerdocsError, is_id_retake_required
+
+        try:
+            endpoint.recipients.verify_signer(
+                RecipientVerifyIdParams(
+                    country_code="USA",
+                    document_type="driverLicense",
+                    front_image="front.jpg",
+                    back_image="back.jpg",
+                    face_image="selfie.jpg",
+                )
+            )
+        except VerdocsError as error:
+            if is_id_retake_required(error):
+                retake = IdRetakeResponse.model_validate(error.body)
+                # e.g. [IdImageErrors(image="face_image", errors=["Poor Quality Selfie"])]
+                show_retake_prompts(retake.images)
+
+    Args:
+        error: Any object, usually a caught exception.
+
+    Returns:
+        True if error is a 400 with code "id_retake" and an images list,
+        narrowing its type to VerdocsAPIError for checkers.
+
+    @sdkOperation recipient.isIdRetakeRequired
+    @sdkGroup Recipient
+    @sdkPage Helpers
+    """
+    if not isinstance(error, VerdocsAPIError) or error.status_code != 400:
+        return False
+    body = error.body
+    return isinstance(body, dict) and body.get("code") == "id_retake" and isinstance(body.get("images"), list)
 
 
 class Recipients:
@@ -232,22 +293,40 @@ class Recipients:
                 RecipientVerifyPasscodeParams(code="1234")
             )
 
+        ID verification sends the photos as multipart/form-data and can take
+        up to a minute while GBG checks them, so it allows at least three
+        minutes.
+        When a photo can't be used it raises a 400 that is_id_retake_required()
+        recognizes.
+
         Args:
             params: The verification step being completed: passcode, email,
-                sms, or kba.
+                sms, kba, or id.
 
         Returns:
             The updated signing session.
 
         Raises:
-            VerdocsAPIError: The verification failed.
+            VerdocsAPIError: The verification failed, or ID photos need
+                retaking (see is_id_retake_required).
             VerdocsConnectionError: The request never reached the API.
 
         @sdkOperation recipient.verifySigner
         @sdkGroup Recipient
         @sdkPage Endpoints
         """
-        response = self._endpoint._request("POST", f"{_SIGN_PATH}/verify", json=_verify_body(params))
+        if isinstance(params, RecipientVerifyIdParams):
+            data, files = _id_verify_parts(params)
+            response = _multipart_request(
+                self._endpoint,
+                "POST",
+                f"{_SIGN_PATH}/verify",
+                data=data,
+                files=files,
+                timeout=max(_ID_VERIFY_TIMEOUT, self._endpoint.timeout),
+            )
+        else:
+            response = self._endpoint._request("POST", f"{_SIGN_PATH}/verify", json=_verify_body(params))
         return SignerTokenResponse.model_validate(response.json())
 
     def delegate(self, envelope_id: str, role_name: str, params: RecipientDelegateParams) -> Recipient:
@@ -574,18 +653,36 @@ class AsyncRecipients:
                 RecipientVerifyPasscodeParams(code="1234")
             )
 
+        ID verification sends the photos as multipart/form-data and can take
+        up to a minute while GBG checks them, so it allows at least three
+        minutes.
+        When a photo can't be used it raises a 400 that is_id_retake_required()
+        recognizes.
+
         Args:
             params: The verification step being completed: passcode, email,
-                sms, or kba.
+                sms, kba, or id.
 
         Returns:
             The updated signing session.
 
         Raises:
-            VerdocsAPIError: The verification failed.
+            VerdocsAPIError: The verification failed, or ID photos need
+                retaking (see is_id_retake_required).
             VerdocsConnectionError: The request never reached the API.
         """
-        response = await self._endpoint._request("POST", f"{_SIGN_PATH}/verify", json=_verify_body(params))
+        if isinstance(params, RecipientVerifyIdParams):
+            data, files = _id_verify_parts(params)
+            response = await _async_multipart_request(
+                self._endpoint,
+                "POST",
+                f"{_SIGN_PATH}/verify",
+                data=data,
+                files=files,
+                timeout=max(_ID_VERIFY_TIMEOUT, self._endpoint.timeout),
+            )
+        else:
+            response = await self._endpoint._request("POST", f"{_SIGN_PATH}/verify", json=_verify_body(params))
         return SignerTokenResponse.model_validate(response.json())
 
     async def delegate(self, envelope_id: str, role_name: str, params: RecipientDelegateParams) -> Recipient:

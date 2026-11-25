@@ -58,6 +58,8 @@ _HELPER_MODULES: list[str] = [
     "verdocs.utils.dates",
     "verdocs.utils.files",
     "verdocs.utils.auth",
+    # is_id_retake_required sits beside verify_signer, like the js-sdk's isIdRetakeRequired
+    "verdocs.resources.recipients",
 ]
 
 _SDK_TAG_RE = re.compile(

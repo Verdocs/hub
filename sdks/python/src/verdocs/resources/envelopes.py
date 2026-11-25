@@ -86,9 +86,12 @@ def _multipart_request(
     *,
     data: dict[str, Any] | None = None,
     files: list[tuple[str, Any]] | None = None,
+    timeout: float | None = None,
 ) -> httpx.Response:
+    # timeout overrides the endpoint's for this one call; None keeps the endpoint's.
+    extra: dict[str, Any] = {"timeout": timeout} if timeout is not None else {}
     try:
-        response = endpoint._client.request(method, path, data=data, files=files)
+        response = endpoint._client.request(method, path, data=data, files=files, **extra)
     except httpx.TransportError as exc:
         raise VerdocsConnectionError(f"{method} {path} failed: {exc}") from exc
     if response.status_code >= 400:
@@ -103,9 +106,12 @@ async def _async_multipart_request(
     *,
     data: dict[str, Any] | None = None,
     files: list[tuple[str, Any]] | None = None,
+    timeout: float | None = None,
 ) -> httpx.Response:
+    # timeout overrides the endpoint's for this one call; None keeps the endpoint's.
+    extra: dict[str, Any] = {"timeout": timeout} if timeout is not None else {}
     try:
-        response = await endpoint._client.request(method, path, data=data, files=files)
+        response = await endpoint._client.request(method, path, data=data, files=files, **extra)
     except httpx.TransportError as exc:
         raise VerdocsConnectionError(f"{method} {path} failed: {exc}") from exc
     if response.status_code >= 400:

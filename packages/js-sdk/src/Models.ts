@@ -1,4 +1,4 @@
-import type {TTemplateSender, TTemplateVisibility, TEventName, TNotificationType, TUsageType, TWebhookAuthMethod, TRecipientSignatureLevel, TCertificateSignatureStatus} from './BaseTypes';
+import type {TTemplateSender, TTemplateVisibility, TEventName, TNotificationType, TUsageType, TWebhookAuthMethod, TRecipientSignatureLevel, TCertificateSignatureStatus, TRecipientIdVerificationLevel} from './BaseTypes';
 import type {TEntitlement, TEnvelopeStatus, TEventDetail, TFieldNumberStyle, TFieldTextCase, TFieldType} from './BaseTypes';
 import type {THistoryEvent, TRecipientAuthMethod, TRecipientAuthStep, TRecipientStatus, TRecipientType} from './BaseTypes';
 import type {TWebhookEvent, TEnvelopeDocumentType} from './BaseTypes';
@@ -919,6 +919,7 @@ export interface IRecipient {
    * Optional because API versions before QES support don't return it.
    */
   signature_level?: TRecipientSignatureLevel;
+  id_verification_level?: TRecipientIdVerificationLevel;
   delegator: boolean;
   delegated_to: string | null;
   message: string | null;
@@ -946,8 +947,8 @@ export interface IRecipient {
   auth_step?: TRecipientAuthStep | null;
   /** The types of authentication/verification required for this recipient. */
   auth_methods?: TRecipientAuthMethod[] | null;
-  /** The status of each auth method enabled. */
-  auth_method_states?: Record<TRecipientAuthMethod, 'complete' | 'failed' | 'challenge' | 'questions' | 'differentiator' | null> | null;
+  /** The status of each auth method enabled. 'pending' means the ID check is still waiting on a result. */
+  auth_method_states?: Record<TRecipientAuthMethod, 'complete' | 'failed' | 'pending' | 'challenge' | 'questions' | 'differentiator' | null> | null;
   /**
    * If auth_method is set to "passcode" this is the passcode required. For security reasons, this
    * field will only be visible to the creator of the envelope.

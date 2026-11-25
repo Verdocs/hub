@@ -123,13 +123,17 @@ public sealed record Recipient
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? InAppKey { get; init; }
 
+    /// <summary>Which tier of ID verification the recipient goes through; see <see cref="RecipientIdVerificationLevel"/> for known values.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? IdVerificationLevel { get; init; }
+
     /// <summary>The next verification step the recipient must perform; see <see cref="RecipientAuthMethod"/> for known values.</summary>
     public string? AuthStep { get; init; }
 
     /// <summary>The authentication methods required for the recipient; see <see cref="RecipientAuthMethod"/> for known values.</summary>
     public IReadOnlyList<string>? AuthMethods { get; init; }
 
-    /// <summary>Per-method progress, keyed by auth method: "complete", "failed", "challenge", "questions", "differentiator", or null.</summary>
+    /// <summary>Per-method progress, keyed by auth method: "complete", "failed", "pending" (an ID check still waiting on a result), "challenge", "questions", "differentiator", or null.</summary>
     public IReadOnlyDictionary<string, string?>? AuthMethodStates { get; init; }
 
     /// <summary>The required passcode when the passcode auth method is enabled. Visible only to the envelope creator.</summary>

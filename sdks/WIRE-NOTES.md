@@ -40,6 +40,7 @@ Auth vocabulary used below (lib/Guards.ts:33-107):
 | PATCH /v2/profiles/:id | multipart or JSON | picture | profile row (with organization) |
 | POST /v2/profiles/signatures | multipart | signature (single) | signature row |
 | POST /v2/profiles/initials | multipart | initial (single) | initial row |
+| POST /v2/sign/verify (auth_method id) | multipart (id) or JSON (every other method) | front_image, back_image, face_image | signing session response |
 | PATCH /v2/organizations/:id | multipart or JSON | logo, thumbnail | organization row (with groups, entitlements) |
 | PATCH /v2/organizations/:orgId/brands/:id | multipart or JSON | logo, thumbnail | brand row |
 | PUT /v2/envelopes/:envelope_id/recipients/:role_name/fields/:field_name | multipart (attachment fields) or JSON (all others) | document (single) | envelope field row |
@@ -304,6 +305,25 @@ Response: the created signature/initial row {id, profile_id, url, ...}. The `url
 object key (users/<profile_id>/signatures/<id>), not a fetchable URL; there is no v2 GET endpoint
 for the image. The id is what gets written into signature/initial fields via the field-update PUT.
 js-sdk callers match (js-sdk/Envelopes/Signatures.ts:19-26, js-sdk/Envelopes/Initials.ts:19-26).
+
+## ID verification photos
+
+POST /v2/sign/verify with auth_method `id`. Auth: signing. Handler: api endpoints/Sign.ts (the `id`
+case of handleRecipientVerification). Multer: memory storage, `fields` with front_image, back_image,
+and face_image (one each), 15 MB per file and three files at most. The photos never touch disk.
+
+Text parts: auth_method=`id`, country_code (ISO 3166-1 alpha-3, e.g. `USA`), and document_type
+(`driverLicense`, `idCard`, or `passport`); a missing country_code or document_type is a 400. File
+parts: front_image and face_image are required (400 without them); back_image is sent only when the
+caller has one (driver's licenses need it). The server scales and re-encodes the photos for GBG, so
+any common image type works, but set each part's content type. Every other auth method on this route
+stays JSON.
+
+GBG checks the photos while the request waits, often close to a minute, so the js-sdk gives this call
+a 180 second timeout (js-sdk/Envelopes/Recipients.ts verifySigner) and the ports do the same. When a
+photo can't be used the response is a 400 with `{status: 'ERROR', code: 'id_retake', error, images}`,
+where `images` lists `{image, errors}` per photo to retake; js-sdk `isIdRetakeRequired` and the
+ports' equivalents recognize it.
 
 ## Organization logo and thumbnail
 

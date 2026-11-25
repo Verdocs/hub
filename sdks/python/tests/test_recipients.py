@@ -7,13 +7,15 @@ from typing import Any
 
 import pytest
 
-from verdocs import InPersonAccessKey, NotFoundError, Recipient
+from verdocs import IdRetakeResponse, InPersonAccessKey, NotFoundError, Recipient, is_id_retake_required
+from verdocs.errors import VerdocsAPIError
 from verdocs.models.envelopes import (
     InPersonLinkResponse,
     RecipientAgreeParams,
     RecipientDelegateParams,
     RecipientSubmitParams,
     RecipientUpdateParams,
+    RecipientVerifyIdParams,
     RecipientVerifyKBAParams,
     RecipientVerifyPasscodeParams,
     SignerTokenResponse,
@@ -320,3 +322,113 @@ async def test_async_verify_and_remind(async_endpoint, respx_mock, base_url, tok
 
     assert request_json(verify_route) == {"auth_method": "passcode", "code": "9999"}
     assert request_json(remind_route) == {"action": "remind"}
+
+
+JPEG_BYTES = b"\xff\xd8\xff\xe0fake-jpeg"
+
+RETAKE_BODY = {
+    "status": "ERROR",
+    "code": "id_retake",
+    "error": "Please retake your selfie.",
+    "images": [{"image": "face_image", "errors": ["Poor Quality Selfie"]}],
+}
+
+
+def id_params(**overrides: Any) -> RecipientVerifyIdParams:
+    fields: dict[str, Any] = {
+        "country_code": "USA",
+        "document_type": "driverLicense",
+        "front_image": ("front.jpg", JPEG_BYTES, "image/jpeg"),
+        "back_image": ("back.jpg", JPEG_BYTES, "image/jpeg"),
+        "face_image": ("selfie.jpg", JPEG_BYTES, "image/jpeg"),
+    }
+    fields.update(overrides)
+    return RecipientVerifyIdParams(**fields)
+
+
+def test_verify_signer_id_sends_multipart_with_long_timeout(endpoint, respx_mock, base_url, token_factory):
+    route = respx_mock.post(f"{base_url}{SIGN_URL}/verify").respond(
+        200, json=signer_token_payload(token_factory("signing"))
+    )
+
+    session = Recipients(endpoint).verify_signer(id_params())
+
+    assert isinstance(session, SignerTokenResponse)
+    request = route.calls.last.request
+    assert request.headers["content-type"].startswith("multipart/form-data; boundary=")
+    content = request.content
+    for text_part in (b'name="auth_method"\r\n\r\nid', b'name="country_code"\r\n\r\nUSA'):
+        assert text_part in content
+    assert b'name="document_type"\r\n\r\ndriverLicense' in content
+    for image in (b'name="front_image"; filename="front.jpg"', b'name="back_image"; filename="back.jpg"'):
+        assert image in content
+    assert b'name="face_image"; filename="selfie.jpg"' in content
+    # GBG checks the photos while the request waits, so this call gets three minutes.
+    assert request.extensions["timeout"]["read"] == 180.0
+
+
+def test_verify_signer_id_omits_missing_back_image(endpoint, respx_mock, base_url, token_factory):
+    route = respx_mock.post(f"{base_url}{SIGN_URL}/verify").respond(
+        200, json=signer_token_payload(token_factory("signing"))
+    )
+
+    Recipients(endpoint).verify_signer(id_params(document_type="passport", back_image=None))
+
+    content = route.calls.last.request.content
+    assert b'name="back_image"' not in content
+    assert b'name="front_image"' in content
+    assert b'name="face_image"' in content
+
+
+def test_verify_signer_id_retake_is_recognized(endpoint, respx_mock, base_url):
+    respx_mock.post(f"{base_url}{SIGN_URL}/verify").respond(400, json=RETAKE_BODY)
+
+    with pytest.raises(VerdocsAPIError) as caught:
+        Recipients(endpoint).verify_signer(id_params())
+
+    assert is_id_retake_required(caught.value)
+    retake = IdRetakeResponse.model_validate(caught.value.body)
+    assert retake.images[0].image == "face_image"
+    assert retake.images[0].errors == ["Poor Quality Selfie"]
+
+
+def test_is_id_retake_required_rejects_other_errors(endpoint, respx_mock, base_url):
+    respx_mock.post(f"{base_url}{SIGN_URL}/verify").respond(400, json={"status": "ERROR", "error": "Invalid code"})
+    with pytest.raises(VerdocsAPIError) as plain_400:
+        Recipients(endpoint).verify_signer(RecipientVerifyPasscodeParams(code="0000"))
+
+    respx_mock.post(f"{base_url}{SIGN_URL}/verify").respond(500, json=RETAKE_BODY)
+    with pytest.raises(VerdocsAPIError) as server_error:
+        Recipients(endpoint).verify_signer(id_params())
+
+    respx_mock.post(f"{base_url}{SIGN_URL}/verify").respond(400, text="Bad Request")
+    with pytest.raises(VerdocsAPIError) as text_body:
+        Recipients(endpoint).verify_signer(id_params())
+
+    assert not is_id_retake_required(plain_400.value)
+    assert not is_id_retake_required(server_error.value)
+    assert not is_id_retake_required(text_body.value)
+    assert not is_id_retake_required(ValueError("not an API error"))
+
+
+async def test_async_verify_signer_id_sends_multipart(async_endpoint, respx_mock, base_url, token_factory):
+    route = respx_mock.post(f"{base_url}{SIGN_URL}/verify").respond(
+        200, json=signer_token_payload(token_factory("signing"))
+    )
+
+    await AsyncRecipients(async_endpoint).verify_signer(id_params(back_image=None))
+
+    request = route.calls.last.request
+    assert request.headers["content-type"].startswith("multipart/form-data; boundary=")
+    assert b'name="face_image"; filename="selfie.jpg"' in request.content
+    assert b'name="back_image"' not in request.content
+    assert request.extensions["timeout"]["read"] == 180.0
+
+
+def test_recipient_parses_id_verification_level():
+    recipient = Recipient.model_validate(
+        recipient_payload(auth_methods=["id"], id_verification_level="plus", auth_method_states={"id": "pending"})
+    )
+
+    assert recipient.id_verification_level == "plus"
+    assert recipient.auth_method_states == {"id": "pending"}

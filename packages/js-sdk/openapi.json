@@ -22278,6 +22278,168 @@
         ]
       }
     },
+    "/v2/sign/qes/state": {
+      "get": {
+        "operationId": "getQesState",
+        "summary": "Get QES State",
+        "tags": [
+          "Recipients"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IQesStateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X GET \"https://api.verdocs.com/v2/sign/qes/state\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/sign/qes/state', { \n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  } \n});\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/sign/qes/state\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"GET\", \"/v2/sign/qes/state\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/sign/qes/state\");\nvar request = new RestRequest(Method.GET);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.get(\"https://api.verdocs.com/v2/sign/qes/state\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
     "/v2/users/sessions": {
       "get": {
         "operationId": "getSessions",
@@ -27158,6 +27320,186 @@
         ]
       }
     },
+    "/v2/sign/qes/start": {
+      "post": {
+        "operationId": "startQesSession",
+        "summary": "Start QES Session",
+        "tags": [
+          "Recipients"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IStartQesSessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Access Denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "error"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ERROR"
+                      ],
+                      "description": "Always set to \"ERROR\"."
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "Description of the error that occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Body Parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "return_url": {
+                    "type": "string",
+                    "description": "Where eID Easy sends the signer back to. Must be http or https."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "CURL",
+            "source": "curl -X POST \"https://api.verdocs.com/v2/sign/qes/start\" \\\n    -H \"Authorization: Bearer ACCESS_TOKEN\" \\\n    -H \"content-type: application/json\" \\\n    -d '{\"param\": \"value\"}'"
+          },
+          {
+            "lang": "typescript",
+            "label": "NodeJS",
+            "source": "import fetch from 'node-fetch';\n\nconst response = await fetch('https://api.verdocs.com/v2/sign/qes/start', {\n  method: 'post',\n  body: JSON.stringify(body),\n  headers: {\n    'Content-Type': 'application/json',\n    'Authorization: Bearer ACCESS_TOKEN'\n  },\n});\n\nconst data = await response.json();\nconsole.log(data);"
+          },
+          {
+            "lang": "ruby",
+            "label": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api.verdocs.com/v2/sign/qes/start\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"Authorization\"] = 'Bearer ACCESS_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
+          },
+          {
+            "lang": "python",
+            "label": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api.verdocs.com\")\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer ACCESS_TOKEN\"\n}\n\nconn.request(\"POST\", \"/v2/sign/qes/start\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))\n"
+          },
+          {
+            "lang": "csharp",
+            "label": "C-Sharp",
+            "source": "var client = new RestClient(\"https://api.verdocs.com/v2/sign/qes/start\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer ACCESS_TOKEN\");\n\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "java",
+            "label": "Java",
+            "source": "HttpResponse<String> response = Unirest.post(\"https://api.verdocs.com/v2/sign/qes/start\")\n  .header(\"content-type\", \"application/json\")\n  .header(\"Authorization\", \"Bearer ACCESS_TOKEN\")\n  .asString();"
+          }
+        ]
+      }
+    },
     "/v2/sign/unauth/{envelope_id}/{role_name}/{key}": {
       "post": {
         "operationId": "startSigningSession",
@@ -29575,6 +29917,34 @@
                       "$ref": "#/components/schemas/IKBAResponse"
                     },
                     "description": "For KBA, responses to any challenge questions presented"
+                  },
+                  "country_code": {
+                    "type": "string",
+                    "description": "For ID, the ISO 3166-1 alpha-3 code of the country that issued the ID, e.g. \"USA\""
+                  },
+                  "document_type": {
+                    "type": "string",
+                    "enum": [
+                      "driverLicense",
+                      "idCard",
+                      "passport"
+                    ],
+                    "description": "For ID, the kind of ID photographed"
+                  },
+                  "front_image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "For ID, a photo of the front of the ID or the passport photo page"
+                  },
+                  "back_image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "For ID, a photo of the back of the ID. Required for driver's licenses."
+                  },
+                  "face_image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "For ID, a selfie of the signer"
                   }
                 }
               }
@@ -29937,6 +30307,33 @@
         "required": [],
         "properties": {}
       },
+      "IAuthenticateRecipientViaIdRequest": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "country_code",
+          "face_image",
+          "front_image"
+        ],
+        "properties": {
+          "back_image": {
+            "type": "string",
+            "description": "Photo of the back of the ID. Required for driver's licenses."
+          },
+          "country_code": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-3 code of the country that issued the ID, e.g. \"USA\"."
+          },
+          "face_image": {
+            "type": "string",
+            "description": "A selfie of the signer, compared against the photo on the ID and checked for liveness."
+          },
+          "front_image": {
+            "type": "string",
+            "description": "Photo of the front of the ID, or the photo page of a passport."
+          }
+        }
+      },
       "IAuthenticateRecipientViaKBARequest": {
         "type": "object",
         "description": "",
@@ -29995,6 +30392,24 @@
           "timezone": {
             "type": "string",
             "description": "The locale code"
+          }
+        }
+      },
+      "ICertificateSignature": {
+        "type": "object",
+        "description": "One QES attempt by a 'qualified' recipient on one envelope document. Every document in the same eID Easy session shares\na provider_doc_id.",
+        "required": [
+          "signature_level",
+          "signing_method"
+        ],
+        "properties": {
+          "signature_level": {
+            "type": "string",
+            "description": "The level eID Easy reports for the signature it produced: 'qualified' for every QES"
+          },
+          "signing_method": {
+            "type": "string",
+            "description": "e.g. 'mid-signature' (Mobile-ID) or 'smart-id-signature'"
           }
         }
       },
@@ -30542,6 +30957,10 @@
             "type": "integer",
             "description": "The 1-based sequence number for the recipient. This can be used to override the template's workflow. Recipients\nare processed in parallel for each matching sequence number (e.g. all recipients at level \"1\" may act in parallel)\nand in series between sequence numbers (e.g. all recipients at level \"1\" must complete their tasks before\nrecipients at level \"2\" may act)."
           },
+          "signature_level": {
+            "type": "string",
+            "description": "'qualified' recipients finish by signing every document with their eID (a QES), once all recipients have submitted.\nRequires the organization's 'qes' or 'qes_sandbox' entitlement. Can't be changed after the envelope is created."
+          },
           "ssn_last_4": {
             "type": "string",
             "description": "Pre-fill KBA SSN-Last-4 for the recipient, if known."
@@ -30596,6 +31015,10 @@
             "type": "string",
             "description": "The name of the recipient as it will be displayed in reports and queries, e.g. 'Paige Turner'."
           },
+          "id_verification_level": {
+            "type": "string",
+            "description": "Decide between \"Id Verification\" and \"Id Verification Plus\""
+          },
           "message": {
             "type": "string",
             "description": "A custom message to include in the email or SMS invitation. May be left blank for a default message."
@@ -30615,6 +31038,10 @@
           "role_name": {
             "type": "string",
             "description": "Unique identifier for the recipient. When using a template, must match one of the pre-defined roles in the template's Recipients list."
+          },
+          "signature_level": {
+            "type": "string",
+            "description": "'qualified' recipients finish by signing every document with their eID (a QES), once all recipients have submitted.\nRequires the organization's 'qes' or 'qes_sandbox' entitlement. Can't be changed after the envelope is created."
           },
           "ssn_last_4": {
             "type": "string",
@@ -31897,6 +32324,36 @@
         "required": [],
         "properties": {}
       },
+      "IIdImageErrors": {
+        "type": "object",
+        "description": "",
+        "required": [],
+        "properties": {}
+      },
+      "IIdRetakeAxiosError": {
+        "type": "object",
+        "description": "",
+        "required": [],
+        "properties": {}
+      },
+      "IIdRetakeResponse": {
+        "type": "object",
+        "description": "The 400 body returned by",
+        "required": [
+          "error",
+          "images"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "A one-line summary for the signer."
+          },
+          "images": {
+            "type": "string",
+            "description": "One entry per photo to retake. Never empty."
+          }
+        }
+      },
       "IIdToken": {
         "type": "object",
         "description": "",
@@ -32370,6 +32827,45 @@
           }
         }
       },
+      "IQesErrorHistoryDetail": {
+        "type": "object",
+        "description": "The event_detail of a 'recipient:qes_error' history entry, as JSON.",
+        "required": [],
+        "properties": {
+          "signature_level": {
+            "type": "string",
+            "description": "For 'not_qualified': the level eID Easy reported instead"
+          }
+        }
+      },
+      "IQesSignedHistoryDetail": {
+        "type": "object",
+        "description": "The event_detail of a 'recipient:qes_signed' history entry, as JSON.",
+        "required": [],
+        "properties": {
+          "baseline_verified": {
+            "type": "boolean",
+            "description": "Whether eID Easy validated the signature's long-term baseline for every document"
+          },
+          "signing_method": {
+            "type": "string",
+            "description": "e.g. 'mid-signature' (Mobile-ID) or 'smart-id-signature'"
+          }
+        }
+      },
+      "IQesStateResponse": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "qes_state"
+        ],
+        "properties": {
+          "qes_state": {
+            "type": "string",
+            "description": "Where the signer stands in the envelope's QES phase, or null if they aren't a 'qualified' recipient."
+          }
+        }
+      },
       "IRadioFieldConfig": {
         "type": "object",
         "description": "Settings for radio button fields.",
@@ -32401,7 +32897,7 @@
           },
           "auth_method_states": {
             "type": "string",
-            "description": "The status of each auth method enabled."
+            "description": "The status of each auth method enabled. 'pending' means the ID check is still waiting on a result."
           },
           "auth_methods": {
             "type": "string",
@@ -32462,6 +32958,10 @@
           "sequence": {
             "type": "integer",
             "description": "The sequence number indicates the order in which Recipients act. Multiple recipients may have the same sequence\nnumber, in which case they may act in parallel. (e.g. all Recipients at sequence 2 will receive invites once\nall Recipients at sequence 1 have signed.)"
+          },
+          "signature_level": {
+            "type": "string",
+            "description": "'qualified' recipients finish by signing every document with their eID (a QES) once all recipients have submitted.\nOptional because API versions before QES support don't return it."
           },
           "ssn_last_4": {
             "type": "string",
@@ -32588,6 +33088,10 @@
           "sequence": {
             "type": "integer",
             "description": "The sequence number indicates the order in which Roles act. Multiple roles may have the same sequence\nnumber, in which case they may act in parallel. (e.g. all Roles at sequence 2 will receive invites once\nall Recipients at sequence 1 have signed.)"
+          },
+          "signature_level": {
+            "type": "string",
+            "description": "The default signature level for recipients created from this role. 'qualified' recipients finish by signing every\ndocument with their eID (a QES), which needs the organization's 'qes' or 'qes_sandbox' entitlement. The sender may\noverride it per recipient when creating an envelope. Optional because API versions before QES support don't return it."
           }
         }
       },
@@ -32759,6 +33263,30 @@
         "description": "",
         "required": [],
         "properties": {}
+      },
+      "IStartQesSessionRequest": {
+        "type": "object",
+        "description": "",
+        "required": [],
+        "properties": {
+          "return_url": {
+            "type": "string",
+            "description": "Where eID Easy sends the signer back to, with qes_result ('signed', 'fail' or 'cancel') added. Usually the signing\npage itself, so the signer lands back in the same session. Must be http or https. Defaults to the signer's signing link."
+          }
+        }
+      },
+      "IStartQesSessionResponse": {
+        "type": "object",
+        "description": "",
+        "required": [
+          "signing_page_url"
+        ],
+        "properties": {
+          "signing_page_url": {
+            "type": "string",
+            "description": "eID Easy's hosted signing page. Send the signer's whole window there: it hands off to Mobile-ID, Smart-ID and card readers."
+          }
+        }
       },
       "ITag": {
         "type": "object",
@@ -34066,6 +34594,7 @@
           null,
           null,
           null,
+          null,
           null
         ]
       },
@@ -34086,6 +34615,17 @@
         "type": "string",
         "description": "",
         "enum": []
+      },
+      "TCertificateSignatureStatus": {
+        "type": "string",
+        "description": "",
+        "enum": [
+          "prepared",
+          "signed",
+          "failed",
+          "canceled",
+          "expired"
+        ]
       },
       "TCreateEnvelopeRequest": {
         "type": "string",
@@ -34163,11 +34703,14 @@
           "passcode_auth",
           "sms_auth",
           "kba_id_auth",
-          "id_auth",
+          "id_verification",
+          "id_verification_plus",
           "custom_disclaimer",
           "custom_branding",
           "sms",
-          "kba_sandbox"
+          "kba_sandbox",
+          "qes",
+          "qes_sandbox"
         ]
       },
       "TEnvelopeDocumentType": {
@@ -34267,6 +34810,7 @@
           "transaction:canceled",
           "user:invited",
           "recipient:invited",
+          "recipient:qes_invited",
           "envelope:canceled",
           "transaction:sent",
           "envelope:signed",
@@ -34369,6 +34913,10 @@
           "recipient:id_failed",
           "recipient:pin_verified",
           "recipient:pin_failed",
+          "recipient:qes_invited",
+          "recipient:qes_started",
+          "recipient:qes_signed",
+          "recipient:qes_error",
           "recipient:session_started",
           "recipient:otp_sent",
           "recipient:otp_verified",
@@ -34381,6 +34929,42 @@
           "owner:updated_recipient_info",
           "owner:get_in_person_link",
           null
+        ]
+      },
+      "TIdDocumentType": {
+        "type": "string",
+        "description": "The kinds of government ID a signer can photograph for ID verification.",
+        "enum": [
+          "driverLicense",
+          "idCard",
+          "passport"
+        ]
+      },
+      "TIdImageError": {
+        "type": "string",
+        "description": "Why a photo needs to be retaken. Most come straight from GBG's image checks.",
+        "enum": [
+          "Image Too Small",
+          "Image Too Large",
+          "Document Missing Four Corners",
+          "Document Too Small",
+          "Document Border Too Small",
+          "Document is Skewed",
+          "Face Image Not Detected",
+          "Barcode Not Detected",
+          "Image same as Document Image",
+          "Image Error",
+          "ID Not Readable",
+          "Poor Quality Selfie"
+        ]
+      },
+      "TIdImageField": {
+        "type": "string",
+        "description": "The photos sent for ID verification.",
+        "enum": [
+          "front_image",
+          "back_image",
+          "face_image"
         ]
       },
       "TMFAType": {
@@ -34454,6 +35038,34 @@
           null
         ]
       },
+      "TQesErrorReason": {
+        "type": "string",
+        "description": "Why a QES attempt failed, in a 'recipient:qes_error' history entry:\n  - prepare_failed: eID Easy rejected the documents, so the signer never reached its page.\n  - not_qualified: The signer signed, but at a lower level than 'qualified'.\n  - download_failed: The signed documents couldn't be retrieved after every retry.",
+        "enum": [
+          "prepare_failed",
+          "not_qualified",
+          "download_failed"
+        ]
+      },
+      "TQesResult": {
+        "type": "string",
+        "description": "How a signer came back from eID Easy's page. The API adds it to the return_url passed to startQesSession as the\nqes_result query parameter. 'signed' means eID Easy finished, not that the signature is confirmed: poll getQesState\nfor that.",
+        "enum": [
+          "signed",
+          "fail",
+          "cancel"
+        ]
+      },
+      "TQesState": {
+        "type": "string",
+        "description": "Where a 'qualified' recipient stands in an envelope's QES phase, which starts once every recipient has submitted:\nwaiting for their turn, ready to sign with their eID, mid-session on eID Easy, or signed.",
+        "enum": [
+          "waiting",
+          "ready",
+          "in_progress",
+          "signed"
+        ]
+      },
       "TRecipientAction": {
         "type": "string",
         "description": "",
@@ -34483,6 +35095,14 @@
           null
         ]
       },
+      "TRecipientIdVerificationLevel": {
+        "type": "string",
+        "description": "",
+        "enum": [
+          "base",
+          "plus"
+        ]
+      },
       "TRecipientKbaStep": {
         "type": "string",
         "description": "The recipient's current step in the KBA (Knowledge-Based Authentication) flow. Branch on",
@@ -34493,6 +35113,15 @@
           null,
           null,
           null
+        ]
+      },
+      "TRecipientSignatureLevel": {
+        "type": "string",
+        "description": "",
+        "enum": [
+          "simple",
+          "advanced",
+          "qualified"
         ]
       },
       "TRecipientStatus": {
@@ -34517,6 +35146,11 @@
           "cc",
           "approver"
         ]
+      },
+      "TRequestableSignatureLevel": {
+        "type": "string",
+        "description": "The signature levels a recipient or role can be created with. 'advanced' only appears in eID Easy's reports of the\nsignature a signer actually produced.",
+        "enum": []
       },
       "TRequestStatus": {
         "type": "string",
@@ -34715,7 +35349,8 @@
           "auth_sms",
           "auth_kba",
           "auth_id",
-          "auth_passcode"
+          "auth_passcode",
+          "qes_used"
         ]
       },
       "TWebhookAuthMethod": {

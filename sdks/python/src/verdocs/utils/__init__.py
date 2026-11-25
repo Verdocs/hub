@@ -31,7 +31,7 @@ from .locales import (
     is_puerto_rico,
 )
 from .primitives import format_full_name, format_initials, full_name_to_initials, integer_sequence
-from .strings import capitalize, convert_to_e164, random_string
+from .strings import capitalize, convert_to_e164, proper_nounify, random_string
 from .token import decode_access_token_body, decode_jwt_body
 
 __all__ = [
@@ -71,6 +71,7 @@ __all__ = [
     "is_mfa_required",
     "is_puerto_rico",
     "name_to_rgba",
+    "proper_nounify",
     "random_string",
     "rescale",
 ]

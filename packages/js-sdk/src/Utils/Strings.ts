@@ -51,3 +51,18 @@ export const randomString = (length: number) =>
   Math.random()
     .toString(36)
     .substring(2, 2 + length + 1);
+
+/**
+ * TODO: I just noticed that we already had a function called `capitalize`, above.
+ *       I'll delete this one once we're back from Thanksgiving.
+ * Transform a word into its proper noun counterpart.
+ *
+ * @sdkOperation string.properNounify
+ * @sdkGroup String
+ * @sdkPage Helpers
+ */
+export const properNounify = (word: string) => {
+  const first = word.slice(0, 1).toUpperCase();
+  const remainder = word.slice(1);
+  return `${first}${remainder}`;
+};

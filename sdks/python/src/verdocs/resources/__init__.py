@@ -14,7 +14,7 @@ from .mfa import MFA, AsyncMFA
 from .notification_templates import AsyncNotificationTemplates, NotificationTemplates
 from .organizations import AsyncOrganizations, Organizations
 from .profiles import AsyncProfiles, Profiles
-from .recipients import AsyncRecipients, Recipients
+from .recipients import AsyncRecipients, Recipients, is_id_retake_required
 from .sessions import AsyncSessions, Sessions
 from .signatures import AsyncSignatures, Signatures
 from .template_documents import AsyncTemplateDocuments, TemplateDocuments
@@ -71,6 +71,7 @@ __all__ = [
     "Templates",
     "Users",
     "Webhooks",
+    "is_id_retake_required",
     "sort_documents",
     "sort_fields",
     "sort_recipients",

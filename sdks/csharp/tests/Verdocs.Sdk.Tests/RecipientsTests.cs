@@ -1,4 +1,6 @@
 using System.Net;
+using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using Verdocs.Models;
 using Verdocs.Resources;
@@ -376,6 +378,285 @@ public sealed class RecipientsTests
         var (recipients, _, _) = CreateResource();
 
         Assert.Throws<ArgumentNullException>(
-            () => { _ = recipients.VerifySignerAsync(null!, TestContext.Current.CancellationToken); });
+            () => { _ = recipients.VerifySignerAsync((AuthenticateRecipientRequest)null!, TestContext.Current.CancellationToken); });
+    }
+
+    private const string RetakeJson = """
+        {
+          "status": "ERROR",
+          "code": "id_retake",
+          "error": "Please retake the photos.",
+          "images": [
+            { "image": "face_image", "errors": ["Poor Quality Selfie"] },
+            { "image": "back_image", "errors": ["Barcode Not Detected", "Document is Skewed"] }
+          ]
+        }
+        """;
+
+    private static IdImageUpload Image(string fileName, string body)
+    {
+        return new IdImageUpload
+        {
+            Content = new MemoryStream(Encoding.ASCII.GetBytes(body)),
+            FileName = fileName,
+            ContentType = "image/jpeg",
+        };
+    }
+
+    [Fact]
+    public async Task VerifySignerAsync_IdVerification_SendsMultipartParts()
+    {
+        var (recipients, handler, _) = CreateResource();
+        handler.Enqueue(
+            HttpStatusCode.OK,
+            $$"""{"access_token": "token-4", "envelope": {{EnvelopeJson}}, "recipient": {{RecipientJson}}}""");
+
+        var response = await recipients.VerifySignerAsync(
+            new AuthenticateRecipientViaIdRequest
+            {
+                CountryCode = "USA",
+                DocumentType = IdDocumentType.DriverLicense,
+                FrontImage = Image("front.jpg", "FRONTDATA"),
+                BackImage = Image("back.jpg", "BACKDATA"),
+                FaceImage = Image("selfie.jpg", "SELFIEDATA"),
+            },
+            TestContext.Current.CancellationToken);
+
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Post, request.Method);
+        Assert.Equal("/v2/sign/verify", request.Uri!.PathAndQuery);
+
+        var parts = ParseMultipart(request.Body!);
+        Assert.Equal(["auth_method", "country_code", "document_type", "front_image", "back_image", "face_image"], parts.Keys);
+        Assert.Equal("id", parts["auth_method"].Body);
+        Assert.Equal("USA", parts["country_code"].Body);
+        Assert.Equal("driverLicense", parts["document_type"].Body);
+        Assert.Equal("FRONTDATA", parts["front_image"].Body);
+        Assert.Equal("BACKDATA", parts["back_image"].Body);
+        Assert.Equal("SELFIEDATA", parts["face_image"].Body);
+        Assert.Contains("filename=\"front.jpg\"", parts["front_image"].Headers);
+        Assert.Contains("filename=\"selfie.jpg\"", parts["face_image"].Headers);
+        Assert.Contains("Content-Type: image/jpeg", parts["face_image"].Headers);
+        Assert.Equal("token-4", response.AccessToken);
+    }
+
+    [Fact]
+    public async Task VerifySignerAsync_IdVerificationWithoutBack_OmitsBackImagePart()
+    {
+        var (recipients, handler, _) = CreateResource();
+        handler.Enqueue(
+            HttpStatusCode.OK,
+            $$"""{"access_token": "token-5", "envelope": {{EnvelopeJson}}, "recipient": {{RecipientJson}}}""");
+
+        await recipients.VerifySignerAsync(
+            new AuthenticateRecipientViaIdRequest
+            {
+                CountryCode = "GBR",
+                DocumentType = IdDocumentType.Passport,
+                FrontImage = Image("front.jpg", "FRONTDATA"),
+                FaceImage = Image("selfie.jpg", "SELFIEDATA"),
+            },
+            TestContext.Current.CancellationToken);
+
+        var parts = ParseMultipart(Assert.Single(handler.Requests).Body!);
+        Assert.False(parts.ContainsKey("back_image"));
+        Assert.Equal("passport", parts["document_type"].Body);
+        Assert.Equal(["auth_method", "country_code", "document_type", "front_image", "face_image"], parts.Keys);
+    }
+
+    [Fact]
+    public async Task VerifySignerAsync_IdVerification_OutlastsShortEndpointTimeout()
+    {
+        var handler = new FakeHttpMessageHandler();
+        using var client = new HttpClient(handler);
+        var endpoint = new VerdocsEndpoint(
+            new VerdocsEndpointOptions { BaseUrl = TestBaseUrl, Timeout = TimeSpan.FromMilliseconds(50) },
+            client);
+        var recipients = new Recipients(endpoint);
+        handler.Enqueue(async (_, cancellationToken) =>
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(300), cancellationToken);
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(
+                    $$"""{"access_token": "token-6", "envelope": {{EnvelopeJson}}, "recipient": {{RecipientJson}}}""",
+                    Encoding.UTF8,
+                    "application/json"),
+            };
+        });
+
+        // The endpoint's 50ms would cut this off; the ID call gets its own, longer timeout.
+        var response = await recipients.VerifySignerAsync(
+            new AuthenticateRecipientViaIdRequest
+            {
+                CountryCode = "USA",
+                DocumentType = IdDocumentType.IdCard,
+                FrontImage = Image("front.jpg", "F"),
+                FaceImage = Image("selfie.jpg", "S"),
+            },
+            TestContext.Current.CancellationToken);
+
+        Assert.Equal("token-6", response.AccessToken);
+    }
+
+    [Fact]
+    public async Task VerifySignerAsync_IdRetakeResponse_IsRecognizedByIsIdRetakeRequired()
+    {
+        var (recipients, handler, _) = CreateResource();
+        handler.Enqueue(HttpStatusCode.BadRequest, RetakeJson);
+
+        IdRetakeResponse? caught = null;
+        try
+        {
+            await recipients.VerifySignerAsync(
+                new AuthenticateRecipientViaIdRequest
+                {
+                    CountryCode = "USA",
+                    DocumentType = IdDocumentType.Passport,
+                    FrontImage = Image("front.jpg", "F"),
+                    FaceImage = Image("selfie.jpg", "S"),
+                },
+                TestContext.Current.CancellationToken);
+        }
+        catch (VerdocsApiException e) when (Recipients.IsIdRetakeRequired(e, out var retake))
+        {
+            caught = retake;
+        }
+
+        Assert.NotNull(caught);
+        Assert.Equal(IdImageField.FaceImage, caught.Images[0].Image);
+    }
+
+    [Fact]
+    public void VerifySignerAsync_JsonRequestWithIdMethod_ThrowsSynchronously()
+    {
+        var (recipients, _, _) = CreateResource();
+
+        Assert.Throws<ArgumentException>(
+            () => { _ = recipients.VerifySignerAsync(new AuthenticateRecipientRequest { AuthMethod = RecipientAuthMethod.Id }, TestContext.Current.CancellationToken); });
+    }
+
+    [Fact]
+    public void VerifySignerAsync_IdRequestWithBadContentType_ThrowsSynchronously()
+    {
+        var (recipients, _, _) = CreateResource();
+        var request = new AuthenticateRecipientViaIdRequest
+        {
+            CountryCode = "USA",
+            DocumentType = IdDocumentType.Passport,
+            FrontImage = Image("front.jpg", "F") with { ContentType = "not a mime type" },
+            FaceImage = Image("selfie.jpg", "S"),
+        };
+
+        Assert.Throws<ArgumentException>(
+            () => { _ = recipients.VerifySignerAsync(request, TestContext.Current.CancellationToken); });
+    }
+
+    [Fact]
+    public void IsIdRetakeRequired_RetakeBody_ReturnsTrueWithImages()
+    {
+        var exception = new VerdocsApiException(HttpStatusCode.BadRequest, RetakeJson);
+
+        Assert.True(Recipients.IsIdRetakeRequired(exception, out var retake));
+        Assert.Equal("ERROR", retake.Status);
+        Assert.Equal("id_retake", retake.Code);
+        Assert.Equal("Please retake the photos.", retake.Error);
+        Assert.Equal(2, retake.Images.Count);
+        Assert.Equal(IdImageField.FaceImage, retake.Images[0].Image);
+        Assert.Equal([IdImageError.PoorQualitySelfie], retake.Images[0].Errors);
+        Assert.Equal([IdImageError.BarcodeNotDetected, IdImageError.DocumentIsSkewed], retake.Images[1].Errors);
+    }
+
+    [Theory]
+    [InlineData(HttpStatusCode.BadRequest, """{"status": "ERROR", "error": "Front image is required"}""")]
+    [InlineData(HttpStatusCode.InternalServerError, """{"code": "id_retake", "images": []}""")]
+    [InlineData(HttpStatusCode.BadRequest, """{"code": "id_retake", "images": "face_image"}""")]
+    [InlineData(HttpStatusCode.BadRequest, """{"code": "id_retake", "images": [1, 2]}""")]
+    [InlineData(HttpStatusCode.BadRequest, """["id_retake"]""")]
+    [InlineData(HttpStatusCode.BadRequest, "<html>Bad Request</html>")]
+    [InlineData(HttpStatusCode.BadRequest, "")]
+    public void IsIdRetakeRequired_OtherErrors_ReturnsFalse(HttpStatusCode statusCode, string body)
+    {
+        var exception = new VerdocsApiException(statusCode, body);
+
+        Assert.False(Recipients.IsIdRetakeRequired(exception, out var retake));
+        Assert.Null(retake);
+    }
+
+    [Fact]
+    public void IsIdRetakeRequired_NonApiException_ReturnsFalse()
+    {
+        Assert.False(Recipients.IsIdRetakeRequired(new HttpRequestException("Network Error"), out _));
+        Assert.False(Recipients.IsIdRetakeRequired(null, out _));
+    }
+
+    [Fact]
+    public void Recipient_IdVerificationFields_Deserialize()
+    {
+        const string json = """
+            {
+              "envelope_id": "e-1",
+              "role_name": "Recipient 1",
+              "status": "invited",
+              "first_name": "Paige",
+              "last_name": "Turner",
+              "email": "paige@example.com",
+              "type": "signer",
+              "id_verification_level": "plus",
+              "auth_methods": ["id"],
+              "auth_method_states": { "id": "pending" },
+              "created_at": "2026-07-01T12:00:00Z",
+              "updated_at": "2026-07-01T12:00:00Z"
+            }
+            """;
+
+        var recipient = JsonSerializer.Deserialize<Recipient>(json, VerdocsJson.Options)!;
+
+        Assert.Equal(RecipientIdVerificationLevel.Plus, recipient.IdVerificationLevel);
+        Assert.Equal("pending", recipient.AuthMethodStates![RecipientAuthMethod.Id]);
+        Assert.Null(recipient.AdditionalData);
+    }
+
+    [Fact]
+    public void CreateEnvelopeRecipient_IdVerificationLevel_SerializesSnakeCase()
+    {
+        var recipient = new CreateEnvelopeRecipient
+        {
+            RoleName = "Recipient 1",
+            FirstName = "Paige",
+            LastName = "Turner",
+            AuthMethods = [RecipientAuthMethod.Id],
+            IdVerificationLevel = RecipientIdVerificationLevel.Base,
+        };
+
+        var body = Assert.IsType<JsonObject>(JsonSerializer.SerializeToNode(recipient, VerdocsJson.Options));
+        Assert.Equal("base", (string?)body["id_verification_level"]);
+
+        var withoutLevel = Assert.IsType<JsonObject>(JsonSerializer.SerializeToNode(recipient with { IdVerificationLevel = null }, VerdocsJson.Options));
+        Assert.False(withoutLevel.ContainsKey("id_verification_level"));
+    }
+
+    // Splits a captured multipart body into its parts, keyed by part name in wire order, so
+    // tests can assert on exactly which parts went out.
+    private static Dictionary<string, (string Headers, string Body)> ParseMultipart(string body)
+    {
+        var boundary = body[..body.IndexOf("\r\n", StringComparison.Ordinal)];
+        var parts = new Dictionary<string, (string Headers, string Body)>();
+        foreach (var chunk in body.Split(boundary).Skip(1))
+        {
+            if (chunk.StartsWith("--", StringComparison.Ordinal))
+            {
+                break;
+            }
+
+            var split = chunk.IndexOf("\r\n\r\n", StringComparison.Ordinal);
+            var headers = chunk[..split];
+            var content = chunk[(split + 4)..^2];
+            var nameStart = headers.IndexOf("name=\"", StringComparison.Ordinal) + 6;
+            var name = headers[nameStart..headers.IndexOf('"', nameStart)];
+            parts.Add(name, (headers, content));
+        }
+
+        return parts;
     }
 }

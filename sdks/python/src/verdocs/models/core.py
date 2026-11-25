@@ -769,6 +769,9 @@ class Recipient(VerdocsModel):
     # Display order within a single sequence level.
     order: int
     type: str  # Known values: RecipientType in base.py.
+    # The ID Verification tier the sender chose, when auth_methods includes
+    # "id". Known values: RecipientIdVerificationLevel in base.py.
+    id_verification_level: str | None = None
     delegator: bool
     delegated_to: str | None = None
     message: str | None = None
@@ -790,8 +793,9 @@ class Recipient(VerdocsModel):
     auth_step: str | None = None
     # Verification types required for this recipient. Known values: RecipientAuthMethod in base.py.
     auth_methods: list[str] | None = None
-    # State per auth method: complete, failed, challenge, questions,
-    # differentiator, or null. Keys and values stay open like the other vocab.
+    # State per auth method: complete, failed, pending (an ID check still
+    # waiting on a result), challenge, questions, differentiator, or null.
+    # Keys and values stay open like the other vocab.
     auth_method_states: dict[str, str | None] | None = None
     # The passcode to enter when auth_methods includes "passcode". Only
     # visible to the envelope creator.

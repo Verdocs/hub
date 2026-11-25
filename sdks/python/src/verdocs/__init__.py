@@ -107,6 +107,11 @@ from .models import (
     GroupProfile,
     GroupUpdateParams,
     HistoryEvent,
+    IdDocumentType,
+    IdImageError,
+    IdImageErrors,
+    IdImageField,
+    IdRetakeResponse,
     IdToken,
     InAppAccessKey,
     Initial,
@@ -172,6 +177,7 @@ from .models import (
     RecipientAuthMethod,
     RecipientAuthStep,
     RecipientDelegateParams,
+    RecipientIdVerificationLevel,
     RecipientKbaStep,
     RecipientKbaStepChallenge,
     RecipientKbaStepComplete,
@@ -185,6 +191,7 @@ from .models import (
     RecipientUpdateParams,
     RecipientUpdateStatus,
     RecipientVerifyEmailParams,
+    RecipientVerifyIdParams,
     RecipientVerifyKBAParams,
     RecipientVerifyParams,
     RecipientVerifyPasscodeParams,
@@ -248,7 +255,7 @@ from .models import (
     WebhookEvents,
     WebhookSetParams,
 )
-from .resources import sort_documents, sort_fields, sort_recipients
+from .resources import is_id_retake_required, sort_documents, sort_fields, sort_recipients
 from .utils.auth import create_code_challenge, create_code_verifier, get_mfa_challenge, is_mfa_required
 
 __version__ = "1.1.0"
@@ -355,6 +362,11 @@ __all__ = [
     "InvitationRole",
     "InvitationUpdateParams",
     "KBAQuestion",
+    "IdDocumentType",
+    "IdImageError",
+    "IdImageErrors",
+    "IdImageField",
+    "IdRetakeResponse",
     "KBAResponse",
     "KbaChallengeQuestion",
     "KbaChallengeResponse",
@@ -412,6 +424,7 @@ __all__ = [
     "RecipientAgreeParams",
     "RecipientAuthMethod",
     "RecipientAuthStep",
+    "RecipientIdVerificationLevel",
     "RecipientDelegateParams",
     "RecipientKbaStep",
     "RecipientKbaStepChallenge",
@@ -426,6 +439,7 @@ __all__ = [
     "RecipientUpdateParams",
     "RecipientUpdateStatus",
     "RecipientVerifyEmailParams",
+    "RecipientVerifyIdParams",
     "RecipientVerifyKBAParams",
     "RecipientVerifyParams",
     "RecipientVerifyPasscodeParams",
@@ -497,6 +511,7 @@ __all__ = [
     "create_code_challenge",
     "create_code_verifier",
     "get_mfa_challenge",
+    "is_id_retake_required",
     "is_mfa_required",
     "sort_documents",
     "sort_fields",

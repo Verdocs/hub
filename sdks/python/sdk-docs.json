@@ -4755,7 +4755,7 @@
             {
               "name": "params",
               "type": "RecipientVerifyParams",
-              "description": "The verification step being completed: passcode, email,\nsms, or kba.",
+              "description": "The verification step being completed: passcode, email,\nsms, kba, or id.",
               "optional": false,
               "default": null
             }
@@ -4767,7 +4767,7 @@
           "throws": [
             {
               "type": "VerdocsAPIError",
-              "description": "The verification failed."
+              "description": "The verification failed, or ID photos need\nretaking (see is_id_retake_required)."
             },
             {
               "type": "VerdocsConnectionError",
@@ -5023,6 +5023,37 @@
             }
           ],
           "examples": [],
+          "deprecated": false
+        },
+        "recipient.isIdRetakeRequired": {
+          "sdkOperation": "recipient.isIdRetakeRequired",
+          "kind": "function",
+          "name": "is_id_retake_required",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "is_id_retake_required(error: object) -> TypeGuard[VerdocsAPIError]",
+          "summary": "Check whether an exception is an ID verification attempt whose photos need retaking.",
+          "params": [
+            {
+              "name": "error",
+              "type": "object",
+              "description": "Any object, usually a caught exception.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "TypeGuard[VerdocsAPIError]",
+            "description": "True if error is a 400 with code \"id_retake\" and an images list,"
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "python",
+              "code": "from verdocs import IdRetakeResponse, RecipientVerifyIdParams, VerdocsError, is_id_retake_required\n\ntry:\n    endpoint.recipients.verify_signer(\n        RecipientVerifyIdParams(\n            country_code=\"USA\",\n            document_type=\"driverLicense\",\n            front_image=\"front.jpg\",\n            back_image=\"back.jpg\",\n            face_image=\"selfie.jpg\",\n        )\n    )\nexcept VerdocsError as error:\n    if is_id_retake_required(error):\n        retake = IdRetakeResponse.model_validate(error.body)\n        # e.g. [IdImageErrors(image=\"face_image\", errors=[\"Poor Quality Selfie\"])]\n        show_retake_prompts(retake.images)"
+            }
+          ],
           "deprecated": false
         }
       }
@@ -6723,6 +6754,37 @@
           },
           "throws": [],
           "examples": [],
+          "deprecated": false
+        },
+        "string.properNounify": {
+          "sdkOperation": "string.properNounify",
+          "kind": "function",
+          "name": "proper_nounify",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "proper_nounify(word: str) -> str",
+          "summary": "Return the word with its first letter uppercased, like a proper noun.",
+          "params": [
+            {
+              "name": "word",
+              "type": "str",
+              "description": "The word to transform. May be empty.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "str",
+            "description": "The input with the first character uppercased, other characters untouched."
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "python",
+              "code": "proper_nounify(\"plus\")  # \"Plus\""
+            }
+          ],
           "deprecated": false
         }
       }

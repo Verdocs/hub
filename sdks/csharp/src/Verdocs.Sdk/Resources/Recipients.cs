@@ -1,3 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Verdocs.Models;
 
@@ -8,6 +12,10 @@ namespace Verdocs.Resources;
 /// </summary>
 public sealed class Recipients
 {
+    private const string IdRetakeCode = "id_retake";
+
+    private static readonly TimeSpan IdVerificationTimeout = TimeSpan.FromSeconds(180);
+
     private readonly VerdocsEndpoint _endpoint;
 
     internal Recipients(VerdocsEndpoint endpoint)
@@ -201,7 +209,8 @@ public sealed class Recipients
     /// methods attached must agree to the disclosures first, then complete every step before
     /// viewing documents, completing fields, or submitting. Requires a signing session. This
     /// is also where real knowledge-based authentication runs; the endpoint's Kba resource
-    /// targets legacy /v2/kba routes that were never deployed.
+    /// targets legacy /v2/kba routes that were never deployed. ID verification uploads photos,
+    /// so it goes through the overload that takes an <see cref="AuthenticateRecipientViaIdRequest"/>.
     ///
     /// <example>
     /// <code>
@@ -212,10 +221,31 @@ public sealed class Recipients
     /// });
     /// </code>
     /// </example>
+    /// <example>
+    /// <code>
+    /// try
+    /// {
+    ///     await endpoint.Recipients.VerifySignerAsync(new AuthenticateRecipientViaIdRequest
+    ///     {
+    ///         CountryCode = "USA",
+    ///         DocumentType = IdDocumentType.DriverLicense,
+    ///         FrontImage = new IdImageUpload { Content = File.OpenRead("front.jpg"), FileName = "front.jpg", ContentType = "image/jpeg" },
+    ///         BackImage = new IdImageUpload { Content = File.OpenRead("back.jpg"), FileName = "back.jpg", ContentType = "image/jpeg" },
+    ///         FaceImage = new IdImageUpload { Content = File.OpenRead("selfie.jpg"), FileName = "selfie.jpg", ContentType = "image/jpeg" },
+    ///     });
+    /// }
+    /// catch (VerdocsApiException e) when (Recipients.IsIdRetakeRequired(e, out var retake))
+    /// {
+    ///     // e.g. [{ Image = "face_image", Errors = ["Poor Quality Selfie"] }]
+    ///     ShowRetakePrompts(retake.Images);
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     /// <param name="request">The verification step being completed.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>The updated signing session.</returns>
+    /// <exception cref="ArgumentException"><see cref="AuthenticateRecipientRequest.AuthMethod"/> is "id", which needs the photo-upload overload.</exception>
     /// <exception cref="VerdocsApiException">The call failed, for example because the code was wrong.</exception>
     /// <sdkOperation>recipient.verifySigner</sdkOperation>
     /// <sdkGroup>Recipient</sdkGroup>
@@ -223,7 +253,117 @@ public sealed class Recipients
     public Task<SignerTokenResponse> VerifySignerAsync(AuthenticateRecipientRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
+        if (request.AuthMethod == RecipientAuthMethod.Id)
+        {
+            throw new ArgumentException(
+                "ID verification uploads photos; pass an AuthenticateRecipientViaIdRequest instead.",
+                nameof(request));
+        }
+
         return _endpoint.SendAsync<SignerTokenResponse>(HttpMethod.Post, "/v2/sign/verify", request, cancellationToken);
+    }
+
+    /// <summary>
+    /// Completes the ID verification step for the current signing session by uploading photos
+    /// of a government ID and a selfie as multipart form data. GBG checks the photos while the
+    /// request waits, which can take a minute or more, so this call allows at least three
+    /// minutes regardless of the endpoint's <see cref="VerdocsEndpoint.Timeout"/>. If you
+    /// handed the endpoint your own HttpClient, its Timeout (100 seconds by default) still
+    /// caps the call, so raise it for this to have room. When a photo can't be used the call
+    /// fails with a 400 that <see cref="IsIdRetakeRequired"/> recognizes, listing which photos
+    /// to retake and why. Requires a signing session. The other overload's docs carry an
+    /// example of this call.
+    /// </summary>
+    /// <param name="request">The ID photos and the document they show.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>The updated signing session.</returns>
+    /// <exception cref="VerdocsApiException">The call failed, for example because a photo needs retaking.</exception>
+    /// <exception cref="TimeoutException">The check did not finish in time.</exception>
+    public Task<SignerTokenResponse> VerifySignerAsync(AuthenticateRecipientViaIdRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentException.ThrowIfNullOrEmpty(request.CountryCode, nameof(request));
+        ArgumentException.ThrowIfNullOrEmpty(request.DocumentType, nameof(request));
+        var frontType = ParseImageContentType(request.FrontImage, nameof(request.FrontImage));
+        var backType = request.BackImage is null ? null : ParseImageContentType(request.BackImage, nameof(request.BackImage));
+        var faceType = ParseImageContentType(request.FaceImage, nameof(request.FaceImage));
+
+        var content = new MultipartFormDataContent();
+        AddTextPart(content, "auth_method", RecipientAuthMethod.Id);
+        AddTextPart(content, "country_code", request.CountryCode);
+        AddTextPart(content, "document_type", request.DocumentType);
+        AddImagePart(content, IdImageField.FrontImage, request.FrontImage, frontType);
+        if (request.BackImage is not null)
+        {
+            AddImagePart(content, IdImageField.BackImage, request.BackImage, backType!);
+        }
+
+        AddImagePart(content, IdImageField.FaceImage, request.FaceImage, faceType);
+
+        // The js-sdk raises this call to 180 seconds because the GBG check regularly runs close
+        // to the 60 second default. We take the longer of that and the endpoint's own timeout
+        // so a caller who already configured more headroom keeps it.
+        var timeout = _endpoint.Timeout > IdVerificationTimeout ? _endpoint.Timeout : IdVerificationTimeout;
+        return _endpoint.SendAsync<SignerTokenResponse>(HttpMethod.Post, "/v2/sign/verify", content, timeout, cancellationToken);
+    }
+
+    /// <summary>
+    /// Checks whether a failed ID verification attempt needs the signer to retake one or more
+    /// photos, and if so hands back the body listing each photo and why. True only for a 400
+    /// whose body has code "id_retake" and an images array, the same test the js-sdk applies.
+    /// Never throws: anything else, including a body that is not JSON, is simply false.
+    ///
+    /// <example>
+    /// <code>
+    /// catch (VerdocsApiException e) when (Recipients.IsIdRetakeRequired(e, out var retake))
+    /// {
+    ///     foreach (var image in retake.Images)
+    ///     {
+    ///         Console.WriteLine($"{image.Image}: {string.Join(", ", image.Errors)}");
+    ///     }
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    /// <param name="exception">The exception a verification call threw. Anything other than a <see cref="VerdocsApiException"/> returns false.</param>
+    /// <param name="retake">The parsed retake body when this returns true; otherwise null.</param>
+    /// <returns>True when the photos need retaking.</returns>
+    /// <sdkOperation>recipient.isIdRetakeRequired</sdkOperation>
+    /// <sdkGroup>Recipient</sdkGroup>
+    /// <sdkPage>Helpers</sdkPage>
+    public static bool IsIdRetakeRequired(Exception? exception, [NotNullWhen(true)] out IdRetakeResponse? retake)
+    {
+        retake = null;
+        if (exception is not VerdocsApiException { StatusCode: HttpStatusCode.BadRequest } apiException
+            || string.IsNullOrWhiteSpace(apiException.ResponseBody))
+        {
+            return false;
+        }
+
+        try
+        {
+            using var document = JsonDocument.Parse(apiException.ResponseBody);
+            var root = document.RootElement;
+            if (root.ValueKind != JsonValueKind.Object
+                || !root.TryGetProperty("code", out var code)
+                || code.ValueKind != JsonValueKind.String
+                || code.GetString() != IdRetakeCode
+                || !root.TryGetProperty("images", out var images)
+                || images.ValueKind != JsonValueKind.Array)
+            {
+                return false;
+            }
+
+            retake = root.Deserialize<IdRetakeResponse>(VerdocsJson.Options);
+            return retake is not null;
+        }
+        catch (JsonException)
+        {
+            // A body that parses but doesn't fit the model (an image entry that isn't an
+            // object, say) lands here too. Either way it isn't a retake we can act on.
+            retake = null;
+            return false;
+        }
     }
 
     /// <summary>
@@ -382,6 +522,40 @@ public sealed class Recipients
             RecipientPath(envelopeId, roleName) + "/ask-question",
             new { question },
             cancellationToken);
+    }
+
+    private static void AddTextPart(MultipartFormDataContent content, string name, string value)
+    {
+        // Names are pre-quoted because .NET only quotes multipart part names when it must,
+        // while browsers (and so the API's usual traffic) always quote them.
+        content.Add(new StringContent(value), "\"" + name + "\"");
+    }
+
+    private static MediaTypeHeaderValue ParseImageContentType(IdImageUpload? image, string property)
+    {
+        if (image is null)
+        {
+            throw new ArgumentException($"{property} is required.", "request");
+        }
+
+        if (image.Content is null || string.IsNullOrEmpty(image.FileName))
+        {
+            throw new ArgumentException($"{property} needs both Content and a FileName.", "request");
+        }
+
+        if (!MediaTypeHeaderValue.TryParse(image.ContentType, out var mediaType))
+        {
+            throw new ArgumentException($"{property}.ContentType must be a valid MIME type, for example \"image/jpeg\".", "request");
+        }
+
+        return mediaType;
+    }
+
+    private static void AddImagePart(MultipartFormDataContent content, string name, IdImageUpload image, MediaTypeHeaderValue contentType)
+    {
+        var part = new StreamContent(image.Content);
+        part.Headers.ContentType = contentType;
+        content.Add(part, "\"" + name + "\"", "\"" + image.FileName + "\"");
     }
 
     private static string RecipientPath(string envelopeId, string roleName)

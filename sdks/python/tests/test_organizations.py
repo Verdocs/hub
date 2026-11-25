@@ -304,7 +304,10 @@ def test_get_active_entitlements_collapses_to_current_features(endpoint, token_f
         id="ent-old", feature="kba_auth", starts_at=_iso(now - timedelta(days=9)), ends_at=_iso(now - timedelta(days=2))
     )
     future = entitlement_payload(
-        id="ent-new", feature="id_auth", starts_at=_iso(now + timedelta(days=2)), ends_at=_iso(now + timedelta(days=9))
+        id="ent-new",
+        feature="id_verification",
+        starts_at=_iso(now + timedelta(days=2)),
+        ends_at=_iso(now + timedelta(days=9)),
     )
     respx_mock.get(f"{base_url}{ORGANIZATIONS_URL}/entitlements").respond(
         200, json=[active, duplicate, expired, future]
