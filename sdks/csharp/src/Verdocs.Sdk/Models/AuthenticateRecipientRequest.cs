@@ -3,11 +3,12 @@ using System.Text.Json.Serialization;
 namespace Verdocs.Models;
 
 /// <summary>
-/// One verification step for <see cref="Resources.Recipients.VerifySignerAsync"/>. The js-sdk
-/// models this as four request variants (passcode, email, SMS, and KBA); C# has no union
-/// types, so one record covers them all and <see cref="AuthMethod"/> discriminates. Set
-/// <see cref="Code"/> for the passcode, email, and SMS methods; the remaining properties feed
-/// the KBA method.
+/// One verification step for <see cref="Resources.Recipients.VerifySignerAsync(AuthenticateRecipientRequest, CancellationToken)"/>.
+/// The js-sdk models this as request variants per method; C# has no union types, so one
+/// record covers the JSON methods (passcode, email, SMS, and KBA) and <see cref="AuthMethod"/>
+/// discriminates. Set <see cref="Code"/> for the passcode, email, and SMS methods; the
+/// remaining properties feed the KBA method. ID verification uploads photos instead, so it
+/// has its own record, <see cref="AuthenticateRecipientViaIdRequest"/>.
 /// </summary>
 public sealed record AuthenticateRecipientRequest
 {

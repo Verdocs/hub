@@ -692,8 +692,8 @@
     "csharp": "ported: endpoint.Recipients.GetInPersonLinkAsync"
   },
   "Envelopes/Recipients.ts#verifySigner": {
-    "python": "ported: endpoint.recipients.verify_signer (params: verdocs.models.envelopes.RecipientVerifyParams); this is the real KBA path",
-    "csharp": "ported: endpoint.Recipients.VerifySignerAsync (this is the deployed KBA path)"
+    "python": "ported: endpoint.recipients.verify_signer (params: verdocs.models.envelopes.RecipientVerifyParams); this is the real KBA path. RecipientVerifyIdParams goes up as multipart with a timeout of at least 180 seconds (the js-sdk sets exactly 180; an endpoint configured longer keeps its own)",
+    "csharp": "ported: endpoint.Recipients.VerifySignerAsync (this is the deployed KBA path). ID verification is an overload taking AuthenticateRecipientViaIdRequest, sent as multipart with a timeout of at least 180 seconds (the js-sdk sets exactly 180; an endpoint configured longer keeps its own)"
   },
   "Envelopes/Recipients.ts#delegateRecipient": {
     "python": "ported: endpoint.recipients.delegate (params: verdocs.models.envelopes.RecipientDelegateParams); returns the new recipient row the server actually sends (js-sdk types {status:'OK'}, a drift)",
@@ -872,8 +872,8 @@
     "csharp": "adapted: merged into Verdocs.Models.AuthenticateRecipientRequest (AuthMethod = kba)"
   },
   "Envelopes/Types.ts#TAuthenticateRecipientRequest": {
-    "python": "ported: verdocs.models.envelopes.RecipientVerifyParams (union alias)",
-    "csharp": "adapted: Verdocs.Models.AuthenticateRecipientRequest (four-variant union merged; AuthMethod discriminates)"
+    "python": "ported: verdocs.models.envelopes.RecipientVerifyParams (union alias, including RecipientVerifyIdParams)",
+    "csharp": "adapted: Verdocs.Models.AuthenticateRecipientRequest (four-variant union merged; AuthMethod discriminates). The id variant is AuthenticateRecipientViaIdRequest on its own VerifySignerAsync overload"
   },
   "Envelopes/Types.ts#DEFAULT_DISCLOSURES": {
     "python": "ported: verdocs.models.envelopes.DEFAULT_DISCLOSURES (verbatim, HTML and all)",
@@ -1746,5 +1746,45 @@
   "BaseTypes.ts#TBasicResponse": {
     "csharp": "adapted: calls whose only response is a status body return Task (SendVoidAsync discards the body after the status check)",
     "python": "adapted: calls whose only response is a status body return None (the status check is the transport's)"
+  },
+  "BaseTypes.ts#TRecipientIdVerificationLevel": {
+    "python": "ported: verdocs.models.RecipientIdVerificationLevel (Literal)",
+    "csharp": "adapted: string + Verdocs.Models.RecipientIdVerificationLevel constants (Base, Plus)"
+  },
+  "Envelopes/Types.ts#TIdDocumentType": {
+    "python": "ported: verdocs.models.envelopes.IdDocumentType (Literal)",
+    "csharp": "adapted: string + Verdocs.Models.IdDocumentType constants"
+  },
+  "Envelopes/Types.ts#IAuthenticateRecipientViaIdRequest": {
+    "python": "adapted: verdocs.models.envelopes.RecipientVerifyIdParams; images take any FileInput (path, bytes, file-like, or httpx tuple) instead of Blob and skip pydantic validation",
+    "csharp": "adapted: Verdocs.Models.AuthenticateRecipientViaIdRequest, sent through its own VerifySignerAsync overload (no AuthMethod property); each Blob becomes an IdImageUpload (Stream + FileName + ContentType)"
+  },
+  "Envelopes/Types.ts#TIdImageField": {
+    "python": "ported: verdocs.models.envelopes.IdImageField (Literal)",
+    "csharp": "adapted: string + Verdocs.Models.IdImageField constants"
+  },
+  "Envelopes/Types.ts#TIdImageError": {
+    "python": "ported: verdocs.models.envelopes.IdImageError (Literal)",
+    "csharp": "adapted: string + Verdocs.Models.IdImageError constants (all 12 values)"
+  },
+  "Envelopes/Types.ts#IIdImageErrors": {
+    "python": "ported: verdocs.models.envelopes.IdImageErrors; image and errors stay plain str so a new GBG reason never breaks parsing",
+    "csharp": "ported: Verdocs.Models.IdImageErrors"
+  },
+  "Envelopes/Types.ts#IIdRetakeResponse": {
+    "python": "ported: verdocs.models.envelopes.IdRetakeResponse; parse VerdocsAPIError.body with it",
+    "csharp": "ported: Verdocs.Models.IdRetakeResponse"
+  },
+  "Envelopes/Types.ts#IIdRetakeAxiosError": {
+    "python": "skipped: axios error shape; the retake body arrives as VerdocsAPIError.body, read with IdRetakeResponse",
+    "csharp": "skipped: axios error shape; VerdocsApiException carries the status and raw body, and Recipients.IsIdRetakeRequired parses it"
+  },
+  "Envelopes/Recipients.ts#isIdRetakeRequired": {
+    "python": "ported: verdocs.is_id_retake_required (verdocs.resources.recipients), a TypeGuard narrowing to VerdocsAPIError",
+    "csharp": "adapted: Verdocs.Resources.Recipients.IsIdRetakeRequired(Exception?, out IdRetakeResponse?), TryParse style instead of a type guard; never throws on unparseable bodies"
+  },
+  "Utils/Strings.ts#properNounify": {
+    "python": "ported: verdocs.utils.strings.proper_nounify",
+    "csharp": "ported: Verdocs.Utils.Strings.ProperNounify"
   }
 }

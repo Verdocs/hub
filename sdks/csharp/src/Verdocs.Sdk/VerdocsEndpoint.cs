@@ -328,9 +328,18 @@ public sealed class VerdocsEndpoint : IDisposable
     /// Sends one API request with prebuilt content (multipart uploads, mainly) and returns
     /// the parsed response.
     /// </summary>
-    internal async Task<TResponse> SendAsync<TResponse>(HttpMethod method, string pathAndQuery, HttpContent? content, CancellationToken cancellationToken)
+    internal Task<TResponse> SendAsync<TResponse>(HttpMethod method, string pathAndQuery, HttpContent? content, CancellationToken cancellationToken)
     {
-        var (statusCode, bytes) = await SendCoreWithStatusAsync(method, pathAndQuery, content, cancellationToken).ConfigureAwait(false);
+        return SendAsync<TResponse>(method, pathAndQuery, content, null, cancellationToken);
+    }
+
+    /// <summary>
+    /// Sends one API request with prebuilt content and a timeout that replaces
+    /// <see cref="Timeout"/> for this call only, for the few calls that are known to run long.
+    /// </summary>
+    internal async Task<TResponse> SendAsync<TResponse>(HttpMethod method, string pathAndQuery, HttpContent? content, TimeSpan? timeout, CancellationToken cancellationToken)
+    {
+        var (statusCode, bytes) = await SendCoreWithStatusAsync(method, pathAndQuery, content, timeout, cancellationToken).ConfigureAwait(false);
         var responseBody = Encoding.UTF8.GetString(bytes);
 
         try
@@ -385,7 +394,7 @@ public sealed class VerdocsEndpoint : IDisposable
 
     private async Task<byte[]> SendCoreAsync(HttpMethod method, string pathAndQuery, HttpContent? content, CancellationToken cancellationToken)
     {
-        var (_, bytes) = await SendCoreWithStatusAsync(method, pathAndQuery, content, cancellationToken).ConfigureAwait(false);
+        var (_, bytes) = await SendCoreWithStatusAsync(method, pathAndQuery, content, null, cancellationToken).ConfigureAwait(false);
         return bytes;
     }
 
@@ -394,7 +403,7 @@ public sealed class VerdocsEndpoint : IDisposable
     /// mapping all live here. Reads the body as bytes so binary downloads and text/JSON
     /// responses share the same path; the API speaks UTF-8 for everything textual.
     /// </summary>
-    private async Task<(HttpStatusCode StatusCode, byte[] Body)> SendCoreWithStatusAsync(HttpMethod method, string pathAndQuery, HttpContent? content, CancellationToken cancellationToken)
+    private async Task<(HttpStatusCode StatusCode, byte[] Body)> SendCoreWithStatusAsync(HttpMethod method, string pathAndQuery, HttpContent? content, TimeSpan? timeout, CancellationToken cancellationToken)
     {
         using var request = new HttpRequestMessage(method, new Uri(BaseUrl, pathAndQuery));
         ApplyHeaders(request);
@@ -405,9 +414,11 @@ public sealed class VerdocsEndpoint : IDisposable
         }
 
         // The endpoint owns the timeout so behavior is identical for owned and injected
-        // clients (we are not allowed to touch an injected client's Timeout).
+        // clients (we are not allowed to touch an injected client's Timeout). An injected client's
+        // own Timeout still applies too, so the shorter of the two wins.
+        var effectiveTimeout = timeout ?? Timeout;
         using var timeoutSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        timeoutSource.CancelAfter(Timeout);
+        timeoutSource.CancelAfter(effectiveTimeout);
 
         try
         {
@@ -423,7 +434,7 @@ public sealed class VerdocsEndpoint : IDisposable
         }
         catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
         {
-            throw new TimeoutException($"The request to {pathAndQuery} did not complete within {Timeout.TotalSeconds:0.###} seconds.");
+            throw new TimeoutException($"The request to {pathAndQuery} did not complete within {effectiveTimeout.TotalSeconds:0.###} seconds.");
         }
     }
 }

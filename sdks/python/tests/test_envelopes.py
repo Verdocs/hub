@@ -170,6 +170,37 @@ def test_create_from_template_sends_email_key_for_phone_only_recipient(endpoint,
     assert body["recipients"][0]["phone"] == "+15551230000"
 
 
+def test_create_from_template_sends_id_verification_level(endpoint, respx_mock, base_url):
+    route = respx_mock.post(f"{base_url}{ENVELOPES_URL}").respond(200, json=envelope_payload())
+
+    Envelopes(endpoint).create(
+        EnvelopeCreateFromTemplateParams(
+            template_id="template-1234",
+            recipients=[
+                EnvelopeCreateRecipientFromTemplate(
+                    role_name="Recipient 1",
+                    first_name="Paige",
+                    last_name="Turner",
+                    email="paige.turner@example.com",
+                    auth_methods=["id"],
+                    id_verification_level="base",
+                )
+            ],
+        )
+    )
+
+    recipient = request_json(route)["recipients"][0]
+    assert recipient["auth_methods"] == ["id"]
+    assert recipient["id_verification_level"] == "base"
+
+
+def test_create_recipient_rejects_unknown_id_verification_level():
+    with pytest.raises(ValidationError):
+        EnvelopeCreateRecipientFromTemplate(
+            role_name="Recipient 1", first_name="Paige", last_name="Turner", email="", id_verification_level="gold"
+        )
+
+
 def test_create_recipient_requires_email_key():
     with pytest.raises(ValidationError):
         EnvelopeCreateRecipientFromTemplate(role_name="Recipient 1", first_name="Paige", last_name="Turner")

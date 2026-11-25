@@ -46,4 +46,55 @@ public sealed class ConstantsTests
         Assert.Equal(WebhookEvent.OrganizationDeleted, WebhookEvent.All[^1]);
         Assert.Distinct(WebhookEvent.All);
     }
+
+    [Fact]
+    public void EntitlementFeature_IdVerification_MatchesJsSdk()
+    {
+        Assert.Equal("id_verification", EntitlementFeature.IdVerification);
+        Assert.Equal("id_verification_plus", EntitlementFeature.IdVerificationPlus);
+
+        // The API renamed id_auth, and the js-sdk dropped it from TEntitlement.
+        Assert.Null(typeof(EntitlementFeature).GetField("IdAuth"));
+    }
+
+    [Fact]
+    public void IdVerificationValues_MatchJsSdk()
+    {
+        Assert.Equal("base", RecipientIdVerificationLevel.Base);
+        Assert.Equal("plus", RecipientIdVerificationLevel.Plus);
+        Assert.Equal("driverLicense", IdDocumentType.DriverLicense);
+        Assert.Equal("idCard", IdDocumentType.IdCard);
+        Assert.Equal("passport", IdDocumentType.Passport);
+        Assert.Equal("front_image", IdImageField.FrontImage);
+        Assert.Equal("back_image", IdImageField.BackImage);
+        Assert.Equal("face_image", IdImageField.FaceImage);
+    }
+
+    [Fact]
+    public void IdImageError_MatchesJsSdk_AllTwelveValues()
+    {
+        string[] expected =
+        [
+            "Image Too Small",
+            "Image Too Large",
+            "Document Missing Four Corners",
+            "Document Too Small",
+            "Document Border Too Small",
+            "Document is Skewed",
+            "Face Image Not Detected",
+            "Barcode Not Detected",
+            "Image same as Document Image",
+            "Image Error",
+            "ID Not Readable",
+            "Poor Quality Selfie",
+        ];
+
+        var actual = typeof(IdImageError)
+            .GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+            .Select(field => (string)field.GetValue(null)!)
+            .ToArray();
+
+        // Reflection doesn't promise declaration order, so compare as sets.
+        Assert.Equal(expected.Order(StringComparer.Ordinal), actual.Order(StringComparer.Ordinal));
+    }
 }

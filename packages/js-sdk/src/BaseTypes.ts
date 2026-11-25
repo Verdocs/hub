@@ -182,7 +182,8 @@ export type TEntitlement =
   | 'passcode_auth'
   | 'sms_auth'
   | 'kba_id_auth'
-  | 'id_auth'
+  | 'id_verification'
+  | 'id_verification_plus'
   | 'custom_disclaimer'
   | 'custom_branding'
   | 'sms'
@@ -223,6 +224,8 @@ export type TWebhookAuthMethod = 'none' | 'hmac' | 'client_credentials';
 export type TNotificationType = 'sms' | 'email' | 'app';
 
 export type TRecipientSignatureLevel = 'simple' | 'advanced' | 'qualified';
+
+export type TRecipientIdVerificationLevel = 'base' | 'plus';
 
 /**
  * The signature levels a recipient or role can be created with. 'advanced' only appears in eID Easy's reports of the

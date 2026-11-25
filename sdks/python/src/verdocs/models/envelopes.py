@@ -18,9 +18,16 @@ import os
 from datetime import datetime
 from typing import IO, Annotated, Any, Literal
 
-from pydantic import Field
+from pydantic import ConfigDict, Field, SkipValidation
 
-from .base import EnvelopeStatus, FieldType, RecipientAuthMethod, RecipientStatus, RecipientType
+from .base import (
+    EnvelopeStatus,
+    FieldType,
+    RecipientAuthMethod,
+    RecipientIdVerificationLevel,
+    RecipientStatus,
+    RecipientType,
+)
 from .core import AccessKey, DropdownOption, Envelope, Initial, Number, Recipient, Signature, VerdocsModel
 
 # What the upload methods accept for a file: a filesystem path (str or
@@ -124,6 +131,8 @@ class EnvelopeCreateRecipientFromTemplate(VerdocsModel):
     message: str | None = None
     # Verification methods the recipient must complete before signing.
     auth_methods: list[RecipientAuthMethod] | None = None
+    # When auth_methods includes "id", which ID Verification tier to run.
+    id_verification_level: RecipientIdVerificationLevel | None = None
     # For passcode auth, the code to challenge the signer with (4+ characters).
     passcode: str | None = None
     # For SMS auth, the number that receives one-time codes. Not defaulted
@@ -543,10 +552,81 @@ class RecipientVerifyKBAParams(VerdocsModel):
     responses: list[KBAResponse] | None = None
 
 
+# The kinds of government ID a signer can photograph (js-sdk: TIdDocumentType).
+IdDocumentType = Literal["driverLicense", "idCard", "passport"]
+
+
+class RecipientVerifyIdParams(VerdocsModel):
+    """Complete an ID verification step (js-sdk: IAuthenticateRecipientViaIdRequest).
+
+    verify_signer sends these as multipart/form-data rather than JSON. The
+    images take anything the upload methods accept (see FileInput); they are
+    passed through to httpx as-is, so pydantic does not validate them.
+    """
+
+    model_config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
+
+    auth_method: Literal["id"] = "id"
+    # ISO 3166-1 alpha-3 code of the country that issued the ID, e.g. "USA".
+    country_code: str
+    document_type: IdDocumentType
+    # Photo of the front of the ID, or the photo page of a passport.
+    front_image: SkipValidation[FileInput]
+    # Photo of the back of the ID. Required for driver's licenses.
+    back_image: SkipValidation[FileInput] | None = None
+    # A selfie of the signer, compared against the photo on the ID and
+    # checked for liveness.
+    face_image: SkipValidation[FileInput]
+
+
 # js-sdk: TAuthenticateRecipientRequest.
 RecipientVerifyParams = (
-    RecipientVerifyPasscodeParams | RecipientVerifyEmailParams | RecipientVerifySMSParams | RecipientVerifyKBAParams
+    RecipientVerifyPasscodeParams
+    | RecipientVerifyEmailParams
+    | RecipientVerifySMSParams
+    | RecipientVerifyKBAParams
+    | RecipientVerifyIdParams
 )
+
+# The photos sent for ID verification (js-sdk: TIdImageField).
+IdImageField = Literal["front_image", "back_image", "face_image"]
+
+# Why a photo needs to be retaken; most come straight from GBG's image checks
+# (js-sdk: TIdImageError).
+IdImageError = Literal[
+    "Image Too Small",
+    "Image Too Large",
+    "Document Missing Four Corners",
+    "Document Too Small",
+    "Document Border Too Small",
+    "Document is Skewed",
+    "Face Image Not Detected",
+    "Barcode Not Detected",
+    "Image same as Document Image",
+    "Image Error",
+    "ID Not Readable",
+    "Poor Quality Selfie",
+]
+
+
+class IdImageErrors(VerdocsModel):
+    """One photo to retake and why (js-sdk: IIdImageErrors)."""
+
+    # Known values: IdImageField.
+    image: str
+    # Known values: IdImageError. Kept open so a new GBG reason never breaks parsing.
+    errors: list[str]
+
+
+class IdRetakeResponse(VerdocsModel):
+    """The 400 body verify_signer gets when ID photos need retaking (js-sdk: IIdRetakeResponse)."""
+
+    status: Literal["ERROR"]
+    code: Literal["id_retake"]
+    # A one-line summary for the signer.
+    error: str
+    # One entry per photo to retake. Never empty.
+    images: list[IdImageErrors]
 
 
 # The KBA step shapes below mirror Envelopes/KBA.ts. The /v2/kba routes they

@@ -172,7 +172,8 @@ EntitlementFeature = Literal[
     "passcode_auth",
     "sms_auth",
     "kba_id_auth",
-    "id_auth",
+    "id_verification",
+    "id_verification_plus",
     "custom_disclaimer",
 ]
 
@@ -181,6 +182,10 @@ EntitlementFeature = Literal[
 RecipientAuthMethod = Literal["kba", "passcode", "sms", "email", "id"]
 
 RecipientAuthStep = RecipientAuthMethod | None
+
+# Which ID Verification tier the sender chose for a recipient. Plus adds an
+# identity check against the details on the ID; base checks the ID and selfie.
+RecipientIdVerificationLevel = Literal["base", "plus"]
 
 UsageType = Literal[
     "envelope",

@@ -23,6 +23,16 @@ public sealed class UtilsStringsTests
     }
 
     [Theory]
+    [InlineData("plus", "Plus")]
+    [InlineData("base", "Base")]
+    [InlineData("iD verification", "ID verification")]
+    [InlineData("", "")]
+    public void ProperNounify_Word_UppercasesFirstCharacterOnly(string word, string expected)
+    {
+        Assert.Equal(expected, Strings.ProperNounify(word));
+    }
+
+    [Theory]
     [InlineData("(212) 555-1212", "+12125551212")]
     [InlineData("212-555-1212", "+12125551212")]
     [InlineData("212.555.1212", "+12125551212")]

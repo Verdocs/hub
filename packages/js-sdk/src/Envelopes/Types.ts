@@ -1,4 +1,4 @@
-import type {TEnvelopeStatus, TFieldDefault, TFieldType, TQesErrorReason, TQesState, TRecipientAuthMethod, TRecipientStatus, TRecipientType} from '../BaseTypes';
+import type {TEnvelopeStatus, TFieldDefault, TFieldType, TQesErrorReason, TQesState, TRecipientAuthMethod, TRecipientIdVerificationLevel, TRecipientStatus, TRecipientType} from '../BaseTypes';
 import type {TRequestableSignatureLevel} from '../BaseTypes';
 import type {IDropdownOption, IEnvelope, IInitial, IRecipient, ISignature, TAccessKey} from '../Models';
 
@@ -46,6 +46,9 @@ export interface ICreateEnvelopeRecipientFromTemplate {
    * Requires the organization's 'qes' or 'qes_sandbox' entitlement. Can't be changed after the envelope is created.
    */
   signature_level?: TRequestableSignatureLevel;
+
+  /** Decide between "Id Verification" and "Id Verification Plus" */
+  id_verification_level?: TRecipientIdVerificationLevel;
 
   /** A custom message to include in the email or SMS invitation. May be left blank for a default message. */
   message?: string;
@@ -571,11 +574,68 @@ export interface IAuthenticateRecipientViaKBARequest {
   responses?: IKBAResponse[];
 }
 
+/** The kinds of government ID a signer can photograph for ID verification. */
+export type TIdDocumentType = 'driverLicense' | 'idCard' | 'passport';
+
+export interface IAuthenticateRecipientViaIdRequest {
+  auth_method: 'id';
+  /** ISO 3166-1 alpha-3 code of the country that issued the ID, e.g. "USA". */
+  country_code: string;
+  document_type: TIdDocumentType;
+  /** Photo of the front of the ID, or the photo page of a passport. */
+  front_image: Blob;
+  /** Photo of the back of the ID. Required for driver's licenses. */
+  back_image?: Blob;
+  /** A selfie of the signer, compared against the photo on the ID and checked for liveness. */
+  face_image: Blob;
+}
+
 export type TAuthenticateRecipientRequest =
   | IAuthenticateRecipientViaPasscodeRequest
   | IAuthenticateRecipientViaEmailRequest
   | IAuthenticateRecipientViaSMSRequest
-  | IAuthenticateRecipientViaKBARequest;
+  | IAuthenticateRecipientViaKBARequest
+  | IAuthenticateRecipientViaIdRequest;
+
+/** The photos sent for ID verification. */
+export type TIdImageField = 'front_image' | 'back_image' | 'face_image';
+
+/** Why a photo needs to be retaken. Most come straight from GBG's image checks. */
+export type TIdImageError =
+  | 'Image Too Small'
+  | 'Image Too Large'
+  | 'Document Missing Four Corners'
+  | 'Document Too Small'
+  | 'Document Border Too Small'
+  | 'Document is Skewed'
+  | 'Face Image Not Detected'
+  | 'Barcode Not Detected'
+  | 'Image same as Document Image'
+  | 'Image Error'
+  | 'ID Not Readable'
+  | 'Poor Quality Selfie';
+
+export interface IIdImageErrors {
+  image: TIdImageField;
+  errors: TIdImageError[];
+}
+
+/** The 400 body returned by `verifySigner` when the signer needs to retake one or more ID photos. */
+export interface IIdRetakeResponse {
+  status: 'ERROR';
+  code: 'id_retake';
+  /** A one-line summary for the signer. */
+  error: string;
+  /** One entry per photo to retake. Never empty. */
+  images: IIdImageErrors[];
+}
+
+export interface IIdRetakeAxiosError {
+  response: {
+    status: 400;
+    data: IIdRetakeResponse;
+  };
+}
 
 /**
  * These disclosures will be used if no overrides are supplied by the caller. Overrides must

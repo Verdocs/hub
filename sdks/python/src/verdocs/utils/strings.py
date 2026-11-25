@@ -79,3 +79,24 @@ def random_string(length: int) -> str:
     @sdkPage Helpers
     """
     return "".join(secrets.choice(_BASE36_ALPHABET) for _ in range(length))
+
+
+def proper_nounify(word: str) -> str:
+    """Return the word with its first letter uppercased, like a proper noun.
+
+    Same result as capitalize(); the js-sdk exports both names, so we do too.
+
+    Example:
+        proper_nounify("plus")  # "Plus"
+
+    Args:
+        word: The word to transform. May be empty.
+
+    Returns:
+        The input with the first character uppercased, other characters untouched.
+
+    @sdkOperation string.properNounify
+    @sdkGroup String
+    @sdkPage Helpers
+    """
+    return capitalize(word)

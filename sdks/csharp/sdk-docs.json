@@ -7286,7 +7286,7 @@
           "gettingStarted": false,
           "resource": "function",
           "signature": "Task\u003CSignerTokenResponse\u003E VerifySignerAsync(AuthenticateRecipientRequest request, CancellationToken cancellationToken = default)",
-          "summary": "Completes one verification step for the current signing session. Recipients with auth methods attached must agree to the disclosures first, then complete every step before viewing documents, completing fields, or submitting. Requires a signing session. This is also where real knowledge-based authentication runs; the endpoint\u0027s Kba resource targets legacy /v2/kba routes that were never deployed.",
+          "summary": "Completes one verification step for the current signing session. Recipients with auth methods attached must agree to the disclosures first, then complete every step before viewing documents, completing fields, or submitting. Requires a signing session. This is also where real knowledge-based authentication runs; the endpoint\u0027s Kba resource targets legacy /v2/kba routes that were never deployed. ID verification uploads photos, so it goes through the overload that takes an AuthenticateRecipientViaIdRequest.",
           "params": [
             {
               "name": "request",
@@ -7309,6 +7309,10 @@
           },
           "throws": [
             {
+              "type": "ArgumentException",
+              "description": "AuthMethod is \u0022id\u0022, which needs the photo-upload overload."
+            },
+            {
               "type": "VerdocsApiException",
               "description": "The call failed, for example because the code was wrong."
             }
@@ -7317,6 +7321,48 @@
             {
               "language": "csharp",
               "code": "var session = await endpoint.Recipients.VerifySignerAsync(new AuthenticateRecipientRequest\n{\n    AuthMethod = \u0022passcode\u0022,\n    Code = \u0022123456\u0022,\n});"
+            },
+            {
+              "language": "csharp",
+              "code": "try\n{\n    await endpoint.Recipients.VerifySignerAsync(new AuthenticateRecipientViaIdRequest\n    {\n        CountryCode = \u0022USA\u0022,\n        DocumentType = IdDocumentType.DriverLicense,\n        FrontImage = new IdImageUpload { Content = File.OpenRead(\u0022front.jpg\u0022), FileName = \u0022front.jpg\u0022, ContentType = \u0022image/jpeg\u0022 },\n        BackImage = new IdImageUpload { Content = File.OpenRead(\u0022back.jpg\u0022), FileName = \u0022back.jpg\u0022, ContentType = \u0022image/jpeg\u0022 },\n        FaceImage = new IdImageUpload { Content = File.OpenRead(\u0022selfie.jpg\u0022), FileName = \u0022selfie.jpg\u0022, ContentType = \u0022image/jpeg\u0022 },\n    });\n}\ncatch (VerdocsApiException e) when (Recipients.IsIdRetakeRequired(e, out var retake))\n{\n    // e.g. [{ Image = \u0022face_image\u0022, Errors = [\u0022Poor Quality Selfie\u0022] }]\n    ShowRetakePrompts(retake.Images);\n}"
+            }
+          ],
+          "deprecated": false
+        },
+        "recipient.isIdRetakeRequired": {
+          "sdkOperation": "recipient.isIdRetakeRequired",
+          "kind": "function",
+          "name": "IsIdRetakeRequired",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "bool IsIdRetakeRequired(Exception? exception, out IdRetakeResponse? retake)",
+          "summary": "Checks whether a failed ID verification attempt needs the signer to retake one or more photos, and if so hands back the body listing each photo and why. True only for a 400 whose body has code \u0022id_retake\u0022 and an images array, the same test the js-sdk applies. Never throws: anything else, including a body that is not JSON, is simply false.",
+          "params": [
+            {
+              "name": "exception",
+              "type": "Exception?",
+              "description": "The exception a verification call threw. Anything other than a VerdocsApiException returns false.",
+              "optional": false,
+              "default": null
+            },
+            {
+              "name": "retake",
+              "type": "out IdRetakeResponse?",
+              "description": "The parsed retake body when this returns true; otherwise null.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "bool",
+            "description": "True when the photos need retaking."
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "catch (VerdocsApiException e) when (Recipients.IsIdRetakeRequired(e, out var retake))\n{\n    foreach (var image in retake.Images)\n    {\n        Console.WriteLine($\u0022{image.Image}: {string.Join(\u0022, \u0022, image.Errors)}\u0022);\n    }\n}"
             }
           ],
           "deprecated": false
@@ -9692,6 +9738,37 @@
             {
               "language": "csharp",
               "code": "Strings.ConvertToE164(\u0022(212) 555-1212\u0022); // \u0022\u002B12125551212\u0022\nStrings.ConvertToE164(\u0022\u002B46766861004\u0022);   // \u0022\u002B46766861004\u0022"
+            }
+          ],
+          "deprecated": false
+        },
+        "string.properNounify": {
+          "sdkOperation": "string.properNounify",
+          "kind": "function",
+          "name": "ProperNounify",
+          "page": "Helpers",
+          "gettingStarted": false,
+          "resource": "function",
+          "signature": "string ProperNounify(string word)",
+          "summary": "Turns a word into its proper noun form by uppercasing the first character and leaving the rest as is. It behaves exactly like Capitalize; the js-sdk exports both names, so we do too.",
+          "params": [
+            {
+              "name": "word",
+              "type": "string",
+              "description": "The word to transform. May be empty.",
+              "optional": false,
+              "default": null
+            }
+          ],
+          "returns": {
+            "type": "string",
+            "description": "The input with the first character uppercased, other characters untouched."
+          },
+          "throws": [],
+          "examples": [
+            {
+              "language": "csharp",
+              "code": "var label = Strings.ProperNounify(\u0022plus\u0022); // \u0022Plus\u0022"
             }
           ],
           "deprecated": false

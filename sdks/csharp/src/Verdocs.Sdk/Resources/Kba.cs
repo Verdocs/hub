@@ -5,7 +5,7 @@ namespace Verdocs.Resources;
 /// <summary>
 /// Legacy knowledge-based authentication calls, reached through the endpoint's Kba property.
 /// NOTE: the /v2/kba routes these methods target DO NOT EXIST in the deployed API; every call
-/// returns 404. Real KBA verification runs through <see cref="Recipients.VerifySignerAsync"/>
+/// returns 404. Real KBA verification runs through <see cref="Recipients.VerifySignerAsync(AuthenticateRecipientRequest, CancellationToken)"/>
 /// (POST /v2/sign/verify). The module is ported code-faithfully from the js-sdk for parity and
 /// is excluded from conformance runs.
 /// </summary>
@@ -21,7 +21,7 @@ public sealed class Kba
     /// <summary>
     /// Gets the current KBA status. Per the js-sdk this may only be called by the recipient
     /// under a signing session. NOTE: the deployed API has no such route; use
-    /// <see cref="Recipients.VerifySignerAsync"/> for real KBA.
+    /// <see cref="Recipients.VerifySignerAsync(AuthenticateRecipientRequest, CancellationToken)"/> for real KBA.
     ///
     /// <example>
     /// <code>
@@ -50,7 +50,7 @@ public sealed class Kba
 
     /// <summary>
     /// Submits a response to a KBA PIN challenge. NOTE: the deployed API has no such route;
-    /// use <see cref="Recipients.VerifySignerAsync"/> for real KBA.
+    /// use <see cref="Recipients.VerifySignerAsync(AuthenticateRecipientRequest, CancellationToken)"/> for real KBA.
     ///
     /// <example>
     /// <code>
@@ -81,7 +81,7 @@ public sealed class Kba
 
     /// <summary>
     /// Submits an identity response to a KBA challenge. NOTE: the deployed API has no such
-    /// route; use <see cref="Recipients.VerifySignerAsync"/> for real KBA.
+    /// route; use <see cref="Recipients.VerifySignerAsync(AuthenticateRecipientRequest, CancellationToken)"/> for real KBA.
     ///
     /// <example>
     /// <code>
@@ -122,7 +122,7 @@ public sealed class Kba
     /// <summary>
     /// Submits answers to KBA challenge questions, in the same order the challenges were
     /// listed in <see cref="RecipientKbaStep.Questions"/>. NOTE: the deployed API has no such
-    /// route; use <see cref="Recipients.VerifySignerAsync"/> for real KBA.
+    /// route; use <see cref="Recipients.VerifySignerAsync(AuthenticateRecipientRequest, CancellationToken)"/> for real KBA.
     ///
     /// <example>
     /// <code>

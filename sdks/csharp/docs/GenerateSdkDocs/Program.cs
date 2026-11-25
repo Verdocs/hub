@@ -282,7 +282,7 @@ internal static class Program
             result.Add(new SdkParam
             {
                 Name = parameter.Name ?? "",
-                Type = TypeDisplayName(parameter.ParameterType) + (IsNullableReference(parameter) ? "?" : ""),
+                Type = (parameter.IsOut ? "out " : "") + TypeDisplayName(parameter.ParameterType) + (IsNullableReference(parameter) ? "?" : ""),
                 Description = docs.ParamDocs.GetValueOrDefault(parameter.Name ?? "", ""),
                 Optional = optional,
                 Default = defaultValue,
@@ -310,7 +310,8 @@ internal static class Program
     // nullability via Nullable<T>, so this only matters for reference types.
     private static bool IsNullableReference(ParameterInfo parameter)
     {
-        if (parameter.ParameterType.IsValueType)
+        var type = parameter.ParameterType.IsByRef ? parameter.ParameterType.GetElementType()! : parameter.ParameterType;
+        if (type.IsValueType)
         {
             return false;
         }
@@ -320,6 +321,12 @@ internal static class Program
 
     private static string TypeDisplayName(Type type)
     {
+        // An out parameter's type is the by-ref form (Foo&); BuildParams adds the "out" itself.
+        if (type.IsByRef)
+        {
+            return TypeDisplayName(type.GetElementType()!);
+        }
+
         if (type == typeof(void))
         {
             return "void";

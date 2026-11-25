@@ -2,6 +2,66 @@
   "$schema": "./sdk-unified.schema.json",
   "operations": [
     {
+      "operationId": "ungrouped.consumeQesResult",
+      "group": "Ungrouped",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Browser only. Read the qes_result the signer came back from eID Easy with, and remove it from the address bar so a\nreload doesn't act on it again. Returns null when there isn't one, or outside a browser. A 'signed' result still needs\ngetQesState to confirm the signature.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "consumeQesResult(): TQesResult | null",
+          "deprecated": false,
+          "returns": {
+            "type": "TQesResult | null"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "ungrouped.getQesReturnUrl",
+      "group": "Ungrouped",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Browser only. The return_url to pass to startQesSession: the current page, without the qes_result from an earlier\nattempt, so the signer lands back in the same session. Returns undefined outside a browser.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getQesReturnUrl(): string | undefined",
+          "deprecated": false,
+          "returns": {
+            "type": "string | undefined"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "ungrouped.isQualifiedRecipient",
+      "group": "Ungrouped",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Check whether a recipient must finish by signing with their eID (a QES), once every recipient has submitted.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "isQualifiedRecipient(recipient: IRecipient | null | undefined): boolean",
+          "params": [
+            {
+              "name": "recipient",
+              "type": "IRecipient | null | undefined",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "boolean"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "kba.getKbaStep",
       "group": "KBA",
       "page": "Endpoints",
@@ -4971,6 +5031,109 @@
       ]
     },
     {
+      "operationId": "recipient.getQesState",
+      "group": "Recipient",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Get where the signer stands in the envelope's QES phase. Returns null for recipients who aren't 'qualified'. Poll this\nafter the signer submits (to see 'waiting' become 'ready') and after they return from eID Easy (to see 'in_progress'\nbecome 'signed' once the signature is processed).",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "getQesState(endpoint: VerdocsEndpoint): Promise<IQesStateResponse>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IQesStateResponse>"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "recipient.isIdRetakeRequired",
+      "group": "Recipient",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "Type guard for an ID verification attempt whose photos need retaking. The body lists each photo to retake and why, so\nthe signer can be shown exactly what to fix.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "isIdRetakeRequired(e: unknown): boolean",
+          "params": [
+            {
+              "name": "e",
+              "type": "unknown",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "bool IsIdRetakeRequired(Exception? exception, out IdRetakeResponse? retake)",
+          "params": [
+            {
+              "name": "exception",
+              "type": "Exception?",
+              "optional": false,
+              "default": null,
+              "description": "The exception a verification call threw. Anything other than a VerdocsApiException returns false."
+            },
+            {
+              "name": "retake",
+              "type": "out IdRetakeResponse?",
+              "optional": false,
+              "default": null,
+              "description": "The parsed retake body when this returns true; otherwise null."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "bool",
+            "description": "True when the photos need retaking."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "catch (VerdocsApiException e) when (Recipients.IsIdRetakeRequired(e, out var retake))\n{\n    foreach (var image in retake.Images)\n    {\n        Console.WriteLine($\"{image.Image}: {string.Join(\", \", image.Errors)}\");\n    }\n}"
+          }
+        },
+        {
+          "language": "python",
+          "signature": "is_id_retake_required(error: object) -> TypeGuard[VerdocsAPIError]",
+          "params": [
+            {
+              "name": "error",
+              "type": "object",
+              "optional": false,
+              "default": null,
+              "description": "Any object, usually a caught exception."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "TypeGuard[VerdocsAPIError]",
+            "description": "True if error is a 400 with code \"id_retake\" and an images list,"
+          },
+          "example": {
+            "language": "python",
+            "code": "from verdocs import IdRetakeResponse, RecipientVerifyIdParams, VerdocsError, is_id_retake_required\n\ntry:\n    endpoint.recipients.verify_signer(\n        RecipientVerifyIdParams(\n            country_code=\"USA\",\n            document_type=\"driverLicense\",\n            front_image=\"front.jpg\",\n            back_image=\"back.jpg\",\n            face_image=\"selfie.jpg\",\n        )\n    )\nexcept VerdocsError as error:\n    if is_id_retake_required(error):\n        retake = IdRetakeResponse.model_validate(error.body)\n        # e.g. [IdImageErrors(image=\"face_image\", errors=[\"Poor Quality Selfie\"])]\n        show_retake_prompts(retake.images)"
+          }
+        }
+      ]
+    },
+    {
       "operationId": "recipient.remindRecipient",
       "group": "Recipient",
       "page": "Endpoints",
@@ -5215,6 +5378,39 @@
           "returns": {
             "type": "Recipient",
             "description": "The reset recipient."
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "recipient.startQesSession",
+      "group": "Recipient",
+      "page": "Endpoints",
+      "gettingStarted": false,
+      "summary": "Start a QES signing session for a 'qualified' recipient. This session should only be used after the\n\"fill\" phase of the envelope-document lifecycle. In other words, after all recipients ('qualified'|'advanced'|'simple')\nhave signed the document in the typical Verdocs envelope workflow. A QES Certificate would not be valid if\n\"Recipient A\" signed + submitted their Verdocs signature, then \"Recipient A\" signed + submitted their QES signature, then\n\"Recipient B\" signed + submitted their Verdocs signature. The QES Certificate is only valid after all Verdocs fields are\ncompleted. Check getQesState first: this is rejected unless the signer's qes_state is 'ready' or 'in_progress'.\n\neID Easy sends the signer back to params.return_url (or their signing link) with qes_result set to 'signed', 'fail' or\n'cancel'. A 'signed' return still needs getQesState to confirm the signature.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "startQesSession(endpoint: VerdocsEndpoint, params: IStartQesSessionRequest = {}): Promise<IStartQesSessionResponse>",
+          "params": [
+            {
+              "name": "endpoint",
+              "type": "VerdocsEndpoint",
+              "optional": false,
+              "default": null,
+              "description": ""
+            },
+            {
+              "name": "params",
+              "type": "IStartQesSessionRequest",
+              "optional": true,
+              "default": "{}",
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "Promise<IStartQesSessionResponse>"
           }
         }
       ]
@@ -5472,7 +5668,7 @@
       "group": "Recipient",
       "page": "Endpoints",
       "gettingStarted": false,
-      "summary": "Verify a recipient within a signing session. All signing sessions use an invite code at a minimum,\nbut many scenarios require more robust verification of recipients, so one or more verification\nmethods may be attached to each recipient. If an authentication method is enabled, the\nsigner must first accept the e-signature disclosures, then complete each verification step\nbefore attempting to view/display documents, complete any fields, or submit the envelope.\nThis endpoint should be called to complete each step. If the call fails an error will be\nthrown.",
+      "summary": "Verify a recipient within a signing session. All signing sessions use an invite code at a minimum,\nbut many scenarios require more robust verification of recipients, so one or more verification\nmethods may be attached to each recipient. If an authentication method is enabled, the\nsigner must first accept the e-signature disclosures, then complete each verification step\nbefore attempting to view/display documents, complete any fields, or submit the envelope.\nThis endpoint should be called to complete each step. If the call fails an error will be\nthrown.\n\nID verification sends the photos as a multipart upload and can take up to a minute while GBG checks them, so this call\nallows up to three minutes for it. When a photo can't be used, the call fails with a 400 that `isIdRetakeRequired()`\nrecognizes, listing which photos to retake and why.",
       "variants": [
         {
           "language": "typescript",
@@ -5496,6 +5692,10 @@
           "deprecated": false,
           "returns": {
             "type": "Promise<ISignerTokenResponse>"
+          },
+          "example": {
+            "language": "typescript",
+            "code": "import {verifySigner, isIdRetakeRequired, VerdocsEndpoint} from '@verdocs/js-sdk';\n\ntry {\n  await verifySigner(VerdocsEndpoint.getDefault(), {\n    auth_method: 'id',\n    country_code: 'USA',\n    document_type: 'driverLicense',\n    front_image: frontFile,\n    back_image: backFile,\n    face_image: selfieFile,\n  });\n} catch (e) {\n  if (isIdRetakeRequired(e)) {\n    // e.g. [{image: 'face_image', errors: ['Poor Quality Selfie']}]\n    showRetakePrompts(e.response.data.images);\n  }\n}"
           }
         },
         {
@@ -5536,7 +5736,7 @@
               "type": "RecipientVerifyParams",
               "optional": false,
               "default": null,
-              "description": "The verification step being completed: passcode, email,\nsms, or kba."
+              "description": "The verification step being completed: passcode, email,\nsms, kba, or id."
             }
           ],
           "deprecated": false,
@@ -12751,6 +12951,76 @@
           "example": {
             "language": "python",
             "code": "convert_to_e164(\"(212) 555-1212\")  # \"+12125551212\"\nconvert_to_e164(\"+46766861004\")    # \"+46766861004\""
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "string.properNounify",
+      "group": "String",
+      "page": "Helpers",
+      "gettingStarted": false,
+      "summary": "TODO: I just noticed that we already had a function called `capitalize`, above.\n      I'll delete this one once we're back from Thanksgiving.\nTransform a word into its proper noun counterpart.",
+      "variants": [
+        {
+          "language": "typescript",
+          "signature": "properNounify(word: string): string",
+          "params": [
+            {
+              "name": "word",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": ""
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "string"
+          }
+        },
+        {
+          "language": "csharp",
+          "signature": "string ProperNounify(string word)",
+          "params": [
+            {
+              "name": "word",
+              "type": "string",
+              "optional": false,
+              "default": null,
+              "description": "The word to transform. May be empty."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "string",
+            "description": "The input with the first character uppercased, other characters untouched."
+          },
+          "example": {
+            "language": "csharp",
+            "code": "var label = Strings.ProperNounify(\"plus\"); // \"Plus\""
+          }
+        },
+        {
+          "language": "python",
+          "signature": "proper_nounify(word: str) -> str",
+          "params": [
+            {
+              "name": "word",
+              "type": "str",
+              "optional": false,
+              "default": null,
+              "description": "The word to transform. May be empty."
+            }
+          ],
+          "deprecated": false,
+          "returns": {
+            "type": "str",
+            "description": "The input with the first character uppercased, other characters untouched."
+          },
+          "example": {
+            "language": "python",
+            "code": "proper_nounify(\"plus\")  # \"Plus\""
           }
         }
       ]
